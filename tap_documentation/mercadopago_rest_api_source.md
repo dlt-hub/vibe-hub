@@ -2,22 +2,21 @@
 
 ## dlt REST API Configuration Documentation
 
-# dlt REST API Source Configuration Documentation for MercadoPago
+# REST API Configuration for dlt
 
-This document provides a comprehensive guide for configuring a dlt data pipeline to integrate with the MercadoPago REST API. It covers all necessary parameters and configurations to ensure a seamless data extraction process.
+This document provides a comprehensive guide for configuring a dlt data pipeline to integrate with the MercadoPago REST API. It covers client configuration, available endpoints, incremental data loading, endpoint dependencies, and API behavior and limits.
 
 ## 1. Client Configuration
 
 ### Base URL
 - **Base URL**: `https://api.mysample.com`
-- This is the root URL for all API requests. Ensure that any versioning or common prefixes are included.
+- This is the root URL for all API requests.
 
 ### Authentication
 - **Type**: `bearer`
 - **Token Format**: `Bearer {token}`
-- **Parameter Name**: `Authorization`
-- **Location**: Header
-- The API requires a Bearer token for authentication. The token should be included in the `Authorization` header of each request.
+- **Header Name**: `Authorization`
+- The token is required for authenticating API requests and should be included in the request headers.
 
 ## 2. Available Endpoints
 
@@ -25,37 +24,37 @@ This document provides a comprehensive guide for configuring a dlt data pipeline
 - **Path**: `/users`
 - **HTTP Method**: `GET`
 - **Required Query Parameters**: None
-- **Response Data Structure**: JSON array located at the root level
+- **Response Data Structure**: JSON array of user objects
 
 #### Pagination Configuration
 - **Type**: `offset`
 - **Limit Parameter**: `limit`
 - **Offset Parameter**: `offset`
 - **Default/Maximum Page Size**: 100
-- Pagination is handled using offset and limit parameters. The next page is determined by incrementing the offset by the limit.
+- **Next Page Determination**: Based on the `$.next_page` JSON path in the response
 
 #### Data Extraction
-- **JSONPath**: `$[*]`
+- **JSONPath**: `$.data`
 - **Primary Key**: `id`
-- The data array is located at the root level of the JSON response. Each user record is uniquely identified by the `id` field.
+- **Key Fields**: `id`, `name`, `email`
 
 ### Groups Endpoint
 - **Path**: `/groups`
 - **HTTP Method**: `GET`
 - **Required Query Parameters**: None
-- **Response Data Structure**: JSON array located at the root level
+- **Response Data Structure**: JSON array of group objects
 
 #### Pagination Configuration
 - **Type**: `offset`
 - **Limit Parameter**: `limit`
 - **Offset Parameter**: `offset`
 - **Default/Maximum Page Size**: 100
+- **Next Page Determination**: Based on the `$.next_page` JSON path in the response
 
 #### Data Extraction
-- **JSONPath**: `$[*]`
+- **JSONPath**: `$.data`
 - **Primary Key**: `id`
-- **Replication Key**: `modified`
-- The data array is located at the root level of the JSON response. Each group record is uniquely identified by the `id` field, and changes are tracked using the `modified` field.
+- **Key Fields**: `id`, `name`, `modified`
 
 ## 3. Incremental Data Loading
 
@@ -67,7 +66,7 @@ This document provides a comprehensive guide for configuring a dlt data pipeline
 - **Query Parameter**: `since`
 - **Date/Timestamp Field**: `modified`
 - **Expected Format**: ISO 8601
-- **Recommended Initial Value**: The earliest date from which you want to start syncing data
+- **Recommended Initial Value**: Earliest record date to sync, specified in the configuration as `start_date`
 
 ## 4. Endpoint Dependencies
 
@@ -80,13 +79,13 @@ This document provides a comprehensive guide for configuring a dlt data pipeline
 ### Rate Limiting
 - **Requests per Second**: Not specified
 - **Burst Limits**: Not specified
-- It is recommended to implement exponential backoff in case of rate limiting errors.
+- **Recommended Delays**: Implement exponential backoff for retries
 
 ### Special Requirements
 - **Custom Headers**: `User-Agent` can be specified in the configuration
-- **Response Format**: JSON
-- **Error Handling Patterns**: Implement retry logic for transient errors and handle HTTP status codes appropriately.
-- **Data Type Specifications**: Ensure that data types in the schema match those expected by the API.
+- **Response Format Considerations**: JSON
+- **Error Handling Patterns**: Implement retry logic for 5xx errors and handle 4xx errors gracefully
+- **Data Type Specifications**: Ensure correct data types as per the schema definitions
 
 ## Output Format
 
@@ -97,7 +96,6 @@ BASE_CONFIG = {
     "base_url": "https://api.mysample.com",
     "auth": {
         "type": "bearer",
-        "location": "header",
         "name": "Authorization",
         "format": "Bearer {token}"
     }
@@ -108,7 +106,7 @@ ENDPOINTS = [
         "name": "users",
         "path": "/users",
         "method": "GET",
-        "data_selector": "$[*]",
+        "data_selector": "$.data",
         "primary_key": "id",
         "pagination": {
             "type": "offset",
@@ -122,9 +120,8 @@ ENDPOINTS = [
         "name": "groups",
         "path": "/groups",
         "method": "GET",
-        "data_selector": "$[*]",
+        "data_selector": "$.data",
         "primary_key": "id",
-        "replication_key": "modified",
         "pagination": {
             "type": "offset",
             "limit_param": "limit",
@@ -142,7 +139,7 @@ ENDPOINTS = [
 DEPENDENCIES = []
 ```
 
-This configuration guide provides all necessary details to set up a dlt data pipeline for the MercadoPago API, ensuring efficient data extraction and integration.
+This configuration guide provides all necessary parameters and settings to effectively integrate with the MercadoPago API using a dlt data pipeline. Adjust the configuration as needed based on specific project requirements or API changes.
 
 ---
 *dlt REST API Source Configuration Guide*

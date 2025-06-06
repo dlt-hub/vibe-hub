@@ -4,22 +4,22 @@
 
 # dlt REST API Source Configuration Documentation
 
-This document provides a comprehensive guide for configuring a dlt REST API source, specifically for the UpWork API. It includes details on client configuration, available endpoints, incremental data loading, endpoint dependencies, and API behavior and limits.
+This document provides a comprehensive guide for configuring a dlt REST API source for the UpWork API. It includes detailed instructions on client configuration, available endpoints, incremental data loading, endpoint dependencies, and API behavior and limits.
 
 ## 1. Client Configuration
 
 ### Base URL
 - **Base URL**: `https://api.upwork.com/graphql`
-- This is the root URL for all API requests.
+- This URL serves as the root for all API requests.
 
 ### Authentication
 - **Type**: `oauth2`
 - **Token URL**: `https://www.upwork.com/api/v3/oauth2/token`
-- **Required Scopes**: Not explicitly defined in the provided code, but typically includes scopes relevant to accessing user and organization data.
+- **Required Scopes**: Not specified in the provided code, but typically includes scopes relevant to the data being accessed.
 - **OAuth Request Body Parameters**:
   - `grant_type`: `client_credentials`
-  - `client_id`: Your UpWork client ID
-  - `client_secret`: Your UpWork client secret
+  - `client_id`: Provided in the configuration
+  - `client_secret`: Provided in the configuration
 
 ## 2. Available Endpoints
 
@@ -28,54 +28,54 @@ This document provides a comprehensive guide for configuring a dlt REST API sour
 - **HTTP Method**: `POST`
 - **Query**: `contractTimeReport`
 - **Required Parameters**:
-  - `filter`: Includes `organizationId_eq` and `timeReportDate_bt` for date range filtering.
-  - `pagination`: Includes `first` for page size and `after` for cursor-based pagination.
-- **Response Data Structure**: JSON with `data.contractTimeReport.edges[*].node` for records.
+  - `filter`: Includes `organizationId_eq` and `timeReportDate_bt` with `rangeStart` and `rangeEnd`
+  - `pagination`: Includes `first` and optionally `after` for pagination
+- **Response Data Structure**: JSON with `data.contractTimeReport.edges[*].node`
 
 ### Time Report
 - **Path**: `/graphql`
 - **HTTP Method**: `POST`
 - **Query**: `timeReport`
 - **Required Parameters**:
-  - `filter`: Includes `organizationId_eq` and `timeReportDate_bt` for date range filtering.
-- **Response Data Structure**: JSON with `data.timeReport` for records.
+  - `filter`: Includes `organizationId_eq` and `timeReportDate_bt` with `rangeStart` and `rangeEnd`
+- **Response Data Structure**: JSON with `data.timeReport`
 
 ### Organization
 - **Path**: `/graphql`
 - **HTTP Method**: `POST`
 - **Query**: `organization`
-- **Response Data Structure**: JSON with `data.organization` for records.
+- **Response Data Structure**: JSON with `data.organization`
 
 ### Pagination Configuration
 - **Type**: `cursor`
-- **Parameter Names**: `first` for page size, `after` for cursor
-- **Next Page Determination**: `pageInfo.endCursor` in the response indicates the next page.
+- **Parameter Names**: `first` for limit, `after` for cursor
+- **Next Page Determination**: `pageInfo.endCursor` in the response
 
 ## 3. Incremental Data Loading
 
 ### Incremental Support
-- **Query Parameter**: `timeReportDate_bt` for date range filtering
+- **Query Parameter**: `timeReportDate_bt`
 - **Date/Timestamp Field**: `dateWorkedOn`
-- **Expected Format**: ISO date format (`YYYY-MM-DD`)
-- **Recommended Initial Values**: Use the `start_date` from the configuration or a default past date.
+- **Expected Format**: `YYYY-MM-DD`
+- **Recommended Initial Values**: Use `start_date` from configuration or default to the earliest possible date.
 
 ## 4. Endpoint Dependencies
 
 ### Resource Relationships
-- **Dependencies**: The `ContractTimeReportStream` and `TimeReportStream` depend on the `organization_id` for filtering.
-- **Mapping Identifiers**: Use `organizationId_eq` in the filter to map data to specific organizations.
+- **Dependencies**: The `ContractTimeReportStream` and `TimeReportStream` depend on the `organization_id` provided in the configuration.
+- **Mapping Identifiers**: Use `organizationId_eq` in filters to relate data to specific organizations.
 
 ## 5. API Behavior & Limits
 
 ### Rate Limiting
-- **Requests per Second/Minute/Hour**: Not explicitly defined in the provided code. Refer to UpWork API documentation for specific limits.
+- **Requests per Second/Minute/Hour**: Not specified in the provided code. Check UpWork API documentation for specific rate limits.
 - **Burst Limits and Recommended Delays**: Implement retry logic with exponential backoff for handling rate limits.
 
 ### Special Requirements
 - **Required Custom Headers**: `User-Agent` if specified in the configuration.
-- **Response Format Considerations**: JSON format with GraphQL query responses.
+- **Response Format Considerations**: Ensure JSON parsing is correctly implemented for GraphQL responses.
 - **Error Handling Patterns**: Implement error handling for common HTTP errors and API-specific errors.
-- **Data Type Specifications**: Ensure correct data types as defined in the schemas (e.g., `DateTimeType`, `StringType`, `NumberType`).
+- **Data Type Specifications**: Ensure correct data types are used as specified in the schemas.
 
 ## Output Format
 
@@ -108,7 +108,7 @@ ENDPOINTS = [
         "incremental": {
             "cursor_path": "dateWorkedOn",
             "param_name": "timeReportDate_bt",
-            "format": "iso"
+            "format": "YYYY-MM-DD"
         }
     },
     {
@@ -120,7 +120,7 @@ ENDPOINTS = [
         "incremental": {
             "cursor_path": "dateWorkedOn",
             "param_name": "timeReportDate_bt",
-            "format": "iso"
+            "format": "YYYY-MM-DD"
         }
     },
     {
@@ -141,7 +141,7 @@ DEPENDENCIES = [
 ]
 ```
 
-This configuration guide provides the necessary parameters and structure to set up a dlt data pipeline for the UpWork API, ensuring efficient data extraction and integration.
+This configuration guide provides the necessary parameters and structure to effectively integrate and extract data from the UpWork API using a dlt data pipeline. Adjust the configuration as needed based on specific requirements and API updates.
 
 ---
 *dlt REST API Source Configuration Guide*

@@ -2,138 +2,97 @@
 
 ## dlt REST API Configuration Documentation
 
-# REST API Configuration for dlt
+# dlt REST API Source Configuration Documentation
 
-This document provides a comprehensive guide to configuring a dlt data pipeline for the Onfleet REST API. The configuration includes details on client setup, available endpoints, pagination, incremental data loading, endpoint dependencies, and API behavior.
+This document provides a comprehensive guide for configuring a dlt REST API source for the Onfleet API. It includes details on client configuration, available endpoints, incremental data loading, endpoint dependencies, and API behavior and limits.
 
 ## 1. Client Configuration
 
-**Base URL:**
-- `https://onfleet.com/api/v2/`
+### Base URL
+- **Base URL**: `https://onfleet.com/api/v2/`
+- This is the root URL for all API requests, including the version path.
 
-**Authentication:**
-- Type: `basic`
-- Location: `header`
-- Parameter Name: `Authorization`
-- Format: `Basic {api_key}`
+### Authentication
+- **Type**: `basic`
+- **Details**:
+  - **Location**: Header
+  - **Header Name**: `Authorization`
+  - **Format**: `Basic {api_key}` (Base64 encoded)
+- **API Key**: Required for authentication. It should be provided in the configuration.
 
 ## 2. Available Endpoints
 
-### Administrators Endpoint
+### Administrators
+- **Path**: `/admins`
+- **Method**: `GET`
+- **Data Selector**: JSON array of administrators
+- **Primary Key**: `id`
+- **Pagination**: Not applicable (single page)
+- **Incremental**: Supported via `timeLastModified`
 
-**Endpoint Details:**
-- Path: `/admins`
-- HTTP Method: `GET`
-- Required Query Parameters: None
-- Response Data Structure: List of administrator objects
+### Hubs
+- **Path**: `/hubs`
+- **Method**: `GET`
+- **Data Selector**: JSON array of hubs
+- **Primary Key**: `id`
+- **Pagination**: Not applicable (single page)
+- **Incremental**: Not supported (full table)
 
-**Pagination Configuration:**
-- Type: `single_page` (no pagination required)
+### Organizations
+- **Path**: `/organization`
+- **Method**: `GET`
+- **Data Selector**: JSON object of organization details
+- **Primary Key**: `id`
+- **Pagination**: Not applicable (single page)
+- **Incremental**: Supported via `timeLastModified`
 
-**Data Extraction:**
-- JSONPath: Root level (list of administrators)
-- Primary Key: `id`
+### Tasks
+- **Path**: `/tasks/all`
+- **Method**: `GET`
+- **Data Selector**: JSON array of tasks
+- **Primary Key**: `id`
+- **Pagination**: Cursor-based using `lastId`
+- **Incremental**: Supported via `timeLastModified`
 
-### Hubs Endpoint
+### Teams
+- **Path**: `/teams`
+- **Method**: `GET`
+- **Data Selector**: JSON array of teams
+- **Primary Key**: `id`
+- **Pagination**: Not applicable (single page)
+- **Incremental**: Supported via `timeLastModified`
 
-**Endpoint Details:**
-- Path: `/hubs`
-- HTTP Method: `GET`
-- Required Query Parameters: None
-- Response Data Structure: List of hub objects
-
-**Pagination Configuration:**
-- Type: `single_page` (no pagination required)
-
-**Data Extraction:**
-- JSONPath: Root level (list of hubs)
-- Primary Key: `id`
-
-### Organizations Endpoint
-
-**Endpoint Details:**
-- Path: `/organization`
-- HTTP Method: `GET`
-- Required Query Parameters: None
-- Response Data Structure: Organization object
-
-**Pagination Configuration:**
-- Type: `single_page` (no pagination required)
-
-**Data Extraction:**
-- JSONPath: Root level (organization object)
-- Primary Key: `id`
-
-### Tasks Endpoint
-
-**Endpoint Details:**
-- Path: `/tasks/all`
-- HTTP Method: `GET`
-- Required Query Parameters: `from` (timestamp), `lastId` (optional for pagination)
-- Response Data Structure: List of task objects
-
-**Pagination Configuration:**
-- Type: `cursor`
-- Parameter Names: `lastId`
-- Next Page Determination: Use `lastId` from the response
-
-**Data Extraction:**
-- JSONPath: `tasks`
-- Primary Key: `id`
-
-### Teams Endpoint
-
-**Endpoint Details:**
-- Path: `/teams`
-- HTTP Method: `GET`
-- Required Query Parameters: None
-- Response Data Structure: List of team objects
-
-**Pagination Configuration:**
-- Type: `single_page` (no pagination required)
-
-**Data Extraction:**
-- JSONPath: Root level (list of teams)
-- Primary Key: `id`
-
-### Workers Endpoint
-
-**Endpoint Details:**
-- Path: `/workers`
-- HTTP Method: `GET`
-- Required Query Parameters: None
-- Response Data Structure: List of worker objects
-
-**Pagination Configuration:**
-- Type: `single_page` (no pagination required)
-
-**Data Extraction:**
-- JSONPath: Root level (list of workers)
-- Primary Key: `id`
+### Workers
+- **Path**: `/workers`
+- **Method**: `GET`
+- **Data Selector**: JSON array of workers
+- **Primary Key**: `id`
+- **Pagination**: Not applicable (single page)
+- **Incremental**: Supported via `timeLastModified`
 
 ## 3. Incremental Data Loading
 
-**Incremental Support:**
-- Query Parameter: `from`
-- Date/Timestamp Field: `timeLastModified`
-- Expected Format: Unix timestamp (milliseconds)
-- Recommended Initial Value: Configured `start_date` in Unix timestamp format
+- **Incremental Support**: Enabled for endpoints with `timeLastModified` as the replication key.
+- **Date/Time Field**: `timeLastModified`
+- **Format**: ISO 8601 date-time strings
+- **Initial Sync**: Use the `start_date` configuration parameter to set the initial sync point.
 
 ## 4. Endpoint Dependencies
 
-**Resource Relationships:**
-- No explicit dependencies between endpoints. Each endpoint can be queried independently.
+- **Resource Relationships**: No explicit dependencies between endpoints.
+- **Mapping Identifiers**: Each endpoint is independent, with unique identifiers for each resource type.
 
 ## 5. API Behavior & Limits
 
-**Rate Limiting:**
-- Maximum Requests: 20 requests per second
-- Recommended Delay: Implement backoff strategy if rate limit is approached
+### Rate Limiting
+- **Limit**: 20 requests per second
+- **Burst Limits**: Implement a delay if the remaining quota is below the configured threshold (`quota_limit`).
 
-**Special Requirements:**
-- Custom Headers: `User-Agent` must be specified
-- Response Format: JSON
-- Error Handling: Implement retry logic for transient errors
+### Special Requirements
+- **Custom Headers**: `User-Agent` header is required.
+- **Response Format**: JSON
+- **Error Handling**: Implement retries with exponential backoff for request failures.
+- **Data Type Specifications**: Ensure date-time fields are correctly parsed and converted.
 
 ## Output Format
 
@@ -155,15 +114,15 @@ ENDPOINTS = [
         "name": "administrators",
         "path": "/admins",
         "method": "GET",
-        "data_selector": None,
+        "data_selector": "data",
         "primary_key": "id",
         "pagination": {
             "type": "single_page"
         },
         "incremental": {
             "cursor_path": "timeLastModified",
-            "param_name": "from",
-            "format": "unix"
+            "param_name": "since",
+            "format": "iso"
         }
     },
     {
@@ -178,17 +137,17 @@ ENDPOINTS = [
         },
         "incremental": {
             "cursor_path": "timeLastModified",
-            "param_name": "from",
-            "format": "unix"
+            "param_name": "since",
+            "format": "iso"
         }
     }
-    # Additional endpoints can be added similarly
+    // Add other endpoints similarly
 ]
 
 DEPENDENCIES = []
 ```
 
-This configuration guide provides all necessary parameters to set up a dlt data pipeline for the Onfleet API, ensuring efficient data extraction and synchronization.
+This configuration guide provides all necessary details to set up a dlt data pipeline for the Onfleet API, ensuring efficient data extraction and synchronization.
 
 ---
 *dlt REST API Source Configuration Guide*

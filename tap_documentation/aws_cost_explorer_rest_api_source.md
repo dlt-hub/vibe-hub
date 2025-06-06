@@ -4,35 +4,34 @@
 
 # REST API Configuration for dlt
 
-This document provides a comprehensive guide for configuring a dlt data pipeline to integrate with the AWS Cost Explorer API. The configuration includes details on client setup, available endpoints, pagination, incremental data loading, endpoint dependencies, and API behavior.
+This documentation provides a comprehensive guide to configuring a dlt data pipeline for the AWS Cost Explorer REST API. The configuration includes client setup, endpoint details, pagination, incremental data loading, endpoint dependencies, and API behavior.
 
 ## 1. Client Configuration
 
 **Base URL:**
-- `https://ce.us-east-1.amazonaws.com/`
-- Note: AWS Cost Explorer API does not have a versioned path.
+- Base URL: AWS Cost Explorer does not use a traditional REST API URL structure. Instead, it uses the AWS SDK to interact with the service.
 
 **Authentication:**
 - Type: `aws_signature`
 - Required Parameters:
   - `access_key`: Your AWS Account Access Key.
   - `secret_key`: Your AWS Account Secret Key.
-  - `session_token`: Optional, required if using temporary credentials.
+  - `session_token`: (Optional) Your AWS Account Session Token if required for authentication.
 
 ## 2. Available Endpoints
 
 ### Cost and Usage with Resources
 
 **Endpoint Details:**
-- Path: `/`
-- HTTP Method: `POST`
+- Path: AWS SDK method `get_cost_and_usage`
+- HTTP Method: N/A (uses AWS SDK)
 - Required Parameters:
-  - `TimePeriod`: Start and End dates in `YYYY-MM-DD` format.
-  - `Granularity`: `DAILY`, `MONTHLY`, or `HOURLY`.
-  - `Metrics`: List of metrics such as `AmortizedCost`, `BlendedCost`, etc.
+  - `TimePeriod`: A dictionary with `Start` and `End` dates in "YYYY-MM-DD" format.
+  - `Granularity`: "MONTHLY", "DAILY", or "HOURLY".
+  - `Metrics`: List of metrics such as "AmortizedCost", "BlendedCost", etc.
 
 **Pagination Configuration:**
-- Type: `cursor`
+- Type: `token_based`
 - Parameter: `NextPageToken`
 - How next page is determined: Use the `NextPageToken` from the response to fetch subsequent pages.
 
@@ -43,25 +42,25 @@ This document provides a comprehensive guide for configuring a dlt data pipeline
 ## 3. Incremental Data Loading
 
 **Incremental Support:**
-- Query Parameter: `TimePeriod`
-- Date Field: `time_period_start`
-- Format: `YYYY-MM-DD`
-- Recommended Initial Value: Start date as per business requirement, e.g., `2023-01-01`.
+- Parameter: `TimePeriod`
+- Date Field: `time_period_start` in the response
+- Format: ISO 8601 dates ("YYYY-MM-DD")
+- Recommended Initial Value: Use the `start_date` from the configuration.
 
 ## 4. Endpoint Dependencies
 
 **Resource Relationships:**
-- No direct dependencies between endpoints as the AWS Cost Explorer API is designed to provide aggregated data.
+- No direct dependencies between endpoints as AWS Cost Explorer primarily provides aggregated data.
 
 ## 5. API Behavior & Limits
 
 **Rate Limiting:**
-- AWS imposes limits on API requests. Check AWS documentation for specific limits and consider implementing exponential backoff for retries.
+- AWS imposes limits on the number of requests per second. Refer to AWS documentation for specific limits.
 
 **Special Requirements:**
 - Required Headers: AWS Signature Version 4 headers for authentication.
 - Response Format: JSON
-- Error Handling: Implement retries for `ThrottlingException` and other transient errors.
+- Error Handling: Handle AWS-specific errors such as `ThrottlingException`.
 
 ## Output Format
 
@@ -69,7 +68,7 @@ This document provides a comprehensive guide for configuring a dlt data pipeline
 # REST API Configuration for dlt
 
 BASE_CONFIG = {
-    "base_url": "https://ce.us-east-1.amazonaws.com/",
+    "base_url": "AWS SDK",
     "auth": {
         "type": "aws_signature",
         "access_key": "YOUR_ACCESS_KEY",
@@ -81,18 +80,17 @@ BASE_CONFIG = {
 ENDPOINTS = [
     {
         "name": "cost_and_usage",
-        "path": "/",
-        "method": "POST",
+        "method": "get_cost_and_usage",
         "data_selector": "ResultsByTime",
         "primary_key": ["metric_name", "time_period_start"],
         "pagination": {
-            "type": "cursor",
-            "cursor_param": "NextPageToken"
+            "type": "token_based",
+            "token_param": "NextPageToken"
         },
         "incremental": {
             "cursor_path": "time_period_start",
             "param_name": "TimePeriod",
-            "format": "YYYY-MM-DD"
+            "format": "iso"
         }
     }
 ]
@@ -100,7 +98,7 @@ ENDPOINTS = [
 DEPENDENCIES = []
 ```
 
-This configuration guide provides the necessary parameters and structure to set up a dlt data pipeline for the AWS Cost Explorer API, ensuring efficient data extraction and integration.
+This configuration guide provides the necessary parameters and structure to set up a dlt data pipeline for extracting data from the AWS Cost Explorer using the AWS SDK. Adjust the configuration as needed based on specific use cases and AWS account settings.
 
 ---
 *dlt REST API Source Configuration Guide*

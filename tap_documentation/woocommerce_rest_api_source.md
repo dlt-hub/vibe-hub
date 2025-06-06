@@ -4,87 +4,90 @@
 
 # dlt REST API Source Configuration Documentation for WooCommerce
 
-This document provides a comprehensive guide to configuring a dlt data pipeline for the WooCommerce REST API. It covers client configuration, available endpoints, pagination, incremental data loading, endpoint dependencies, and API behavior.
+This document provides a comprehensive guide for configuring a dlt data pipeline to extract data from the WooCommerce REST API. The configuration includes client setup, endpoint details, pagination, incremental data loading, endpoint dependencies, and API behavior considerations.
 
 ## 1. Client Configuration
 
 **Base URL:**
-- Base URL: `https://{site_url}/wp-json/wc/v3/`
-- Ensure to replace `{site_url}` with your WooCommerce store URL.
+- `https://{site_url}/wp-json/wc/v3/`
+- Replace `{site_url}` with your WooCommerce store URL.
 
 **Authentication:**
 - Type: `basic`
-- For Basic Authentication:
-  - Username: `consumer_key`
-  - Password: `consumer_secret`
-- These credentials are required for accessing the WooCommerce API.
+- Username: `consumer_key`
+- Password: `consumer_secret`
+- The credentials are required for accessing the API and should be provided in the configuration.
 
 ## 2. Available Endpoints
 
-### Products
-- **Path:** `/products`
-- **Method:** `GET`
-- **Query Parameters:**
-  - `per_page`: Number of records per page (default: 100)
-  - `order`: Sort order (default: `asc`)
-- **Response Data Structure:** JSON array of product objects
-- **Data Extraction:** JSONPath: `$[*]`
-- **Primary Key:** `id`
+### Products Endpoint
 
-### Orders
-- **Path:** `/orders`
-- **Method:** `GET`
-- **Query Parameters:**
-  - `per_page`: Number of records per page (default: 100)
-  - `order`: Sort order (default: `asc`)
-- **Response Data Structure:** JSON array of order objects
-- **Data Extraction:** JSONPath: `$[*]`
-- **Primary Key:** `id`
+**Endpoint Details:**
+- Path: `/products`
+- HTTP Method: `GET`
+- Required Query Parameters: None
+- Optional Query Parameters: `per_page`, `order`, `page`, `modified_after`, `after`
+- Response Data Structure: JSON array of product objects
 
-### Coupons
-- **Path:** `/coupons`
-- **Method:** `GET`
-- **Query Parameters:**
-  - `per_page`: Number of records per page (default: 100)
-  - `order`: Sort order (default: `asc`)
-- **Response Data Structure:** JSON array of coupon objects
-- **Data Extraction:** JSONPath: `$[*]`
-- **Primary Key:** `id`
+**Pagination Configuration:**
+- Type: `page_number`
+- Parameter Names: `per_page`, `page`
+- Default Page Size: 100
+- Maximum Page Size: 100
+- Next Page Determination: Based on `X-WP-TotalPages` header
 
-## 3. Pagination Configuration
+**Data Extraction:**
+- JSONPath: `$[*]`
+- Primary Key: `id`
+- Key Fields: `id`, `name`, `date_modified`
 
-- **Type:** `page_number`
-- **Parameter Names:**
-  - `page`: Current page number
-  - `per_page`: Number of records per page
-- **Next Page Determination:** Use the `X-WP-TotalPages` header to determine if more pages are available.
-- **Default/Maximum Page Sizes:** Default is 100 records per page.
+### Orders Endpoint
 
-## 4. Incremental Data Loading
+**Endpoint Details:**
+- Path: `/orders`
+- HTTP Method: `GET`
+- Required Query Parameters: None
+- Optional Query Parameters: `per_page`, `order`, `page`, `modified_after`, `after`
+- Response Data Structure: JSON array of order objects
 
-- **Incremental Support:** Supported via `date_modified` field.
-- **Query Parameter:** `modified_after` or `after` (depending on WooCommerce version)
-- **Date/Timestamp Field:** `date_modified`
-- **Expected Format:** ISO 8601 (e.g., `2023-01-01T00:00:00`)
-- **Recommended Initial Values:** Use the `start_date` from the configuration, defaulting to `2000-01-01T00:00:00.000Z`.
+**Pagination Configuration:**
+- Type: `page_number`
+- Parameter Names: `per_page`, `page`
+- Default Page Size: 100
+- Maximum Page Size: 100
+- Next Page Determination: Based on `X-WP-TotalPages` header
 
-## 5. Endpoint Dependencies
+**Data Extraction:**
+- JSONPath: `$[*]`
+- Primary Key: `id`
+- Key Fields: `id`, `date_modified`
 
-- **Resource Relationships:**
-  - `ProductVarianceStream` depends on `ProductsStream` for `product_id`.
-  - `OrderNotesStream` and `OrdersRefundsStream` depend on `OrdersStream` for `order_id`.
-- **Mapping Identifiers:** Use `id` from parent resources to fetch child resources.
-- **Processing Order:** Fetch parent resources first, followed by child resources.
+## 3. Incremental Data Loading
 
-## 6. API Behavior & Limits
+**Incremental Support:**
+- Products and Orders support incremental loading.
+- Query Parameter: `modified_after` or `after`
+- Date Field: `date_modified`
+- Expected Format: ISO 8601 (e.g., `2023-01-01T00:00:00Z`)
+- Recommended Initial Value: `2000-01-01T00:00:00Z`
+
+## 4. Endpoint Dependencies
+
+**Resource Relationships:**
+- `ProductVarianceStream` depends on `ProductsStream`.
+- `OrderNotesStream` and `OrdersRefundsStream` depend on `OrdersStream`.
+- Mapping: Use `product_id` for product variations and `order_id` for order notes and refunds.
+
+## 5. API Behavior & Limits
 
 **Rate Limiting:**
-- WooCommerce does not explicitly document rate limits, but it's advisable to handle retries and backoff for 429 responses.
+- WooCommerce does not explicitly document rate limits, but it is recommended to handle 429 status codes gracefully.
+- Implement exponential backoff for retries.
 
 **Special Requirements:**
-- **Headers:** Ensure `Content-Type` is set to `application/json`.
-- **User-Agent:** Randomized for each request unless specified in the configuration.
-- **Error Handling:** Implement retries for 5xx errors and handle 4xx errors gracefully.
+- Custom Headers: `Content-Type: application/json`, `User-Agent: {random_user_agent}`
+- Response Format: JSON
+- Error Handling: Handle 401, 403, 429, and 5xx errors with retries and appropriate logging.
 
 ## Output Format
 
@@ -149,11 +152,16 @@ DEPENDENCIES = [
         "endpoint": "order_notes",
         "depends_on": "orders",
         "param_mapping": {"order_id": "id"}
+    },
+    {
+        "endpoint": "orders_refunds",
+        "depends_on": "orders",
+        "param_mapping": {"order_id": "id"}
     }
 ]
 ```
 
-This configuration guide provides all necessary parameters and considerations for integrating with the WooCommerce REST API using dlt. Adjust the configuration as needed based on your specific WooCommerce setup and data requirements.
+This configuration guide provides the necessary parameters and considerations for setting up a dlt data pipeline to extract data from the WooCommerce REST API effectively. Adjust the configuration as needed based on your specific requirements and API usage patterns.
 
 ---
 *dlt REST API Source Configuration Guide*

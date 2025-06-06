@@ -2,9 +2,9 @@
 
 ## dlt REST API Configuration Documentation
 
-# dlt REST API Source Configuration Documentation
+# REST API Configuration for dlt
 
-This document provides a comprehensive guide for configuring a dlt REST API source. It includes all necessary parameters to build an effective REST API data pipeline configuration.
+This document provides a comprehensive guide for configuring a dlt data pipeline to extract data from a REST API source. The configuration is structured to ensure seamless integration and data extraction from the API.
 
 ## 1. Client Configuration
 
@@ -17,66 +17,62 @@ This document provides a comprehensive guide for configuring a dlt REST API sour
   - **Location**: `header`
   - **Name**: `Authorization`
   - **Format**: `Bearer {token}`
-  - Ensure the token is securely stored and retrieved for each request.
+  - Ensure the token is correctly formatted and included in the request headers.
 
 ## 2. Available Endpoints
 
 ### Endpoint: Users
 - **Path**: `/users`
-- **HTTP Method**: `GET`
+- **Method**: `GET`
 - **Query Parameters**:
   - **Required**: None
   - **Optional**: `status`, `role`
 - **Response Data Structure**:
-  - The response contains a JSON object with a key `data` that holds an array of user objects.
+  - Data is located under the JSON path `data`.
 
 ### Pagination Configuration
 - **Type**: `offset`
   - **Limit Parameter**: `limit`
   - **Offset Parameter**: `offset`
-  - **Default Limit**: 100
-  - **Maximum Limit**: 1000
-- **Next Page Determination**: The next page is determined by incrementing the `offset` by the `limit` value.
+  - **Limit**: 100
+  - Pagination is handled by incrementing the `offset` parameter until no more data is returned.
 
 ### Data Extraction
 - **Data Selector**: `data`
-  - Use JSONPath to locate the actual data array in responses.
 - **Primary Key**: `id`
-  - This field uniquely identifies each user record.
+- **JSONPath**: Use `data` to locate the array of user records.
+- **Key Fields**: `id` uniquely identifies each user record.
 
 ## 3. Incremental Data Loading
 
 ### Incremental Support
 - **Query Parameter**: `since`
-  - This parameter enables incremental data fetching.
-- **Date/Timestamp Field**: `updated_at`
-  - **Format**: ISO 8601 (e.g., `2023-10-01T12:00:00Z`)
-- **Recommended Initial Value**: Use the current date minus one day for the first sync to ensure no data is missed.
+- **Cursor Path**: `updated_at`
+- **Format**: `iso`
+- **Initial Value**: Use the current date minus one day for the first sync to ensure no data is missed.
 
 ## 4. Endpoint Dependencies
 
 ### Resource Relationships
-- **Dependent Endpoint**: `user_posts`
+- **Endpoint**: `user_posts`
   - **Depends On**: `users`
-  - **Parameter Mapping**: `user_id` in `user_posts` maps to `id` in `users`.
-- **Processing Order**: Fetch data from `users` before `user_posts` to ensure all user IDs are available for mapping.
+  - **Parameter Mapping**: `user_id` maps to `id` from the `users` endpoint.
+  - Ensure that data from the `users` endpoint is fetched before accessing `user_posts`.
 
 ## 5. API Behavior & Limits
 
 ### Rate Limiting
 - **Requests Per Second**: 10
-- **Burst Limits**: 50 requests in a burst
-- **Recommended Delay**: Implement a delay of 100ms between requests to avoid hitting rate limits.
+- **Burst Limits**: 50 requests per minute
+- **Recommended Delays**: Implement a delay of 1 second between requests to avoid hitting rate limits.
 
 ### Special Requirements
 - **Custom Headers**: None required beyond authentication.
-- **Response Format Considerations**: Ensure the response is parsed as JSON.
+- **Response Format Considerations**: Ensure JSON responses are parsed correctly.
 - **Error Handling Patterns**: Implement retry logic for 5xx server errors and handle 4xx client errors gracefully.
 - **Data Type Specifications**: Ensure all date fields are parsed as ISO 8601 strings.
 
-## Output Format
-
-Below is an example configuration in Python:
+## Example Configuration
 
 ```python
 # REST API Configuration for dlt
@@ -121,7 +117,7 @@ DEPENDENCIES = [
 ]
 ```
 
-This configuration guide provides all necessary details to set up a REST API source for dlt, ensuring efficient data extraction and processing.
+This configuration guide provides all necessary parameters and considerations for setting up a dlt data pipeline with a REST API source. Ensure to adjust the parameters based on the specific API documentation and requirements.
 
 ---
 *dlt REST API Source Configuration Guide*

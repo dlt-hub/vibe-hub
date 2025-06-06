@@ -4,68 +4,78 @@
 
 # dlt REST API Source Configuration Documentation
 
-This document provides a comprehensive guide for configuring a dlt REST API source using the Impact API. It includes details on client configuration, available endpoints, incremental data loading, endpoint dependencies, and API behavior and limits.
+This document provides a comprehensive guide for configuring a dlt REST API source for the Impact API. It outlines the necessary parameters and configurations required to build an effective data pipeline using the dlt framework.
 
 ## 1. Client Configuration
 
 ### Base URL
 - **Base URL**: `https://api.impact.com/{api_catalog}/{account_sid}/`
-- **Version Path**: Typically included in the endpoint paths (e.g., `v2`).
+- **Version Path**: The API version is typically included in the endpoint paths, such as `v2`.
 
 ### Authentication
 - **Type**: `basic`
-- **Details**:
-  - **Username**: `account_sid`
-  - **Password**: `auth_token`
-  - **Header**: `Authorization: Basic {encoded_credentials}`
+- **Credentials**:
+  - **Account SID**: Provided in the configuration file.
+  - **Auth Token**: Provided in the configuration file.
+- **Header Format**: Basic Authentication is used, where the `account_sid` and `auth_token` are combined and encoded in the request headers.
 
 ## 2. Available Endpoints
 
-### Example Endpoint: Users
-- **Path**: `/Users`
+### Endpoint Details
+
+#### Example Endpoint: `Ads`
+- **Path**: `/Ads`
 - **HTTP Method**: `GET`
-- **Query Parameters**: None required
-- **Response Data Structure**: JSON array under the key `Users`
+- **Required Query Parameters**: None
+- **Optional Query Parameters**: None
+- **Response Data Structure**: JSON object with a key `Ads` containing an array of ad records.
 
-### Pagination Configuration
-- **Type**: `offset`
-- **Parameters**:
-  - **Limit Parameter**: `PageSize`
-  - **Offset Parameter**: `offset`
-- **Next Page Determination**: Based on the presence of `@nextpageuri` in the response
-- **Default/Maximum Page Sizes**: Default is 20,000 records per page
+#### Pagination Configuration
+- **Type**: `single_page` (No pagination required for this endpoint)
+- **Parameter Names**: Not applicable
+- **Default/Maximum Page Sizes**: Not applicable
 
-### Data Extraction
-- **JSONPath**: `Users`
+#### Data Extraction
+- **JSONPath**: `Ads`
 - **Primary Key**: `id`
-- **Unique Record Identification**: Use the `id` field
+- **Key Fields**: `id` uniquely identifies each ad record.
+
+### Additional Endpoints
+- **Campaigns**: `/Campaigns`
+- **Actions**: `/Actions`
+- **Invoices**: `/Invoices`
+- Each endpoint has specific configurations for pagination, data extraction, and incremental loading as detailed in the `STREAMS` dictionary.
 
 ## 3. Incremental Data Loading
 
 ### Incremental Support
-- **Parameter**: `since`
-- **Date/Timestamp Field**: `updated_at`
+
+#### Example Endpoint: `api_submissions`
+- **Incremental Parameter**: `submission_date`
+- **Date Field**: `submission_date`
 - **Format**: ISO 8601 (e.g., `2023-10-01T00:00:00Z`)
-- **Initial Values**: Use the current date minus a reasonable period (e.g., 30 days) for the first sync
+- **Initial Value**: The `start_date` specified in the configuration file.
 
 ## 4. Endpoint Dependencies
 
 ### Resource Relationships
-- **Example**: `user_posts` endpoint depends on `users`
-- **Mapping**: Use `user_id` from `users` to fetch related `user_posts`
-- **Processing Order**: Fetch `users` first, then `user_posts`
+
+#### Example Dependency: `Campaigns` and `Actions`
+- **Parent Endpoint**: `Campaigns`
+- **Child Endpoint**: `Actions`
+- **Mapping**: `CampaignId` in `Actions` is mapped to `id` in `Campaigns`.
+- **Processing Order**: `Campaigns` must be processed before `Actions`.
 
 ## 5. API Behavior & Limits
 
 ### Rate Limiting
-- **Requests**: 1,000 requests per hour
-- **Burst Limits**: Handle with exponential backoff on 429 errors
+- **Requests**: Up to 1000 requests per hour.
+- **Burst Limits**: Handled using exponential backoff and rate limiting in the client implementation.
 
 ### Special Requirements
-- **Custom Headers**: `User-Agent` must be specified
+- **Custom Headers**: `User-Agent` is required and specified in the configuration.
 - **Response Format**: JSON
-- **Error Handling**: Implement retries with backoff for 5xx errors
-- **Data Type Specifications**: Ensure all date fields are in ISO 8601 format
+- **Error Handling**: Specific exceptions are raised based on HTTP status codes, with retries for server errors.
 
 ## Output Format
 
@@ -76,26 +86,32 @@ BASE_CONFIG = {
     "base_url": "https://api.impact.com/{api_catalog}/{account_sid}/",
     "auth": {
         "type": "basic",
-        "username": "account_sid",
-        "password": "auth_token"
+        "credentials": {
+            "account_sid": "<account_sid>",
+            "auth_token": "<auth_token>"
+        }
     }
 }
 
 ENDPOINTS = [
     {
-        "name": "users",
-        "path": "/Users",
+        "name": "ads",
+        "path": "/Ads",
         "method": "GET",
-        "data_selector": "Users",
+        "data_selector": "Ads",
         "primary_key": "id",
         "pagination": {
-            "type": "offset",
-            "limit_param": "PageSize",
-            "offset_param": "offset",
-            "limit": 20000
-        },
+            "type": "single_page"
+        }
+    },
+    {
+        "name": "api_submissions",
+        "path": "/APISubmissions",
+        "method": "GET",
+        "data_selector": "APISubmission",
+        "primary_key": "batch_id",
         "incremental": {
-            "cursor_path": "updated_at",
+            "cursor_path": "submission_date",
             "param_name": "since",
             "format": "iso"
         }
@@ -104,14 +120,14 @@ ENDPOINTS = [
 
 DEPENDENCIES = [
     {
-        "endpoint": "user_posts", 
-        "depends_on": "users",
-        "param_mapping": {"user_id": "id"}
+        "endpoint": "actions",
+        "depends_on": "campaigns",
+        "param_mapping": {"CampaignId": "id"}
     }
 ]
 ```
 
-This configuration guide provides the necessary parameters and structure to effectively integrate and extract data from the Impact API using a dlt data pipeline. Adjust the configuration as needed based on specific API documentation and requirements.
+This configuration guide is designed to help you set up a dlt data pipeline for the Impact API, ensuring efficient data extraction and processing. Adjust the configurations as needed based on specific API requirements and data needs.
 
 ---
 *dlt REST API Source Configuration Guide*

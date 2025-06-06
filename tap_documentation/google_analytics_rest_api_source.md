@@ -2,77 +2,77 @@
 
 ## dlt REST API Configuration Documentation
 
-# dlt REST API Source Configuration Documentation
+# dlt REST API Source Configuration Documentation for Google Analytics
 
-This document provides a comprehensive guide for configuring a dlt REST API source for the Google Analytics Data API (GA4). The configuration will enable you to build an effective data pipeline using dlt to extract all available data from the API.
+This document provides a comprehensive guide for configuring a dlt REST API source to extract data from the Google Analytics API using the `tap-google-analytics` from the MeltanoLabs organization. The configuration is structured to facilitate seamless integration and data extraction.
 
 ## 1. Client Configuration
 
 ### Base URL
-- **Base URL**: `https://analyticsdata.googleapis.com/v1beta/`
-- This is the base URL for accessing the Google Analytics Data API (GA4). Ensure that you append the appropriate endpoint paths to this base URL for specific data requests.
+- **Base URL**: The Google Analytics API does not use a traditional REST endpoint with a base URL. Instead, it uses the `BetaAnalyticsDataClient` from the `google.analytics.data_v1beta` library to interact with the API.
 
 ### Authentication
-- **Type**: `oauth2`
+- **Type**: `oauth2` or `service_account`
 - **OAuth2 Configuration**:
-  - **token_url**: `https://oauth2.googleapis.com/token`
+  - **token_url**: Not directly specified, handled by the Google OAuth2 library.
   - **Required Scopes**: `https://www.googleapis.com/auth/analytics.readonly`
-- **Credentials**:
-  - For OAuth2, you will need to provide:
-    - `client_id`
-    - `client_secret`
-    - `refresh_token`
-- These credentials can be obtained from the Google Cloud Console under the API & Services section.
+  - **Parameters**:
+    - `client_id`: Your Google Analytics Client ID
+    - `client_secret`: Your Google Analytics Client Secret
+    - `refresh_token`: Your Google Analytics Refresh Token
+- **Service Account Configuration**:
+  - **Key File Location**: Path to the JSON key file for the service account.
+  - **Client Secrets**: JSON object containing the service account credentials.
 
 ## 2. Available Endpoints
 
-### Endpoint: Run Report
-- **Path**: `/properties/{property_id}:runReport`
-- **HTTP Method**: `POST`
-- **Required Parameters**:
+### Endpoint Details
+- **Path**: The API uses method calls rather than URL paths. For example, `run_report` is used to fetch data.
+- **HTTP Method**: The API uses method calls, typically equivalent to `POST` in REST.
+- **Required/Optional Parameters**:
   - `property_id`: The Google Analytics Property ID.
-- **Optional Parameters**:
   - `dimensions`: List of dimensions to include in the report.
   - `metrics`: List of metrics to include in the report.
-  - `date_ranges`: Start and end dates for the report.
-- **Response Data Structure**:
-  - The response includes `dimensionHeaders`, `metricHeaders`, and `rows` which contain the actual data.
+  - `date_ranges`: Start and end dates for the data.
 
 ### Pagination Configuration
-- **Type**: `offset`
+- **Type**: `page_number`
 - **Parameter Names**:
-  - `limit`: Specifies the number of records per page.
-  - `offset`: Specifies the starting point for the next page.
-- **Default/Maximum Page Sizes**: Typically, the API supports a maximum of 100,000 records per request.
+  - `limit`: Number of records per page (default is 100,000).
+  - `offset`: Used to calculate the starting point for the next page.
+- **Next Page Determination**: Calculated based on the `offset` and `limit`.
 
 ### Data Extraction
-- **JSONPath**: The data is located in the `rows` field of the response.
-- **Primary Key**: Each record can be uniquely identified using a combination of dimensions and metrics.
+- **Data Location**: Data is extracted from the `rows` attribute in the `RunReportResponse`.
+- **Record Identification**: Each record is identified by the combination of dimensions and metrics.
+- **Key Fields**: Typically, the combination of dimensions serves as the primary key.
 
 ## 3. Incremental Data Loading
 
 ### Incremental Support
-- **Query Parameter**: `date_ranges`
-- **Date/Time Field**: Use the `date` dimension to track updates.
+- **Query Parameter**: `date_ranges` with `start_date` and `end_date` for incremental loading.
+- **Date/Timestamp Field**: `date` dimension is used for tracking updates.
 - **Expected Format**: ISO 8601 date format (e.g., `YYYY-MM-DD`).
-- **Recommended Initial Values**: Use the earliest date you wish to start syncing data from.
+- **Initial Values**: Configured via `start_date` in the configuration.
 
 ## 4. Endpoint Dependencies
 
 ### Resource Relationships
-- **Dependencies**: Some metrics may depend on specific dimensions being included in the request.
-- **Mapping Identifiers**: Ensure that dimensions and metrics are compatible as per Google Analytics API documentation.
+- **Dependencies**: Not explicitly defined in the API, but logical dependencies exist between dimensions and metrics.
+- **Mapping Identifiers**: Not applicable as the API does not use traditional REST resource identifiers.
+- **Processing Order**: Ensure dimensions and metrics are valid combinations as per Google Analytics API documentation.
 
 ## 5. API Behavior & Limits
 
 ### Rate Limiting
-- **Requests**: The API has a limit on the number of requests per second and per day. Refer to the Google Analytics API documentation for specific limits.
+- **Requests**: Google Analytics API has quotas and limits that vary by account. Check the Google API Console for specific limits.
 - **Burst Limits**: Implement exponential backoff for handling rate limits.
 
 ### Special Requirements
-- **Custom Headers**: None required beyond standard OAuth2 headers.
-- **Response Format**: JSON
-- **Error Handling**: Implement retry logic for handling transient errors such as `rateLimitExceeded` and `quotaExceeded`.
+- **Custom Headers**: Managed by the Google API client library.
+- **Response Format**: JSON format with structured data.
+- **Error Handling**: Implement retry logic for non-fatal errors using backoff strategies.
+- **Data Type Specifications**: Dimensions are typically strings, while metrics can be integers or floats.
 
 ## Output Format
 
@@ -80,29 +80,25 @@ This document provides a comprehensive guide for configuring a dlt REST API sour
 # REST API Configuration for dlt
 
 BASE_CONFIG = {
-    "base_url": "https://analyticsdata.googleapis.com/v1beta/",
     "auth": {
         "type": "oauth2",
-        "token_url": "https://oauth2.googleapis.com/token",
         "scopes": ["https://www.googleapis.com/auth/analytics.readonly"],
-        "client_id": "<your_client_id>",
-        "client_secret": "<your_client_secret>",
-        "refresh_token": "<your_refresh_token>"
+        "client_id": "<YOUR_CLIENT_ID>",
+        "client_secret": "<YOUR_CLIENT_SECRET>",
+        "refresh_token": "<YOUR_REFRESH_TOKEN>"
     }
 }
 
 ENDPOINTS = [
     {
-        "name": "run_report",
-        "path": "/properties/{property_id}:runReport",
-        "method": "POST",
+        "name": "ga_report",
+        "method": "run_report",
         "data_selector": "rows",
         "primary_key": ["dimension1", "dimension2"],
         "pagination": {
-            "type": "offset",
-            "limit_param": "limit",
-            "offset_param": "offset",
-            "limit": 100000
+            "type": "page_number",
+            "limit": 100000,
+            "offset": 0
         },
         "incremental": {
             "cursor_path": "date",
@@ -115,7 +111,7 @@ ENDPOINTS = [
 DEPENDENCIES = []
 ```
 
-This configuration guide provides the necessary parameters and structure to set up a dlt data pipeline for the Google Analytics Data API (GA4). Ensure that you replace placeholders with actual values and adjust configurations as needed based on your specific use case.
+This configuration guide provides the necessary parameters and structure to set up a dlt data pipeline for extracting data from the Google Analytics API using the `tap-google-analytics`. Ensure all credentials and configurations are correctly set to enable successful data extraction.
 
 ---
 *dlt REST API Source Configuration Guide*

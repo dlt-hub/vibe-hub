@@ -4,7 +4,7 @@
 
 # REST API Configuration for dlt
 
-This document provides a comprehensive guide to configuring a dlt data pipeline for the Treez REST API. The configuration includes client setup, endpoint details, pagination, incremental data loading, endpoint dependencies, and API behavior.
+This document provides a comprehensive guide for configuring a dlt data pipeline to integrate with the Treez REST API. The configuration includes details on client setup, available endpoints, pagination, incremental data loading, endpoint dependencies, and API behavior.
 
 ## 1. Client Configuration
 
@@ -27,88 +27,93 @@ This document provides a comprehensive guide to configuring a dlt data pipeline 
 - **Path:** `/product/product_list/lastUpdated/after/{last_updated_date}`
 - **HTTP Method:** `GET`
 - **Required Query Parameters:**
-  - `active`: Set to `true` to fetch active products.
-  - `pagesize`: Maximum number of records per page (50).
-  - `page`: Current page number for pagination.
-- **Response Data Structure:** JSON with a key `data` containing `product_list`.
+  - `active`: Boolean to filter active products (`true` or `false`)
+  - `pagesize`: Number of records per page (default is 50)
+  - `page`: Page number for pagination
 
 **Pagination Configuration:**
 - **Type:** `page_number`
-- **Parameter Names:**
-  - `pagesize`: 50
-  - `page`: Increment to fetch subsequent pages.
-- **Next Page Determination:** Increment `page` until the response length is less than 50.
+- **Parameter Names:** `page`, `pagesize`
+- **Default Page Size:** 50
+- **Maximum Page Size:** 50
 
 **Data Extraction:**
 - **JSONPath:** `data.product_list`
 - **Primary Key:** `product_id`
-- **Key Fields:** `product_id` uniquely identifies each product.
 
 ### Customers Endpoint
 
 **Endpoint Details:**
 - **Path:** `/customer/lastUpdated/after/{last_updated_date}/page/{page}/pagesize/50`
 - **HTTP Method:** `GET`
-- **Response Data Structure:** JSON with a key `data`.
+- **Required Query Parameters:**
+  - `page`: Page number for pagination
 
 **Pagination Configuration:**
 - **Type:** `page_number`
-- **Parameter Names:**
-  - `pagesize`: 50
-  - `page`: Increment to fetch subsequent pages.
-- **Next Page Determination:** Increment `page` until the response length is less than 50.
+- **Parameter Names:** `page`, `pagesize`
+- **Default Page Size:** 50
+- **Maximum Page Size:** 50
 
 **Data Extraction:**
 - **JSONPath:** `data`
 - **Primary Key:** `customer_id`
-- **Key Fields:** `customer_id` uniquely identifies each customer.
 
 ### Tickets Endpoint
 
 **Endpoint Details:**
 - **Path:** `/ticket/lastUpdated/after/{last_updated_date}/page/{page}/pagesize/25`
 - **HTTP Method:** `GET`
-- **Response Data Structure:** JSON with a key `ticketList`.
+- **Required Query Parameters:**
+  - `page`: Page number for pagination
 
 **Pagination Configuration:**
 - **Type:** `page_number`
-- **Parameter Names:**
-  - `pagesize`: 25
-  - `page`: Increment to fetch subsequent pages.
-- **Next Page Determination:** Increment `page` until the response length is less than 25.
+- **Parameter Names:** `page`, `pagesize`
+- **Default Page Size:** 25
+- **Maximum Page Size:** 25
 
 **Data Extraction:**
 - **JSONPath:** `ticketList`
 - **Primary Key:** `ticket_id`
-- **Key Fields:** `ticket_id` uniquely identifies each ticket.
 
 ## 3. Incremental Data Loading
 
 **Incremental Support:**
-- **Products:** `last_updated_at` field, parameter `lastUpdated`
-- **Customers:** `last_update` field, parameter `lastUpdated`
-- **Tickets:** `last_updated_at` field, parameter `lastUpdated`
-- **Expected Format:** ISO 8601 date format (e.g., `2020-01-01T00:00:00.000Z`)
-- **Recommended Initial Values:** Use a date far in the past to ensure all records are fetched initially.
+- **Products Endpoint:**
+  - **Parameter:** `lastUpdated`
+  - **Field:** `last_updated_at`
+  - **Format:** ISO 8601 (e.g., `2020-01-01T00:00:00.000Z`)
+
+- **Customers Endpoint:**
+  - **Parameter:** `lastUpdated`
+  - **Field:** `last_update`
+  - **Format:** ISO 8601
+
+- **Tickets Endpoint:**
+  - **Parameter:** `lastUpdated`
+  - **Field:** `last_updated_at`
+  - **Format:** ISO 8601
+
+**Recommended Initial Values:**
+- Use a date far enough in the past to ensure all relevant data is captured initially, such as `2020-01-01T00:00:00.000Z`.
 
 ## 4. Endpoint Dependencies
 
 **Resource Relationships:**
-- No explicit dependencies between endpoints are defined in the current configuration. Each endpoint can be processed independently.
+- No explicit dependencies between endpoints are required for initial data extraction. Each endpoint can be processed independently.
 
 ## 5. API Behavior & Limits
 
 **Rate Limiting:**
-- **Products:** 5 requests per 2 seconds
-- **Customers:** 4 requests per 2 seconds
-- **Tickets:** 4 requests per 2 seconds
-- **Recommended Delays:** Implement retry logic with delays to handle rate limits.
+- **Products Endpoint:** 5 requests per 2 seconds
+- **Customers Endpoint:** 4 requests per 2 seconds
+- **Tickets Endpoint:** 4 requests per 2 seconds
 
 **Special Requirements:**
-- **Custom Headers:** `authorization`, `client_id`
-- **Response Format Considerations:** Ensure JSON parsing handles nested structures.
-- **Error Handling Patterns:** Implement token refresh logic when authentication errors occur.
-- **Data Type Specifications:** Ensure date fields are parsed as ISO 8601 strings.
+- **Custom Headers:** `client_id` must be included in the request headers.
+- **Response Format:** JSON
+- **Error Handling:** Implement retry logic for token refresh and handle HTTP errors gracefully.
 
 ## Output Format
 
@@ -181,9 +186,11 @@ ENDPOINTS = [
         }
     }
 ]
+
+DEPENDENCIES = []
 ```
 
-This configuration guide provides all necessary parameters to set up a dlt data pipeline for the Treez API, ensuring efficient data extraction and synchronization.
+This configuration guide provides all necessary parameters and settings to effectively integrate the Treez API with a dlt data pipeline, ensuring efficient data extraction and synchronization.
 
 ---
 *dlt REST API Source Configuration Guide*

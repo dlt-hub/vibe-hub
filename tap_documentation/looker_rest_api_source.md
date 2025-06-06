@@ -4,69 +4,69 @@
 
 # dlt REST API Source Configuration Documentation
 
-This document provides a comprehensive guide for configuring a dlt REST API source for the Looker API. It includes all necessary parameters and configurations to establish a data pipeline using the Looker API.
+This document provides a comprehensive guide for configuring a dlt REST API source for the Looker API. It includes detailed instructions on client configuration, available endpoints, incremental data loading, endpoint dependencies, and API behavior and limits.
 
 ## 1. Client Configuration
 
 ### Base URL
-- **Base URL**: `https://<subdomain>.looker.com:19999/api/4.0/`
-- **Version Path**: `/api/4.0/`
+- **Base URL**: `https://{subdomain}.looker.com:19999/api/4.0/`
+  - Replace `{subdomain}` with your specific Looker instance subdomain.
+  - The API version used is `4.0`.
 
 ### Authentication
 - **Type**: `oauth2`
-- **Token URL**: `https://<subdomain>.looker.com:19999/api/4.0/login`
-- **Required Scopes**: Not applicable (Looker API uses client credentials)
+  - **Token URL**: `https://{subdomain}.looker.com:19999/api/4.0/login`
+  - **Required Scopes**: Not applicable as Looker uses client credentials for OAuth2.
 - **Parameters**:
-  - `client_id`: Your Looker API client ID
-  - `client_secret`: Your Looker API client secret
+  - **Client ID**: Provided by Looker.
+  - **Client Secret**: Provided by Looker.
+  - **Authorization Header**: `Authorization: Bearer {access_token}`
 
 ## 2. Available Endpoints
 
-### Endpoint: Users
+### Example Endpoint: Users
 - **Path**: `/users`
 - **HTTP Method**: `GET`
-- **Query Parameters**: None required
-- **Response Data Structure**: JSON array of user objects
+- **Query Parameters**: None required for basic retrieval.
+- **Response Data Structure**: JSON array of user objects.
 
 ### Pagination Configuration
 - **Type**: `single_page`
-- **Parameter Names**: Not applicable
-- **Default/Maximum Page Sizes**: Not applicable
+  - Looker API does not support pagination for most endpoints.
+- **Parameter Names**: Not applicable.
+- **Default/Maximum Page Sizes**: Not applicable.
 
 ### Data Extraction
-- **JSONPath**: `$.data`
+- **JSONPath**: `$.data` (assuming the data is under a `data` key in the response).
 - **Primary Key**: `id`
+- **Key Fields**: `id`, `email`, `name`
 
 ## 3. Incremental Data Loading
 
 ### Incremental Support
-- **Query Parameter**: `since`
+- **Query Parameter**: `updated_at` (not directly supported, but can be used in custom queries).
 - **Date/Timestamp Field**: `updated_at`
 - **Expected Format**: ISO 8601 (e.g., `2023-10-01T00:00:00Z`)
-- **Recommended Initial Values**: `1970-01-01T00:00:00Z` for first sync
+- **Recommended Initial Values**: Use the current date minus a reasonable buffer (e.g., 30 days) for the first sync.
 
 ## 4. Endpoint Dependencies
 
 ### Resource Relationships
-- **Parent Endpoint**: `users`
-- **Child Endpoints**: `user_sessions`, `content_favorites`, `content_views`
-- **Mapping Identifiers**: `user_id` from `users` to child endpoints
-- **Processing Order**: Fetch `users` first, then fetch child resources using `user_id`
+- **Example**: `user_sessions` depends on `users`.
+  - **Mapping**: `user_id` from `users` to `user_id` in `user_sessions`.
+  - **Processing Order**: Fetch `users` first, then `user_sessions`.
 
 ## 5. API Behavior & Limits
 
 ### Rate Limiting
-- **Requests per Second**: 400
-- **Burst Limits**: Not specified
-- **Recommended Delays**: Implement exponential backoff for retries
+- **Requests per Second**: Not explicitly documented; implement exponential backoff for retries.
+- **Burst Limits**: Handle 429 status codes by retrying after a delay.
 
 ### Special Requirements
-- **Required Custom Headers**:
-  - `Authorization`: `Bearer {access_token}`
-  - `User-Agent`: Custom user agent string
-- **Response Format Considerations**: JSON
-- **Error Handling Patterns**: Retry on 5xx errors and 429 (rate limit exceeded)
-- **Data Type Specifications**: Ensure all ID fields are treated as strings
+- **Custom Headers**: `User-Agent` must be set to a recognizable string (e.g., `tap-looker`).
+- **Response Format Considerations**: JSON format.
+- **Error Handling Patterns**: Implement retries for 5xx errors and handle 404s gracefully.
+- **Data Type Specifications**: Ensure all ID fields are treated as strings due to potential inconsistencies in Looker API responses.
 
 ## Output Format
 
@@ -74,12 +74,13 @@ This document provides a comprehensive guide for configuring a dlt REST API sour
 # REST API Configuration for dlt
 
 BASE_CONFIG = {
-    "base_url": "https://<subdomain>.looker.com:19999/api/4.0/",
+    "base_url": "https://{subdomain}.looker.com:19999/api/4.0/",
     "auth": {
         "type": "oauth2",
-        "token_url": "https://<subdomain>.looker.com:19999/api/4.0/login",
-        "client_id": "<your_client_id>",
-        "client_secret": "<your_client_secret>"
+        "token_url": "https://{subdomain}.looker.com:19999/api/4.0/login",
+        "client_id": "{client_id}",
+        "client_secret": "{client_secret}",
+        "header_format": "Bearer {access_token}"
     }
 }
 
@@ -103,14 +104,14 @@ ENDPOINTS = [
 
 DEPENDENCIES = [
     {
-        "endpoint": "user_sessions",
+        "endpoint": "user_sessions", 
         "depends_on": "users",
         "param_mapping": {"user_id": "id"}
     }
 ]
 ```
 
-This configuration guide provides all necessary details to set up a dlt data pipeline for the Looker API, ensuring efficient data extraction and handling of API-specific behaviors.
+This configuration guide provides the necessary parameters and structure to set up a dlt data pipeline for the Looker API, ensuring efficient data extraction and handling of API-specific behaviors.
 
 ---
 *dlt REST API Source Configuration Guide*

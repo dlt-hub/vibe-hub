@@ -4,7 +4,7 @@
 
 # REST API Configuration for dlt
 
-This guide provides a comprehensive configuration for integrating a REST API source into a dlt data pipeline. The configuration includes client setup, endpoint details, pagination, incremental data loading, endpoint dependencies, and API behavior considerations.
+This document provides a comprehensive guide for configuring a dlt data pipeline to integrate with a REST API source. The configuration includes client setup, endpoint details, pagination, incremental data loading, endpoint dependencies, and API behavior considerations.
 
 ## 1. Client Configuration
 
@@ -17,17 +17,15 @@ This guide provides a comprehensive configuration for integrating a REST API sou
   - **Location**: `header`
   - **Name**: `Authorization`
   - **Format**: `Bearer {token}`
-  - Ensure the token is formatted correctly and included in the request headers.
+  - Ensure the token is correctly formatted and included in the request headers.
 
 ## 2. Available Endpoints
 
-### Endpoint Details
-
-#### Users Endpoint
+### Endpoint: Users
 - **Path**: `/users`
 - **HTTP Method**: `GET`
 - **Required Query Parameters**: None
-- **Optional Query Parameters**: `status`, `role`
+- **Optional Query Parameters**: `limit`, `offset`
 - **Response Data Structure**: JSON object with a `data` array containing user records.
 
 ### Pagination Configuration
@@ -39,42 +37,44 @@ This guide provides a comprehensive configuration for integrating a REST API sou
 - **Next Page Determination**: Increment the `offset` by the `limit` value until no more data is returned.
 
 ### Data Extraction
-- **JSONPath to Data Array**: `data`
+- **Data Selector**: `data`
+  - Use JSONPath to locate the data array in the response.
 - **Primary Key**: `id`
-- **Key Fields**: `id`, `name`, `email`
+  - Each user record is uniquely identified by the `id` field.
 
 ## 3. Incremental Data Loading
 
 ### Incremental Support
 - **Query Parameter**: `since`
+  - Use this parameter to fetch records updated after a specific timestamp.
 - **Date/Timestamp Field**: `updated_at`
-- **Expected Format**: ISO 8601 (e.g., `2023-10-01T00:00:00Z`)
-- **Recommended Initial Value**: Current date minus one year for the first sync.
+  - **Format**: ISO 8601 (e.g., `2023-10-01T00:00:00Z`)
+- **Recommended Initial Value**: Use the current date minus a reasonable buffer period for the first sync.
 
 ## 4. Endpoint Dependencies
 
 ### Resource Relationships
-
-#### User Posts Endpoint
-- **Depends On**: `users`
-- **Path**: `/user_posts`
-- **Param Mapping**: `user_id` from `users.id`
-- **Processing Order**: Fetch users first, then fetch posts using `user_id`.
+- **Endpoint**: `user_posts`
+  - **Depends On**: `users`
+  - **Parameter Mapping**: `user_id` in `user_posts` maps to `id` in `users`.
+- **Processing Order**: Fetch `users` first to obtain `user_id` values, then use these to fetch related `user_posts`.
 
 ## 5. API Behavior & Limits
 
 ### Rate Limiting
-- **Requests Per Minute**: 60
-- **Burst Limits**: 10 requests per second
-- **Recommended Delay**: Implement a delay of 1 second between requests to avoid hitting rate limits.
+- **Requests Per Second**: 10
+- **Burst Limits**: 50 requests per minute
+- **Recommended Delays**: Implement a delay of 100ms between requests to avoid hitting rate limits.
 
 ### Special Requirements
 - **Custom Headers**: None required beyond authentication.
 - **Response Format Considerations**: Ensure JSON responses are parsed correctly.
-- **Error Handling Patterns**: Retry on 5xx errors, log and skip on 4xx errors.
-- **Data Type Specifications**: Ensure date fields are parsed as datetime objects.
+- **Error Handling Patterns**: Implement retries with exponential backoff for transient errors.
+- **Data Type Specifications**: Ensure all date fields are parsed as ISO 8601 strings.
 
 ## Output Format
+
+Below is the structured configuration format for the dlt data pipeline:
 
 ```python
 # REST API Configuration for dlt
@@ -119,7 +119,7 @@ DEPENDENCIES = [
 ]
 ```
 
-This configuration guide provides all necessary parameters to set up a dlt data pipeline for extracting data from a REST API, ensuring efficient data retrieval and processing.
+This configuration ensures that the dlt data pipeline can effectively communicate with the REST API, extract all available data, handle pagination, and perform incremental updates while respecting API limits and dependencies.
 
 ---
 *dlt REST API Source Configuration Guide*

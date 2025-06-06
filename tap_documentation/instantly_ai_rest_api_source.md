@@ -4,83 +4,99 @@
 
 # dlt REST API Source Configuration Documentation for InstantlyAI
 
-This document provides a comprehensive guide to configuring a dlt data pipeline for the InstantlyAI REST API. It covers all necessary parameters and settings to ensure successful data extraction and integration.
+This document provides a comprehensive guide to configuring a dlt data pipeline for the InstantlyAI REST API. It includes details on client configuration, available endpoints, incremental data loading, endpoint dependencies, and API behavior and limits.
 
 ## 1. Client Configuration
 
-### Base URL
-- **Base URL**: `https://api.instantly.ai/api`
-- **Version Path**: Not specified, assume default versioning is handled by the base URL.
+**Base URL:**
+- Base URL: `https://api.instantly.ai/api`
+- This URL serves as the root for all API requests.
 
-### Authentication
-- **Type**: `api_key`
-- **Location**: `params`
-- **Parameter Name**: `api_key`
-- **Format**: The API key is passed as a query parameter in the URL.
+**Authentication:**
+- Type: `api_key`
+- Location: `params`
+- Parameter Name: `api_key`
+- The API key must be included in the query parameters of each request.
 
 ## 2. Available Endpoints
 
-### Campaigns Endpoint
-- **Path**: `/v1/campaign/list`
-- **HTTP Method**: `GET`
-- **Required Query Parameters**: None
-- **Response Data Structure**: JSON array of campaign objects
+### Campaigns
 
-#### Pagination Configuration
-- **Type**: `offset`
-- **Parameter Names**: 
-  - `limit`: Controls the number of records per page (default is 100).
-  - `skip`: Used as the offset for pagination.
-- **Next Page Determination**: Increment `skip` by `limit` for the next page.
-- **Default/Maximum Page Sizes**: Default is 100, maximum is not specified.
+**Endpoint Details:**
+- Path: `/v1/campaign/list`
+- HTTP Method: `GET`
+- Required Query Parameters: None
+- Response Data Structure: JSON array of campaign objects
 
-#### Data Extraction
-- **JSONPath**: `"$[*]"` (indicating the data is at the root level of the JSON response)
-- **Primary Key**: `id`
+**Pagination Configuration:**
+- Type: `offset`
+- Parameter Names: `skip` (offset), `limit` (page size)
+- Default Page Size: 100
+- Pagination is handled using the `skip` parameter to offset the results.
 
-### Campaign Status Endpoint
-- **Path**: `/v1/campaign/get/status`
-- **HTTP Method**: `GET`
-- **Required Query Parameters**: `campaign_id`
-- **Response Data Structure**: JSON object with status details
+**Data Extraction:**
+- JSONPath: `$[*]`
+- Primary Key: `id`
+- Each campaign record is uniquely identified by the `id` field.
 
-### Analytics Campaign Summary Endpoint
-- **Path**: `/v1/analytics/campaign/summary`
-- **HTTP Method**: `GET`
-- **Required Query Parameters**: `campaign_id`
-- **Response Data Structure**: JSON object with summary analytics
+### Campaign Status
 
-### Analytics Campaign Count Endpoint
-- **Path**: `/v1/analytics/campaign/count`
-- **HTTP Method**: `GET`
-- **Required Query Parameters**: `start_date`
-- **Response Data Structure**: JSON object with count analytics
+**Endpoint Details:**
+- Path: `/v1/campaign/get/status`
+- HTTP Method: `GET`
+- Required Query Parameters: `campaign_id`
+- Response Data Structure: JSON object with status details
+
+**Data Extraction:**
+- JSONPath: `$[*]`
+- This endpoint requires a `campaign_id` from the Campaigns endpoint.
+
+### Analytics Campaign Summary
+
+**Endpoint Details:**
+- Path: `/v1/analytics/campaign/summary`
+- HTTP Method: `GET`
+- Required Query Parameters: `campaign_id`
+- Response Data Structure: JSON object with summary analytics
+
+**Data Extraction:**
+- JSONPath: `$[*]`
+- This endpoint requires a `campaign_id` from the Campaigns endpoint.
+
+### Analytics Campaign Count
+
+**Endpoint Details:**
+- Path: `/v1/analytics/campaign/count`
+- HTTP Method: `GET`
+- Required Query Parameters: `start_date`
+- Response Data Structure: JSON object with count analytics
+
+**Data Extraction:**
+- JSONPath: `$[*]`
+- The `start_date` parameter is used to filter results.
 
 ## 3. Incremental Data Loading
 
-### Incremental Support
-- **Campaigns Endpoint**: No explicit incremental loading support.
-- **Analytics Campaign Count Endpoint**: Uses `start_date` parameter to fetch data from a specific date.
-- **Date/Time Field**: Not explicitly used for incremental loading in the provided streams.
-- **Format**: `YYYY-MM-DD` for `start_date`.
+**Incremental Support:**
+- The `Analytics Campaign Count` endpoint supports incremental loading using the `start_date` parameter.
+- Date Format: `YYYY-MM-DD`
+- Recommended Initial Value: The earliest date from which you want to start syncing data.
 
 ## 4. Endpoint Dependencies
 
-### Resource Relationships
-- **Campaign Status and Analytics Endpoints**: Depend on the `Campaigns` endpoint to provide `campaign_id`.
-- **Mapping**: `campaign_id` from `Campaigns` is used in dependent endpoints.
+**Resource Relationships:**
+- The `Campaign Status` and `Analytics Campaign Summary` endpoints depend on data from the `Campaigns` endpoint.
+- Mapping: Use the `id` field from the `Campaigns` endpoint as the `campaign_id` parameter for dependent endpoints.
 
 ## 5. API Behavior & Limits
 
-### Rate Limiting
-- **Requests per Second/Minute/Hour**: Not specified in the provided code.
-- **Burst Limits and Recommended Delays**: Not specified.
+**Rate Limiting:**
+- Specific rate limits are not documented; however, it is recommended to implement retry logic with exponential backoff in case of rate limit errors.
 
-### Special Requirements
-- **Custom Headers**: `User-Agent` can be set if specified in the configuration.
-- **Response Format Considerations**: JSON format is assumed.
-- **Error Handling Patterns**: Not explicitly defined in the provided code.
-- **Data Type Specifications**: JSON schema files are used for data validation.
+**Special Requirements:**
+- Custom Headers: Include a `User-Agent` header if specified in the configuration.
+- Response Format: JSON
+- Error Handling: Implement error handling for common HTTP errors such as 429 (Too Many Requests) and 500 (Internal Server Error).
 
 ## Output Format
 
@@ -114,39 +130,37 @@ ENDPOINTS = [
         "name": "campaign_status",
         "path": "/v1/campaign/get/status",
         "method": "GET",
-        "parent_stream": "campaigns",
-        "param_mapping": {"campaign_id": "id"}
+        "data_selector": "$[*]",
+        "dependencies": {
+            "depends_on": "campaigns",
+            "param_mapping": {"campaign_id": "id"}
+        }
     },
     {
         "name": "analytics_campaign_summary",
         "path": "/v1/analytics/campaign/summary",
         "method": "GET",
-        "parent_stream": "campaigns",
-        "param_mapping": {"campaign_id": "id"}
+        "data_selector": "$[*]",
+        "dependencies": {
+            "depends_on": "campaigns",
+            "param_mapping": {"campaign_id": "id"}
+        }
     },
     {
         "name": "analytics_campaign_count",
         "path": "/v1/analytics/campaign/count",
         "method": "GET",
-        "query_params": {"start_date": "YYYY-MM-DD"}
-    }
-]
-
-DEPENDENCIES = [
-    {
-        "endpoint": "campaign_status",
-        "depends_on": "campaigns",
-        "param_mapping": {"campaign_id": "id"}
-    },
-    {
-        "endpoint": "analytics_campaign_summary",
-        "depends_on": "campaigns",
-        "param_mapping": {"campaign_id": "id"}
+        "data_selector": "$[*]",
+        "incremental": {
+            "cursor_path": "start_date",
+            "param_name": "start_date",
+            "format": "YYYY-MM-DD"
+        }
     }
 ]
 ```
 
-This configuration guide provides all necessary details to set up a dlt data pipeline for the InstantlyAI REST API, ensuring efficient data extraction and integration.
+This configuration guide provides all necessary parameters and details to effectively integrate with the InstantlyAI REST API using a dlt data pipeline.
 
 ---
 *dlt REST API Source Configuration Guide*

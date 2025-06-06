@@ -2,72 +2,69 @@
 
 ## dlt REST API Configuration Documentation
 
-# dlt REST API Source Configuration Documentation
+# REST API Configuration for dlt
 
-This document provides a comprehensive guide for configuring a dlt REST API source for the `tap-staffwise` integration. It includes detailed instructions on client configuration, available endpoints, incremental data loading, endpoint dependencies, and API behavior and limits.
+This document provides a comprehensive guide for configuring a dlt data pipeline to extract data from the Staffwise REST API. The configuration includes details on client setup, available endpoints, pagination, incremental data loading, endpoint dependencies, and API behavior.
 
 ## 1. Client Configuration
 
 ### Base URL
-- **Base URL**: The API base URL is constructed dynamically using the subdomain provided in the configuration. The format is:
-  ```
-  https://{subdomain}.staffed.it
-  ```
-  Replace `{subdomain}` with the actual subdomain you intend to use.
+- **Base URL**: `https://{subdomain}.staffed.it`
+  - Replace `{subdomain}` with the specific subdomain you are targeting.
 
 ### Authentication
 - **Type**: `api_key`
 - **Location**: `header`
 - **Parameter Name**: `x-api-key`
-- **Token Format**: The API key is directly used as the value for the `x-api-key` header.
+- **Token Format**: Directly use the API key as the value.
 
 ## 2. Available Endpoints
 
 ### Reporting Endpoint
 - **Path**: `/reporting/api/get-data/{reporting_id}`
-  - Replace `{reporting_id}` with the actual reporting ID from the configuration.
-- **HTTP Method**: `GET`
-- **Required Query Parameters**: None specified, but payload parameters are used for filtering.
-- **Response Data Structure**: The response is expected to be in CSV format, which is parsed into JSON records.
+  - Replace `{reporting_id}` with the specific reporting ID.
+- **HTTP Method**: `POST`
+- **Required Query Parameters**: None
+- **Response Data Structure**: CSV format, parsed into JSON records.
 
 ### Pagination Configuration
-- **Type**: `page_number`
-- **Parameter Names**: 
-  - `page` for the page number
-- **Default/Maximum Page Sizes**: Not explicitly defined; depends on API defaults.
+- **Type**: `single_page`
+  - The API does not support pagination; all data is returned in a single response.
 
 ### Data Extraction
-- **Data Location**: The data is extracted from CSV content in the response.
-- **Record Identification**: Each record is identified by fields such as `Shift ID`, `Location`, etc.
-- **Primary Key**: Not explicitly defined in the code, but `Shift ID` could serve as a unique identifier.
+- **Data Location**: The entire response is parsed as CSV and converted to JSON.
+- **Primary Key**: `Shift ID`
+- **JSONPath**: Not applicable due to CSV response format.
 
 ## 3. Incremental Data Loading
 
 ### Incremental Support
-- **Query Parameter**: `dateStart` and `dateStop` are used for filtering data by date range.
-- **Date/Timestamp Field**: `Date` and `Submission date` fields in the response.
-- **Expected Format**: Dates are expected in a string format, likely ISO 8601.
-- **Recommended Initial Values**: Use the earliest date of interest for `dateStart` and the current date for `dateStop` for the first sync.
+- **Query Parameter**: `dateStart` and `dateStop`
+- **Date Field**: `Date` in the response
+- **Format**: ISO 8601 date format (e.g., `YYYY-MM-DD`)
+- **Initial Values**: Set `start_date` and `stop_date` in the configuration for the first sync.
 
 ## 4. Endpoint Dependencies
 
 ### Resource Relationships
-- **Dependencies**: The `reporting` endpoint does not explicitly depend on other endpoints within the provided code.
-- **Identifier Mapping**: Not applicable as there are no dependent endpoints.
+- **Dependencies**: None specified in the current configuration.
+- **Mapping**: Not applicable.
 
 ## 5. API Behavior & Limits
 
 ### Rate Limiting
-- **Requests per Second/Minute/Hour**: Not specified in the provided code. Check API documentation for limits.
-- **Burst Limits and Recommended Delays**: Implement retry logic based on API responses for rate limiting.
+- **Requests per Second**: Not explicitly defined; monitor and adjust based on observed behavior.
+- **Burst Limits**: Not specified; implement retry logic for handling rate limit errors.
 
 ### Special Requirements
-- **Custom Headers**: `User-Agent` can be set if specified in the configuration.
-- **Response Format Considerations**: Responses are in CSV format, which is parsed into JSON.
-- **Error Handling Patterns**: Implement error handling based on HTTP status codes and response content.
-- **Data Type Specifications**: Ensure correct data types are used when parsing CSV content.
+- **Custom Headers**: `User-Agent` can be set via configuration.
+- **Response Format**: CSV, converted to JSON.
+- **Error Handling**: Implement retry logic for network errors and rate limiting.
+- **Data Type Specifications**: Ensure correct parsing of CSV fields into appropriate JSON data types.
 
 ## Output Format
+
+Below is the Python configuration for the dlt pipeline:
 
 ```python
 # REST API Configuration for dlt
@@ -78,7 +75,7 @@ BASE_CONFIG = {
         "type": "api_key",
         "location": "header",
         "name": "x-api-key",
-        "format": "{api_key}"
+        "format": "{token}"
     }
 }
 
@@ -86,17 +83,16 @@ ENDPOINTS = [
     {
         "name": "reporting",
         "path": "/reporting/api/get-data/{reporting_id}",
-        "method": "GET",
-        "data_selector": "csv",
+        "method": "POST",
+        "data_selector": None,  # CSV response
         "primary_key": "Shift ID",
         "pagination": {
-            "type": "page_number",
-            "page_param": "page"
+            "type": "single_page"
         },
         "incremental": {
             "cursor_path": "Date",
-            "param_name": "dateStart",
-            "format": "string"
+            "param_name": ["dateStart", "dateStop"],
+            "format": "iso"
         }
     }
 ]
@@ -104,7 +100,7 @@ ENDPOINTS = [
 DEPENDENCIES = []
 ```
 
-This configuration guide provides the necessary parameters and structure to set up a dlt data pipeline for the `tap-staffwise` REST API source. Adjust the configuration based on specific API documentation and requirements.
+This configuration guide provides all necessary parameters and settings to effectively integrate and extract data from the Staffwise API using a dlt data pipeline. Adjust the configuration as needed based on specific use cases and API updates.
 
 ---
 *dlt REST API Source Configuration Guide*
