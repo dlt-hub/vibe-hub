@@ -17,18 +17,18 @@ def rentcast_source(access_token=dlt.secrets.value):
         "client": {
             "base_url": "https://api.rentcast.io/v1",
             {
-    "auth": {
-        "type": "api_key",
-        "header_name": "X-Api-Key",
-        "token": access_token
-    }
-},
+               "auth": {
+                  "type": "api_key",
+                  "header_name": "X-Api-Key",
+                  "token": access_token
+               }
+            },
         },
         "resources": [
             "/v1/properties",
-"/properties/{address}",
-"/owners/{address}"
-        ],
+       "/properties/{address}",
+       "/owners/{address}"
+    ],
     }
 
     yield from rest_api_resources(config)
