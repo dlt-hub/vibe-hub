@@ -135,8 +135,6 @@ The steps are:
 
 ## Running into errors?
 
-Here are some things that may help:
-
 ### 📬 Webhooks & Event Handling
 
 - Webhook **event delivery is aggregated**, may arrive out of order, and may be delayed by up to one minute.

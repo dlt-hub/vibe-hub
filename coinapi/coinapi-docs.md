@@ -152,8 +152,6 @@ The steps are:
 
 ## Running into errors?
 
-Here are some things that may help:
-
 Important considerations include ensuring the API key is correctly included in request headers. Data delays and resolution discrepancies may occur, and the API supports multiple response formats and content types which should be correctly handled. Additionally, the response might include nullable fields and rate limits are strictly enforced, with each 100 items returned counted as one API call.
 
 ### Extra resources:

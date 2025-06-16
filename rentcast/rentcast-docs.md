@@ -152,8 +152,6 @@ The steps are:
 
 ## Running into errors?
 
-Here are some things that may help:
-
 It's important to note that if the payment fails, API access is suspended. The free developer plan allows up to 50 requests per month. Historical data availability varies by type and starts only from recent years (e.g., rental data from April 2020 and sales data from January 2024). The API covers approximately 96% of residential properties across the US. Data updates take snapshots at the end of each month, and data accuracy can be influenced by the number of active listings.
 
 ### Extra resources:

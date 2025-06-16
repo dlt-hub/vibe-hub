@@ -149,8 +149,6 @@ The steps are:
 
 ## Running into errors?
 
-Here are some things that may help:
-
 The API has strict authentication requirements with OAuth tokens often requiring specific scopes. Tokens are displayed only once at generation and their validity is tied to the user's account status. Ensure correct encoding for path parameters and handle pagination carefully using cursor-based methods. Error handling is critical as multiple status codes need to be managed.
 
 ### Extra resources:
