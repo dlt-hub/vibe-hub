@@ -17,14 +17,14 @@ def freshservice_source(access_token=dlt.secrets.value):
         "client": {
             "base_url": "https://your-instance.api-name.com",
             "auth": {
-    "type": "bearer",
-    "token": access_token,
-},
+               "type": "bearer",
+               "token": access_token,
+            },
         },
         "resources": [
             "/services/data/vXX.X/sobjects/CampaignMember",
-"/api/v2/tickets",
-"/api/v2/relationships/bulk-create"
+           "/api/v2/tickets",
+           "/api/v2/relationships/bulk-create"
         ],
     }
 

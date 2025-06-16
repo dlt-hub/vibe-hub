@@ -17,19 +17,19 @@ def coin_api_source(access_token=dlt.secrets.value):
         "client": {
             "base_url": "https://api.coinapi.io",
             {
-    "auth": {
-        "type": "api_key",
-        "header_name": "X-CoinAPI-Key",
-        "key": access_token
-    }
-},
-        },
+             "auth": {
+                 "type": "api_key",
+                 "header_name": "X-CoinAPI-Key",
+                 "key": access_token
+                }
+            }
+         },
         "resources": [
             "/v1/options/:exchange_id/current",
-"/v1/quotes/current",
-"/v1/orderbooks/:symbol_id/depth/current"
-        ],
-    }
+            "/v1/quotes/current",
+            "/v1/orderbooks/:symbol_id/depth/current"
+                    ],
+                }
 
     yield from rest_api_resources(config)
 
