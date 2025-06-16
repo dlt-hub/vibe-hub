@@ -149,8 +149,6 @@ The steps are:
 
 ## Running into errors?
 
-Here are some things that may help:
-
 The API uses OAuth2 with a refresh token which requires the setup of a connected app in the API. Certain endpoints like those returning contact information may have null values in deeply nested fields. Be aware of possible request limits and query timeouts, and ensure proper handling of 401 Unauthorized errors due to expired tokens or incorrect scopes.
 
 ### Extra resources:

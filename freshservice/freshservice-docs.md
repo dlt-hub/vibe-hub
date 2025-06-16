@@ -149,8 +149,6 @@ The steps are:
 
 ## Running into errors?
 
-Here are some things that may help:
-
 Users must be aware of the specific privileges required to access certain endpoints. The API includes different behaviors for Freshservice and Freshservice for MSPs. Some endpoints require multipart/form-data content type. Also, certain operations like deleting assets or changing statuses might have irreversible effects. Updated records might take a few minutes to reflect due to indexing delays. The API's behavior may also vary based on the type of ID provided in requests.
 
 ### Extra resources:
