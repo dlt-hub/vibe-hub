@@ -17,15 +17,16 @@ def coin_api_source(access_token=dlt.secrets.value):
         "client": {
             "base_url": "https://api.coinapi.io",
             "auth": {
-    "type": "api_key",
-    "token": access_token,
-},
+                "type": "api_key",
+                "key": 'X-CoinAPI-Key',
+                "value": access_token
+            },
         },
         "resources": [
             "/v1/options/:exchange_id/current",
-"/v1/quotes/current",
-"/v1/orderbooks/:symbol_id/depth/current"
-        ],
+            "/v1/quotes/current",
+            "/v1/orderbooks/:symbol_id/depth/current"
+            ],
     }
 
     yield from rest_api_resources(config)
@@ -54,9 +55,10 @@ def get_data() -> None:
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from coin_api’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- Current Data: Access current market data for exchanges, quotes, order books, and asset metrics.
-- Historical Data: Fetch historical market data including OHLCV, asset metrics, and exchange metrics.
-- Rates and Metrics: Obtain current and specific rates for assets, including exchange rates and timeseries data.
+- Current Data: Retrieve the latest data for different cryptocurrencies by exchanges, assets, or symbols.
+- Quotes and Order Books: Access current quotes and detailed order book data for specific symbols.
+- Historical Data: Fetch historical market data including OHLCV for exchanges or specific symbols.
+- Exchange Rates: Get current and historical exchange rates for various cryptocurrency assets, with the ability to request specific rate pairs.
 
 You can combine these endpoints to build pipelines that extract structured content from CoinAPI workspaces at scale — via REST APIs or webhook ingestion.
 
@@ -67,17 +69,17 @@ The steps are:
 1. **Execute these commands in a new Cursor shell.**
     
     Install dlt with duckdb support:
-    ```python
+    ```shell
     pip install dlt
     ```
 
     Initialize a dlt pipeline with CoinAPI support.
-    ```
+    ```shell
     dlt init dlthub:coin_api duckdb
     ```
 
     The `init` command will setup some important files and folders, including `requirments.txt`. Install the requirements for the rest of the project.
-    ```
+    ```shell
     pip install -r requirements.txt
     ```
     
@@ -104,28 +106,20 @@ The steps are:
     
 3. **Setup credentials** 
     
-    Authentication is managed through an API key included in the request headers. The API key should be sent as the value of the 'X-CoinAPI-Key' header in each request.
-
-    In cursor, you would setup credentials in code as shown below:
+    Authentication is done using an API key which must be included in the header of every request under the name 'X-CoinAPI-Key'.
     
-    ```python
-    def get_data() -> None:
-        ...
-        access_token = "my_access_token"
-        ...
-    ```
-    
-    If you want to protect these secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
+    To get appropriate API keys, please visit the original source at https://www.coinapi.io/.
+    If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
     
 4. **Run the pipeline in the Python terminal in Cursor**
     
-    ```
+    ```shell
     python coin_api_pipeline.py
     ```
     
     If your pipeline runs correctly you’ll se something like
     
-    ```python
+    ```shell
     Pipeline coin_api load step completed in 0.26 seconds
     1 load package(s) were loaded to destination duckdb and into dataset coin_api_data
     The duckdb destination used duckdb:/coin_api.duckdb location to store data
@@ -134,7 +128,7 @@ The steps are:
     
 5. **See data**
     
-    ```python
+    ```shell
     dlt pipeline coin_api_pipeline show --marimo
     ```
     
@@ -147,11 +141,10 @@ The steps are:
     # get docs table as pandas
     print(data.docs.df())
     ```
-    
 
 ## Running into errors?
 
-Notable considerations include: API key must be included in all requests; some responses might include nullable fields; data can be delayed and might change without notice; endpoint supports multiple response formats; rate limits can be easily exceeded leading to blocked access; ensure precise matching of request parameters to avoid bad requests.
+Users must ensure the API key is valid and has the necessary permissions. Responses may include nullable fields and optional data. The API supports multiple response formats and data might be delayed or change without notice. Users should handle potential errors such as exceeding rate limits, unauthorized access, and bad requests properly.
 
 ### Extra resources:
 
