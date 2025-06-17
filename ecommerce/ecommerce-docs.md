@@ -17,15 +17,15 @@ def ecommerce_source(access_token=dlt.secrets.value):
         "client": {
             "base_url": "https://api.ecommerceapi.uk/v1",
             "auth": {
-    "type": "basic",
-    "token": access_token,
-},
+                "type": "basic",
+                "token": access_token,
+            },
         },
         "resources": [
             "/brands",
-"/countries",
-"/payment-methods"
-        ],
+            "/countries",
+            "/payment-methods"
+            ],
     }
 
     yield from rest_api_resources(config)

@@ -17,14 +17,14 @@ def iterable_source(access_token=dlt.secrets.value):
         "client": {
             "base_url": "https://api.iterable.com/api",
             "auth": {
-    "type": "apikey",
-    "token": access_token,
-},
+                "type": "apikey",
+                "token": access_token,
+            },
         },
         "resources": [
             "/users",
-"/events"
-        ],
+            "/events"
+            ],
     }
 
     yield from rest_api_resources(config)

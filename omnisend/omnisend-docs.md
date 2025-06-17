@@ -17,15 +17,15 @@ def omnisend_source(access_token=dlt.secrets.value):
         "client": {
             "base_url": "https://api.omnisend.com/v5",
             "auth": {
-    "type": "bearer",
-    "token": access_token
-},
+                "type": "bearer",
+                "token": access_token
+            },
         },
         "resources": [
             "/brands/current",
-"/v5/events",
-"/contacts"
-        ],
+            "/v5/events",
+            "/contacts"
+            ],
     }
 
     yield from rest_api_resources(config)
