@@ -17,9 +17,9 @@ def corona_zahlen_source(access_token=dlt.secrets.value):
         "client": {
             "base_url": "https://api.corona-zahlen.org",
             "auth": {
-                "type": "bearer",
-                "token": access_token,
-            },
+                                        "type": "bearer",
+                                        "token": access_token,
+                                    },
         },
         "resources": [
             "/districts/history/frozen-incidence/7",

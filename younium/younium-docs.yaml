@@ -1,0 +1,193 @@
+resources:
+- name: chartofaccounts
+  endpoint:
+    params:
+      skip: 10
+      filter: name eq 'Adam' and age gt 20
+      orderby: name
+- name: invoices
+  endpoint:
+    params:
+      skip: 10
+      take: 5
+      filter: name eq 'Adam' and age gt 20
+      sort: name
+- name: invoice_attachment
+  endpoint:
+    params:
+      filter: name eq 'Adam' and age gt 20
+      sort: accountNumber Desc
+      modifiedAfter: 03/01/2025 00:00:00
+      modifiedBefore: 03/01/2025 00:00:00
+- name: journals
+  endpoint:
+    path: /journals
+    method: GET
+    data_selector: '[]'
+- name: measurements
+  endpoint:
+    path: /api/measurements
+    method: GET
+- name: sales_order_or_subscription
+  endpoint:
+    path: /Orders/{id}
+    method: GET
+    data_selector: .
+    params:
+      id: '{uuid}'
+- name: charge_by_id
+  endpoint:
+    path: /Orders/Charges/{id}
+    method: GET
+    data_selector: .
+    params:
+      id: '{uuid}'
+- name: products
+  endpoint:
+    path: /products
+    method: GET
+    data_selector: products
+- name: tax_templates
+  endpoint:
+    path: /taxtemplates
+    method: GET
+    data_selector: '[]'
+- name: charge
+  endpoint:
+    path: /charges
+    method: GET
+    data_selector: charge
+- name: bookings
+  endpoint:
+    path: /bookings
+    method: GET
+    data_selector: data
+- name: invoicebatches
+  endpoint:
+    params:
+      pageSize: 20
+      pageNumber: 1
+- name: payments
+  endpoint:
+    path: /
+    method: GET
+    data_selector: data
+- name: reports
+  endpoint:
+    path: /api/2.1/reports
+    method: GET
+    params:
+      sort: accountNumber Desc
+      filter: name eq 'Adam' and age gt 20
+      modifiedAfter: 03/01/2025 00:00:00
+      modifiedBefore: 03/01/2025 00:00:00
+- name: simpleproducts
+  endpoint:
+    path: /simpleproducts
+    method: GET
+    data_selector: data
+    params: {}
+    paginator:
+      type: page
+      page_size_param: pageSize
+      default_page_size: 1
+- name: taxtemplates
+  endpoint:
+    path: /taxtemplates
+    method: GET
+    data_selector: data
+- name: data
+  endpoint:
+    path: /api-s/api-2.1/usage
+    method: GET
+    data_selector: data
+- name: subscriptions
+  endpoint:
+    method: GET
+    params:
+      pageNumber: 1
+- name: invoice_operations
+  endpoint:
+    method: GET
+    data_selector: successful
+    params:
+      invoiceAction: CreateDraftAndPostInvoice
+- name: products
+  endpoint:
+    path: /products
+    method: POST
+- name: products_update
+  endpoint:
+    path: /products/{id}
+    method: PATCH
+- name: webhook_events
+  endpoint:
+    method: POST
+notes:
+- Requires permission 'Financial Account Read'.
+- Pagination uses nextPage links for cursor-based iteration
+- Pagination uses nextPage URL provided within each response for continuous data fetching.
+- Pagination parameters include pageNumber and pageSize, indicating support for page-based
+  navigation.
+- Only fields containing values are present in the response.
+- Pagination allows 1-100 entries per page.
+- If no entries are found, a 400 Bad Request response is returned.
+- Idempotent requests are stored for a default duration of 24 hours unless specified
+  otherwise; maximum storage duration is 168 hours
+- Validation errors occur if tier indices are skipped or toQuantity is not properly
+  set
+- Deleting entities on a product that have been deleted cannot be recovered; updates
+  cannot be undone
+- Webhooks provide real-time updates, alternative to scheduled API polling
+- Webhook attempts are retried every 3 hours up to 10 times before manual intervention
+  is needed
+errors:
+- Invoice with online payment status 'Succeeded' and 'Processing' will not be reprocessed
+- 400: Bad Request
+- 401: Unauthorized
+- 403: Forbidden
+- 404: Not Found
+- 401 Unauthorized: Failed authentications or authorizations
+- 403 Forbidden: Failed authentications or authorizations
+- 404 Not Found: Not found endpoints
+- 409 Conflict: Concurrent requests with the same idempotency key before the first
+    request resolves
+- 400 Bad Request: Altered request body from the initial request
+- 'Validation Error: Check if appropriate fields like tier indices and toQuantity
+  are correctly specified'
+- code: 400
+  message: Invalid credentials or other errors
+- code: 401
+  message: Expired, missing, or incorrect access token
+- code: 403
+  message: Unauthorized access due to incorrect legal entity or insufficient permissions
+auth_info:
+  mentioned_objects:
+  - Financial Account Read
+  - Invoice Read
+  - Invoice View
+  - charge
+  - chargePlan
+  - JWT access token
+  - API Token
+  - Client ID
+  - Secret key
+client:
+  paginator:
+    page_size_param: take
+    default_page_size: 5
+    type: page
+    cursor_path: nextPage
+    cursor_param: nextPage
+  base_url: https://developer.younium.com/api-s/api-2.0
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+    flow: jwt
+    token_url: https://developer.younium.com/auth/token
+  headers:
+    Accept: '*/*'
+    api-version: '2.1'
+    legal-entity: '{{ legal_entity_id }}'
+source_metadata: null

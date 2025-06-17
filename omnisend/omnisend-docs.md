@@ -1,6 +1,6 @@
 # How to load Omnisend data in Python using dlt
 
-**Build a Omnisend-to-database or-dataframe pipeline in Python using dlt with automatic cursor support.**
+**Build a Omnisend-to-database or-dataframe pipeline in Python using dlt with automatic Cursor support.**
 
 Your outcome will be a fully declarative python pipeline based on dlt’s REST API connector
 
@@ -18,7 +18,7 @@ def omnisend_source(access_token=dlt.secrets.value):
             "base_url": "https://api.omnisend.com/v5",
             "auth": {
                 "type": "bearer",
-                "token": access_token
+                "token": access_token,
             },
         },
         "resources": [
@@ -54,9 +54,9 @@ def get_data() -> None:
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from omnisend’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- Brand Management - Manage current brand settings.
-- Event Tracking - Track various customer events like adding products to cart, placing orders, and starting checkouts.
-- Contact Management - Manage contacts and batch operations for contacts.
+- Events: Manage various customer-related events for marketing automations, such as cart and order events.
+- Contacts: Handle operations related to customer contact details, including creating and updating contacts.
+- Products: Facilitate operations on product data, such as adding new products to the system.
 
 You can combine these endpoints to build pipelines that extract structured content from Omnisend workspaces at scale — via REST APIs or webhook ingestion.
 
@@ -104,7 +104,7 @@ The steps are:
     
 3. **Setup credentials** 
     
-    Authentication is done using OAuth2 with Authorization Code flow. The API key is required and must be included in the header for backend requests.
+    Authentication uses OAuth2 with Authorization Code flow. The API key must be included in the header under the name 'X-API-KEY'.
     
     To get appropriate API keys, please visit the original source at https://api-docs.omnisend.com.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
@@ -142,7 +142,7 @@ The steps are:
 
 ## Running into errors?
 
-Before integration, merchants must contact Omnisend to enable their platform. Specific events related to product abandonment must be sent via JavaScript API. The base URL has recently changed from v3 to v5, requiring migration steps. Event data must include 'eventTime' set to the actual order creation date to avoid triggering unwanted automation workflows. Rate limits apply, and the API key's validity and configuration must be monitored to avoid unauthorized errors.
+Before using the API, a merchant must contact Omnisend to enable their platform. It is crucial to ensure the correct setting of event times to prevent unwanted automations. The API supports tracking customer events, but only for identified contacts. Payloads are limited to 1MB, and the API key and contact identifiers are case-sensitive. Batch operations are asynchronous and can include up to 1,000 actions.
 
 ### Extra resources:
 

@@ -17,9 +17,9 @@ def notion_source(access_token=dlt.secrets.value):
         "client": {
             "base_url": "https://api.notion.com/v1",
             "auth": {
-                "type": "bearer",
-                "token": access_token,
-            },
+                                        "type": "bearer",
+                                        "token": access_token,
+                                    },
         },
         "resources": [
             "/v1/pages/{page_id}",
