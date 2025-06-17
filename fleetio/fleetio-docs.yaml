@@ -1,0 +1,250 @@
+resources:
+- name: filtering_and_sorting
+  endpoint:
+    data_selector: records
+- name: inventory
+  endpoint:
+    method: POST
+- name: purchase_order
+  endpoint:
+    method: POST
+- name: purchase_order_line_items
+  endpoint:
+    method: POST
+- name: work_order
+  endpoint:
+    method: POST
+- name: vehicle
+  endpoint:
+    path: /vehicles/{external_id}
+    method: GET
+- name: temporary_policy
+  endpoint:
+    path: /api/v1/uploads/policies
+    method: POST
+    data_selector: ''
+- name: upload_file
+  endpoint:
+    path: https://lmuavc3zg4.execute-api.us-east-1.amazonaws.com/prod/uploads
+    method: POST
+    data_selector: ''
+- name: work_order
+  endpoint:
+    path: /v2/work_orders
+    method: POST
+    data_selector: images_attributes
+    params:
+      vehicle_id: ''
+      issued_at: ''
+      work_order_status_id: ''
+      images_attributes:
+      - name: ''
+        file_url: ''
+      documents_attributes:
+      - name: ''
+        file_url: ''
+- name: work_order_update
+  endpoint:
+    path: /v2/work_orders/{id}
+    method: PATCH
+    data_selector: images_attributes
+    params:
+      images_attributes:
+      - name: ''
+        file_url: ''
+- name: faults
+  endpoint:
+    method: POST
+- name: groups
+  endpoint:
+    method: PATCH
+- name: inventory_journal_entries
+  endpoint:
+    method: POST
+- name: location_entries
+  endpoint:
+    method: POST
+- name: meter_entries
+  endpoint:
+    method: POST
+- name: vehicles
+  endpoint:
+    method: POST
+- name: vehicles
+  endpoint:
+    method: PATCH
+- name: contacts
+- name: expense_entries
+- name: fuel_entries
+- name: issues
+- name: parts
+- name: vehicle_acquisitions
+- name: purchase_orders
+- name: service_entries
+- name: vehicles
+- name: vehicle_assignments
+- name: vehicle_renewal_reminders
+- name: vendors
+- name: work_orders
+- name: vehicles
+  endpoint:
+    path: /api/v1/vehicles
+    method: GET
+    data_selector: records
+    params:
+      year_gteq: 2018
+      s: year desc
+- name: vehicles
+  endpoint:
+    path: /vehicles
+    method: GET
+    params:
+      page: page
+- name: vehicles_index
+  endpoint:
+    path: /vehicles
+    method: GET
+    data_selector: ''
+- name: vehicles_create
+  endpoint:
+    path: /vehicles
+    method: POST
+    data_selector: ''
+- name: vehicles_show
+  endpoint:
+    path: /vehicles/:id
+    method: GET
+    data_selector: ''
+- name: vehicles_update
+  endpoint:
+    path: /vehicles/:id
+    method: PATCH
+    data_selector: ''
+- name: vehicles_delete
+  endpoint:
+    path: /vehicles/:id
+    method: DELETE
+    data_selector: ''
+- name: import_completed
+  endpoint:
+    path: /webhooks/import_completed
+    method: POST
+- name: work_order
+  endpoint:
+    path: /services/data/vXX.X/sobjects/WorkOrder
+    method: GET
+    data_selector: records
+- name: work_order
+  endpoint:
+    path: /work_orders
+    method: GET
+    data_selector: payload
+- name: work_order
+  endpoint:
+    path: /services/data/vXX.X/sobjects/WorkOrder
+    method: GET
+    data_selector: records
+- name: work_order
+  endpoint:
+    path: /work_orders
+    method: GET
+    data_selector: payload
+- name: webhook_event
+  endpoint:
+    method: POST
+- name: webhook_events
+  endpoint:
+    path: /webhooks/events
+    method: GET
+notes:
+- During the transition to new filtering and sorting methods, some endpoints use original
+  q[] sorting while others use new methods.
+- Special --globoff flag needed for cURL requests to handle [] in filters.
+- API supports both standard REST and Bulk API operations
+- Pagination is used to efficiently return data
+- Transition from q[] style to filter and sort URL parameters
+- API keys are tied to individual user permissions
+- API versioning allows for gradual integration upgrades
+- file_url is the only required field for images and documents, but 'name' and 'description'
+  are recommended for clarity.
+- Bulk API does not support deletion of records
+- Subject to rate limiting
+- Maximum records per job varies by record type (100 for most; 500 for Inventory;
+  1000 for Groups)
+- Maximum of 10 concurrent jobs, additional jobs are enqueued
+- When submitting dates to the API, use ISO 8601 format to avoid ambiguity; other
+  formats might be misinterpreted.
+- API key must be treated as a secret and not shared or committed to source code repositories
+- It is recommended to rotate the API key periodically
+- Endpoint versions deprecated as of 2023-03-01; use date-based versioning
+- Breaking changes contained in new date versions; ensure compatibility by testing
+- Webhooks are asynchronous and should not be relied upon for time-sensitive operations.
+- Delays might occur in message delivery.
+- Webhook events are debounced to prevent server overload.
+- Message verification using HMAC SHA-256 is recommended.
+- Webhooks are disabled after 3 consecutive failed messages
+- Webhook events are retained for 30 days
+errors:
+- 403 Forbidden: Check API user permissions
+- 429 Too Many Requests: Reduce request frequency; wait for the period specified in
+    the 'Retry-After' header before retrying
+- 200 OK: Everything went as expected! Used on index and show actions.
+- 201 Created: A record was created successfully. Used on create actions. Check the
+    location header for the url of the newly created object.
+- 204 No Content: The action was successful, but the API does not need to return any
+    data. Used on update and delete actions.
+- 400 Bad Request: The request body most likely has invalid or bad attributes. Check
+    to make sure the request body attributes being sent are as expected.
+- 401 Unauthorized: Your credentials syntax is not correct, or your credentials are
+    invalid. If you are getting this error, please review the Quick Start guide.
+- 403 Forbidden: You are trying to access an endpoint for which the user associated
+    with your API key does not have permissions to access. There will not be anything
+    in the response body. If you are getting this error, please check that the endpoint
+    is correct and check the permissions of the user and be sure they can actually
+    do the action you are attempting. You can learn more in the Help Center article
+    about User Roles & Permissions as well as the Full Permissions Reference.
+- 404 Not Found: The record you are trying to access does not exist.
+- 422 Unprocessable Entity: A record cannot be created or updated, usually due to
+    validation errors. If you receive this response code check the response body for
+    error messages. See the example below.
+- 429 Too Many Requests: Too many requests were received in a short period of time.
+    See the page on Rate Limiting for specific details and for tips on how to handle
+    these scenarios.
+- 500 Internal Server Error: Ideally you should never see this, but if you do, you've
+    probably found a bug. Yes it's true, we make bugs too. We have automated monitoring
+    of these errors, and we try to fix them proactively, but if its a problem and
+    its messing up your day, please tell us about it. It is also possible that our
+    servers are down, so be sure to check out our System Status page for information
+    about our servers and their current health.
+- '200 code not received within 30 seconds: Fleetio will consider the endpoint failed
+  to handle the message.'
+- Failed: Endpoint did not return HTTP 200 or took more than 30 seconds to respond
+auth_info:
+  mentioned_objects:
+  - API key
+  - Account Token
+  - API Key
+client:
+  paginator:
+    type: page
+    cursor_path: next_cursor
+    cursor_param: start_cursor
+    page_size_param: per_page
+    default_page_size: 50
+  base_url: https://secure.fleetio.com
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+    flow: undefined
+    token_url: undefined
+    client_id: undefined
+    client_secret: undefined
+    refresh_token: undefined
+  headers:
+    Account-Token: '{{ dlt.secrets[''fleetio_account_token''] }}'
+    Authorization: Token {{ dlt.secrets['fleetio_api_key'] }}
+    Accept: application/json
+    X-Api-Version: valid version string
+    Content-Type: application/json
+source_metadata: null
