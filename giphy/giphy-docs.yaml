@@ -1,0 +1,141 @@
+resources:
+- name: clips_search
+  endpoint:
+    path: /v1/clips/search
+    method: GET
+    params:
+      api_key: '{{ dlt.secrets[''giphy_api_key''] }}'
+      q: ''
+      limit: 25
+      offset: 0
+      country_code: ''
+      lang: ''
+      rating: R
+- name: clips_trending
+  endpoint:
+    path: /v1/clips/trending
+    method: GET
+    params:
+      api_key: '{{ dlt.secrets[''giphy_api_key''] }}'
+      limit: 25
+      offset: 0
+      country_code: ''
+      rating: PG
+- name: content_by_id
+  endpoint:
+    path: /v1/content/:Id
+    method: GET
+    params:
+      api_key: '{{ dlt.secrets[''giphy_api_key''] }}'
+      id: ''
+- name: content_by_ids
+  endpoint:
+    path: /v1/content
+    method: GET
+    params:
+      api_key: '{{ dlt.secrets[''giphy_api_key''] }}'
+      ids: ''
+- name: search_clips
+  endpoint:
+    path: /clips/search
+    method: GET
+    params:
+      q: cats
+      limit: 5
+- name: trending_clips
+  endpoint:
+    path: /clips/trending
+    method: GET
+    params:
+      limit: 10
+- name: clips_search
+  endpoint:
+    path: /clips/search
+    method: GET
+    data_selector: data
+    params:
+      q: '{{ required }}'
+      limit: 25
+      offset: 0
+      country_code: '{{ auto detected }}'
+      lang: '{{ auto detected }}'
+      rating: R
+- name: clips_trending
+  endpoint:
+    path: /clips/trending
+    method: GET
+    data_selector: data
+    params:
+      limit: 25
+      offset: 0
+      country_code: '{{ auto detected }}'
+      rating: PG
+- name: content_by_id
+  endpoint:
+    path: /content/:Id
+    method: GET
+    data_selector: data
+    params:
+      id: '{{ required }}'
+- name: content_by_ids
+  endpoint:
+    path: /content
+    method: GET
+    data_selector: data
+    params:
+      ids: '{{ required }}'
+- name: search_clips
+  endpoint:
+    path: /clips/search
+    method: GET
+    params:
+      q: cats
+      limit: 5
+- name: trending_clips
+  endpoint:
+    path: /clips/trending
+    method: GET
+    params:
+      limit: 10
+- name: trending_gifs
+  endpoint:
+    path: /trending
+    method: GET
+    data_selector: data
+    params:
+      limit: 10
+      offset: '{{ offset }}'
+- name: gif_grid
+  endpoint:
+    path: /fetchGifs
+    method: GET
+    data_selector: data
+    params:
+      limit: 10
+      offset: '{{ offset }}'
+- name: text
+  endpoint:
+    path: /text
+    method: GET
+notes:
+- Pagination uses offset and limit parameters; defaults are provided for these values.
+- GIPHY serves more than 10 billion GIFs per day
+- Offers extensive rendition options for different platforms and devices
+errors: []
+auth_info:
+  mentioned_objects:
+  - api_key
+client:
+  base_url: https://api.giphy.com
+  auth:
+    type: apikey
+    location: query
+    header_name: api_key
+  headers:
+    Accept: application/json
+  paginator:
+    type: offset
+    cursor_param: offset
+    page_size_param: limit
+    default_page_size: 25
+source_metadata: null

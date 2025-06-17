@@ -1,6 +1,6 @@
 # How to load Ecommerce API data in Python using dlt
 
-**Build a Ecommerce API-to-database or-dataframe pipeline in Python using dlt with automatic cursor support.**
+**Build a Ecommerce API-to-database or-dataframe pipeline in Python using dlt with automatic Cursor support.**
 
 Your outcome will be a fully declarative python pipeline based on dlt’s REST API connector
 
@@ -18,7 +18,7 @@ def ecommerce_source(access_token=dlt.secrets.value):
             "base_url": "https://api.ecommerceapi.uk/v1",
             "auth": {
                 "type": "basic",
-                "token": access_token,
+                "token": access_token
             },
         },
         "resources": [
@@ -54,12 +54,12 @@ def get_data() -> None:
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from ecommerce’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- Brand Management: Allows creation and management of brands.
-- Country Information: Retrieve list of countries or specific country details.
-- Payment Methods: Fetch external payment methods.
-- Business Details: Retrieve or modify business details and features.
-- Custom Fields: Manage custom fields for various business aspects.
-- Webhooks: Manage and verify webhooks for event-driven updates.
+- Brand Management: Allows creating and managing brands.
+- Country Information: Retrieve information about countries, specific countries, and manage country details.
+- Payment Methods: Manage and retrieve payment methods available externally.
+- Business Details: Access and update details about a business, including features and their status changes.
+- Custom Fields: Handle custom fields for items, including creating, counting, updating, and deleting.
+- Webhooks: Deal with webhooks for real-time updates, including creation, counting, specific data retrieval, updating, deleting, and verification.
 
 You can combine these endpoints to build pipelines that extract structured content from Ecommerce API workspaces at scale — via REST APIs or webhook ingestion.
 
@@ -107,7 +107,7 @@ The steps are:
     
 3. **Setup credentials** 
     
-    The API uses Basic Authentication with Base64 encoding. The credentials need to be passed in the header under the key 'Authorization' with the prefix 'Bearer'.
+    The API uses Basic Authentication. Credentials must be encoded in Base64 and included in the Authorization header as a Bearer token.
     
     To get appropriate API keys, please visit the original source at https://api.shopwired.co.uk.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
@@ -145,7 +145,7 @@ The steps are:
 
 ## Running into errors?
 
-Ensure proper Base64 encoding of your credentials for authentication. Be mindful of the cursor-based pagination method, especially the 'next' field in the response for navigating through lists.
+The API uses cursor-based pagination, so the 'next' field in the response must be used to fetch the next page of results. Always ensure that the Base64 encoding of your credentials is correct to avoid 401 Unauthorized errors.
 
 ### Extra resources:
 
