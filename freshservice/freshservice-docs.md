@@ -17,14 +17,14 @@ def freshservice_source(access_token=dlt.secrets.value):
         "client": {
             "base_url": "https://your-instance.api-name.com",
             "auth": {
-               "type": "bearer",
-               "token": access_token,
-            },
+    "type": "bearer",
+    "token": access_token,
+},
         },
         "resources": [
             "/services/data/vXX.X/sobjects/CampaignMember",
-           "/api/v2/tickets",
-           "/api/v2/relationships/bulk-create"
+"/api/v2/tickets",
+"/api/v2/purchase_orders/[purchase_order_id]"
         ],
     }
 
@@ -54,7 +54,9 @@ def get_data() -> None:
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from freshservice’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-Freshservice API offers a variety of endpoint categories including Campaign Member Management, Contact Management, Rate Limit Information, Ticket Handling, Relationship Management, Purchase Order Processing, Asset Type Handling, Application Management, and License Management. These categories allow for operations like retrieving, creating, updating, and deleting resources, and also managing bulk operations and specific asset or relationship views.
+- Endpoint Category 1: Campaign and Contacts Management - Manage campaign members and contacts, including retrieval and incremental updates based on 'updated_at'.
+- Endpoint Category 2: Tickets and Relationships - Handle ticket creation, view, and bulk operations on relationships between assets or tickets.
+- Endpoint Category 3: Asset and Purchase Order Management - Operations on asset types, purchase orders including updates and viewing specific records.
 
 You can combine these endpoints to build pipelines that extract structured content from Freshservice workspaces at scale — via REST APIs or webhook ingestion.
 
@@ -66,10 +68,10 @@ The steps are:
     
     Install dlt with duckdb support:
     ```python
-    pip install dlt[duckdb]
+    pip install dlt
     ```
 
-    In a new directory, initialize a dlt pipeline with Freshservice support.
+    Initialize a dlt pipeline with Freshservice support.
     ```
     dlt init dlthub:freshservice duckdb
     ```
@@ -86,7 +88,7 @@ The steps are:
     ```
     Please generate REST API Source for Freshservice API as specified in @freshservice-docs.yaml 
     Start with 2 endpoints that look the most important and skip incremental loading for now. 
-    Place the code in place it freshservice_pipeline.py and name the pipeline freshservice_pipeline. 
+    Place the code in freshservice_pipeline.py and name the pipeline freshservice_pipeline. 
     If the file exists use it as a starting point. 
     Do not add or modify any other files. 
     Use @dlt rest api as tutorial. 
@@ -102,7 +104,7 @@ The steps are:
     
 3. **Setup credentials** 
     
-    The Freshservice API uses OAuth2 with a refresh token flow. It requires setting up a connected app within the API platform. Authentication is done via a bearer token passed in the Authorization header.
+    Uses OAuth2 with a refresh token flow for authentication. This requires setting up a connected app within the Freshservice platform to obtain client_id, client_secret, and refresh_token.
 
     In cursor, you would setup credentials in code as shown below:
     
@@ -149,7 +151,7 @@ The steps are:
 
 ## Running into errors?
 
-Users must be aware of the specific privileges required to access certain endpoints. The API includes different behaviors for Freshservice and Freshservice for MSPs. Some endpoints require multipart/form-data content type. Also, certain operations like deleting assets or changing statuses might have irreversible effects. Updated records might take a few minutes to reflect due to indexing delays. The API's behavior may also vary based on the type of ID provided in requests.
+Requires careful management of OAuth tokens and understanding of privileges for access. Deprecation of certain formats and specific API behaviors related to assets and tickets. Also, multipart/form-data content type is required for certain requests.
 
 ### Extra resources:
 

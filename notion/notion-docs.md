@@ -17,14 +17,14 @@ def notion_source(access_token=dlt.secrets.value):
         "client": {
             "base_url": "https://api.notion.com/v1",
             "auth": {
-               "type": "bearer",
-               "token": access_token
-            },
+    "type": "bearer",
+    "token": access_token,
+},
         },
         "resources": [
-           "/v1/pages/{page_id}",
-           "/v1/blocks/{block_id}",
-           "/v1/databases/{database_id}"
+            "/v1/pages/{page_id}",
+"/v1/blocks/{block_id}",
+"/v1/databases/{database_id}"
         ],
     }
 
@@ -54,7 +54,11 @@ def get_data() -> None:
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from notion’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-The API provides various endpoints grouped into categories such as Pages, Blocks, Databases, and Comments. These allow CRUD operations on pages, blocks, and databases, and also manage comments and file uploads.
+- Endpoint Category 1: Pages - Manage and retrieve information about pages.
+- Endpoint Category 2: Blocks - Retrieve and modify content blocks within pages.
+- Endpoint Category 3: Databases - Handle database configurations and query database content.
+- Endpoint Category 4: Comments - Create and retrieve comments on pages or blocks.
+- Endpoint Category 5: File Uploads - Manage the file upload process and retrieve file statuses.
 
 You can combine these endpoints to build pipelines that extract structured content from Notion workspaces at scale — via REST APIs or webhook ingestion.
 
@@ -66,10 +70,10 @@ The steps are:
     
     Install dlt with duckdb support:
     ```python
-    pip install dlt[duckdb]
+    pip install dlt
     ```
 
-    In a new directory, initialize a dlt pipeline with Notion support.
+    Initialize a dlt pipeline with Notion support.
     ```
     dlt init dlthub:notion duckdb
     ```
@@ -86,7 +90,7 @@ The steps are:
     ```
     Please generate REST API Source for Notion API as specified in @notion-docs.yaml 
     Start with 2 endpoints that look the most important and skip incremental loading for now. 
-    Place the code in place it notion_pipeline.py and name the pipeline notion_pipeline. 
+    Place the code in notion_pipeline.py and name the pipeline notion_pipeline. 
     If the file exists use it as a starting point. 
     Do not add or modify any other files. 
     Use @dlt rest api as tutorial. 
@@ -102,7 +106,7 @@ The steps are:
     
 3. **Setup credentials** 
     
-    Authentication is handled via bearer token, which must be included in the header of each request. OAuth2 is used for token management.
+    Authentication is done through OAuth2 using bearer token. The token is placed in the header for secure transmission and is critical for accessing and manipulating resources.
 
     In cursor, you would setup credentials in code as shown below:
     
@@ -149,7 +153,7 @@ The steps are:
 
 ## Running into errors?
 
-Users must manage token security carefully. Unsupported block types are marked as 'unsupported', and response times can be affected by third-party services. API version updates may introduce breaking changes, and integration capabilities limit API access and actions. Rate limits are enforced, and careful handling of pagination and error codes is necessary.
+Rate limits apply, and managing them is crucial to avoid service interruptions. Not all block types are supported, which may affect content management. OAuth scopes must be correctly configured for proper API functionality.
 
 ### Extra resources:
 

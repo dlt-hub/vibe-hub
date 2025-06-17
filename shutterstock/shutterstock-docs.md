@@ -17,14 +17,14 @@ def shutterstock_source(access_token=dlt.secrets.value):
         "client": {
             "base_url": "https://api-reference.shutterstock.com",
             "auth": {
-               "type": "bearer",
-               "token": access_token,
-            },
+    "type": "bearer",
+    "token": access_token,
+},
         },
         "resources": [
             "/v2/user/subscriptions",
-           "/v2/images/licenses",
-           "/v2/images/search"
+"/v2/images/licenses",
+"/v2/images/search"
         ],
     }
 
@@ -54,7 +54,11 @@ def get_data() -> None:
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from shutterstock’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-The API provides categories such as User Subscriptions, Image Licenses, Image Search, Editorial Content, and Editorial Licenses. These categories allow for retrieving subscription details, licensing images, searching for images based on specific queries, exploring editorial content, and managing licenses for editorial images.
+- Endpoint Category 1: User Subscriptions
+- Endpoint Category 2: Image Licenses
+- Endpoint Category 3: Image Search
+- Endpoint Category 4: Editorial Content
+- Endpoint Category 5: Editorial Livefeeds
 
 You can combine these endpoints to build pipelines that extract structured content from Shutterstock workspaces at scale — via REST APIs or webhook ingestion.
 
@@ -66,10 +70,10 @@ The steps are:
     
     Install dlt with duckdb support:
     ```python
-    pip install dlt[duckdb]
+    pip install dlt
     ```
 
-    In a new directory, initialize a dlt pipeline with Shutterstock support.
+    Initialize a dlt pipeline with Shutterstock support.
     ```
     dlt init dlthub:shutterstock duckdb
     ```
@@ -86,7 +90,7 @@ The steps are:
     ```
     Please generate REST API Source for Shutterstock API as specified in @shutterstock-docs.yaml 
     Start with 2 endpoints that look the most important and skip incremental loading for now. 
-    Place the code in place it shutterstock_pipeline.py and name the pipeline shutterstock_pipeline. 
+    Place the code in shutterstock_pipeline.py and name the pipeline shutterstock_pipeline. 
     If the file exists use it as a starting point. 
     Do not add or modify any other files. 
     Use @dlt rest api as tutorial. 
@@ -102,7 +106,7 @@ The steps are:
     
 3. **Setup credentials** 
     
-    Authentication is required for all endpoints using OAuth2 with different scopes such as 'licenses.view', 'collections.view', and 'purchases.view'. Both HTTP Basic and OAuth2 authentication methods are supported, with OAuth2 being necessary for most endpoints.
+    Authentication is required for all endpoints, supporting both HTTP Basic and OAuth authentication. OAuth 2.0 is typically required, with specific scopes such as 'licenses.view' or 'collections.edit' being necessary for certain actions.
 
     In cursor, you would setup credentials in code as shown below:
     
@@ -149,7 +153,7 @@ The steps are:
 
 ## Running into errors?
 
-The API has strict authentication requirements with OAuth tokens often requiring specific scopes. Tokens are displayed only once at generation and their validity is tied to the user's account status. Ensure correct encoding for path parameters and handle pagination carefully using cursor-based methods. Error handling is critical as multiple status codes need to be managed.
+Token visibility is limited; it is shown only once during generation and must be copied immediately. Also, tokens are tied to the user account's password or email status, affecting their validity. Certain endpoints are deprecated, and specific OAuth scopes are required for different endpoints.
 
 ### Extra resources:
 
