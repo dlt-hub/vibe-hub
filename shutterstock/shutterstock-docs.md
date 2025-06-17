@@ -17,15 +17,15 @@ def shutterstock_source(access_token=dlt.secrets.value):
         "client": {
             "base_url": "https://api-reference.shutterstock.com",
             "auth": {
-    "type": "bearer",
-    "token": access_token,
-},
+                "type": "bearer",
+                "token": access_token,
+            },
         },
         "resources": [
             "/v2/user/subscriptions",
-"/v2/images/licenses",
-"/v2/images/search"
-        ],
+            "/v2/images/licenses",
+            "/v2/images/search"
+            ],
     }
 
     yield from rest_api_resources(config)
