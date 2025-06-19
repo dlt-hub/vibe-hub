@@ -1,0 +1,291 @@
+resources:
+- name: bookings
+  endpoint:
+    path: /bookings
+    method: POST
+- name: booking_details
+  endpoint:
+    path: /bookings/{id}
+    method: GET
+- name: booking_amendments
+  endpoint:
+    path: /booking_amendments
+    method: POST
+- name: booking_line_items
+  endpoint:
+    path: /booking_line_items
+    method: POST
+- name: specific_booking_line_item
+  endpoint:
+    path: /booking_line_items/{id}
+    method: GET
+- name: carbon_calculation
+  endpoint:
+    path: /carbon_calculation
+    method: POST
+    data_selector: data.co2e_emissions
+- name: commercial_invoices
+  endpoint:
+    path: /commercial_invoices
+    method: GET
+    data_selector: data
+    params:
+      page: 1
+- name: commercial_invoice
+  endpoint:
+    path: /commercial_invoices/{id}
+    method: GET
+    data_selector: data
+- name: create_commercial_invoice
+  endpoint:
+    path: /commercial_invoices
+    method: POST
+- name: update_commercial_invoice
+  endpoint:
+    path: /commercial_invoices
+    method: PATCH
+- name: documents
+  endpoint:
+    path: /documents
+    method: GET
+- name: create_document
+  endpoint:
+    path: /documents
+    method: POST
+- name: document_details
+  endpoint:
+    path: /documents/{id}
+    method: GET
+- name: document_download
+  endpoint:
+    path: /documents/{id}/download
+    method: GET
+- name: products
+  endpoint:
+    path: /products
+    method: GET
+- name: product
+  endpoint:
+    path: /products
+    method: POST
+- name: product
+  endpoint:
+    path: /products/;id
+    method: PATCH
+- name: purchase_orders
+  endpoint:
+    path: /purchase_orders
+    method: GET
+- name: specific_purchase_order
+  endpoint:
+    path: /purchase_orders/id
+    method: GET
+- name: purchase_order_line_items
+  endpoint:
+    path: /purchase_order_line_items
+    method: GET
+- name: specific_purchase_order_line_item
+  endpoint:
+    path: /purchase_order_line_items/id
+    method: GET
+- name: create_purchase_order
+  endpoint:
+    path: /purchase_orders
+    method: POST
+    params:
+      name: '{{ purchase_order_number }}'
+      transportation_mode: '{{ mode_of_transport }}'
+      incoterm: '{{ trade_terms }}'
+- name: shipments
+  endpoint:
+    path: /shipments
+    method: GET
+    data_selector: data
+    params:
+      sort: id
+      direction: desc
+- name: shipment
+  endpoint:
+    path: /shipments/id
+    method: GET
+    data_selector: data
+- name: update_shipment
+  endpoint:
+    path: /shipments/id
+    method: PATCH
+    data_selector: data
+- name: oauth_token
+  endpoint:
+    path: /oauth/token
+    method: POST
+    params:
+      client_id: '{{ client_id }}'
+      client_secret: '{{ client_secret }}'
+      audience: https://api.flexport.com
+      grant_type: client_credentials
+- name: bookings
+  endpoint:
+    path: /bookings
+    method: POST
+- name: bookings_list
+  endpoint:
+    path: /bookings
+    method: GET
+- name: carbon_calculation
+  endpoint:
+    path: /carbon_calculation
+    method: POST
+- name: commercial_invoices
+  endpoint:
+    path: /commercial_invoices
+    method: POST
+- name: retrieve_commercial_invoices
+  endpoint:
+    path: /commercial_invoices
+    method: GET
+- name: documents
+  endpoint:
+    path: /documents
+    method: POST
+- name: retrieve_documents
+  endpoint:
+    path: /documents
+    method: GET
+- name: freight_invoices
+  endpoint:
+    path: /freight_invoices
+    method: GET
+- name: products
+  endpoint:
+    path: /products
+    method: POST
+- name: retrieve_products
+  endpoint:
+    path: /products
+    method: GET
+- name: update_products
+  endpoint:
+    path: /products
+    method: PUT
+- name: delete_products
+  endpoint:
+    path: /products
+    method: DELETE
+- name: purchase_orders
+  endpoint:
+    path: /purchase_orders
+    method: POST
+- name: purchase_orders_list
+  endpoint:
+    path: /purchase_orders
+    method: GET
+- name: shipments
+  endpoint:
+    path: /shipments
+    method: GET
+- name: bookings
+  endpoint:
+    method: GET
+- name: carbon_calculation
+  endpoint:
+    method: GET
+- name: commercial_invoices
+  endpoint:
+    method: GET
+- name: documents
+  endpoint:
+    method: GET
+- name: freight_invoices
+  endpoint:
+    method: GET
+- name: products
+  endpoint:
+    method: GET
+- name: purchase_orders
+  endpoint:
+    method: GET
+- name: shipments
+  endpoint:
+    method: GET
+notes: []
+errors:
+- code: invalid_param
+  message: shipper_entity_ref does not exist in your network
+- bad_request: Validation Error; `country_code` is required and must be in ISO3166-1
+    alpha-2 format for destination_address.
+- BadRequestError: Ensure that `country_code` is provided in the correct format and
+    check required fields such as `weight` or `teus` and `distance` or location details.
+- Too many requests per hour: You’ve exceeded the hourly request limit of 1000 requests
+    per hour. Try throttling the rate of your requests.
+- invalid_pagination: 'Invalid Sort Direction. allowed values: desc, asc'
+- status: 422
+  message: Unable to decode document. Make sure document has a base64 string encoding.
+- status: 400
+  message: 'Invalid Sort Direction. allowed values: desc, asc'
+- status: 404
+  message: Invalid `document_id` on get, invalid `shipment_id` on POST.
+- status: 400
+  message: Invalid Sort Direction. allowed values; desc, asc
+- code: SKU Product with SKU XXXX already exists
+  message: Please update SKU field or search for the existing SKU
+- message: Missing property XXX
+- message: Could not find HS Code XXX.XX.XX.XX for CA
+- message: invalid HS code data provided
+- message: invalid regions provided; XX
+- message: data provided for the following regions multiple times; XX
+- code: 400
+  message: Invalid Sort Direction. allowed values; desc, asc
+- code: 422
+  message: Purchase order xxxxx may not be cancelled since it has an active booking
+- code: 422
+  message: Cannot remove line items that have been booked
+- code: 422
+  message: Cannot update a line item to request fewer units than have already been
+    booked
+- code: 422
+  message: Company does not exist for reference ...
+- code: 422
+  message: Purchase Order xxxxx has multiple line items with same item key
+- code: 422
+  message: '...location_ref requires ...'
+- code: 422
+  message: '...Must arrive date ...'
+- code: 422
+  message: '...not a valid Purchase Order Status ...'
+- code: 422
+  message: '...product_name cannot be empty for a new product...'
+- code: 422
+  message: '...product_sku must be specified...'
+- code: 422
+  message: Unknown unit of measure
+- code: 422
+  message: '...invalid transportation mode...'
+- code: 422
+  message: '...Invalid incoterm...'
+- code: 422
+  message: You must specify at least one line item under po_line_items
+- code: 422
+  message: '...can not change the seller role...'
+- code: 503
+  message: Error message received from Http Server, Code 503; Service Unavailable
+- code: 504
+  message: Error message received from Http Server, Code 504; Gateway Time-out
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.flexport.com
+  headers:
+    Flexport-Version: 3
+    Content-Type: application/json
+    Accept: application/json
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  paginator:
+    type: page
+    page_size_param: per
+    default_page_size: 20
+    cursor_path: self
+    cursor_param: page
+source_metadata: null
