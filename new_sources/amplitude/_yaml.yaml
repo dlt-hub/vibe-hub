@@ -1,0 +1,51 @@
+# Source Metadata
+source_name: amplitude
+version: 1.1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.amplitude.com
+  auth:
+    type: apikey
+    location: header
+    header_name: x-api-key
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: events
+    endpoint:
+      path: /events
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "SERVER_UPLOAD_TIME"
+      }
+
+  - name: merges
+    endpoint:
+      path: /merge
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "MERGE_EVENT_TIME"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - APIKey
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses API key for authentication
+  - Rate limits may apply depending on the plan
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key validity
+  - 429 Too Many Requests: Throttle requests or increase limits
