@@ -1,0 +1,63 @@
+# Source Metadata
+source_name: amazon-ads
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+  - Bulk 2.0
+  - Metadata API
+
+# Client / Connection Config
+client:
+  base_url: https://advertising.amazon.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.amazon.com/auth/o2/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: campaigns
+    endpoint:
+      path: /v2/campaigns
+      method: GET
+      data_selector: campaigns
+      params: {}
+
+  - name: ad_groups
+    endpoint:
+      path: /v2/adGroups
+      method: GET
+      data_selector: adGroups
+      params: {}
+
+  - name: keywords
+    endpoint:
+      path: /v2/keywords
+      method: GET
+      data_selector: keywords
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires Amazon Advertising API account and proper permissions
+  - Rate limits apply to requests, so consider implementing retries
+
+# Troubleshooting & Error Patterns
+errors:
+  - 400 Bad Request: Check request parameters and format
+  - 401 Unauthorized: Verify OAuth token and scopes
+  - 429 Too Many Requests: Implement exponential backoff strategy for retries

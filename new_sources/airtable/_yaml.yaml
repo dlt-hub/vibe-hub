@@ -1,0 +1,48 @@
+# Source Metadata
+source_name: airtable
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.airtable.com/v0/
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: bases
+    endpoint:
+      path: meta/bases
+      method: GET
+      data_selector: bases
+
+  - name: records
+    endpoint:
+      path: {base_id}/{table_id}
+      method: GET
+      data_selector: records
+      params: {
+                "pageSize": 100
+              }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - AirtableClient
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires Airtable API token for authentication
+  - If table_mapping is not provided, the tap will use the table names from Airtable as target table names
+
+# Troubleshooting & Error Patterns
+errors:
+  - 429: Too Many Requests - Throttle API calls or reduce frequency
+  - 404: Base ids missing - Check that base ids are correct and exist in your Airtable account

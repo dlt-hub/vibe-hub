@@ -1,0 +1,39 @@
+# Source Metadata
+source_name: azure-blob-storage
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://<your-storage-account-name>.blob.core.windows.net
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.microsoftonline.com/<tenant_id>/oauth2/v2.0/token
+    client_id: "{{ dlt.secrets['azure_client_id'] }}"
+    client_secret: "{{ dlt.secrets['azure_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['azure_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: blob
+    endpoint:
+      path: /<container-name>/<blob-name>
+      method: GET
+      data_selector: properties
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires Azure Active Directory (AAD) authentication
+  - Blob names are case-sensitive
+
+# Troubleshooting & Error Patterns
+errors:
+  - 403 Forbidden: Check permissions on the storage account or container
+  - 404 Not Found: Verify the container and blob names
