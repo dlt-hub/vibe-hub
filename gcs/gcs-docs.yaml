@@ -1,0 +1,44 @@
+# Source Metadata
+source_name: Google Cloud Storage (GCS)
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://storage.googleapis.com
+  auth:
+    type: service_account
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: files
+    endpoint:
+      path: /{bucket_name}/**  # pattern to match all files in the bucket
+      method: GET
+      data_selector: files
+      params: {
+                "incremental": "updated_at"
+              }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - ServiceAccount
+    - IAMPermissions
+    - Bucket
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses Service Account for authentication
+  - Files must be accessible based on permissions granted to the service account
+
+# Troubleshooting & Error Patterns
+errors:
+  - 403 Forbidden: Check IAM permissions for the service account
+  - 404 Not Found: Verify bucket name and file paths are correct

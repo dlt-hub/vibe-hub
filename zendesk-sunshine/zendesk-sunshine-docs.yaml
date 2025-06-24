@@ -1,0 +1,96 @@
+# Source Metadata
+source_name: zendesk_sunshine
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.zendesk.com/api/v2
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://your-instance.zendesk.com/oauth/tokens
+    client_id: "{{ dlt.secrets['zendesk_client_id'] }}"
+    client_secret: "{{ dlt.secrets['zendesk_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['zendesk_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next_page
+    cursor_param: page
+    page_size_param: per_page
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: ObjectTypes
+    endpoint:
+      path: /custom_objects/object_types
+      method: GET
+      data_selector: object_types
+      params: {}
+
+  - name: ObjectRecords
+    endpoint:
+      path: /custom_objects/object_records
+      method: GET
+      data_selector: object_records
+      params: {}
+
+  - name: RelationshipTypes
+    endpoint:
+      path: /custom_objects/relationship_types
+      method: GET
+      data_selector: relationship_types
+      params: {}
+
+  - name: RelationshipRecords
+    endpoint:
+      path: /custom_objects/relationship_records
+      method: GET
+      data_selector: relationship_records
+      params: {}
+
+  - name: ObjectTypePolicies
+    endpoint:
+      path: /custom_objects/object_type_policies
+      method: GET
+      data_selector: object_type_policies
+      params: {}
+
+  - name: Jobs
+    endpoint:
+      path: /custom_objects/jobs
+      method: GET
+      data_selector: jobs
+      params: {}
+
+  - name: Limits
+    endpoint:
+      path: /custom_objects/limits
+      method: GET
+      data_selector: limits
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+    - AuthProvider
+    - NamedCredential
+
+# Known Quirks or Risks, Caveats
+notes:
+  - The Jobs stream is currently not available because it stores data temporarily.
+  - The connector is restricted by normal Zendesk requests limitation.
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - QUERY_TIMEOUT: Break down filters or add selectivity
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

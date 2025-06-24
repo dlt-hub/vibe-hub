@@ -1,0 +1,107 @@
+# Source Metadata
+source_name: amazon_ads
+version: 7.0.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://advertising-api.amazon.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.amazon.com/o/oauth2/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextPage
+    cursor_param: nextToken
+    page_size_param: pageSize
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: sponsored_display_campaigns_report_stream
+    endpoint:
+      path: /v3/sponsoredDisplay/reports/campaigns
+      method: GET
+      data_selector: metrics
+  - name: sponsored_display_adgroups_report_stream
+    endpoint:
+      path: /v3/sponsoredDisplay/reports/adgroups
+      method: GET
+      data_selector: metrics
+  - name: sponsored_display_productads_report_stream
+    endpoint:
+      path: /v3/sponsoredDisplay/reports/productads
+      method: GET
+      data_selector: metrics
+  - name: sponsored_display_targets_report_stream
+    endpoint:
+      path: /v3/sponsoredDisplay/reports/targets
+      method: GET
+      data_selector: metrics
+  - name: sponsored_display_asins_report_stream
+    endpoint:
+      path: /v3/sponsoredDisplay/reports/asins
+      method: GET
+      data_selector: metrics
+  - name: sponsored_products_campaigns_report_stream
+    endpoint:
+      path: /v3/sponsoredProducts/reports/campaigns
+      method: GET
+      data_selector: metrics
+  - name: sponsored_products_adgroups_report_stream
+    endpoint:
+      path: /v3/sponsoredProducts/reports/adgroups
+      method: GET
+      data_selector: metrics
+  - name: sponsored_products_keywords_report_stream
+    endpoint:
+      path: /v3/sponsoredProducts/reports/keywords
+      method: GET
+      data_selector: metrics
+  - name: sponsored_products_targets_report_stream
+    endpoint:
+      path: /v3/sponsoredProducts/reports/targets
+      method: GET
+      data_selector: metrics
+  - name: sponsored_products_productads_report_stream
+    endpoint:
+      path: /v3/sponsoredProducts/reports/productads
+      method: GET
+      data_selector: metrics
+  - name: sponsored_products_asins_keywords_report_stream
+    endpoint:
+      path: /v3/sponsoredProducts/reports/asins/keywords
+      method: GET
+      data_selector: metrics
+  - name: sponsored_products_asins_targets_report_stream
+    endpoint:
+      path: /v3/sponsoredProducts/reports/asins/targets
+      method: GET
+      data_selector: metrics
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Streams have new primary keys based on latest API updates
+  - Metrics have been moved to the root of the schema
+
+# Troubleshooting & Error Patterns
+errors:
+  - 400: Bad Request - Check request parameters
+  - 401: Unauthorized - Verify OAuth token
+  - 429: Too Many Requests - Reduce request frequency

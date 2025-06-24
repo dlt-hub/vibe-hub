@@ -1,0 +1,78 @@
+# Source Metadata
+source_name: reddit
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://www.reddit.com
+  auth:
+    type: oauth2
+    flow: password
+    token_url: https://www.reddit.com/api/v1/access_token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: self
+    endpoint:
+      path: /api/v1/me
+      method: GET
+      data_selector: 
+  - name: search
+    endpoint:
+      path: /search
+      method: GET
+      data_selector: 
+      params: {
+                "query": "airbyte",
+                "limit": 1000,
+                "include_over_18": false
+      }
+  - name: subreddit_search
+    endpoint:
+      path: /subreddits/search
+      method: GET
+      data_selector: 
+  - name: message_inbox
+    endpoint:
+      path: /message/inbox
+      method: GET
+      data_selector: 
+  - name: subreddit_popular
+    endpoint:
+      path: /subreddits/popular
+      method: GET
+      data_selector: 
+  - name: subreddit_explore
+    endpoint:
+      path: /subreddits/explore
+      method: GET
+      data_selector: 
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+    - AppCredentials
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Reddit API has a rate limit of 100 queries per minute per OAuth client ID
+  - A new access token is required if the api_key expires
+  - Maximum of 1000 records can be fetched per single stream call
+
+# Troubleshooting & Error Patterns
+errors:
+  - RATE_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - INVALID_REQUEST: Check API parameters for correctness
+  - 401 Unauthorized: Recheck OAuth credentials or token expiration

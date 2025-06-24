@@ -1,0 +1,69 @@
+# Source Metadata
+source_name: mixpanel
+version: 3.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.mixpanel.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://mixpanel.com/oauth/token
+    client_id: "{{ dlt.secrets['mixpanel_client_id'] }}"
+    client_secret: "{{ dlt.secrets['mixpanel_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['mixpanel_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    page_size_param: pageSize
+    default_page_size: 200
+
+# Resources (per endpoint/object)
+resources:
+  - name: cohorts
+    endpoint:
+      path: /cohorts
+      method: GET
+      data_selector: records
+
+  - name: cohort_members
+    endpoint:
+      path: /cohort_members
+      method: GET
+      data_selector: records
+      params: {
+                "incremental": "created_at"
+      }
+
+  - name: engage
+    endpoint:
+      path: /engage
+      method: GET
+      data_selector: records
+      params: {
+                "incremental": "last_seen"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - The default retrieval range includes records created within the past year if start date not provided.
+  - Requires resetting your data before resuming syncs after upgrades.
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

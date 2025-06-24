@@ -1,0 +1,111 @@
+# Source Metadata
+source_name: mailchimp
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://<dc>.api.mailchimp.com/3.0
+  auth:
+    type: apikey
+  headers:
+    Authorization: "Bearer {{ dlt.secrets['mailchimp_access_token'] }}"
+  paginator:
+    type: cursor
+    cursor_path: next_cursor
+    cursor_param: offset
+    page_size_param: count
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: automations
+    endpoint:
+      path: /automations
+      method: GET
+      data_selector: automations
+      
+  - name: campaigns
+    endpoint:
+      path: /campaigns
+      method: GET
+      data_selector: campaigns
+      
+  - name: email_activity
+    endpoint:
+      path: /reports
+      method: GET
+      data_selector: reports
+      
+  - name: interests
+    endpoint:
+      path: /lists/{list_id}/interests
+      method: GET
+      data_selector: interests
+      
+  - name: interest_categories
+    endpoint:
+      path: /lists/categories
+      method: GET
+      data_selector: categories
+      
+  - name: lists
+    endpoint:
+      path: /lists
+      method: GET
+      data_selector: lists
+      
+  - name: list_members
+    endpoint:
+      path: /lists/{list_id}/members
+      method: GET
+      data_selector: members
+      
+  - name: reports
+    endpoint:
+      path: /reports
+      method: GET
+      data_selector: reports
+      
+  - name: segments
+    endpoint:
+      path: /lists/{list_id}/segments
+      method: GET
+      data_selector: segments
+      
+  - name: segment_members
+    endpoint:
+      path: /lists/{list_id}/segments/{segment_id}/members
+      method: GET
+      data_selector: members
+      
+  - name: tags
+    endpoint:
+      path: /lists/{list_id}/tag-search
+      method: GET
+      data_selector: tags
+      
+  - name: unsubscribes
+    endpoint:
+      path: /lists/{list_id}/members/unsubscribed
+      method: GET
+      data_selector: members
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Key
+    - OAuth Token
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Mailchimp has a maximum of 10 simultaneous connections to its API.
+  - The EmailActivity and Unsubscribes streams do not have an id primary key.
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - INVALID_API_KEY: Check that your API key is valid and active
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

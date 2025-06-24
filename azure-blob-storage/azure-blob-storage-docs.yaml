@@ -1,0 +1,43 @@
+# Source Metadata
+source_name: Azure Blob Storage
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://<your_storage_account>.blob.core.windows.net
+  auth:
+    type: Client Credentials
+    tenant_id: "{{ dlt.secrets['tenant_id'] }}"
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: blob_container
+    endpoint:
+      path: /<container_name>?restype=container&comp=list
+      method: GET
+      data_selector: blobs
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - Storage Blob Data Reader
+    - Service Principal
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires Storage Blob Data Reader role for access
+  - Egress costs may apply for data transfer
+
+# Troubleshooting & Error Patterns
+errors:
+  - 403 Forbidden: Check permissions for the storage account or container
+  - 404 Not Found: Verify the container name and blob path
+  - 401 Unauthorized: Recheck client credentials and tenant ID

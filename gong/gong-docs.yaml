@@ -1,0 +1,66 @@
+# Source Metadata
+source_name: Gong
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://us-14321.app.gong.io
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://us-14321.app.gong.io/oauth/token
+    client_id: "{{ dlt.secrets['gong_client_id'] }}"
+    client_secret: "{{ dlt.secrets['gong_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['gong_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: answered_scorecards
+    endpoint:
+      path: /v2/stats/activity/scorecards
+      method: POST
+      data_selector: data
+
+  - name: calls
+    endpoint:
+      path: /v2/calls
+      method: GET
+      data_selector: data
+
+  - name: extensive_calls
+    endpoint:
+      path: /v2/calls/extensive
+      method: POST
+      data_selector: data
+
+  - name: scorecards
+    endpoint:
+      path: /v2/settings/scorecards
+      method: GET
+      data_selector: data
+
+  - name: users
+    endpoint:
+      path: /v2/users
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - The Gong API limits access to 3 API calls per second and 10,000 API calls per day.
+
+# Troubleshooting & Error Patterns
+errors:
+  - RATE_LIMIT_EXCEEDED: Throttle API calls to stay within limits.

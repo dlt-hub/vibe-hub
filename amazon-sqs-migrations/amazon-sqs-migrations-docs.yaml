@@ -1,0 +1,58 @@
+# Source Metadata
+source_name: amazon_sqs
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://sqs.your-region.amazonaws.com
+  auth:
+    type: apikey
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: receive_message
+    endpoint:
+      path: /ReceiveMessage
+      method: POST
+      data_selector: messages
+      params: {
+                "queue_url": "{{ dlt.secrets['queue_url'] }}",
+                "access_key": "{{ dlt.secrets['access_key'] }}",
+                "secret_key": "{{ dlt.secrets['secret_key'] }}",
+                "region": "{{ dlt.secrets['region'] }}"
+      }
+
+  - name: get_queue_attributes
+    endpoint:
+      path: /GetQueueAttributes
+      method: POST
+      data_selector: attributes
+      params: {
+                "queue_url": "{{ dlt.secrets['queue_url'] }}",
+                "access_key": "{{ dlt.secrets['access_key'] }}",
+                "secret_key": "{{ dlt.secrets['secret_key'] }}",
+                "region": "{{ dlt.secrets['region'] }}"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - QueueUrl
+    - AccessKeyId
+    - SecretAccessKey
+
+# Known Quirks or Risks, Caveats
+notes:
+  - `Delete messages after read` is no longer supported
+  - Ensure proper permissions for access_key and secret_key
+
+# Troubleshooting & Error Patterns
+errors:
+  - AccessDenied: Check permissions for the access key
+  - InvalidParameterValue: Ensure all required parameters are correctly provided
+  - QueueDoesNotExist: Verify that the queue URL is correct

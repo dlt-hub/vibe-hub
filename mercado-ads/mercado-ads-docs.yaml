@@ -1,0 +1,128 @@
+# Source Metadata
+source_name: mercado_ads
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.mercado-ads.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.mercado-ads.com/services/oauth2/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['client_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: brand_advertisers
+    endpoint:
+      path: /brand/advertisers
+      method: GET
+      data_selector: records
+  - name: brand_campaigns
+    endpoint:
+      path: /brand/campaigns
+      method: GET
+      data_selector: records
+  - name: brand_campaigns_metrics
+    endpoint:
+      path: /brand/campaigns/metrics
+      method: GET
+      data_selector: records
+  - name: brand_items
+    endpoint:
+      path: /brand/items
+      method: GET
+      data_selector: records
+  - name: brand_keywords
+    endpoint:
+      path: /brand/keywords
+      method: GET
+      data_selector: records
+  - name: brand_keywords_metrics
+    endpoint:
+      path: /brand/keywords/metrics
+      method: GET
+      data_selector: records
+  - name: display_advertisers
+    endpoint:
+      path: /display/advertisers
+      method: GET
+      data_selector: records
+  - name: display_campaigns
+    endpoint:
+      path: /display/campaigns
+      method: GET
+      data_selector: records
+  - name: display_campaigns_metrics
+    endpoint:
+      path: /display/campaigns/metrics
+      method: GET
+      data_selector: records
+  - name: display_line_items
+    endpoint:
+      path: /display/line-items
+      method: GET
+      data_selector: records
+  - name: display_line_items_metrics
+    endpoint:
+      path: /display/line-items/metrics
+      method: GET
+      data_selector: records
+  - name: display_creatives
+    endpoint:
+      path: /display/creatives
+      method: GET
+      data_selector: records
+  - name: product_advertisers
+    endpoint:
+      path: /product/advertisers
+      method: GET
+      data_selector: records
+  - name: product_campaigns
+    endpoint:
+      path: /product/campaigns
+      method: GET
+      data_selector: records
+  - name: product_campaigns_metrics
+    endpoint:
+      path: /product/campaigns/metrics
+      method: GET
+      data_selector: records
+  - name: product_items
+    endpoint:
+      path: /product/items
+      method: GET
+      data_selector: records
+  - name: product_items_metrics
+    endpoint:
+      path: /product/items/metrics
+      method: GET
+      data_selector: records
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires lookback_days, start_date, and end_date for certain endpoints
+  - Start and end dates have specific restrictions based on ad type
+
+# Troubleshooting & Error Patterns
+errors:
+  - 400: Bad Request - Check input parameters and their limits
+  - 401: Unauthorized - Verify OAuth credentials or token validity
+  - 429: Too Many Requests - Implement exponential backoff for retries

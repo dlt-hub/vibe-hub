@@ -1,0 +1,99 @@
+# Source Metadata
+source_name: opsgenie
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.opsgenie.com
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['opsgenie_api_key'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: alerts
+    endpoint:
+      path: /v2/alerts
+      method: GET
+      data_selector: data
+      params: { }
+
+  - name: alert_logs
+    endpoint:
+      path: /v2/alerts/{alertId}/logs
+      method: GET
+      data_selector: data
+      params: { }
+
+  - name: alert_recipients
+    endpoint:
+      path: /v2/alerts/{alertId}/recipients
+      method: GET
+      data_selector: data
+      params: { }
+
+  - name: services
+    endpoint:
+      path: /v2/services
+      method: GET
+      data_selector: data
+      params: { }
+
+  - name: incidents
+    endpoint:
+      path: /v2/incidents
+      method: GET
+      data_selector: data
+      params: { }
+
+  - name: integrations
+    endpoint:
+      path: /v2/integrations
+      method: GET
+      data_selector: data
+      params: { }
+
+  - name: users
+    endpoint:
+      path: /v2/users
+      method: GET
+      data_selector: data
+      params: { }
+
+  - name: teams
+    endpoint:
+      path: /v2/teams
+      method: GET
+      data_selector: data
+      params: { }
+
+  - name: team_members
+    endpoint:
+      path: /v2/teams/{teamId}/members
+      method: GET
+      data_selector: data
+      params: { }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - ApiKey
+    - Permissions
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires API Key with Read and Configuration Access permissions
+  - Rate limits may apply under heavy usage
+
+# Troubleshooting & Error Patterns
+errors:
+  - 400 Bad Request: Check request parameters and formatting
+  - 401 Unauthorized: Verify API Key and permissions
+  - 429 Too Many Requests: Implement exponential backoff for retries

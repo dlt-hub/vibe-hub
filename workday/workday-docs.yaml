@@ -1,0 +1,98 @@
+# Source Metadata
+source_name: Workday
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-workday-instance.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://your-workday-instance.com/oauth2/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    page_size_param: pageSize
+    default_page_size: 200
+
+# Resources (per endpoint/object)
+resources:
+  - name: jobs
+    endpoint:
+      path: /report/Jobs
+      method: GET
+      data_selector: data
+  - name: job_families
+    endpoint:
+      path: /report/JobFamilies
+      method: GET
+      data_selector: data
+  - name: job_profiles
+    endpoint:
+      path: /report/JobProfiles
+      method: GET
+      data_selector: data
+  - name: people
+    endpoint:
+      path: /report/People
+      method: GET
+      data_selector: data
+  - name: workers
+    endpoint:
+      path: /report/Workers
+      method: GET
+      data_selector: data
+  - name: workers_direct_reports
+    endpoint:
+      path: /report/WorkersDirectReports
+      method: GET
+      data_selector: data
+  - name: worker_history
+    endpoint:
+      path: /report/WorkerHistory
+      method: GET
+      data_selector: data
+  - name: worker_payslips
+    endpoint:
+      path: /report/WorkerPayslips
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "updated_at"
+              }
+  - name: worker_time_off_entries
+    endpoint:
+      path: /report/WorkerTimeOffEntries
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "updated_at"
+              }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+    - NamedCredential
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Incremental syncs are only supported for specific streams: Worker Payslips and Worker Time Off Entries.
+  - Requires Workday tenant and hostname setup.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check OAuth token and permissions.
+  - 403 Forbidden: Ensure user has access to the specified reports.

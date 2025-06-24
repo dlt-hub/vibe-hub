@@ -1,0 +1,177 @@
+# Source Metadata
+source_name: tiktok_marketing
+version: 4.0.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://business-api.tiktok.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://business-api.tiktok.com/oauth2/token
+    client_id: "{{ dlt.secrets['tiktok_client_id'] }}"
+    client_secret: "{{ dlt.secrets['tiktok_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['tiktok_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next_cursor
+    cursor_param: cursor
+    page_size_param: page_size
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: ad_group_audience_reports_by_country_daily
+    endpoint:
+      path: /ad_group_audience_reports_by_country_daily
+      method: GET
+      data_selector: data
+  - name: ad_group_audience_reports_by_platform_daily
+    endpoint:
+      path: /ad_group_audience_reports_by_platform_daily
+      method: GET
+      data_selector: data
+  - name: ad_group_audience_reports_daily
+    endpoint:
+      path: /ad_group_audience_reports_daily
+      method: GET
+      data_selector: data
+  - name: ad_groups
+    endpoint:
+      path: /ad_groups
+      method: GET
+      data_selector: data
+  - name: ad_groups_reports_daily
+    endpoint:
+      path: /ad_groups_reports_daily
+      method: GET
+      data_selector: data
+  - name: ad_groups_reports_hourly
+    endpoint:
+      path: /ad_groups_reports_hourly
+      method: GET
+      data_selector: data
+  - name: ads
+    endpoint:
+      path: /ads
+      method: GET
+      data_selector: data
+  - name: ads_audience_reports_by_country_daily
+    endpoint:
+      path: /ads_audience_reports_by_country_daily
+      method: GET
+      data_selector: data
+  - name: ads_audience_reports_by_platform_daily
+    endpoint:
+      path: /ads_audience_reports_by_platform_daily
+      method: GET
+      data_selector: data
+  - name: ads_audience_reports_by_province_daily
+    endpoint:
+      path: /ads_audience_reports_by_province_daily
+      method: GET
+      data_selector: data
+  - name: ads_audience_reports_daily
+    endpoint:
+      path: /ads_audience_reports_daily
+      method: GET
+      data_selector: data
+  - name: ads_reports_daily
+    endpoint:
+      path: /ads_reports_daily
+      method: GET
+      data_selector: data
+  - name: ads_reports_hourly
+    endpoint:
+      path: /ads_reports_hourly
+      method: GET
+      data_selector: data
+  - name: advertisers_audience_reports_by_country_daily
+    endpoint:
+      path: /advertisers_audience_reports_by_country_daily
+      method: GET
+      data_selector: data
+  - name: advertisers_audience_reports_by_platform_daily
+    endpoint:
+      path: /advertisers_audience_reports_by_platform_daily
+      method: GET
+      data_selector: data
+  - name: advertisers_audience_reports_daily
+    endpoint:
+      path: /advertisers_audience_reports_daily
+      method: GET
+      data_selector: data
+  - name: advertisers_reports_daily
+    endpoint:
+      path: /advertisers_reports_daily
+      method: GET
+      data_selector: data
+  - name: advertisers_reports_hourly
+    endpoint:
+      path: /advertisers_reports_hourly
+      method: GET
+      data_selector: data
+  - name: campaigns
+    endpoint:
+      path: /campaigns
+      method: GET
+      data_selector: data
+  - name: campaigns_audience_reports_by_country_daily
+    endpoint:
+      path: /campaigns_audience_reports_by_country_daily
+      method: GET
+      data_selector: data
+  - name: campaigns_audience_reports_by_platform_daily
+    endpoint:
+      path: /campaigns_audience_reports_by_platform_daily
+      method: GET
+      data_selector: data
+  - name: campaigns_audience_reports_daily
+    endpoint:
+      path: /campaigns_audience_reports_daily
+      method: GET
+      data_selector: data
+  - name: campaigns_reports_daily
+    endpoint:
+      path: /campaigns_reports_daily
+      method: GET
+      data_selector: data
+  - name: campaigns_reports_hourly
+    endpoint:
+      path: /campaigns_reports_hourly
+      method: GET
+      data_selector: data
+  - name: creative_assets_images
+    endpoint:
+      path: /creative_assets_images
+      method: GET
+      data_selector: data
+  - name: creative_assets_videos
+    endpoint:
+      path: /creative_assets_videos
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires setup of connected app in TikTok
+  - Ensure to handle pagination correctly for large datasets
+
+# Troubleshooting & Error Patterns
+errors:
+  - 400 Bad Request: Check request parameters and formats
+  - 401 Unauthorized: Recheck OAuth token validity and scopes
+  - 429 Too Many Requests: Implement exponential backoff for rate limits

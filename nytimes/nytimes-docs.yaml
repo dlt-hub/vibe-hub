@@ -1,0 +1,60 @@
+# Source Metadata
+source_name: new_york_times
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.nytimes.com/svc
+  auth:
+    type: apikey
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: archive
+    endpoint:
+      path: /archive/v1/{year}/{month}.json
+      method: GET
+      data_selector: response.items
+      params: {}
+
+  - name: most_popular_emailed
+    endpoint:
+      path: /mostpopular/v2/emailed/{period}.json
+      method: GET
+      data_selector: results
+      params: {}
+
+  - name: most_popular_shared
+    endpoint:
+      path: /mostpopular/v2/shared/{period}.json
+      method: GET
+      data_selector: results
+      params: {}
+
+  - name: most_popular_viewed
+    endpoint:
+      path: /mostpopular/v2/viewed/{period}.json
+      method: GET
+      data_selector: results
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports full refresh sync
+  - Requires New York Times API Key for access
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Ensure valid API Key
+  - 404 Not Found: Check the endpoint path or parameters
+  - 429 Too Many Requests: Rate limit exceeded, reduce request frequency

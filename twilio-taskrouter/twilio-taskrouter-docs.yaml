@@ -1,0 +1,50 @@
+# Source Metadata
+source_name: Twilio Taskrouter
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.twilio.com
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: workspaces
+    endpoint:
+      path: /2010-04-01/Workspaces.json
+      method: GET
+      data_selector: workspaces
+
+  - name: workers
+    endpoint:
+      path: /2010-04-01/Workspaces/{WorkspaceSid}/Workers.json
+      method: GET
+      data_selector: workers
+      params: {
+                "incremental": "updated_at"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - AccountSID
+    - AuthToken
+    - WorkspaceSID
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses Basic authentication with Account SID and Auth Token
+  - Rate limits apply as per Twilio's documentation
+
+# Troubleshooting & Error Patterns
+errors:
+  - 429: Too Many Requests: Throttle API calls or reduce frequency
+  - 401 Unauthorized: Recheck Account SID or Auth Token

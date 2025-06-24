@@ -1,0 +1,80 @@
+# Source Metadata
+source_name: zoho_crm
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://zohoapis.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://accounts.zoho.com/oauth/v2/token
+    client_id: "{{ dlt.secrets['zoho_client_id'] }}"
+    client_secret: "{{ dlt.secrets['zoho_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['zoho_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next_page
+    cursor_param: page
+    page_size_param: per_page
+    default_page_size: 200
+
+# Resources (per endpoint/object)
+resources:
+  - name: accounts
+    endpoint:
+      path: /crm/v2/Accounts
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: contacts
+    endpoint:
+      path: /crm/v2/Contacts
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: deals
+    endpoint:
+      path: /crm/v2/Deals
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: leads
+    endpoint:
+      path: /crm/v2/Leads
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: tasks
+    endpoint:
+      path: /crm/v2/Tasks
+      method: GET
+      data_selector: data
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Some modules may not be available for sync due to limitations of Zoho CRM Edition or permissions scope.
+  - API calls are associated with credits; consider this when configuring connections.
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

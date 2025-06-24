@@ -1,0 +1,76 @@
+# Source Metadata
+source_name: mailtrap
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://mailtrap.io/api/v1
+  auth:
+    type: apikey
+    api_token: "{{ dlt.secrets['api_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: accounts
+    endpoint:
+      path: /accounts
+      method: GET
+      data_selector: accounts
+
+  - name: billing_usage
+    endpoint:
+      path: /billing_usage
+      method: GET
+      data_selector: billing_usage
+
+  - name: resources
+    endpoint:
+      path: /resources
+      method: GET
+      data_selector: resources
+
+  - name: sending_domains
+    endpoint:
+      path: /sending_domains
+      method: GET
+      data_selector: sending_domains
+
+  - name: inboxes
+    endpoint:
+      path: /inboxes
+      method: GET
+      data_selector: inboxes
+
+  - name: messages
+    endpoint:
+      path: /messages
+      method: GET
+      data_selector: messages
+
+  - name: projects
+    endpoint:
+      path: /projects
+      method: GET
+      data_selector: projects
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - api_token
+
+# Known Quirks or Risks, Caveats
+notes:
+  - No pagination support for any resources
+  - Supports full sync but not incremental loading
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API token validity
+  - 404 Not Found: Verify endpoint path and resource existence

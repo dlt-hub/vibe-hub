@@ -1,0 +1,66 @@
+# Source Metadata
+source_name: TMDb
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+  - Bulk 2.0
+  - Metadata API
+
+# Client / Connection Config
+client:
+  base_url: https://api.themoviedb.org
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.themoviedb.org/3/authentication/token/new
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next_page
+    cursor_param: page
+    page_size_param: page_size
+    default_page_size: 20
+
+# Resources (per endpoint/object)
+resources:
+  - name: search_people
+    endpoint:
+      path: /3/search/person
+      method: GET
+      data_selector: results
+      params: {
+                "query": "search_query"
+      }
+
+  - name: search_tv_shows
+    endpoint:
+      path: /3/search/tv
+      method: GET
+      data_selector: results
+      params: {
+                "query": "search_query"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - The 'poster_path' in search_people schema can be optionally empty.
+  - The 'overview' in search_tv_shows schema contains both strings and spaces.
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - QUERY_TIMEOUT: Break down filters or add selectivity
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

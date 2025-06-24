@@ -1,0 +1,141 @@
+# Source Metadata
+source_name: zoom
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.zoom.us/v2
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://zoom.us/oauth/token
+    client_id: "{{ dlt.secrets['zoom_client_id'] }}"
+    client_secret: "{{ dlt.secrets['zoom_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['zoom_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next_page_token
+    cursor_param: page_token
+    page_size_param: page_size
+    default_page_size: 30
+
+# Resources (per endpoint/object)
+resources:
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: users
+  - name: meetings
+    endpoint:
+      path: /meetings
+      method: GET
+      data_selector: meetings
+  - name: meeting_registrants
+    endpoint:
+      path: /meetings/{meetingId}/registrants
+      method: GET
+      data_selector: registrants
+  - name: meeting_polls
+    endpoint:
+      path: /meetings/{meetingId}/polls
+      method: GET
+      data_selector: polls
+  - name: meeting_poll_results
+    endpoint:
+      path: /meetings/{meetingId}/polls/results
+      method: GET
+      data_selector: poll_results
+  - name: meeting_questions
+    endpoint:
+      path: /meetings/{meetingId}/registrants/questions
+      method: GET
+      data_selector: questions
+  - name: webinars
+    endpoint:
+      path: /webinars
+      method: GET
+      data_selector: webinars
+  - name: webinar_panelists
+    endpoint:
+      path: /webinars/{webinarId}/panelists
+      method: GET
+      data_selector: panelists
+  - name: webinar_registrants
+    endpoint:
+      path: /webinars/{webinarId}/registrants
+      method: GET
+      data_selector: registrants
+  - name: webinar_absentees
+    endpoint:
+      path: /webinars/{webinarId}/absentees
+      method: GET
+      data_selector: absentees
+  - name: webinar_polls
+    endpoint:
+      path: /webinars/{webinarId}/polls
+      method: GET
+      data_selector: polls
+  - name: webinar_poll_results
+    endpoint:
+      path: /webinars/{webinarId}/polls/results
+      method: GET
+      data_selector: poll_results
+  - name: webinar_questions
+    endpoint:
+      path: /webinars/{webinarId}/registrants/questions
+      method: GET
+      data_selector: questions
+  - name: webinar_tracking_sources
+    endpoint:
+      path: /webinars/{webinarId}/tracking_sources
+      method: GET
+      data_selector: tracking_sources
+  - name: webinar_qa_results
+    endpoint:
+      path: /webinars/{webinarId}/qa
+      method: GET
+      data_selector: qa_results
+  - name: report_meetings
+    endpoint:
+      path: /reports/meetings
+      method: GET
+      data_selector: meetings
+  - name: report_meeting_participants
+    endpoint:
+      path: /reports/meetings/{meetingId}/participants
+      method: GET
+      data_selector: participants
+  - name: report_webinars
+    endpoint:
+      path: /reports/webinars
+      method: GET
+      data_selector: webinars
+  - name: report_webinar_participants
+    endpoint:
+      path: /reports/webinars/{webinarId}/participants
+      method: GET
+      data_selector: participants
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth2
+    - App
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Only supports Full Refresh syncs
+  - Requires setup of Server-to-Server OAuth app
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check OAuth token and scopes
+  - 429 Too Many Requests: Implement backoff strategy for rate limits

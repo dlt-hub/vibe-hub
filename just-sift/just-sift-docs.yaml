@@ -1,0 +1,39 @@
+# Source Metadata
+source_name: JustSift
+version: 0.0.22
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.justsift.com
+  auth:
+    type: apikey
+    api_token: "{{ dlt.secrets['api_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: peoples
+    endpoint:
+      path: /api/v1/peoples
+      method: GET
+      data_selector: data
+  - name: fields
+    endpoint:
+      path: /api/v1/fields
+      method: GET
+      data_selector: data
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports full sync but not incremental loading
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API token validity
+  - 403 Forbidden: Verify permissions for the requested resource

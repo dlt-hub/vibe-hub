@@ -1,0 +1,139 @@
+# Source Metadata
+source_name: Shopify
+version: 2.1.4
+authentication_required: true
+api_types_available:
+  - REST
+  - GraphQL
+  - GraphQL BULK
+
+# Client / Connection Config
+client:
+  base_url: https://your-store.myshopify.com/admin/api/2024-04
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://your-store.myshopify.com/admin/oauth/access_token
+    client_id: "{{ dlt.secrets['shopify_client_id'] }}"
+    client_secret: "{{ dlt.secrets['shopify_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['shopify_refresh_token'] }}"
+    location: header
+    header_name: X-Shopify-Access-Token
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextPage
+    cursor_param: page_info
+    page_size_param: limit
+    default_page_size: 250
+
+# Resources (per endpoint/object)
+resources:
+  - name: abandoned_checkouts
+    endpoint:
+      path: /checkouts
+      method: GET
+      data_selector: checkouts
+      params: {}
+
+  - name: articles
+    endpoint:
+      path: /blogs/{blog_id}/articles
+      method: GET
+      data_selector: articles
+      params: {}
+
+  - name: balance_transactions
+    endpoint:
+      path: /admin/api/2024-04/balance_transactions.json
+      method: GET
+      data_selector: balance_transactions
+      params: {}
+
+  - name: blogs
+    endpoint:
+      path: /admin/api/2024-04/blogs.json
+      method: GET
+      data_selector: blogs
+      params: {}
+
+  - name: collects
+    endpoint:
+      path: /admin/api/2024-04/collects.json
+      method: GET
+      data_selector: collects
+      params: {}
+
+  - name: collections
+    endpoint:
+      path: /admin/api/2024-04/custom_collections.json
+      method: GET
+      data_selector: custom_collections
+      params: {}
+
+  - name: customers
+    endpoint:
+      path: /admin/api/2024-04/customers.json
+      method: GET
+      data_selector: customers
+      params: {}
+
+  - name: draft_orders
+    endpoint:
+      path: /admin/api/2024-04/draft_orders.json
+      method: GET
+      data_selector: draft_orders
+      params: {}
+
+  - name: fulfillments
+    endpoint:
+      path: /admin/api/2024-04/fulfillments.json
+      method: GET
+      data_selector: fulfillments
+      params: {}
+
+  - name: orders
+    endpoint:
+      path: /admin/api/2024-04/orders.json
+      method: GET
+      data_selector: orders
+      params: {}
+
+  - name: pages
+    endpoint:
+      path: /admin/api/2024-04/pages.json
+      method: GET
+      data_selector: pages
+      params: {}
+
+  - name: products
+    endpoint:
+      path: /admin/api/2024-04/products.json
+      method: GET
+      data_selector: products
+      params: {}
+
+  - name: transactions
+    endpoint:
+      path: /admin/api/2024-04/transactions.json
+      method: GET
+      data_selector: transactions
+      params: {}
+
+# Auth Info
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - Shop
+
+# Notes
+notes:
+  - Requires OAuth2 setup for access
+  - Rate limits may apply; handle with backoff strategies
+
+# Error Patterns
+errors:
+  - 429 Rate Limit Exceeded: Implement exponential backoff
+  - 401 Unauthorized: Verify OAuth token and scopes
+  - 404 Not Found: Check endpoint paths and parameters

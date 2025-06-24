@@ -1,0 +1,103 @@
+# Source Metadata
+source_name: helpscout
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.helpscout.net/v2
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.helpscout.net/v2/oauth2/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: conversations
+    endpoint:
+      path: /conversations
+      method: GET
+      data_selector: conversations
+
+  - name: conversation_threads
+    endpoint:
+      path: /conversations/{id}/threads
+      method: GET
+      data_selector: threads
+
+  - name: customers
+    endpoint:
+      path: /customers
+      method: GET
+      data_selector: customers
+
+  - name: inboxes
+    endpoint:
+      path: /inboxes
+      method: GET
+      data_selector: inboxes
+
+  - name: inbox_custom_fields
+    endpoint:
+      path: /inbox-custom-fields
+      method: GET
+      data_selector: customFields
+
+  - name: inbox_folders
+    endpoint:
+      path: /inbox-folders
+      method: GET
+      data_selector: folders
+
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: users
+
+  - name: workflows
+    endpoint:
+      path: /workflows
+      method: GET
+      data_selector: workflows
+
+  - name: tags
+    endpoint:
+      path: /tags
+      method: GET
+      data_selector: tags
+
+  - name: teams
+    endpoint:
+      path: /teams
+      method: GET
+      data_selector: teams
+
+  - name: team_members
+    endpoint:
+      path: /team-members
+      method: GET
+      data_selector: teamMembers
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth2
+
+# Known Quirks or Risks, Caveats
+notes:
+  - DefaultPaginator pagination style is used across all resources.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check if the access token is valid and has not expired.

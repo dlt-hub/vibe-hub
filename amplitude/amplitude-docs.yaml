@@ -1,0 +1,81 @@
+# Source Metadata
+source_name: amplitude
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.amplitude.com
+  auth:
+    type: apikey
+    client_id: "{{ dlt.secrets['api_key'] }}"
+    client_secret: "{{ dlt.secrets['secret_key'] }}"
+    location: query
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: active_users_counts
+    endpoint:
+      path: /active-users
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+  - name: annotations
+    endpoint:
+      path: /annotations
+      method: GET
+      data_selector: data
+
+  - name: average_session_length
+    endpoint:
+      path: /average-session-length
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+  - name: cohorts
+    endpoint:
+      path: /cohorts
+      method: GET
+      data_selector: data
+
+  - name: events
+    endpoint:
+      path: /export
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "start_time"
+      }
+
+  - name: events_list
+    endpoint:
+      path: /events
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Key
+    - Secret Key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires API Key and Secret Key for authentication
+  - Incremental sync is supported for specific streams only
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API Key and Secret Key
+  - 403 Forbidden: Verify permissions for the requested resource
+  - 429 Too Many Requests: Implement rate limiting in requests

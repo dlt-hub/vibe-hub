@@ -1,0 +1,192 @@
+# Source Metadata
+source_name: xero
+version: 2.1.4
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.xero.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.xero.com/oauth2/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: page
+    page_size_param: pageSize
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: accounts
+    endpoint:
+      path: /api.xro/2.1/Accounts
+      method: GET
+      data_selector: Accounts
+      params: {}
+
+  - name: bank_transactions
+    endpoint:
+      path: /api.xro/2.1/BankTransactions
+      method: GET
+      data_selector: BankTransactions
+      params: {}
+
+  - name: bank_transfers
+    endpoint:
+      path: /api.xro/2.1/BankTransfers
+      method: GET
+      data_selector: BankTransfers
+      params: {}
+
+  - name: branding_themes
+    endpoint:
+      path: /api.xro/2.1/BrandingThemes
+      method: GET
+      data_selector: BrandingThemes
+      params: {}
+
+  - name: contact_groups
+    endpoint:
+      path: /api.xro/2.1/ContactGroups
+      method: GET
+      data_selector: ContactGroups
+      params: {}
+
+  - name: contacts
+    endpoint:
+      path: /api.xro/2.1/Contacts
+      method: GET
+      data_selector: Contacts
+      params: {}
+
+  - name: credit_notes
+    endpoint:
+      path: /api.xro/2.1/CreditNotes
+      method: GET
+      data_selector: CreditNotes
+      params: {}
+
+  - name: currencies
+    endpoint:
+      path: /api.xro/2.1/Currencies
+      method: GET
+      data_selector: Currencies
+      params: {}
+
+  - name: employees
+    endpoint:
+      path: /api.xro/2.1/Employees
+      method: GET
+      data_selector: Employees
+      params: {}
+
+  - name: invoices
+    endpoint:
+      path: /api.xro/2.1/Invoices
+      method: GET
+      data_selector: Invoices
+      params: {}
+
+  - name: items
+    endpoint:
+      path: /api.xro/2.1/Items
+      method: GET
+      data_selector: Items
+      params: {}
+
+  - name: manual_journals
+    endpoint:
+      path: /api.xro/2.1/ManualJournals
+      method: GET
+      data_selector: ManualJournals
+      params: {}
+
+  - name: organisation
+    endpoint:
+      path: /api.xro/2.1/Organisation
+      method: GET
+      data_selector: Organisation
+      params: {}
+
+  - name: overpayments
+    endpoint:
+      path: /api.xro/2.1/Overpayments
+      method: GET
+      data_selector: Overpayments
+      params: {}
+
+  - name: payments
+    endpoint:
+      path: /api.xro/2.1/Payments
+      method: GET
+      data_selector: Payments
+      params: {}
+
+  - name: prepayments
+    endpoint:
+      path: /api.xro/2.1/Prepayments
+      method: GET
+      data_selector: Prepayments
+      params: {}
+
+  - name: purchase_orders
+    endpoint:
+      path: /api.xro/2.1/PurchaseOrders
+      method: GET
+      data_selector: PurchaseOrders
+      params: {}
+
+  - name: repeating_invoices
+    endpoint:
+      path: /api.xro/2.1/RepeatingInvoices
+      method: GET
+      data_selector: RepeatingInvoices
+      params: {}
+
+  - name: tax_rates
+    endpoint:
+      path: /api.xro/2.1/TaxRates
+      method: GET
+      data_selector: TaxRates
+      params: {}
+
+  - name: tracking_categories
+    endpoint:
+      path: /api.xro/2.1/TrackingCategories
+      method: GET
+      data_selector: TrackingCategories
+      params: {}
+
+  - name: users
+    endpoint:
+      path: /api.xro/2.1/Users
+      method: GET
+      data_selector: Users
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - ClientID
+    - ClientSecret
+    - TenantID
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires setup of a connected app in Xero
+  - Handles .NET JSON date format automatically
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Attempt to refresh access token
+  - 403 Forbidden: Log error and skip affected record
+  - 429 Rate Limit Exceeded: Respect Retry-After header

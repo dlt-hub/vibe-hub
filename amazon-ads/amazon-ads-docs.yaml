@@ -1,0 +1,220 @@
+# Source Metadata
+source_name: Amazon Ads
+version: 5.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://advertising-api.amazon.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.amazon.com/auth/o2/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: page
+    page_size_param: pageSize
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: profiles
+    endpoint:
+      path: /v2/profiles
+      method: GET
+      data_selector: profiles
+      params: {}
+
+  - name: portfolios
+    endpoint:
+      path: /v2/portfolios
+      method: GET
+      data_selector: portfolios
+      params: {}
+
+  - name: sponsored_brands_campaigns
+    endpoint:
+      path: /v3/sponsoredBrands/campaigns
+      method: GET
+      data_selector: campaigns
+      params: {}
+
+  - name: sponsored_brands_ad_groups
+    endpoint:
+      path: /v3/sponsoredBrands/adGroups
+      method: GET
+      data_selector: adGroups
+      params: {}
+
+  - name: sponsored_brands_keywords
+    endpoint:
+      path: /v3/sponsoredBrands/keywords
+      method: GET
+      data_selector: keywords
+      params: {}
+
+  - name: sponsored_display_campaigns
+    endpoint:
+      path: /v3/sponsoredDisplay/campaigns
+      method: GET
+      data_selector: campaigns
+      params: {}
+
+  - name: sponsored_display_ad_groups
+    endpoint:
+      path: /v3/sponsoredDisplay/adGroups
+      method: GET
+      data_selector: adGroups
+      params: {}
+
+  - name: sponsored_display_product_ads
+    endpoint:
+      path: /v3/sponsoredDisplay/productAds
+      method: GET
+      data_selector: productAds
+      params: {}
+
+  - name: sponsored_display_targetings
+    endpoint:
+      path: /v3/sponsoredDisplay/targetings
+      method: GET
+      data_selector: targetings
+      params: {}
+
+  - name: sponsored_display_creatives
+    endpoint:
+      path: /v3/sponsoredDisplay/creatives
+      method: GET
+      data_selector: creatives
+      params: {}
+
+  - name: sponsored_display_budget_rules
+    endpoint:
+      path: /v3/sponsoredDisplay/budgetRules
+      method: GET
+      data_selector: budgetRules
+      params: {}
+
+  - name: sponsored_products_campaigns
+    endpoint:
+      path: /v2/sponsoredProducts/campaigns
+      method: GET
+      data_selector: campaigns
+      params: {}
+
+  - name: sponsored_products_ad_groups
+    endpoint:
+      path: /v2/sponsoredProducts/adGroups
+      method: GET
+      data_selector: adGroups
+      params: {}
+
+  - name: sponsored_products_ad_group_bid_recommendations
+    endpoint:
+      path: /v2/sponsoredProducts/adGroupBidRecommendations
+      method: GET
+      data_selector: bidRecommendations
+      params: {}
+
+  - name: sponsored_products_ad_group_suggested_keywords
+    endpoint:
+      path: /v2/sponsoredProducts/adGroupSuggestedKeywords
+      method: GET
+      data_selector: suggestedKeywords
+      params: {}
+
+  - name: sponsored_products_keywords
+    endpoint:
+      path: /v2/sponsoredProducts/keywords
+      method: GET
+      data_selector: keywords
+      params: {}
+
+  - name: sponsored_products_negative_keywords
+    endpoint:
+      path: /v2/sponsoredProducts/negativeKeywords
+      method: GET
+      data_selector: negativeKeywords
+      params: {}
+
+  - name: sponsored_products_campaign_negative_keywords
+    endpoint:
+      path: /v2/sponsoredProducts/campaignNegativeKeywords
+      method: GET
+      data_selector: campaignNegativeKeywords
+      params: {}
+
+  - name: sponsored_products_ads
+    endpoint:
+      path: /v2/sponsoredProducts/ads
+      method: GET
+      data_selector: ads
+      params: {}
+
+  - name: sponsored_products_targetings
+    endpoint:
+      path: /v2/sponsoredProducts/targetings
+      method: GET
+      data_selector: targetings
+      params: {}
+
+  - name: brands_reports
+    endpoint:
+      path: /v2/reports/brands
+      method: GET
+      data_selector: reports
+      params: {}
+
+  - name: brand_video_reports
+    endpoint:
+      path: /v2/reports/brandVideo
+      method: GET
+      data_selector: reports
+      params: {}
+
+  - name: display_reports
+    endpoint:
+      path: /v2/reports/display
+      method: GET
+      data_selector: reports
+      params: {}
+
+  - name: products_reports
+    endpoint:
+      path: /v2/reports/products
+      method: GET
+      data_selector: reports
+      params: {}
+
+  - name: attribution_reports
+    endpoint:
+      path: /v2/reports/attribution
+      method: GET
+      data_selector: reports
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+    - AuthProvider
+    - NamedCredential
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses OAuth2 with refresh token — requires setup of connected app in Amazon Ads
+  - Some reports may return no data if there are no clicks or views associated with the campaigns on the requested day
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - QUERY_TIMEOUT: Break down filters or add selectivity
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

@@ -1,0 +1,54 @@
+# Source Metadata
+source_name: Yahoo Finance Price
+version: 0.3.23
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://finance.yahoo.com/
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.login.yahoo.com/oauth2/get_token
+    client_id: "{{ dlt.secrets['yahoo_client_id'] }}"
+    client_secret: "{{ dlt.secrets['yahoo_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['yahoo_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextPage
+    cursor_param: page
+    page_size_param: limit
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: stock_price
+    endpoint:
+      path: /v6/finance/quote
+      method: GET
+      data_selector: quoteResponse.result
+      params: {
+                "symbols": "AAPL,MSFT,GOOGL"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth2
+    - AccessToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires API key and secret to access endpoints.
+  - Rate limits may apply based on the API usage.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check your API key and token expiration.
+  - 429 Too Many Requests: Reduce the frequency of your API calls.

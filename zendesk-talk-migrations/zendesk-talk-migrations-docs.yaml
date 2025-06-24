@@ -1,0 +1,62 @@
+# Source Metadata
+source_name: zendesk-talk
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.zendesk.com/api/v2
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://your-instance.zendesk.com/oauth/tokens
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: page
+    page_size_param: per_page
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: calls
+    endpoint:
+      path: /talk/calls.json
+      method: GET
+      data_selector: calls
+      params: {
+                "incremental": "updated_at"
+      }
+
+  - name: call_legs
+    endpoint:
+      path: /talk/call_legs.json
+      method: GET
+      data_selector: call_legs
+      params: {
+                "incremental": "updated_at"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses OAuth2 with refresh token — requires setup of connected app in Zendesk
+  - Ensure to reset data after migration to the new version
+
+# Troubleshooting & Error Patterns
+errors:
+  - 403 Forbidden: Check if the token has the necessary permissions
+  - 404 Not Found: Verify the endpoint path and parameters
+  - 429 Too Many Requests: Reduce the frequency of API calls

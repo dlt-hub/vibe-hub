@@ -1,0 +1,53 @@
+# Source Metadata
+source_name: ebay_finance
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://apiz.ebay.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.ebay.com/identity/v1/oauth2/token
+    client_id: "{{ dlt.secrets['username'] }}"
+    client_secret: "{{ dlt.secrets['password'] }}"
+    refresh_token: "{{ dlt.secrets['refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: transactions
+    endpoint:
+      path: /sell/finances/v1/transactions
+      method: GET
+      data_selector: transactions
+  - name: payouts
+    endpoint:
+      path: /sell/finances/v1/payouts
+      method: GET
+      data_selector: payouts
+      params: {
+                "payoutId": "payoutId"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires setup of eBay Developer account for credentials
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check credentials and token expiration
+  - 403 Forbidden: Verify permissions for the requested resource

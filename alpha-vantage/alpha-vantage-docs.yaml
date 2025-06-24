@@ -1,0 +1,99 @@
+# Source Metadata
+source_name: Alpha Vantage
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://www.alphavantage.co/query
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: time_series_intraday
+    endpoint:
+      path: /time_series/intraday
+      method: GET
+      data_selector: Time Series (1min)
+      params: {
+                "symbol": "AAPL",
+                "interval": "1min",
+                "outputsize": "compact"
+      }
+
+  - name: time_series_daily
+    endpoint:
+      path: /time_series/daily
+      method: GET
+      data_selector: Time Series (Daily)
+      params: {
+                "symbol": "AAPL",
+                "outputsize": "compact"
+      }
+
+  - name: time_series_daily_adjusted
+    endpoint:
+      path: /time_series/daily_adjusted
+      method: GET
+      data_selector: Time Series (Daily)
+      params: {
+                "symbol": "AAPL",
+                "outputsize": "compact"
+      }
+
+  - name: time_series_weekly
+    endpoint:
+      path: /time_series/weekly
+      method: GET
+      data_selector: Time Series (Weekly)
+      params: {
+                "symbol": "AAPL"
+      }
+
+  - name: time_series_weekly_adjusted
+    endpoint:
+      path: /time_series/weekly_adjusted
+      method: GET
+      data_selector: Time Series (Weekly)
+      params: {
+                "symbol": "AAPL"
+      }
+
+  - name: time_series_monthly
+    endpoint:
+      path: /time_series/monthly
+      method: GET
+      data_selector: Time Series (Monthly)
+      params: {
+                "symbol": "AAPL"
+      }
+
+  - name: time_series_monthly_adjusted
+    endpoint:
+      path: /time_series/monthly_adjusted
+      method: GET
+      data_selector: Time Series (Monthly)
+      params: {
+                "symbol": "AAPL"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - api_key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports both sandbox and production environments
+  - Full refresh sync is recommended to avoid duplicate data
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - 401 Unauthorized: Recheck API key validity

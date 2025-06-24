@@ -1,0 +1,89 @@
+# Source Metadata
+source_name: employment_hero
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://oauth.employmenthero.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://oauth.employmenthero.com/oauth2/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: organisations
+    endpoint:
+      path: /v2/organisations
+      method: GET
+      data_selector: data
+  - name: employees
+    endpoint:
+      path: /v2/employees
+      method: GET
+      data_selector: data
+  - name: leave_requests
+    endpoint:
+      path: /v2/leave_requests
+      method: GET
+      data_selector: data
+  - name: employee_certifications
+    endpoint:
+      path: /v2/employee_certifications
+      method: GET
+      data_selector: data
+  - name: pay_details
+    endpoint:
+      path: /v2/pay_details
+      method: GET
+      data_selector: data
+  - name: teams
+    endpoint:
+      path: /v2/teams
+      method: GET
+      data_selector: data
+  - name: policies
+    endpoint:
+      path: /v2/policies
+      method: GET
+      data_selector: data
+  - name: certifications
+    endpoint:
+      path: /v2/certifications
+      method: GET
+      data_selector: data
+  - name: custom_fields
+    endpoint:
+      path: /v2/custom_fields
+      method: GET
+      data_selector: data
+  - name: employee_custom_fields
+    endpoint:
+      path: /v2/employee_custom_fields
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth
+    - Bearer Token
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses Bearer token authentication; requires setup in developer portal
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Recheck OAuth token validity or permissions

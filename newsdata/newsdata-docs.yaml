@@ -1,0 +1,48 @@
+# Source Metadata
+source_name: Newsdata API
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://newsdata.io/api
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: latest
+    endpoint:
+      path: /v1/news
+      method: GET
+      data_selector: results
+      params: {
+                "page": 1,
+                "size": 10
+      }
+  
+  - name: sources
+    endpoint:
+      path: /v1/sources
+      method: GET
+      data_selector: sources
+      params: {
+                "category": "",
+                "language": "",
+                "country": ""
+      }
+
+# Known Quirks or Risks, Caveats
+notes:
+  - The free tier only allows 200 requests per day and up to 10 news per request.
+  - Advanced search queries are not allowed on the free tier.
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Reduce the number of requests or upgrade plan.
+  - INVALID_API_KEY: Check API key validity and ensure it is included in requests.

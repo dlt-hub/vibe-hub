@@ -1,0 +1,60 @@
+# Source Metadata
+source_name: Tempo
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.tempo.io
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://tempo.io/oauth2/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: accounts
+    endpoint:
+      path: /accounts
+      method: GET
+      data_selector: data
+
+  - name: customers
+    endpoint:
+      path: /customers
+      method: GET
+      data_selector: data
+
+  - name: worklogs
+    endpoint:
+      path: /worklogs
+      method: GET
+      data_selector: data
+
+  - name: workload_schemes
+    endpoint:
+      path: /workload-schemes
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires an API token generated from Tempo settings under Data Access
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API token validity or permissions

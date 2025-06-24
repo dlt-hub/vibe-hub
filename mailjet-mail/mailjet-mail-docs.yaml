@@ -1,0 +1,59 @@
+# Source Metadata
+source_name: Mailjet Mail API
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.mailjet.com/v3
+  auth:
+    type: apikey
+    client_id: "{{ dlt.secrets['MAILJET_API_KEY'] }}"
+    client_secret: "{{ dlt.secrets['MAILJET_SECRET_KEY'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: contact_list
+    endpoint:
+      path: /contactlist
+      method: GET
+      data_selector: Data
+
+  - name: contacts
+    endpoint:
+      path: /contacts
+      method: GET
+      data_selector: Data
+
+  - name: messages
+    endpoint:
+      path: /message
+      method: GET
+      data_selector: Data
+
+  - name: campaigns
+    endpoint:
+      path: /campaign
+      method: GET
+      data_selector: Data
+
+  - name: stats
+    endpoint:
+      path: /stats
+      method: GET
+      data_selector: Data
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Only supports full refresh syncs
+  - APIs are under rate limits; a 429 error may occur if limits are reached
+
+# Troubleshooting & Error Patterns
+errors:
+  - 429: Rate limit exceeded; throttle API calls or reduce frequency

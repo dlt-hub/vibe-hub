@@ -1,0 +1,66 @@
+# Source Metadata
+source_name: TrustPilot
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.trustpilot.com/v1
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.trustpilot.com/v1/oauth/oauth-business-users-for-applications/accesstoken
+    client_id: "{{ dlt.secrets['trustpilot_client_id'] }}"
+    client_secret: "{{ dlt.secrets['trustpilot_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['trustpilot_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Content-Type: application/x-www-form-urlencoded
+  paginator:
+    type: cursor
+    cursor_path: next
+    cursor_param: after
+    page_size_param: limit
+    default_page_size: 50
+
+# Resources (per endpoint/object)
+resources:
+  - name: Configured Business Units
+    endpoint:
+      path: /business-units/configured
+      method: GET
+      data_selector: businessUnits
+      params: {}
+
+  - name: Business Units
+    endpoint:
+      path: /business-units
+      method: GET
+      data_selector: businessUnits
+      params: {}
+
+  - name: Private Reviews
+    endpoint:
+      path: /business-units/{businessUnitId}/private-reviews
+      method: GET
+      data_selector: reviews
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - BusinessUnit
+
+# Known Quirks or Risks, Caveats
+notes:
+  - The connector is restricted by Trustpilot rate limit guidelines.
+  - OAuth 2.0 setup is required for accessing more streams.
+
+# Troubleshooting & Error Patterns
+errors:
+  - RATE_LIMIT_EXCEEDED: Monitor request frequency to avoid throttling.
+  - 401 Unauthorized: Ensure API key or OAuth token is valid.

@@ -1,0 +1,55 @@
+# Source Metadata
+source_name: airbyte
+version: 0.1.6
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.airbyte.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.airbyte.com/oauth/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: jobs
+    endpoint:
+      path: /api/v1/jobs
+      method: GET
+      data_selector: jobs
+      params: {
+                "incremental": "updated_at"
+      }
+
+  - name: connections
+    endpoint:
+      path: /api/v1/connections
+      method: GET
+      data_selector: connections
+
+  - name: workspaces
+    endpoint:
+      path: /api/v1/workspaces
+      method: GET
+      data_selector: workspaces
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth2
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires client_id and client_secret for API access
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check client_id and client_secret
+  - 404 Not Found: Verify the endpoint URL

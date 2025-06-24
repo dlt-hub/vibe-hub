@@ -1,0 +1,56 @@
+# Source Metadata
+source_name: aws_cloudtrail
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://cloudtrail.us-east-1.amazonaws.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.aws.amazon.com/o/oauth2/token
+    client_id: "{{ dlt.secrets['aws_client_id'] }}"
+    client_secret: "{{ dlt.secrets['aws_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['aws_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    page_size_param: pageSize
+    default_page_size: 200
+
+# Resources (per endpoint/object)
+resources:
+  - name: management_events
+    endpoint:
+      path: /management_events
+      method: GET
+      data_selector: records
+      params: {
+                "incremental": "EventTime"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - The management_events stream changed its EventTime field from integer to float.
+  - The start_date parameter is now optional, taking the current date as the default.
+  - Connector can add filters to response attributes using lookup_attributes_filter.
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - QUERY_TIMEOUT: Break down filters or add selectivity
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

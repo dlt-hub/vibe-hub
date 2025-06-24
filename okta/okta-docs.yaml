@@ -1,0 +1,107 @@
+# Source Metadata
+source_name: okta
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://okta-domain.okta.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://okta-domain.okta.com/oauth2/default/v1/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextPage
+    cursor_param: next
+    page_size_param: limit
+    default_page_size: 200
+
+# Resources (per endpoint/object)
+resources:
+  - name: users
+    endpoint:
+      path: /api/v1/users
+      method: GET
+      data_selector: users
+      params: {}
+
+  - name: user_role_assignments
+    endpoint:
+      path: /api/v1/users/{userId}/roles
+      method: GET
+      data_selector: roles
+      params: {}
+
+  - name: groups
+    endpoint:
+      path: /api/v1/groups
+      method: GET
+      data_selector: groups
+      params: {}
+
+  - name: group_members
+    endpoint:
+      path: /api/v1/groups/{groupId}/members
+      method: GET
+      data_selector: members
+      params: {}
+
+  - name: group_role_assignments
+    endpoint:
+      path: /api/v1/groups/{groupId}/roles
+      method: GET
+      data_selector: roles
+      params: {}
+
+  - name: system_log
+    endpoint:
+      path: /api/v1/logs
+      method: GET
+      data_selector: logs
+      params: {}
+
+  - name: custom_roles
+    endpoint:
+      path: /api/v1/roles
+      method: GET
+      data_selector: roles
+      params: {}
+
+  - name: permissions
+    endpoint:
+      path: /api/v1/roles/{roleId}/permissions
+      method: GET
+      data_selector: permissions
+      params: {}
+
+  - name: resource_sets
+    endpoint:
+      path: /api/v1/resourceSets
+      method: GET
+      data_selector: resourceSets
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth2
+    - API Token
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Restricted by normal Okta requests limitation
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

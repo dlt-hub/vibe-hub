@@ -1,0 +1,64 @@
+# Source Metadata
+source_name: postgres
+version: 3.6.35
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: postgresql://<user_name>:<password>@<host>:<port>/<database>
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextCursor
+    cursor_param: nextCursor
+    page_size_param: pageSize
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: table_name
+    endpoint:
+      path: /tables/table_name
+      method: GET
+      data_selector: records
+      params: {
+                "incremental": "updated_at"
+      }
+
+  - name: another_table_name
+    endpoint:
+      path: /tables/another_table_name
+      method: GET
+      data_selector: records
+      params: {
+                # other params
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - PostgresUser
+    - PostgresDatabase
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires a read-only user with appropriate permissions
+  - Ensure to allow inbound traffic if using Airbyte Cloud
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check user permissions or credentials
+  - 404 Not Found: Verify the table name or endpoint URL
+  - 500 Internal Server Error: Check server logs for more details

@@ -1,0 +1,79 @@
+# Source Metadata
+source_name: My Hours
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://myhours.com/api
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://myhours.com/oauth/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: page
+    page_size_param: page_size
+    default_page_size: 30
+
+# Resources (per endpoint/object)
+resources:
+  - name: time_logs
+    endpoint:
+      path: /time_logs
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: clients
+    endpoint:
+      path: /clients
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: projects
+    endpoint:
+      path: /projects
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: team_members
+    endpoint:
+      path: /team_members
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: tags
+    endpoint:
+      path: /tags
+      method: GET
+      data_selector: data
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+    - AdminAccount
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires credentials to an admin My Hours account
+  - Pagination size can be adjusted based on the amount of time logs
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check credentials and admin access
+  - 404 Not Found: Verify endpoint path and request parameters
+  - 429 Too Many Requests: Implement exponential backoff for retries

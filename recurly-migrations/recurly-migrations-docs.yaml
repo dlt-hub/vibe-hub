@@ -1,0 +1,70 @@
+# Source Metadata
+source_name: recurly
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+  - Bulk 2.0
+  - Metadata API
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.recurly.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.recurly.com/v2/oauth/token
+    client_id: "{{ dlt.secrets['recurly_client_id'] }}"
+    client_secret: "{{ dlt.secrets['recurly_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['recurly_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next_page
+    cursor_param: page
+    page_size_param: per_page
+    default_page_size: 200
+
+# Resources (per endpoint/object)
+resources:
+  - name: accounts
+    endpoint:
+      path: /accounts
+      method: GET
+      data_selector: accounts
+      params: {}
+
+  - name: subscriptions
+    endpoint:
+      path: /subscriptions
+      method: GET
+      data_selector: subscriptions
+      params: {}
+
+  - name: invoices
+    endpoint:
+      path: /invoices
+      method: GET
+      data_selector: invoices
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+    - NamedCredential
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses OAuth2 with refresh token — requires setup of connected app in Recurly
+  - Some objects may have rate limits that affect data retrieval
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - INVALID_API_KEY: Check the provided API key for correctness
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

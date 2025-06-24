@@ -1,0 +1,54 @@
+# Source Metadata
+source_name: leadfeeder
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.leadfeeder.com
+  auth:
+    type: apikey
+    auth_token: "{{ dlt.secrets['api_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: accounts
+    endpoint:
+      path: /accounts
+      method: GET
+      data_selector: records
+  - name: leads
+    endpoint:
+      path: /leads
+      method: GET
+      data_selector: records
+      paginator:
+        type: DefaultPaginator
+  - name: visits
+    endpoint:
+      path: /visits
+      method: GET
+      data_selector: records
+      paginator:
+        type: DefaultPaginator
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - api_token
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports full sync for accounts, incremental sync for leads and visits.
+  - The `start_date` parameter can be used for incremental syncs.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API token validity
+  - 404 Not Found: Verify endpoint paths and resource availability

@@ -1,0 +1,146 @@
+# Source Metadata
+source_name: Clazar
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.clazar.io
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.clazar.io/oauth/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next
+    cursor_param: cursor
+    page_size_param: page_size
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: listings
+    endpoint:
+      path: /listings
+      method: GET
+      data_selector: data
+  - name: private_offers
+    endpoint:
+      path: /private-offers
+      method: GET
+      data_selector: data
+  - name: buyers
+    endpoint:
+      path: /buyers
+      method: GET
+      data_selector: data
+  - name: contracts
+    endpoint:
+      path: /contracts
+      method: GET
+      data_selector: data
+  - name: opportunities
+    endpoint:
+      path: /opportunities
+      method: GET
+      data_selector: data
+  - name: analytics_aws_disbursement
+    endpoint:
+      path: /analytics/aws/disbursement
+      method: GET
+      data_selector: data
+  - name: analytics_aws_revenue
+    endpoint:
+      path: /analytics/aws/revenue
+      method: GET
+      data_selector: data
+  - name: analytics_aws_opportunities
+    endpoint:
+      path: /analytics/aws/opportunities
+      method: GET
+      data_selector: data
+  - name: analytics_azure_revenue
+    endpoint:
+      path: /analytics/azure/revenue
+      method: GET
+      data_selector: data
+  - name: analytics_azure_customers
+    endpoint:
+      path: /analytics/azure/customers
+      method: GET
+      data_selector: data
+  - name: analytics_azure_orders
+    endpoint:
+      path: /analytics/azure/orders
+      method: GET
+      data_selector: data
+  - name: analytics_azure_metered_usage
+    endpoint:
+      path: /analytics/azure/metered-usage
+      method: GET
+      data_selector: data
+  - name: analytics_azure_opportunities
+    endpoint:
+      path: /analytics/azure/opportunities
+      method: GET
+      data_selector: data
+  - name: analytics_gcp_disbursement
+    endpoint:
+      path: /analytics/gcp/disbursement
+      method: GET
+      data_selector: data
+  - name: analytics_gcp_disbursement_summary
+    endpoint:
+      path: /analytics/gcp/disbursement-summary
+      method: GET
+      data_selector: data
+  - name: analytics_gcp_charges_usage
+    endpoint:
+      path: /analytics/gcp/charges-usage
+      method: GET
+      data_selector: data
+  - name: analytics_gcp_daily_insights
+    endpoint:
+      path: /analytics/gcp/daily-insights
+      method: GET
+      data_selector: data
+  - name: analytics_gcp_daily_incremental_insights
+    endpoint:
+      path: /analytics/gcp/daily-incremental-insights
+      method: GET
+      data_selector: data
+  - name: analytics_gcp_monthly_insights
+    endpoint:
+      path: /analytics/gcp/monthly-insights
+      method: GET
+      data_selector: data
+  - name: analytics_gcp_monthly_incremental_insights
+    endpoint:
+      path: /analytics/gcp/monthly-incremental-insights
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Rate limits: 30/minute for Analytics APIs, 120/minute for other APIs
+  - Some streams support incremental loading partially
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

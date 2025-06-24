@@ -1,0 +1,55 @@
+# Source Metadata
+source_name: Freightview
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.api.name.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: shipments
+    endpoint:
+      path: /shipments
+      method: GET
+      data_selector: shipments
+      params: {}
+
+  - name: quotes
+    endpoint:
+      path: /quotes
+      method: GET
+      data_selector: quotes
+      params: {}
+
+  - name: tracking
+    endpoint:
+      path: /tracking
+      method: GET
+      data_selector: tracking
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - ClientID
+    - ClientSecret
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports full sync but does not support incremental loading for all streams
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check client_id and client_secret
+  - 403 Forbidden: Ensure correct permissions are set

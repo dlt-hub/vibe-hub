@@ -1,0 +1,103 @@
+# Source Metadata
+source_name: zendesk_chat
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your_subdomain.zendesk.com/api/v2/chat
+  auth:
+    type: apikey
+    token_url: https://your_subdomain.zendesk.com/access_token
+    client_id: "{{ dlt.secrets['zendesk_client_id'] }}"
+    client_secret: "{{ dlt.secrets['zendesk_client_secret'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next_page
+    cursor_param: page
+    page_size_param: per_page
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: accounts
+    endpoint:
+      path: /accounts
+      method: GET
+      data_selector: accounts
+  - name: agents
+    endpoint:
+      path: /agents
+      method: GET
+      data_selector: agents
+  - name: agent_timelines
+    endpoint:
+      path: /agent_timelines
+      method: GET
+      data_selector: timelines
+  - name: chats
+    endpoint:
+      path: /chats
+      method: GET
+      data_selector: chats
+  - name: shortcuts
+    endpoint:
+      path: /shortcuts
+      method: GET
+      data_selector: shortcuts
+  - name: triggers
+    endpoint:
+      path: /triggers
+      method: GET
+      data_selector: triggers
+  - name: bans
+    endpoint:
+      path: /bans
+      method: GET
+      data_selector: bans
+  - name: departments
+    endpoint:
+      path: /departments
+      method: GET
+      data_selector: departments
+  - name: goals
+    endpoint:
+      path: /goals
+      method: GET
+      data_selector: goals
+  - name: skills
+    endpoint:
+      path: /skills
+      method: GET
+      data_selector: skills
+  - name: roles
+    endpoint:
+      path: /roles
+      method: GET
+      data_selector: roles
+  - name: routing_settings
+    endpoint:
+      path: /routing_settings
+      method: GET
+      data_selector: routing_settings
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - AccessToken
+    - OAuth2
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Connector is restricted by Zendesk's requests limitation
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

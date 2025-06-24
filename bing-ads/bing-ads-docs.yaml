@@ -1,0 +1,129 @@
+# Source Metadata
+source_name: Bing Ads
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.bingads.microsoft.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.microsoftonline.com/common/oauth2/v2.0/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextPage
+    cursor_param: continuationToken
+    page_size_param: pageSize
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: accounts
+    endpoint:
+      path: /Accounts
+      method: GET
+      data_selector: accounts
+      params: {}
+
+  - name: ad_groups
+    endpoint:
+      path: /AdGroups
+      method: GET
+      data_selector: adGroups
+      params: {}
+
+  - name: ads
+    endpoint:
+      path: /Ads
+      method: GET
+      data_selector: ads
+      params: {}
+
+  - name: campaigns
+    endpoint:
+      path: /Campaigns
+      method: GET
+      data_selector: campaigns
+      params: {}
+
+  - name: keywords
+    endpoint:
+      path: /Keywords
+      method: GET
+      data_selector: keywords
+      params: {}
+
+  - name: labels
+    endpoint:
+      path: /Labels
+      method: GET
+      data_selector: labels
+      params: {}
+
+  - name: budget
+    endpoint:
+      path: /Budgets
+      method: GET
+      data_selector: budgets
+      params: {}
+
+  - name: ad_group_labels
+    endpoint:
+      path: /AdGroupLabels
+      method: GET
+      data_selector: adGroupLabels
+      params: {}
+
+  - name: app_install_ads
+    endpoint:
+      path: /AppInstallAds
+      method: GET
+      data_selector: appInstallAds
+      params: {}
+
+  - name: app_install_ad_labels
+    endpoint:
+      path: /AppInstallAdLabels
+      method: GET
+      data_selector: appInstallAdLabels
+      params: {}
+
+  - name: campaign_labels
+    endpoint:
+      path: /CampaignLabels
+      method: GET
+      data_selector: campaignLabels
+      params: {}
+
+  - name: keyword_labels
+    endpoint:
+      path: /KeywordLabels
+      method: GET
+      data_selector: keywordLabels
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Refresh token expires in 90 days, requires re-authentication
+  - Be cautious with data synchronization limits and quotas
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration
+  - 403 Forbidden: Check user permissions or access rights

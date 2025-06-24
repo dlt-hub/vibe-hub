@@ -1,0 +1,64 @@
+# Source Metadata
+source_name: visma_economic
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://restapi.e-conomic.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://restapi.e-conomic.com/token
+    client_id: "{{ dlt.secrets['agreement_grant_token'] }}"
+    client_secret: "{{ dlt.secrets['app_secret_token'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: accounts
+    endpoint:
+      path: /accounts
+      method: GET
+      data_selector: data
+  - name: customers
+    endpoint:
+      path: /customers
+      method: GET
+      data_selector: data
+  - name: invoices_booked
+    endpoint:
+      path: /invoices/booked
+      method: GET
+      data_selector: data
+  - name: invoices_booked_document
+    endpoint:
+      path: /invoices/booked/{bookedInvoiceNumber}
+      method: GET
+      data_selector: data
+  - name: invoices_paid
+    endpoint:
+      path: /invoices/paid
+      method: GET
+      data_selector: data
+  - name: invoices_total
+    endpoint:
+      path: /invoices/totals
+      method: GET
+      data_selector: data
+  - name: products
+    endpoint:
+      path: /products
+      method: GET
+      data_selector: data
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Only implements full refresh, meaning all records are synced with every new sync.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Ensure Agreement Grant Token and App Secret Token are valid.

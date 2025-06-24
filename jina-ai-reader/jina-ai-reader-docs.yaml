@@ -1,0 +1,45 @@
+# Source Metadata
+source_name: jina_ai_reader
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://r.jina.ai
+  auth:
+    type: bearer_token
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: reader
+    endpoint:
+      path: /{url}
+      method: GET
+      data_selector: results
+
+  - name: search
+    endpoint:
+      path: /{search_prompt}
+      method: GET
+      data_selector: results
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - BearerToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires Jina AI Bearer Token for higher rate limits
+  - No incremental sync supported
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check Bearer Token validity
+  - 429 Too Many Requests: Rate limit exceeded, reduce request frequency

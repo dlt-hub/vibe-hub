@@ -1,0 +1,68 @@
+# Source Metadata
+source_name: cloudbeds
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://hotels.cloudbeds.com/api/v1.2
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: guests
+    endpoint:
+      path: /guests
+      method: GET
+      data_selector: records
+
+  - name: hotels
+    endpoint:
+      path: /hotels
+      method: GET
+      data_selector: records
+
+  - name: rooms
+    endpoint:
+      path: /rooms
+      method: GET
+      data_selector: records
+
+  - name: reservations
+    endpoint:
+      path: /reservations
+      method: GET
+      data_selector: records
+
+  - name: transactions
+    endpoint:
+      path: /transactions
+      method: GET
+      data_selector: records
+
+  - name: packages
+    endpoint:
+      path: /packages
+      method: GET
+      data_selector: records
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - api_key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - All endpoints support full sync
+  - No support for incremental loading
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Ensure API Key is correct and has the required scopes
+  - 404 Not Found: Check if the endpoint path is correct

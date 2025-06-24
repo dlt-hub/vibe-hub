@@ -1,0 +1,61 @@
+# Source Metadata
+source_name: BigQuery
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://bigquery.googleapis.com/bigquery/v2
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://oauth2.googleapis.com/token
+    client_id: "{{ dlt.secrets['gcp_client_id'] }}"
+    client_secret: "{{ dlt.secrets['gcp_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['gcp_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: datasets
+    endpoint:
+      path: /projects/{projectId}/datasets
+      method: GET
+      data_selector: datasets
+      params: {}
+
+  - name: tables
+    endpoint:
+      path: /projects/{projectId}/datasets/{datasetId}/tables
+      method: GET
+      data_selector: tables
+      params: {}
+
+  - name: jobs
+    endpoint:
+      path: /projects/{projectId}/jobs
+      method: POST
+      data_selector: jobReference
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - ServiceAccount
+    - ServiceAccountKey
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires a Google Cloud Project with BigQuery enabled
+  - Service Account must have "BigQuery User" and "BigQuery Data Editor" roles
+
+# Troubleshooting & Error Patterns
+errors:
+  - 403: Access Denied - Check permissions for the Service Account
+  - 404: Not Found - Verify projectId, datasetId, or tableId
+  - 400: Bad Request - Check the request format and parameters

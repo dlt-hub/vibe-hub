@@ -1,0 +1,50 @@
+# Source Metadata
+source_name: pingdom
+version: 0.0.1
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.pingdom.com/api/3.1
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: checks
+    endpoint:
+      path: /checks
+      method: GET
+      data_selector: checks
+      params: {}
+
+  - name: performance
+    endpoint:
+      path: /summary.performance/{checkid}
+      method: GET
+      data_selector: performance
+      params:
+        start_date: 
+        probes: 
+        resolution: hour
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires API Key for access
+  - Start date is required for incremental loading
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API Key validity
+  - 400 Bad Request: Verify required parameters are included

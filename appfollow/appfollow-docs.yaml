@@ -1,0 +1,45 @@
+# Source Metadata
+source_name: Appfollow
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.appfollow.io
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_secret'] }}"
+    location: header
+    header_name: X-Api-Key
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: ratings
+    endpoint:
+      path: /ratings
+      method: GET
+      data_selector: data
+      params: {
+                "ext_id": "{{ dlt.secrets['ext_id'] }}",
+                "cid": "{{ dlt.secrets['cid'] }}",
+                "country": "{{ dlt.secrets['country'] }}"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - ApiKey
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Full Refresh sync mode only
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key validity
+  - 403 Forbidden: Insufficient permissions for the requested operation
+  - 404 Not Found: Verify the endpoint and parameters used

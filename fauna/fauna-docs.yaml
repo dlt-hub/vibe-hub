@@ -1,0 +1,53 @@
+# Source Metadata
+source_name: fauna
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-fauna-instance.fauna.com
+  auth:
+    type: api_key
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: collection
+    endpoint:
+      path: /collections
+      method: GET
+      data_selector: collections
+  - name: index
+    endpoint:
+      path: /indexes
+      method: GET
+      data_selector: indexes
+  - name: document
+    endpoint:
+      path: /collections/{collection_name}/documents
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "ts"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - Role
+    - Key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires the creation of roles and keys for access
+  - The Fauna Secret is displayed only once
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check Fauna Secret or role permissions
+  - 403 Forbidden: Ensure the role has the necessary read privileges

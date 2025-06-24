@@ -1,0 +1,52 @@
+# Source Metadata
+source_name: Fillout
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.fillout.com
+  auth:
+    type: apikey
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: forms
+    endpoint:
+      path: /forms
+      method: GET
+      data_selector: records
+
+  - name: form_metadata
+    endpoint:
+      path: /form_metadata
+      method: GET
+      data_selector: records
+
+  - name: submissions
+    endpoint:
+      path: /submissions
+      method: GET
+      data_selector: records
+      params: {
+                "incremental": "submissionId"
+              }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - api_key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Pagination is handled with DefaultPaginator
+  - Supports full sync for all streams, but only submissions support incremental loading
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key validity
+  - 404 Not Found: Verify endpoint paths or resource availability

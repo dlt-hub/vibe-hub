@@ -1,0 +1,47 @@
+# Source Metadata
+source_name: sendinblue
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.sendinblue.com/v3
+  auth:
+    type: apikey
+    location: header
+    header_name: api-key
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: contacts
+    endpoint:
+      path: /contacts
+      method: GET
+      data_selector: contacts
+      params: {
+                "incremental": "updatedAt"
+      }
+
+  - name: campaigns
+    endpoint:
+      path: /emailCampaigns
+      method: GET
+      data_selector: campaigns
+
+  - name: templates
+    endpoint:
+      path: /smtp/templates
+      method: GET
+      data_selector: templates
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Sendinblue APIs are under rate limits for the number of API calls allowed per API keys per second. If you reach a rate limit, API will return a 429 HTTP error code.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 429: Rate limit exceeded. Throttle API calls or reduce frequency.

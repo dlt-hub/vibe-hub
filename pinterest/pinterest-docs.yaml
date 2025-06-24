@@ -1,0 +1,270 @@
+# Source Metadata
+source_name: Pinterest
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.pinterest.com/v5
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.pinterest.com/v5/oauth/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next
+    cursor_param: cursor
+    page_size_param: page_size
+    default_page_size: 50
+
+# Resources (per endpoint/object)
+resources:
+  - name: account_analytics
+    endpoint:
+      path: /user_account/analytics
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+  - name: boards
+    endpoint:
+      path: /boards
+      method: GET
+      data_selector: data
+
+  - name: board_sections
+    endpoint:
+      path: /board_sections
+      method: GET
+      data_selector: data
+
+  - name: pins_on_board_section
+    endpoint:
+      path: /board_sections/list_pins
+      method: GET
+      data_selector: data
+
+  - name: pins_on_board
+    endpoint:
+      path: /boards/list_pins
+      method: GET
+      data_selector: data
+
+  - name: ad_accounts
+    endpoint:
+      path: /ad_accounts
+      method: GET
+      data_selector: data
+
+  - name: ad_account_analytics
+    endpoint:
+      path: /ad_account/analytics
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+  - name: campaigns
+    endpoint:
+      path: /campaigns
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+  - name: campaign_analytics
+    endpoint:
+      path: /campaigns/analytics
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+  - name: campaign_analytics_report
+    endpoint:
+      path: /analytics/create_report
+      method: POST
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+  - name: ad_groups
+    endpoint:
+      path: /ad_groups
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+  - name: ad_group_analytics
+    endpoint:
+      path: /ad_groups/analytics
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+  - name: ads
+    endpoint:
+      path: /ads
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+  - name: ad_analytics
+    endpoint:
+      path: /ads/analytics
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+  - name: catalogs
+    endpoint:
+      path: /catalogs
+      method: GET
+      data_selector: data
+
+  - name: catalogs_feeds
+    endpoint:
+      path: /feeds
+      method: GET
+      data_selector: data
+
+  - name: catalogs_product_groups
+    endpoint:
+      path: /catalogs_product_groups
+      method: GET
+      data_selector: data
+
+  - name: audiences
+    endpoint:
+      path: /audiences
+      method: GET
+      data_selector: data
+
+  - name: keywords
+    endpoint:
+      path: /keywords/get
+      method: GET
+      data_selector: data
+
+  - name: conversion_tags
+    endpoint:
+      path: /conversion_tags
+      method: GET
+      data_selector: data
+
+  - name: customer_lists
+    endpoint:
+      path: /customer_lists
+      method: GET
+      data_selector: data
+
+  - name: advertiser_report
+    endpoint:
+      path: /analytics/create_report
+      method: POST
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+  - name: advertiser_targeting_report
+    endpoint:
+      path: /analytics/create_report
+      method: POST
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+  - name: pin_promotion_report
+    endpoint:
+      path: /analytics/create_report
+      method: POST
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+  - name: pin_promotion_targeting_report
+    endpoint:
+      path: /analytics/create_report
+      method: POST
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+  - name: product_group_report
+    endpoint:
+      path: /analytics/create_report
+      method: POST
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+  - name: product_group_targeting_report
+    endpoint:
+      path: /analytics/create_report
+      method: POST
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+  - name: product_item_report
+    endpoint:
+      path: /analytics/create_report
+      method: POST
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+  - name: keyword_report
+    endpoint:
+      path: /analytics/create_report
+      method: POST
+      data_selector: data
+      params: {
+                "incremental": "date"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses OAuth2 with refresh token
+  - Requires setup of connected app in Pinterest
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

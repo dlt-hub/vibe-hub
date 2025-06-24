@@ -1,0 +1,98 @@
+# Source Metadata
+source_name: rd_station_marketing
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.rd.services
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.rd.services/auth/oauth/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: conversions
+    endpoint:
+      path: /conversions
+      method: GET
+      data_selector: data
+
+  - name: emails
+    endpoint:
+      path: /emails
+      method: GET
+      data_selector: data
+
+  - name: funnel
+    endpoint:
+      path: /funnel
+      method: GET
+      data_selector: data
+
+  - name: workflow_emails_statistics
+    endpoint:
+      path: /workflow_emails_statistics
+      method: GET
+      data_selector: data
+
+  - name: embeddables
+    endpoint:
+      path: /embeddables
+      method: GET
+      data_selector: data
+
+  - name: fields
+    endpoint:
+      path: /fields
+      method: GET
+      data_selector: data
+
+  - name: landing_pages
+    endpoint:
+      path: /landing_pages
+      method: GET
+      data_selector: data
+
+  - name: popups
+    endpoint:
+      path: /popups
+      method: GET
+      data_selector: data
+
+  - name: segmentations
+    endpoint:
+      path: /segmentations
+      method: GET
+      data_selector: data
+
+  - name: workflows
+    endpoint:
+      path: /workflows
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth2
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Each endpoint has its own performance limitations based on the account plan.
+  - Ensure to comply with the API request limit.
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - 401 Unauthorized: Recheck OAuth credentials or token expiration

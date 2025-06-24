@@ -1,0 +1,65 @@
+# Source Metadata
+source_name: rss
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.rss.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.rss.com/services/oauth2/token
+    client_id: "{{ dlt.secrets['rss_client_id'] }}"
+    client_secret: "{{ dlt.secrets['rss_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['rss_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    page_size_param: pageSize
+    default_page_size: 200
+
+# Resources (per endpoint/object)
+resources:
+  - name: feed
+    endpoint:
+      path: /services/data/v1.0/feed
+      method: GET
+      data_selector: records
+      params: {
+                "incremental": "updated_at"
+      }
+
+  - name: post
+    endpoint:
+      path: /services/data/v1.0/post
+      method: GET
+      data_selector: records
+      params: {
+                # other params
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+    - NamedCredential
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses OAuth2 with refresh token — requires setup of connected app in rss
+  - Some objects may return nulls in deeply nested fields
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - QUERY_TIMEOUT: Break down filters or add selectivity
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

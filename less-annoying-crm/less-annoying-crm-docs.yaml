@@ -1,0 +1,79 @@
+# Source Metadata
+source_name: less_annoying_crm
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://account.lessannoyingcrm.com/app
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: users
+    endpoint:
+      path: /api/users
+      method: GET
+      data_selector: users
+
+  - name: contacts
+    endpoint:
+      path: /api/contacts
+      method: GET
+      data_selector: contacts
+      params: {
+                "incremental": "updated_at"
+      }
+
+  - name: tasks
+    endpoint:
+      path: /api/tasks
+      method: GET
+      data_selector: tasks
+
+  - name: pipeline_items
+    endpoint:
+      path: /api/pipeline_items
+      method: GET
+      data_selector: pipeline_items
+
+  - name: notes
+    endpoint:
+      path: /api/notes
+      method: GET
+      data_selector: notes
+
+  - name: teams
+    endpoint:
+      path: /api/teams
+      method: GET
+      data_selector: teams
+
+  - name: events
+    endpoint:
+      path: /api/events
+      method: GET
+      data_selector: events
+
+  - name: contact_events
+    endpoint:
+      path: /api/contact_events
+      method: GET
+      data_selector: contact_events
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Some endpoints support full sync, while others do not
+  - Incremental loading is not supported for all resources
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key validity
+  - 404 Not Found: Verify endpoint paths and resource availability
+  - 429 Too Many Requests: Implement rate limiting on calls

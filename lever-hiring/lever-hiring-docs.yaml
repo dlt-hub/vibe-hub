@@ -1,0 +1,91 @@
+# Source Metadata
+source_name: lever_hiring
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.hire.lever.co/v1
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://your-instance.api-name.com/token
+    client_id: "{{ dlt.secrets['lever_hiring_client_id'] }}"
+    client_secret: "{{ dlt.secrets['lever_hiring_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['lever_hiring_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: offset
+    page_size_param: limit
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: applications
+    endpoint:
+      path: /applications
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: interviews
+    endpoint:
+      path: /interviews
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: notes
+    endpoint:
+      path: /notes
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: offers
+    endpoint:
+      path: /offers
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: opportunities
+    endpoint:
+      path: /opportunities
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: referrals
+    endpoint:
+      path: /referrals
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: data
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth2
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports both Full Refresh and Incremental syncs.
+  - Should not run into API limitations under normal usage.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check client ID, client secret, or refresh token validity.
+  - 429 Too Many Requests: Implement exponential backoff for retries.

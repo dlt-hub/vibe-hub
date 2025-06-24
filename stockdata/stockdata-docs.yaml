@@ -1,0 +1,70 @@
+# Source Metadata
+source_name: StockData
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.stockdata.com
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: news_feeds_per_symbol
+    endpoint:
+      path: /news/feeds/symbol
+      method: GET
+      data_selector: records
+      params: {
+                "filter_entities": false,
+                "symbols": [],
+                "start_date": ""
+      }
+
+  - name: news_feeds_per_industry
+    endpoint:
+      path: /news/feeds/industry
+      method: GET
+      data_selector: records
+      params: {
+                "filter_entities": false,
+                "industries": [],
+                "start_date": ""
+      }
+
+  - name: eod_data
+    endpoint:
+      path: /eod
+      method: GET
+      data_selector: records
+      params: {
+                "symbols": [],
+                "start_date": ""
+      }
+
+  - name: intraday_unadjusted_data
+    endpoint:
+      path: /intraday/unadjusted
+      method: GET
+      data_selector: records
+      params: {
+                "symbols": [],
+                "start_date": ""
+      }
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Pagination is supported for news feeds but not for EOD and intraday data.
+  - Filtering entities may limit the returned results based on specified symbols or industries.
+
+# Troubleshooting & Error Patterns
+errors:
+  - INVALID_API_KEY: Check your API key and ensure it is valid.
+  - RATE_LIMIT_EXCEEDED: Reduce the frequency of your API calls.
+  - 400 BAD REQUEST: Verify the request parameters are correct.

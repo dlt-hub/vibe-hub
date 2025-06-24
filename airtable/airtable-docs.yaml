@@ -1,0 +1,59 @@
+# Source Metadata
+source_name: airtable
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+  - Metadata API
+
+# Client / Connection Config
+client:
+  base_url: https://api.airtable.com
+  auth:
+    type: apikey
+    token_url: null
+    client_id: null
+    client_secret: null
+    refresh_token: null
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: pagination
+    cursor_path: null
+    cursor_param: null
+    page_size_param: null
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: bases
+    endpoint:
+      path: /v0/meta/bases
+      method: GET
+      data_selector: bases
+      params: {}
+
+  - name: tables
+    endpoint:
+      path: /v0/{baseId}/tables
+      method: GET
+      data_selector: tables
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - Personal Access Token
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires Personal Access Token with specified scopes
+  - If tables are renamed or deleted in Airtable, syncing may stop until the connection schema is reset
+
+# Troubleshooting & Error Patterns
+errors:
+  - 400: Bad Request — Check API request format and parameters
+  - 401: Unauthorized — Verify token validity and permissions
+  - 429: Rate Limit Exceeded — Throttle API calls to adhere to rate limits
