@@ -1,0 +1,45 @@
+# Source Metadata
+source_name: pocket
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://getpocket.com/v3
+  auth:
+    type: oauth2
+    flow: auth_code
+    token_url: https://getpocket.com/v3/oauth/authorize
+    client_id: "{{ dlt.secrets['consumer_key'] }}"
+    access_token: "{{ dlt.secrets['access_token'] }}"
+    location: header
+    header_name: X-Accept
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: retrieve
+    endpoint:
+      path: /retrieve
+      method: POST
+      data_selector: 
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - ConsumerKey
+    - AccessToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Only supports full refresh syncs
+  - Rate limits apply as per Pocket API documentation
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check if the Access Token is valid or has expired
+  - 403 Forbidden: Ensure that the Consumer Key has the necessary permissions

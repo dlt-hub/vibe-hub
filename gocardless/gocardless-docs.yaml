@@ -1,0 +1,63 @@
+# Source Metadata
+source_name: GoCardless
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://gocardless.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://gocardless.com/oauth/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: mandates
+    endpoint:
+      path: /mandates
+      method: GET
+      data_selector: mandates
+  - name: payments
+    endpoint:
+      path: /payments
+      method: GET
+      data_selector: payments
+  - name: payouts
+    endpoint:
+      path: /payouts
+      method: GET
+      data_selector: payouts
+  - name: refunds
+    endpoint:
+      path: /refunds
+      method: GET
+      data_selector: refunds
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - AccessToken
+    - GoCardlessEnvironment
+    - GoCardlessVersion
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires Access Token, GoCardless Environment, GoCardless Version, and Start Date
+  - Full Refresh Sync supported; Incremental - Append Sync not supported
+  - No Namespaces supported
+
+# Troubleshooting & Error Patterns
+errors:
+  - 404 Not Found: Ensure the endpoint path is correct
+  - 401 Unauthorized: Verify access token and permissions
+  - 500 Internal Server Error: Retry the request later

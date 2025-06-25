@@ -1,0 +1,87 @@
+# Source Metadata
+source_name: mailchimp
+version: 2.0.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://<dc>.api.mailchimp.com/3.0
+  auth:
+    type: apikey
+  headers:
+    Authorization: "apikey {{ dlt.secrets['mailchimp_api_key'] }}"
+
+# Resources (per endpoint/object)
+resources:
+  - name: automations
+    endpoint:
+      path: /automations
+      method: GET
+      data_selector: automations
+
+  - name: campaigns
+    endpoint:
+      path: /campaigns
+      method: GET
+      data_selector: campaigns
+
+  - name: email_activity
+    endpoint:
+      path: /email-activity
+      method: GET
+      data_selector: email_activity
+
+  - name: list_members
+    endpoint:
+      path: /lists/{list_id}/members
+      method: GET
+      data_selector: members
+
+  - name: lists
+    endpoint:
+      path: /lists
+      method: GET
+      data_selector: lists
+
+  - name: reports
+    endpoint:
+      path: /reports
+      method: GET
+      data_selector: reports
+
+  - name: segment_members
+    endpoint:
+      path: /segments/{segment_id}/members
+      method: GET
+      data_selector: members
+
+  - name: segments
+    endpoint:
+      path: /segments
+      method: GET
+      data_selector: segments
+
+  - name: unsubscribes
+    endpoint:
+      path: /lists/{list_id}/members/unsubscribed
+      method: GET
+      data_selector: unsubscribed_members
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - ApiKey
+
+# Known Quirks or Risks, Caveats
+notes:
+  - The `._links` field has been removed from all streams
+  - Empty strings are converted to null values in the data
+
+# Troubleshooting & Error Patterns
+errors:
+  - 400 Bad Request: Check for invalid parameters
+  - 401 Unauthorized: Verify API key and permissions
+  - 404 Not Found: Ensure the requested resource exists
+  - 429 Too Many Requests: Implement exponential backoff for retries

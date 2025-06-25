@@ -1,0 +1,60 @@
+# Source Metadata
+source_name: zendesk_support
+version: 4.0.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-zendesk-instance.zendesk.com/api/v2
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://your-zendesk-instance.zendesk.com/oauth/tokens
+    client_id: "{{ dlt.secrets['zendesk_client_id'] }}"
+    client_secret: "{{ dlt.secrets['zendesk_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['zendesk_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next_page
+    cursor_param: page
+    page_size_param: per_page
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: tickets
+    endpoint:
+      path: /tickets.json
+      method: GET
+      data_selector: tickets
+      params: {}
+
+  - name: ticket_metrics
+    endpoint:
+      path: /ticket_metrics.json
+      method: GET
+      data_selector: ticket_metrics
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Pagination strategy has changed to cursor-based
+  - Stream `Deleted Tickets` has been removed
+
+# Troubleshooting & Error Patterns
+errors:
+  - 404 Not Found: Check the endpoint path or resource availability
+  - 401 Unauthorized: Verify OAuth token and scopes
+  - 429 Too Many Requests: Implement exponential backoff for retries

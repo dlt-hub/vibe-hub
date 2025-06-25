@@ -1,0 +1,81 @@
+# Source Metadata
+source_name: Instagram
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://graph.facebook.com/v12.0
+  auth:
+    type: oauth2
+    flow: auth_code
+    token_url: https://graph.facebook.com/v12.0/oauth/access_token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: paging.next
+    cursor_param: after
+    page_size_param: limit
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: user
+    endpoint:
+      path: /me
+      method: GET
+      data_selector: data
+
+  - name: media
+    endpoint:
+      path: /me/media
+      method: GET
+      data_selector: data
+
+  - name: stories
+    endpoint:
+      path: /me/stories
+      method: GET
+      data_selector: data
+
+  - name: user_insights
+    endpoint:
+      path: /me/insights
+      method: GET
+      data_selector: data
+
+  - name: media_insights
+    endpoint:
+      path: /{media-id}/insights
+      method: GET
+      data_selector: data
+
+  - name: story_insights
+    endpoint:
+      path: /{story-id}/insights
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - Instagram Graph API
+    - OAuth
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Incremental sync modes are only available for the User Insights stream.
+  - Instagram limits the number of requests that can be made at a time.
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration.

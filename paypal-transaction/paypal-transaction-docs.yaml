@@ -1,0 +1,89 @@
+# Source Metadata
+source_name: paypal
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.paypal.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.paypal.com/v1/oauth2/token
+    client_id: "{{ dlt.secrets['paypal_client_id'] }}"
+    client_secret: "{{ dlt.secrets['paypal_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['paypal_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: page
+    page_size_param: page_size
+    default_page_size: 20
+
+# Resources (per endpoint/object)
+resources:
+  - name: transactions
+    endpoint:
+      path: /v1/reporting/transactions
+      method: GET
+      data_selector: transaction_details
+      params: {
+                "start_date": "YYYY-MM-DDTHH:MM:SSZ"
+      }
+
+  - name: balances
+    endpoint:
+      path: /v1/reporting/balances
+      method: GET
+      data_selector: balances
+
+  - name: list_products
+    endpoint:
+      path: /v1/catalogs/products
+      method: GET
+      data_selector: products
+
+  - name: show_product_details
+    endpoint:
+      path: /v1/catalogs/products/{product_id}
+      method: GET
+      data_selector: product_details
+
+  - name: list_disputes
+    endpoint:
+      path: /v1/customer/disputes
+      method: GET
+      data_selector: disputes
+
+  - name: search_invoices
+    endpoint:
+      path: /v2/invoicing/invoices
+      method: GET
+      data_selector: invoices
+
+  - name: list_payments
+    endpoint:
+      path: /v1/payments/payment
+      method: GET
+      data_selector: payments
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+    - ClientID
+    - ClientSecret
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Historical Data: You can't retrieve more than 3yrs of data for transactions.
+  - Rate Limits: Max 50 requests per minute from IP address to all endpoint.
+
+# Troubleshooting & Error Patterns
+errors:
+  - RESULTSET_TOO_LARGE: Reduce the size of the slice period in your connection configuration.
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration.

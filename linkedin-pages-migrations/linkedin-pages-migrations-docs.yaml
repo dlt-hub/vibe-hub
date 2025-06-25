@@ -1,0 +1,69 @@
+# Source Metadata
+source_name: linkedin_pages
+version: 1.0.7
+authentication_required: true
+api_types_available:
+  - REST
+  - Bulk 2.0
+  - Metadata API
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.api.linkedin.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://www.linkedin.com/oauth/v2/accessToken
+    client_id: "{{ dlt.secrets['linkedin_client_id'] }}"
+    client_secret: "{{ dlt.secrets['linkedin_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['linkedin_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextPage
+    cursor_param: after
+    page_size_param: count
+    default_page_size: 200
+
+# Resources (per endpoint/object)
+resources:
+  - name: pages
+    endpoint:
+      path: /v2/pages
+      method: GET
+      data_selector: elements
+      params: {
+                "incremental": "updated_at",
+                "start_date": "2022-10-01",
+                "time_granularity_type": "DAY"
+      }
+
+  - name: posts
+    endpoint:
+      path: /v2/posts
+      method: GET
+      data_selector: elements
+      params: {
+                "incremental": "updated_at"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+    - NamedCredential
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses OAuth2 with refresh token — requires setup of connected app in LinkedIn
+  - Some objects may have rate limits impacting data retrieval
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - QUERY_TIMEOUT: Break down filters or add selectivity
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

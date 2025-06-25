@@ -1,0 +1,58 @@
+# Source Metadata
+source_name: Apify
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.apify.com/v2
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: dataset_collection
+    endpoint:
+      path: /datasets
+      method: GET
+      data_selector: results
+
+  - name: dataset
+    endpoint:
+      path: /datasets/{datasetId}
+      method: GET
+      data_selector: result
+
+  - name: item_collection
+    endpoint:
+      path: /datasets/{datasetId}/items
+      method: GET
+      data_selector: data
+
+  - name: item_collection_website_content_crawler
+    endpoint:
+      path: /datasets/{datasetId}/items
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API token
+    - dataset ID
+
+# Known Quirks or Risks, Caveats
+notes:
+  - The stream uses a dynamic schema for item_collection.
+  - The stream item_collection_website_content_crawler uses a static schema.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API token validity
+  - 404 Not Found: Verify dataset ID and endpoint path

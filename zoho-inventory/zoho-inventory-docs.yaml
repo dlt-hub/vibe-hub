@@ -1,0 +1,104 @@
+# Source Metadata
+source_name: zoho_inventory
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://{domain}.zoho.com/inventory/v1
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://accounts.zoho.{domain}/oauth/v2/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: items
+    endpoint:
+      path: /items
+      method: GET
+      data_selector: items
+  - name: item_groups
+    endpoint:
+      path: /itemGroups
+      method: GET
+      data_selector: item_groups
+  - name: organizations
+    endpoint:
+      path: /organizations
+      method: GET
+      data_selector: organizations
+  - name: contacts
+    endpoint:
+      path: /contacts
+      method: GET
+      data_selector: contacts
+  - name: itemadjustments
+    endpoint:
+      path: /itemAdjustments
+      method: GET
+      data_selector: item_adjustments
+  - name: warehouses
+    endpoint:
+      path: /warehouses
+      method: GET
+      data_selector: warehouses
+  - name: transferorders
+    endpoint:
+      path: /transferOrders
+      method: GET
+      data_selector: transfer_orders
+  - name: salesorders
+    endpoint:
+      path: /salesOrders
+      method: GET
+      data_selector: sales_orders
+  - name: packages
+    endpoint:
+      path: /packages
+      method: GET
+      data_selector: packages
+  - name: invoices
+    endpoint:
+      path: /invoices
+      method: GET
+      data_selector: invoices
+  - name: purchaseorders
+    endpoint:
+      path: /purchaseOrders
+      method: GET
+      data_selector: purchase_orders
+  - name: creditnotes
+    endpoint:
+      path: /creditNotes
+      method: GET
+      data_selector: credit_notes
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: users
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires domain suffix based on data center location
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check OAuth credentials and token validity

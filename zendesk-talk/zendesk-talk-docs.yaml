@@ -1,0 +1,136 @@
+# Source Metadata
+source_name: zendesk_talk
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your_subdomain.zendesk.com/api/v2
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://your_subdomain.zendesk.com/oauth/tokens
+    client_id: "{{ dlt.secrets['zendesk_client_id'] }}"
+    client_secret: "{{ dlt.secrets['zendesk_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['zendesk_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next_page
+    cursor_param: page
+    page_size_param: per_page
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: account_overview
+    endpoint:
+      path: /voice/account_overview
+      method: GET
+      data_selector: account_overview
+      params: {}
+
+  - name: addresses
+    endpoint:
+      path: /voice/phone_numbers
+      method: GET
+      data_selector: phone_numbers
+      params: {}
+
+  - name: agents_activity
+    endpoint:
+      path: /voice/stats/agents_activity
+      method: GET
+      data_selector: agents_activity
+      params: {}
+
+  - name: agents_overview
+    endpoint:
+      path: /voice/stats/agents_overview
+      method: GET
+      data_selector: agents_overview
+      params: {}
+
+  - name: calls
+    endpoint:
+      path: /voice/incremental_exports/calls
+      method: GET
+      data_selector: calls
+      params: {}
+
+  - name: call_legs
+    endpoint:
+      path: /voice/incremental_exports/call_legs
+      method: GET
+      data_selector: call_legs
+      params: {}
+
+  - name: current_queue_activity
+    endpoint:
+      path: /voice/stats/current_queue_activity
+      method: GET
+      data_selector: current_queue_activity
+      params: {}
+
+  - name: greeting_categories
+    endpoint:
+      path: /voice/greetings/categories
+      method: GET
+      data_selector: greeting_categories
+      params: {}
+
+  - name: greetings
+    endpoint:
+      path: /voice/greetings
+      method: GET
+      data_selector: greetings
+      params: {}
+
+  - name: ivrs
+    endpoint:
+      path: /voice/ivrs
+      method: GET
+      data_selector: ivrs
+      params: {}
+
+  - name: ivr_menus
+    endpoint:
+      path: /voice/ivrs/menus
+      method: GET
+      data_selector: ivr_menus
+      params: {}
+
+  - name: ivr_routes
+    endpoint:
+      path: /voice/ivr_routes
+      method: GET
+      data_selector: ivr_routes
+      params: {}
+
+  - name: phone_numbers
+    endpoint:
+      path: /voice/phone_numbers
+      method: GET
+      data_selector: phone_numbers
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+    - API Access Token
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires API access token or OAuth setup
+  - Rate limits apply as per Zendesk documentation
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - 401 Unauthorized: Check token validity or scopes

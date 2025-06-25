@@ -1,0 +1,91 @@
+# Source Metadata
+source_name: Bitly
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api-ssl.bitly.com/v4
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Content-Type: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: bitlinks
+    endpoint:
+      path: /bitlinks
+      method: GET
+      data_selector: link
+  - name: bitlink_clicks
+    endpoint:
+      path: /bitlinks/{bitlink}/clicks
+      method: GET
+      data_selector: link
+  - name: bsds
+    endpoint:
+      path: /bsds
+      method: GET
+      data_selector: data
+  - name: campaigns
+    endpoint:
+      path: /campaigns
+      method: GET
+      data_selector: campaigns
+  - name: channels
+    endpoint:
+      path: /channels
+      method: GET
+      data_selector: channels
+  - name: groups
+    endpoint:
+      path: /groups
+      method: GET
+      data_selector: groups
+  - name: group_preferences
+    endpoint:
+      path: /group_preferences
+      method: GET
+      data_selector: preferences
+  - name: group_shorten_counts
+    endpoint:
+      path: /group_shorten_counts
+      method: GET
+      data_selector: counts
+  - name: organizations
+    endpoint:
+      path: /organizations
+      method: GET
+      data_selector: organizations
+  - name: organization_shorten_counts
+    endpoint:
+      path: /organization_shorten_counts
+      method: GET
+      data_selector: counts
+  - name: qr_codes
+    endpoint:
+      path: /qr_codes
+      method: GET
+      data_selector: qr_codes
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - API requires an API key for authentication
+  - Some endpoints do not support pagination
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key validity
+  - 404 Not Found: Verify endpoint and parameters
+  - 429 Too Many Requests: Reduce request frequency to avoid rate limiting

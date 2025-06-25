@@ -1,0 +1,111 @@
+# Source Metadata
+source_name: zoho_billing
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://www.zoho.com/billing/api/v1
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://accounts.zoho.com/oauth/v2/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: products
+    endpoint:
+      path: /products
+      method: GET
+      data_selector: products
+
+  - name: plans
+    endpoint:
+      path: /plans
+      method: GET
+      data_selector: plans
+
+  - name: addons
+    endpoint:
+      path: /addons
+      method: GET
+      data_selector: addons
+
+  - name: coupons
+    endpoint:
+      path: /coupons
+      method: GET
+      data_selector: coupons
+
+  - name: customers
+    endpoint:
+      path: /customers
+      method: GET
+      data_selector: customers
+
+  - name: quotes
+    endpoint:
+      path: /quotes
+      method: GET
+      data_selector: quotes
+
+  - name: invoices
+    endpoint:
+      path: /invoices
+      method: GET
+      data_selector: invoices
+
+  - name: expenses
+    endpoint:
+      path: /expenses
+      method: GET
+      data_selector: expenses
+
+  - name: subscriptions
+    endpoint:
+      path: /subscriptions
+      method: GET
+      data_selector: subscriptions
+
+  - name: taxes
+    endpoint:
+      path: /taxes
+      method: GET
+      data_selector: taxes
+
+  - name: transactions
+    endpoint:
+      path: /transactions
+      method: GET
+      data_selector: transactions
+
+  - name: recurring_expenses
+    endpoint:
+      path: /recurring_expenses
+      method: GET
+      data_selector: recurring_expenses
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - All streams support full sync but do not support incremental loading.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Recheck OAuth credentials or token expiration
+  - 404 Not Found: Verify endpoint paths and resource availability

@@ -1,0 +1,34 @@
+# Source Metadata
+source_name: Navan
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.navan.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.navan.com/oauth/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: bookings
+    endpoint:
+      path: /bookings
+      method: GET
+      data_selector: records
+
+# Known Quirks or Risks, Caveats
+notes:
+  - API credential details are only accessible once
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Recheck OAuth credentials and scopes

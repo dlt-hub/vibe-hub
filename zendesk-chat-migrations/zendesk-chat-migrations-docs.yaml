@@ -1,0 +1,60 @@
+# Source Metadata
+source_name: zendesk_chat
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-subdomain.zendesk.com/api/v2
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://your-subdomain.zendesk.com/oauth/tokens
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next_page
+    cursor_param: page
+    page_size_param: per_page
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: chat_sessions
+    endpoint:
+      path: /live_chat/sessions
+      method: GET
+      data_selector: sessions
+      params: {}
+
+  - name: chat_messages
+    endpoint:
+      path: /live_chat/messages
+      method: GET
+      data_selector: messages
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires Zendesk subdomain configuration
+  - Rate limits apply on API calls
+
+# Troubleshooting & Error Patterns
+errors:
+  - 404 Not Found: Check the endpoint URL and resource availability
+  - 401 Unauthorized: Verify OAuth credentials and scopes
+  - 429 Too Many Requests: Implement exponential backoff for retries

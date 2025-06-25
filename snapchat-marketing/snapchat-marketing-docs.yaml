@@ -1,0 +1,223 @@
+# Source Metadata
+source_name: Snapchat Marketing
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://marketingapi.snapchat.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://accounts.snapchat.com/login/oauth2/access_token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: page
+    page_size_param: limit
+    default_page_size: 1000
+
+# Resources (per endpoint/object)
+resources:
+  - name: AdAccounts
+    endpoint:
+      path: /v1/adaccounts
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "id"
+      }
+
+  - name: Ads
+    endpoint:
+      path: /v1/ads
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "id"
+      }
+
+  - name: AdSquads
+    endpoint:
+      path: /v1/adsquads
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "id"
+      }
+
+  - name: Campaigns
+    endpoint:
+      path: /v1/campaigns
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "id"
+      }
+
+  - name: Creatives
+    endpoint:
+      path: /v1/creatives
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "id"
+      }
+
+  - name: Media
+    endpoint:
+      path: /v1/media
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "id"
+      }
+
+  - name: Organizations
+    endpoint:
+      path: /v1/organizations
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "id"
+      }
+
+  - name: Segments
+    endpoint:
+      path: /v1/segments
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "id"
+      }
+
+  - name: AdAccounts_Stats_Hourly
+    endpoint:
+      path: /v1/adaccounts/stats/hourly
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": ["id", "granularity", "start_time"]
+      }
+
+  - name: AdAccounts_Stats_Daily
+    endpoint:
+      path: /v1/adaccounts/stats/daily
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": ["id", "granularity", "start_time"]
+      }
+
+  - name: AdAccounts_Stats_Lifetime
+    endpoint:
+      path: /v1/adaccounts/stats/lifetime
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": ["id", "granularity"]
+      }
+
+  - name: Ads_Stats_Hourly
+    endpoint:
+      path: /v1/ads/stats/hourly
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": ["id", "granularity", "start_time"]
+      }
+
+  - name: Ads_Stats_Daily
+    endpoint:
+      path: /v1/ads/stats/daily
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": ["id", "granularity", "start_time"]
+      }
+
+  - name: Ads_Stats_Lifetime
+    endpoint:
+      path: /v1/ads/stats/lifetime
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": ["id", "granularity"]
+      }
+
+  - name: AdSquads_Stats_Hourly
+    endpoint:
+      path: /v1/adsquads/stats/hourly
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": ["id", "granularity", "start_time"]
+      }
+
+  - name: AdSquads_Stats_Daily
+    endpoint:
+      path: /v1/adsquads/stats/daily
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": ["id", "granularity", "start_time"]
+      }
+
+  - name: AdSquads_Stats_Lifetime
+    endpoint:
+      path: /v1/adsquads/stats/lifetime
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": ["id", "granularity"]
+      }
+
+  - name: Campaigns_Stats_Hourly
+    endpoint:
+      path: /v1/campaigns/stats/hourly
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": ["id", "granularity", "start_time"]
+      }
+
+  - name: Campaigns_Stats_Daily
+    endpoint:
+      path: /v1/campaigns/stats/daily
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": ["id", "granularity", "start_time"]
+      }
+
+  - name: Campaigns_Stats_Lifetime
+    endpoint:
+      path: /v1/campaigns/stats/lifetime
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": ["id", "granularity"]
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses OAuth2 with refresh token — requires setup of connected app in Snapchat
+  - Syncing data with an hourly granularity may generate large data volumes
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

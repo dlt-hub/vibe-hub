@@ -1,0 +1,41 @@
+# Source Metadata
+source_name: AWS CloudTrail
+version: 1.1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://cloudtrail.amazonaws.com
+  auth:
+    type: apikey
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: management_events
+    endpoint:
+      path: /lookup-events
+      method: GET
+      data_selector: Events
+      params: {
+                "incremental": "eventTime"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - AWS Access key ID
+    - AWS Secret access key
+    - AWS region name
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Rate of lookup requests for events is limited to two per second, per account, per region.
+  - Only Management events are available; Insight events are not supported.
+
+# Troubleshooting & Error Patterns
+errors:
+  - ThrottlingException: Retry after some time if throttling occurs.

@@ -1,0 +1,48 @@
+# Source Metadata
+source_name: OpinionStage
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://opinionstage.com/api
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: items
+    endpoint:
+      path: /items
+      method: GET
+      data_selector: data
+  - name: responses
+    endpoint:
+      path: /responses
+      method: GET
+      data_selector: data
+  - name: questions
+    endpoint:
+      path: /questions
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - APIKey
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Only supports full sync for all streams.
+  - Incremental loading is not supported.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check your API key.
+  - 404 Not Found: Verify endpoint URL.

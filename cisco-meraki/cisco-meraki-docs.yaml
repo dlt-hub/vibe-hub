@@ -1,0 +1,77 @@
+# Source Metadata
+source_name: meraki
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.meraki.com/api/v1
+  auth:
+    type: apikey
+    auth_key: "{{ dlt.secrets['api_key'] }}"
+    location: header
+    header_name: X-Cisco-Meraki-API-Key
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: organizations
+    endpoint:
+      path: /organizations
+      method: GET
+      data_selector: organizations
+
+  - name: datacenters
+    endpoint:
+      path: /datacenters
+      method: GET
+      data_selector: datacenters
+
+  - name: organization_networks
+    endpoint:
+      path: /organizations/{organizationId}/networks
+      method: GET
+      data_selector: networks
+
+  - name: organization_devices
+    endpoint:
+      path: /organizations/{organizationId}/devices
+      method: GET
+      data_selector: devices
+
+  - name: organization_apiRequests
+    endpoint:
+      path: /organizations/{organizationId}/apiRequests
+      method: GET
+      data_selector: apiRequests
+
+  - name: organization_admins
+    endpoint:
+      path: /organizations/{organizationId}/admins
+      method: GET
+      data_selector: admins
+
+  - name: organization_saml
+    endpoint:
+      path: /organizations/{organizationId}/saml
+      method: GET
+      data_selector: saml
+
+  - name: organization_network_settings
+    endpoint:
+      path: /organizations/{organizationId}/networkSettings
+      method: GET
+      data_selector: networkSettings
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Some endpoints may require specific organizationId to be provided.
+  - API rate limits may apply.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 403 Forbidden: Check API key permissions.
+  - 404 Not Found: Verify endpoint path and organizationId.

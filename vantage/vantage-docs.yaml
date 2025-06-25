@@ -1,0 +1,63 @@
+# Source Metadata
+source_name: Vantage API
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://vantage.api.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://vantage.api.com/oauth/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: page
+    page_size_param: pageSize
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: providers
+    endpoint:
+      path: /providers
+      method: GET
+      data_selector: data
+  - name: services
+    endpoint:
+      path: /services
+      method: GET
+      data_selector: data
+  - name: products
+    endpoint:
+      path: /products
+      method: GET
+      data_selector: data
+  - name: reports
+    endpoint:
+      path: /reports
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - AccessToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - This source only supports full refresh syncs.
+  - Rate limits apply; exceeding them will result in a 429 error.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 429: Rate limit exceeded; throttle API calls.
+  - 401 Unauthorized: Check access token validity.

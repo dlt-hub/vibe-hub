@@ -1,0 +1,56 @@
+# Source Metadata
+source_name: Microsoft OneDrive
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://graph.microsoft.com/v1.0
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: "@odata.nextLink"
+    cursor_param: null
+    page_size_param: "$top"
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: drive_item
+    endpoint:
+      path: /me/drive/root/children
+      method: GET
+      data_selector: value
+      params: {
+                "$select": "id,name,createdDateTime,lastModifiedDateTime,webUrl",
+                "$filter": "createdDateTime ge {start_date}"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - Application permissions
+    - Microsoft Graph API
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires Application permissions in Azure Active Directory
+  - Throttling limits apply as per Microsoft Graph API guidelines
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Ensure application permissions are granted and token is valid
+  - 403 Forbidden: Check if the user has access to the requested resource
+  - 429 Too Many Requests: Respect the API throttling limits and retry after a delay

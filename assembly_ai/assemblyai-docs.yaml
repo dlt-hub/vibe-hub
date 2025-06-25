@@ -1,0 +1,62 @@
+# Source Metadata
+source_name: AssemblyAI
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.assemblyai.com/v2
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Authorization: "{{ dlt.secrets['api_key'] }}"
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: transcripts
+    endpoint:
+      path: /transcripts
+      method: POST
+      data_selector: id
+      params: {}
+
+  - name: transcript_sentences
+    endpoint:
+      path: /transcripts/{id}/sentences
+      method: GET
+      data_selector: uuid
+      params: {}
+
+  - name: paragraphs
+    endpoint:
+      path: /transcripts/{id}/paragraphs
+      method: GET
+      data_selector: uuid
+      params: {}
+
+  - name: transcript_subtitle
+    endpoint:
+      path: /transcripts/{id}/subtitle
+      method: GET
+      data_selector: uuid
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - api_key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports Full Sync for all streams except transcript_sentences, paragraphs, and transcript_subtitle
+  - Supports Incremental loading for transcripts only
+
+# Troubleshooting & Error Patterns
+errors:
+  - 400 Bad Request: Check payload format or required fields
+  - 401 Unauthorized: Verify API key is valid
+  - 429 Too Many Requests: Implement retry logic after delay

@@ -1,0 +1,58 @@
+# Source Metadata
+source_name: calendly
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://calendly.com
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: event_types
+    endpoint:
+      path: /event_types
+      method: GET
+      data_selector: data
+  - name: api_user
+    endpoint:
+      path: /users/me
+      method: GET
+      data_selector: data
+  - name: groups
+    endpoint:
+      path: /groups
+      method: GET
+      data_selector: data
+  - name: organization_memberships
+    endpoint:
+      path: /organization_memberships
+      method: GET
+      data_selector: data
+  - name: scheduled_events
+    endpoint:
+      path: /scheduled_events
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Incremental sync in scheduled_events uses start_time as a cursor which may lead to stale data if events change after syncing.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check your API key and permissions.
+  - 404 Not Found: Verify the endpoint path or resource.

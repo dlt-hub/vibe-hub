@@ -1,0 +1,80 @@
+# Source Metadata
+source_name: sharetribe
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://www.sharetribe.com/api/v1
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://www.sharetribe.com/api/v1/oauth/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+  headers:
+    Accept: application/json
+  paginator:
+    type: default
+
+# Resources (per endpoint/object)
+resources:
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: records
+  - name: marketplace
+    endpoint:
+      path: /marketplace
+      method: GET
+      data_selector: records
+  - name: listings
+    endpoint:
+      path: /listings
+      method: GET
+      data_selector: records
+  - name: transactions
+    endpoint:
+      path: /transactions
+      method: GET
+      data_selector: records
+  - name: events
+    endpoint:
+      path: /events
+      method: GET
+      data_selector: records
+  - name: bookings
+    endpoint:
+      path: /bookings
+      method: GET
+      data_selector: records
+  - name: messages
+    endpoint:
+      path: /messages
+      method: GET
+      data_selector: records
+  - name: reviews
+    endpoint:
+      path: /reviews
+      method: GET
+      data_selector: records
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth
+    - ClientId
+    - ClientSecret
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports incremental sync for all streams except marketplace
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration
+  - 403 Forbidden: Ensure you have permissions for the requested resource
+  - 404 Not Found: Verify the endpoint path and parameters

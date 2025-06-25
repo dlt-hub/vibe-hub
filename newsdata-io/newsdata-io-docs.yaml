@@ -1,0 +1,55 @@
+# Source Metadata
+source_name: NewsData.io
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://newsdata.io/api
+  auth:
+    type: apikey
+    location: query
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: latest_news
+    endpoint:
+      path: /v1/news
+      method: GET
+      data_selector: articles
+      params: {
+                "api_key": "{{ dlt.secrets['api_key'] }}",
+                "start_date": "{{ start_date }}",
+                "end_date": "{{ end_date }}",
+                "categories": "{{ categories }}",
+                "countries": "{{ countries }}",
+                "languages": "{{ languages }}",
+                "domains": "{{ domains }}"
+      }
+
+  - name: historical_news
+    endpoint:
+      path: /v1/news
+      method: GET
+      data_selector: articles
+      params: {
+                "api_key": "{{ dlt.secrets['api_key'] }}",
+                "start_date": "{{ start_date }}",
+                "end_date": "{{ end_date }}",
+                "categories": "{{ categories }}",
+                "countries": "{{ countries }}",
+                "languages": "{{ languages }}",
+                "domains": "{{ domains }}"
+      }
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Historical News is only available for premium users of NewsData service.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check if the API key is valid and has the required permissions.

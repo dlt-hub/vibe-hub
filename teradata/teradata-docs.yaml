@@ -1,0 +1,43 @@
+# Source Metadata
+source_name: teradata
+version: 1.0
+authentication_required: true
+api_types_available:
+  - JDBC
+
+# Client / Connection Config
+client:
+  base_url: jdbc:teradata://your-host-name
+  auth:
+    type: basic
+    username: "{{ dlt.secrets['teradata_username'] }}"
+    password: "{{ dlt.secrets['teradata_password'] }}"
+  headers:
+    Content-Type: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: table_name
+    endpoint:
+      path: /databases/{database_name}/tables
+      method: GET
+      data_selector: tables
+      params: {
+                "database": "your_database_name"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - Teradata Vantage
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires read permissions on the specified database
+  - Separate connection needed for different databases
+
+# Troubleshooting & Error Patterns
+errors:
+  - 1017: Login failed - check username and password
+  - 37001: Syntax error - check the SQL query syntax
+  - 2641: Database not found - verify the database name

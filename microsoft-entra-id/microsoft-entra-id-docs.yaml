@@ -1,0 +1,92 @@
+# Source Metadata
+source_name: microsoft_entra_id
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://graph.microsoft.com/v1.0
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.microsoftonline.com/{{ dlt.secrets['tenant_id'] }}/oauth2/v2.0/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: value
+  - name: groups
+    endpoint:
+      path: /groups
+      method: GET
+      data_selector: value
+  - name: applications
+    endpoint:
+      path: /applications
+      method: GET
+      data_selector: value
+  - name: user_owned_deleted_items
+    endpoint:
+      path: /users/{id}/ownedObjects/delta
+      method: GET
+      data_selector: value
+  - name: directoryroles
+    endpoint:
+      path: /directoryRoles
+      method: GET
+      data_selector: value
+  - name: directoryroletemplates
+    endpoint:
+      path: /directoryRoleTemplates
+      method: GET
+      data_selector: value
+  - name: directoryaudits
+    endpoint:
+      path: /auditLogs/directoryAudits
+      method: GET
+      data_selector: value
+  - name: serviceprincipals
+    endpoint:
+      path: /servicePrincipals
+      method: GET
+      data_selector: value
+  - name: identityproviders
+    endpoint:
+      path: /identityProviders
+      method: GET
+      data_selector: value
+  - name: adminconsentrequestpolicy
+    endpoint:
+      path: /adminConsentRequestPolicies
+      method: GET
+      data_selector: value
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - Application
+    - OAuth2PermissionGrant
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses OAuth2 with refresh token — requires setup of application in Microsoft Entra Admin Center
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration
+  - 403 Forbidden: Verify permissions for the requested resource
+  - 404 Not Found: Ensure the endpoint path is correct and the resource exists

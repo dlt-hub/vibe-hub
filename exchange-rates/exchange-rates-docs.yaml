@@ -1,0 +1,40 @@
+# Source Metadata
+source_name: Exchange Rates API
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.exchangeratesapi.io
+  auth:
+    type: apikey
+    auth_key: "{{ dlt.secrets['access_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: exchange_rates
+    endpoint:
+      path: /latest
+      method: GET
+      data_selector: rates
+      params: {
+                "base": "EUR"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - access_key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Free plan limited to 1,000 API calls per month
+  - Base parameter cannot be specified on the free plan, default is EUR
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Limit of 1,000 requests per month on free plan

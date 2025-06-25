@@ -1,0 +1,67 @@
+# Source Metadata
+source_name: algolia
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.algolia.com
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+    application_id: "{{ dlt.secrets['application_id'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: indices
+    endpoint:
+      path: /1/indexes
+      method: GET
+      data_selector: results
+
+  - name: indexes_query
+    endpoint:
+      path: /1/indexes/*/query
+      method: POST
+      data_selector: hits
+
+  - name: available_languages
+    endpoint:
+      path: /1/availableLanguages
+      method: GET
+      data_selector: languages
+
+  - name: logs
+    endpoint:
+      path: /1/logs
+      method: GET
+      data_selector: logs
+      params: {
+                "incremental": "updatedAt"
+      }
+
+  - name: indexes_settings
+    endpoint:
+      path: /1/indexes/*/settings
+      method: GET
+      data_selector: settings
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - APIKey
+    - ApplicationID
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses API key for authentication 
+  - Some endpoints may have limitations on request frequency
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key and application ID
+  - 429 Too Many Requests: Implement retry logic with backoff strategy

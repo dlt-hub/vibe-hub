@@ -1,0 +1,72 @@
+# Source Metadata
+source_name: Microsoft Lists
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://graph.microsoft.com/v1.0/sites
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: lists
+    endpoint:
+      path: /{site_id}/lists
+      method: GET
+      data_selector: value
+
+  - name: listcontenttypes
+    endpoint:
+      path: /{site_id}/lists/{list_id}/contentTypes
+      method: GET
+      data_selector: value
+
+  - name: listitems
+    endpoint:
+      path: /{site_id}/lists/{list_id}/items
+      method: GET
+      data_selector: value
+
+  - name: items
+    endpoint:
+      path: /{site_id}/lists/{list_id}/items/{item_id}
+      method: GET
+      data_selector: value
+
+  - name: columnvalues
+    endpoint:
+      path: /{site_id}/lists/{list_id}/columns
+      method: GET
+      data_selector: value
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - Application
+    - API Permissions
+    - Client Secret
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires Microsoft Graph API permissions: Sites.Read.All, Sites.ReadWrite.All
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check client_id, client_secret, or token expiration
+  - 403 Forbidden: Ensure API permissions have been granted
+  - 404 Not Found: Verify site_id and list_id parameters

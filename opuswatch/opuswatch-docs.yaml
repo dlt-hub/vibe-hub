@@ -1,0 +1,103 @@
+# Source Metadata
+source_name: OPUSWatch
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://opuswatch.nl/api
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: clients
+    endpoint:
+      path: /clients
+      method: GET
+      data_selector: records
+  - name: locations
+    endpoint:
+      path: /locations
+      method: GET
+      data_selector: records
+  - name: rows
+    endpoint:
+      path: /rows
+      method: GET
+      data_selector: records
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: records
+  - name: workers
+    endpoint:
+      path: /workers
+      method: GET
+      data_selector: records
+  - name: worker_groups
+    endpoint:
+      path: /worker_groups
+      method: GET
+      data_selector: records
+  - name: tasks
+    endpoint:
+      path: /tasks
+      method: GET
+      data_selector: records
+  - name: task_groups
+    endpoint:
+      path: /task_groups
+      method: GET
+      data_selector: records
+  - name: labels
+    endpoint:
+      path: /labels
+      method: GET
+      data_selector: records
+  - name: varieties
+    endpoint:
+      path: /varieties
+      method: GET
+      data_selector: records
+  - name: registrations_initial
+    endpoint:
+      path: /registrations/initial
+      method: GET
+      data_selector: records
+  - name: registrations_incremental
+    endpoint:
+      path: /registrations/incremental
+      method: GET
+      data_selector: records
+  - name: sessions_initial
+    endpoint:
+      path: /sessions/initial
+      method: GET
+      data_selector: records
+  - name: sessions_incremental
+    endpoint:
+      path: /sessions/incremental
+      method: GET
+      data_selector: records
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - APIKey
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports full sync but not incremental for most streams
+
+# Troubleshooting & Error Patterns
+errors:
+  - 400 Bad Request: Check query parameters for validity
+  - 401 Unauthorized: Verify API key and permissions
+  - 404 Not Found: Ensure endpoint is correct and available

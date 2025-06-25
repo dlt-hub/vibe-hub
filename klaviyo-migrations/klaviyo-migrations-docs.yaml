@@ -1,0 +1,101 @@
+# Source Metadata
+source_name: klaviyo
+version: 2.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://a.klaviyo.com/api/
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://a.klaviyo.com/api/token
+    client_id: "{{ dlt.secrets['klaviyo_client_id'] }}"
+    client_secret: "{{ dlt.secrets['klaviyo_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['klaviyo_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: page
+    page_size_param: page_size
+    default_page_size: 50
+
+# Resources (per endpoint/object)
+resources:
+  - name: campaigns
+    endpoint:
+      path: /campaigns/
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: email_templates
+    endpoint:
+      path: /email-templates/
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: events
+    endpoint:
+      path: /events/
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: flows
+    endpoint:
+      path: /flows/
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: global_exclusions
+    endpoint:
+      path: /global-exclusions/
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: lists
+    endpoint:
+      path: /lists/
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: metrics
+    endpoint:
+      path: /metrics/
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: profiles
+    endpoint:
+      path: /profiles/
+      method: GET
+      data_selector: data
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Users need to refresh the source schemas and reset streams after upgrading to 2.0.0.
+  - Data reset and schema refresh are needed for migration from v1 to v2.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 400: Bad Request - Check request parameters
+  - 401: Unauthorized - Verify authentication credentials
+  - 404: Not Found - Ensure the endpoint path is correct
+  - 429: Too Many Requests - Implement backoff strategy for rate limits

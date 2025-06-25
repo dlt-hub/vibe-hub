@@ -1,0 +1,79 @@
+# Source Metadata
+source_name: perigon
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.perigon.io/v1
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: articles
+    endpoint:
+      path: /articles
+      method: GET
+      data_selector: data
+      params: {
+                "start_date": "optional"
+      }
+
+  - name: stories
+    endpoint:
+      path: /stories
+      method: GET
+      data_selector: data
+      params: {
+                "start_date": "optional"
+      }
+
+  - name: journalists
+    endpoint:
+      path: /journalists
+      method: GET
+      data_selector: data
+
+  - name: sources
+    endpoint:
+      path: /sources
+      method: GET
+      data_selector: data
+
+  - name: people
+    endpoint:
+      path: /people
+      method: GET
+      data_selector: data
+
+  - name: companies
+    endpoint:
+      path: /companies
+      method: GET
+      data_selector: data
+
+  - name: topics
+    endpoint:
+      path: /topics
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports full sync and incremental loading for all resources.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check your API key.
+  - 429 Too Many Requests: Reduce the rate of requests.

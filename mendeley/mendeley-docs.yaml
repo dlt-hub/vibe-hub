@@ -1,0 +1,104 @@
+# Source Metadata
+source_name: mendeley
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.mendeley.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.mendeley.com/oauth/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['client_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: annotations
+    endpoint:
+      path: /annotations
+      method: GET
+      data_selector: records
+
+  - name: catalog_search
+    endpoint:
+      path: /catalog
+      method: GET
+      data_selector: records
+
+  - name: identifier_types
+    endpoint:
+      path: /identifier_types
+      method: GET
+      data_selector: records
+
+  - name: profile
+    endpoint:
+      path: /profile
+      method: GET
+      data_selector: records
+
+  - name: trashed
+    endpoint:
+      path: /trashed
+      method: GET
+      data_selector: records
+
+  - name: groups
+    endpoint:
+      path: /groups
+      method: GET
+      data_selector: records
+
+  - name: folders
+    endpoint:
+      path: /folders
+      method: GET
+      data_selector: records
+
+  - name: files
+    endpoint:
+      path: /files
+      method: GET
+      data_selector: records
+
+  - name: documents
+    endpoint:
+      path: /documents
+      method: GET
+      data_selector: records
+
+  - name: subject_areas
+    endpoint:
+      path: /subject_areas
+      method: GET
+      data_selector: records
+
+  - name: institutions
+    endpoint:
+      path: /institutions
+      method: GET
+      data_selector: records
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires setup of connected app in Mendeley API
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

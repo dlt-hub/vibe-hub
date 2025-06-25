@@ -1,0 +1,42 @@
+# Source Metadata
+source_name: aha
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://www.aha.io/api
+  auth:
+    type: apikey
+  headers:
+    Authorization: Bearer {{ dlt.secrets['api_key'] }}
+
+# Resources (per endpoint/object)
+resources:
+  - name: features
+    endpoint:
+      path: /features
+      method: GET
+      data_selector: features
+  - name: products
+    endpoint:
+      path: /products
+      method: GET
+      data_selector: products
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Full Refresh Sync only supported
+  - Rate limits apply as described in the API documentation
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API Key validity
+  - 429 Too Many Requests: Respect rate limits

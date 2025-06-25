@@ -1,0 +1,94 @@
+# Source Metadata
+source_name: source-circleci
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://circleci.com/api/v2
+  auth:
+    type: apikey
+  headers:
+    Circle-Token: "{{ dlt.secrets['api_key'] }}"
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: context
+    endpoint:
+      path: /context
+      method: GET
+      data_selector: items
+  - name: self_ids
+    endpoint:
+      path: /self/ids
+      method: GET
+      data_selector: items
+  - name: self_collaborations
+    endpoint:
+      path: /self/collaborations
+      method: GET
+      data_selector: items
+  - name: me
+    endpoint:
+      path: /me
+      method: GET
+      data_selector: items
+  - name: projects
+    endpoint:
+      path: /projects
+      method: GET
+      data_selector: items
+  - name: pipelines
+    endpoint:
+      path: /pipelines
+      method: GET
+      data_selector: items
+  - name: specific_project
+    endpoint:
+      path: /project/:org_id/:project_id
+      method: GET
+      data_selector: items
+  - name: jobs
+    endpoint:
+      path: /pipeline/:pipeline_id/jobs
+      method: GET
+      data_selector: items
+  - name: workflow
+    endpoint:
+      path: /workflow
+      method: GET
+      data_selector: items
+  - name: insights_metrics
+    endpoint:
+      path: /insights/metrics
+      method: GET
+      data_selector: items
+  - name: insights_branches
+    endpoint:
+      path: /insights/branches
+      method: GET
+      data_selector: items
+  - name: workflow_jobs
+    endpoint:
+      path: /workflow/:workflow_id/jobs
+      method: GET
+      data_selector: items
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires API Key from CircleCI user settings
+  - Pagination is handled by DefaultPaginator across all streams
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API Key validity and permissions
+  - 404 Not Found: Verify the endpoint path and parameters

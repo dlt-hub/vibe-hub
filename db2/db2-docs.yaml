@@ -1,0 +1,45 @@
+# Source Metadata
+source_name: db2
+version: 1.0
+authentication_required: true
+api_types_available:
+  - JDBC
+  - SQLJ
+
+# Client / Connection Config
+client:
+  base_url: jdbc:db2://{host}:{port}/{database}
+  auth:
+    type: basic
+    username: "{{ dlt.secrets['db2_username'] }}"
+    password: "{{ dlt.secrets['db2_password'] }}"
+
+# Resources (per endpoint/object)
+resources:
+  - name: tables
+    endpoint:
+      path: /tables
+      method: GET
+      data_selector: records
+
+  - name: schemas
+    endpoint:
+      path: /schemas
+      method: GET
+      data_selector: records
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - AIRBYTE_ROLE
+    - AIRBYTE_USER
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires a dedicated read-only user for better permission control
+  - SSL connection setup may require client certificate
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check database user credentials and permissions
+  - 400 Bad Request: Ensure correct database connection parameters are provided

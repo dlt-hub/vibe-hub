@@ -1,0 +1,148 @@
+# Source Metadata
+source_name: Outbrain Amplify
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://amplifyv01.api.outbrain.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.outbrain.com/oauth/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: offset
+    page_size_param: limit
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: marketers
+    endpoint:
+      path: /marketers
+      method: GET
+      data_selector: data
+
+  - name: campaigns_by_marketers
+    endpoint:
+      path: /campaigns/by_marketers
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "updated_at"
+      }
+
+  - name: campaigns_geo_location
+    endpoint:
+      path: /campaigns/geo_location
+      method: GET
+      data_selector: data
+
+  - name: promoted_links_for_campaigns
+    endpoint:
+      path: /promoted_links/campaigns
+      method: GET
+      data_selector: data
+
+  - name: promoted_links_sequence_for_campaigns
+    endpoint:
+      path: /promoted_links/sequence/campaigns
+      method: GET
+      data_selector: data
+
+  - name: budgets_for_marketers
+    endpoint:
+      path: /budgets/marketers
+      method: GET
+      data_selector: data
+
+  - name: performance_report_campaigns_by_marketers
+    endpoint:
+      path: /performance_report/campaigns/by_marketers
+      method: GET
+      data_selector: data
+
+  - name: performance_report_periodic_by_marketers
+    endpoint:
+      path: /performance_report/periodic/by_marketers
+      method: GET
+      data_selector: data
+
+  - name: performance_report_periodic_by_marketers_campaign
+    endpoint:
+      path: /performance_report/periodic/by_marketers/campaign
+      method: GET
+      data_selector: data
+
+  - name: performance_report_periodic_content_by_promoted_links_campaign
+    endpoint:
+      path: /performance_report/periodic/content/by_promoted_links/campaign
+      method: GET
+      data_selector: data
+
+  - name: performance_report_marketers_by_publisher
+    endpoint:
+      path: /performance_report/marketers/by_publisher
+      method: GET
+      data_selector: data
+
+  - name: performance_report_publishers_by_campaigns
+    endpoint:
+      path: /performance_report/publishers/by_campaigns
+      method: GET
+      data_selector: data
+
+  - name: performance_report_marketers_by_platforms
+    endpoint:
+      path: /performance_report/marketers/by_platforms
+      method: GET
+      data_selector: data
+
+  - name: performance_report_marketers_campaigns_by_platforms
+    endpoint:
+      path: /performance_report/marketers/campaigns/by_platforms
+      method: GET
+      data_selector: data
+
+  - name: performance_report_marketers_by_geo_performance
+    endpoint:
+      path: /performance_report/marketers/by_geo_performance
+      method: GET
+      data_selector: data
+
+  - name: performance_report_marketers_campaigns_by_geo
+    endpoint:
+      path: /performance_report/marketers/campaigns/by_geo
+      method: GET
+      data_selector: data
+
+  - name: performance_report_marketers_by_interest
+    endpoint:
+      path: /performance_report/marketers/by_interest
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports Full Refresh and Incremental syncs
+  - Requires credentials and start-date for setup
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

@@ -1,0 +1,65 @@
+# Source Metadata
+source_name: Braintree
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.braintreepayments.com
+  auth:
+    type: apikey
+    client_id: "{{ dlt.secrets['braintree_client_id'] }}"
+    client_secret: "{{ dlt.secrets['braintree_client_secret'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: customers
+    endpoint:
+      path: /customers
+      method: GET
+      data_selector: customers
+  - name: discounts
+    endpoint:
+      path: /discounts
+      method: GET
+      data_selector: discounts
+  - name: disputes
+    endpoint:
+      path: /disputes
+      method: GET
+      data_selector: disputes
+  - name: transactions
+    endpoint:
+      path: /transactions
+      method: GET
+      data_selector: transactions
+  - name: merchant_accounts
+    endpoint:
+      path: /merchant-accounts
+      method: GET
+      data_selector: merchantAccounts
+  - name: plans
+    endpoint:
+      path: /plans
+      method: GET
+      data_selector: plans
+  - name: subscriptions
+    endpoint:
+      path: /subscriptions
+      method: GET
+      data_selector: subscriptions
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports both Full Refresh and Incremental syncs
+  - Recommended to use restricted, read-only keys for integration
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API credentials or permissions
+  - 403 Forbidden: Ensure proper access rights for the API key
+  - 404 Not Found: Verify endpoint paths and resource availability

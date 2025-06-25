@@ -1,0 +1,125 @@
+# Source Metadata
+source_name: breezometer
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.breezometer.com
+  auth:
+    type: apikey
+    location: query
+    header_name: 
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: air_quality_current
+    endpoint:
+      path: /air-quality/v2/current-conditions
+      method: GET
+      data_selector: data
+      params: {
+                "api_key": "{{ dlt.secrets['breezometer_api_key'] }}",
+                "lat": "{{ lat }}",
+                "lon": "{{ lon }}"
+      }
+
+  - name: air_quality_forecast
+    endpoint:
+      path: /air-quality/v2/hourly-forecast
+      method: GET
+      data_selector: data
+      params: {
+                "api_key": "{{ dlt.secrets['breezometer_api_key'] }}",
+                "lat": "{{ lat }}",
+                "lon": "{{ lon }}",
+                "days": "{{ days }}"
+      }
+
+  - name: air_quality_historical
+    endpoint:
+      path: /air-quality/v2/hourly-history
+      method: GET
+      data_selector: data
+      params: {
+                "api_key": "{{ dlt.secrets['breezometer_api_key'] }}",
+                "lat": "{{ lat }}",
+                "lon": "{{ lon }}",
+                "hours": "{{ historic_hours }}"
+      }
+
+  - name: pollen_forecast
+    endpoint:
+      path: /pollen/v2/daily-forecast
+      method: GET
+      data_selector: data
+      params: {
+                "api_key": "{{ dlt.secrets['breezometer_api_key'] }}",
+                "lat": "{{ lat }}",
+                "lon": "{{ lon }}"
+      }
+
+  - name: weather_current
+    endpoint:
+      path: /weather/v1/current-conditions
+      method: GET
+      data_selector: data
+      params: {
+                "api_key": "{{ dlt.secrets['breezometer_api_key'] }}",
+                "lat": "{{ lat }}",
+                "lon": "{{ lon }}"
+      }
+
+  - name: weather_forecast
+    endpoint:
+      path: /weather/v1/hourly-forecast
+      method: GET
+      data_selector: data
+      params: {
+                "api_key": "{{ dlt.secrets['breezometer_api_key'] }}",
+                "lat": "{{ lat }}",
+                "lon": "{{ lon }}",
+                "hours": "{{ hours }}"
+      }
+
+  - name: wildfire_burnt_area
+    endpoint:
+      path: /wildfire/v1/burnt-area
+      method: GET
+      data_selector: data
+      params: {
+                "api_key": "{{ dlt.secrets['breezometer_api_key'] }}",
+                "lat": "{{ lat }}",
+                "lon": "{{ lon }}"
+      }
+
+  - name: wildfire_locate
+    endpoint:
+      path: /wildfire/v1/current-conditions
+      method: GET
+      data_selector: data
+      params: {
+                "api_key": "{{ dlt.secrets['breezometer_api_key'] }}",
+                "lat": "{{ lat }}",
+                "lon": "{{ lon }}"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - api_key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires an API key for access
+  - Limited to specific geographic coordinates for data retrieval
+
+# Troubleshooting & Error Patterns
+errors:
+  - INVALID_API_KEY: Ensure the API key is correct
+  - RATE_LIMIT_EXCEEDED: Reduce the number of requests made in a short time
+  - 404 Not Found: Check the endpoint path and parameters provided

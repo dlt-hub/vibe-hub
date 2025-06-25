@@ -1,0 +1,152 @@
+# Source Metadata
+source_name: Pardot
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://pi.pardot.com/api
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.salesforce.com/services/oauth2/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextPage
+    cursor_param: offset
+    page_size_param: page_size
+    default_page_size: 1000
+
+# Resources (per endpoint/object)
+resources:
+  - name: account
+    endpoint:
+      path: /v5/account/version
+      method: GET
+      data_selector: account
+  - name: campaigns
+    endpoint:
+      path: /v5/campaigns/version
+      method: GET
+      data_selector: campaigns
+      params: {
+                "incremental": "updated_at"
+      }
+  - name: custom_fields
+    endpoint:
+      path: /v5/customField/version
+      method: GET
+      data_selector: custom_fields
+      params: {
+                "incremental": "updated_at"
+      }
+  - name: custom_redirects
+    endpoint:
+      path: /v5/customRedirect/version
+      method: GET
+      data_selector: custom_redirects
+  - name: dynamic_content
+    endpoint:
+      path: /v5/dynamicContent/version
+      method: GET
+      data_selector: dynamic_content
+      params: {
+                "incremental": "updated_at"
+      }
+  - name: emails
+    endpoint:
+      path: /v5/email/version
+      method: GET
+      data_selector: emails
+      params: {
+                "incremental": "updated_at"
+      }
+  - name: email_clicks
+    endpoint:
+      path: /v4/emailClick/version
+      method: GET
+      data_selector: email_clicks
+      params: {
+                "incremental": "updated_at"
+      }
+  - name: engagement_studio_programs
+    endpoint:
+      path: /v5/engagementStudioProgram/version
+      method: GET
+      data_selector: engagement_studio_programs
+      params: {
+                "incremental": "updated_at"
+      }
+  - name: files
+    endpoint:
+      path: /v5/files/version
+      method: GET
+      data_selector: files
+  - name: folders
+    endpoint:
+      path: /v5/folders/version
+      method: GET
+      data_selector: folders
+  - name: forms
+    endpoint:
+      path: /v5/forms/version
+      method: GET
+      data_selector: forms
+  - name: landing_pages
+    endpoint:
+      path: /v5/landingPage/version
+      method: GET
+      data_selector: landing_pages
+      params: {
+                "incremental": "updated_at"
+      }
+  - name: lifecycle_stages
+    endpoint:
+      path: /v5/lifecycleStage/version
+      method: GET
+      data_selector: lifecycle_stages
+      params: {
+                "incremental": "updated_at"
+      }
+  - name: prospects
+    endpoint:
+      path: /v5/prospects/version
+      method: GET
+      data_selector: prospects
+      params: {
+                "incremental": "updated_at"
+      }
+  - name: users
+    endpoint:
+      path: /v5/users/version
+      method: GET
+      data_selector: users
+      params: {
+                "incremental": "updated_at"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+    - NamedCredential
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses OAuth2 with refresh token — requires setup of connected app in api
+  - Some objects may have rate limits based on plan level
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

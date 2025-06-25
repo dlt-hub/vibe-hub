@@ -1,0 +1,86 @@
+# Source Metadata
+source_name: simfin
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.simfin.com
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: company_info
+    endpoint:
+      path: /company/info
+      method: GET
+      data_selector: data
+
+  - name: financial_statements
+    endpoint:
+      path: /financials/statements
+      method: GET
+      data_selector: data
+
+  - name: price_data
+    endpoint:
+      path: /price/data
+      method: GET
+      data_selector: data
+
+  - name: companies
+    endpoint:
+      path: /companies
+      method: GET
+      data_selector: data
+
+  - name: common_shares_outstanding
+    endpoint:
+      path: /common/shares/outstanding
+      method: GET
+      data_selector: data
+
+  - name: weighted_shares_outstanding
+    endpoint:
+      path: /weighted/shares/outstanding
+      method: GET
+      data_selector: data
+
+  - name: filings_by_company
+    endpoint:
+      path: /filings/company
+      method: GET
+      data_selector: data
+      params: {
+                "filingIdentifier": "id"
+      }
+
+  - name: filings_list
+    endpoint:
+      path: /filings/list
+      method: GET
+      data_selector: data
+      params: {
+                "filingIdentifier": "id"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - APIKey
+
+# Known Quirks or Risks, Caveats
+notes:
+  - No pagination support across all streams
+  - Full sync is supported, but incremental loading is not
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check if the API key is valid or missing
+  - 404 Not Found: Verify the endpoint path and parameters

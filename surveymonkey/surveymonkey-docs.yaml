@@ -1,0 +1,88 @@
+# Source Metadata
+source_name: SurveyMonkey
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.surveymonkey.com/v3
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.surveymonkey.com/oauth/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next_page
+    cursor_param: offset
+    page_size_param: limit
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: Surveys
+    endpoint:
+      path: /surveys
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: SurveyPages
+    endpoint:
+      path: /surveys/{survey_id}/pages
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: SurveyQuestions
+    endpoint:
+      path: /surveys/{survey_id}/pages/{page_id}/questions
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: SurveyResponses
+    endpoint:
+      path: /surveys/{id}/responses/bulk
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: SurveyCollectors
+    endpoint:
+      path: /surveys/{survey_id}/collectors
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: Collectors
+    endpoint:
+      path: /collectors/{collector_id}
+      method: GET
+      data_selector: data
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - AccessToken
+    - OAuth
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports OAuth authentication only for US accounts
+  - Rate limits apply based on account type
+
+# Troubleshooting & Error Patterns
+errors:
+  - 400 Bad Request: Check request parameters for correctness
+  - 401 Unauthorized: Verify access token or OAuth scopes
+  - 429 Too Many Requests: Reduce request frequency to avoid rate limits

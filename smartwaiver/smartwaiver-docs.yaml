@@ -1,0 +1,57 @@
+# Source Metadata
+source_name: Smartwaiver
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.smartwaiver.com
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: templates
+    endpoint:
+      path: /templates
+      method: GET
+      data_selector: templates
+  - name: signed_waivers
+    endpoint:
+      path: /signed_waivers
+      method: GET
+      data_selector: signed_waivers
+      paginator:
+        type: DefaultPaginator
+  - name: detailed_signed_waiver
+    endpoint:
+      path: /detailed_signed_waiver
+      method: GET
+      data_selector: detailed_signed_waiver
+  - name: checkins
+    endpoint:
+      path: /checkins
+      method: GET
+      data_selector: checkins
+      paginator:
+        type: DefaultPaginator
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Due to some limitation of SmartWaiver API it can have situations where you won't be able to retrieve all records available.
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - QUERY_TIMEOUT: Break down filters or add selectivity
+  - 401 Unauthorized: Check API key validity

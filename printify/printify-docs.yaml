@@ -1,0 +1,68 @@
+# Source Metadata
+source_name: printify
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.printify.com/v1
+  auth:
+    type: apikey
+    api_token: "{{ dlt.secrets['api_token'] }}"
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: shops
+    endpoint:
+      path: /shops
+      method: GET
+      data_selector: data
+
+  - name: shop_orders
+    endpoint:
+      path: /shops/{shop_id}/orders
+      method: GET
+      data_selector: data
+
+  - name: catalog_blueprints
+    endpoint:
+      path: /catalog/blueprints
+      method: GET
+      data_selector: data
+
+  - name: catalog_print_providers
+    endpoint:
+      path: /catalog/print_providers
+      method: GET
+      data_selector: data
+
+  - name: shop_products
+    endpoint:
+      path: /shops/{shop_id}/products
+      method: GET
+      data_selector: data
+
+  - name: catalog_blueprint_print_providers
+    endpoint:
+      path: /catalog/blueprints/{blueprint_id}/print_providers
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Token
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires API token from Printify account settings.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API token validity

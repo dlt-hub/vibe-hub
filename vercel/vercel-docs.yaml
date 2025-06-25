@@ -1,0 +1,87 @@
+# Source Metadata
+source_name: Vercel
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.vercel.com
+  auth:
+    type: apikey
+    access_token: "{{ dlt.secrets['access_token'] }}"
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: projects
+    endpoint:
+      path: /v1/projects
+      method: GET
+      data_selector: projects
+
+  - name: teams
+    endpoint:
+      path: /v1/teams
+      method: GET
+      data_selector: teams
+
+  - name: user
+    endpoint:
+      path: /v1/user
+      method: GET
+      data_selector: user
+
+  - name: deployments
+    endpoint:
+      path: /v1/deployments
+      method: GET
+      data_selector: deployments
+
+  - name: checks
+    endpoint:
+      path: /v1/checks
+      method: GET
+      data_selector: checks
+
+  - name: environments
+    endpoint:
+      path: /v1/environments
+      method: GET
+      data_selector: environments
+
+  - name: auth_tokens
+    endpoint:
+      path: /v1/auth/tokens
+      method: GET
+      data_selector: auth_tokens
+
+  - name: aliases
+    endpoint:
+      path: /v1/aliases
+      method: GET
+      data_selector: aliases
+
+  - name: deployment_events
+    endpoint:
+      path: /v1/deployment-events
+      method: GET
+      data_selector: deployment_events
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - AccessToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports full sync for all streams
+  - Incremental loading is supported only for deployments and aliases
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Verify access token validity and permissions

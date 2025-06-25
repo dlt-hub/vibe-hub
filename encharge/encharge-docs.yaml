@@ -1,0 +1,68 @@
+# Source Metadata
+source_name: encharge
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.encharge.io
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: peoples
+    endpoint:
+      path: /peoples
+      method: GET
+      data_selector: records
+  - name: accounts
+    endpoint:
+      path: /accounts
+      method: GET
+      data_selector: records
+  - name: account_tags
+    endpoint:
+      path: /account_tags
+      method: GET
+      data_selector: records
+  - name: segments
+    endpoint:
+      path: /segments
+      method: GET
+      data_selector: records
+  - name: segment_people
+    endpoint:
+      path: /segment_people
+      method: GET
+      data_selector: records
+  - name: fields
+    endpoint:
+      path: /fields
+      method: GET
+      data_selector: records
+  - name: schemas
+    endpoint:
+      path: /schemas
+      method: GET
+      data_selector: records
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - api_key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - No pagination support for some streams
+  - Supports full sync but not incremental sync
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key validity
+  - 404 Not Found: Verify endpoint path and resource availability

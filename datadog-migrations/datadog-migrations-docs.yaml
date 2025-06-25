@@ -1,0 +1,69 @@
+# Source Metadata
+source_name: datadog
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+  - Bulk 2.0
+  - Metadata API
+
+# Client / Connection Config
+client:
+  base_url: https://api.datadoghq.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://app.datadoghq.com/oauth/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next
+    cursor_param: cursor
+    page_size_param: page_size
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: dashboards
+    endpoint:
+      path: /api/v2/dashboards
+      method: GET
+      data_selector: dashboards
+      params: {}
+
+  - name: monitors
+    endpoint:
+      path: /api/v1/monitor
+      method: GET
+      data_selector: monitors
+      params: {}
+
+  - name: events
+    endpoint:
+      path: /api/v1/events
+      method: GET
+      data_selector: events
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth2
+    - Application
+
+# Known Quirks or Risks, Caveats
+notes:
+  - On December 13, 2024, is_read_only attribute will be removed from dashboards API
+  - Incremental sync requires setting start and end date config options
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - UNAUTHORIZED: Check API key or OAuth token validity
+  - NOT_FOUND: Ensure endpoint path is correct

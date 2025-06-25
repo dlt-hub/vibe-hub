@@ -1,0 +1,75 @@
+# Source Metadata
+source_name: salesforce
+version: 2.7.11
+authentication_required: true
+api_types_available:
+  - REST
+  - Bulk 2.0
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.salesforce.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.salesforce.com/services/oauth2/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    page_size_param: pageSize
+    default_page_size: 200
+
+# Resources (per endpoint/object)
+resources:
+  - name: account
+    endpoint:
+      path: /services/data/vXX.X/sobjects/Account
+      method: GET
+      data_selector: records
+      params: {
+                "incremental": "LastModifiedDate"
+      }
+
+  - name: contact
+    endpoint:
+      path: /services/data/vXX.X/sobjects/Contact
+      method: GET
+      data_selector: records
+      params: {
+                "incremental": "LastModifiedDate"
+      }
+      
+  - name: opportunity
+    endpoint:
+      path: /services/data/vXX.X/sobjects/Opportunity
+      method: GET
+      data_selector: records
+      params: {
+                "incremental": "LastModifiedDate"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+    - NamedCredential
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses OAuth2 with refresh token — requires setup of connected app in Salesforce
+  - Some objects may have specific read permissions based on user roles and permission sets
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - QUERY_TIMEOUT: Break down filters or add selectivity
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

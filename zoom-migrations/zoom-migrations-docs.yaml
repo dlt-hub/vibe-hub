@@ -1,0 +1,72 @@
+# Source Metadata
+source_name: zoom
+version: 1.1
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.zoom.us/v2
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://zoom.us/oauth/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: users
+      params: {}
+
+  - name: meetings
+    endpoint:
+      path: /meetings
+      method: GET
+      data_selector: meetings
+      params: {}
+
+  - name: webinars
+    endpoint:
+      path: /webinars
+      method: GET
+      data_selector: webinars
+      params: {}
+
+  - name: chat_channels
+    endpoint:
+      path: /chat/channels
+      method: GET
+      data_selector: chat_channels
+      params: {}
+
+  - name: reports
+    endpoint:
+      path: /reports
+      method: GET
+      data_selector: reports
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires setup of server-to-server OAuth app with specified scopes
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check OAuth credentials and scopes
+  - 403 Forbidden: Ensure sufficient permissions for requested resources

@@ -1,0 +1,74 @@
+# Source Metadata
+source_name: commercetools
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.commercetools.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://auth.commercetools.com/oauth/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: offset
+    page_size_param: limit
+    default_page_size: 50
+
+# Resources (per endpoint/object)
+resources:
+  - name: customers
+    endpoint:
+      path: /{projectKey}/customers
+      method: GET
+      data_selector: results
+
+  - name: orders
+    endpoint:
+      path: /{projectKey}/orders
+      method: GET
+      data_selector: results
+
+  - name: products
+    endpoint:
+      path: /{projectKey}/products
+      method: GET
+      data_selector: results
+
+  - name: discountCodes
+    endpoint:
+      path: /{projectKey}/discountCodes
+      method: GET
+      data_selector: results
+
+  - name: payments
+    endpoint:
+      path: /{projectKey}/payments
+      method: GET
+      data_selector: results
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - ApiClient
+    - ProjectKey
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires projectKey for API requests
+  - Rate limit restrictions apply
+
+# Troubleshooting & Error Patterns
+errors:
+  - 400 Bad Request: Check for invalid parameters
+  - 401 Unauthorized: Ensure valid client credentials and permissions
+  - 429 Too Many Requests: Respect rate limits and back off on requests

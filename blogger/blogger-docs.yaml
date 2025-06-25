@@ -1,0 +1,60 @@
+source_name: Blogger
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+client:
+  base_url: https://www.googleapis.com/blogger/v3
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://oauth2.googleapis.com/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['client_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+resources:
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: items
+
+  - name: blogs
+    endpoint:
+      path: /blogs
+      method: GET
+      data_selector: items
+
+  - name: posts
+    endpoint:
+      path: /posts
+      method: GET
+      data_selector: items
+
+  - name: pages
+    endpoint:
+      path: /pages
+      method: GET
+      data_selector: items
+
+  - name: comments
+    endpoint:
+      path: /comments
+      method: GET
+      data_selector: items
+
+notes:
+  - Supports Full Sync
+  - Does not support Incremental
+
+errors:
+  - 401 Unauthorized: Check OAuth token validity
+  - 403 Forbidden: Ensure correct permissions for the requested resources

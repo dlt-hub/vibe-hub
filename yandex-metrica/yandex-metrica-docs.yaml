@@ -1,0 +1,59 @@
+# Source Metadata
+source_name: yandex_metrica
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api-metrika.yandex.net
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://oauth.yandex.com/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: views
+    endpoint:
+      path: /management/v1/counters/{counter_id}/data/visits
+      method: GET
+      data_selector: data
+      params: {
+                "start_date": "YYYY-MM-DD",
+                "end_date": "YYYY-MM-DD"
+      }
+
+  - name: sessions
+    endpoint:
+      path: /management/v1/counters/{counter_id}/data/hits
+      method: GET
+      data_selector: data
+      params: {
+                "start_date": "YYYY-MM-DD",
+                "end_date": "YYYY-MM-DD"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth2Token
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Recommended to sync data once a day
+  - Some syncs may take a long time to finish; timeout period is 2 hours
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - QUERY_TIMEOUT: Adjust filters or improve selectivity
+  - 401 Unauthorized: Verify OAuth scopes or token validity

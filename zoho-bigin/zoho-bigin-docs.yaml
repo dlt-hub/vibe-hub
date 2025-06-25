@@ -1,0 +1,96 @@
+# Source Metadata
+source_name: Zoho Bigin
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.api.bigin.zoho.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://accounts.zoho.com/oauth/v2/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['client_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: records
+  - name: modules
+    endpoint:
+      path: /modules
+      method: GET
+      data_selector: records
+  - name: organizations
+    endpoint:
+      path: /organizations
+      method: GET
+      data_selector: records
+  - name: roles
+    endpoint:
+      path: /roles
+      method: GET
+      data_selector: records
+  - name: notes
+    endpoint:
+      path: /notes
+      method: GET
+      data_selector: records
+  - name: tags
+    endpoint:
+      path: /tags
+      method: GET
+      data_selector: records
+  - name: companies
+    endpoint:
+      path: /companies
+      method: GET
+      data_selector: records
+  - name: contacts
+    endpoint:
+      path: /contacts
+      method: GET
+      data_selector: records
+  - name: tasks
+    endpoint:
+      path: /tasks
+      method: GET
+      data_selector: records
+  - name: events
+    endpoint:
+      path: /events
+      method: GET
+      data_selector: records
+  - name: products
+    endpoint:
+      path: /products
+      method: GET
+      data_selector: records
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth
+    - RefreshToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Pagination for users, notes, companies, contacts, tasks, events, products is supported; others do not support pagination.
+  - Full sync is supported for all resources; incremental loading is not supported.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check OAuth credentials and token validity

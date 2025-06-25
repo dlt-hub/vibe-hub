@@ -1,0 +1,85 @@
+# Source Metadata
+source_name: typeform
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.typeform.com
+  auth:
+    type: apikey
+    token_url: 
+    client_id: 
+    client_secret: 
+    refresh_token: 
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: offset
+    page_size_param: page_size
+    default_page_size: 200
+
+# Resources (per endpoint/object)
+resources:
+  - name: forms
+    endpoint:
+      path: /forms
+      method: GET
+      data_selector: items
+      params: {}
+
+  - name: responses
+    endpoint:
+      path: /forms/{form_id}/responses
+      method: GET
+      data_selector: items
+      params: {
+                "incremental": "response_id"
+      }
+
+  - name: webhooks
+    endpoint:
+      path: /webhooks
+      method: GET
+      data_selector: items
+      params: {}
+
+  - name: workspaces
+    endpoint:
+      path: /workspaces
+      method: GET
+      data_selector: items
+      params: {}
+
+  - name: images
+    endpoint:
+      path: /images
+      method: GET
+      data_selector: items
+      params: {}
+
+  - name: themes
+    endpoint:
+      path: /themes
+      method: GET
+      data_selector: items
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - PersonalAccessToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - API rate limits (2 requests per second)
+  - Page size limit: Forms - 200, Responses - 1000
+
+# Troubleshooting & Error Patterns
+errors:
+  - 429 Too Many Requests: Reduce the frequency of API calls
+  - 401 Unauthorized: Check API key or token validity

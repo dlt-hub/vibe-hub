@@ -1,0 +1,63 @@
+# Source Metadata
+source_name: news_api
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://newsapi.org/v2
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['news_api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: everything
+    endpoint:
+      path: /everything
+      method: GET
+      data_selector: articles
+      params: {
+                "apiKey": "{{ dlt.secrets['news_api_key'] }}",
+                "search_query": "",
+                "search_in": "",
+                "sources": "",
+                "domains": "",
+                "exclude_domains": "",
+                "start_date": "",
+                "end_date": "",
+                "language": "",
+                "country": "",
+                "category": "",
+                "sort_by": ""
+      }
+      
+  - name: top_headlines
+    endpoint:
+      path: /top-headlines
+      method: GET
+      data_selector: articles
+      params: {
+                "apiKey": "{{ dlt.secrets['news_api_key'] }}",
+                "country": "",
+                "category": ""
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - api_key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Free tier allows 100 requests per day and up to 100 results per request.
+  - It is recommended to use a paid tier API key.
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Upgrade to a paid tier for more requests.
+  - 401 Unauthorized: Check if the API key is valid and correctly set.

@@ -1,0 +1,78 @@
+# Source Metadata
+source_name: zonka_feedback
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.zonkafeedback.com
+  auth:
+    type: apikey
+    auth_token: "{{ dlt.secrets['auth_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: responses
+    endpoint:
+      path: /responses
+      method: GET
+      data_selector: records
+
+  - name: workspaces
+    endpoint:
+      path: /workspaces
+      method: GET
+      data_selector: records
+
+  - name: surveys
+    endpoint:
+      path: /surveys
+      method: GET
+      data_selector: records
+
+  - name: contacts
+    endpoint:
+      path: /contacts
+      method: GET
+      data_selector: records
+
+  - name: tasks
+    endpoint:
+      path: /tasks
+      method: GET
+      data_selector: records
+
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: records
+
+  - name: locations
+    endpoint:
+      path: /locations
+      method: GET
+      data_selector: records
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - AuthToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires Data Center ID and Auth Token for access
+  - No incremental loading support for resources
+
+# Troubleshooting & Error Patterns
+errors:
+  - INVALID_AUTH_TOKEN: Ensure the Auth Token is generated correctly
+  - RESOURCE_NOT_FOUND: Check the endpoint path and parameters

@@ -1,0 +1,61 @@
+# Source Metadata
+source_name: mysql
+version: 3.4.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-mysql-instance.com
+  auth:
+    type: basic
+    username: "{{ dlt.secrets['username'] }}"
+    password: "{{ dlt.secrets['password'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: databases
+    endpoint:
+      path: /databases
+      method: GET
+      data_selector: records
+      params: {}
+
+  - name: tables
+    endpoint:
+      path: /databases/{database}/tables
+      method: GET
+      data_selector: records
+      params: {
+                "database": "your_database_name"
+      }
+
+  - name: rows
+    endpoint:
+      path: /databases/{database}/tables/{table}/rows
+      method: GET
+      data_selector: records
+      params: {
+                "database": "your_database_name",
+                "table": "your_table_name"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - MySQLUser
+    - MySQLDatabase
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Ensure binary logging is enabled for Change Data Capture (CDC)
+  - Requires a read-only user with appropriate permissions
+
+# Troubleshooting & Error Patterns
+errors:
+  - 1045: Access denied for user; check credentials
+  - 2002: Can't connect to MySQL server; verify hostname and port
+  - 1049: Unknown database; check database name

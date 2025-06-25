@@ -1,0 +1,76 @@
+# Source Metadata
+source_name: Pexels-API
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.pexels.com/v1
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: photos_search
+    endpoint:
+      path: /search
+      method: GET
+      data_selector: photos
+      params: {
+                "query": "people",
+                "orientation": "landscape",
+                "size": "large",
+                "color": "any",
+                "locale": "en-US"
+      }
+  
+  - name: photos_curated
+    endpoint:
+      path: /curated
+      method: GET
+      data_selector: photos
+      params: {
+                "per_page": "1"
+      }
+
+  - name: videos_search
+    endpoint:
+      path: /videos/search
+      method: GET
+      data_selector: videos
+      params: {
+                "query": "people"
+      }
+
+  - name: videos_popular
+    endpoint:
+      path: /videos/popular
+      method: GET
+      data_selector: videos
+
+  - name: collection_featured
+    endpoint:
+      path: /collections/featured
+      method: GET
+      data_selector: collections
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - api_key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - API key is mandatory for accessing the API
+  - The API supports specific query parameters for search endpoints
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check if the API key is valid
+  - 404 Not Found: Verify endpoint path and parameters

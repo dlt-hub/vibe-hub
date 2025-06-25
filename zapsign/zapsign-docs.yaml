@@ -1,0 +1,58 @@
+# Source Metadata
+source_name: zapsign
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://app.zapsign.co/api/v1
+  auth:
+    type: apikey
+    auth_token: "{{ dlt.secrets['api_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: templates
+    endpoint:
+      path: /templates
+      method: GET
+      data_selector: results
+      params: {}
+
+  - name: documents
+    endpoint:
+      path: /documents
+      method: GET
+      data_selector: results
+      params: {}
+
+  - name: signer
+    endpoint:
+      path: /signer
+      method: GET
+      data_selector: results
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Token
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports Full Sync for all resources
+  - Incremental loading not supported for signer resource
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API token validity
+  - 404 Not Found: Verify endpoint path and parameters
+  - 429 Too Many Requests: Reduce the frequency of API calls

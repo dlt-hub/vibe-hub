@@ -1,0 +1,64 @@
+# Source Metadata
+source_name: google_drive
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://www.googleapis.com/drive/v3
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://oauth2.googleapis.com/token
+    client_id: "{{ dlt.secrets['google_drive_client_id'] }}"
+    client_secret: "{{ dlt.secrets['google_drive_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['google_drive_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: page
+    cursor_param: pageToken
+    page_size_param: pageSize
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: files
+    endpoint:
+      path: /files
+      method: GET
+      data_selector: files
+      params: {
+                "q": "'{folder_id}' in parents",
+                "fields": "nextPageToken, files(id, name, mimeType, modifiedTime)"
+      }
+
+  - name: permissions
+    endpoint:
+      path: /files/{fileId}/permissions
+      method: GET
+      data_selector: permissions
+      params: {
+                "fields": "permissions(id, role, type)"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - ServiceAccount
+    - OAuth2Client
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires Google Drive API and Admin SDK API to be enabled
+  - Subfolders are recursively included in the sync
+
+# Troubleshooting & Error Patterns
+errors:
+  - 404: Not Found - Ensure the folder ID is correct and accessible
+  - 403: Forbidden - Check permissions for accessing the folder or file
+  - 401: Unauthorized - Verify OAuth credentials and token validity

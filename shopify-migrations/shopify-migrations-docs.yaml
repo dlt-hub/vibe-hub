@@ -1,0 +1,100 @@
+# Source Metadata
+source_name: shopify
+version: 3.0.0
+authentication_required: true
+api_types_available:
+  - REST
+  - GraphQL
+
+# Client / Connection Config
+client:
+  base_url: https://your-shopify-instance.myshopify.com/admin/api/2024-04
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://your-shopify-instance.myshopify.com/admin/oauth/access_token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: X-Shopify-Access-Token
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextPageInfo
+    cursor_param: after
+    page_size_param: limit
+    default_page_size: 50
+
+# Resources (per endpoint/object)
+resources:
+  - name: countries
+    endpoint:
+      path: /graphql
+      method: POST
+      data_selector: data.countries
+      params: {
+                "incremental": "updated_at"
+      }
+
+  - name: product_variants
+    endpoint:
+      path: /graphql
+      method: POST
+      data_selector: data.productVariants
+      params: {
+                "incremental": "updated_at"
+      }
+
+  - name: orders
+    endpoint:
+      path: /graphql
+      method: POST
+      data_selector: data.orders
+      params: {
+                "incremental": "updated_at"
+      }
+
+  - name: articles
+    endpoint:
+      path: /graphql
+      method: POST
+      data_selector: data.articles
+      params: {
+                "incremental": "updated_at"
+      }
+
+  - name: blogs
+    endpoint:
+      path: /graphql
+      method: POST
+      data_selector: data.blogs
+      params: {
+                "incremental": "updated_at"
+      }
+
+  - name: pages
+    endpoint:
+      path: /graphql
+      method: POST
+      data_selector: data.pages
+      params: {
+                "incremental": "updated_at"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires `read_shipping` access scope for countries stream
+  - Refresh schema and clear affected streams after changes
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check OAuth scopes or token expiration
+  - 403 Forbidden: Ensure the app has necessary permissions

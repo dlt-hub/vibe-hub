@@ -1,0 +1,76 @@
+source_name: notion
+version: 3.0.0
+authentication_required: true
+api_types_available:
+  - REST
+
+client:
+  base_url: https://api.notion.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.notion.com/v1/oauth/token
+    client_id: "{{ dlt.secrets['notion_client_id'] }}"
+    client_secret: "{{ dlt.secrets['notion_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['notion_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next_cursor
+    cursor_param: start_cursor
+    page_size_param: page_size
+    default_page_size: 100
+
+resources:
+  - name: comments
+    endpoint:
+      path: /v1/comments
+      method: GET
+      data_selector: results
+      params: {
+                "incremental": "created_time"
+      }
+
+  - name: pages
+    endpoint:
+      path: /v1/pages
+      method: GET
+      data_selector: results
+      params: {
+                "incremental": "last_edited_time"
+      }
+
+  - name: databases
+    endpoint:
+      path: /v1/databases
+      method: GET
+      data_selector: results
+      params: {
+                "incremental": "last_edited_time"
+      }
+
+  - name: blocks
+    endpoint:
+      path: /v1/blocks
+      method: GET
+      data_selector: results
+      params: {
+                "incremental": "last_edited_time"
+      }
+
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+    - AuthProvider
+
+notes:
+  - Data for the Comments stream needs to be cleared before resuming syncs after the upgrade.
+  - Changes to JSON schemas may require a full schema refresh and data reset when upgrading.
+
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Reduce number of requests or implement exponential backoff.
+  - QUERY_TIMEOUT: Optimize query parameters or reduce data volume.
+  - 401 Unauthorized: Verify OAuth token and permissions.

@@ -1,0 +1,130 @@
+# Source Metadata
+source_name: amazon_seller_partner
+version: 4.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://sellingpartnerapi-na.amazon.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.amazon.com/auth/o2/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextToken
+    cursor_param: nextToken
+    page_size_param: limit
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: get_fba_storage_fee_charges_data
+    endpoint:
+      path: /fba/inventory/v1/fbaStorageFeeCharges
+      method: GET
+      data_selector: payload
+      params: {}
+
+  - name: get_flat_file_all_orders_data_by_order_date_general
+    endpoint:
+      path: /orders/v0/orders
+      method: GET
+      data_selector: payload
+      params: {}
+
+  - name: get_flat_file_all_orders_data_by_last_update_general
+    endpoint:
+      path: /orders/v0/orders
+      method: GET
+      data_selector: payload
+      params: {}
+
+  - name: get_amazon_fulfilled_shipments_data_general
+    endpoint:
+      path: /fba/shipments/v0/shipments
+      method: GET
+      data_selector: payload
+      params: {}
+
+  - name: get_ledger_detail_view_data
+    endpoint:
+      path: /finances/v0/ledgers
+      method: GET
+      data_selector: payload
+      params: {}
+
+  - name: get_merchants_listings_fyp_report
+    endpoint:
+      path: /reports/v0/reports
+      method: GET
+      data_selector: payload
+      params: {}
+
+  - name: get_stranded_inventory_ui_data
+    endpoint:
+      path: /fba/inventory/v1/strandedInventory
+      method: GET
+      data_selector: payload
+      params: {}
+
+  - name: get_v2_settlement_report_data_flat_file
+    endpoint:
+      path: /finances/v0/settlements
+      method: GET
+      data_selector: payload
+      params: {}
+
+  - name: get_merchant_listings_all_data
+    endpoint:
+      path: /listings/v0/items
+      method: GET
+      data_selector: payload
+      params: {}
+
+  - name: get_merchant_listings_data
+    endpoint:
+      path: /listings/v0/items
+      method: GET
+      data_selector: payload
+      params: {}
+
+  - name: get_merchant_listings_inactive_data
+    endpoint:
+      path: /listings/v0/items
+      method: GET
+      data_selector: payload
+      params: {}
+
+  - name: get_merchant_listings_data_back_compat
+    endpoint:
+      path: /listings/v0/items
+      method: GET
+      data_selector: payload
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth2
+    - SellingPartnerApi
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires user to refresh source schema and reset streams after upgrading
+  - Some endpoints may have rate limits
+
+# Troubleshooting & Error Patterns
+errors:
+  - 400 Bad Request: Review request parameters
+  - 401 Unauthorized: Check OAuth token validity and permissions
+  - 429 Too Many Requests: Implement exponential backoff for retries

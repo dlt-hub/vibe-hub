@@ -1,0 +1,130 @@
+# Source Metadata
+source_name: linkedin_ads
+version: 5.0.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.linkedin.com/v2
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://www.linkedin.com/oauth/v2/accessToken
+    client_id: "{{ dlt.secrets['linkedin_client_id'] }}"
+    client_secret: "{{ dlt.secrets['linkedin_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['linkedin_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: paging.next
+    cursor_param: start
+    page_size_param: count
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: ad_campaign_analytics
+    endpoint:
+      path: /adCampaignAnalyticsV2
+      method: GET
+      data_selector: elements
+      params: {}
+
+  - name: ad_creative_analytics
+    endpoint:
+      path: /adCreativeAnalyticsV2
+      method: GET
+      data_selector: elements
+      params: {}
+
+  - name: ad_impression_device_analytics
+    endpoint:
+      path: /adImpressionDeviceAnalyticsV2
+      method: GET
+      data_selector: elements
+      params: {}
+
+  - name: ad_member_company_size_analytics
+    endpoint:
+      path: /adMemberCompanySizeAnalyticsV2
+      method: GET
+      data_selector: elements
+      params: {}
+
+  - name: ad_member_country_analytics
+    endpoint:
+      path: /adMemberCountryAnalyticsV2
+      method: GET
+      data_selector: elements
+      params: {}
+
+  - name: ad_member_job_function_analytics
+    endpoint:
+      path: /adMemberJobFunctionAnalyticsV2
+      method: GET
+      data_selector: elements
+      params: {}
+
+  - name: ad_member_job_title_analytics
+    endpoint:
+      path: /adMemberJobTitleAnalyticsV2
+      method: GET
+      data_selector: elements
+      params: {}
+
+  - name: ad_member_industry_analytics
+    endpoint:
+      path: /adMemberIndustryAnalyticsV2
+      method: GET
+      data_selector: elements
+      params: {}
+
+  - name: ad_member_seniority_analytics
+    endpoint:
+      path: /adMemberSeniorityAnalyticsV2
+      method: GET
+      data_selector: elements
+      params: {}
+
+  - name: ad_member_region_analytics
+    endpoint:
+      path: /adMemberRegionAnalyticsV2
+      method: GET
+      data_selector: elements
+      params: {}
+
+  - name: ad_member_company_analytics
+    endpoint:
+      path: /adMemberCompanyAnalyticsV2
+      method: GET
+      data_selector: elements
+      params: {}
+
+  - name: account_users
+    endpoint:
+      path: /accounts/{accountId}/users
+      method: GET
+      data_selector: elements
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires OAuth2 setup and permissions for accessing LinkedIn Ads data
+  - May encounter data duplication if previous streams were using old primary keys
+
+# Troubleshooting & Error Patterns
+errors:
+  - RATE_LIMIT_EXCEEDED: Reduce request frequency or batch requests
+  - UNAUTHORIZED: Ensure valid OAuth token and permissions
+  - 404 NOT_FOUND: Check if the resource path is correct and the account is valid

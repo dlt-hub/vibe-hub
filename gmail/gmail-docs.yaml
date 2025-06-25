@@ -1,0 +1,82 @@
+# Source Metadata
+source_name: gmail
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://gmail.googleapis.com/gmail/v1
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://oauth2.googleapis.com/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['client_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: profile
+    endpoint:
+      path: /users/me/profile
+      method: GET
+      data_selector: 
+  - name: drafts
+    endpoint:
+      path: /users/me/drafts
+      method: GET
+      data_selector: drafts
+  - name: labels
+    endpoint:
+      path: /users/me/labels
+      method: GET
+      data_selector: labels
+  - name: labels_details
+    endpoint:
+      path: /users/me/labels
+      method: GET
+      data_selector: labels
+  - name: messages
+    endpoint:
+      path: /users/me/messages
+      method: GET
+      data_selector: messages
+  - name: messages_details
+    endpoint:
+      path: /users/me/messages/{id}
+      method: GET
+      data_selector: 
+  - name: threads
+    endpoint:
+      path: /users/me/threads
+      method: GET
+      data_selector: threads
+  - name: threads_details
+    endpoint:
+      path: /users/me/threads/{id}
+      method: GET
+      data_selector: 
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires OAuth 2.0 authentication with the scope `https://www.googleapis.com/auth/gmail.readonly`
+  - Include Spam & Trash option defaults to false
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check OAuth token and permissions
+  - 404 Not Found: Verify resource IDs and paths

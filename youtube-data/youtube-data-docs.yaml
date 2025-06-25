@@ -1,0 +1,67 @@
+# Source Metadata
+source_name: youtube_data_api
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://www.googleapis.com/youtube/v3
+  auth:
+    type: apikey
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: videos
+    endpoint:
+      path: /videos
+      method: GET
+      data_selector: items
+
+  - name: video_details
+    endpoint:
+      path: /videos
+      method: GET
+      data_selector: items
+
+  - name: channels
+    endpoint:
+      path: /channels
+      method: GET
+      data_selector: items
+      params: {
+                "id": "{{ channel_id }}"
+      }
+
+  - name: comments
+    endpoint:
+      path: /commentThreads
+      method: GET
+      data_selector: items
+
+  - name: channel_comments
+    endpoint:
+      path: /commentThreads
+      method: GET
+      data_selector: items
+      params: {
+                "id": "{{ channel_id }}"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - channel_id
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses API key for authentication
+  - Supports full sync but not incremental loading
+
+# Troubleshooting & Error Patterns
+errors:
+  - 403 Forbidden: Check API key and quota
+  - 404 Not Found: Verify resource IDs or parameters

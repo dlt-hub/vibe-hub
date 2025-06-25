@@ -1,0 +1,71 @@
+# Source Metadata
+source_name: hubspot
+version: 5.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.hubapi.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.hubapi.com/oauth/v1/token
+    client_id: "{{ dlt.secrets['hubspot_client_id'] }}"
+    client_secret: "{{ dlt.secrets['hubspot_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['hubspot_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: page
+    page_size_param: limit
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: contacts
+    endpoint:
+      path: /contacts/v1/lists/all/contacts/all
+      method: GET
+      data_selector: contacts
+      params: {
+                "incremental": "updated_at"
+      }
+
+  - name: deals
+    endpoint:
+      path: /deals/v1/deal/paged
+      method: GET
+      data_selector: deals
+      params: {
+                "incremental": "updated_at"
+      }
+
+  - name: companies
+    endpoint:
+      path: /companies/v2/companies/paged
+      method: GET
+      data_selector: companies
+      params: {
+                "incremental": "updated_at"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth2Token
+    - HubSpotClient
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Refresh the source schema after upgrading to ensure uninterrupted syncs.
+  - Certain streams may have been deprecated in the latest version.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 404 Not Found: Verify the endpoint URL and parameters
+  - 401 Unauthorized: Check OAuth token validity and scopes
+  - 429 Too Many Requests: Implement exponential backoff for retries

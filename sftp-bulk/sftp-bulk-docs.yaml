@@ -1,0 +1,43 @@
+# Source Metadata
+source_name: SFTP Bulk
+version: 1.0
+authentication_required: true
+api_types_available:
+  - SFTP
+
+# Client / Connection Config
+client:
+  base_url: sftp://your-sftp-server.com
+  auth:
+    type: password  # or key_pair
+    location: header
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: file_stream
+    endpoint:
+      path: /
+      method: GET
+      data_selector: files
+      params: {
+                "folder_path": "/logs/2022",
+                "file_type": "CSV"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - PrivateKey
+    - Username
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports incremental loading based on file creation or modification time
+  - Can load only the most recent file when configured
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Verify username and password or private key configuration
+  - 404 Not Found: Check folder path and file naming conventions

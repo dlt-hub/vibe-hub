@@ -1,0 +1,74 @@
+# Source Metadata
+source_name: SparkPost
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.sparkpost.com/api
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: message_events
+    endpoint:
+      path: /api/v1/message-events
+      method: GET
+      data_selector: results
+
+  - name: sending_domains
+    endpoint:
+      path: /api/v1/sending-domains
+      method: GET
+      data_selector: results
+
+  - name: ab_test
+    endpoint:
+      path: /api/v1/ab-test
+      method: GET
+      data_selector: results
+
+  - name: templates
+    endpoint:
+      path: /api/v1/templates
+      method: GET
+      data_selector: results
+
+  - name: recipients
+    endpoint:
+      path: /api/v1/recipients
+      method: GET
+      data_selector: results
+
+  - name: subaccounts
+    endpoint:
+      path: /api/v1/subaccounts
+      method: GET
+      data_selector: results
+
+  - name: snippets
+    endpoint:
+      path: /api/v1/snippets
+      method: GET
+      data_selector: results
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - No pagination support for most endpoints
+  - Incremental loading is not supported
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key validity
+  - 404 Not Found: Verify endpoint path and resource existence

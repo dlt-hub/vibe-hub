@@ -1,0 +1,63 @@
+# Source Metadata
+source_name: Survicate
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.survicate.com
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: surveys
+    endpoint:
+      path: /surveys
+      method: GET
+      data_selector: surveys
+      params: {
+                "start_date": "start_date"
+      }
+
+  - name: surveys_questions
+    endpoint:
+      path: /surveys/questions
+      method: GET
+      data_selector: questions
+
+  - name: surveys_responses
+    endpoint:
+      path: /surveys/responses
+      method: GET
+      data_selector: responses
+      params: {
+                "start_date": "start_date"
+      }
+
+  - name: respondents_attributes
+    endpoint:
+      path: /respondents/attributes
+      method: GET
+      data_selector: attributes
+
+  - name: respondents_responses
+    endpoint:
+      path: /respondents/responses
+      method: GET
+      data_selector: responses
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports full sync for all streams except surveys_questions and respondents_attributes
+  - Incremental loading is supported for surveys and surveys_responses only
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key validity
+  - 404 Not Found: Verify endpoint path and parameters

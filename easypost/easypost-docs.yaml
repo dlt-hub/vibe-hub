@@ -1,0 +1,79 @@
+# Source Metadata
+source_name: easypost
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.easypost.com/v2
+  auth:
+    type: apikey
+    username: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Content-Type: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: batches
+    endpoint:
+      path: /batches
+      method: GET
+      data_selector: batches
+  - name: addresses
+    endpoint:
+      path: /addresses
+      method: GET
+      data_selector: addresses
+  - name: trackers
+    endpoint:
+      path: /trackers
+      method: GET
+      data_selector: trackers
+  - name: metadata_carriers
+    endpoint:
+      path: /metadata/carriers
+      method: GET
+      data_selector: carriers
+  - name: end_shippers
+    endpoint:
+      path: /end_shippers
+      method: GET
+      data_selector: end_shippers
+  - name: webhooks
+    endpoint:
+      path: /webhooks
+      method: GET
+      data_selector: webhooks
+  - name: users_children
+    endpoint:
+      path: /users/children
+      method: GET
+      data_selector: users_children
+  - name: carrier_accounts
+    endpoint:
+      path: /carrier_accounts
+      method: GET
+      data_selector: carrier_accounts
+  - name: api_keys
+    endpoint:
+      path: /api_keys
+      method: GET
+      data_selector: api_keys
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - BasicAuth
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses API Key for authentication routed as Basic Http
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key or authentication setup
+  - 404 Not Found: Verify endpoint paths or resource availability

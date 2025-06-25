@@ -1,0 +1,52 @@
+# Source Metadata
+source_name: mailosaur
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://mailosaur.com/api
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: messages
+    endpoint:
+      path: /messages
+      method: GET
+      data_selector: records
+
+  - name: servers
+    endpoint:
+      path: /servers
+      method: GET
+      data_selector: records
+
+  - name: transactions
+    endpoint:
+      path: /transactions
+      method: GET
+      data_selector: records
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - No pagination support for any streams
+  - Supports full sync but not incremental loading
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key validity
+  - 404 Not Found: Ensure correct endpoint path
+  - 500 Internal Server Error: Retry request after some time

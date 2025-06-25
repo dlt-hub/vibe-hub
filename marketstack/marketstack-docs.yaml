@@ -1,0 +1,60 @@
+# Source Metadata
+source_name: Marketstack
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.marketstack.com/v1
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: Exchanges
+    endpoint:
+      path: /exchanges
+      method: GET
+      data_selector: data
+
+  - name: Tickers
+    endpoint:
+      path: /tickers
+      method: GET
+      data_selector: data
+
+  - name: Historical Data
+    endpoint:
+      path: /eod
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "start_date"
+      }
+
+  - name: Splits
+    endpoint:
+      path: /splits
+      method: GET
+      data_selector: data
+
+  - name: Dividends
+    endpoint:
+      path: /dividends
+      method: GET
+      data_selector: data
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports Full Sync for Historical Data
+  - Does not support Incremental loading for Exchanges, Tickers, Splits, or Dividends
+
+# Troubleshooting & Error Patterns
+errors:
+  - API_KEY_INVALID: Check if the API key is correct
+  - RESOURCE_NOT_FOUND: Verify the endpoint and parameters used

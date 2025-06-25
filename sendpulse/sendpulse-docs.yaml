@@ -1,0 +1,75 @@
+# Source Metadata
+source_name: SendPulse
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.sendpulse.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.sendpulse.com/oauth/access_token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: mailing_lists
+    endpoint:
+      path: /mailing-lists
+      method: GET
+      data_selector: mailing_lists
+  - name: campaigns
+    endpoint:
+      path: /campaigns
+      method: GET
+      data_selector: campaigns
+  - name: templates
+    endpoint:
+      path: /templates
+      method: GET
+      data_selector: templates
+  - name: senders
+    endpoint:
+      path: /senders
+      method: GET
+      data_selector: senders
+  - name: webhooks
+    endpoint:
+      path: /webhooks
+      method: GET
+      data_selector: webhooks
+  - name: balance_details
+    endpoint:
+      path: /balance/details
+      method: GET
+      data_selector: balance_details
+  - name: balance
+    endpoint:
+      path: /balance
+      method: GET
+      data_selector: balance
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthClient
+
+# Known Quirks or Risks, Caveats
+notes:
+  - No pagination for templates, senders, webhooks, balance_details, and balance
+  - Supports full sync only; incremental loading is not supported
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check client_id and client_secret
+  - 403 Forbidden: Ensure correct permissions for the API access

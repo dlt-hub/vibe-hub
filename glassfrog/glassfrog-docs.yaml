@@ -1,0 +1,86 @@
+# Source Metadata
+source_name: glassfrog
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.glassfrog.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.glassfrog.com/oauth/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: assignments
+    endpoint:
+      path: /assignments
+      method: GET
+      data_selector: records
+      
+  - name: checklist_items
+    endpoint:
+      path: /checklist_items
+      method: GET
+      data_selector: records
+      
+  - name: circles
+    endpoint:
+      path: /circles
+      method: GET
+      data_selector: records
+      
+  - name: custom_fields
+    endpoint:
+      path: /custom_fields
+      method: GET
+      data_selector: records
+      
+  - name: metrics
+    endpoint:
+      path: /metrics
+      method: GET
+      data_selector: records
+      
+  - name: people
+    endpoint:
+      path: /people
+      method: GET
+      data_selector: records
+      
+  - name: projects
+    endpoint:
+      path: /projects
+      method: GET
+      data_selector: records
+      
+  - name: roles
+    endpoint:
+      path: /roles
+      method: GET
+      data_selector: records
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports only Full Refresh syncs
+  - Incremental - Append Sync is not supported
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key or token expiration
+  - 404 Not Found: Verify the endpoint path or resource existence

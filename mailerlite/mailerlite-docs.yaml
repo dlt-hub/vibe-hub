@@ -1,0 +1,76 @@
+# Source Metadata
+source_name: MailerLite
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.mailerlite.com/api/v2
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['mailer_api_key'] }}"
+    location: header
+    header_name: X-MailerLite-ApiKey
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: campaigns
+    endpoint:
+      path: /campaigns
+      method: GET
+      data_selector: data
+
+  - name: subscribers
+    endpoint:
+      path: /subscribers
+      method: GET
+      data_selector: data
+
+  - name: automations
+    endpoint:
+      path: /automations
+      method: GET
+      data_selector: data
+
+  - name: timezones
+    endpoint:
+      path: /timezones
+      method: GET
+      data_selector: data
+
+  - name: segments
+    endpoint:
+      path: /segments
+      method: GET
+      data_selector: data
+
+  - name: forms_popup
+    endpoint:
+      path: /forms/popup
+      method: GET
+      data_selector: data
+
+  - name: forms_embedded
+    endpoint:
+      path: /forms/embedded
+      method: GET
+      data_selector: data
+
+  - name: forms_promotion
+    endpoint:
+      path: /forms/promotion
+      method: GET
+      data_selector: data
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Only supports full refresh syncs
+  - Global rate limit of 120 requests per minute
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency

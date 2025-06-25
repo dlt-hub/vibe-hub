@@ -1,0 +1,95 @@
+# Source Metadata
+source_name: elasticemail
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.elasticemail.com/v2
+  auth:
+    type: apikey
+    auth: "{{ dlt.secrets['api_key'] }}"
+    location: header
+    header_name: X-ElasticEmail-ApiKey
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextCursor
+    cursor_param: cursor
+    page_size_param: pageSize
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: campaigns
+    endpoint:
+      path: /campaigns
+      method: GET
+      data_selector: campaigns
+
+  - name: contacts
+    endpoint:
+      path: /contacts
+      method: GET
+      data_selector: contacts
+
+  - name: events
+    endpoint:
+      path: /events
+      method: GET
+      data_selector: events
+
+  - name: files
+    endpoint:
+      path: /files
+      method: GET
+      data_selector: files
+
+  - name: inboundroute
+    endpoint:
+      path: /inboundroute
+      method: GET
+      data_selector: inboundroutes
+
+  - name: lists
+    endpoint:
+      path: /lists
+      method: GET
+      data_selector: lists
+
+  - name: segments
+    endpoint:
+      path: /segments
+      method: GET
+      data_selector: segments
+
+  - name: statistics
+    endpoint:
+      path: /statistics
+      method: GET
+      data_selector: statistics
+
+  - name: templates
+    endpoint:
+      path: /templates
+      method: GET
+      data_selector: templates
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - ApiKey
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses API key for authentication
+  - Some resources may have rate limits
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key validity
+  - 429 Too Many Requests: Reduce frequency of requests
+  - 404 Not Found: Verify endpoint path and resource availability

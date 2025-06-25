@@ -1,0 +1,61 @@
+# Source Metadata
+source_name: coinmarketcap
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://pro-api.coinmarketcap.com/v1
+  auth:
+    type: apikey
+    headers:
+      X-CMC_PRO_API_KEY: "{{ dlt.secrets['api_key'] }}"
+
+# Resources (per endpoint/object)
+resources:
+  - name: categories
+    endpoint:
+      path: /cryptocurrency/categories
+      method: GET
+      data_selector: data
+
+  - name: listing
+    endpoint:
+      path: /cryptocurrency/listings/latest
+      method: GET
+      data_selector: data
+
+  - name: quotes
+    endpoint:
+      path: /cryptocurrency/quotes/latest
+      method: GET
+      data_selector: data
+
+  - name: fiat
+    endpoint:
+      path: /fiat
+      method: GET
+      data_selector: data
+
+  - name: exchange
+    endpoint:
+      path: /exchange
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API token
+
+# Known Quirks or Risks, Caveats
+notes:
+  - This connector only supports full refresh syncs
+  - API is under rate limits for the number of API calls allowed per API key per second
+
+# Troubleshooting & Error Patterns
+errors:
+  - 429: Rate limit exceeded
+  - 401 Unauthorized: Check API key validity and permissions

@@ -1,0 +1,68 @@
+# Source Metadata
+source_name: eventzilla
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.eventzilla.net/v1
+  auth:
+    type: apikey
+    auth_info: 
+      x-api-key: "{{ dlt.secrets['eventzilla_api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: events
+    endpoint:
+      path: /events
+      method: GET
+      data_selector: records
+
+  - name: attendees
+    endpoint:
+      path: /attendees
+      method: GET
+      data_selector: records
+
+  - name: categories
+    endpoint:
+      path: /categories
+      method: GET
+      data_selector: records
+
+  - name: tickets
+    endpoint:
+      path: /tickets
+      method: GET
+      data_selector: records
+
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: records
+
+  - name: transactions
+    endpoint:
+      path: /transactions
+      method: GET
+      data_selector: records
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - x-api-key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Pagination is handled using DefaultPaginator
+  - Supports full sync but not incremental loading
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Ensure the API key is valid and included in the request

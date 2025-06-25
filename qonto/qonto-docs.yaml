@@ -1,0 +1,67 @@
+# Source Metadata
+source_name: Qonto
+version: 0.2.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.qonto.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://auth.qonto.com/oauth/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next
+    cursor_param: page
+    page_size_param: limit
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: accounts
+    endpoint:
+      path: /v1/accounts
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: transactions
+    endpoint:
+      path: /v1/transactions
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: users
+    endpoint:
+      path: /v1/users
+      method: GET
+      data_selector: data
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth
+    - Token
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires a valid OAuth2 setup to access resources
+  - Rate limits apply depending on account type
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check token validity or permissions
+  - 403 Forbidden: Ensure adequate permissions for the requested resource
+  - 429 Too Many Requests: Implement exponential backoff for retries

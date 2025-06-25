@@ -1,0 +1,92 @@
+# Source Metadata
+source_name: Buildkite
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://buildkite.com
+  auth:
+    type: bearer_token
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: organizations
+    endpoint:
+      path: /v2/organizations
+      method: GET
+      data_selector: organizations
+  - name: analytics_organizations_suites
+    endpoint:
+      path: /v2/analytics/organizations/suites
+      method: GET
+      data_selector: suites
+  - name: organizations_pipelines
+    endpoint:
+      path: /v2/organizations/:organization_slug/pipelines
+      method: GET
+      data_selector: pipelines
+  - name: access-token
+    endpoint:
+      path: /v2/access-token
+      method: GET
+      data_selector: access_token
+  - name: builds
+    endpoint:
+      path: /v2/builds
+      method: GET
+      data_selector: builds
+  - name: organizations_clusters
+    endpoint:
+      path: /v2/organizations/:organization_slug/clusters
+      method: GET
+      data_selector: clusters
+  - name: organizations_builds
+    endpoint:
+      path: /v2/organizations/:organization_slug/builds
+      method: GET
+      data_selector: builds
+  - name: organizations_pipelines_builds
+    endpoint:
+      path: /v2/organizations/:organization_slug/pipelines/:pipeline_slug/builds
+      method: GET
+      data_selector: builds
+  - name: organizations_clusters_queues
+    endpoint:
+      path: /v2/organizations/:organization_slug/clusters/:cluster_slug/queues
+      method: GET
+      data_selector: queues
+  - name: organizations_clusters_tokens
+    endpoint:
+      path: /v2/organizations/:organization_slug/clusters/:cluster_slug/tokens
+      method: GET
+      data_selector: tokens
+  - name: organizations_emojis
+    endpoint:
+      path: /v2/organizations/:organization_slug/emojis
+      method: GET
+      data_selector: emojis
+  - name: user
+    endpoint:
+      path: /v2/user
+      method: GET
+      data_selector: user
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - Bearer Token
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Buildkite uses bearer token authentication
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check token validity
+  - 404 Not Found: Verify endpoint and resource existence
+  - 429 Too Many Requests: Implement exponential backoff for retries

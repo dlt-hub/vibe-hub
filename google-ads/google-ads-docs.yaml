@@ -1,0 +1,79 @@
+# Source Metadata
+source_name: google_ads
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://googleads.googleapis.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://oauth2.googleapis.com/token
+    client_id: "{{ dlt.secrets['google_ads_client_id'] }}"
+    client_secret: "{{ dlt.secrets['google_ads_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['google_ads_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: offset
+    page_size_param: pageSize
+    default_page_size: 1000
+
+# Resources (per endpoint/object)
+resources:
+  - name: customer
+    endpoint:
+      path: /v18/customers
+      method: GET
+      data_selector: resources
+      params: {}
+
+  - name: ad_group
+    endpoint:
+      path: /v18/customers/{customerId}/adGroups
+      method: GET
+      data_selector: resources
+      params: {}
+
+  - name: ad_group_ad
+    endpoint:
+      path: /v18/customers/{customerId}/adGroupAds
+      method: GET
+      data_selector: resources
+      params: {}
+
+  - name: campaign
+    endpoint:
+      path: /v18/customers/{customerId}/campaigns
+      method: GET
+      data_selector: resources
+      params: {}
+
+  - name: click_view
+    endpoint:
+      path: /v18/customers/{customerId}/clickViews
+      method: GET
+      data_selector: resources
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth2
+    - GoogleAdsClient
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires a developer token and OAuth credentials
+  - Incremental updates are supported but only for the last three months of data
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401: Unauthorized - Check your OAuth token and its scopes
+  - 403: Permission Denied - Ensure that your developer token is approved and has the required permissions
+  - 429: Rate Limit Exceeded - Reduce the number of requests or implement retries with exponential backoff

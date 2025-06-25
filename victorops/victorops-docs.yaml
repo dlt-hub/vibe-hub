@@ -1,0 +1,50 @@
+# Source Metadata
+source_name: victorops
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://portal.victorops.com
+  auth:
+    type: apikey
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: incidents
+    endpoint:
+      path: /api/reporting/v2/incidents
+      method: GET
+      data_selector: incidents
+      params: {
+                "incremental": "updated_at"
+      }
+
+  - name: teams
+    endpoint:
+      path: /api/public/v1/team
+      method: GET
+      data_selector: teams
+
+  - name: users
+    endpoint:
+      path: /api/public/v1/user
+      method: GET
+      data_selector: users
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - APIKey
+
+# Known Quirks or Risks, Caveats
+notes:
+  - The VictorOps source should not run into API limitations under normal usage
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency

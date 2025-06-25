@@ -1,0 +1,47 @@
+# Source Metadata
+source_name: jenkins
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your.jenkins.url
+  auth:
+    type: api_key
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: builds
+    endpoint:
+      path: /job/$JOB_NAME/$BUILD_NUMBER/api/json
+      method: GET
+      data_selector: 
+      params: {}
+
+  - name: jobs
+    endpoint:
+      path: /job/$JOB_NAME/api/json
+      method: GET
+      data_selector: 
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - Jenkins User
+    - Jenkins API Token
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports both Full Refresh and Incremental syncs
+  - Should not run into Jenkins API limitations under normal usage
+
+# Troubleshooting & Error Patterns
+errors:
+  - RATE_LIMIT_EXCEEDED: Create an issue if you see rate limit issues that are not automatically retried successfully

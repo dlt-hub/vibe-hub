@@ -1,0 +1,281 @@
+# Source Metadata
+source_name: zendesk_support
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your_subdomain.zendesk.com/api/v2
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://your_subdomain.zendesk.com/oauth/tokens
+    client_id: "{{ dlt.secrets['zendesk_client_id'] }}"
+    client_secret: "{{ dlt.secrets['zendesk_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['zendesk_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: meta.next_page
+    cursor_param: page
+    page_size_param: per_page
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: account_attributes
+    endpoint:
+      path: /account_attributes.json
+      method: GET
+      data_selector: account_attributes
+
+  - name: articles
+    endpoint:
+      path: /help_center/articles.json
+      method: GET
+      data_selector: articles
+
+  - name: article_votes
+    endpoint:
+      path: /help_center/votes.json
+      method: GET
+      data_selector: votes
+
+  - name: article_comments
+    endpoint:
+      path: /help_center/articles/{article_id}/comments.json
+      method: GET
+      data_selector: comments
+
+  - name: article_comment_votes
+    endpoint:
+      path: /help_center/votes.json
+      method: GET
+      data_selector: votes
+
+  - name: attribute_definitions
+    endpoint:
+      path: /ticket_fields.json
+      method: GET
+      data_selector: ticket_fields
+
+  - name: audit_logs
+    endpoint:
+      path: /audit_logs.json
+      method: GET
+      data_selector: audit_logs
+
+  - name: automations
+    endpoint:
+      path: /automations.json
+      method: GET
+      data_selector: automations
+
+  - name: brands
+    endpoint:
+      path: /brands.json
+      method: GET
+      data_selector: brands
+
+  - name: custom_roles
+    endpoint:
+      path: /custom_roles.json
+      method: GET
+      data_selector: custom_roles
+
+  - name: groups
+    endpoint:
+      path: /groups.json
+      method: GET
+      data_selector: groups
+
+  - name: group_memberships
+    endpoint:
+      path: /group_memberships.json
+      method: GET
+      data_selector: group_memberships
+
+  - name: macros
+    endpoint:
+      path: /macros.json
+      method: GET
+      data_selector: macros
+
+  - name: organizations
+    endpoint:
+      path: /organizations.json
+      method: GET
+      data_selector: organizations
+
+  - name: organization_fields
+    endpoint:
+      path: /organization_fields.json
+      method: GET
+      data_selector: organization_fields
+
+  - name: organization_memberships
+    endpoint:
+      path: /organization_memberships.json
+      method: GET
+      data_selector: organization_memberships
+
+  - name: posts
+    endpoint:
+      path: /help_center/posts.json
+      method: GET
+      data_selector: posts
+
+  - name: post_comments
+    endpoint:
+      path: /help_center/posts/{post_id}/comments.json
+      method: GET
+      data_selector: comments
+
+  - name: post_comment_votes
+    endpoint:
+      path: /help_center/votes.json
+      method: GET
+      data_selector: votes
+
+  - name: post_votes
+    endpoint:
+      path: /help_center/votes.json
+      method: GET
+      data_selector: votes
+
+  - name: satisfaction_ratings
+    endpoint:
+      path: /satisfaction_ratings.json
+      method: GET
+      data_selector: satisfaction_ratings
+
+  - name: schedules
+    endpoint:
+      path: /schedules.json
+      method: GET
+      data_selector: schedules
+
+  - name: sla_policies
+    endpoint:
+      path: /sla_policies.json
+      method: GET
+      data_selector: sla_policies
+
+  - name: tags
+    endpoint:
+      path: /tags.json
+      method: GET
+      data_selector: tags
+
+  - name: tickets
+    endpoint:
+      path: /tickets.json
+      method: GET
+      data_selector: tickets
+
+  - name: ticket_audits
+    endpoint:
+      path: /tickets/{ticket_id}/audits.json
+      method: GET
+      data_selector: audits
+
+  - name: ticket_comments
+    endpoint:
+      path: /tickets/{ticket_id}/comments.json
+      method: GET
+      data_selector: comments
+
+  - name: ticket_fields
+    endpoint:
+      path: /ticket_fields.json
+      method: GET
+      data_selector: ticket_fields
+
+  - name: ticket_forms
+    endpoint:
+      path: /ticket_forms.json
+      method: GET
+      data_selector: ticket_forms
+
+  - name: ticket_metrics
+    endpoint:
+      path: /ticket_metrics.json
+      method: GET
+      data_selector: ticket_metrics
+
+  - name: ticket_metric_events
+    endpoint:
+      path: /ticket_metric_events.json
+      method: GET
+      data_selector: ticket_metric_events
+
+  - name: topics
+    endpoint:
+      path: /help_center/topics.json
+      method: GET
+      data_selector: topics
+
+  - name: triggers
+    endpoint:
+      path: /triggers.json
+      method: GET
+      data_selector: triggers
+
+  - name: ticket_skips
+    endpoint:
+      path: /ticket_skips.json
+      method: GET
+      data_selector: ticket_skips
+
+  - name: users
+    endpoint:
+      path: /users.json
+      method: GET
+      data_selector: users
+
+  - name: user_identities
+    endpoint:
+      path: /user_identities.json
+      method: GET
+      data_selector: user_identities
+
+  - name: user_fields
+    endpoint:
+      path: /user_fields.json
+      method: GET
+      data_selector: user_fields
+
+  - name: categories
+    endpoint:
+      path: /help_center/categories.json
+      method: GET
+      data_selector: categories
+
+  - name: sections
+    endpoint:
+      path: /help_center/sections.json
+      method: GET
+      data_selector: sections
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+    - AuthProvider
+    - NamedCredential
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses OAuth2 with refresh token — requires setup of connected app in Zendesk
+  - Some objects may return nulls in deeply nested fields
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - QUERY_TIMEOUT: Break down filters or add selectivity
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

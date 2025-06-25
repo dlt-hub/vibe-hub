@@ -1,0 +1,50 @@
+# Source Metadata
+source_name: google_forms
+version: 0.0.1
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://forms.googleapis.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://oauth2.googleapis.com/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['client_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: defaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: forms
+    endpoint:
+      path: /v1/forms
+      method: GET
+      data_selector: forms
+  - name: form_responses
+    endpoint:
+      path: /v1/forms/{formId}/responses
+      method: GET
+      data_selector: responses
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth2
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports full sync but does not support incremental loading
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration
+  - 403 Forbidden: Ensure the form ID is correct and accessible

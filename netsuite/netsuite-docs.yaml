@@ -1,0 +1,74 @@
+# Source Metadata
+source_name: Oracle NetSuite
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.api.netsuite.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://your-instance.api.netsuite.com/services/rest/auth/oauth2/token
+    client_id: "{{ dlt.secrets['consumer_key'] }}"
+    client_secret: "{{ dlt.secrets['consumer_secret'] }}"
+    refresh_token: "{{ dlt.secrets['token_id'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextPage
+    cursor_param: page
+    page_size_param: limit
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: customer
+    endpoint:
+      path: /services/rest/record/v1/customer
+      method: GET
+      data_selector: records
+      params: {
+                "incremental": "lastModifiedDate"
+      }
+
+  - name: sales_order
+    endpoint:
+      path: /services/rest/record/v1/salesOrder
+      method: GET
+      data_selector: records
+      params: {
+                "incremental": "lastModifiedDate"
+      }
+
+  - name: invoice
+    endpoint:
+      path: /services/rest/record/v1/invoice
+      method: GET
+      data_selector: records
+      params: {
+                "incremental": "lastModifiedDate"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - TokenBasedAuthentication
+    - Integration
+    - Role
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires proper role configuration and permissions in NetSuite to access data.
+  - API calls may be subject to concurrency limits.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 403 Forbidden: Ensure the role has the necessary permissions.
+  - 404 Not Found: Verify the endpoint path is correct.
+  - 401 Unauthorized: Check validity of OAuth tokens and permissions.

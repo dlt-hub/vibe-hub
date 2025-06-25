@@ -1,0 +1,44 @@
+# Source Metadata
+source_name: senseforce
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-senseforce-backend-url.com
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: datasets
+    endpoint:
+      path: /api/v1/datasets
+      method: GET
+      data_selector: data
+      params: {
+                "incremental": "Timestamp"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Access Token
+    - Backend URL
+    - Dataset ID
+
+# Known Quirks or Risks, Caveats
+notes:
+  - The Timestamp, Thing and Id columns are mandatory for the Connector to work as intended.
+  - Incremental syncs might not work properly if the Timestamp column is not in the first position.
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - 401 Unauthorized: Recheck API Access Token validity or permissions

@@ -1,0 +1,70 @@
+# Source Metadata
+source_name: YNAB
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.ynab.com/v1
+  auth:
+    type: apikey
+    auth_key: "{{ dlt.secrets['api_key'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: budgets
+    endpoint:
+      path: /budgets
+      method: GET
+      data_selector: data.budgets
+
+  - name: accounts
+    endpoint:
+      path: /budgets/{budget_id}/accounts
+      method: GET
+      data_selector: data.accounts
+
+  - name: categories
+    endpoint:
+      path: /budgets/{budget_id}/categories
+      method: GET
+      data_selector: data.categories
+
+  - name: payees
+    endpoint:
+      path: /budgets/{budget_id}/payees
+      method: GET
+      data_selector: data.payees
+
+  - name: transactions
+    endpoint:
+      path: /budgets/{budget_id}/transactions
+      method: GET
+      data_selector: data.transactions
+
+  - name: category_groups
+    endpoint:
+      path: /budgets/{budget_id}/category-groups
+      method: GET
+      data_selector: data.category_groups
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - PersonalAccessToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires personal access token from https://api.ynab.com/#personal-access-tokens
+
+# Troubleshooting & Error Patterns
+errors:
+  - INVALID_TOKEN: Ensure the API key is valid and correctly set in authentication
+  - NOT_FOUND: Check the budget ID for accuracy in requests
+  - RATE_LIMIT_EXCEEDED: Reduce the frequency of API calls

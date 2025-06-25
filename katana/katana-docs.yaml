@@ -1,0 +1,160 @@
+# Source Metadata
+source_name: katana
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.katanamrp.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.katanamrp.com/auth/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: customers
+    endpoint:
+      path: /customers
+      method: GET
+      data_selector: records
+
+  - name: shipping_fee
+    endpoint:
+      path: /shipping_fee
+      method: GET
+      data_selector: records
+
+  - name: costs
+    endpoint:
+      path: /costs
+      method: GET
+      data_selector: records
+
+  - name: customer_addresses
+    endpoint:
+      path: /customer_addresses
+      method: GET
+      data_selector: records
+
+  - name: variants
+    endpoint:
+      path: /variants
+      method: GET
+      data_selector: records
+
+  - name: tax_rates
+    endpoint:
+      path: /tax_rates
+      method: GET
+      data_selector: records
+
+  - name: suppliers
+    endpoint:
+      path: /suppliers
+      method: GET
+      data_selector: records
+
+  - name: stocktakes
+    endpoint:
+      path: /stocktakes
+      method: GET
+      data_selector: records
+
+  - name: stock_adjustments
+    endpoint:
+      path: /stock_adjustments
+      method: GET
+      data_selector: records
+
+  - name: sales_orders
+    endpoint:
+      path: /sales_orders
+      method: GET
+      data_selector: records
+
+  - name: sales_order_fulfillments
+    endpoint:
+      path: /sales_order_fulfillments
+      method: GET
+      data_selector: records
+
+  - name: sales_order_addresses
+    endpoint:
+      path: /sales_order_addresses
+      method: GET
+      data_selector: records
+
+  - name: recipes
+    endpoint:
+      path: /recipes
+      method: GET
+      data_selector: records
+
+  - name: purchase_orders
+    endpoint:
+      path: /purchase_orders
+      method: GET
+      data_selector: records
+
+  - name: products
+    endpoint:
+      path: /products
+      method: GET
+      data_selector: records
+
+  - name: price_lists
+    endpoint:
+      path: /price_lists
+      method: GET
+      data_selector: records
+
+  - name: inventory
+    endpoint:
+      path: /inventory
+      method: GET
+      data_selector: records
+
+  - name: locations
+    endpoint:
+      path: /locations
+      method: GET
+      data_selector: records
+
+  - name: manufacturing_orders
+    endpoint:
+      path: /manufacturing_orders
+      method: GET
+      data_selector: records
+
+  - name: materials
+    endpoint:
+      path: /materials
+      method: GET
+      data_selector: records
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires an API Key from Katana account
+  - Some endpoints may have limitations on data retrieval
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key validity or permissions
+  - 429 Too Many Requests: Implement exponential backoff for retries

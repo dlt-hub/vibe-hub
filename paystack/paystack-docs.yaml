@@ -1,0 +1,86 @@
+# Source Metadata
+source_name: paystack
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.paystack.co
+  auth:
+    type: apikey
+    auth_key: "{{ dlt.secrets['paystack_secret_key'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: customers
+    endpoint:
+      path: /customer
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: disputes
+    endpoint:
+      path: /dispute
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: invoices
+    endpoint:
+      path: /paymentrequest
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: refunds
+    endpoint:
+      path: /refund
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: settlements
+    endpoint:
+      path: /settlement
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: subscriptions
+    endpoint:
+      path: /subscription
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: transactions
+    endpoint:
+      path: /transaction
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: transfers
+    endpoint:
+      path: /transfer
+      method: GET
+      data_selector: data
+      params: {}
+
+# Known Quirks or Risks, Caveats
+notes:
+  - The connector uses the `createdAt` field for incremental syncs.
+  - Lookback Window can be set to reload data from the past N days.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Ensure the secret key is correct.
+  - 404 Not Found: Check that the requested resource path is valid.
+  - 500 Internal Server Error: Retry the request after a short interval.

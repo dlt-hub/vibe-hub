@@ -1,0 +1,67 @@
+# Source Metadata
+source_name: zuora
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://rest.zuora.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://rest.zuora.com/oauth/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextPageCursor
+    cursor_param: cursor
+    page_size_param: pageSize
+    default_page_size: 200
+
+# Resources (per endpoint/object)
+resources:
+  - name: accounts
+    endpoint:
+      path: /v1/accounts
+      method: GET
+      data_selector: accounts
+      params: {}
+
+  - name: invoices
+    endpoint:
+      path: /v1/invoices
+      method: GET
+      data_selector: invoices
+      params: {}
+
+  - name: subscriptions
+    endpoint:
+      path: /v1/subscriptions
+      method: GET
+      data_selector: subscriptions
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Some objects may not be available for sync due to Zuora Subscription Plan limitations.
+  - Initial sync may take a considerable amount of time depending on data volume.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check OAuth token and permissions.
+  - 404 Not Found: Verify endpoint path and resource availability.
+  - 429 Too Many Requests: Throttle requests or increase interval.

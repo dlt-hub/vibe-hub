@@ -1,0 +1,44 @@
+# Source Metadata
+source_name: plaid
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://sandbox.plaid.com
+  auth:
+    type: apikey
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_key'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Content-Type: application/json;charset=UTF-16
+
+# Resources (per endpoint/object)
+resources:
+  - name: balance
+    endpoint:
+      path: /accounts/balance/get
+      method: POST
+      data_selector: accounts
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - AccessToken
+    - PublicToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Only supports pulling from the balances endpoint currently
+  - Full Refresh sync is supported, but incremental sync is coming soon
+
+# Troubleshooting & Error Patterns
+errors:
+  - 400 Bad Request: Check the request format or parameters
+  - 401 Unauthorized: Verify client_id and client_secret
+  - 429 Too Many Requests: Reduce API call frequency to avoid rate limits
