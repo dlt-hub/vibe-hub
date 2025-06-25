@@ -11,7 +11,7 @@ from dlt.sources.rest_api import (
 def salesforce_data_source(access_token=dlt.secrets.value):
     config: RESTAPIConfig = {
         "client": {
-            "base_url": "https://your-instance.salesforce.com/services/data/vXX.X/",
+            "base_url": "https://your-instance.api-name.com/",
             "auth": {
                 "type": "bearer",
                 "token": access_token,
@@ -19,8 +19,7 @@ def salesforce_data_source(access_token=dlt.secrets.value):
         },
         "resources": [
             "campaign_member",
-            "contact",
-            "query"
+            "contact"
             ],
     }
 
@@ -50,7 +49,8 @@ def get_data() -> None:
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from salesforce_data’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- SObjects: Access and manipulate records within standard and custom objects. - Query and Search: Perform SOQL and SOSL queries to retrieve complex data sets.
+- CampaignMember: Allows access to campaign member specific data.
+- Contact: Provides access to individual contact records.
 
 You can combine these endpoints to build pipelines that extract structured content from Salesforce workspaces at scale — via REST APIs or webhook ingestion.
 
@@ -100,7 +100,7 @@ Now you're ready to get started!
     
 3. 🔒 **Setup credentials** 
     
-    Uses OAuth2 authentication with a refresh token flow. The client must handle token refresh scenarios using a client ID, client secret, and refresh token.
+    Authentication is handled via OAuth2 with a refresh token flow. Essential details include a client ID, client secret, and refresh token. Tokens must be obtained or refreshed using the token URL provided.
     
     To get appropriate API keys, please visit the original source at https://www.salesforce.com/.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
@@ -138,7 +138,7 @@ Now you're ready to get started!
 
 ## Running into errors?
 
-API uses OAuth2 which requires initial setup including a connected app in Salesforce. Be aware of rate limits and potential for nulls in nested fields of some resources like Contact.
+Be aware of API request limits and potential QUERY_TIMEOUT errors. Also, some nested fields in objects like Contact may return null values which need handling in data processing.
 
 ### Extra resources:
 
