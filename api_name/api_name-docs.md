@@ -1,4 +1,4 @@
-In this guide, we'll set up a complete API-Name data pipeline from API credentials to your first data load in just 10 minutes. You'll end up with a fully declarative Python pipeline based on dlt's REST API connector.
+In this guide, we'll set up a complete API Name data pipeline from API credentials to your first data load in just 10 minutes. You'll end up with a fully declarative Python pipeline based on dlt's REST API connector.
 
 ```python-outcome
 import dlt
@@ -11,16 +11,16 @@ from dlt.sources.rest_api import (
 def api_name_source(access_token=dlt.secrets.value):
     config: RESTAPIConfig = {
         "client": {
-            "base_url": "https://your-instance.api-name.com/v1/",
+            "base_url": "https://your-instance.api-name.com/",
             "auth": {
-                "type": "bearer",
-                "token": access_token,
+                "type": "apikey",
+                "api_key": access_token,
             },
         },
         "resources": [
-            "customers/count/daily",
-            "customers/count/weekly",
-            "customers/count/monthly"
+            "members",
+            "organization_invitations",
+            "member_fields"
             ],
     }
 
@@ -50,9 +50,15 @@ def get_data() -> None:
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from api_name’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- Customer Count Metrics: Provides daily, weekly, monthly, and quarterly customer count statistics.
+- Members: Manage and retrieve member data.
+- Organization Invitations: Handle invitations within the organization.
+- Member Fields: Access custom fields associated with members.
+- Activities: Track and retrieve activities related to members.
+- Notes: Manage notes associated with members.
+- Actions: Retrieve actions taken by or related to members.
+- Candidates: Access candidate data within the system.
 
-You can combine these endpoints to build pipelines that extract structured content from API-Name workspaces at scale — via REST APIs or webhook ingestion.
+You can combine these endpoints to build pipelines that extract structured content from API Name workspaces at scale — via REST APIs or webhook ingestion.
 
 ## Setup & steps to follow
 
@@ -73,7 +79,7 @@ Now you're ready to get started!
     pip install dlt
     ```
 
-    Initialize a dlt pipeline with API-Name support.
+    Initialize a dlt pipeline with API Name support.
     ```shell
     dlt init dlthub:api_name duckdb
     ```
@@ -88,8 +94,8 @@ Now you're ready to get started!
     Here’s a nice prompt for you to start: 
     
     ```prompt
-    Please generate a REST API Source for API-Name API, as specified in @api_name-docs.yaml 
-    Start with endpoints "customers/count/daily" and "customers/count/weekly" and skip incremental loading for now. 
+    Please generate a REST API Source for API Name API, as specified in @api_name-docs.yaml 
+    Start with endpoints "members" and "organization_invitations" and skip incremental loading for now. 
     Place the code in api_name_pipeline.py and name the pipeline api_name_pipeline. 
     If the file exists, use it as a starting point. 
     Do not add or modify any other files. 
@@ -100,7 +106,7 @@ Now you're ready to get started!
     
 3. 🔒 **Setup credentials** 
     
-    Uses OAuth2 with refresh token flow. Requires the setting up of a connected app in API-Name for authentication. Authentication includes acquiring access tokens via a token URL, and tokens are refreshed automatically using the refresh token.
+    Authentication is done using an API key.
     
     To get appropriate API keys, please visit the original source at https://www.api-name.com/.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
@@ -132,13 +138,13 @@ Now you're ready to get started!
     import dlt
 
    data = dlt.pipeline("api_name_pipeline").dataset()
-   # get customers/count/daily table as Pandas frame
-   data.customers/count/daily.df().head()
+   # get members table as Pandas frame
+   data.members.df().head()
     ```
 
 ## Running into errors?
 
-Some endpoints in API-Name have rate limits, which can lead to REQUEST_LIMIT_EXCEEDED errors. To avoid QUERY_TIMEOUT errors, it's advised to break down filters or add selectivity. Ensure proper OAuth scopes are set as unauthorized access leads to 401 errors.
+There is no support for incremental loading, which might affect data synchronization efficiency. Ensure API key validity to avoid 401 Unauthorized errors and verify endpoint paths to prevent 404 Not Found errors.
 
 ### Extra resources:
 

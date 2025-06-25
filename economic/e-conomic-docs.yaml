@@ -1,0 +1,207 @@
+# Source Metadata
+source_name: e-conomic
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.e-conomic.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.e-conomic.com/services/oauth2/token
+    client_id: "{{ dlt.secrets['app_secret_token'] }}"
+    client_secret: "{{ dlt.secrets['agreement_grant_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: accounts
+    endpoint:
+      path: /accounts
+      method: GET
+      data_selector: records
+  - name: accounting_years
+    endpoint:
+      path: /accounting_years
+      method: GET
+      data_selector: records
+  - name: app_roles
+    endpoint:
+      path: /app_roles
+      method: GET
+      data_selector: records
+  - name: currencies
+    endpoint:
+      path: /currencies
+      method: GET
+      data_selector: records
+  - name: customer_groups
+    endpoint:
+      path: /customer_groups
+      method: GET
+      data_selector: records
+  - name: customers
+    endpoint:
+      path: /customers
+      method: GET
+      data_selector: records
+  - name: departmental_distributions
+    endpoint:
+      path: /departmental_distributions
+      method: GET
+      data_selector: records
+  - name: departments
+    endpoint:
+      path: /departments
+      method: GET
+      data_selector: records
+  - name: employees
+    endpoint:
+      path: /employees
+      method: GET
+      data_selector: records
+  - name: journals
+    endpoint:
+      path: /journals
+      method: GET
+      data_selector: records
+  - name: payment_terms
+    endpoint:
+      path: /payment_terms
+      method: GET
+      data_selector: records
+  - name: payment_types
+    endpoint:
+      path: /payment_types
+      method: GET
+      data_selector: records
+  - name: product_groups
+    endpoint:
+      path: /product_groups
+      method: GET
+      data_selector: records
+  - name: products
+    endpoint:
+      path: /products
+      method: GET
+      data_selector: records
+  - name: draft_quotes
+    endpoint:
+      path: /draft_quotes
+      method: GET
+      data_selector: records
+  - name: suppliers
+    endpoint:
+      path: /suppliers
+      method: GET
+      data_selector: records
+  - name: units
+    endpoint:
+      path: /units
+      method: GET
+      data_selector: records
+  - name: vat_accounts
+    endpoint:
+      path: /vat_accounts
+      method: GET
+      data_selector: records
+  - name: vat_types
+    endpoint:
+      path: /vat_types
+      method: GET
+      data_selector: records
+  - name: vat_zones
+    endpoint:
+      path: /vat_zones
+      method: GET
+      data_selector: records
+  - name: sent_quotes
+    endpoint:
+      path: /sent_quotes
+      method: GET
+      data_selector: records
+  - name: archived_quotes
+    endpoint:
+      path: /archived_quotes
+      method: GET
+      data_selector: records
+  - name: draft_invoices
+    endpoint:
+      path: /draft_invoices
+      method: GET
+      data_selector: records
+  - name: booked_invoices
+    endpoint:
+      path: /booked_invoices
+      method: GET
+      data_selector: records
+  - name: paid_invoices
+    endpoint:
+      path: /paid_invoices
+      method: GET
+      data_selector: records
+  - name: overdue_invoices
+    endpoint:
+      path: /overdue_invoices
+      method: GET
+      data_selector: records
+  - name: unpaid_invoices
+    endpoint:
+      path: /unpaid_invoices
+      method: GET
+      data_selector: records
+  - name: not_due_invoices
+    endpoint:
+      path: /not_due_invoices
+      method: GET
+      data_selector: records
+  - name: total_invoices
+    endpoint:
+      path: /total_invoices
+      method: GET
+      data_selector: records
+  - name: sent_invoices
+    endpoint:
+      path: /sent_invoices
+      method: GET
+      data_selector: records
+  - name: draft_orders
+    endpoint:
+      path: /draft_orders
+      method: GET
+      data_selector: records
+  - name: sent_orders
+    endpoint:
+      path: /sent_orders
+      method: GET
+      data_selector: records
+  - name: archived_orders
+    endpoint:
+      path: /archived_orders
+      method: GET
+      data_selector: records
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - AppSecretToken
+    - AgreementGrantToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses OAuth2 with refresh token  requires setup of connected app in e-conomic
+  - Some objects may have specific access requirements depending on account settings
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Recheck OAuth credentials or token expiration
+  - 403 Forbidden: Verify permissions for the requested data
+  - 404 Not Found: Ensure the endpoint path is correct or resource exists

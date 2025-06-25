@@ -1,10 +1,6 @@
-# How to load Giphy data in Python using dlt
+In this guide, we'll set up a complete GIPHY data pipeline from API credentials to your first data load in just 10 minutes. You'll end up with a fully declarative Python pipeline based on dlt's REST API connector.
 
-**Build a Giphy-to-database or-dataframe pipeline in Python using dlt with automatic Cursor support.**
-
-Your outcome will be a fully declarative python pipeline based on dlt’s REST API connector
-
-```python
+```python-outcome
 import dlt
 from dlt.sources.rest_api import (
     RESTAPIConfig,
@@ -15,17 +11,18 @@ from dlt.sources.rest_api import (
 def giphy_source(access_token=dlt.secrets.value):
     config: RESTAPIConfig = {
         "client": {
-            "base_url": "https://api.giphy.com",
+            "base_url": "https://api.giphy.com/v1/",
             "auth": {
                 "type": "apikey",
-                "token": access_token,
-            }
-,
+                "location": "query",
+                "header_name": "api_key",
+                "api_key": giphy_api_key
+            },
         },
         "resources": [
-            "/v1/clips/search",
-            "/v1/clips/trending",
-            "/v1/content/:Id"
+            "clips/search",
+            "clips/trending",
+            "content"
             ],
     }
 
@@ -43,81 +40,82 @@ def get_data() -> None:
     print(load_info)  # noqa
 ```
 
-**Why use dlt for this?**
+### Why use dlt for this?
 
-- Fully declarative while being python native and enabling imperative customisation.
-- Schema evolution with type inference for resilient, low maintenance pipelines.
+- dlt is fully declarative, while being python-native and enabling imperative customization
+- Offers schema evolution with type inference for resilient, low maintenance pipelines
 - Performance and scalability control
-- Easy to extend by team member, shallow learning curve
-- Tool of choice for Pythonic Iceberg  Lakehouses
+- Shallow learning curve - the pipeline is easy to extend by any team member
+- dlt is the tool of choice for Pythonic Iceberg Lakehouses
 
 ## What you’ll do
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from giphy’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- Clips: Search and retrieve trending or specific video clips based on queries.
-- Content Retrieval: Fetch specific content by ID or multiple IDs.
-- Trending: Access trending GIFs and clips, potentially with filters like rating or country.
-- Miscellaneous: Other endpoints like fetching GIF grids or plain text data.
+- Clips Search: Allows searching for clips using various filters such as query, limit, offset, country code, language, and rating.
+- Trending Clips: Provides a list of trending clips, which can be filtered by limit, offset, country code, and rating.
+- Content Retrieval: Includes endpoints to retrieve content by specific IDs or a list of IDs.
 
-You can combine these endpoints to build pipelines that extract structured content from Giphy workspaces at scale — via REST APIs or webhook ingestion.
+You can combine these endpoints to build pipelines that extract structured content from GIPHY workspaces at scale — via REST APIs or webhook ingestion.
 
-## Steps to follow:
+## Setup & steps to follow
 
-The steps are:
+```default
+Before getting started, let's make sure Cursor is set up correctly:
+   - Use a model like Claude 3.7 Sonnet or better
+   - Add the specification file **@giphy-docs.yaml** as context
+   - Index the REST API Source tutorial: https://dlthub.com/docs/dlt-ecosystem/verified-sources/rest_api/ and add it to context as **@dlt rest api**
+   - [Read our full steps on setting up Cursor](https://dlthub.com/docs/dlt-ecosystem/llm-tooling/cursor-restapi#23-configuring-cursor-with-documentation)
+```
 
-1. **Execute these commands in a new Cursor shell.**
+Now you're ready to get started! 
+
+1. ⚙️ **Execute these commands in a new Cursor shell.**
     
     Install dlt with duckdb support:
     ```shell
     pip install dlt
     ```
 
-    Initialize a dlt pipeline with Giphy support.
+    Initialize a dlt pipeline with GIPHY support.
     ```shell
     dlt init dlthub:giphy duckdb
     ```
 
-    The `init` command will setup some important files and folders, including `requirments.txt`. Install the requirements for the rest of the project.
+    The `init` command will setup some important files and folders, including `requirements.txt`. Install the requirements for the rest of the project.
     ```shell
     pip install -r requirements.txt
     ```
     
-2. **Start vibe-coding**
+2. 🤠 **Start vibe-coding**
     
     Here’s a nice prompt for you to start: 
     
-    ```
-    Please generate REST API Source for Giphy API as specified in @giphy-docs.yaml 
-    Start with 2 endpoints that look the most important and skip incremental loading for now. 
+    ```prompt
+    Please generate a REST API Source for GIPHY API, as specified in @giphy-docs.yaml 
+    Start with endpoints "clips/search" and "clips/trending" and skip incremental loading for now. 
     Place the code in giphy_pipeline.py and name the pipeline giphy_pipeline. 
-    If the file exists use it as a starting point. 
+    If the file exists, use it as a starting point. 
     Do not add or modify any other files. 
-    Use @dlt rest api as tutorial. 
-    After adding the endpoints allow the user to run the pipeline with python giphy_pipeline.py and await further instructions.
-    
+    Use @dlt rest api as a tutorial. 
+    After adding the endpoints, allow the user to run the pipeline with python giphy_pipeline.py and await further instructions.
     ```
+
     
-    **Suggestions for the best results:**
-    - Use model like Claude 3.7 Sonnet or better
-    - **@giphy-docs.yaml** - add specification file to context
-    - Index REST API Source tutorial: https://dlthub.com/docs/dlt-ecosystem/verified-sources/rest_api/ and add it to context as **@dlt rest api**
-    - Read more here: https://dlthub.com/docs/dlt-ecosystem/llm-tooling/cursor-restapi#23-configuring-cursor-with-documentation
+3. 🔒 **Setup credentials** 
     
-3. **Setup credentials** 
+    Authentication is via API key, which should be included as a query parameter named 'api_key' in the request.
     
-    Authentication is done via API key which is included in the query parameters of each request. The header name for this parameter is 'api_key'.
-    
-    To get appropriate API keys, please visit the original source at https://developers.giphy.com.
+    To get appropriate API keys, please visit the original source at https://www.giphy.com/.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
     
-4. **Run the pipeline in the Python terminal in Cursor**
+4. 🏃‍♀️ **Run the pipeline in the Python terminal in Cursor**
     
     ```shell
     python giphy_pipeline.py
     ```
     
-    If your pipeline runs correctly you’ll se something like
+    If your pipeline runs correctly you’ll see something like the following:
     
     ```shell
     Pipeline giphy load step completed in 0.26 seconds
@@ -126,31 +124,31 @@ The steps are:
     Load package 1749667187.541553 is LOADED and contains no failed jobs
     ```
     
-5. **See data**
+5. 📈 **See data**
     
     ```shell
     dlt pipeline giphy_pipeline show --marimo
     ```
     
-6. **Get your data in Python**
+6. 🐍 **Get your data in Python**
     
     ```python
     import dlt
-    
-    data = pipeline.attach("giphy_pipeline").dataset()
-    # get docs table as pandas
-    print(data.docs.df())
+
+   data = dlt.pipeline("giphy_pipeline").dataset()
+   # get clips/search table as Pandas frame
+   data.clips/search.df().head()
     ```
 
 ## Running into errors?
 
-Giphy API uses pagination with offset and limit, which are set by default but can be customized per request. Users should be aware of the rate limits and possible need for handling large data volumes due to Giphy's extensive content options.
+When integrating, consider that pagination is managed through offset and limit parameters with default values provided. Also, be aware of the extensive rendition options which might require handling different formats for various platforms and devices.
 
 ### Extra resources:
 
 - [Learn more with our 1h vibe coding course!](https://www.youtube.com/watch?v=GGid70rnJuM)
 
-## What’s next
+## Next steps
 
-- [REST API Sources with Cursor](https://dlthub.com/docs/dlt-ecosystem/llm-tooling/cursor-restapi)
-- [Deploy a pipeline](https://dlthub.com/docs/walkthroughs/deploy-a-pipeline)
+- [How to deploy a pipeline](https://dlthub.com/docs/walkthroughs/deploy-a-pipeline)
+- [How-to guide: Creating REST API Sources with Cursor](https://dlthub.com/docs/dlt-ecosystem/llm-tooling/cursor-restapi)

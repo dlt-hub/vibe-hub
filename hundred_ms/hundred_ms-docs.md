@@ -11,17 +11,17 @@ from dlt.sources.rest_api import (
 def hundred_ms_source(access_token=dlt.secrets.value):
     config: RESTAPIConfig = {
         "client": {
-            "base_url": "https://api.100ms.live/v2",
+            "base_url": "https://api.100ms.live/v2/",
             "auth": {
-    "type": "bearer",
-    "token": access_token,
-},
+                "type": "apikey",
+                "token": management_token,
+            },
         },
         "resources": [
-            "/rooms/sessions",
-"/rooms",
-"/rooms/active_peers"
-        ],
+            "rooms",
+            "sessions",
+            "templates"
+            ],
     }
 
     yield from rest_api_resources(config)
@@ -51,10 +51,9 @@ def get_data() -> None:
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from hundred_ms’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
 - Rooms: Manage and retrieve information about rooms.
-- Sessions: Access details about sessions within rooms.
-- Templates: Manage and retrieve template settings and destinations.
-- Analytics: Gather events and analytics data.
-- Recordings: Access recordings from sessions.
+- Sessions: Fetch data related to sessions within rooms.
+- Templates: Manage configuration templates for rooms and their settings.
+- Analytics: Access events and recording analytics.
 
 You can combine these endpoints to build pipelines that extract structured content from 100ms workspaces at scale — via REST APIs or webhook ingestion.
 
@@ -70,7 +69,7 @@ Before getting started, let's make sure Cursor is set up correctly:
 
 Now you're ready to get started! 
 
-### 1. ⚙️ **Execute these commands in a new Cursor shell.**
+1. ⚙️ **Execute these commands in a new Cursor shell.**
     
     Install dlt with duckdb support:
     ```shell
@@ -87,13 +86,13 @@ Now you're ready to get started!
     pip install -r requirements.txt
     ```
     
-### 2. 🤠 **Start vibe-coding**
+2. 🤠 **Start vibe-coding**
     
     Here’s a nice prompt for you to start: 
     
     ```prompt
     Please generate a REST API Source for 100ms API, as specified in @hundred_ms-docs.yaml 
-    Start with 2 endpoints that look the most important and skip incremental loading for now. 
+    Start with endpoints "rooms" and "sessions" and skip incremental loading for now. 
     Place the code in hundred_ms_pipeline.py and name the pipeline hundred_ms_pipeline. 
     If the file exists, use it as a starting point. 
     Do not add or modify any other files. 
@@ -102,14 +101,14 @@ Now you're ready to get started!
     ```
 
     
-### 3. 🔒 **Setup credentials** 
+3. 🔒 **Setup credentials** 
     
-    Authentication requires an API key, which should be included in the request header with the name 'Authorization'. The API key should be prefixed with 'Bearer '.
+    The API uses an API key for authentication, which must be included in the header of each request.
     
     To get appropriate API keys, please visit the original source at https://www.100ms.live/.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
     
-### 4. 🏃‍♀️ **Run the pipeline in the Python terminal in Cursor**
+4. 🏃‍♀️ **Run the pipeline in the Python terminal in Cursor**
     
     ```shell
     python hundred_ms_pipeline.py
@@ -124,25 +123,25 @@ Now you're ready to get started!
     Load package 1749667187.541553 is LOADED and contains no failed jobs
     ```
     
-### 5. 📈 **See data**
+5. 📈 **See data**
     
     ```shell
     dlt pipeline hundred_ms_pipeline show --marimo
     ```
     
-### 6. 🐍 **Get your data in Python**
+6. 🐍 **Get your data in Python**
     
     ```python
     import dlt
 
    data = dlt.pipeline("hundred_ms_pipeline").dataset()
-   # get "/rooms/sessions" table as Pandas frame
-   data."/rooms/sessions".df().head()
+   # get rooms table as Pandas frame
+   data.rooms.df().head()
     ```
 
 ## Running into errors?
 
-A management token is essential for all API requests. Some resources support incremental loading, while others do not, which may affect data retrieval strategies.
+A management token is crucial for all API requests. Not all resources support incremental loading, and precise error handling is necessary to manage potential 401 and 404 HTTP responses effectively.
 
 ### Extra resources:
 

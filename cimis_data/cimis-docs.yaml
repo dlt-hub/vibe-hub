@@ -1,0 +1,57 @@
+# Source Metadata
+source_name: CIMIS
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://wwwcimis.water.ca.gov
+  auth:
+    type: apikey
+    location: query
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: data
+    endpoint:
+      path: /data
+      method: GET
+      data_selector: records
+      params: {
+                "incremental": "Julian"
+      }
+
+  - name: stations
+    endpoint:
+      path: /stations
+      method: GET
+      data_selector: records
+
+  - name: spatial_zipcodes
+    endpoint:
+      path: /spatial_zipcodes
+      method: GET
+      data_selector: records
+
+  - name: station_zipcodes
+    endpoint:
+      path: /station_zipcodes
+      method: GET
+      data_selector: records
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - appKey
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Julian in the data stream represents the day in Julia format
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key validity

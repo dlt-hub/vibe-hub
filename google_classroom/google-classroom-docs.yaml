@@ -1,0 +1,76 @@
+# Source Metadata
+source_name: Google Classroom
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://classroom.googleapis.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://oauth2.googleapis.com/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['client_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: courses
+    endpoint:
+      path: /v1/courses
+      method: GET
+      data_selector: courses
+
+  - name: teachers
+    endpoint:
+      path: /v1/courses/{courseId}/teachers
+      method: GET
+      data_selector: teachers
+
+  - name: students
+    endpoint:
+      path: /v1/courses/{courseId}/students
+      method: GET
+      data_selector: students
+
+  - name: announcements
+    endpoint:
+      path: /v1/courses/{courseId}/announcements
+      method: GET
+      data_selector: announcements
+
+  - name: coursework
+    endpoint:
+      path: /v1/courses/{courseId}/courseWork
+      method: GET
+      data_selector: courseWork
+
+  - name: studentsubmissions
+    endpoint:
+      path: /v1/courses/{courseId}/courseWork/{courseWorkId}/studentSubmissions
+      method: GET
+      data_selector: studentSubmissions
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses OAuth2 with refresh token  requires setup of connected app in Google Cloud Console
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401: Unauthorized - Recheck OAuth scopes or token expiration
+  - 403: Forbidden - Ensure correct permissions for accessing resources

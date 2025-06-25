@@ -1,0 +1,66 @@
+# Source Metadata
+source_name: google_calendar
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://www.googleapis.com/calendar/v3
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://oauth2.googleapis.com/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['client_refresh_token_2'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: colors
+    endpoint:
+      path: /colors
+      method: GET
+      data_selector: items
+  - name: settings
+    endpoint:
+      path: /settings
+      method: GET
+      data_selector: items
+  - name: calendarlist
+    endpoint:
+      path: /users/me/calendarList
+      method: GET
+      data_selector: items
+  - name: calendars
+    endpoint:
+      path: /calendars
+      method: GET
+      data_selector: items
+  - name: events
+    endpoint:
+      path: /calendars/{calendarId}/events
+      method: GET
+      data_selector: items
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth2
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires a valid calendar ID for accessing events
+  - Some resources may have restrictions on the type of data returned
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401: Unauthorized  Check your OAuth tokens and permissions
+  - 404: Not Found  Ensure the calendar ID is correct

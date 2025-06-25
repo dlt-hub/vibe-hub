@@ -1,0 +1,129 @@
+# Source Metadata
+source_name: box
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.box.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.box.com/oauth2/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: events
+    endpoint:
+      path: /events
+      method: GET
+      data_selector: entries
+
+  - name: sign_templates
+    endpoint:
+      path: /sign_templates
+      method: GET
+      data_selector: entries
+
+  - name: collections
+    endpoint:
+      path: /collections
+      method: GET
+      data_selector: entries
+
+  - name: collection_items
+    endpoint:
+      path: /collection_items
+      method: GET
+      data_selector: entries
+
+  - name: sign_request
+    endpoint:
+      path: /sign_requests
+      method: GET
+      data_selector: entries
+
+  - name: admin_logs
+    endpoint:
+      path: /admin_logs
+      method: GET
+      data_selector: entries
+
+  - name: files
+    endpoint:
+      path: /files
+      method: GET
+      data_selector: entries
+
+  - name: file_collaborations
+    endpoint:
+      path: /file_collaborations
+      method: GET
+      data_selector: entries
+
+  - name: file_comments
+    endpoint:
+      path: /file_comments
+      method: GET
+      data_selector: entries
+
+  - name: file_tasks
+    endpoint:
+      path: /file_tasks
+      method: GET
+      data_selector: entries
+
+  - name: folders
+    endpoint:
+      path: /folders
+      method: GET
+      data_selector: entries
+
+  - name: folder_collaborations
+    endpoint:
+      path: /folder_collaborations
+      method: GET
+      data_selector: entries
+
+  - name: recent_items
+    endpoint:
+      path: /recent_items
+      method: GET
+      data_selector: entries
+
+  - name: trashed_items
+    endpoint:
+      path: /trashed_items
+      method: GET
+      data_selector: entries
+
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: entries
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth2
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Supports full sync but does not support incremental sync
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check OAuth2 token validity and permissions
+  - 403 Forbidden: Ensure user has access to the requested resource
+  - 404 Not Found: Verify the endpoint and resource existence

@@ -1,0 +1,73 @@
+# Source Metadata
+source_name: confluence_api
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.atlassian.net/wiki/rest/api
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://your-instance.atlassian.net/oauth/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next
+    cursor_param: next
+    page_size_param: limit
+    default_page_size: 50
+
+# Resources (per endpoint/object)
+resources:
+  - name: blogposts
+    endpoint:
+      path: v2/blogposts
+      method: GET
+      data_selector: results
+      params: {
+                "incremental": "updated_at"
+      }
+
+  - name: pages
+    endpoint:
+      path: v2/pages
+      method: GET
+      data_selector: results
+      params: {
+                "incremental": "updated_at"
+      }
+
+  - name: spaces
+    endpoint:
+      path: v2/spaces
+      method: GET
+      data_selector: results
+      params: {
+                "incremental": "updated_at"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth2
+    - ApiToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Ensure to upgrade to version 1.0.0 for compatibility
+  - Schema modifications may require adjustments in existing integrations
+
+# Troubleshooting & Error Patterns
+errors:
+  - 400 Bad Request: Check your request parameters
+  - 401 Unauthorized: Verify your OAuth token and scopes
+  - 404 Not Found: Ensure the endpoint path is correct

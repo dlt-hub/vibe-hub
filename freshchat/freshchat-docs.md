@@ -1,10 +1,6 @@
-# How to load Freshchat data in Python using dlt
+In this guide, we'll set up a complete Freshchat data pipeline from API credentials to your first data load in just 10 minutes. You'll end up with a fully declarative Python pipeline based on dlt's REST API connector.
 
-**Build a Freshchat-to-database or-dataframe pipeline in Python using dlt with automatic Cursor support.**
-
-Your outcome will be a fully declarative python pipeline based on dlt’s REST API connector
-
-```python
+```python-outcome
 import dlt
 from dlt.sources.rest_api import (
     RESTAPIConfig,
@@ -15,16 +11,14 @@ from dlt.sources.rest_api import (
 def freshchat_source(access_token=dlt.secrets.value):
     config: RESTAPIConfig = {
         "client": {
-            "base_url": "https://api.freshchat.com",
+            "base_url": "https://api.freshchat.com/",
             "auth": {
                 "type": "bearer",
                 "token": access_token,
             },
         },
         "resources": [
-            "/conversations/{conversation_id}",
-            "/messages",
-            "/agents"
+            "conversations", "messages", "agents"
             ],
     }
 
@@ -42,31 +36,38 @@ def get_data() -> None:
     print(load_info)  # noqa
 ```
 
-**Why use dlt for this?**
+### Why use dlt for this?
 
-- Fully declarative while being python native and enabling imperative customisation.
-- Schema evolution with type inference for resilient, low maintenance pipelines.
+- dlt is fully declarative, while being python-native and enabling imperative customization
+- Offers schema evolution with type inference for resilient, low maintenance pipelines
 - Performance and scalability control
-- Easy to extend by team member, shallow learning curve
-- Tool of choice for Pythonic Iceberg  Lakehouses
+- Shallow learning curve - the pipeline is easy to extend by any team member
+- dlt is the tool of choice for Pythonic Iceberg Lakehouses
 
 ## What you’ll do
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from freshchat’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- Conversation Management: Manage and retrieve data about conversations, including creating, updating, and viewing conversations.
-- Messaging: Send and receive messages within a conversation, support for various message types including text, images, and templates.
-- Agent Management: Handle agent information, including retrieving and updating agent details.
-- Account Configuration: Access and modify account settings and configurations.
-- File Handling: Manage file uploads within conversations, with limitations on size and quantity per request.
+- Conversations: Manage and retrieve conversations, including updating statuses and properties. 
+- Messages: Send and receive messages, support for various message types including text, media, and templates. 
+- Agents: Manage agent details and statuses. 
+- Authentication: Handle OAuth2 token generation and refresh.
 
 You can combine these endpoints to build pipelines that extract structured content from Freshchat workspaces at scale — via REST APIs or webhook ingestion.
 
-## Steps to follow:
+## Setup & steps to follow
 
-The steps are:
+```default
+Before getting started, let's make sure Cursor is set up correctly:
+   - Use a model like Claude 3.7 Sonnet or better
+   - Add the specification file **@freshchat-docs.yaml** as context
+   - Index the REST API Source tutorial: https://dlthub.com/docs/dlt-ecosystem/verified-sources/rest_api/ and add it to context as **@dlt rest api**
+   - [Read our full steps on setting up Cursor](https://dlthub.com/docs/dlt-ecosystem/llm-tooling/cursor-restapi#23-configuring-cursor-with-documentation)
+```
 
-1. **Execute these commands in a new Cursor shell.**
+Now you're ready to get started! 
+
+1. ⚙️ **Execute these commands in a new Cursor shell.**
     
     Install dlt with duckdb support:
     ```shell
@@ -78,46 +79,40 @@ The steps are:
     dlt init dlthub:freshchat duckdb
     ```
 
-    The `init` command will setup some important files and folders, including `requirments.txt`. Install the requirements for the rest of the project.
+    The `init` command will setup some important files and folders, including `requirements.txt`. Install the requirements for the rest of the project.
     ```shell
     pip install -r requirements.txt
     ```
     
-2. **Start vibe-coding**
+2. 🤠 **Start vibe-coding**
     
     Here’s a nice prompt for you to start: 
     
-    ```
-    Please generate REST API Source for Freshchat API as specified in @freshchat-docs.yaml 
-    Start with 2 endpoints that look the most important and skip incremental loading for now. 
+    ```prompt
+    Please generate a REST API Source for Freshchat API, as specified in @freshchat-docs.yaml 
+    Start with endpoints "conversations" and "messages" and skip incremental loading for now. 
     Place the code in freshchat_pipeline.py and name the pipeline freshchat_pipeline. 
-    If the file exists use it as a starting point. 
+    If the file exists, use it as a starting point. 
     Do not add or modify any other files. 
-    Use @dlt rest api as tutorial. 
-    After adding the endpoints allow the user to run the pipeline with python freshchat_pipeline.py and await further instructions.
-    
+    Use @dlt rest api as a tutorial. 
+    After adding the endpoints, allow the user to run the pipeline with python freshchat_pipeline.py and await further instructions.
     ```
+
     
-    **Suggestions for the best results:**
-    - Use model like Claude 3.7 Sonnet or better
-    - **@freshchat-docs.yaml** - add specification file to context
-    - Index REST API Source tutorial: https://dlthub.com/docs/dlt-ecosystem/verified-sources/rest_api/ and add it to context as **@dlt rest api**
-    - Read more here: https://dlthub.com/docs/dlt-ecosystem/llm-tooling/cursor-restapi#23-configuring-cursor-with-documentation
+3. 🔒 **Setup credentials** 
     
-3. **Setup credentials** 
+    Uses OAuth 2.0 for authentication. Token is included in the Authorization header as a Bearer token. Token refresh and generation are handled through specified endpoints.
     
-    Authentication is managed via OAuth 2.0 with refresh tokens. Specific scopes are required for different operations, such as 'freshchat.conversation.view', 'freshchat.roles.view', and 'freshchat.reports.view'.
-    
-    To get appropriate API keys, please visit the original source at https://developers.freshchat.com.
+    To get appropriate API keys, please visit the original source at https://www.freshworks.com/live-chat-software/.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
     
-4. **Run the pipeline in the Python terminal in Cursor**
+4. 🏃‍♀️ **Run the pipeline in the Python terminal in Cursor**
     
     ```shell
     python freshchat_pipeline.py
     ```
     
-    If your pipeline runs correctly you’ll se something like
+    If your pipeline runs correctly you’ll see something like the following:
     
     ```shell
     Pipeline freshchat load step completed in 0.26 seconds
@@ -126,31 +121,31 @@ The steps are:
     Load package 1749667187.541553 is LOADED and contains no failed jobs
     ```
     
-5. **See data**
+5. 📈 **See data**
     
     ```shell
     dlt pipeline freshchat_pipeline show --marimo
     ```
     
-6. **Get your data in Python**
+6. 🐍 **Get your data in Python**
     
     ```python
     import dlt
-    
-    data = pipeline.attach("freshchat_pipeline").dataset()
-    # get docs table as pandas
-    print(data.docs.df())
+
+   data = dlt.pipeline("freshchat_pipeline").dataset()
+   # get conversations table as Pandas frame
+   data.conversations.df().head()
     ```
 
 ## Running into errors?
 
-Care should be taken with OAuth scopes as specific permissions are needed for different API calls. The system uses pagination extensively, and data types and limits (e.g., file sizes up to 25 MB) must be adhered to. Errors need careful handling, especially with OAuth tokens and rate limits.
+Pay attention to OAuth scopes required for different endpoints. Ensure proper handling of refresh tokens as they have defined lifetimes. Be cautious with file uploads as they have size limits and only one file can be uploaded per request. Localization settings need manual management in SDKs.
 
 ### Extra resources:
 
 - [Learn more with our 1h vibe coding course!](https://www.youtube.com/watch?v=GGid70rnJuM)
 
-## What’s next
+## Next steps
 
-- [REST API Sources with Cursor](https://dlthub.com/docs/dlt-ecosystem/llm-tooling/cursor-restapi)
-- [Deploy a pipeline](https://dlthub.com/docs/walkthroughs/deploy-a-pipeline)
+- [How to deploy a pipeline](https://dlthub.com/docs/walkthroughs/deploy-a-pipeline)
+- [How-to guide: Creating REST API Sources with Cursor](https://dlthub.com/docs/dlt-ecosystem/llm-tooling/cursor-restapi)

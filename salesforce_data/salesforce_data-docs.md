@@ -11,15 +11,16 @@ from dlt.sources.rest_api import (
 def salesforce_data_source(access_token=dlt.secrets.value):
     config: RESTAPIConfig = {
         "client": {
-            "base_url": "https://your-instance.api-name.com/",
+            "base_url": "https://{domain}/v1/",
             "auth": {
                 "type": "bearer",
                 "token": access_token,
             },
         },
         "resources": [
-            "campaign_member",
-            "contact"
+            "projects",
+            "runs",
+            "samples"
             ],
     }
 
@@ -49,8 +50,14 @@ def get_data() -> None:
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from salesforce_data’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- CampaignMember: Allows access to campaign member specific data.
-- Contact: Provides access to individual contact records.
+- Projects: Endpoint for accessing project data.
+- Runs: Endpoint for accessing run executions within projects.
+- Samples: Endpoint for accessing samples related to projects or runs.
+- Sample Files: Access files associated with samples.
+- Run Files: Access files associated with runs.
+- App Sessions: Manage session information for applications.
+- App Results: Get results from applications run within the platform.
+- App Results Files: Access files generated as results of app executions.
 
 You can combine these endpoints to build pipelines that extract structured content from Salesforce workspaces at scale — via REST APIs or webhook ingestion.
 
@@ -89,7 +96,7 @@ Now you're ready to get started!
     
     ```prompt
     Please generate a REST API Source for Salesforce API, as specified in @salesforce_data-docs.yaml 
-    Start with endpoints "campaign_member" and "contact" and skip incremental loading for now. 
+    Start with endpoints "projects" and "runs" and skip incremental loading for now. 
     Place the code in salesforce_data_pipeline.py and name the pipeline salesforce_data_pipeline. 
     If the file exists, use it as a starting point. 
     Do not add or modify any other files. 
@@ -100,7 +107,7 @@ Now you're ready to get started!
     
 3. 🔒 **Setup credentials** 
     
-    Authentication is handled via OAuth2 with a refresh token flow. Essential details include a client ID, client secret, and refresh token. Tokens must be obtained or refreshed using the token URL provided.
+    Authentication uses OAuth2 with a refresh token flow. Tokens are obtained via a token URL and require a client ID and client secret. The 'Authorization' header is used for passing the access token.
     
     To get appropriate API keys, please visit the original source at https://www.salesforce.com/.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
@@ -132,13 +139,13 @@ Now you're ready to get started!
     import dlt
 
    data = dlt.pipeline("salesforce_data_pipeline").dataset()
-   # get campaign_member table as Pandas frame
-   data.campaign_member.df().head()
+   # get projects table as Pandas frame
+   data.projects.df().head()
     ```
 
 ## Running into errors?
 
-Be aware of API request limits and potential QUERY_TIMEOUT errors. Also, some nested fields in objects like Contact may return null values which need handling in data processing.
+Ensure that the user ID provided is correct to access user-specific data. Watch out for 401 errors which could indicate an expired or invalid access token.
 
 ### Extra resources:
 
