@@ -1,4 +1,4 @@
-In this guide, we'll set up a complete ActiveCampaign data pipeline from API credentials to your first data load in just 10 minutes. You'll end up with a fully declarative Python pipeline based on dlt's REST API connector.
+In this guide, we'll set up a complete BigMailer data pipeline from API credentials to your first data load in just 10 minutes. You'll end up with a fully declarative Python pipeline based on dlt's REST API connector.
 
 ```python-outcome
 import dlt
@@ -8,17 +8,19 @@ from dlt.sources.rest_api import (
 )
 
 @dlt.source
-def active_campaign_source(access_token=dlt.secrets.value):
+def big_mailer_source(access_token=dlt.secrets.value):
     config: RESTAPIConfig = {
         "client": {
-            "base_url": "https://your-instance.api.activecampaign.com/api/3/",
-            "auth": {
-                "type": "apikey",
-                "token": access_token,
-            },
+            "base_url": "https://api.bigmailerapp.com/",
+            {
+    "auth": {
+                    "type": "apikey",
+                    "api_key": access_token,
+                }
+},
         },
         "resources": [
-            "campaigns",
+            "brands",
             "contacts",
             "lists"
             ],
@@ -29,12 +31,12 @@ def active_campaign_source(access_token=dlt.secrets.value):
 
 def get_data() -> None:
     pipeline = dlt.pipeline(
-        pipeline_name='active_campaign_pipeline',
+        pipeline_name='big_mailer_pipeline',
         destination='duckdb',
-        dataset_name='active_campaign_data', 
+        dataset_name='big_mailer_data', 
     )
     access_token = "my_access_token"
-    load_info = pipeline.run(active_campaign_source(access_token))
+    load_info = pipeline.run(big_mailer_source(access_token))
     print(load_info)  # noqa
 ```
 
@@ -48,21 +50,27 @@ def get_data() -> None:
 
 ## What you’ll do
 
-We’ll show you how to generate a readable and easily maintainable Python script that fetches data from active_campaign’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
+We’ll show you how to generate a readable and easily maintainable Python script that fetches data from big_mailer’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- Campaign Management: Manage email campaigns including creation, modification, and analytics.
-- Contact Management: Handle contact details, list management, and segmentation for personalized marketing.
-- Deal Tracking: Manage sales pipelines, track deals and their stages.
-- Form Handling: Integration and management of subscription forms for user data collection.
+- Brands: Retrieve information about brands.
+- Contacts: Access and manage contact details.
+- Lists: Manage and retrieve lists for campaigns.
+- Fields: Access custom field definitions.
+- Message Types: Manage different types of messaging formats.
+- Segments: Handle segmentation of contacts for targeted campaigns.
+- Bulk Campaigns: Manage bulk email campaigns.
+- Transactional Campaigns: Handle transaction-specific email campaigns.
+- Suppression Lists: Manage lists of suppressed contacts to avoid sending emails.
+- Users: Manage user accounts and their access.
 
-You can combine these endpoints to build pipelines that extract structured content from ActiveCampaign workspaces at scale — via REST APIs or webhook ingestion.
+You can combine these endpoints to build pipelines that extract structured content from BigMailer workspaces at scale — via REST APIs or webhook ingestion.
 
 ## Setup & steps to follow
 
 ```default
 Before getting started, let's make sure Cursor is set up correctly:
    - Use a model like Claude 3.7 Sonnet or better
-   - Add the specification file **@active_campaign-docs.yaml** as context
+   - Add the specification file **@big_mailer-docs.yaml** as context
    - Index the REST API Source tutorial: https://dlthub.com/docs/dlt-ecosystem/verified-sources/rest_api/ and add it to context as **@dlt rest api**
    - [Read our full steps on setting up Cursor](https://dlthub.com/docs/dlt-ecosystem/llm-tooling/cursor-restapi#23-configuring-cursor-with-documentation)
 ```
@@ -76,9 +84,9 @@ Now you're ready to get started!
     pip install dlt
     ```
 
-    Initialize a dlt pipeline with ActiveCampaign support.
+    Initialize a dlt pipeline with BigMailer support.
     ```shell
-    dlt init dlthub:active_campaign duckdb
+    dlt init dlthub:big_mailer duckdb
     ```
 
     The `init` command will setup some important files and folders, including `requirements.txt`. Install the requirements for the rest of the project.
@@ -91,42 +99,42 @@ Now you're ready to get started!
     Here’s a nice prompt for you to start: 
     
     ```prompt
-    Please generate a REST API Source for ActiveCampaign API, as specified in @active_campaign-docs.yaml 
-    Start with endpoints "campaigns" and "contacts" and skip incremental loading for now. 
-    Place the code in active_campaign_pipeline.py and name the pipeline active_campaign_pipeline. 
+    Please generate a REST API Source for BigMailer API, as specified in @big_mailer-docs.yaml 
+    Start with endpoints "brands" and "contacts" and skip incremental loading for now. 
+    Place the code in big_mailer_pipeline.py and name the pipeline big_mailer_pipeline. 
     If the file exists, use it as a starting point. 
     Do not add or modify any other files. 
     Use @dlt rest api as a tutorial. 
-    After adding the endpoints, allow the user to run the pipeline with python active_campaign_pipeline.py and await further instructions.
+    After adding the endpoints, allow the user to run the pipeline with python big_mailer_pipeline.py and await further instructions.
     ```
 
     
 3. 🔒 **Setup credentials** 
     
-    Authentication is done via API key. The key should be passed in the request header under the name 'Api-Token'.
+    Authentication is managed through an API key included in the headers of HTTP requests.
     
-    To get appropriate API keys, please visit the original source at https://www.activecampaign.com/.
+    To get appropriate API keys, please visit the original source at https://www.bigmailer.io/.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
     
 4. 🏃‍♀️ **Run the pipeline in the Python terminal in Cursor**
     
     ```shell
-    python active_campaign_pipeline.py
+    python big_mailer_pipeline.py
     ```
     
     If your pipeline runs correctly you’ll see something like the following:
     
     ```shell
-    Pipeline active_campaign load step completed in 0.26 seconds
-    1 load package(s) were loaded to destination duckdb and into dataset active_campaign_data
-    The duckdb destination used duckdb:/active_campaign.duckdb location to store data
+    Pipeline big_mailer load step completed in 0.26 seconds
+    1 load package(s) were loaded to destination duckdb and into dataset big_mailer_data
+    The duckdb destination used duckdb:/big_mailer.duckdb location to store data
     Load package 1749667187.541553 is LOADED and contains no failed jobs
     ```
     
 5. 📈 **See data**
     
     ```shell
-    dlt pipeline active_campaign_pipeline show --marimo
+    dlt pipeline big_mailer_pipeline show --marimo
     ```
     
 6. 🐍 **Get your data in Python**
@@ -134,14 +142,14 @@ Now you're ready to get started!
     ```python
     import dlt
 
-   data = dlt.pipeline("active_campaign_pipeline").dataset()
-   # get campaigns table as Pandas frame
-   data.campaigns.df().head()
+   data = dlt.pipeline("big_mailer_pipeline").dataset()
+   # get brands table as Pandas frame
+   data.brands.df().head()
     ```
 
 ## Running into errors?
 
-ActiveCampaign API only supports full refresh syncs and is restricted to a rate limit of 5 requests per second per account. Exceeding these limits may lead to request throttling or temporary suspension of service.
+BigMailer supports full synchronization but does not support incremental loading, meaning all data must be fully reloaded during each sync, potentially increasing load times and processing resources.
 
 ### Extra resources:
 

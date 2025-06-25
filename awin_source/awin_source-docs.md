@@ -1,4 +1,4 @@
-In this guide, we'll set up a complete Akeneo data pipeline from API credentials to your first data load in just 10 minutes. You'll end up with a fully declarative Python pipeline based on dlt's REST API connector.
+In this guide, we'll set up a complete Awin data pipeline from API credentials to your first data load in just 10 minutes. You'll end up with a fully declarative Python pipeline based on dlt's REST API connector.
 
 ```python-outcome
 import dlt
@@ -8,19 +8,19 @@ from dlt.sources.rest_api import (
 )
 
 @dlt.source
-def akeneo_source(access_token=dlt.secrets.value):
+def awin_source_source(access_token=dlt.secrets.value):
     config: RESTAPIConfig = {
         "client": {
-            "base_url": "https://api.akeneo.com/",
+            "base_url": "https://developer.awin.com/",
             "auth": {
                 "type": "bearer",
                 "token": access_token,
             },
         },
         "resources": [
-            "products-uuid",
-            "products",
-            "product-models"
+            "transactions",
+            "orders",
+            "commission_groups"
             ],
     }
 
@@ -29,12 +29,12 @@ def akeneo_source(access_token=dlt.secrets.value):
 
 def get_data() -> None:
     pipeline = dlt.pipeline(
-        pipeline_name='akeneo_pipeline',
+        pipeline_name='awin_source_pipeline',
         destination='duckdb',
-        dataset_name='akeneo_data', 
+        dataset_name='awin_source_data', 
     )
     access_token = "my_access_token"
-    load_info = pipeline.run(akeneo_source(access_token))
+    load_info = pipeline.run(awin_source_source(access_token))
     print(load_info)  # noqa
 ```
 
@@ -48,20 +48,22 @@ def get_data() -> None:
 
 ## What you’ll do
 
-We’ll show you how to generate a readable and easily maintainable Python script that fetches data from akeneo’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
+We’ll show you how to generate a readable and easily maintainable Python script that fetches data from awin_source’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- Products: Manage and retrieve product information.
-- Product Models: Handle the creation and updates of product models.
-- Assets: Manage assets associated with products.
+- Transactions: Manage and validate transactions.
+- Orders: Post and manage order information.
+- Commission Groups: Handle commission groups related to transactions.
+- Reporting: Access performance reports and campaign data.
+- Program Details: Retrieve details on programs a publisher is joined to.
 
-You can combine these endpoints to build pipelines that extract structured content from Akeneo workspaces at scale — via REST APIs or webhook ingestion.
+You can combine these endpoints to build pipelines that extract structured content from Awin workspaces at scale — via REST APIs or webhook ingestion.
 
 ## Setup & steps to follow
 
 ```default
 Before getting started, let's make sure Cursor is set up correctly:
    - Use a model like Claude 3.7 Sonnet or better
-   - Add the specification file **@akeneo-docs.yaml** as context
+   - Add the specification file **@awin_source-docs.yaml** as context
    - Index the REST API Source tutorial: https://dlthub.com/docs/dlt-ecosystem/verified-sources/rest_api/ and add it to context as **@dlt rest api**
    - [Read our full steps on setting up Cursor](https://dlthub.com/docs/dlt-ecosystem/llm-tooling/cursor-restapi#23-configuring-cursor-with-documentation)
 ```
@@ -75,9 +77,9 @@ Now you're ready to get started!
     pip install dlt
     ```
 
-    Initialize a dlt pipeline with Akeneo support.
+    Initialize a dlt pipeline with Awin support.
     ```shell
-    dlt init dlthub:akeneo duckdb
+    dlt init dlthub:awin_source duckdb
     ```
 
     The `init` command will setup some important files and folders, including `requirements.txt`. Install the requirements for the rest of the project.
@@ -90,42 +92,42 @@ Now you're ready to get started!
     Here’s a nice prompt for you to start: 
     
     ```prompt
-    Please generate a REST API Source for Akeneo API, as specified in @akeneo-docs.yaml 
-    Start with endpoints "products-uuid" and "products" and skip incremental loading for now. 
-    Place the code in akeneo_pipeline.py and name the pipeline akeneo_pipeline. 
+    Please generate a REST API Source for Awin API, as specified in @awin_source-docs.yaml 
+    Start with endpoints "transactions" and "orders" and skip incremental loading for now. 
+    Place the code in awin_source_pipeline.py and name the pipeline awin_source_pipeline. 
     If the file exists, use it as a starting point. 
     Do not add or modify any other files. 
     Use @dlt rest api as a tutorial. 
-    After adding the endpoints, allow the user to run the pipeline with python akeneo_pipeline.py and await further instructions.
+    After adding the endpoints, allow the user to run the pipeline with python awin_source_pipeline.py and await further instructions.
     ```
 
     
 3. 🔒 **Setup credentials** 
     
-    Authentication is via OAuth2 with an authorization code flow. It includes scopes for various levels of access and requires tokens to be passed in the Authorization header.
+    Authentication for most endpoints requires an OAuth 2.0 Bearer Token, passed via the Authorization header. Some specific endpoints, like 'Create Transactions', require an API Key.
     
-    To get appropriate API keys, please visit the original source at https://www.akeneo.com/.
+    To get appropriate API keys, please visit the original source at https://www.awin.com/.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
     
 4. 🏃‍♀️ **Run the pipeline in the Python terminal in Cursor**
     
     ```shell
-    python akeneo_pipeline.py
+    python awin_source_pipeline.py
     ```
     
     If your pipeline runs correctly you’ll see something like the following:
     
     ```shell
-    Pipeline akeneo load step completed in 0.26 seconds
-    1 load package(s) were loaded to destination duckdb and into dataset akeneo_data
-    The duckdb destination used duckdb:/akeneo.duckdb location to store data
+    Pipeline awin_source load step completed in 0.26 seconds
+    1 load package(s) were loaded to destination duckdb and into dataset awin_source_data
+    The duckdb destination used duckdb:/awin_source.duckdb location to store data
     Load package 1749667187.541553 is LOADED and contains no failed jobs
     ```
     
 5. 📈 **See data**
     
     ```shell
-    dlt pipeline akeneo_pipeline show --marimo
+    dlt pipeline awin_source_pipeline show --marimo
     ```
     
 6. 🐍 **Get your data in Python**
@@ -133,14 +135,14 @@ Now you're ready to get started!
     ```python
     import dlt
 
-   data = dlt.pipeline("akeneo_pipeline").dataset()
-   # get products-uuid table as Pandas frame
-   data.products-uuid.df().head()
+   data = dlt.pipeline("awin_source_pipeline").dataset()
+   # get transactions table as Pandas frame
+   data.transactions.df().head()
     ```
 
 ## Running into errors?
 
-Authentication requires careful handling of client secrets and refresh tokens. The API uses rate limiting, and endpoints must respect these limits to avoid 429 errors. Some endpoints are read-only, and changes in asset values are required to trigger updates. Ensure secure storage and management of credentials.
+Some APIs require specific subscription plans. There's a throttle limit of 20 API calls per minute per user. Certain endpoints only accept JSONL format. Deep linking requires specific parameters and configurations, and tracking depends heavily on proper JavaScript tag implementation on the advertiser's confirmation page.
 
 ### Extra resources:
 
