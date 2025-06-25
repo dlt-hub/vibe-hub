@@ -1,4 +1,4 @@
-In this guide, we'll set up a complete API Name data pipeline from API credentials to your first data load in just 10 minutes. You'll end up with a fully declarative Python pipeline based on dlt's REST API connector.
+In this guide, we'll set up a complete API-Name data pipeline from API credentials to your first data load in just 10 minutes. You'll end up with a fully declarative Python pipeline based on dlt's REST API connector.
 
 ```python-outcome
 import dlt
@@ -13,14 +13,13 @@ def api_name_source(access_token=dlt.secrets.value):
         "client": {
             "base_url": "https://your-instance.api-name.com/",
             "auth": {
-                "type": "apikey",
-                "api_key": access_token,
+                "type": "bearer",
+                "token": access_token,
             },
         },
         "resources": [
-            "members",
-            "organization_invitations",
-            "member_fields"
+            "campaign_member",
+            "contact"
             ],
     }
 
@@ -50,15 +49,10 @@ def get_data() -> None:
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from api_name’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- Members: Manage and retrieve member data.
-- Organization Invitations: Handle invitations within the organization.
-- Member Fields: Access custom fields associated with members.
-- Activities: Track and retrieve activities related to members.
-- Notes: Manage notes associated with members.
-- Actions: Retrieve actions taken by or related to members.
-- Candidates: Access candidate data within the system.
+- Campaign Member: Allows querying and managing campaign members.
+- Contact: Enables access to contact data, including retrieval and modification.
 
-You can combine these endpoints to build pipelines that extract structured content from API Name workspaces at scale — via REST APIs or webhook ingestion.
+You can combine these endpoints to build pipelines that extract structured content from API-Name workspaces at scale — via REST APIs or webhook ingestion.
 
 ## Setup & steps to follow
 
@@ -79,7 +73,7 @@ Now you're ready to get started!
     pip install dlt
     ```
 
-    Initialize a dlt pipeline with API Name support.
+    Initialize a dlt pipeline with API-Name support.
     ```shell
     dlt init dlthub:api_name duckdb
     ```
@@ -94,8 +88,8 @@ Now you're ready to get started!
     Here’s a nice prompt for you to start: 
     
     ```prompt
-    Please generate a REST API Source for API Name API, as specified in @api_name-docs.yaml 
-    Start with endpoints "members" and "organization_invitations" and skip incremental loading for now. 
+    Please generate a REST API Source for API-Name API, as specified in @api_name-docs.yaml 
+    Start with endpoints "campaign_member" and "contact" and skip incremental loading for now. 
     Place the code in api_name_pipeline.py and name the pipeline api_name_pipeline. 
     If the file exists, use it as a starting point. 
     Do not add or modify any other files. 
@@ -106,9 +100,9 @@ Now you're ready to get started!
     
 3. 🔒 **Setup credentials** 
     
-    Authentication is done using an API key.
+    Uses OAuth2 with a refresh token flow. Requires setting up a connected app and handling tokens via endpoints provided for authentication.
     
-    To get appropriate API keys, please visit the original source at https://www.api-name.com/.
+    To get appropriate API keys, please visit the original source at https://api-name.com/.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
     
 4. 🏃‍♀️ **Run the pipeline in the Python terminal in Cursor**
@@ -138,13 +132,13 @@ Now you're ready to get started!
     import dlt
 
    data = dlt.pipeline("api_name_pipeline").dataset()
-   # get members table as Pandas frame
-   data.members.df().head()
+   # get campaign_member table as Pandas frame
+   data.campaign_member.df().head()
     ```
 
 ## Running into errors?
 
-There is no support for incremental loading, which might affect data synchronization efficiency. Ensure API key validity to avoid 401 Unauthorized errors and verify endpoint paths to prevent 404 Not Found errors.
+Be aware of the potential for null values in deeply nested fields of some objects like Contact. Also, manage API call rates to avoid hitting the request limit, and optimize queries to prevent timeouts.
 
 ### Extra resources:
 

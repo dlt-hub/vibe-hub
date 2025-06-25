@@ -1,0 +1,83 @@
+# Source Metadata
+source_name: looker
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.looker.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://your-instance.looker.com/api/v4.0/login
+    client_id: "{{ dlt.secrets['looker_client_id'] }}"
+    client_secret: "{{ dlt.secrets['looker_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['looker_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next_page
+    cursor_param: page_token
+    page_size_param: page_size
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: boards
+    endpoint:
+      path: /api/v4.0/boards
+      method: GET
+      data_selector: boards
+      params: {
+                # other params
+      }
+
+  - name: board_items
+    endpoint:
+      path: /api/v4.0/board_items
+      method: GET
+      data_selector: board_items
+      params: {
+                # other params
+      }
+
+  - name: board_sections
+    endpoint:
+      path: /api/v4.0/board_sections
+      method: GET
+      data_selector: board_sections
+      params: {
+                # other params
+      }
+
+  - name: dashboards
+    endpoint:
+      path: /api/v4.0/dashboards
+      method: GET
+      data_selector: dashboards
+      params: {
+                # other params
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+    - AuthProvider
+    - Client
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses OAuth2 with refresh token  requires setup of connected app in Looker
+  - Some endpoints may have rate limits
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - QUERY_TIMEOUT: Optimize queries or reduce complexity
+  - 401 Unauthorized: Verify OAuth token validity or scopes

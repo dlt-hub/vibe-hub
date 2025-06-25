@@ -19,8 +19,7 @@ def salesforce_instance_source(access_token=dlt.secrets.value):
         },
         "resources": [
             "campaign_member",
-            "contact",
-            "campaign"
+            "contact"
             ],
     }
 
@@ -50,8 +49,8 @@ def get_data() -> None:
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from salesforce_instance’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- Campaign Member Management: Manage and retrieve data related to campaign members.
-- Contact Management: Operations related to managing contact information.
+- Campaign Member Management: Operations related to accessing and managing campaign members.
+- Contact Management: Operations for accessing and managing contact details.
 
 You can combine these endpoints to build pipelines that extract structured content from Salesforce workspaces at scale — via REST APIs or webhook ingestion.
 
@@ -101,7 +100,7 @@ Now you're ready to get started!
     
 3. 🔒 **Setup credentials** 
     
-    Uses OAuth2 with a flow for refresh tokens. The authentication requires a client ID, client secret, and refresh token, with the token URL for refreshing access.
+    Uses OAuth2 authentication with refresh token flow. Requires the setup of a connected app within Salesforce for authentication.
     
     To get appropriate API keys, please visit the original source at https://www.salesforce.com/.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
@@ -139,7 +138,7 @@ Now you're ready to get started!
 
 ## Running into errors?
 
-API usage may hit request limits, leading to throttling. Some endpoints might return null for deeply nested fields. It's necessary to manage OAuth scopes and token expiration carefully to avoid unauthorized errors. Also, consider breaking down API requests with selective filters to avoid query timeouts.
+Salesforce API uses OAuth2 which requires periodic token refresh. Throttling and query timeouts can occur, requiring management of API call frequency and query optimization. Nested fields in some objects like Contact may return null values.
 
 ### Extra resources:
 
