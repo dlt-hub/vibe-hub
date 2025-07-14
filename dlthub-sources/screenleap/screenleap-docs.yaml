@@ -1,0 +1,63 @@
+resources:
+- name: recording_complete
+  endpoint:
+    path: /RECORDING_COMPLETE
+    method: POST
+    data_selector: eventType
+    params: {}
+- name: recording_error
+  endpoint:
+    path: /RECORDING_ERROR
+    method: POST
+    data_selector: eventType
+    params: {}
+- name: stop_active_share_session
+  endpoint:
+    path: /v2/screen-shares/{screenShareCode}/stop
+    method: POST
+- name: retrieve_share_session_information
+  endpoint:
+    path: /v2/screen-shares/{screenShareCode}
+    method: GET
+- name: retrieve_share_sessions
+  endpoint:
+    path: /v2/screen-shares
+    method: GET
+- name: retrieve_recent_share_sessions
+  endpoint:
+    path: /v2/recent-screen-shares
+    method: GET
+notes:
+- 'Pricing for the API is separate from the Screenleap subscription plans: you do
+  not need a Screenleap subscription in order to use the API.'
+- Each Screenleap subscription is intended for use by a single user whereas the API
+  can be used for any number of concurrent users.
+- The average number of participants in a share session is usually much lower than
+  most people predict. For example, on Screenleap, the average share session has about
+  3.6 total participants (one presenter and 2.6 viewers).
+- Each share session supports one recording, meaning you can start and stop recording
+  only once during the duration of the share session.
+- Completed recordings will be retained for one month and then deleted.
+- All API requests must include a valid accountid and authtoken.
+- Requests that require passing in the authtoken must use SSL.
+- API is designed for multiple concurrent share sessions.
+- The roomId parameter needs to be added to connect presenters and viewers.
+- roomId can be any arbitrary string and is not persisted.
+- Auto-login requires user accounts with tokens.
+errors:
+- '401 - Unauthorized: The provided credential was missing or incorrect.'
+- '403 - Forbidden: You are attempting to access a share session that you did not
+  create through the Screenleap API.'
+- '404 - Not Found: The share code that you are trying to stop does not exist or has
+  already ended.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.screenleap.com
+  auth:
+    type: apikey
+  headers:
+    Accept: application/json
+    accountid: '{{ your_account_id }}'
+    authtoken: '{{ your_auth_token }}'
+source_metadata: null

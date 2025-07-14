@@ -1,0 +1,98 @@
+resources:
+- name: air_quality_data
+  endpoint:
+    path: /v1/air_quality
+    method: GET
+    data_selector: data
+    params: {}
+- name: forecasted_aqi_by_zip
+  endpoint:
+    path: /forecasted/aqi/zip
+    method: GET
+    data_selector: data
+    params: {}
+- name: forecasted_aqi_by_lat_long
+  endpoint:
+    path: /forecasted/aqi/latlong
+    method: GET
+    data_selector: data
+    params: {}
+- name: pm25_contour_maps_kml
+  endpoint:
+    path: /contour/maps/pm25/kml
+    method: GET
+    data_selector: data
+    params: {}
+- name: ozone_contour_maps_kml
+  endpoint:
+    path: /contour/maps/ozone/kml
+    method: GET
+    data_selector: data
+    params: {}
+- name: combined_contour_maps_kml
+  endpoint:
+    path: /contour/maps/combined/kml
+    method: GET
+    data_selector: data
+    params: {}
+- name: aqi_values_by_date_time
+  endpoint:
+    path: /aqi/values/date_time
+    method: GET
+    data_selector: data
+    params: {}
+- name: current_aqi_by_zip
+  endpoint:
+    path: /current/aqi/zip
+    method: GET
+    data_selector: data
+    params: {}
+- name: current_aqi_by_lat_long
+  endpoint:
+    path: /current/aqi/latlong
+    method: GET
+    data_selector: data
+    params: {}
+- name: historical_aqi_by_zip
+  endpoint:
+    path: /historical/aqi/zip
+    method: GET
+    data_selector: data
+    params: {}
+- name: historical_aqi_by_lat_long
+  endpoint:
+    path: /historical/aqi/latlong
+    method: GET
+    data_selector: data
+    params: {}
+notes:
+- Requires API key for access
+- Data may vary based on the region queried
+- AirNow observational data are not fully verified or validated; these data are subject
+  to change and should be considered preliminary.
+- Only validated data should be used for reports and data analysis whenever possible.
+- Air quality data, forecast values, and advisory statements should not be altered
+  in any way and should be disseminated as received.
+- Web services were designed for end users to make requests for forecasts or data
+  for a selected area, not for looping through all zip codes to populate a database.
+errors:
+- '401 Unauthorized: Check API key validity'
+- '404 Not Found: Invalid endpoint or resource'
+- An error occurs when using a web service, an XML-formatted message will be returned
+  describing the error.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.airnowapi.org
+  auth:
+    type: apikey
+    flow: refresh_token
+    token_url: https://api.airquality.com/oauth/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: x-api-key
+  headers:
+    Accept: application/json
+source_metadata: null

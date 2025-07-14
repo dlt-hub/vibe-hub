@@ -1,0 +1,231 @@
+resources:
+- name: device_type
+  endpoint:
+    path: /v1/data
+    method: GET
+    data_selector: items
+    params:
+      incremental: accounts
+- name: device_os
+  endpoint:
+    path: ''
+    method: GET
+    data_selector: items
+    params:
+      accounts: '1752604059001'
+      dimensions: device_os
+- name: filter_device_os
+  endpoint:
+    path: ''
+    method: GET
+    data_selector: items
+    params:
+      accounts: '1752604059001'
+      dimensions: video
+      where: device_os==os_x,mac,ios
+- name: city
+  endpoint:
+    path: /data
+    method: GET
+    data_selector: items
+    params:
+      accounts: '1752604059001'
+      dimensions: city
+- name: country
+  endpoint:
+    path: /data
+    method: GET
+    data_selector: items
+    params:
+      accounts: '1752604059001'
+      dimensions: country
+- name: region
+  endpoint:
+    path: /v1/data
+    method: GET
+    data_selector: items
+    params:
+      accounts: one or more account ids as a comma-delimited list
+      dimensions: one or more dimensions as a comma-delimited list
+- name: analytics_data
+  endpoint:
+    path: /v1/data
+    method: GET
+    data_selector: items
+    params:
+      incremental: from
+- name: referrer_domain
+  endpoint:
+    path: /v1/data
+    method: GET
+    params:
+      accounts: '1752604059001'
+      dimensions: referrer_domain
+- name: filter_referrer_domain
+  endpoint:
+    path: /v1/data
+    method: GET
+    params:
+      accounts: '1752604059001'
+      dimensions: video
+      where: referrer_domain==brightcove.com,docs.brightcove.com
+- name: dimension_request
+  endpoint:
+    path: ''
+    method: GET
+    data_selector: items
+    params:
+      accounts: '1752604059001'
+      dimensions: source_type
+- name: filter_request
+  endpoint:
+    path: ''
+    method: GET
+    data_selector: items
+    params:
+      accounts: '1752604059001'
+      dimensions: video
+      where: source_type==direct
+- name: dimension_request
+  endpoint:
+    path: ''
+    method: GET
+    data_selector: items
+    params:
+      accounts: '1752604059001'
+      dimensions: search_terms
+- name: filter_request
+  endpoint:
+    path: ''
+    method: GET
+    data_selector: items
+    params:
+      accounts: '1752604059001'
+      dimensions: account
+      where: search_terms==video+src+change
+- name: dimension_request
+  endpoint:
+    path: ''
+    method: GET
+    data_selector: items
+    params:
+      accounts: '1752604059001'
+      dimensions: social_platform
+- name: filter_request
+  endpoint:
+    path: ''
+    method: GET
+    data_selector: items
+    params:
+      accounts: '1752604059001'
+      dimensions: account
+      where: social_platform==twitter
+- name: player
+  endpoint:
+    path: ''
+    method: GET
+    data_selector: items
+    params:
+      accounts: '1752604059001'
+      dimensions: player
+- name: video
+  endpoint:
+    path: /v1/data
+    method: GET
+    data_selector: items
+    params:
+      accounts: '1752604059001'
+      dimensions: video
+- name: viewer_analytics
+  endpoint:
+    path: /analytics/viewer
+    method: GET
+    data_selector: data
+    params:
+      account: required
+      dimensions: required
+      limit: '10'
+      offset: '0'
+      sort: video_view
+      fields: video,video_view
+      format: json
+      reconciled: 'true'
+- name: dimension_request
+  endpoint:
+    path: /v1/data
+    method: GET
+    data_selector: items
+    params:
+      accounts: '3365624256001'
+      dimensions: viewer
+      limit: '10'
+      fields: viewer,time,video_view,engagement_score
+- name: multi_dimension_request
+  endpoint:
+    path: /v1/data
+    method: GET
+    data_selector: items
+    params:
+      accounts: '3365624256001'
+      dimensions: viewer,country,region,city,video,device_type
+      limit: '10'
+      fields: viewer,time,video_view,engagement_score,video_percent_viewed,video_seconds_viewed,video_engagement_1,video_engagement_25,video_engagement_50,video_engagement_75,video_engagement_100,video.tags,video.reference_id,video.name,video.description,video.duration,video.long_description,dma,country_name,region_name
+- name: video_engagement
+  endpoint:
+    path: /video/engagement
+    method: GET
+    data_selector: items
+- name: analytics_report
+  endpoint:
+    path: /v1/data
+    method: GET
+    data_selector: items
+    params:
+      accounts: '4800266849001'
+      from: '2021-06-23'
+      to: '2021-06-25'
+      dimensions: date,viewer
+      limit: 10
+      fields: video,viewer,video_view
+      format: csv
+notes:
+- Only dates within the past 32 days are allowed for engagement endpoints.
+- 'Analytics data is derived from multiple sources: some is sent by the player, but
+  other data is collected from CDNs and the Video Cloud system.'
+- 'Client credentials must include the CMS: Video read permission'
+- The API returns engagement data for videos across different regions.
+- 'Minimum requirements for iOS debugging: Safari version 6+ running on Mac MacOS,
+  iPhone or iPad with iOS 6+'
+- 'Minimum requirements for Android debugging: Chrome 32+ running on Mac or Windows,
+  Android device with Chrome for Android 32+'
+- Steps for Android debugging were written using a device running Android 11.
+- Charles is compatible with Windows, Mac and Linux, iOS and/or Android device.
+- Forensic Watermarking is not linked to a specific ingest profile.
+- Add the tag 'watermarked' to the video for easier identification.
+- The segment length should be 2 seconds for it to work with Forensic Watermark. And
+  the account should be specifically configured.
+- Only VOD is supported at this time. Forensic watermarking for Live streams is not
+  supported.
+- Videos must be at least five minutes long to have forensic watermarking applied.
+- Encrypted HLS videos (HLSe) are not currently supported.
+- SSAI is not supported with Forensic Watermarking. If SSAI is used in an asset with
+  Forensic Watermarking, the Forensic Watermarking will not be delivered.
+- This feature requires a NAGRA License Key.
+- Players will require a forensic watermarking JWT that you will create using a script
+  provided by NAGRA.
+- Delivery rules cannot be used with players used to deliver videos with forensic
+  watermarking.
+- You must use Brightcove's CDN. BYO CDN is not supported.
+- Brightcove will not handle detection analysis. For this, contact NAGRA.
+- Forensic Watermarking is not supported with License Keys Protection.
+- You must set the dimensions between 320 and 5120 for width and 240 to 3200 for height.
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://analytics.api.brightcove.com
+  headers:
+    Accept: application/json
+  auth:
+    type: oauth2
+source_metadata: null

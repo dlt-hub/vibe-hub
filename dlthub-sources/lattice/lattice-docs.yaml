@@ -1,0 +1,53 @@
+resources:
+- name: employee
+  endpoint:
+    path: /employee
+    method: GET
+    data_selector: employee
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+notes:
+- Endpoints and fields are subject to change at any time without notice.
+- Lattice is committed to protecting your personal data and privacy.
+- Lattice prioritizes the human element in data privacy.
+- Uses OAuth2 with refresh token â€” requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- All API requests must be made over HTTPS.
+- The Lattice API was designed to only be called from a server and thus does not provide
+  any CORS ability.
+- Lattice does not sell personal information to third parties.
+- The API rating limit is 240 requests per minute.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '401 Unauthorized: Recheck API key or token expiration'
+- '429 Too Many Requests: If the rate limit is reached, the number of seconds needed
+  to wait until you can try again'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.latticehq.com
+  auth:
+    type: apikey
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+source_metadata: null

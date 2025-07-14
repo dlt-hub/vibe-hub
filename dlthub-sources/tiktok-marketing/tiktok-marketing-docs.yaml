@@ -1,0 +1,229 @@
+# Source Metadata
+source_name: TikTok Marketing
+version: 4.8.0-rc.1
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://business-api.tiktok.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://business-api.tiktok.com/oauth/access_token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next_cursor
+    cursor_param: cursor
+    page_size_param: page_size
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: advertisers
+    endpoint:
+      path: /open_api/v1.3/advertisers
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: ad_groups
+    endpoint:
+      path: /open_api/v1.3/ad_groups
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: ads
+    endpoint:
+      path: /open_api/v1.3/ads
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: campaigns
+    endpoint:
+      path: /open_api/v1.3/campaigns
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: ads_reports_hourly
+    endpoint:
+      path: /open_api/v1.3/reports/ad/ads_hourly
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: ads_reports_daily
+    endpoint:
+      path: /open_api/v1.3/reports/ad/ads_daily
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: ads_reports_lifetime
+    endpoint:
+      path: /open_api/v1.3/reports/ad/ads_lifetime
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: advertisers_reports_hourly
+    endpoint:
+      path: /open_api/v1.3/reports/advertiser/advertisers_hourly
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: advertisers_reports_daily
+    endpoint:
+      path: /open_api/v1.3/reports/advertiser/advertisers_daily
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: advertisers_reports_lifetime
+    endpoint:
+      path: /open_api/v1.3/reports/advertiser/advertisers_lifetime
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: audiences
+    endpoint:
+      path: /open_api/v1.3/audiences
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: campaigns_reports_hourly
+    endpoint:
+      path: /open_api/v1.3/reports/campaign/campaigns_hourly
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: campaigns_reports_daily
+    endpoint:
+      path: /open_api/v1.3/reports/campaign/campaigns_daily
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: campaigns_reports_lifetime
+    endpoint:
+      path: /open_api/v1.3/reports/campaign/campaigns_lifetime
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: creative_assets_images
+    endpoint:
+      path: /open_api/v1.3/creative/assets/images
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: creative_assets_music
+    endpoint:
+      path: /open_api/v1.3/creative/assets/music
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: creative_assets_portfolios
+    endpoint:
+      path: /open_api/v1.3/creative/assets/portfolios
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: creative_assets_videos
+    endpoint:
+      path: /open_api/v1.3/creative/assets/videos
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: spark_ads
+    endpoint:
+      path: /open_api/v1.3/spark/ads
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: pixels
+    endpoint:
+      path: /open_api/v1.3/pixels
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: pixel_instant_page_events
+    endpoint:
+      path: /open_api/v1.3/pixels/instant_page_events
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: pixel_events_statistics
+    endpoint:
+      path: /open_api/v1.3/pixels/events_statistics
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: ads_reports_by_country_daily
+    endpoint:
+      path: /open_api/v1.3/reports/ad/ads_by_country_daily
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: ads_reports_by_country_hourly
+    endpoint:
+      path: /open_api/v1.3/reports/ad/ads_by_country_hourly
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: ad_groups_by_country_daily
+    endpoint:
+      path: /open_api/v1.3/reports/ad_group/ad_groups_by_country_daily
+      method: GET
+      data_selector: data
+      params: {}
+
+  - name: ad_groups_by_country_hourly
+    endpoint:
+      path: /open_api/v1.3/reports/ad_group/ad_groups_by_country_hourly
+      method: GET
+      data_selector: data
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+    - NamedCredential
+
+# Known Quirks or Risks, Caveats
+notes:
+  - TikTok Reporting API has data latency, usually about 11 hours.
+  - Recommended to use higher values of attribution window for Incremental Syncs, at least 3 days.
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - QUERY_TIMEOUT: Break down filters or add selectivity
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

@@ -1,0 +1,49 @@
+# Source Metadata
+source_name: dynamodb
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://dynamodb.us-west-2.amazonaws.com
+  auth:
+    type: aws
+  headers:
+    Content-Type: application/json
+  paginator:
+    type: cursor
+    cursor_path: LastEvaluatedKey
+    cursor_param: ExclusiveStartKey
+    page_size_param: Limit
+    default_page_size: 1000
+
+# Resources (per endpoint/object)
+resources:
+  - name: items
+    endpoint:
+      path: /{table_name}
+      method: POST
+      data_selector: Items
+      params: {
+                "incremental": "timestamp"  # example incremental loading key
+              }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - access_key_id
+    - secret_access_key
+    - DefaultCredentialsProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Cursor field must be a top-level attribute.
+  - Only ISO 8601 and epoch cursor types are supported.
+
+# Troubleshooting & Error Patterns
+errors:
+  - AccessDeniedException: Check IAM permissions.
+  - ResourceNotFoundException: Verify table name and region.
+  - ProvisionedThroughputExceededException: Throttle requests.

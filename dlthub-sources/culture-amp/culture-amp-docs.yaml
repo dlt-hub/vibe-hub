@@ -1,0 +1,122 @@
+resources:
+- name: survey_responses
+  endpoint:
+    path: /survey//responses
+    method: GET
+    data_selector: responses
+    params: {}
+- name: surveys
+  endpoint:
+    path: /surveys
+    method: GET
+    data_selector: ''
+    params: {}
+- name: List surveys
+  endpoint:
+    path: /list-surveys
+    method: GET
+- name: survey_responses
+  endpoint:
+    path: /reporting_api/survey//responses
+    method: GET
+    params:
+      cursor: ''
+      limit: ''
+      start_date: ''
+      end_date: ''
+notes:
+- This integration is currently in Beta.
+- The default behavior for users left off your HRIS sync file is to set their end
+  date to the import date, categorizing them as former employees.
+- You cannot configure both SSO methods simultaneously.
+- If your account is hosted on the EU or AU data center, insert .eu or .au immediately
+  after the subdomain in the URL.
+- For security reasons, it's best to create this API Key from an Admin user account
+  that only has access to the data fields you wish to sync with Culture Amp.
+- Workday uses our full import process. When your data syncs, any employees not included
+  in your data file will become inactive as former employees, with their End Date
+  set to the import date.
+- If your ADP setup requires 2FA and you encounter this issue, we recommend switching
+  to an SFTP connection for ADP integration instead.
+- IntelliHR does not support the ability to exclude users via an exclusion field.
+- 'Important: Humaans does not support the ability to exclude users via an exclusion
+  field.'
+- The Employee Data Integration only supports openSSH key pairs, not SSH2.
+- Be wary of sharing your private key. Don't send it anywhere via email, text or through
+  any other insecure means.
+- Changes to employee data in Culture Amp will not flow back to EmploymentHero.
+- Default behavior for users left off your HRIS sync file is to set their end date
+  to the import date.
+- This integration is currently in Beta
+- Default behavior for users left off your HRIS sync file is to set their end date
+  to the import date, categorizing them as former employees.
+- It only gives you access to data from surveys with the raw data option turned on.
+- Once a survey is launched, you can't go back and enable raw data.
+- The API does not anonymize survey data or provide access to de-identified responses.
+- To avoid confusion from users about which demographic to use, we would recommend
+  navigating to the Settings > Account Demographics page and deleting the old demographics
+  after your first sync.
+- As part of our commitment to data security, only data relevant to your import and
+  field mappings will be stored.
+- Uses OAuth2 with Paycor credentials
+- If you prefer that users left off your HRIS sync file are treated as deactivated
+  instead, just reply with 'Ask a Person' in a Support Conversation.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Default behavior for users left off your HRIS sync file is to set their end date
+  to the import date
+- If you prefer that these users are treated as deactivated instead, just contact
+  Culture Amp Support, and we can adjust the default setting.
+- Demographic data for survey participants isn't available through the Survey API
+  right now but will be added in the next few months.
+- Surveys must have the Raw Data Extract setting enabled at time of launch to be retrievable
+  via the API.
+- If you prefer that these users are treated as deactivated instead, just reply with
+  'Ask a Person' in a Support Conversation to speak with a Product Support Specialist
+  and we can adjust the default setting.
+- If you prefer that these users are treated as deactivated instead, just reply with
+  "Ask a Person" in a Support Conversation.
+- Easily retrieve raw data from Culture Amp surveys via the Survey API, with metadata,
+  questions, and responses available for analysis.
+- Customize based on employee expected outcomes from self-reflection.
+- Focus can be on purely development goals, role performance, or clear expectations.
+- Feature updates include role competencies in employee profile, automatic career
+  path role assignment, and customizable role labels.
+- Uses OAuth2 with refresh token — requires setup of connected app in Culture Amp
+- Some objects may return nulls in deeply nested fields
+errors:
+- '403: The email address being sent from the Active Directory must exactly match
+  the email address associated with the user’s Culture Amp profile.'
+- '''Connection refused'' error may occur due to internal Firewall blocking the SFTP
+  connection.'
+- Make sure the hostname and username you use to set up your SFTP client are copied
+  directly from the setup form in Culture Amp.
+- '404 - Not Found: Feature is not enabled (talk to our support team); or Survey ID
+  is incorrect'
+- '403 - Forbidden: Token is invalid; or Email is incorrect; or User does not have
+  Survey Data Analyst permissions'
+- '400 - Bad Request: Raw Data Extracts are not enabled for the requested survey;
+  or Limit is too high; or Invalid query parameters'
+auth_info:
+  mentioned_objects:
+  - SAML
+  - Okta
+  - Bitium
+  - Microsoft Azure
+  - Workday
+  - OneLogin
+client:
+  auth:
+    type: oauth2
+    flow: refresh_token
+    location: header
+    header_name: Authorization
+  base_url: https://your-instance.api-name.com
+  headers:
+    Accept: application/json
+    CA-API-Username: ''
+  paginator:
+    type: cursor
+    cursor_param: cursor
+    page_size_param: limit
+    default_page_size: 200
+source_metadata: null

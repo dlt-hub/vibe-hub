@@ -1,0 +1,41 @@
+# Source Metadata
+source_name: mongodb
+version: 2.0.1
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: mongodb://<username>:<password>@<host>:<port>/<database>
+  auth:
+    type: password
+    username: READ_ONLY_USER
+    password: "READ_ONLY_PASSWORD"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: collections
+    endpoint:
+      path: /<database>/{collection}
+      method: GET
+      data_selector: records
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - DatabaseUser
+    - ConnectionString
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires a read-only user with access to the database
+  - Connection strings vary based on MongoDB Atlas or self-hosted setups
+
+# Troubleshooting & Error Patterns
+errors:
+  - AUTH_FAILED: Check username and password for correctness
+  - NETWORK_ERROR: Verify the network connection to the MongoDB instance
+  - DATABASE_NOT_FOUND: Ensure the specified database exists and user has access

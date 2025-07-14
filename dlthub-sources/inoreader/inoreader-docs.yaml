@@ -1,0 +1,146 @@
+resources:
+- name: preference_stream_list
+  endpoint:
+    path: /preference/stream/list
+    method: GET
+    data_selector: streamprefs
+    params: {}
+- name: rename_tag
+  endpoint:
+    path: /rename-tag
+    method: POST
+    data_selector: OK
+    params: {}
+- name: disable_tag
+  endpoint:
+    path: /disable-tag
+    method: POST
+    data_selector: OK
+    params:
+      s: full tag name, like user/-/label/Tech
+- name: quickadd
+  endpoint:
+    path: /subscription/quickadd
+    method: POST
+    data_selector: query
+    params:
+      quickadd: feedId
+- name: edit_feed
+  endpoint:
+    path: /subscription/edit
+    method: POST
+    data_selector: null
+    params: {}
+- name: user_info
+  endpoint:
+    path: /user-info
+    method: GET
+    data_selector: ''
+- name: set_stream_preferences
+  endpoint:
+    path: /preference/stream/set
+    method: POST
+    data_selector: OK
+    params: {}
+- name: unread_count
+  endpoint:
+    path: /unread-count
+    method: GET
+    data_selector: unreadcounts
+    params: {}
+- name: stream_contents
+  endpoint:
+    path: /stream/contents/[streamId]
+    method: GET
+    params:
+      n: '20'
+      output: json
+- name: item_ids
+  endpoint:
+    path: /reader/api/0/stream/items/ids
+    method: GET
+    data_selector: items
+    params:
+      n: 20
+      r: newest
+      xt: user/-/state/com.google/read
+      it: user/-/state/com.google/read
+      output: json
+      includeAllDirectStreamIds: false
+- name: subscription
+  endpoint:
+    path: /subscription/list
+    method: GET
+    data_selector: subscriptions
+- name: tags_and_folders
+  endpoint:
+    path: /tag/list
+    method: GET
+    data_selector: tags
+    params:
+      types: '1'
+      counts: '1'
+- name: mark_all_as_read
+  endpoint:
+    path: /mark-all-as-read
+    method: POST
+    data_selector: OK
+    params:
+      ts: unix_timestamp
+- name: edit_tag
+  endpoint:
+    path: /edit-tag
+    method: POST
+    data_selector: OK
+    params: {}
+notes:
+- dest cannot contain forward slashes (they are forbidden in folder names)
+- We do not sell, rent, or otherwise provide your Personal Data to third parties for
+  marketing purposes.
+- We do not collect any Sensitive Data about you.
+- We do not transfer your personal data outside the European Economic Area (EEA).
+- For all other use cases, an Inoreader Pro plan is required to access the API.
+- API access is granted to developers who want to create publicly available apps on
+  platforms where Inoreader is not available.
+- In order to protect the backend we have placed default rate limits, which are accounted
+  on a daily basis.
+- Limits can only be increased for developers who want to create publicly available
+  apps on platforms where Inoreader is not available or by purchasing an Custom Inoreader
+  plan.
+- You need to send App ID and App key with every API request.
+- Sort IDs are 8-character strings consisting of hex characters.
+- To find the desired order, use the subscription-ordering pair for each folder.
+- Uses OAuth2 with authorization code flow
+- Remember to always include your access token to all subsequent API requests.
+errors:
+- '403'
+- '429'
+- '401: End-user not authorized'
+- '403: You are not sending the correct AppID and/or AppSecret'
+- '404: Method not implemented'
+- '429: Daily limit reached for this zone'
+- '503: Service unavailable'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- You will not have to pay a fee to access your personal data (or to exercise any
+  of the other rights).
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://www.inoreader.com/reader/api/0
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+    AppId: '1000001414'
+    AppKey: kk18irxGeoXA5wyFg9U1PpTuabDu2WWG
+  auth:
+    type: none
+    flow: authorization_code
+    token_url: https://www.inoreader.com/oauth2/token
+    client_id: '[CLIENT_ID]'
+    client_secret: '[CLIENT_SECRET]'
+    location: header
+    header_name: Authorization
+  paginator:
+    type: cursor
+    cursor_param: continuation
+source_metadata: null

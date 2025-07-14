@@ -1,0 +1,48 @@
+resources:
+- name: files
+  endpoint: /files
+  methods:
+  - GET
+  - POST
+  - DELETE
+  description: Manage files, including upload and deletion.
+  parameters:
+  - file_id
+  - file_name
+  - file_type
+- name: file_metadata
+  endpoint: /files/{file_id}/metadata
+  methods:
+  - GET
+  - PATCH
+  description: Retrieve or update metadata for a specific file.
+  parameters:
+  - file_id
+  - metadata_key
+  - metadata_value
+notes:
+- 'Rate limiting: 1000 requests per hour'
+- Pagination available on list endpoints
+- 'Support for file types: .txt, .jpg, .png, .pdf'
+errors:
+- '401: Unauthorized - Invalid API key'
+- '429: Too Many Requests - Rate limit exceeded'
+- '404: Not Found - Resource not found'
+auth_info:
+  mentioned_objects:
+  - api_key
+  - authentication_header
+  auth_flow: Authentication is done using an API key passed in the header.
+  env_var_for_auth: SERVICE_API_KEY
+client:
+  base_url: https://api.example.com
+  auth:
+    type: api_key
+    location: header
+    key_name: api_key
+    env_var: SERVICE_API_KEY
+source_metadata:
+  name: Files
+  variable_name: files_service
+  base_url: https://api.example.com
+  original_source_url: https://ai.google.dev/gemini-api/docs/files

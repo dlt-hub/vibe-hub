@@ -1,0 +1,59 @@
+resources:
+- name: users
+  endpoint: /users
+  methods:
+  - GET
+  - POST
+  description: Manage user accounts
+  parameters:
+  - user_id
+  - email
+  - name
+- name: invoices
+  endpoint: /invoices
+  methods:
+  - GET
+  - POST
+  - PUT
+  description: Handle invoice management
+  parameters:
+  - invoice_id
+  - amount
+  - customer_id
+- name: projects
+  endpoint: /projects
+  methods:
+  - GET
+  - POST
+  description: Manage projects
+  parameters:
+  - project_id
+  - name
+  - description
+notes:
+- 'Rate limiting: 1000 requests per hour'
+- Pagination available on list endpoints
+- Webhook support for real-time updates
+errors:
+- '401: Unauthorized - Invalid API key'
+- '429: Too Many Requests - Rate limit exceeded'
+- '404: Not Found - Resource not found'
+- '500: Internal Server Error - Unexpected condition'
+auth_info:
+  mentioned_objects:
+  - api_key
+  - authentication_header
+  auth_flow: Authentication is done using an API key passed in the Authorization header.
+  env_var_for_auth: FAKTUROID_API_KEY
+client:
+  base_url: https://api.fakturoid.cz/v3
+  auth:
+    type: api_key
+    location: header
+    key_name: Authorization
+    env_var: FAKTUROID_API_KEY
+source_metadata:
+  name: Fakturoid
+  variable_name: service_name
+  base_url: https://api.fakturoid.cz/v3
+  original_source_url: https://www.fakturoid.cz/api/v3

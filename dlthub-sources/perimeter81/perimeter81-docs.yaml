@@ -1,0 +1,1526 @@
+resources:
+- name: VNC connection
+  endpoint:
+    path: /applications/vnc
+    method: POST
+    data_selector: applicationDetails
+    params:
+      application_name: Enter a name of your choice
+      protocol: VNC
+      host: Enter the internal IP address of the server
+      port: 5900
+      max_connections: 1
+      copy_paste: 'Yes'
+      authentication: The password predefined in your VNC
+      access_groups: State the names of the user groups
+- name: tunnel
+  endpoint:
+    path: /v2.1/networks/{networkId}/tunnels/ipsec/single/{tunnelId}
+    method: GET
+    data_selector: object
+    params:
+      networkId: string
+      tunnelId: string
+- name: add_gateway
+  endpoint:
+    path: /v2.1/networks/{networkId}/instances
+    method: POST
+    data_selector: object
+    params:
+      networkId: string
+      regionId: string
+      idle: boolean
+- name: network
+  endpoint:
+    path: /v2.1/networks/{networkId}
+    method: DELETE
+- name: login
+  endpoint:
+    path: ctl login
+    method: POST
+    data_selector: response
+    params:
+      TENANT_ID: TENANT_ID
+      USERNAME: USERNAME
+      PASSWORD: PASSWORD
+- name: networks
+  endpoint:
+    path: /api/networks
+    method: GET
+    data_selector: network_list
+    params: {}
+- name: network_regions
+  endpoint:
+    path: /api/network_regions
+    method: GET
+    data_selector: region_list
+    params: {}
+- name: network_instances
+  endpoint:
+    path: /api/network_instances
+    method: GET
+    data_selector: instance_list
+    params: {}
+- name: network_tunnels
+  endpoint:
+    path: /api/network_tunnels
+    method: GET
+    data_selector: tunnel_list
+    params: {}
+- name: add_group_member
+  endpoint:
+    path: /v1/groups/{groupId}/member/{userId}
+    method: POST
+- name: addresses
+  endpoint:
+    path: /v2.1/objects/addresses
+    method: POST
+- name: SSH Connection
+  endpoint:
+    path: /ssh/connection
+    method: POST
+- name: IPsec Connection
+  endpoint:
+    path: /vpn/ipsec/connections
+    method: POST
+    data_selector: connection
+    params:
+      name: IPsec-VPN connection
+      vpn_gateway: VPN Gateway
+      customer_gateway: P81 gateway public IP
+      local_network: CIDR block of the VPC
+      remote_network: CIDR block of the on-premises data center
+      effective_immediately: 'Yes'
+      pre_shared_key: Automatically generated or specified key
+      version: IKEv1
+      negotiation_mode: Main mode
+      encryption_algorithm: aes256
+      authentication_algorithm: sha1
+      dh_group: group2
+      sa_lifecycle_phase_one: 86400
+      sa_lifecycle_phase_two: 86400
+      local_id: Local VPN Gateway public IP address
+      remote_id: P81 gateway public IP address
+- name: Tunnel
+  endpoint:
+    path: /tunnel/add
+    method: POST
+    data_selector: tunnel
+    params:
+      name: Tunnel
+      shared_secret: Shared secret set in Alibaba Cloud
+      public_ip: AliBaba VPN Gateway Public IP address
+      remote_id: AliBaba VPN Gateway Public IP address
+      ike_version: V1
+      ike_lifetime: 8h
+      tunnel_lifetime: 1h
+      dead_peer_detection_delay: 10s
+      dead_peer_detection_timeout: 30s
+      encryption_phase_one: aes256
+      encryption_phase_two: aes256
+      integrity_phase_one: sha1
+      integrity_phase_two: sha1
+      dh_groups_phase_one: 2
+      dh_groups_phase_two: 2
+- name: users
+  endpoint:
+    path: /api/rest/v1/users
+    method: GET
+    data_selector: data
+    params:
+      page: 1
+      limit: 25
+- name: create_network
+  endpoint:
+    path: /v2.1/networks
+    method: POST
+    data_selector: object
+    params: {}
+- name: IPSec Tunnel
+  endpoint:
+    path: /api/vpn/tunnels
+    method: POST
+    data_selector: tunnel
+    params:
+      name: Harmony SASE
+      shared_secret: generated_or_provided_secret
+      public_ip: Cisco_Meraki_Public_WAN_IP
+      remote_id: Cisco_Meraki_Public_WAN_IP
+      harmony_sase_network_subnet: 10.255.0.0/16
+      remote_gateway_proposal_subnets: internal_LAN_subnet
+      ike_version: V1
+      ike_lifetime: '28800'
+      tunnel_lifetime: '3600'
+      dead_peer_detection_delay: '10'
+      dead_peer_detection_timeout: '50'
+      encryption_phase_1: aes256
+      encryption_phase_2: aes256
+      integrity_phase_1: sha1
+      integrity_phase_2: sha1
+      diffie_hellman_groups_phase_1: '5'
+      diffie_hellman_groups_phase_2: '5'
+- name: IPSec Tunnel Configuration
+  endpoint:
+    path: /config/ipsec/tunnel
+    method: SET
+    data_selector: tunnel
+    params: {}
+- name: Firewall Security Policies
+  endpoint:
+    path: /config/security/policies
+    method: SET
+    data_selector: policy
+    params: {}
+- name: Static Route Configuration
+  endpoint:
+    path: /routing-options/static
+    method: SET
+    data_selector: route
+    params: {}
+- name: gateway
+  endpoint:
+    path: /api/gateway
+    method: GET
+- name: group
+  endpoint:
+    path: /v1/groups/{id}
+    method: DELETE
+    data_selector: null
+    params:
+      id: String
+- name: Transit Gateway
+  endpoint:
+    path: /createTransitGateway
+    method: POST
+    data_selector: transit_gateway
+    params: {}
+- name: Site-to-Site VPN
+  endpoint:
+    path: /createVpnConnection
+    method: POST
+    data_selector: vpn_connection
+    params:
+      Routing: Dynamic (BGP)
+      BGP AS Number: 64512
+- name: Harmony SASE
+  endpoint:
+    path: /settings/identity_providers
+    method: POST
+- name: EntityID
+  endpoint:
+    path: urn:auth0:perimeter81:{{WORKSPACE}}-oc
+    method: GET
+    data_selector: ''
+    params: {}
+- name: Assertion Consumer Service URL
+  endpoint:
+    path: https://auth.perimeter81.com/login/callback?connection={{WORKSPACE}}-oc
+    method: GET
+    data_selector: ''
+    params: {}
+- name: Malware Protection
+  endpoint:
+    path: /malware/protection
+    method: GET
+- name: Threat Emulation
+  endpoint:
+    path: /threat/emulation
+    method: GET
+- name: Anti-Bot
+  endpoint:
+    path: /anti-bot
+    method: GET
+- name: addresses
+  endpoint:
+    path: /v2.1/objects/addresses
+    method: GET
+    data_selector: data
+    params: {}
+- name: IPSec Tunnel Configuration
+  endpoint:
+    path: /services/data/vXX.X/sobjects/IPSecTunnel
+    method: POST
+    data_selector: tunnels
+    params:
+      subnets: 10.255.0.0/16
+- name: tunnel
+  endpoint:
+    path: /v2.1/networks/{networkId}/tunnels/openvpn/{tunnelId}
+    method: HTTP
+    data_selector: object
+    params: {}
+- name: ipsec_tunnel
+  endpoint:
+    path: /config/ipsec/tunnel
+    method: POST
+    data_selector: tunnels
+    params:
+      name: tunnel_name
+      shared_secret: shared_secret_string
+      public_ip: public_ip_address
+      remote_id: remote_id_address
+      ike_version: IKEv2
+      ike_lifetime: 8h
+      tunnel_lifetime: 1h
+      dead_peer_detection_delay: 10s
+      dead_peer_detection_timeout: 30s
+      encryption_phase_1: aes256
+      encryption_phase_2: aes256
+      integrity_phase_1: sha256
+      integrity_phase_2: sha256
+      dh_group_phase_1: 14
+      dh_group_phase_2: 14
+- name: static_route
+  endpoint:
+    path: /routing/static
+    method: POST
+    data_selector: static_routes
+    params:
+      name: static_route_name
+      description: static_route_description
+      interface: interface_name
+      network: 10.255.0.0/16
+      gateway: 169.254.2.121
+- name: tunnel
+  endpoint:
+    path: /v2.1/networks/{networkId}/tunnels/ipsec/redundant
+    method: POST
+    data_selector: object
+    params: {}
+- name: tunnel
+  endpoint:
+    path: /v2.1/networks/{networkId}/tunnels/ipsec/single/{tunnelId}
+    method: POST
+- name: openvpn_tunnel
+  endpoint:
+    path: /v2.1/networks/{networkId}/tunnels/openvpn
+    method: POST
+    data_selector: object
+    params: {}
+- name: objects
+  endpoint:
+    path: /v2.1/objects/services/{objectId}
+    method: PUT
+    data_selector: object
+    params: {}
+- name: tunnel
+  endpoint:
+    path: /v2.1/networks/{networkId}/tunnels/ipsec/redundant/{tunnelId}
+    method: GET
+    data_selector: object
+    params: {}
+- name: AD/LDAP Connector
+  endpoint:
+    path: /install
+    method: POST
+    data_selector: connector
+    params: {}
+- name: tunnel
+  endpoint:
+    path: /v2.1/networks/{networkId}/tunnels/wireguard
+    method: POST
+    data_selector: object
+    params: {}
+- name: policy
+  endpoint:
+    path: /v2.1/networks/{networkId}/policy
+    method: HTTP
+    data_selector: null
+    params: {}
+- name: OneLogin
+  endpoint:
+    path: /api/endpoint/path
+    method: POST
+    data_selector: data
+    params: {}
+- name: SAML Integration
+  endpoint:
+    path: /login/callback
+    method: POST
+- name: Harmony SASE Gateway
+  endpoint:
+    path: /services/data/vXX.X/sobjects/HarmonySASEGateway
+    method: POST
+    data_selector: records
+    params: {}
+- name: Virtual Private Gateway
+  endpoint:
+    path: /services/data/vXX.X/sobjects/VirtualPrivateGateway
+    method: POST
+    data_selector: records
+    params: {}
+- name: Customer Gateway
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CustomerGateway
+    method: POST
+    data_selector: records
+    params: {}
+- name: Site-to-Site VPN Connection
+  endpoint:
+    path: /services/data/vXX.X/sobjects/SiteToSiteVPNConnection
+    method: POST
+    data_selector: records
+    params: {}
+- name: application_status
+  endpoint:
+    path: /v2.1/applications/status/{statusId}
+    method: GET
+    data_selector: object
+    params:
+      statusId: string
+- name: PaginatedList
+  endpoint:
+    path: /paginated/list
+    method: GET
+- name: PaginationQueryDto
+  endpoint:
+    path: /pagination/query
+    method: GET
+- name: SortQueryDto
+  endpoint:
+    path: /sort/query
+    method: GET
+- name: SearchQueryDto
+  endpoint:
+    path: /search/query
+    method: GET
+- name: ADFS
+  endpoint:
+    path: /adfs/ls
+    method: GET
+    data_selector: claims
+    params:
+      connection: '{{WORKSPACE}}-oc'
+- name: groups
+  endpoint:
+    path: /api/rest/v1/groups
+    method: POST
+- name: authorize
+  endpoint:
+    path: /api/v1/auth/authorize
+    method: POST
+    data_selector: data
+- name: tunnel
+  endpoint:
+    path: /v2.1/networks/{networkId}/tunnels/ipsec/single
+    method: POST
+- name: wireguard_tunnel
+  endpoint:
+    path: /v2.1/networks/{networkId}/tunnels/wireguard/{tunnelId}
+    method: GET
+    data_selector: object
+    params: {}
+- name: networks
+  endpoint:
+    path: /api/rest/v1/networks
+    method: GET
+    data_selector: data
+    params: {}
+- name: applications
+  endpoint:
+    method: GET
+- name: remove_region
+  endpoint:
+    path: /v2.1/networks/{networkId}/regions
+    method: DELETE
+    data_selector: resource
+    params:
+      networkId: string
+      regionId: string
+- name: Security Events
+  endpoint:
+    path: /services/data/vXX.X/sobjects/SecurityEvents
+    method: GET
+    data_selector: records
+    params: {}
+- name: Firewall
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Firewall
+    method: GET
+    data_selector: records
+    params: {}
+- name: IPSec Tunnel
+  endpoint:
+    path: /api/v1/ipsec/tunnel
+    method: POST
+    data_selector: tunnel
+    params:
+      shared_secret: your_shared_secret
+      public_ip: your_firewall_public_wan_ip
+      remote_id: your_remote_id
+      harmony_sase_network_subnet: 10.255.0.0/16
+      internal_lan_subnet: your_internal_lan_subnet
+- name: services
+  endpoint:
+    path: /v2.1/objects/services/{objectId}
+    method: DELETE
+- name: tunnel_configuration_harmony
+  endpoint:
+    path: /configuration/tunnel/harmony
+    method: POST
+    data_selector: tunnel_details
+    params:
+      name: Tunnel Name
+      shared_secret: Your Shared Secret
+      public_ip: Your Public IP
+      harmony_subnet: 10.2XX.0.0/16
+      remote_subnet: Local LAN Subnets
+      ike_version: V2
+      encryption_phase_1: AES256
+      encryption_phase_2: AES256
+      integrity_phase_1: SHA1
+      integrity_phase_2: SHA1
+      dh_groups_phase_1: '5'
+      dh_groups_phase_2: '5'
+      dpd_detection: 30s
+      dpd_timeout: 10s
+- name: tunnel_configuration_linksys
+  endpoint:
+    path: /configuration/tunnel/linksys
+    method: POST
+    data_selector: tunnel_details
+    params:
+      tunnel_name: Tunnel Name
+      local_security_gateway_type: IP Only
+      local_ip_address: Your local IP address
+      local_subnet_mask: Your subnet mask
+      remote_security_gateway_type: IP Only
+      remote_ip_address: 10.255.0.0
+      remote_subnet_mask: 255.255.0.0
+      keying_mode: IKE with PSK
+      phase_1_dhg: Group 5
+      phase_1_encryption: AES256
+      phase_1_authentication: SHA1
+      phase_1_sa_lifetime: '28800'
+      pfs: Enabled
+      phase_2_dhg: Group 5
+      phase_2_encryption: AES256
+      phase_2_authentication: SHA1
+      phase_2_sa_lifetime: '3600'
+      preshared_key: Your Shared Secret
+- name: active_sessions
+  endpoint:
+    path: /active_sessions
+    method: GET
+    data_selector: sessions
+    params: {}
+- name: member_licenses
+  endpoint:
+    path: /member_licenses
+    method: GET
+    data_selector: licenses
+    params: {}
+- name: gateway_licenses
+  endpoint:
+    path: /gateway_licenses
+    method: GET
+    data_selector: licenses
+    params: {}
+- name: zero_trust_applications
+  endpoint:
+    path: /zero_trust_applications
+    method: GET
+    data_selector: applications
+    params: {}
+- name: bandwidth_usage
+  endpoint:
+    path: /bandwidth_usage
+    method: GET
+    data_selector: bandwidth
+    params: {}
+- name: os_distribution
+  endpoint:
+    path: /os_distribution
+    method: GET
+    data_selector: os_distribution
+    params: {}
+- name: device_type_distribution
+  endpoint:
+    path: /device_type_distribution
+    method: GET
+    data_selector: device_distribution
+    params: {}
+- name: agent_version_by_os
+  endpoint:
+    path: /agent_version_by_os
+    method: GET
+    data_selector: agent_versions
+    params: {}
+- name: Content Filter
+  endpoint:
+    path: /content/filter
+    method: POST
+    data_selector: filter
+    params:
+      Filter Type: Plug-in
+      Connection Name: Harmony SASE
+      Identifier: com.safervpn.osx.smb
+      Filter Webkit traffic: 'Yes'
+      Filter Socket Traffic: 'Yes'
+      Socket Filter Bundle ID: com.safervpn.osx.smb
+      Socket Requirement: identifier "com.safervpn.osx.smb" and anchor apple generic
+        and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate
+        leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU]
+        = "924635PD62"
+      Filter Network Pockets: 'Yes'
+      Pocket Bundle ID: com.safervpn.osx.smb
+      Packet Requirement: identifier "com.safervpn.osx.smb" and anchor apple generic
+        and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate
+        leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU]
+        = "924635PD62"
+      Filter Grade: Firewall
+- name: System Extension
+  endpoint:
+    path: /system/extension
+    method: POST
+    data_selector: extension
+    params:
+      Allow User Overrides: 'Yes'
+      Allowed System Extension Types: Network
+      Team ID: 924635PD62
+      Bundle Identifier: com.safervpn.osx.smb.proxy
+- name: users
+  endpoint:
+    path: /v1/users
+    method: POST
+    data_selector: tenantId
+    params: {}
+- name: tunnel
+  endpoint:
+    path: /v2.1/networks/{networkId}/tunnels/wireguard/{tunnelId}
+    method: POST
+    data_selector: object
+    params: {}
+- name: NetworkList
+  endpoint:
+    path: /v1/networks
+    method: GET
+    data_selector: data
+- name: Harmony SASE
+  endpoint:
+    path: /sso/idp/SSO.saml2
+    method: GET
+    data_selector: idpid
+    params: {}
+- name: tunnel
+  endpoint:
+    path: /v2.1/networks/{networkId}/tunnels/openvpn/{tunnelId}
+    method: GET
+    data_selector: object
+    params: {}
+- name: regions
+  endpoint:
+    path: /v2.1/networks/regions
+    method: GET
+    data_selector: regions
+- name: status
+  endpoint:
+    path: /v2.1/status
+    method: GET
+    data_selector: string
+    params: {}
+- name: delete_tunnel
+  endpoint:
+    path: /v2.1/networks/{networkId}/tunnels/wireguard/{tunnelId}
+    method: DELETE
+    data_selector: statusUrl
+    params: {}
+- name: tunnel
+  endpoint:
+    path: /v2.1/networks/{networkId}/tunnels/ipsec/single/{tunnelId}
+    method: DELETE
+    data_selector: object
+    params: {}
+- name: network
+  endpoint:
+    path: /list/network
+    method: GET
+    data_selector: networks
+    params:
+      permissions:
+      - network:read
+- name: VPN Gateway
+  endpoint:
+    path: /create-vpn-gateway
+    method: POST
+    data_selector: gateway_details
+    params: {}
+- name: BGP Routes
+  endpoint:
+    path: /configure-bgp-routes
+    method: POST
+    data_selector: bgp_route_details
+    params: {}
+- name: Tunnel Status
+  endpoint:
+    path: /tunnel-status
+    method: GET
+    data_selector: tunnel_status
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: groups
+  endpoint:
+    path: /groups
+    method: GET
+    data_selector: data
+    params:
+      page: '1'
+      limit: '1'
+- name: Log Analytics Workspace
+  endpoint:
+    path: /api/log_analytics_workspace
+    method: POST
+- name: addresses
+  endpoint:
+    path: /v2.1/objects/addresses/{objectId}
+    method: HTTP
+    data_selector: object
+    params: {}
+- name: customer_gateway
+  endpoint:
+    path: /services/vpc/customer-gateway
+    method: POST
+    data_selector: gateway
+    params:
+      routing: static
+- name: virtual_private_gateway
+  endpoint:
+    path: /services/vpc/virtual-private-gateway
+    method: POST
+    data_selector: gateway
+    params: {}
+- name: vpn_connection
+  endpoint:
+    path: /services/vpc/vpn-connection
+    method: POST
+    data_selector: connection
+    params:
+      routing: static
+      subnet: 10.255.0.0/16
+- name: network_update
+  endpoint:
+    path: /v2.1/networks/{networkId}/regions
+    method: HTTP
+    data_selector: resource
+    params:
+      networkId: string
+      regionId: string
+      idle: boolean
+- name: users
+  endpoint:
+    path: /v1/users
+    method: POST
+- name: groups
+  endpoint:
+    path: /v1/groups
+    method: POST
+- name: member_to_group
+  endpoint:
+    path: /v1/groups/{groupId}/member/{userId}
+    method: POST
+- name: addons_members
+  endpoint:
+    path: /v1/addons/members
+    method: POST
+- name: addons_gateways
+  endpoint:
+    path: /v1/addons/gateways
+    method: POST
+- name: status
+  endpoint:
+    path: /v2.1/networks/status/{statusId}
+    method: GET
+    data_selector: object
+    params: {}
+- name: SAML 2.0 Identity Providers
+  endpoint:
+    path: /saml2/perimeter81
+    method: GET
+- name: VPN Tunnel
+  endpoint:
+    path: /api/vpn/tunnel
+    method: POST
+    data_selector: tunnel
+    params:
+      name: Harmony SASE
+      shared_secret: Insert your shared secret
+      public_ip: Insert the public IP of the FortiGate device
+      remote_id: Insert the remote ID of the FortiGate device
+      harmony_sase_gateway_proposal_subnets: 10.XXX.0.0/16
+      remote_gateway_proposal_subnets: Specify according to your local LAN Subnets
+      ike_version: V2
+      diffie_hellman_groups_phase_1: 21
+      diffie_hellman_groups_phase_2: 21
+- name: tunnel
+  endpoint:
+    path: /v2.1/networks/{networkId}/tunnels/openvpn/{tunnelId}
+    method: DELETE
+    data_selector: statusUrl
+    params: {}
+- name: saml2_web_app
+  endpoint:
+    path: /login/callback
+    method: GET
+    data_selector: configuration
+    params: {}
+- name: Harmony SASE
+  endpoint:
+    path: /apps/registration
+    method: POST
+- name: Virtual Network Gateway
+  endpoint:
+    path: /create/virtual-network-gateway
+    method: POST
+    data_selector: gateway
+    params: {}
+- name: Local Network Gateway
+  endpoint:
+    path: /create/local-network-gateway
+    method: POST
+    data_selector: local_gateway
+    params: {}
+- name: IPSEC Tunnel Connection
+  endpoint:
+    path: /create/ipsec-tunnel-connection
+    method: POST
+    data_selector: connection
+    params: {}
+- name: group_member
+  endpoint:
+    path: /groups/{groupId}/member/{userId}
+    method: DELETE
+- name: objects
+  endpoint:
+    path: /services
+    method: GET
+- name: SCIM
+  endpoint:
+    path: /scim
+    method: POST
+- name: users
+  endpoint:
+    path: /v1/users
+    method: GET
+    data_selector: data
+    params:
+      limit: 100
+- name: groups
+  endpoint:
+    path: /v1/groups
+    method: GET
+    data_selector: data
+    params:
+      limit: 100
+- name: addons
+  endpoint:
+    path: /v1/addons
+    method: GET
+    data_selector: data
+    params: {}
+- name: networks
+  endpoint:
+    path: /v1/networks
+    method: GET
+    data_selector: data
+    params: {}
+- name: SAML Configuration
+  endpoint:
+    path: /login/callback
+    method: GET
+    data_selector: configs
+    params: {}
+- name: update_network
+  endpoint:
+    path: /v2.1/networks/{networkId}
+    method: PUT
+- name: bucket_policy
+  endpoint:
+    path: /
+    method: PUT
+    data_selector: Statement
+    params: {}
+- name: users
+  endpoint:
+    path: /v1/users
+    method: GET
+    data_selector: data
+    params: {}
+- name: create_user
+  endpoint:
+    path: /v1/users
+    method: POST
+    data_selector: profileData
+    params: {}
+- name: delete_user
+  endpoint:
+    path: /v1/users/{id}
+    method: DELETE
+    data_selector: 'null'
+    params: {}
+- name: tunnel
+  endpoint:
+    path: /v2.1/networks/{networkId}/tunnels/ipsec/redundant/{tunnelId}
+    method: DELETE
+    params: {}
+- name: Virtual Network Gateway
+  endpoint:
+    path: /create/virtual-network-gateway
+    method: POST
+    data_selector: gateway
+    params: {}
+- name: Local Network Gateway
+  endpoint:
+    path: /create/local-network-gateway
+    method: POST
+    data_selector: localGateway
+    params: {}
+- name: IPSEC Tunnel Connection
+  endpoint:
+    path: /create/ipsec-connection
+    method: POST
+    data_selector: connection
+    params: {}
+- name: remove_gateways_from_network
+  endpoint:
+    path: /v2.1/networks/{networkId}/instances
+    method: HTTP
+    data_selector: resource
+    params: {}
+- name: Default Bypass Rules
+  endpoint:
+    path: Bypass Rules
+    method: GET
+    data_selector: rules
+    params: {}
+- name: addresses
+  endpoint:
+    path: /v2.1/objects/addresses/{objectId}
+    method: DELETE
+    data_selector: null
+    params: {}
+- name: IPSec Tunnel Configuration
+  endpoint:
+    path: /config/ipsec/tunnel
+    method: POST
+    data_selector: tunnel
+    params: {}
+- name: Enhancements
+  endpoint:
+    path: /enhancements
+    method: GET
+    data_selector: records
+    params: {}
+- name: Resolved Issues
+  endpoint:
+    path: /resolved_issues
+    method: GET
+    data_selector: records
+    params: {}
+- name: users
+  endpoint:
+    path: /v1/users/{id}
+    method: DELETE
+    data_selector: null
+    params:
+      id: userID
+- name: Virtual_network_gateway
+  endpoint:
+    path: /virtual_network_gateways
+    method: POST
+    data_selector: gateway_settings
+    params:
+      gateway_type: VPN
+      vpn_type: Route-Based
+      enable_active_active_mode: true
+      configure_gbp: true
+      asn: default
+      custom_azure_apipa_bgp_ip_address: ''
+- name: Local_network_gateways
+  endpoint:
+    path: /local_network_gateways
+    method: POST
+    data_selector: gateway_settings
+    params:
+      configure_bgp_settings: true
+      asn: default
+- name: Connection
+  endpoint:
+    path: /connections
+    method: POST
+    data_selector: connection_settings
+    params:
+      enable_bgp: true
+      ike_protocol: IKEv2
+- name: Transit Gateway
+  endpoint:
+    path: /services/data/vXX.X/transit_gateways
+    method: POST
+    data_selector: transit_gateway
+    params: {}
+- name: Transit Gateway Attachment
+  endpoint:
+    path: /services/data/vXX.X/transit_gateway_attachments
+    method: POST
+    data_selector: transit_gateway_attachment
+    params: {}
+- name: Site-to-Site VPN Connections
+  endpoint:
+    path: /services/data/vXX.X/site_to_site_vpn_connections
+    method: GET
+    data_selector: vpn_connections
+    params: {}
+- name: groups
+  endpoint:
+    path: /v1/groups
+    method: GET
+    data_selector: data
+- name: services
+  endpoint:
+    path: /v2.1/objects/services
+    method: POST
+    data_selector: object
+    params:
+      required_permission: '["objects:create"]'
+- name: VPN Gateway
+  endpoint:
+    path: /spaces/vpn/info
+    method: GET
+    data_selector: VPNs
+    params:
+      space: SPACE
+- name: IKE Policy
+  endpoint:
+    path: /vpc/ike_policies
+    method: POST
+    data_selector: policy
+    params:
+      name: New IKE Policy
+      region: Region
+      resource_group: Resource group
+      ike_version: 1
+      dh_group: 2
+      authentication: sha256
+      key_lifetime: 28800
+      encryption: aes256
+- name: IPSec Policy
+  endpoint:
+    path: /vpc/ipsec_policies
+    method: POST
+    data_selector: policy
+    params:
+      name: New IPSec Policy
+      region: Region
+      resource_group: Resource group
+      check: PFS
+      dh_group: 2
+      authentication: sha256
+      key_lifetime: 3600
+      encryption: aes256
+- name: VPN Gateway
+  endpoint:
+    path: /vpc/vpn_gateways
+    method: POST
+    data_selector: gateway
+    params:
+      name: Enter a name of your choice
+      virtual_private_cloud: Choose the desired cloud
+      resource_group: Choose the resource group
+      subnet: Choose the appropriate subnet
+- name: VPN Connection
+  endpoint:
+    path: /vpc/vpn_connections
+    method: POST
+    data_selector: connection
+    params:
+      connection_name: Set a name
+      peer_gateway_address: Insert your Harmony SASE gateway IP
+      preshared_key: Insert an 8 character (at least) string containing upper-case
+        letters, upper-case letters, and numbers
+      local_subnet: Specify one or more subnets in the VPC you want to connect
+      peer_subnet: 10.255.0.0/16
+      dead_peer_detection_action: Restart
+      interval: 10 seconds
+      timeout: 30 seconds
+      ike_policy: Choose the policy that was earlier
+      ipsec_policy: Choose the policy that was earlier
+- name: Tunnel
+  endpoint:
+    path: /vpn/tunnels
+    method: POST
+    data_selector: tunnel
+    params:
+      name: Specify a name
+      public_ip: Insert the IP of the VPN Gateway you have just defined
+      remote_id: Identical to Remote IP
+      shared_secret: Insert the same preshared key you chose before
+      harmony_sase_gateway_proposal_subnets: 10.255.0.0/16 or according to what you
+        defined in the IBM Cloud portal
+      remote_gateway_proposal_subnets: Specify one or more subnets in the VPC you
+        want to connect
+      ike_version: 1
+      ike_lifetime: 8h
+      tunnel_lifetime: 1h
+      dead_peer_detection_delay: 10s
+      dead_peer_detection_timeout: 30s
+      encryption_phase_1: aes256
+      encryption_phase_2: aes256
+      integrity_phase_1: sha256
+      integrity_phase_2: sha256
+      diffie_hellman_groups_phase_1: 2
+      diffie_hellman_groups_phase_2: 2
+- name: policy
+  endpoint:
+    path: /v2.1/networks/{networkId}/policy
+    method: GET
+notes:
+- Private key is presented to you only once. You will need both keys to set up the
+  integration.
+- Provided TENANT_ID must have database identity provider enabled.
+- It is considered a good network security practice to make sure that internal resources
+  for your organization's prod or perhaps dev environment are permitted access via
+  a private subnet.
+- Accessing internal resources by name is a huge benefit for any environment.
+- Agent now rebranded to Check Point - Harmony SASE.
+- Agent supports the new European Data Residency instance of Harmony SASE.
+- IKEv2 protocol deprecated as a method of agent connection - removed from agent UI.
+- If the user did not complete the system extension installation, they can log out
+  and sign back into the agent to re-initiate the flow of SWG installation.
+- If the SWG certificate installation has been denied or blocked, attempts to reach
+  any website via the browser will be encountered with an error.
+- Administrators can temporarily provide access to Harmony SASE support professionals
+  for direct assistance with issues.
+- Allowing Support Access does not require an additional user license.
+- A record of each user and support agent login is recorded in the activity log.
+- The values above reflect typical usage during standard operations.
+- Resource consumption may temporarily increase during intensive tasks, such as heavy
+  browsing or large file downloads.
+- Ensure that you possess an active Harmony SASE account and network.
+- Maintain an active ZyXEL USG account with the necessary administrative permissions.
+- When the remote subnet is similar to one local subnet you will only be able to reach
+  the local network.
+- The gateways can be deployed in two separate Regions for comprehensive ISP redundancy.
+- The network can be scaled up and adding another region should not affect the connection.
+- SCIM-based user provisioning is available to Harmony SASE's Enterprise customers
+  only.
+- The 'Name' field does not support the following special characters such as '@',
+  ',', '#', '$', and '!'
+- Ensure the connection is intended for a single VPC.
+- If dealing with multiple VPCs, refer to the guide on configuring a Site-to-Site
+  IPsec tunnel to AWS Transit Gateway.
+- Usually use subnet 10.255.0.0/16 for Harmony SASE network.
+- P81 default is - 10.255.0.0/16.
+- Health Check - Optional
+- Search string or URL encoded JSON can be provided in the 'q' parameter.
+- Ensure IKEv2 is set up on the Firewall if possible.
+- If your Harmony SASE network subnet is not 10.255.0.0/16 make sure to change the
+  appropriate line.
+- Currently, the import feature is not supported for Redundant (High-Availability)
+  Tunnels on Azure Cloud.
+- Ensure AWS Transit Gateway is configured with default settings.
+- Naming conventions for connections should be logical for ease of identification.
+- Users that are SOLELY assigned SSO as their authentication method, will first need
+  to have a successful login for their account to be created.
+- Ensure you have admin access in both Rippling and Harmony SASE platforms for a successful
+  integration.
+- Always replace placeholders with the appropriate values during setup, such as the
+  Harmony SASE domain page.
+- Always replace placeholders like {{WORKSPACE}} and {{Your PingFederate Domain}}
+  with the actual values during the configuration.
+- Threat Prevention is part of the Internet Access (SWG) Suite.
+- The Agent version is v11.5 or later for full policy enforcement.
+- Ensure you have an active Harmony SASE account with an existing network.
+- The Harmony SASE application should be installed on your devices.
+- You have an operational Sophos XG setup with the necessary administrative privileges.
+- 'The following SAML attributes are supported: given_name, family_name, user.email,
+  groups'
+- By default, the Perimeter 81 Gateway Proposal Subnets should be set to 10.255.0.0/16.
+- By default, the Harmony SASE subnet is 10.255.0.0/16.
+- Conduct a risk assessment to determine which posture checks are most critical for
+  your organization.
+- Regularly update your posture check settings to align with evolving security policies.
+- Ensure that an active Harmony SASE account and a configured network.
+- The Harmony SASE application is installed on your designated devices.
+- An up-and-running DrayTek Vigor 2862 setup with the necessary administrative credentials.
+- Ensure that the Harmony SASE app is installed on your devices.
+- The EdgeMAX Device must have necessary administrative permissions.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Each generated access token expires 60 minutes after being issued
+- The integration will not be successful unless all users have their email addresses
+  filled in.
+- Always replace placeholders like {{WORKSPACE}} with the appropriate values during
+  setup.
+- Ensure that the correct attributes are mapped in OneLogin for accurate user authentication
+  and authorization in Harmony SASE.
+- After specifying a Trusted IP range, only authorized Harmony SASE users from your
+  Private Server will have access to Salesforce resources.
+- Malware detection engine activates automatically for any user with the Access Policy
+  feature activated.
+- A SAML integration mandates all users to authenticate using Google Suite
+- Best practice is to authenticate this with a service user (such as it@<yourcompany>.com)
+  with sufficient permissions.
+- If the user leaves the organisation you will have to create new Client ID and Secret
+  and then re-authenticate with a new user.
+- This setup specifically aids in achieving redundancy by utilizing two independent
+  gateways.
+- Ensure that the route added matches the route transmitted by BGP.
+- If you see somewhat differently or if you wish to have more granular traffic control,
+  select ADD, and create an appropriate rule.
+- Always replace placeholders like {{WORKSPACE}} and {{YOUR.ADFS.DOMAIN}} with the
+  appropriate values during configuration.
+- The deployment process of Harmony SASE varies depending on your MDM provider and
+  is done utilizing a public app deployment process.
+- If you are managing the Harmony SASE client deployment using MDM you should disable
+  the Update client functions in the Harmony SASE Web Console to prevent looping client
+  installation issues.
+- Some web browsers fail to display graphical components in the destination HTTP(S)
+  page if a host header is missing, so it is advised to configure a custom header
+  in any case.
+- Choose the name of your own choice.
+- Let other administrators know what this rule serves for (optional).
+- You can choose to log traffic related to the rule (this may lead to additional costs
+  on Google's side).
+- Leave default values for priority.
+- Ingress direction of traffic.
+- Allow action on match.
+- Depending on your needs, choose the entire network or choose resources that are
+  labeled with a certain tag.
+- Paste the IP address of the gateway and add /32, for instance 37.142.39.122/32.
+- None for second source filter.
+- Allow all protocols and ports.
+- Ensure that your local networks and the cloud infrastructure seamlessly integrate.
+- Check the IP addresses and other details you entered during setup.
+- Once you've successfully authorized the API key, you may use any API Calls permitted
+  under Key Permissions for 60 minutes.
+- After 60 minutes, you must go through authorization once more to continue interacting
+  with the API.
+- You must generate an integration key, API hostname, and Secret key to connect Harmony
+  SASE to DUO.
+- The Harmony SASE agent is not supported on Windows devices with ARM architecture
+  processors and those running the PRISM (Microsoft) emulation layer.
+- Success. List of networks returned.
+- This configuration permits to pass through the SAML response the Users given name
+  and surname.
+- Always review your application access policies periodically to ensure they are up-to-date
+  with organizational needs.
+- Test new policies on a small group before rolling them out organization-wide.
+- Ensure the Harmony SASE app is installed on your devices.
+- Verify the tunnel status in the Harmony SASE dashboard.
+- Ensure that an active Harmony SASE account and a setup network.
+- The Harmony SASE application is installed on necessary devices.
+- A working Linksys setup with appropriate administrative privileges.
+- 'Required permissions: ["network:read"]'
+- 'The Harmony SASE Client (Agent) offers two major VPN protocols: WireGuard and OpenVPN.'
+- If you experience reduced performance or are unable to connect using one protocol,
+  try switching to the other protocol.
+- If you have the 'Always-On VPN' feature active via User-Groups Policies, you will
+  need to disable it before being able to change the protocol.
+- Other protocols, such as ICMP (ping), are not supported on the gateways.
+- The Access Key ID and Secret Access Key appear only at the point of creating the
+  tunnel and must be saved before applying the change.
+- New Threat Prevention Policy includes threat emulation, anti-bot, and malware protection.
+- Admins can gain early access to NGN capabilities and provide feedback.
+- Securing access to publicly accessible websites or SaaS providers (Such as Microsoft
+  Office 365 or Gmail) is not supported using Harmony SASE's Zero Trust Application
+  Access.
+- Regularly review who has access to what resources.
+- Use strong authentication mechanisms.
+- An active Infinity Portal account is required to access logs in Infinity Events.
+- Changing the data residency after account creation is not possible.
+- Ensure correct region selection for VPN Gateway.
+- Peer ASN is set to 65000 for Harmony SASE.
+- The Harmony SASE AS Number cannot be edited after the tunnel's creation.
+- Uses OAuth2 with refresh token â€” requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Ensure you have the necessary permissions to create a network.
+- If the issue persists, try refreshing the page or logging out and back in.
+- The access policy is a first-match-rule base.
+- URLs containing protocols, queries, parameters, or anchors are not supported.
+- Admin Activity provides quick and easy visibility into the actions of your Admins.
+- To successfully follow this guide, you should have an active Harmony SASE account
+  and a functional network.
+- Installed the Harmony SASE app on your devices.
+- An active Google Cloud Platform (GCP) account with the necessary administrative
+  permissions.
+- Ensure that you have the correct Log Analytics Workspace ID and Primary Key.
+- Use the first vendor and ike version for consistency.
+- Ensure to allow traffic from Harmony SASE subnets.
+- Regularly review and update user group profiles to ensure they align with the evolving
+  needs of your organization.
+- Utilize the default profile for general configurations that apply to most users.
+- Prioritize profiles based on the importance and frequency of use to ensure users
+  see the most relevant configurations first.
+- Regularly review the integration settings to ensure continuous data flow between
+  Harmony SASE and Splunk Cloud.
+- In case of any error codes, refer to the provided error messages for guidance on
+  resolving the issues.
+- Always replace placeholders like YOUR_WORKSPACE with the appropriate values during
+  the setup.
+- Ensure that the correct attributes and URLs are set in JumpCloud for accurate user
+  authentication and authorization in Harmony SASE.
+- Ensure to configure static routes from the Harmony SASE subnet to the local network
+  through the VPN tunnel gateway.
+- Only a single dynamic IP IPSec tunnel is supported per each Cloud Gateway.
+- 0.0.0.0 is NOT an acceptable value for the Remote ID.
+- If you are utilizing the Private Zone/Private DNS feature of Google Cloud, you can
+  utilize the those name servers via private IP's through the tunnel established on
+  the Harmony SASEimeter81 gateway.
+- You can take full advantange of private DNS zones and still resolve external records.
+- Make sure that inbound query forwarding is On and all of the desired networks are
+  selected.
+- The two-factor authenticator is defined per IdP and cannot be assigned to a specific
+  user.
+- Ensure you select the 'Regular Web Application' type when creating an application
+  in Auth0.
+- Replace placeholders like {{WORKSPACE}} with the appropriate values during configuration.
+- Ensure that the ranges specified do not overlap with other networks.
+- Verify the correct subscription is showing when creating resources.
+- URL aliasing enables Zero-Trust Applications on the Harmony SASE platform to utilize
+  a custom URL instead of the default FQDN assigned upon creation.
+- The Zero Trust Application’s FQDN is allocated in the Harmony SASE Administrator
+  Portal only after you save your application’s settings.
+- Use the Client Secret when connecting with the Harmony SASE IDP
+- User must belong to the Premium Plus or Enterprise plan to access the API.
+- Uses two-step secure tokens for authentication.
+- Use IKE Version 2 with a lifetime of 8h for IKE.
+- Tunnel Lifetime is set to 1h.
+- Dead Peer Detection Delay is 10s and Timeout is 30s.
+- Encryption for Phase 1 and Phase 2 is aes256.
+- Integrity for Phase 1 is sha256 and for Phase 2 is sha256.
+- Diffie Hellman Groups for Phase 1 and Phase 2 is 14.
+- Using SAML 2.0 means user groups won't auto-sync like with App Registration, requiring
+  manual adjustments in Harmony SASE.
+- Ensure both tunnels are route-based tunnels.
+- Make sure the device you are using supports route-based VPN.
+- If possible - use Route-based connectivity for this process.
+- You'll need Administrator permissions to your company's Office365 workspace.
+- You'll need to have an Owner / Manager role in Perimeter 81.
+- Ensure that the Harmony SASE application is installed on the necessary devices.
+- An operational D-Link setup with the required administrative access is needed.
+- You can enter up to four different IP addresses for DNS servers.
+- Ensure that you have an active Harmony SASE account and network.
+- The Harmony SASE app must be installed on your devices.
+- An active Barracuda account with administrative permissions is required.
+- Automatically select the security mode based on the security protocols supported
+  by both the client and the server. This is the default.
+- Network Level Authentication, sometimes also referred to as 'hybrid' or CredSSP
+  (the protocol that drives NLA). This mode uses TLS encryption and requires the username
+  and password to be given in advance.
+- Extended Network Level Authentication. This mode is identical to NLA except that
+  an additional 'Early User Authorization Result' is required to be sent from the
+  server to the client immediately after the NLA handshake is completed.
+- RDP authentication and encryption implemented via TLS (Transport Layer Security).
+  Also referred to as RDSTLS, the TLS security mode is primarily used in load-balanced
+  configurations where the initial RDP server may redirect the connection to a different
+  RDP server.
+- Automatically select the security mode based on the security protocols supported
+  by both the client and the server, limiting that negotiation to only the protocols
+  known to be supported by Hyper-V / VMConnect.
+- Standard RDP encryption. This mode is generally only used for older Windows servers
+  or in cases where a standard Windows login screen is desired.
+- It is supported only with the Harmony SASE Agent for macOS version 10.4 and higher.
+- The Revoke button is disabled. It will be supported in the future.
+- If you are hosting the Linux machine on a Windows host, virtualization must be enabled
+  on the Windows BIOS to allow Virtualization.
+- Hostname must be an IP address or Fully Qualified Domain Name(FQDN).
+- The administrator must store the hostname and/or port number in the IdP to redirect
+  the member to the appropriate RDP server.
+- For the list of supported IdP Attribute properties, see Microsoft Graph User Properties.
+- Custom properties are not supported.
+- 'For Azure AD, make sure to configure the Azure application to have these permissions:
+  Directory.Read.All User.Read'
+- Ensure that you have an active Harmony SASE account with an existing network.
+- The Harmony SASE application is installed on your devices.
+- You have an operational SonicWall Firewall setup with necessary administrative privileges.
+- If you encounter issues during or after the setup, try reviewing your settings to
+  ensure everything matches the instructions.
+- In particular, check the IP addresses and other details you entered during setup.
+- Ensure Harmony SASE and Azure IP addresses do not overlap.
+- Check the status of the VPN connection in the Azure portal.
+- SWG should be configured to bypass applications known to utilize certificate pinning.
+- In order to ensure better system security, we enforce the use of a strong password.
+- Don’t use a password you have used on another site or something too obvious like
+  your pet’s name.
+- Ensure you create a dedicated Harmony SASE Application within your SAML IdP.
+- Always replace placeholders like {{WORKSPACE}} with your actual workspace name when
+  setting up.
+- Ensure the correct attributes (Email Address, First Name, Last Name) are passed
+  to the platform for accurate member mapping.
+- Ensure that the Harmony SASE application is installed on your devices.
+- You have never configured IKEv2 policies on this device.
+- You have never enabled IKEv2 on the outside interface.
+- Redesigned UI
+- Automatic silent updates
+- Ensure to create at least two different gateways in the same network for redundancy.
+- The public IPs for both gateways are required for configuration.
+- HAR files contain sensitive data, including the content of the pages you downloaded
+  while recording and your cookies.
+- We highly recommend encrypting the file before sending the HAR file.
+- Follow the steps to create the Transit Gateway and attachments.
+- Check the tunnel status in the Harmony SASE dashboard to verify successful connection.
+- By default, Harmony SASE Gateway Proposal Subnets should be set to 10.255.0.0/16.
+- Remote Gateway Proposal Subnets can be set to 0.0.0.0/0 or customized.
+- IKE Version should be IKEv2 if the Firewall version supports it, otherwise IKEv1.
+- IKE Lifetime is 8h.
+- Tunnel Lifetime is 1h.
+- Dead Peer Detection Delay is 10s.
+- Dead Peer Detection Timeout is 30s.
+- Encryption (Phase 1) is aes256.
+- Encryption (Phase 2) is aes256.
+- Integrity (Phase 1) is sha256.
+- Integrity (Phase 2) is sha256.
+- Diffie-Hellman Groups (Phase 1) is 14.
+- Diffie-Hellman Groups (Phase 2) is 14.
+- Use the Wait command to wait for the gateway to be ready.
+- Ensure IP addresses and other details match the instructions.
+- The version available here may be newer than the default version for some customers,
+  while a gradual rollout is underway.
+- Always on VPN automatically connects the VPN when an Internet connection is available.
+- Kill Switch instantly cuts the Internet connection should the VPN disconnect, protecting
+  data from brief exposure.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '403 Forbidden: Access denied to the resource'
+- '404 Resource not found: The specified resource does not exist'
+- 400 Bad request
+- 401 Unauthorized
+- 402 Insufficient licenses
+- 403 Forbidden
+- 404 Network not found
+- Unauthorized
+- Forbidden
+- 'Too Many Open Sessions: Failed to login'
+- Gateway not found
+- 'Invalid IP Address: Ensure the public IP and remote IP are correctly specified.'
+- 'Configuration Mismatch: Verify settings in both Harmony SASE and UniFi USG.'
+- '403 Forbidden: Check permissions'
+- '404 Resource not found: Verify resource identifier'
+- 404 Resource not found
+- 422 Unprocessable entity
+- If you encounter issues during or after the setup, try reviewing your settings to
+  ensure everything matches the instructions.
+- If issues persist, please consult our dedicated support.
+- 409 Conflict - You cannot update a service that is associated with one or more policies
+- We could not send the SMS. Please try the recovery code
+- '401 Unauthorized: Recheck API key or token expiration'
+- '402 Insufficient licenses: Check your license allocation'
+- '403 Forbidden: Verify your permissions'
+- '404 Resource not found: Ensure the resource exists'
+- '422 Unprocessable entity: Check the request body for errors'
+- '400: Bad request'
+- '401: Unauthorized'
+- '403: Forbidden'
+- '404: Network not found'
+- Check the IP addresses and other details if you encounter issues during setup.
+- 400 Bad Request
+- 401 Not Authorized
+- 404 Application Not Found
+- 500 Internal Server Error
+- Check IP addresses and other details during setup if issues persist.
+- 400 Bad request.
+- '401 Unauthorized: Wrong or expired Access Token'
+- '401 Unauthorized: Check credentials'
+- '402 Insufficient licenses: Verify license availability'
+- '404 Resource not found: Confirm resource existence'
+- '422 Unprocessable entity: Review request parameters'
+- '401 Unauthorized: message'
+- '403 Forbidden: message'
+- '404 Resource not found: message'
+- Bad Request
+- Not Authorized
+- Internal Server Error
+- 403 Forbbiden
+- 404 Region\Network not found
+- 409 Conflict - You cannot delete a service that is associated with one or more policies
+- Region not found
+- '400: Bad request.'
+- '422 Unprocessable entity: Validate request body'
+- '401 Unauthorized: Recheck token'
+- '404 Resource not found: Verify resource ID'
+- '422 Unprocessable entity: Check request parameters'
+- '403 Forbidden: Access denied'
+- '404 Resource not found: Check the specified resource'
+- '422 Unprocessable entity: Check the request data'
+- Network not found
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- 'SENTINEL_INACTIVE_CUSTOMER: The workspace has been deactivated.'
+- 'SENTINEL_INVALID_CUSTOMER_ID: Please make sure you entered the correct customer
+  ID.'
+- 'SENTINEL_INVALID_AUTHORIZATION: The service failed to authenticate the request.'
+- 409 Conflict - You cannot delete an address that is associated with one or more
+  policies
+- 409 Network region exists
+- 404 Status not found
+- '403: Forbidden - Token disabled: Enable token at Splunk Web.'
+- '401: Unauthorized - Invalid authorization: Please make sure you entered a valid
+  token.'
+- '403: Forbidden - Invalid token: Please make sure you entered a valid token.'
+- '500: Internal Error - Internal server error: Please contact our support team indicating
+  the error.'
+- '503: Service Unavailable - Server is busy: There are too many requests pending
+  in the Splunk server queue. Please try again later.'
+- '400: Bad Request - Data channel is missing: Edit the token at the Splunk Platform
+  and make sure to untick Indexer Acknowledgement.'
+- '400: Bad Request - Error in handling indexed fields: Please contact our support
+  team indicating the error.'
+- Check IP addresses and details entered during setup if issues persist.
+- '404 Resource not found: Verify the resource ID'
+- If issues persist, review IP addresses and details entered during setup.
+- '200: Success. Group member deleted.'
+- '400 Bad request: Check request parameters.'
+- '404 Not found: Verify the resource ID.'
+- '401 Unauthorized: Check API key and token.'
+- 'S3_INVALID_ACCESS_KEY_ID: Make sure you copied correctly the access key ID'
+- 'S3_INVALID_SECRET_ACCESS_KEY: Make sure you copied correctly the secret access
+  key.'
+- 'S3_INVALID_BUCKET: Make sure the Bucket name in Harmony SASE matched the Bucket
+  name in S3 (case sensitive).'
+- 'S3_ACCESS_DENIED_BUCKET: The IAM user doesn''t have the required access permissions
+  to the bucket. Make sure to attach the appropriate policy.'
+- '404 Resource not found: Check the resource ID'
+- '422 Unprocessable entity: Validate the request parameters'
+- 'Connection timeout: Verify IP addresses and configurations.'
+- 'Authentication failed: Check shared secrets and public IPs.'
+- Error after logout with code P81-1448
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  auth:
+    type: aws_access_key
+    location: header
+    header_name: Authorization
+    sign_in_url: SAML 2.0 Endpoint (HTTP)
+    sign_out_url: SLO Endpoint (HTTP)
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+  base_url: ''
+  paginator:
+    type: page
+    page_size_param: limit
+    default_page_size: 1
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+    Host: your-internal-FQDN
+    Authorization: Your temporary Access Token obtained using the /authorize method
+source_metadata: null

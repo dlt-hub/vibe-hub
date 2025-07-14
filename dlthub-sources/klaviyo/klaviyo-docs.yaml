@@ -1,0 +1,105 @@
+# Source Metadata
+source_name: klaviyo
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://a.klaviyo.com/api/v1
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['klaviyo_api_key'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: offset
+    page_size_param: page_size
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: campaigns
+    endpoint:
+      path: /campaigns/
+      method: GET
+      data_selector: data
+
+  - name: campaigns_detailed
+    endpoint:
+      path: /campaigns/detailed/
+      method: GET
+      data_selector: data
+
+  - name: email_templates
+    endpoint:
+      path: /templates/
+      method: GET
+      data_selector: data
+
+  - name: events
+    endpoint:
+      path: /events/
+      method: GET
+      data_selector: data
+
+  - name: events_detailed
+    endpoint:
+      path: /events/detailed/
+      method: GET
+      data_selector: data
+
+  - name: flows
+    endpoint:
+      path: /flows/
+      method: GET
+      data_selector: data
+
+  - name: global_exclusions
+    endpoint:
+      path: /global_exclusions/
+      method: GET
+      data_selector: data
+
+  - name: lists
+    endpoint:
+      path: /lists/
+      method: GET
+      data_selector: data
+
+  - name: lists_detailed
+    endpoint:
+      path: /lists/detailed/
+      method: GET
+      data_selector: data
+
+  - name: metrics
+    endpoint:
+      path: /metrics/
+      method: GET
+      data_selector: data
+
+  - name: profiles
+    endpoint:
+      path: /profiles/
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - Private API key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - The `Campaigns Detailed` stream contains extra fields requiring additional time to fetch.
+  - The `Profiles` stream may experience transient API errors under heavy load.
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - 500 Internal Server Error: Retry the request after a short delay
+  - 401 Unauthorized: Recheck API key validity and permissions

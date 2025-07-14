@@ -1,0 +1,85 @@
+# Source Metadata
+source_name: Zoho Expense
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://www.zoho.com/expense/api/v1
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://accounts.zoho.com/oauth/v2/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: users
+  - name: trips
+    endpoint:
+      path: /trips
+      method: GET
+      data_selector: trips
+  - name: expense_reports
+    endpoint:
+      path: /expense_reports
+      method: GET
+      data_selector: expense_reports
+  - name: projects
+    endpoint:
+      path: /projects
+      method: GET
+      data_selector: projects
+  - name: customers
+    endpoint:
+      path: /customers
+      method: GET
+      data_selector: customers
+  - name: organizations
+    endpoint:
+      path: /organizations
+      method: GET
+      data_selector: organizations
+  - name: expense_categories
+    endpoint:
+      path: /expense_categories
+      method: GET
+      data_selector: expense_categories
+  - name: currencies
+    endpoint:
+      path: /currencies
+      method: GET
+      data_selector: currencies
+  - name: taxes
+    endpoint:
+      path: /taxes
+      method: GET
+      data_selector: taxes
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthClient
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Data Center suffix must be specified based on your location (e.g., com, in, jp)
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check OAuth credentials and scopes
+  - 429 Too Many Requests: Reduce the frequency of API calls

@@ -1,0 +1,228 @@
+resources:
+- name: accounts
+  endpoint:
+    path: /accounts
+    method: GET
+    data_selector: accounts
+- name: balance
+  endpoint:
+    path: /balance
+    method: GET
+    data_selector: balance
+- name: pots
+  endpoint:
+    path: /pots
+    method: GET
+    data_selector: pots
+- name: transactions
+  endpoint:
+    path: /transactions
+    method: GET
+    data_selector: transactions
+- name: feed
+  endpoint:
+    path: /feed
+    method: POST
+    data_selector: '{}'
+- name: upload_attachment
+  endpoint:
+    path: /attachment/upload
+    method: POST
+    data_selector: file_url
+    params:
+      file_name: Required
+      file_type: Required
+      content_length: Required
+- name: register_attachment
+  endpoint:
+    path: /attachment/register
+    method: POST
+    data_selector: attachment
+    params:
+      external_id: Required
+      file_url: Required
+      file_type: Required
+- name: deregister_attachment
+  endpoint:
+    path: /attachment/deregister
+    method: POST
+    data_selector: {}
+    params:
+      id: Required
+- name: create_receipt
+  endpoint:
+    path: /transaction-receipts
+    method: PUT
+    data_selector: receipt_id
+    params:
+      transaction_id: Required
+      external_id: Required
+      total: Required
+      currency: Required
+      items: Required
+- name: retrieve_receipt
+  endpoint:
+    path: /transaction-receipts
+    method: GET
+    data_selector: receipt
+    params:
+      external_id: Required
+- name: delete_receipt
+  endpoint:
+    path: /transaction-receipts
+    method: DELETE
+    data_selector: {}
+    params:
+      external_id: Required
+- name: register_webhook
+  endpoint:
+    path: /webhooks
+    method: POST
+    data_selector: webhook
+    params:
+      account_id: Required
+      url: Required
+- name: list_webhooks
+  endpoint:
+    path: /webhooks
+    method: GET
+    data_selector: webhooks
+    params:
+      account_id: Required
+- name: delete_webhook
+  endpoint:
+    path: /webhooks/{webhook_id}
+    method: DELETE
+    data_selector: {}
+    params: {}
+- name: accounts
+  endpoint:
+    path: /accounts
+    method: GET
+    data_selector: accounts
+- name: balance
+  endpoint:
+    path: /balance
+    method: GET
+    data_selector: balance
+- name: pots
+  endpoint:
+    path: /pots
+    method: GET
+    data_selector: pots
+- name: transactions
+  endpoint:
+    path: /transactions
+    method: GET
+    data_selector: transactions
+- name: webhooks
+  endpoint:
+    path: /webhooks
+    method: POST
+    data_selector: webhook
+- name: scheduled_payments
+  endpoint:
+    path: /accounts/{AccountId}/scheduled-payments
+    method: GET
+- name: international_payments
+  endpoint:
+    path: /international-payments
+    method: GET
+- name: pots
+  endpoint:
+    path: /aisp/pots
+    method: GET
+- name: transactions
+  endpoint:
+    path: /aisp/accounts/{accountId}/transactions
+    method: GET
+- name: direct_debits
+  endpoint:
+    path: /accounts/{AccountId}/direct-debits
+    method: GET
+- name: Refund Accounts
+  endpoint:
+    path: /services/data/vXX.X/sobjects/RefundAccount
+    method: GET
+    data_selector: Data/Initiation
+    params:
+      ReadRefundAccount: 'Yes'
+- name: Rejected Payments
+  endpoint:
+    path: /services/data/vXX.X/sobjects/RejectedPayments
+    method: GET
+    data_selector: Data/Initiation/SupplementaryData
+    params: {}
+- name: DCR Request
+  endpoint:
+    path: /open-banking/dcr
+    method: POST
+    data_selector: body
+    params: {}
+- name: SSA
+  endpoint:
+    path: /open-banking/ssa
+    method: POST
+    data_selector: body
+    params: {}
+notes:
+- This API uses OAuth 2.0 for authentication.
+- OAuth 2.0 authentication is required to access the API.
+- You can only make payments in GBP. We don't support other currencies.
+- Monzo's EU PSD2 API currently only supports Account Information Services.
+- We support an optional query param `includePots`. When set to `true`, an additional
+  `Information` balance type will be returned.
+- If you wish to keep transactions ordered oldest to newest then omit the `order`
+  parameter or set `order=asc`.
+- We have enabled reading refund account details as part of domestic and international
+  payment consent resource creation.
+- The refund account data will be returned in the payment order creation response.
+- Uses OAuth2 with redirect flow
+- Only supports tls_client_auth authentication method
+errors:
+- 'invalid_token: The supplied access token is invalid or has expired.'
+- '400: Bad Request - Your request has missing arguments or is malformed.'
+- '401: Unauthorized - Your request is not authenticated.'
+- '403: Forbidden - Your request is authenticated but has insufficient permissions.'
+- '404: Page Not Found - The endpoint requested does not exist.'
+- '429: Too Many Requests - Your application is exceeding its rate limit.'
+- 'bad_request: 400'
+- 'forbidden: 403'
+- 'internal_service: 500'
+- 'not_found: 404'
+- 'precondition_failed: 412'
+- 'timeout: 504'
+- 'unauthorized: 401'
+- 'rate_limited: 429'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '403 Forbidden: Check if the required permissions are granted.'
+- Insufficient funds
+- Something went wrong
+- FPS not acknowledged
+- Additional security checks were not completed
+- Payment reference contains offensive language
+- Payment limits exceeded
+- Scheme limits exceeded
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects:
+  - access_token
+  - refresh_token
+  - OAuth 2
+  - OpenID connect
+  - tls_client_auth
+client:
+  base_url: https://verify-s101.eu.monzo.com
+  auth:
+    type: oauth2
+    token_url: https://login.api.com/services/oauth2/token
+    location: header
+    header_name: Authorization
+    flow: client_credentials
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+  headers:
+    Accept: application/json
+source_metadata: null

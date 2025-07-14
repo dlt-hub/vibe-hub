@@ -1,0 +1,55 @@
+resources:
+- name: messages
+  endpoint: /me/messages
+  methods:
+  - POST
+  description: Send messages to users
+  parameters:
+  - recipient
+  - message
+  - notification_type
+- name: webhooks
+  endpoint: /{app-id}/subscribed_apps
+  methods:
+  - POST
+  description: Subscribe to webhooks for real-time updates
+  parameters:
+  - object
+  - callback_url
+  - fields
+- name: users
+  endpoint: /{user-id}
+  methods:
+  - GET
+  description: Retrieve user profile information
+  parameters:
+  - fields
+notes:
+- Rate limiting applies, with specific limits based on the type of call.
+- Pagination is implemented for list endpoints using cursors.
+- Webhooks need to be verified by responding to a challenge on the callback URL.
+errors:
+- '400: Bad Request - Invalid parameter or request format'
+- '401: Unauthorized - Invalid or missing access token'
+- '403: Forbidden - Access denied to the requested resource'
+- '404: Not Found - Resource not found'
+- '500: Internal Server Error - An error occurred on the server'
+auth_info:
+  mentioned_objects:
+  - access_token
+  - authentication_header
+  auth_flow: OAuth 2.0 is used for authentication, requiring an access token to be
+    passed in the Authorization header.
+  env_var_for_auth: FACEBOOK_ACCESS_TOKEN
+client:
+  base_url: https://graph.facebook.com/v11.0
+  auth:
+    type: oauth
+    location: header
+    key_name: Authorization
+    env_var: FACEBOOK_ACCESS_TOKEN
+source_metadata:
+  name: Facebook Messenger
+  variable_name: facebook_messenger
+  base_url: https://graph.facebook.com/v11.0
+  original_source_url: https://developers.facebook.com/docs/messenger-platform/

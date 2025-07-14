@@ -1,0 +1,212 @@
+resources:
+- name: booking
+  endpoint:
+    path: /bookings
+    method: GET
+    data_selector: customers
+    params: {}
+- name: availability_slots
+  endpoint:
+    path: /v1/availability/slots
+    method: POST
+- name: bookings
+  endpoint:
+    path: /bookings
+    method: GET
+    data_selector: Booking
+    params: {}
+- name: groups
+  endpoint:
+    path: /resources/groups
+    method: GET
+- name: update_customer
+  endpoint:
+    path: /v1/bookings//customers/
+    method: PUT
+- name: availability_slots
+  endpoint:
+    path: /v1/availability/slots/
+    method: GET
+- name: cancel_booking
+  endpoint:
+    path: /v1/bookings//customers//cancel
+    method: POST
+- name: service_categories
+  endpoint:
+    path: /services/categories
+    method: GET
+- name: booking_created
+  endpoint:
+    path: /webhooks/booking_created
+    method: POST
+    data_selector: event_data
+    params: {}
+- name: booking_updated
+  endpoint:
+    path: /webhooks/booking_updated
+    method: POST
+    data_selector: event_data
+    params: {}
+- name: booking_cancelled
+  endpoint:
+    path: /webhooks/booking_cancelled
+    method: POST
+    data_selector: event_data
+    params: {}
+- name: customer_created
+  endpoint:
+    path: /webhooks/customer_created
+    method: POST
+    data_selector: event_data
+    params: {}
+- name: customer_updated
+  endpoint:
+    path: /webhooks/customer_updated
+    method: POST
+    data_selector: event_data
+    params: {}
+- name: customer_deleted
+  endpoint:
+    path: /webhooks/customer_deleted
+    method: POST
+    data_selector: event_data
+    params: {}
+- name: services
+  endpoint:
+    path: /services
+    method: GET
+    data_selector: data
+    params:
+      limit: '1'
+- name: bookings
+  endpoint:
+    path: /bookings
+    method: GET
+    data_selector: data
+    params:
+      ids: <GROUP_BOOKING_ID>
+- name: availability_slots
+  endpoint:
+    path: /v1/availability/slots
+    method: POST
+    data_selector: data
+    params: {}
+- name: bookings
+  endpoint:
+    path: /v1/bookings
+    method: POST
+    data_selector: data
+    params: {}
+- name: booking
+  endpoint:
+    path: /api/v1/bookings
+    method: POST
+    data_selector: data
+    params: {}
+- name: availability_intervals_search
+  endpoint:
+    path: /availability/intervals/search
+    method: POST
+    data_selector: data
+    params: {}
+- name: availability_slots
+  endpoint:
+    path: /availability/slots
+    method: POST
+    data_selector: data
+    params: {}
+- name: bookings
+  endpoint:
+    path: /bookings
+    method: POST
+    data_selector: data
+    params: {}
+- name: availability_intervals
+  endpoint:
+    path: /availability/intervals/search
+    method: POST
+    data_selector: data
+    params: {}
+- name: availability_slots
+  endpoint:
+    path: /availability/slots
+    method: POST
+    data_selector: data
+    params: {}
+- name: bookings
+  endpoint:
+    path: /bookings
+    method: POST
+    data_selector: data
+    params: {}
+- name: cancel_booking
+  endpoint:
+    path: /v1/bookings//cancel
+    method: POST
+- name: bookings
+  endpoint:
+    path: /v1/bookings
+    method: POST
+    data_selector: data
+    params: {}
+- name: customers
+  endpoint:
+    path: /customers/
+    method: GET
+- name: bookings
+  endpoint:
+    path: /bookings
+    method: POST
+    data_selector: data
+    params: {}
+notes:
+- Zoom meetings for bookings are created asynchronously when a booking is created.
+- The meeting's properties might not be present for a short time after the booking
+  is created.
+- Keep your API key safe!
+- Anyone with your organisation's API key can perform any operation supported by Appointedd's
+  API on your organisation.
+- We recommend against using our API directly from clients (such as a web application)
+  and instead communicating with the Appointedd API from a server you control.
+- Cross-Origin Resource Sharing (CORS) is not supported
+- Because you cannot currently securely exchange and store API keys on browsers our
+  API does not implement the required headers for Cross-Origin Resource Sharing (CORS)
+  as it is not designed for this use case.
+- This means that calls to the API directly from a browser will fail and this is considered
+  expected behaviour.
+- We recommend you implement a proxy server with client-server authentication patterns
+  to communicate with our API from a browser client.
+- The response for this endpoint will be paginated
+- Webhook sent whenever a booking is created or updated.
+- Final step is to confirm the availability slot and turn it into a booking
+- Confirming the availability slot is required to create a booking.
+- API has a hard limit of 10240 bytes (or 10.24 kilobytes) for request sizes.
+errors:
+- '400 Bad Request: Ensure required fields are included in the request.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.appointedd.com/v1
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+    flow: refresh_token
+    token_url: https://login.appointedd.com/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+  headers:
+    Accept: application/json
+    X-API-KEY: <YOUR_API_KEY>
+    Content-Type: application/json
+  resources:
+  - name: invoices
+    endpoint:
+      path: /bookings/customers/invoices
+      method: POST
+  paginator:
+    default_page_size: 10
+    type: range
+    page_size_param: limit
+source_metadata: null

@@ -1,0 +1,51 @@
+resources:
+- name: users
+  endpoint: /v2/profile
+  methods:
+  - GET
+  description: Retrieve user profile information
+  parameters:
+  - userId
+- name: messages
+  endpoint: /v2/bot/message
+  methods:
+  - POST
+  description: Send messages to users
+  parameters:
+  - to
+  - messages
+- name: rich-menu
+  endpoint: /v2/bot/richmenu
+  methods:
+  - POST
+  - GET
+  - DELETE
+  description: Manage rich menus for users
+  parameters:
+  - richMenuId
+notes:
+- 'Rate limiting: 100 requests per second'
+- Pagination available on list endpoints
+- Webhook support for real-time updates and events
+errors:
+- '401: Unauthorized - Invalid access token'
+- '429: Too Many Requests - Rate limit exceeded'
+- '404: Not Found - Resource not found'
+auth_info:
+  mentioned_objects:
+  - bearer_token
+  - authentication_header
+  auth_flow: OAuth 2.0 for obtaining access tokens
+  env_var_for_auth: LINE_API_TOKEN
+client:
+  base_url: https://api.line.me
+  auth:
+    type: bearer_token
+    location: header
+    key_name: Authorization
+    env_var: LINE_API_TOKEN
+source_metadata:
+  name: Line
+  variable_name: service_name
+  base_url: https://api.line.me
+  original_source_url: https://developers.line.biz/en/docs/

@@ -1,0 +1,88 @@
+# Source Metadata
+source_name: monday
+version: 2.0.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.monday.com/v2
+  auth:
+    type: api_key
+    location: header
+    header_name: Authorization
+  headers:
+    Content-Type: application/json
+  paginator:
+    type: cursor
+    cursor_path: next_cursor
+    cursor_param: next
+    page_size_param: limit
+    default_page_size: 25
+
+# Resources (per endpoint/object)
+resources:
+  - name: boards
+    endpoint:
+      path: /boards
+      method: GET
+      data_selector: data.boards
+      params: {}
+
+  - name: items
+    endpoint:
+      path: /items
+      method: GET
+      data_selector: data.items
+      params: {}
+
+  - name: tags
+    endpoint:
+      path: /tags
+      method: GET
+      data_selector: data.tags
+      params: {}
+
+  - name: teams
+    endpoint:
+      path: /teams
+      method: GET
+      data_selector: data.teams
+      params: {}
+
+  - name: updates
+    endpoint:
+      path: /updates
+      method: GET
+      data_selector: data.updates
+      params: {}
+
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: data.users
+      params: {}
+
+  - name: workspaces
+    endpoint:
+      path: /workspaces
+      method: GET
+      data_selector: data.workspaces
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - ApiKey
+
+# Known Quirks or Risks, Caveats
+notes:
+  - The Id field has changed from an integer to a string in several streams including Boards, Items, Tags, Teams, Updates, Users, and Workspaces.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 403 Forbidden: Check API key permissions or access rights
+  - 404 Not Found: Verify endpoint path or resource existence
+  - 500 Internal Server Error: Retry the request after some time

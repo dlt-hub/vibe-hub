@@ -1,0 +1,249 @@
+resources:
+- name: bulk_download
+  endpoint:
+    path: /bulkdownloads/{datatable_code}
+    method: GET
+    data_selector: bulk_download
+    params: {}
+- name: file_download
+  endpoint:
+    path: /bulkdownloads/file/{filename}.{ext}
+    method: GET
+    data_selector: null
+    params: {}
+- name: fund
+  endpoint:
+    path: /api/v3/datatables/ETFG/FUND
+    method: GET
+    data_selector: datatable.data
+    params:
+      ticker: SPY,IWM
+- name: datatable
+  endpoint:
+    path: /datatables/{datatable_code}.{format}
+    method: GET
+    data_selector: datatable.data
+    params:
+      qopts.columns: ticker
+- name: datatables
+  endpoint:
+    path: /datatables/{datatable_code}.{format}
+    method: GET
+    data_selector: datatable.data
+    params: {}
+- name: metadata
+  endpoint:
+    path: /datatables/{datatable_code}/metadata.{format}
+    method: GET
+    data_selector: datatable
+    params: {}
+- name: ETFG_FUND
+  endpoint:
+    path: /datatables/ETFG/FUND
+    method: GET
+    data_selector: data
+    params: {}
+- name: ETFG_FUND
+  endpoint:
+    path: /ETFG/FUND.json
+    method: GET
+    data_selector: datatable.data
+    params:
+      qopts.columns: ticker,date,shares_outstanding
+- name: datatable_bulk_download
+  endpoint:
+    path: /datatables/{datatable_code}.{format}/
+    method: GET
+    params:
+      qopts.export: 'true'
+- name: ndaq_rtat
+  endpoint:
+    path: /ndaq_rtat
+    method: GET
+- name: zacks_hdm
+  endpoint:
+    path: /zacks_hdm
+    method: GET
+- name: MER/F1
+  endpoint:
+    path: /get_table/MER/F1
+    method: GET
+    data_selector: records
+    params:
+      paginate: true
+- name: WIKI/PRICES
+  endpoint:
+    path: /get_table/WIKI/PRICES
+    method: GET
+    data_selector: records
+    params: {}
+- name: MER/F1
+  endpoint:
+    path: /datatable
+    method: GET
+    data_selector: data
+    params:
+      paginate: 'TRUE'
+- name: Mergent Global Fundamentals Data
+  endpoint:
+    path: /datatables/MER/F1.xml
+    method: GET
+    data_selector: datatable.data
+    params:
+      mapcode: '-5370'
+      compnumber: '39102'
+      reporttype: A
+      qopts.columns: reportdate,amount
+- name: tables
+  endpoint:
+    path: /tables
+    method: GET
+    data_selector: tables
+- name: last_sale
+  endpoint:
+    path: /last_sale
+    method: GET
+- name: last_trade
+  endpoint:
+    path: /last_trade
+    method: GET
+- name: last_quote
+  endpoint:
+    path: /last_quote
+    method: GET
+- name: snapshot
+  endpoint:
+    path: /snapshot
+    method: GET
+- name: trends
+  endpoint:
+    path: /trends
+    method: GET
+- name: bar
+  endpoint:
+    path: /bar
+    method: GET
+notes:
+- Requests will require time for processing. Check the status value to know when files
+  are ready.
+- These tables datasets are not real-time; most update once a day with a 1-day lag.
+- Users who are not appending any API key to their Tables API call (ie. “anonymous
+  users”) have a combined limit of 20 calls per 10 minutes and 50 calls per day.
+- Users who are not subscribed to any premium data, but who are appending their API
+  key to their API call, have a limit of 300 calls per 10 seconds, 2,000 calls per
+  10 minutes and a limit of 50,000 calls per day.
+- Authenticated users have a concurrency limit of one; that is, they can make one
+  call at a time and have an additional call in the queue.
+- Premium data subscribers who are subscribed to at least one tables dataset, and
+  who are appending their API key to their API call, have a limit of 5,000 calls per
+  10 minutes and a limit of 720,000 calls per day.
+- Premium data subscribers who are bulk downloading an entire table using the qopts.export_true
+  parameter may only use qopts.export=true 60 times in one hour.
+- The API supports multiple response formats including JSON, XML, and CSV.
+- An API call that does not include any filter will attempt to download the entire
+  table but is limited to 10,000 rows.
+- The data returned by the Tables API is unsorted by default. Data sorting must be
+  done locally.
+- The generated link is only valid for 30 minutes.
+- To use the add-in, you will need an API key, which comes with your free Nasdaq Data
+  Link account.
+- Tested with Python 3
+- Tested with Tableau Desktop 2022.2
+- The tables API is limited to 10,000 rows per call.
+- Using `paginate=True` will extend the limit to 1,000,000 rows.
+- Using paginate=TRUE will extend the limit to 1,000,000 rows.
+- Only columns designated as 'filterable' in the table's documentation page can be
+  used as criteria to filter rows.
+- Uses API key for authentication
+- To gain access to these products on Nasdaq Data Link, please contact our Sales Team.
+- If you would like to make more than 50 calls a day, you will need to create a free
+  account and set your API key.
+- You must set your API key to download the premium datasets to which you are subscribed.
+- If you are not receiving all the expected data, please double check your API key.
+  If a valid API key is not used, some tables will default to returning sample data.
+- If you are not receiving all the expected data, please double check your API key.
+- Only columns designated as “filterable” in the table's documentation page can be
+  used as criteria to filter rows.
+- The R package cannot be used with real-time products. Real-time products may be
+  accessed through the Streaming API or REST API for real-time or delayed data.
+errors:
+- 'QEAx05: Unauthorized'
+- 'QEAx06: You have exceeded your daily call limit as a subscriber'
+- 'QEAx07: Please try again in 30 seconds'
+- 'QELx01: You have exceeded your daily call limit as an anonymous user.'
+- 'QELx02: You have exceeded your daily call limit as a registered user.'
+- 'QELx03: You have exceeded your daily call limit as a subscriber.'
+- 'QELx04: You have exceeded your 10-minute call limit as a registered user.'
+- 'QELx05: You have exceeded your 10-minute call limit as a subscriber.'
+- 'QELx06: You have requested too many rows of data.'
+- 'QELx07: Your request query parameters are too long.'
+- 'QELx08: The amount of data you are trying to return is too large. You need to narrow
+  the data returned with filters.'
+- 'QEAx01: We could not recognize your API key. Please check your API key and try
+  again. You can find your API key under your account settings.'
+- 'QEAx02: Your login credentials are invalid.'
+- 'QEAx03: You must have an API key to access this resource.'
+- 'QEPx01: You have attempted to view a protected resource in anonymous mode, i.e.,
+  without providing an API key. Please register for a free Nasdaq Data Link account
+  and then include your API key with your requests.'
+- 'QEPx02: You do not have permission to use this endpoint.'
+- 'QEPx04: You do not have permission to view this dataset OR you have exceeded your
+  quota of free trials for this dataset. Please subscribe to this dataset to get more
+  views or downloads.'
+- 'QEPx05: You have attempted to view a premium dataset in anonymous mode, i.e., without
+  providing an API key. Please log in or register for a free Nasdaq Data Link account
+  and then include your API key with your requests.'
+- 'QEPx06: You do not have access to view part of the data requested (e.g., column).'
+- 'QESx02: You are missing a required parameter or its value is empty. Please check
+  your parameters and try again.'
+- 'QESx03: You have submitted incorrect parameters for creating/updating this resource.
+  Please check your API call syntax and try again.'
+- 'QESx04: You have submitted incorrect query parameters. Please check your API call
+  syntax and try again.'
+- 'QESx05: You have requested an unknown format. Please check the format you requested
+  and try again.'
+- 'QESx06: You have used an invalid cursor or page ID with your query. Please check
+  your query and try again.'
+- 'QESx07: You have used an unsupported operator for your query parameters. Please
+  check and try again.'
+- 'QESx08: You have tried to filter a column that is not available for filtering.
+  Please remove and try again.'
+- 'QESx09: The syntax of your query parameters is incorrect. Please check the syntax
+  and try again.'
+- 'QECx01: Unknown API route. We could not recognize the URL you requested. Please
+  check your URL and try again.'
+- 'QECx02: You have submitted an incorrect Table code. Please check your Table codes
+  and try again.'
+- 'QECx03: We could not find the resource you requested. Please check your URL and
+  try again.'
+- 'QECx04: The referral code is invalid. Please try again.'
+- 'QECx05: The URL you requested is incorrect. You may be presented with an alternative
+  URL to use instead.'
+- 'QECx06: You cannot make API calls to this dataset. This dataset has been deprecated.
+  Please contact [email protected] for further information.'
+- 'QEMx01: Something went wrong. Please try again. If you continue to have problems,
+  please contact us at [email protected].'
+- 'QEXx01: The request took too long. Please try again later.'
+- 'QEXx02: We are experiencing connectivity issues. Please try again later.'
+- 'QEXx03: Something went wrong. Please try again. If you continue to have problems,
+  please contact us at [email protected].'
+- Your query will return too many results. Please apply some filters and try again.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://your-instance.api-name.com
+  auth:
+    type: api_key
+    location: header
+    header_name: Authorization
+    protocol: https
+    port: 443
+    client_id: client ID
+    client_secret: client secret
+    token_url: token endpoint
+  headers:
+    Accept: application/json
+  paginator:
+    type: page
+    default_page_size: 10000
+source_metadata: null

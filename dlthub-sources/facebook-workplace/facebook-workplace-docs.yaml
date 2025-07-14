@@ -1,0 +1,60 @@
+resources:
+- name: users
+  endpoint: /users
+  methods:
+  - GET
+  - POST
+  description: Manage user accounts
+  parameters:
+  - user_id
+  - email
+  - name
+- name: groups
+  endpoint: /groups
+  methods:
+  - GET
+  - POST
+  description: Manage groups within Workplace
+  parameters:
+  - group_id
+  - name
+  - privacy
+- name: posts
+  endpoint: /posts
+  methods:
+  - GET
+  - POST
+  - DELETE
+  description: Manage posts in Workplace
+  parameters:
+  - post_id
+  - message
+  - attachments
+notes:
+- 'Rate limiting applies: 200 requests per user per hour.'
+- Support for pagination on list endpoints.
+- Webhooks available for real-time updates.
+errors:
+- '401: Unauthorized - Invalid access token'
+- '403: Forbidden - Insufficient permissions'
+- '404: Not Found - Resource not found'
+- '429: Too Many Requests - Rate limit exceeded'
+auth_info:
+  mentioned_objects:
+  - bearer_token
+  - authentication_header
+  auth_flow: Users need to obtain an access token via OAuth 2.0 to authenticate API
+    requests.
+  env_var_for_auth: WORKPLACE_API_TOKEN
+client:
+  base_url: https://graph.facebook.com/v10.0
+  auth:
+    type: oauth
+    location: header
+    key_name: Authorization
+    env_var: WORKPLACE_API_TOKEN
+source_metadata:
+  name: Facebook-workplace
+  variable_name: service_name
+  base_url: https://graph.facebook.com/v10.0
+  original_source_url: https://developers.facebook.com/docs/workplace/

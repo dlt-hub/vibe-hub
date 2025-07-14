@@ -1,0 +1,141 @@
+# Source Metadata
+source_name: recurly
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.recurly.com
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['recurly_api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: accounts
+    endpoint:
+      path: /accounts
+      method: GET
+      data_selector: accounts
+
+  - name: account_notes
+    endpoint:
+      path: /accounts/{account_id}/notes
+      method: GET
+      data_selector: notes
+
+  - name: account_coupon_redemptions
+    endpoint:
+      path: /accounts/{account_id}/coupon_redemptions
+      method: GET
+      data_selector: coupon_redemptions
+
+  - name: add_ons
+    endpoint:
+      path: /add_ons
+      method: GET
+      data_selector: add_ons
+
+  - name: billing_infos
+    endpoint:
+      path: /accounts/{account_id}/billing_info
+      method: GET
+      data_selector: billing_info
+
+  - name: coupons
+    endpoint:
+      path: /coupons
+      method: GET
+      data_selector: coupons
+
+  - name: unique_coupons
+    endpoint:
+      path: /bulk/unique_coupons
+      method: GET
+      data_selector: unique_coupons
+
+  - name: credit_payments
+    endpoint:
+      path: /invoices/{invoice_id}/credit_payments
+      method: GET
+      data_selector: credit_payments
+
+  - name: automated_exports
+    endpoint:
+      path: /exports
+      method: GET
+      data_selector: exports
+
+  - name: invoices
+    endpoint:
+      path: /invoices
+      method: GET
+      data_selector: invoices
+
+  - name: measured_units
+    endpoint:
+      path: /measured_units
+      method: GET
+      data_selector: measured_units
+
+  - name: line_items
+    endpoint:
+      path: /invoices/{invoice_id}/line_items
+      method: GET
+      data_selector: line_items
+
+  - name: plans
+    endpoint:
+      path: /plans
+      method: GET
+      data_selector: plans
+
+  - name: shipping_addresses
+    endpoint:
+      path: /accounts/{account_id}/shipping_addresses
+      method: GET
+      data_selector: shipping_addresses
+
+  - name: shipping_methods
+    endpoint:
+      path: /shipping_methods
+      method: GET
+      data_selector: shipping_methods
+
+  - name: subscriptions
+    endpoint:
+      path: /subscriptions
+      method: GET
+      data_selector: subscriptions
+
+  - name: subscription_changes
+    endpoint:
+      path: /subscriptions/{subscription_id}/changes
+      method: GET
+      data_selector: changes
+
+  - name: transactions
+    endpoint:
+      path: /transactions
+      method: GET
+      data_selector: transactions
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - APIKey
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires a Recurly Account and API Key for access
+  - Ensure to create a restricted, read-only key for Airbyte access
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API Key validity
+  - 404 Not Found: Verify endpoint paths and resource IDs
+  - 429 Too Many Requests: Implement rate limiting or backoff strategies

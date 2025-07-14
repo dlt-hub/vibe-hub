@@ -1,0 +1,57 @@
+resources:
+- name: payments
+  endpoint: /payments
+  methods:
+  - POST
+  - GET
+  description: Initiate and manage payments
+  parameters:
+  - amount
+  - currency
+  - paymentMethod
+  - reference
+- name: refunds
+  endpoint: /refunds
+  methods:
+  - POST
+  description: Process refunds for payments
+  parameters:
+  - paymentPspReference
+  - amount
+  - currency
+- name: notifications
+  endpoint: /notifications
+  methods:
+  - POST
+  description: Receive payment notifications
+  parameters:
+  - notificationItems
+notes:
+- 'Rate limiting: 1000 requests per hour'
+- Ensure to handle paginated responses for list endpoints
+- Webhooks are supported for real-time event notifications
+errors:
+- '401: Unauthorized - Invalid API key'
+- '429: Too Many Requests - Rate limit exceeded'
+- '404: Not Found - Resource not found'
+- '400: Bad Request - Invalid request parameters'
+auth_info:
+  mentioned_objects:
+  - api_key
+  - authentication_header
+  - bearer_token
+  auth_flow: Authentication is done using an API key provided in the Authorization
+    header.
+  env_var_for_auth: ADYEN_API_KEY
+client:
+  base_url: https://api.adyen.com
+  auth:
+    type: api_key
+    location: header
+    key_name: Authorization
+    env_var: ADYEN_API_KEY
+source_metadata:
+  name: Adyen
+  variable_name: adyen
+  base_url: https://api.adyen.com
+  original_source_url: https://docs.adyen.com/api-explorer/

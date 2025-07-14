@@ -1,0 +1,3500 @@
+resources:
+- name: dnszone
+  endpoint:
+    path: /dnszone
+    method: GET
+    data_selector: Items
+    params: {}
+- name: dnszone
+  endpoint:
+    path: /dnszone
+    method: GET
+    params:
+      page: '1'
+      perPage: '10'
+- name: log_file
+  endpoint:
+    path: /{mm}-{dd}-{yy}/{pull_zone_id}.log
+    method: GET
+    data_selector: log data
+    params:
+      start: number
+      end: number
+      sort: string
+- name: access_log
+  endpoint:
+    path: /logs
+    method: GET
+    data_selector: logs
+    params: {}
+- name: container_update
+  endpoint:
+    path: /update_container_image
+    method: POST
+    data_selector: response
+    params:
+      app_id: ${{ vars.APP_ID }}
+      api_key: ${{ secrets.BUNNYNET_API_KEY }}
+      container: app
+      image_tag: ${{ github.sha }}
+- name: users
+  endpoint:
+    path: /execute
+    method: POST
+    data_selector: rows
+- name: deploy_script
+  endpoint:
+    path: /deploy
+    method: POST
+    data_selector: script
+    params: {}
+- name: files
+  endpoint:
+    path: /
+    method: GET
+    data_selector: files
+    params: {}
+- name: image_generation
+  endpoint:
+    path: /.ai/img/<engine-name>/<blueprint>/<seed>/<prompt>.jpg
+    method: GET
+- name: resizing
+  endpoint:
+    path: /resize
+    method: GET
+    params:
+      width: pixels
+      height: pixels
+- name: crop
+  endpoint:
+    path: /crop
+    method: GET
+    data_selector: crop
+    params:
+      crop: width,height
+      aspect_ratio: auto
+      crop_gravity: center
+      focus_crop: width,height,x_coordinate,y_coordinate
+- name: saturation
+  endpoint:
+    params:
+      saturation:
+        units: -100 to 100
+        range: '0'
+        default: ''
+- name: hue
+  endpoint:
+    params:
+      hue:
+        units: 0 to 100
+        range: '0'
+        default: '0'
+- name: contrast
+  endpoint:
+    params:
+      contrast:
+        units: -100 to 100
+        range: '0'
+        default: ''
+- name: tint
+  endpoint:
+    params:
+      tint:
+        units: ffffff
+        default: ''
+- name: sepia
+  endpoint:
+    params:
+      sepia:
+        units: 0 - 100
+        values: '0'
+        default: ''
+- name: bunny_shield
+  endpoint:
+    path: N/A
+    method: N/A
+    data_selector: N/A
+    params:
+      description: Temporary indicator that a user has successfully completed the
+        JavaScript Proof-of-Work (PoW) challenge.
+- name: bunny_shield_chk
+  endpoint:
+    path: N/A
+    method: N/A
+    data_selector: N/A
+    params:
+      description: Functions as a checksum or validation token to ensure the integrity
+        of the first cookie.
+- name: bunnyshield_id
+  endpoint:
+    path: N/A
+    method: N/A
+    data_selector: N/A
+    params:
+      description: Persistent, first-party identifier used by Bunny Shield’s bot detection
+        system.
+- name: bunnyshield_bd
+  endpoint:
+    path: N/A
+    method: N/A
+    data_selector: N/A
+    params:
+      description: Used to capture a detailed, non-invasive fingerprint of the user’s
+        browser environment.
+- name: video_library
+  endpoint:
+    path: /delivery/stream
+    method: POST
+    data_selector: videoLibrary
+    params: {}
+- name: video_upload
+  endpoint:
+    path: /upload/video
+    method: POST
+    data_selector: video
+    params: {}
+- name: video_url
+  endpoint:
+    path: /video/url
+    method: GET
+    data_selector: videoUrl
+    params: {}
+- name: embed_code
+  endpoint:
+    path: /video/embed
+    method: GET
+    data_selector: embedCode
+    params: {}
+- name: video_embed
+  endpoint:
+    path: /embed/{video_library_id}/{video_id}
+    method: GET
+    data_selector: embed_url
+    params: {}
+- name: Direct Play
+  endpoint:
+    path: /play/{video_library_id}/{video_id}
+    method: GET
+- name: Original File
+  endpoint:
+    path: /{video_id}/original
+    method: GET
+- name: HLS Playlist
+  endpoint:
+    path: /{video_id}/playlist.m3u8
+    method: GET
+- name: Thumbnail
+  endpoint:
+    path: /{video_id}/{thumbnail_file_name}
+    method: GET
+- name: Preview Animation
+  endpoint:
+    path: /{video_id}/preview.webp
+    method: GET
+- name: MP4 Video
+  endpoint:
+    path: /{video_id}/play_{resolution_height}p.mp4
+    method: GET
+- name: Subtitle File
+  endpoint:
+    path: /{video_id}/captions/{language_code}.vtt
+    method: GET
+- name: deployment_package
+  endpoint:
+    path: /request/deployment/package
+    method: POST
+    data_selector: package
+    params: {}
+- name: certificate_signing_request
+  endpoint:
+    path: /create/csr
+    method: POST
+    data_selector: csr
+    params: {}
+- name: fps_certificate
+  endpoint:
+    path: /create/fps/certificate
+    method: POST
+    data_selector: certificate
+    params: {}
+- name: certificate
+  endpoint:
+    path: /{library_id}/certificate
+    method: GET
+- name: license
+  endpoint:
+    path: /{library_id}/license/?videoId=${video_id}
+    method: POST
+- name: video_playlist
+  endpoint:
+    path: /{storageZoneId}.{storageDomain}/{videoId}/playlist.m3u8
+    method: GET
+    data_selector: manifest
+- name: widevine_license
+  endpoint:
+    path: /WidevineLicense/{libraryId}/{videoId}
+    method: GET
+    data_selector: license
+- name: fairplay_certificate
+  endpoint:
+    path: /FairPlay/{libraryId}/certificate
+    method: GET
+    data_selector: certificate
+- name: fairplay_license
+  endpoint:
+    path: /FairPlay/{libraryId}/license/
+    method: GET
+    data_selector: license
+- name: premium_encoding
+  endpoint:
+    path: /pricing/premium_encoding
+    method: GET
+    data_selector: pricing_details
+    params: {}
+- name: just_in_time_encoding
+  endpoint:
+    path: /features/just_in_time_encoding
+    method: GET
+    data_selector: features_details
+    params: {}
+- name: output_codecs
+  endpoint:
+    path: /features/output_codecs
+    method: GET
+    data_selector: codecs_details
+    params: {}
+- name: encoding_prioritization
+  endpoint:
+    path: /features/encoding_prioritization
+    method: GET
+    data_selector: prioritization_details
+    params: {}
+- name: edgerules
+  endpoint:
+    path: /pullzone//edgerules/addOrUpdate
+    method: POST
+    data_selector: ''
+    params: {}
+- name: setEdgeRuleEnabled
+  endpoint:
+    path: /pullzone//edgerules//setEdgeRuleEnabled
+    method: POST
+    data_selector: ''
+    params: {}
+- name: DnsRequest
+  endpoint:
+    path: /handleQuery
+    method: POST
+    data_selector: request
+    params: {}
+- name: ARecord
+  endpoint:
+    path: ARecord
+    method: GET
+    data_selector: records
+    params: {}
+- name: AaaaRecord
+  endpoint:
+    path: AaaaRecord
+    method: GET
+    data_selector: records
+    params: {}
+- name: CnameRecord
+  endpoint:
+    path: CnameRecord
+    method: GET
+    data_selector: records
+    params: {}
+- name: PullZoneRecord
+  endpoint:
+    path: PullZoneRecord
+    method: GET
+    data_selector: records
+    params: {}
+- name: Monitoring
+  endpoint:
+    path: /Monitoring.getStatus
+    method: GET
+    data_selector: MonitoringStatus
+    params: {}
+- name: GeoDatabase
+  endpoint:
+    path: /GeoDatabase.resolve
+    method: GET
+    data_selector: GeoLocation
+    params: {}
+- name: GeoDistance
+  endpoint:
+    path: /GeoDistance.calculate
+    method: GET
+    data_selector: distance
+    params: {}
+- name: RoutingEngine
+  endpoint:
+    path: /RoutingEngine.getWeightedRandom
+    method: GET
+    data_selector: Server
+    params: {}
+- name: bunnynet_storage_zone
+  endpoint:
+    path: /storage_zones
+    method: POST
+    data_selector: storage_zones
+- name: bunnynet_storage_file
+  endpoint:
+    path: /storage_files
+    method: POST
+    data_selector: storage_files
+- name: bunnynet_pullzone
+  endpoint:
+    path: /pullzones
+    method: POST
+    data_selector: pullzones
+- name: pullzone
+  endpoint:
+    path: /bunnynet_pullzone
+    method: POST
+    data_selector: pullzone
+    params: {}
+- name: storage
+  endpoint:
+    path: /bunnynet_storage_zone
+    method: POST
+    data_selector: storage
+    params: {}
+- name: queue_statistics
+  endpoint:
+    path: /pullzone//originshield/queuestatistics
+    method: GET
+    data_selector: ''
+    params: {}
+- name: safehop_statistics
+  endpoint:
+    path: /pullzone//safehop/statistics
+    method: GET
+- name: optimizer_statistics
+  endpoint:
+    path: /pullzone//optimizer/statistics
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /shield/event-logs/{{shieldZoneId}}
+    method: GET
+    data_selector: ''
+- name: event_logs
+  endpoint:
+    path: /shield/event-logs/{{shieldZoneId}}
+    method: GET
+    data_selector: logs
+    params: {}
+- name: event_logs
+  endpoint:
+    path: /shield/event-logs/{{shieldZoneId}}
+    method: GET
+- name: country
+  endpoint:
+    path: /country
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /apikeys
+    method: GET
+- name: region
+  endpoint:
+    path: /region
+    method: GET
+- name: video_library
+  endpoint:
+    path: /video/library
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: dns_zone
+  endpoint:
+    path: /dnszone
+    method: GET
+- name: pull_zone
+  endpoint:
+    path: /pullzone
+    method: GET
+- name: storage_zone
+  endpoint:
+    path: /storagezone
+    method: GET
+- name: statistics
+  endpoint:
+    path: /statistics
+    method: GET
+- name: edge_script
+  endpoint:
+    path: /edgescript
+    method: GET
+- name: release
+  endpoint:
+    path: /release
+    method: GET
+- name: shield_zone
+  endpoint:
+    path: /shieldzone
+    method: GET
+- name: waf
+  endpoint:
+    path: /waf
+    method: GET
+- name: ddos
+  endpoint:
+    path: /ddos
+    method: GET
+- name: rate_limit
+  endpoint:
+    path: /ratelimit
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /eventlogs
+    method: GET
+- name: country_list
+  endpoint:
+    path: /getcountrylist
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /listvideolibraries
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /listdnszones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /listpullzones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /liststoragezones
+    method: GET
+- name: remove_allowed_referrer
+  endpoint:
+    path: /pullzone//removeAllowedReferrer
+    method: POST
+- name: country_list
+  endpoint:
+    path: /region
+    method: GET
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /apikeys
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /videolibrary
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dnszone
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pullzone
+    method: GET
+- name: edge_rules
+  endpoint:
+    path: /edge/rules
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storagezone
+    method: GET
+- name: statistics
+  endpoint:
+    path: /statistics
+    method: GET
+- name: events
+  endpoint:
+    path: /events
+    method: GET
+- name: video_library
+  endpoint:
+    path: /videolibrary
+    method: GET
+- name: Get Video Library
+  endpoint:
+    path: /{id}
+    method: GET
+- name: addBlockedReferrer
+  endpoint:
+    path: /pullzone//addBlockedReferrer
+    method: POST
+- name: country_list
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /apikeys
+    method: GET
+- name: region_list
+  endpoint:
+    path: /region
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dnszone
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storagezone
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /eventlogs
+    method: GET
+- name: Get Country List
+  endpoint:
+    path: /countries
+    method: GET
+- name: List API Keys
+  endpoint:
+    path: /apikeys
+    method: GET
+- name: Region list
+  endpoint:
+    path: /regions
+    method: GET
+- name: List Video Libraries
+  endpoint:
+    path: /videolibrary
+    method: GET
+- name: List DNS Zones
+  endpoint:
+    path: /dnszones
+    method: GET
+- name: List Pull Zones
+  endpoint:
+    path: /pullzones
+    method: GET
+- name: List Storage Zones
+  endpoint:
+    path: /storagezones
+    method: GET
+- name: Get Statistics
+  endpoint:
+    path: /statistics
+    method: GET
+- name: List WAF Rules
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: Get Overview Metrics
+  endpoint:
+    path: /metrics/overview
+    method: GET
+- name: Get Country List
+  endpoint:
+    path: /countries
+    method: GET
+- name: List API Keys
+  endpoint:
+    path: /apikeys
+    method: GET
+- name: List Video Libraries
+  endpoint:
+    path: /videolibrary
+    method: GET
+- name: List DNS Zones
+  endpoint:
+    path: /dnszones
+    method: GET
+- name: List Pull Zones
+  endpoint:
+    path: /pullzones
+    method: GET
+- name: List Storage Zones
+  endpoint:
+    path: /storagezones
+    method: GET
+- name: List Edge Scripts
+  endpoint:
+    path: /edgescripts
+    method: GET
+- name: List Secrets
+  endpoint:
+    path: /secrets
+    method: GET
+- name: Get Active Release
+  endpoint:
+    path: /releases/active
+    method: GET
+- name: List Shield Zones
+  endpoint:
+    path: /shieldzones
+    method: GET
+- name: List WAF Rules
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: List Rate Limits
+  endpoint:
+    path: /ratelimits
+    method: GET
+- name: List Event Logs
+  endpoint:
+    path: /eventlogs
+    method: GET
+- name: resetApiKey
+  endpoint:
+    path: /resetApiKey
+    method: POST
+    data_selector: ''
+    params: {}
+- name: reset_api_key
+  endpoint:
+    path: /resetApiKey
+    method: POST
+- name: remove_blocked_referrer
+  endpoint:
+    path: /pullzone//removeBlockedReferrer
+    method: POST
+- name: Get Country List
+  endpoint:
+    path: /countries
+    method: get
+- name: List API Keys
+  endpoint:
+    path: /apikeys
+    method: get
+- name: Region list
+  endpoint:
+    path: /region
+    method: get
+- name: List Video Libraries
+  endpoint:
+    path: /videolibraries
+    method: get
+- name: Get Video Library
+  endpoint:
+    path: /videolibrary/{id}
+    method: get
+- name: Get Languages
+  endpoint:
+    path: /languages
+    method: get
+- name: List DNS Zones
+  endpoint:
+    path: /dnszones
+    method: get
+- name: List Pull Zones
+  endpoint:
+    path: /pullzones
+    method: get
+- name: Get Storage Zone
+  endpoint:
+    path: /storagezone
+    method: get
+- name: List Files
+  endpoint:
+    path: /files
+    method: get
+- name: Get Video
+  endpoint:
+    path: /video/{id}
+    method: get
+- name: Get Edge Script
+  endpoint:
+    path: /edgescript
+    method: get
+- name: Get Active Release
+  endpoint:
+    path: /releases/active
+    method: get
+- name: List Shield Zones
+  endpoint:
+    path: /shieldzones
+    method: get
+- name: List WAF Rules
+  endpoint:
+    path: /waf/rules
+    method: get
+- name: List Event Logs
+  endpoint:
+    path: /eventlogs
+    method: get
+- name: add_allowed_referrer
+  endpoint:
+    path: /addAllowedReferrer
+    method: POST
+    data_selector: ''
+    params: {}
+- name: remove_allowed_referrer
+  endpoint:
+    path: /removeAllowedReferrer
+    method: POST
+    data_selector: ''
+    params: {}
+- name: add_blocked_referrer
+  endpoint:
+    path: /addBlockedReferrer
+    method: POST
+- name: removeBlockedReferrer
+  endpoint:
+    path: /videolibrary//removeBlockedReferrer
+    method: POST
+    data_selector: ''
+    params: {}
+- name: dns_zone
+  endpoint:
+    path: /dnszone
+    method: GET
+    data_selector: records
+- name: dns_zone
+  endpoint:
+    path: /dnszone
+    method: GET
+- name: rotate_deployment_key
+  endpoint:
+    path: /compute/script//deploymentKey/rotate
+    method: POST
+- name: dns_zone
+  endpoint:
+    path: /dnszone/{id}
+    method: GET
+- name: dns_zone
+  endpoint:
+    path: /{id}
+    method: GET
+- name: DNS Zone
+  endpoint:
+    path: /{id}
+    method: get
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /apikeys
+    method: GET
+- name: region
+  endpoint:
+    path: /region
+    method: GET
+- name: video_library
+  endpoint:
+    path: /video_library
+    method: GET
+- name: dns_zone
+  endpoint:
+    path: /dnszone
+    method: GET
+- name: storage_zone
+  endpoint:
+    path: /storagezone
+    method: GET
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: region
+  endpoint:
+    path: /region
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dnszone
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pullzone
+    method: GET
+- name: edge_rules
+  endpoint:
+    path: /edge-rule
+    method: GET
+- name: statistics
+  endpoint:
+    path: /statistics
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storagezone
+    method: GET
+- name: files
+  endpoint:
+    path: /files
+    method: GET
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /apikeys
+    method: GET
+- name: regions
+  endpoint:
+    path: /regions
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /video/libraries
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dnszone
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pullzone
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storagezone
+    method: GET
+- name: edge_scripts
+  endpoint:
+    path: /edgescript
+    method: GET
+- name: waf_rules
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: rate_limits
+  endpoint:
+    path: /ratelimit
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /eventlogs
+    method: GET
+- name: Get DNS Query Statistics
+  endpoint:
+    path: /{id}/statistics
+    method: get
+- name: check_availability
+  endpoint:
+    path: /dnszone/checkavailability
+    method: POST
+- name: dns_zone
+  endpoint:
+    path: /dnszone/{zoneId}/records
+    method: put
+- name: DNS Zone
+  endpoint:
+    path: /dnszone/{zoneId}/records/{id}
+    method: GET
+- name: delete_dns_record
+  endpoint:
+    path: /{zoneId}/records/{id}
+    method: DELETE
+- name: country_list
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /apikeys
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dnszone
+    method: GET
+- name: statistics
+  endpoint:
+    path: /statistics
+    method: GET
+- name: pull_zone
+  endpoint:
+    path: /pullzone
+    method: GET
+    data_selector: records
+    params: {}
+- name: pull_zone
+  endpoint:
+    path: /pullzone
+    method: GET
+- name: pull_zone
+  endpoint:
+    path: /pullzone/
+    method: get
+- name: pull_zone
+  endpoint:
+    path: /pullzone/
+    method: GET
+- name: pull_zone
+  endpoint:
+    path: /{id}
+    method: GET
+- name: country_list
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /apikeys
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dnszone
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pullzone
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storagezone
+    method: GET
+- name: check_availability
+  endpoint:
+    path: /pullzone/checkavailability
+    method: POST
+- name: add_certificate
+  endpoint:
+    path: /pullzone//addCertificate
+    method: POST
+- name: remove_certificate
+  endpoint:
+    path: /pullzone//removeCertificate
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: pullzone
+  endpoint:
+    path: /pullzone/{id}/addHostname
+    method: post
+- name: remove_hostname
+  endpoint:
+    path: /pullzone//removeHostname
+    method: DELETE
+- name: get_country_list
+  endpoint:
+    path: /countries
+    method: GET
+- name: list_api_keys
+  endpoint:
+    path: /apikeys
+    method: GET
+- name: list_video_libraries
+  endpoint:
+    path: /videolibraries
+    method: GET
+- name: list_dns_zones
+  endpoint:
+    path: /dnszones
+    method: GET
+- name: list_pull_zones
+  endpoint:
+    path: /pullzones
+    method: GET
+- name: list_storage_zones
+  endpoint:
+    path: /storagezones
+    method: GET
+- name: get_statistics
+  endpoint:
+    path: /statistics
+    method: GET
+- name: list_event_logs
+  endpoint:
+    path: /eventlogs
+    method: GET
+- name: Country List
+  endpoint:
+    path: /countries
+    method: GET
+- name: List API Keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: Region list
+  endpoint:
+    path: /region
+    method: GET
+- name: List Video Libraries
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: List DNS Zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: List Pull Zones
+  endpoint:
+    path: /pullzones
+    method: GET
+- name: List Storage Zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: List Files
+  endpoint:
+    path: /files
+    method: GET
+- name: Get Video Statistics
+  endpoint:
+    path: /video/statistics
+    method: GET
+- name: List Edge Scripts
+  endpoint:
+    path: /edge-scripts
+    method: GET
+- name: Get Active Release
+  endpoint:
+    path: /releases/active
+    method: GET
+- name: List WAF Rules
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: Get Overview Metrics
+  endpoint:
+    path: /metrics/overview
+    method: GET
+- name: List Event Logs
+  endpoint:
+    path: /event-logs
+    method: GET
+- name: reset_security_key
+  endpoint:
+    path: /pullzone//resetSecurityKey
+    method: POST
+- name: add_allowed_referrer
+  endpoint:
+    path: /pullzone//addAllowedReferrer
+    method: POST
+- name: Add Blocked IP
+  endpoint:
+    path: /pullzone/{id}/addBlockedIp
+    method: POST
+- name: remove_blocked_ip
+  endpoint:
+    path: /pullzone//removeBlockedIp
+    method: POST
+    data_selector: ''
+    params: {}
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: region
+  endpoint:
+    path: /region
+    method: GET
+- name: video_library
+  endpoint:
+    path: /video-library
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: dns_zone
+  endpoint:
+    path: /dns-zone
+    method: GET
+- name: pull_zone
+  endpoint:
+    path: /pull-zone
+    method: GET
+- name: storage_zone
+  endpoint:
+    path: /storage-zone
+    method: GET
+- name: files
+  endpoint:
+    path: /files
+    method: GET
+- name: video
+  endpoint:
+    path: /video
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /event-logs
+    method: GET
+- name: country_list
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: files
+  endpoint:
+    path: /files
+    method: GET
+- name: collections
+  endpoint:
+    path: /collections
+    method: GET
+- name: videos
+  endpoint:
+    path: /videos
+    method: GET
+- name: edge_scripts
+  endpoint:
+    path: /edge-scripts
+    method: GET
+- name: secrets
+  endpoint:
+    path: /secrets
+    method: GET
+- name: releases
+  endpoint:
+    path: /releases
+    method: GET
+- name: shield_zones
+  endpoint:
+    path: /shield-zones
+    method: GET
+- name: waf_rules
+  endpoint:
+    path: /waf-rules
+    method: GET
+- name: rate_limits
+  endpoint:
+    path: /rate-limits
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /event-logs
+    method: GET
+- name: List Storage Zones
+  endpoint:
+    path: /storagezone
+    method: get
+- name: List Storage Zones
+  endpoint:
+    path: /storagezone
+    method: GET
+- name: Add Storage Zone
+  endpoint:
+    path: /storagezone
+    method: POST
+- name: Check the storage zone availability
+  endpoint:
+    path: /storagezone/availability
+    method: POST
+- name: Get Storage Zone
+  endpoint:
+    path: /storagezone/{id}
+    method: GET
+- name: Update Storage Zone
+  endpoint:
+    path: /storagezone/{id}
+    method: POST
+- name: Delete Storage Zone
+  endpoint:
+    path: /storagezone/{id}
+    method: DELETE
+- name: Get Storage Zone Statistics
+  endpoint:
+    path: /storagezone/{id}/statistics
+    method: GET
+- name: check_availability
+  endpoint:
+    path: /storagezone/checkavailability
+    method: POST
+    data_selector: ''
+    params: {}
+- name: storage_zone
+  endpoint:
+    path: /storagezone/{id}
+    method: get
+- name: Storage Zone
+  endpoint:
+    path: /storagezone
+    method: get
+- name: Get Storage Zone Statistics
+  endpoint:
+    path: /{id}/statistics
+    method: GET
+- name: reset_password
+  endpoint:
+    path: /resetPassword
+    method: POST
+    data_selector: ''
+    params: {}
+- name: file
+  endpoint:
+    path: /
+    method: GET
+- name: upload_file
+  endpoint:
+    path: /{STORAGE_ZONE_NAME}/{FILENAME_TO_UPLOAD}
+    method: PUT
+- name: files_and_directories
+  endpoint:
+    path: /
+    method: GET
+- name: video_upload
+  endpoint:
+    path: /tusupload
+    method: POST
+    data_selector: metadata
+    params: {}
+- name: collections
+  endpoint:
+    path: /library/collections/
+    method: GET
+- name: collections
+  endpoint:
+    path: /library/collections/
+    method: POST
+- name: collections
+  endpoint:
+    path: /library/collections/
+    method: DELETE
+- name: collections
+  endpoint:
+    path: /library/collections
+    method: GET
+- name: collections
+  endpoint:
+    path: /library/collections
+    method: POST
+    data_selector: ''
+    params: {}
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: transcribe
+  endpoint:
+    path: /library/videos/transcribe
+    method: POST
+    data_selector: ''
+    params: {}
+- name: country_list
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: region_list
+  endpoint:
+    path: /region
+    method: GET
+- name: video_library
+  endpoint:
+    path: /library/{libraryId}/videos/{videoId}
+    method: GET
+- name: get_country_list
+  endpoint:
+    path: /get/countries
+    method: GET
+- name: list_api_keys
+  endpoint:
+    path: /api/keys
+    method: GET
+- name: list_video_libraries
+  endpoint:
+    path: /video/libraries
+    method: GET
+- name: list_dns_zones
+  endpoint:
+    path: /dns/zones
+    method: GET
+- name: list_pull_zones
+  endpoint:
+    path: /pull/zones
+    method: GET
+- name: list_storage_zones
+  endpoint:
+    path: /storage/zones
+    method: GET
+- name: list_files
+  endpoint:
+    path: /files
+    method: GET
+- name: get_collection_list
+  endpoint:
+    path: /collections
+    method: GET
+- name: list_videos
+  endpoint:
+    path: /videos
+    method: GET
+- name: list_edge_scripts
+  endpoint:
+    path: /edge/scripts
+    method: GET
+- name: get_active_release
+  endpoint:
+    path: /releases/active
+    method: GET
+- name: list_shield_zones
+  endpoint:
+    path: /shield/zones
+    method: GET
+- name: list_waf_rules
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: list_event_logs
+  endpoint:
+    path: /event/logs
+    method: GET
+- name: heatmap
+  endpoint:
+    path: /library/videos/heatmap
+    method: GET
+- name: Get Video play data
+  endpoint:
+    path: /library/{libraryId}/videos/{videoId}/play
+    method: get
+- name: statistics
+  endpoint:
+    path: /library/statistics
+    method: GET
+- endpoint:
+    path: /library/videos/reencode
+    method: POST
+- name: videos_repackage
+  endpoint:
+    path: /library/videos/repackage
+    method: POST
+    data_selector: ''
+    params: {}
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api_keys
+    method: GET
+- name: region
+  endpoint:
+    path: /region
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /video_libraries
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns_zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull_zones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage_zones
+    method: GET
+- name: files
+  endpoint:
+    path: /files
+    method: GET
+- name: collections
+  endpoint:
+    path: /collections
+    method: GET
+- name: videos
+  endpoint:
+    path: /videos
+    method: GET
+- name: edge_scripts
+  endpoint:
+    path: /edge_scripts
+    method: GET
+- name: variables
+  endpoint:
+    path: /variables
+    method: GET
+- name: secrets
+  endpoint:
+    path: /secrets
+    method: GET
+- name: releases
+  endpoint:
+    path: /releases
+    method: GET
+- name: shield_zones
+  endpoint:
+    path: /shield_zones
+    method: GET
+- name: waf_rules
+  endpoint:
+    path: /waf_rules
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /event_logs
+    method: GET
+- name: country_list
+  endpoint:
+    path: /countries
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /videos
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: edge_scripts
+  endpoint:
+    path: /edge-scripts
+    method: GET
+- name: secrets
+  endpoint:
+    path: /secrets
+    method: GET
+- name: videos_fetch
+  endpoint:
+    path: /library//videos/fetch
+    method: POST
+    data_selector: ''
+    params: {}
+- name: captions
+  endpoint:
+    path: /library/videos/captions/
+    method: POST
+- name: videos_resolutions
+  endpoint:
+    path: /library/videos/resolutions
+    method: GET
+- name: resolutions_cleanup
+  endpoint:
+    path: /library/videos/resolutions/cleanup
+    method: POST
+- name: country
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: region
+  endpoint:
+    path: /region
+    method: GET
+- name: video_library
+  endpoint:
+    path: /video-library
+    method: GET
+- name: dns_zone
+  endpoint:
+    path: /dns-zone
+    method: GET
+- name: pull_zone
+  endpoint:
+    path: /pull-zone
+    method: GET
+- name: storage_zone
+  endpoint:
+    path: /storage-zone
+    method: GET
+- name: edge_script
+  endpoint:
+    path: /edge-script
+    method: GET
+- name: waf_rule
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: rate_limit
+  endpoint:
+    path: /rate-limits
+    method: GET
+- name: event_log
+  endpoint:
+    path: /event-logs
+    method: GET
+- name: country_list
+  endpoint:
+    path: /countries
+    method: GET
+- name: list_api_keys
+  endpoint:
+    path: /apikeys
+    method: GET
+- name: region_list
+  endpoint:
+    path: /region
+    method: GET
+- name: video_library_list
+  endpoint:
+    path: /video-library
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: statistics
+  endpoint:
+    path: /statistics
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: countries
+  endpoint:
+    path: /countries
+    method: get
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: get
+- name: region
+  endpoint:
+    path: /region
+    method: get
+- name: video_library
+  endpoint:
+    path: /video-library
+    method: get
+- name: languages
+  endpoint:
+    path: /languages
+    method: get
+- name: dns_zone
+  endpoint:
+    path: /dns-zone
+    method: get
+- name: pull_zone
+  endpoint:
+    path: /pull-zone
+    method: get
+- name: storage_zone
+  endpoint:
+    path: /storage-zone
+    method: get
+- name: edge_script
+  endpoint:
+    path: /edge-script
+    method: get
+- name: release
+  endpoint:
+    path: /release
+    method: get
+- name: shield_zone
+  endpoint:
+    path: /shield-zone
+    method: get
+- name: waf
+  endpoint:
+    path: /waf
+    method: get
+- name: ddos
+  endpoint:
+    path: /ddos
+    method: get
+- name: rate_limit
+  endpoint:
+    path: /rate-limit
+    method: get
+- name: metrics
+  endpoint:
+    path: /metrics
+    method: get
+- name: event_logs
+  endpoint:
+    path: /event-logs
+    method: get
+- name: country_list
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: region_list
+  endpoint:
+    path: /region
+    method: GET
+- name: video_library_list
+  endpoint:
+    path: /stream/video-library
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: edge_scripts
+  endpoint:
+    path: /edge-scripts
+    method: GET
+- name: shield_zones
+  endpoint:
+    path: /shield-zones
+    method: GET
+- name: waf_rules
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /event-logs
+    method: GET
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /shield/event-logs/{shieldZoneId}/{date}/{continuationToken}
+    method: GET
+- name: country
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_key
+  endpoint:
+    path: /apikeys
+    method: GET
+- name: video_library
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: dns_zone
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zone
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: Get Edge Script Statistics
+  endpoint:
+    path: /compute/script/{id}/statistics
+    method: get
+- name: List Shield Zones
+  endpoint:
+    path: /waf/shield
+    method: get
+- name: Get Shield Zone
+  endpoint:
+    path: /waf/shield/{id}
+    method: get
+- name: list_edge_scripts
+  endpoint:
+    path: /compute/script
+    method: GET
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: region
+  endpoint:
+    path: /region
+    method: GET
+- name: video_library
+  endpoint:
+    path: /video-library
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: edge_rules
+  endpoint:
+    path: /edge-rules
+    method: GET
+- name: statistics
+  endpoint:
+    path: /statistics
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: country_list
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: region_list
+  endpoint:
+    path: /region
+    method: GET
+- name: video_library
+  endpoint:
+    path: /video-library
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: statistics
+  endpoint:
+    path: /statistics
+    method: GET
+- name: country
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api_keys
+    method: GET
+- name: region
+  endpoint:
+    path: /region
+    method: GET
+- name: video_library
+  endpoint:
+    path: /video_libraries
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns_zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull_zones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage_zones
+    method: GET
+- name: files
+  endpoint:
+    path: /files
+    method: GET
+- name: edge_scripts
+  endpoint:
+    path: /edge_scripts
+    method: GET
+- name: variables
+  endpoint:
+    path: /variables
+    method: GET
+- name: releases
+  endpoint:
+    path: /releases
+    method: GET
+- name: shield_zones
+  endpoint:
+    path: /shield_zones
+    method: GET
+- name: waf_rules
+  endpoint:
+    path: /waf_rules
+    method: GET
+- name: rate_limits
+  endpoint:
+    path: /rate_limits
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /event_logs
+    method: GET
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: Get Country List
+  endpoint:
+    path: /countries
+    method: GET
+- name: List API Keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: List Video Libraries
+  endpoint:
+    path: /video/libraries
+    method: GET
+- name: List DNS Zones
+  endpoint:
+    path: /dns/zones
+    method: GET
+- name: List Pull Zones
+  endpoint:
+    path: /pullzones
+    method: GET
+- name: List Storage Zones
+  endpoint:
+    path: /storage/zones
+    method: GET
+- name: Get Statistics
+  endpoint:
+    path: /statistics
+    method: GET
+- name: List Secrets
+  endpoint:
+    path: /secrets
+    method: GET
+- name: Get Active Release
+  endpoint:
+    path: /releases/active
+    method: GET
+- name: List Shield Zones
+  endpoint:
+    path: /shield/zones
+    method: GET
+- name: List WAF Rules
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: Get Overview Metrics
+  endpoint:
+    path: /metrics/overview
+    method: GET
+- name: List Event Logs
+  endpoint:
+    path: /event-logs
+    method: GET
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api_keys
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /video_libraries
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns_zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull_zones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage_zones
+    method: GET
+- name: files
+  endpoint:
+    path: /files
+    method: GET
+- name: videos
+  endpoint:
+    path: /videos
+    method: GET
+- name: edge_scripts
+  endpoint:
+    path: /edge_scripts
+    method: GET
+- name: variables
+  endpoint:
+    path: /variables
+    method: GET
+- name: secrets
+  endpoint:
+    path: /secrets
+    method: GET
+- name: releases
+  endpoint:
+    path: /releases
+    method: GET
+- name: shield_zones
+  endpoint:
+    path: /shield_zones
+    method: GET
+- name: waf_rules
+  endpoint:
+    path: /waf_rules
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /event_logs
+    method: GET
+- name: country_list
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: region_list
+  endpoint:
+    path: /region
+    method: GET
+- name: video_library_list
+  endpoint:
+    path: /video-library
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: files
+  endpoint:
+    path: /files
+    method: GET
+- name: collections
+  endpoint:
+    path: /collections
+    method: GET
+- name: videos
+  endpoint:
+    path: /videos
+    method: GET
+- name: edge_scripts
+  endpoint:
+    path: /edge-scripts
+    method: GET
+- name: variables
+  endpoint:
+    path: /variables
+    method: GET
+- name: secrets
+  endpoint:
+    path: /secrets
+    method: GET
+- name: release
+  endpoint:
+    path: /release
+    method: GET
+- name: waf_rules
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: rate_limits
+  endpoint:
+    path: /rate-limits
+    method: GET
+- name: metrics
+  endpoint:
+    path: /metrics
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /event-logs
+    method: GET
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: region
+  endpoint:
+    path: /region
+    method: GET
+- name: video_library
+  endpoint:
+    path: /video-library
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: edge_rules
+  endpoint:
+    path: /edge-rules
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: statistics
+  endpoint:
+    path: /statistics
+    method: GET
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: edge_scripts
+  endpoint:
+    path: /edge-scripts
+    method: GET
+- name: waf_rules
+  endpoint:
+    path: /waf-rules
+    method: GET
+- name: ddos_enums
+  endpoint:
+    path: /ddos/enums
+    method: GET
+- name: rate_limits
+  endpoint:
+    path: /rate-limits
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /event-logs
+    method: GET
+- name: country
+  endpoint:
+    path: /api/countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api/keys
+    method: GET
+- name: region
+  endpoint:
+    path: /api/regions
+    method: GET
+- name: video_library
+  endpoint:
+    path: /api/video/libraries
+    method: GET
+- name: languages
+  endpoint:
+    path: /api/languages
+    method: GET
+- name: dns_zone
+  endpoint:
+    path: /api/dns/zones
+    method: GET
+- name: pull_zone
+  endpoint:
+    path: /api/pullzones
+    method: GET
+- name: edge_rule
+  endpoint:
+    path: /api/edge/rules
+    method: GET
+- name: storage_zone
+  endpoint:
+    path: /api/storage/zones
+    method: GET
+- name: file
+  endpoint:
+    path: /api/files
+    method: GET
+- name: video
+  endpoint:
+    path: /api/videos
+    method: GET
+- name: release
+  endpoint:
+    path: /api/releases
+    method: GET
+- name: waf_rule
+  endpoint:
+    path: /api/waf/rules
+    method: GET
+- name: country_list
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: files
+  endpoint:
+    path: /files
+    method: GET
+- name: videos
+  endpoint:
+    path: /videos
+    method: GET
+- name: waf_rules
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /event-logs
+    method: GET
+- name: active_releases
+  endpoint:
+    path: /compute/script//releases/active
+    method: GET
+- name: country
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: dns_zone
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: video_library
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: storage_zone
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: statistics
+  endpoint:
+    path: /statistics
+    method: GET
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: region
+  endpoint:
+    path: /region
+    method: GET
+- name: stream_video_library
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: dns_zone
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zone
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: storage_zone
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: statistics
+  endpoint:
+    path: /statistics
+    method: GET
+- name: country_list
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: region_list
+  endpoint:
+    path: /region
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /video-library
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: files
+  endpoint:
+    path: /files
+    method: GET
+- name: videos
+  endpoint:
+    path: /videos
+    method: GET
+- name: edge_scripts
+  endpoint:
+    path: /edge-scripts
+    method: GET
+- name: secrets
+  endpoint:
+    path: /secrets
+    method: GET
+- name: releases
+  endpoint:
+    path: /releases
+    method: GET
+- name: shield_zones
+  endpoint:
+    path: /shield-zones
+    method: GET
+- name: waf_rules
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: ddos_enums
+  endpoint:
+    path: /ddos/enums
+    method: GET
+- name: rate_limits
+  endpoint:
+    path: /rate-limits
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /event-logs
+    method: GET
+- name: shield_zones
+  endpoint:
+    path: /shield/shield-zones
+    method: GET
+- name: shield_zone
+  endpoint:
+    path: /shield/shield-zone/
+    method: GET
+- name: shield_zone
+  endpoint:
+    path: /shield/shield-zone
+    method: POST
+- name: shield_zone
+  endpoint:
+    path: /shield/shield-zone
+    method: get
+- name: waf_rules
+  endpoint:
+    path: /shield/waf/rules
+    method: GET
+- name: Country List
+  endpoint:
+    path: /countries
+    method: GET
+- name: API Keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: Region List
+  endpoint:
+    path: /region
+    method: GET
+- name: Video Libraries
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: Languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: DNS Zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: Pull Zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: Storage Zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: Files
+  endpoint:
+    path: /files
+    method: GET
+- name: Collections
+  endpoint:
+    path: /collections
+    method: GET
+- name: Videos
+  endpoint:
+    path: /videos
+    method: GET
+- name: Edge Scripts
+  endpoint:
+    path: /edge-scripts
+    method: GET
+- name: Secrets
+  endpoint:
+    path: /secrets
+    method: GET
+- name: Releases
+  endpoint:
+    path: /releases
+    method: GET
+- name: Shield Zones
+  endpoint:
+    path: /shield-zones
+    method: GET
+- name: WAF Rules
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: DDoS Enums
+  endpoint:
+    path: /ddos/enums
+    method: GET
+- name: Rate Limits
+  endpoint:
+    path: /rate-limits
+    method: GET
+- name: Metrics
+  endpoint:
+    path: /metrics
+    method: GET
+- name: Event Logs
+  endpoint:
+    path: /event-logs
+    method: GET
+- name: WAF Profiles
+  endpoint:
+    path: /shield/waf/profiles
+    method: GET
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: files
+  endpoint:
+    path: /files
+    method: GET
+- name: collections
+  endpoint:
+    path: /collections
+    method: GET
+- name: videos
+  endpoint:
+    path: /videos
+    method: GET
+- name: edge_scripts
+  endpoint:
+    path: /edge-scripts
+    method: GET
+- name: secrets
+  endpoint:
+    path: /secrets
+    method: GET
+- name: releases
+  endpoint:
+    path: /releases
+    method: GET
+- name: shield_zones
+  endpoint:
+    path: /shield/zones
+    method: GET
+- name: waf_rules
+  endpoint:
+    path: /shield/waf/rules
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /event-logs
+    method: GET
+- name: Get Country List
+  endpoint:
+    path: /countries
+    method: GET
+- name: List API Keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: Region list
+  endpoint:
+    path: /region
+    method: GET
+- name: List Video Libraries
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: List DNS Zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: List Pull Zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: Get Statistics
+  endpoint:
+    path: /statistics
+    method: GET
+- name: List Storage Zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: List Files
+  endpoint:
+    path: /files
+    method: GET
+- name: Get Collection List
+  endpoint:
+    path: /collections
+    method: GET
+- name: List WAF Rules
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: List Custom WAF Rules
+  endpoint:
+    path: /shield/waf/custom-rules/
+    method: GET
+- name: Get Shield Zone
+  endpoint:
+    path: /shield/zone/
+    method: GET
+- name: List WAF Rules
+  endpoint:
+    path: /shield/waf/rules/
+    method: GET
+- name: custom_waf_rule
+  endpoint:
+    path: /shield/waf/custom-rule/{id}
+    method: GET
+- name: country_list
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: files
+  endpoint:
+    path: /files
+    method: GET
+- name: collections
+  endpoint:
+    path: /collections
+    method: GET
+- name: videos
+  endpoint:
+    path: /videos
+    method: GET
+- name: edge_scripts
+  endpoint:
+    path: /edge-scripts
+    method: GET
+- name: secrets
+  endpoint:
+    path: /secrets
+    method: GET
+- name: releases
+  endpoint:
+    path: /releases
+    method: GET
+- name: shield_zones
+  endpoint:
+    path: /shield/zones
+    method: GET
+- name: waf_rules
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: rate_limits
+  endpoint:
+    path: /rate-limits
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /event-logs
+    method: GET
+- name: List Shield Zones
+  endpoint:
+    path: /shield/zones
+    method: GET
+- name: Get Shield Zone
+  endpoint:
+    path: /shield/zones/{id}
+    method: GET
+- name: Create Shield Zone
+  endpoint:
+    path: /shield/zones
+    method: POST
+- name: Update Shield Zone
+  endpoint:
+    path: /shield/zones/{id}
+    method: PATCH
+- name: Delete Shield Zone
+  endpoint:
+    path: /shield/zones/{id}
+    method: DELETE
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /apikeys
+    method: GET
+- name: region
+  endpoint:
+    path: /region
+    method: GET
+- name: video_library
+  endpoint:
+    path: /video/library
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns/zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pullzones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage/zones
+    method: GET
+- name: edge_storage
+  endpoint:
+    path: /edge/storage
+    method: GET
+- name: videos
+  endpoint:
+    path: /videos
+    method: GET
+- name: edge_scripts
+  endpoint:
+    path: /edge/scripts
+    method: GET
+- name: releases
+  endpoint:
+    path: /releases
+    method: GET
+- name: waf_rules
+  endpoint:
+    path: /shield/waf/rules
+    method: GET
+- name: rate_limits
+  endpoint:
+    path: /rate/limits
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /event/logs
+    method: GET
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: edge_rules
+  endpoint:
+    path: /edge-rules
+    method: GET
+- name: statistics
+  endpoint:
+    path: /statistics
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: videos
+  endpoint:
+    path: /videos
+    method: GET
+- name: waf_engine_configuration
+  endpoint:
+    path: /shield/waf/engine-config
+    method: GET
+- name: country_list
+  endpoint:
+    path: /countries
+    method: get
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: get
+- name: region_list
+  endpoint:
+    path: /region
+    method: get
+- name: video_libraries
+  endpoint:
+    path: /stream/video-libraries
+    method: get
+- name: dns_zones
+  endpoint:
+    path: /dns-zone
+    method: get
+- name: pull_zones
+  endpoint:
+    path: /pull-zone
+    method: get
+- name: storage_zones
+  endpoint:
+    path: /storage-zone
+    method: get
+- name: files
+  endpoint:
+    path: /files
+    method: get
+- name: videos
+  endpoint:
+    path: /videos
+    method: get
+- name: edge_scripts
+  endpoint:
+    path: /edge-scripts
+    method: get
+- name: secrets
+  endpoint:
+    path: /secrets
+    method: get
+- name: releases
+  endpoint:
+    path: /releases
+    method: get
+- name: shield_zones
+  endpoint:
+    path: /shield-zones
+    method: get
+- name: waf_rules
+  endpoint:
+    path: /waf/rules
+    method: get
+- name: event_logs
+  endpoint:
+    path: /event-logs
+    method: get
+- name: country_list
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: edge_rules
+  endpoint:
+    path: /edge-rules
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: files
+  endpoint:
+    path: /files
+    method: GET
+- name: collections
+  endpoint:
+    path: /collections
+    method: GET
+- name: videos
+  endpoint:
+    path: /videos
+    method: GET
+- name: edge_scripts
+  endpoint:
+    path: /edge-scripts
+    method: GET
+- name: secrets
+  endpoint:
+    path: /secrets
+    method: GET
+- name: releases
+  endpoint:
+    path: /releases
+    method: GET
+- name: waf_rules
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: rate_limits
+  endpoint:
+    path: /rate-limits
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /event-logs
+    method: GET
+- name: Get Rate Limit
+  endpoint:
+    path: /shield/rate-limit/{id}
+    method: GET
+- name: List API Keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: List Video Libraries
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: List DNS Zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: List Pull Zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: List Storage Zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: Get Statistics
+  endpoint:
+    path: /statistics
+    method: GET
+- name: List Files
+  endpoint:
+    path: /files
+    method: GET
+- name: List Edge Scripts
+  endpoint:
+    path: /edge-scripts
+    method: GET
+- name: Get Active Release
+  endpoint:
+    path: /releases/active
+    method: GET
+- name: List Shield Zones
+  endpoint:
+    path: /shield-zones
+    method: GET
+- name: List WAF Rules
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: List Rate Limits
+  endpoint:
+    path: /rate-limits
+    method: GET
+- name: List Event Logs
+  endpoint:
+    path: /event-logs
+    method: GET
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: languages
+  endpoint:
+    path: /languages
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: files
+  endpoint:
+    path: /files
+    method: GET
+- name: collections
+  endpoint:
+    path: /collections
+    method: GET
+- name: videos
+  endpoint:
+    path: /videos
+    method: GET
+- name: country_list
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: region_list
+  endpoint:
+    path: /region
+    method: GET
+- name: video_library_list
+  endpoint:
+    path: /video-library
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: files
+  endpoint:
+    path: /files
+    method: GET
+- name: collections
+  endpoint:
+    path: /collections
+    method: GET
+- name: videos
+  endpoint:
+    path: /videos
+    method: GET
+- name: edge_scripts
+  endpoint:
+    path: /edge-scripts
+    method: GET
+- name: secrets
+  endpoint:
+    path: /secrets
+    method: GET
+- name: releases
+  endpoint:
+    path: /releases
+    method: GET
+- name: shield_zones
+  endpoint:
+    path: /shield-zones
+    method: GET
+- name: waf_rules
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: rate_limits
+  endpoint:
+    path: /rate-limits
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /event-logs
+    method: GET
+- name: country_list
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: video_library
+  endpoint:
+    path: /video-library
+    method: GET
+- name: dns_zone
+  endpoint:
+    path: /dns-zone
+    method: GET
+- name: storage_zone
+  endpoint:
+    path: /storage-zone
+    method: GET
+- name: file_management
+  endpoint:
+    path: /manage-files
+    method: GET
+- name: video_management
+  endpoint:
+    path: /manage-videos
+    method: GET
+- name: edge_script
+  endpoint:
+    path: /edge-script
+    method: GET
+- name: secret_management
+  endpoint:
+    path: /secret
+    method: GET
+- name: release_management
+  endpoint:
+    path: /release
+    method: GET
+- name: shield_zone
+  endpoint:
+    path: /shield-zone
+    method: GET
+- name: waf_rules
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: ddos_enums
+  endpoint:
+    path: /ddos/enums
+    method: GET
+- name: rate_limits
+  endpoint:
+    path: /rate-limits
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /event-logs
+    method: GET
+- name: country
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+- name: api_keys
+  endpoint:
+    path: /api-keys
+    method: GET
+- name: region
+  endpoint:
+    path: /region
+    method: GET
+- name: video_libraries
+  endpoint:
+    path: /video-libraries
+    method: GET
+- name: dns_zones
+  endpoint:
+    path: /dns-zones
+    method: GET
+- name: pull_zones
+  endpoint:
+    path: /pull-zones
+    method: GET
+- name: storage_zones
+  endpoint:
+    path: /storage-zones
+    method: GET
+- name: files
+  endpoint:
+    path: /files
+    method: GET
+- name: collections
+  endpoint:
+    path: /collections
+    method: GET
+- name: videos
+  endpoint:
+    path: /videos
+    method: GET
+- name: waf_rules
+  endpoint:
+    path: /waf/rules
+    method: GET
+- name: rate_limits
+  endpoint:
+    path: /rate-limits
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /event-logs
+    method: GET
+- name: Rate Limit Metrics
+  endpoint:
+    path: /shield/metrics/rate-limit/{id}
+    method: GET
+notes:
+- Normal charges for CDN bandwidth are billed separately and are not included in the
+  CPU Time or Requests charges.
+- Environment variables and secrets must have unique names in the same script.
+- Effectively utilizing Magic Containers' monitoring tools involves tailoring the
+  display to meet your specific analysis needs.
+- Set SendGrid Api Key to SENDGRID_API_KEY environment secret to be able to use SendGrid
+  SDK.
+- No, adding a payment card is optional. You'll still get $20 in trial credits without
+  it. However, adding a card boosts your trial balance to $50 and unlocks additional
+  features and products.
+- IPv6 is automatically disabled when token authentication is in use.
+- To redirect requests to a different domain, you can use the Response.redirect method.
+- Extended logging can be enabled upon request.
+- Logs are uploaded at the end of each day for the previous day.
+- Stored log files are compressed using GZip and must be decompressed before opening.
+- Stored log files are split into multiple smaller chunks, each containing up to 10
+  million logs.
+- UDP protocol does not provide a layer of security.
+- There might be up to a 10-30 second delay between an actual request and the log
+  hitting your Syslog endpoint.
+- Token authentication will block all requests to your URLs unless a valid token is
+  passed with the request.
+- Variable expansion is supported by Edge Rules
+- RequestHeaders and Query collections are automatically populated
+- To integrate Magic Containers with GitHub, you must create a classic Personal Access
+  Token (PAT) in your GitHub account. Be sure to include `read:packages` and `read:org`
+  permissions.
+- Make sure your personal access token has read-only permissions!
+- We strongly recommend enabling at least the Readiness health check. This check helps
+  the platform detect when your application is ready to receive traffic, minimizing
+  the chances of failed requests and ensuring a smoother user experience.
+- Make sure your personal access token has read-only permissions set (or activated)!
+- Logs are a critical component of Magic Containers and are accessible through the
+  dedicated Logs tab on the Dashboard.
+- This single interface provides both platform-level (system) logs and application-level
+  (app) logs.
+- System logs reveal the internal events and decisions made by the Magic Containers
+  infrastructure, such as successful or failed container starts, networking issues,
+  or health check responses.
+- App logs consist of the standard output and error streams from the containers themselves,
+  showing any messages your software generates.
+- Because logs are live-streamed, you can only view them in real time.
+- The platform currently does not retain historical logs, so troubleshooting is most
+  effective when you keep the log view open while reproducing the problem in your
+  application.
+- To quickly pinpoint issues, you can narrow your scope by focusing on a specific
+  region, pod, or container within the pod.
+- You can also switch between system logs and app logs to determine whether a malfunction
+  originates in the platform’s orchestration layer or your application code.
+- Filtering logs by application or region is also helpful if you manage many deployments
+  across different environments.
+- Narrowing down the view to a single location can highlight specific regional issues,
+  like network latency or hardware constraints.
+- If the entire application experiences recurring difficulties, switching to a broader
+  application-level view will reveal whether the problem occurs in multiple pods and
+  regions simultaneously.
+- Metadata allows for more detailed logs.
+- Metadata like region or public endpoints can be used by the application to adjust
+  its behavior or configuration dynamically.
+- Public endpoints metadata allows services to register themselves or discover other
+  services dynamically.
+- Knowing the internal IP and host details can help in network planning and management.
+- Dynamic scaling based on user traffic
+- Customizable optimization strategies
+- Changes to endpoints do not trigger a Rolling Update. Endpoint changes are applied
+  immediately without interrupting the running containers.
+- If the Rolling Update encounters problems, such as deploying a broken image, it
+  handles the situation by detecting any new pod that fails to reach a running state
+  within ten minutes and considering it unhealthy.
+- Dynamic Instances provide on-demand scaling and charge you based on your actual
+  consumption of CPU, RAM, disk, and bandwidth.
+- Currently, no detailed cost breakdown is provided for Magic Containers.
+- Ingress is free if there are no endpoints. However, any outbound data (egress) will
+  still incur charges.
+- Once an application consumes 10 GB of ephemeral storage, the container/pod will
+  be evicted and automatically restarted. Any data stored in ephemeral storage is
+  lost during this process.
+- Magic Containers automatically attempts to restart a container if it detects a failure.
+  The system will attempt to restart the container up to 10 times before giving up.
+- Sub-user accounts are not supported.
+- Functions act as substitutes for an origin server, enabling handling of HTTP requests
+  directly at the edge.
+- Middleware functions allow for request and response modifications.
+- Custom access control can be implemented based on headers.
+- The limits are designed to accommodate typical use cases under normal operating
+  conditions and provide a fair execution environment for all users.
+- Edge Scripting environments have built-in flexibility to handle occasional spikes
+  that exceed these limits.
+- The provided templates are starting points for implementing your own application.
+- Token authentication is automatically generated and required for image generation.
+- Bunny Shield relies on cookies to support its abuse mitigation features, protect
+  against automated bots, and maintain legitimate user access.
+- All the cookies listed above are strictly necessary to deliver the services provided
+  by Bunny.net to our customers unless otherwise specified.
+- Bunny Shield ensures that these cookies never track user behaviour beyond verifying
+  legitimacy of the browser request.
+- They do not contain personally identifiable information and exist only as short-lived,
+  first-party cookies dedicated to ensuring secure, legitimate user access.
+- Quality set in query parameter has the highest priority, then the Smart Optimization
+  setting, then the general default.
+- Images will only be encoded in a WEBP format if you have WEBP enabled in your Bunny
+  Optimizer settings.
+- When transcoding from a format that supports transparencies to one that does not,
+  all transparent elements of an image will become opaque.
+- Token Authentication is used to secure videos.
+- Adaptive bitrate streaming optimizes video resolution and framerate based on the
+  viewer's network bandwidth.
+- This technology allows users with high bandwidth to enjoy high-quality streams,
+  whereas those with limited bandwidth can reduce the resolution and framerate to
+  suit their constraints.
+- As outlined in the PlayerJs Spec, there may be inconsistencies if multiple players
+  on the page have the same source src.
+- To get around this, simply append a UUID or a timestamp to the iframe's src to guarantee
+  that all players on the page have a unique src.
+- The token parameter is a HEX value of the SHA256 hash based on the key, video ID
+  and expiration time.
+- The expires parameter is the UNIX timestamp marking until when the URL is accessible.
+- Webhook URL must be configured to receive notifications on video status changes.
+- Enterprise DRM ensures that videos are encrypted during the transcoding process
+  and stored securely in the storage.
+- MediaCage strictly enforces content playback through its proprietary Embed View.
+- MediaCage does not support MP4 fallback and Early-Play features when activated on
+  a video library.
+- MediaCage Enterprise DRM is a premium feature and requires coordination with our
+  sales team for activation.
+- Contact Support Team to express your interest in enabling MediaCage Enterprise DRM
+  for your account.
+- You may be asked about the implementation and testing of the Key Server Module (KSM).
+- If a device does not meet the minimum required security level for a given type of
+  content, the content will be blocked.
+- L1 represents the highest level of security provided by Widevine.
+- L2 security level involves content decoding and rendering through a secure hardware
+  component or a protected co-processor.
+- L3 is a software-only security solution, providing the lowest tier of Widevine's
+  DRM security.
+- You are required to use your own license key for the player to ensure domain whitelisting
+  for production environments.
+- The license service endpoint employs referrer protection and embed token authentication
+  to secure requests.
+- Referrer protection and token authentication are required for the license service
+  endpoint.
+- Pricing is based on maximum video output resolution and number of output codecs.
+- Video length is counted in 10-second increments.
+- You can find our OpenAPI Documentation here.
+- Use the provided API token for authentication
+- Rate limiting is a technique used to control the flow of incoming traffic to a server
+  by restricting the number of requests a client can make within a predetermined period.
+- Brute force attacks involve an attacker attempting to gain unauthorized access to
+  user accounts by systematically trying numerous password combinations.
+- DDoS attacks aim to overwhelm your server with a flood of requests, rendering your
+  application unavailable to legitimate users.
+- APIs are often targeted for abuse due to their automated nature and potential access
+  to sensitive data.
+- Automated bots can generate significant non-human traffic, consuming server resources
+  and affecting application performance.
+- Creating a rate limit rule allows you to customize Bunny Shield’s protections to
+  manage traffic effectively.
+- Bot detection can be configured via API for efficient management.
+- Enable DNSSEC within your DNS zone under the Security tab.
+- To assure great performance, the storage API has limits in place for the number
+  of requests and connections.
+- The limits are applied on a server-by-server basis.
+- The storage endpoint hostname will depend on the primary region of the storage zone.
+- Up to 100 concurrent connections are allowed to upload to a single zone at the same
+  time.
+- If the limit is reached, further requests will be rejected with a status code 429.
+- Up to 200 connections will be allowed from a single IP.
+errors:
+- 400 - The request did not pass validation. This may include issues with the request
+  model, body, or parameters.
+- 401 - Authorization for the request has failed.
+- 403 - The action is forbidden for the user. This may include restrictions on the
+  URL or the HTTP method being used.
+- 404 - The requested entity could not be found.
+- 429 - Too many requests; the rate limit has been exceeded.
+- 500 - An internal server error occurred.
+- '403 Forbidden: Invalid token provided'
+- ECONNREFUSED - Connection refused by server
+- 331 Username ok, need password
+- Content will be blocked if the device does not meet the minimum required security
+  level.
+- '404 Not Found: If the file does not exist.'
+- '429: Further requests will be rejected if connection limits are reached.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.bunny.net
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+  headers:
+    Content-type: application/json
+    content-type: application/json
+    Accept-Encoding: gzip
+    Accept: application/json
+    X-AB: new
+    Authorization: Bearer {{ dlt.secrets['api_token'] }}
+    AccessKey: ''
+    Content-Type: application/json
+    accept: application/json
+    AuthorizationSignature: presigned_signature
+    AuthorizationExpire: '1234567890'
+    VideoId: video-guid
+    LibraryId: '1234567890'
+  paginator: {}
+  resources:
+  - name: loadFreeCertificate
+    endpoint:
+      path: /pullzone/loadFreeCertificate
+      method: GET
+  - name: reset_read_only_password
+    endpoint:
+      path: /storagezone/resetReadOnlyPassword
+      method: POST
+      data_selector: ''
+      params: {}
+source_metadata: null

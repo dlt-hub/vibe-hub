@@ -1,0 +1,144 @@
+resources:
+- name: feature_flag
+  endpoint:
+    path: /api/flags
+    method: GET
+    data_selector: flags
+- name: SDK Installation
+  endpoint:
+    path: /install
+    method: GET
+    data_selector: installation_guide
+- name: Feature Flag Evaluation
+  endpoint:
+    path: /evaluate
+    method: GET
+    data_selector: flag_evaluations
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: Release Integration
+  endpoint:
+    path: /setup
+    method: POST
+    data_selector: configuration
+notes:
+- Enables self-serve experimentation
+- Feature flags allow for risk mitigation during migrations
+- The Haskell SDK uses an SDK key. Keys are specific to each project and environment.
+- Access tokens should never be exposed in untrusted contexts.
+- The preferred way to authenticate with the API is by adding an Authorization header
+  containing your access token to your requests.
+- The .NET (server-side) SDK uses an SDK key. Keys are specific to each project and
+  environment.
+- The PHP SDK uses an SDK key.
+- The Flutter SDK version 4 uses either a mobile key or a client-side ID, depending
+  on the platform.
+- Never embed a server-side SDK key into a client-side application.
+- Feature flags allow for targeted feature releases and quick rollbacks.
+- Feature flags allow for gradual rollout of features to targeted users
+- Use environment variables to securely manage SDK keys
+- The Electron SDK uses a client-side ID
+- Client-side IDs are specific to each project and environment
+- This SDK requires LaunchDarkly's Cloudflare integration
+- The Cloudflare SDK uses the Cloudflare KV as a persistent feature store
+- The Services are not designed for minors under 18.
+- We do not currently recognize or respond to browser-initiated Do Not Track (DNT)
+  signals.
+- California, Colorado, Connecticut, Utah, and Virginia have enacted consumer privacy
+  laws that grant their residents certain rights and require additional disclosures.
+- The iOS SDK uses a mobile key for authorization.
+- LDClient must be a singleton for each LaunchDarkly project.
+- The SDK uses an SDK key specific to each project and environment.
+- Metrics measure audience behaviors affected by flags.
+- Each time you edit and save the metric, LaunchDarkly increments the metric version.
+- Access tokens should never be exposed in untrusted contexts
+- Modifying the Origin header causes an error
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- The Vue SDK uses a client-side ID. Client-side IDs are specific to each project
+  and environment.
+- You must make feature flags available to client-side SDKs before the SDK can evaluate
+  those flags.
+- OAuth also lets you limit the connection of your integrated app to individual members.
+- We recommend using roles to limit the amount of access to LaunchDarkly those tokens
+  have.
+- Mobile keys are not secret and you can expose them in your client-side code without
+  risk.
+- During this two-hour brownout test window, any request that does not include a valid
+  SNI will be rejected with an HTTP 421 (Misdirected Request) response code.
+- If you encounter a 421 response for what you believe is a valid request, check SNI
+  Configuration.
+- The C++ (server-side) SDK uses an SDK key
+- Data Export works by sending data to one of our supported destinations.
+- The Data Export feature facilitates live data export and does not backfill historical
+  data.
+- Every field in the setup form is required, and all but one have defaults you can
+  use.
+- The Erlang SDK uses an SDK key. Keys are specific to each project and environment.
+- The SDK requires Promise support in browsers.
+- Always include a timeout parameter when initializing the SDK.
+- Use feature flags on every new feature you develop.
+- Run experiments on as many feature flags or AI Configs as possible.
+- Consider experiments from day one.
+- Define what you’re measuring.
+- Plan your experiments in relation to each other.
+- Associate end users who interact with your app before and after logging in.
+errors:
+- '401 Unauthorized: You may not have permission to perform some API calls.'
+- 'LaunchDarklyFlagFetchError: network error'
+- We may also respond to and abide by opt-out preference signals sent through the
+  Global Privacy Control where required by State Law.
+- '401: Unauthorized'
+- '429: Too Many Requests'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '421 Misdirected Request: Ensure your tools, libraries, or proxies are correctly
+  configured to include SNI during TLS handshakes.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://your-instance.api-name.com
+  auth:
+    type: sdk_key
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+    Authorization: SDK key
+  resources:
+  - name: store
+    endpoint:
+      path: /store
+      method: POST
+  - name: event
+    endpoint:
+      path: /event
+      method: GET
+  paginator:
+    type: cursor
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    page_size_param: pageSize
+    default_page_size: 200
+source_metadata: null

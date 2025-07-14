@@ -1,0 +1,78 @@
+resources:
+- name: account
+  endpoint:
+    path: /account
+    method: GET
+    data_selector: response
+- name: signature_request
+  endpoint:
+    path: /signature_request
+    method: POST
+    data_selector: response
+- name: embedded_sign_url
+  endpoint:
+    path: /embedded/sign_url
+    method: GET
+    data_selector: response
+- name: account
+  endpoint:
+    path: /account
+    method: GET
+- name: signature_request
+  endpoint:
+    path: /signature_request/{signature_request_id}
+    method: GET
+- name: embedded_sign_url
+  endpoint:
+    path: /embedded/sign_url
+    method: GET
+- name: signature_request
+  endpoint:
+    path: /signature_request
+    method: POST
+    data_selector: events
+    params: {}
+- name: account
+  endpoint:
+    path: /account
+    method: POST
+    data_selector: events
+    params: {}
+- name: template
+  endpoint:
+    path: /template
+    method: POST
+    data_selector: events
+    params: {}
+notes:
+- Sending production (legally-binding) signature requests requires a paid API plan.
+- In test mode, you can do 10 requests per minute.
+- Uses test_mode for testing API calls
+- Rate limits are enforced on the number of API calls
+- Please ensure the test_mode parameter is set to true in the Body section of the
+  embedded console.
+- API Key is required for authentication.
+- Endpoints for both embedded and non-embedded signing flows.
+- Uses API Key for authentication, which can be generated from the API Settings page.
+- Events are sent as multipart/form-data POST requests.
+- HelloSign is officially rebranded as Dropbox Sign.
+errors:
+- '429 Too Many Requests: Too many requests. System limits for this type of request
+  are 2000 per hour.'
+- '500: Unknown error. Please contact support@hellosign.com.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.hellosign.com/v3
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    flow: refresh_token
+    token_url: https://api.hellosign.com/oauth/token
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+  headers:
+    Accept: application/json
+source_metadata: null

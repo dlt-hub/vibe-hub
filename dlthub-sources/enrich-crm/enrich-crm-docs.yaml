@@ -1,0 +1,54 @@
+resources:
+- name: users
+  endpoint: /users
+  methods:
+  - GET
+  - POST
+  description: Manage user accounts
+  parameters:
+  - user_id
+  - email
+  - name
+- name: companies
+  endpoint: /companies
+  methods:
+  - GET
+  description: Retrieve company information
+  parameters:
+  - company_id
+  - name
+- name: enrich
+  endpoint: /enrich
+  methods:
+  - POST
+  description: Enrich user data with additional information
+  parameters:
+  - email
+  - first_name
+  - last_name
+notes:
+- 'Rate limiting: 1000 requests per hour'
+- Pagination available on list endpoints
+- Webhook support for real-time updates
+errors:
+- '401: Unauthorized - Invalid API key'
+- '429: Too Many Requests - Rate limit exceeded'
+- '404: Not Found - Resource not found'
+auth_info:
+  mentioned_objects:
+  - api_key
+  - authentication_header
+  auth_flow: Authenticate by including the API key in the Authorization header.
+  env_var_for_auth: APOLLO_API_KEY
+client:
+  base_url: https://api.apollo.io/v1
+  auth:
+    type: api_key
+    location: header
+    key_name: Authorization
+    env_var: APOLLO_API_KEY
+source_metadata:
+  name: Enrich-crm
+  variable_name: service_name
+  base_url: https://api.apollo.io/v1
+  original_source_url: https://docs.apollo.io/

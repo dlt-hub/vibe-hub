@@ -1,0 +1,53 @@
+# Source Metadata
+source_name: Kissmetrics
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://app.kissmetrics.io
+  auth:
+    type: basic
+    username: "{{ dlt.secrets['username'] }}"
+    password: "{{ dlt.secrets['password'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: products
+    endpoint:
+      path: /api/v1/products
+      method: GET
+      data_selector: data
+  - name: reports
+    endpoint:
+      path: /api/v1/reports
+      method: GET
+      data_selector: data
+  - name: events
+    endpoint:
+      path: /api/v1/events
+      method: GET
+      data_selector: data
+  - name: properties
+    endpoint:
+      path: /api/v1/properties
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - BasicAuth
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Pagination is handled by DefaultPaginator
+  - Supports Full Sync but does not support Incremental loading
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check username and password

@@ -1,0 +1,199 @@
+resources:
+- name: messages
+  endpoint:
+    path: /1/messages.json
+    method: POST
+    data_selector: response
+    params:
+      token: API_token
+      user: User_token
+      message: Message_content
+- name: weather_forecast
+  endpoint:
+    path: /onecall
+    method: GET
+    data_selector: daily
+    params:
+      lat: '40.7467173'
+      lon: '-74.0189387'
+      cnt: '7'
+      units: metric
+- name: topic
+  endpoint:
+    path: /api/topics
+    method: GET
+    data_selector: topics
+    params: {}
+- name: boolean_variables
+  endpoint:
+    path: /boolean_variables
+    method: GET
+    data_selector: ''
+- name: string_variables
+  endpoint:
+    path: /string_variables
+    method: GET
+    data_selector: ''
+- name: numeric_variables
+  endpoint:
+    path: /numeric_variables
+    method: GET
+    data_selector: ''
+- name: conditions
+  endpoint:
+    path: /conditions
+    method: GET
+    data_selector: ''
+- name: variableconditions
+  endpoint:
+    path: /variableconditions
+    method: GET
+    data_selector: ''
+- name: tuyaconditions
+  endpoint:
+    path: /tuyaconditions
+    method: GET
+    data_selector: ''
+- name: timeconditions
+  endpoint:
+    path: /timeconditions
+    method: GET
+    data_selector: ''
+- name: logicblocks
+  endpoint:
+    path: /logicblocks
+    method: GET
+    data_selector: ''
+- name: tuya_conditions
+  endpoint:
+    path: /api/v1/tuyaconditions
+    method: GET
+- name: topic
+  endpoint:
+    path: /topics
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: topics
+  endpoint:
+    path: /api/v1/topics
+    method: GET
+    data_selector: data
+    params: {}
+- name: videos
+  endpoint:
+    path: /videos
+    method: GET
+    data_selector: titles
+- name: topic
+  endpoint:
+    path: /api/topics
+    method: GET
+    data_selector: topics
+    params: {}
+- name: UpdateVariableTrue
+  endpoint:
+    path: /update_variable_true
+    method: POST
+- name: UpdateVariableFalse
+  endpoint:
+    path: /update_variable_false
+    method: POST
+- name: ToggleVariable
+  endpoint:
+    path: /toggle_variable
+    method: POST
+- name: UpdateNumericVariable
+  endpoint:
+    path: /update_numeric_variable
+    method: POST
+- name: UpdateStringVariable
+  endpoint:
+    path: /update_string_variable
+    method: POST
+- name: InitiateLogicblockEvaluation
+  endpoint:
+    path: /initiate_logicblock_evaluation
+    method: POST
+- name: ReceiveEvent
+  endpoint:
+    path: /receive_event
+    method: POST
+- name: webhook_action
+  endpoint:
+    path: /webhook
+    method: POST
+    data_selector: response
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- In order to ensure stability and fair use of Apilio, there is a number of rate limits
+  in place.
+- Each action is measured and - if necessary - suspended individually. The reason
+  to limit the use of an action is to stop endless loops.
+- 'Rate Limit: 10 runs in 20 seconds. The suspend time is 10 seconds.'
+- 'Calling a webhook of any type: 60 requests in 60 seconds. The suspend time is 5
+  minutes.'
+- 'Any REST API operation: 60 requests in 60 seconds. The suspend time is 5 minutes.'
+- 'Updating a variable or triggering a Logicblock: 60 requests in 60 seconds. The
+  suspend time is 5 minutes.'
+- Available log entries according to your plan with a maximum of 6000.
+- You are allowed to create up to 150 elements of Devices and Tags.
+- For actions, the limit is 500 of each type.
+- You accept all risk of using the forum and content on the forum. As far as the law
+  allows, the company and its suppliers provide the forum as is, without any warranty
+  whatsoever.
+- Neither the company nor its suppliers will be liable to you for breach-of-contract
+  damages their personnel could not have reasonably foreseen when you agreed to these
+  terms.
+- As far as the law allows, the total liability to you for claims of any kind that
+  are related to the forum or content on the forum will be limited to $50.
+- Authorization Header must be replaced with your own personal Authorization Header
+  from Apilio
+- You can only read out Boolean variables at the moment.
+- Some objects like Contact may return nulls in deeply nested fields
+- Exporting Apilio data into a Google Sheet at regular intervals for historic data
+  storage
+- Automating kitchen lights on and off using a zibgee light level sensor and a zigbee
+  PIR sensor combination to detect motion with a 5 minute timeout to turn off lights
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://ifttt.com/apilio
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    page_size_param: pageSize
+    default_page_size: 200
+source_metadata: null

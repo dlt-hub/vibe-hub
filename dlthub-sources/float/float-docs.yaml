@@ -1,0 +1,131 @@
+resources:
+- name: people
+  endpoint:
+    path: /v3/people
+    method: POST
+    data_selector: people
+    params: {}
+- name: departments
+  endpoint:
+    path: /departments
+    method: GET
+    data_selector: departments
+    params: {}
+- name: people
+  endpoint:
+    path: /people
+    method: GET
+    params: {}
+- name: tasks
+  endpoint:
+    path: /tasks
+    method: GET
+    params: {}
+- name: tasks
+  endpoint:
+    path: /v3/tasks
+    method: GET
+    params:
+      start_date: ''
+      end_date: ''
+      people_id: ''
+      project_id: ''
+      phase_id: ''
+      sort: ''
+- name: timeoffs
+  endpoint:
+    path: /v3/timeoffs
+    method: GET
+    params:
+      start_date: ''
+      end_date: ''
+- name: logged-time
+  endpoint:
+    path: /v3/logged-time
+    method: GET
+    params:
+      start_date: ''
+      end_date: ''
+      fields: ''
+- name: tasks
+  endpoint:
+    path: /v3/tasks
+    method: POST
+    data_selector: null
+    params: {}
+- name: logged_time
+  endpoint:
+    path: /v3/logged-time
+    method: POST
+    data_selector: null
+    params: {}
+- name: timeoffs
+  endpoint:
+    path: /v3/timeoffs
+    method: POST
+    data_selector: null
+    params: {}
+- name: projects
+  endpoint:
+    path: /v3/projects
+    method: POST
+    data_selector: project
+    params: {}
+- name: project_tasks
+  endpoint:
+    path: /v3/project_tasks
+    method: POST
+    data_selector: task
+    params: {}
+- name: phases
+  endpoint:
+    path: /v3/phases
+    method: POST
+    data_selector: phase
+    params: {}
+- name: milestones
+  endpoint:
+    path: /v3/milestones
+    method: POST
+    data_selector: milestone
+    params: {}
+- name: accounts
+  endpoint:
+    path: /v3/accounts
+    method: GET
+    data_selector: accounts
+    params: {}
+notes:
+- The API token should be treated as sensitive as a password and must not be shared
+  or distributed to untrusted parties.
+- The token will remain valid as long as the account is in good standing or until
+  it is regenerated.
+- Scheduled allocations and logged time can be created over the API when full-day
+  time off tasks exist on the same date, the task will still be saved in the database
+  but it will not be visible on the UI.
+- Creating a part-time time off task will not delete already existing tasks.
+- All requests must be made over HTTPS.
+- You can filter results by using query parameters.
+errors:
+- '429 Error: too many requests by this user'
+- '500 Internal Server Error: Hold and try your request again later'
+- '400 Bad Request: Something is wrong with your request. Please check the error information'
+- '401 Not Authorized: You haven’t supplied a valid token in your Authorization header'
+- '422 Unprocessable Entity: The data supplied has failed validation'
+- '500 Internal Server Error: Please hold and try your request again later.'
+auth_info:
+  mentioned_objects: []
+client:
+  headers:
+    Authorization: Bearer FLOAT_ACCESS_TOKEN
+    User-Agent: Glenn's People Import Integration (glenn@example.com)
+    Accept: application/json
+    Content-Type: application/json
+  base_url: https://api.float.com
+  auth:
+    type: bearer_token
+  paginator:
+    type: page
+    page_size_param: per-page
+    default_page_size: 50
+source_metadata: null

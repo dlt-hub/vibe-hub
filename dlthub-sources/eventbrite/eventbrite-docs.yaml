@@ -1,0 +1,103 @@
+# Source Metadata
+source_name: eventbrite
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://www.eventbrite.com
+  auth:
+    type: apikey
+    private_token: "{{ dlt.secrets['private_token'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: organizations
+    endpoint:
+      path: /v3/organizations/
+      method: GET
+      data_selector: events
+  - name: events
+    endpoint:
+      path: /v3/events/
+      method: GET
+      data_selector: events
+  - name: attendees
+    endpoint:
+      path: /v3/attendees/
+      method: GET
+      data_selector: attendees
+  - name: categories
+    endpoint:
+      path: /v3/categories/
+      method: GET
+      data_selector: categories
+  - name: formats
+    endpoint:
+      path: /v3/formats/
+      method: GET
+      data_selector: formats
+  - name: orders
+    endpoint:
+      path: /v3/orders/
+      method: GET
+      data_selector: orders
+  - name: organizations_members
+    endpoint:
+      path: /v3/organizations/:organization_id/members/
+      method: GET
+      data_selector: members
+  - name: organizations_roles
+    endpoint:
+      path: /v3/organizations/:organization_id/roles/
+      method: GET
+      data_selector: roles
+  - name: default_questions
+    endpoint:
+      path: /v3/events/:event_id/default_questions/
+      method: GET
+      data_selector: questions
+  - name: custom_questions
+    endpoint:
+      path: /v3/events/:event_id/custom_questions/
+      method: GET
+      data_selector: questions
+  - name: ticket_buyer_settings
+    endpoint:
+      path: /v3/ticket_buyer_settings/
+      method: GET
+      data_selector: settings
+  - name: ticket_classes
+    endpoint:
+      path: /v3/ticket_classes/
+      method: GET
+      data_selector: classes
+  - name: available_ticket_classes
+    endpoint:
+      path: /v3/available_ticket_classes/
+      method: GET
+      data_selector: classes
+  - name: venues
+    endpoint:
+      path: /v3/venues/
+      method: GET
+      data_selector: venues
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - PrivateToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires a private token for API requests
+  - Some endpoints may have rate limits
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check private token validity
+  - 404 Not Found: Verify endpoint paths and parameters

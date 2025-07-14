@@ -1,0 +1,310 @@
+resources:
+- name: create_job
+  endpoint:
+    path: /services/api/x/bulk-api/v1/jobs
+    method: POST
+- name: create_import
+  endpoint:
+    path: /services/api/x/bulk-api/v1/imports/3f621962-f617-4f99-98ba-37d5cfb8e7a6
+    method: POST
+- name: Create Job Post
+  endpoint:
+    path: /createJobPost
+    method: POST
+- name: Refresh Job Post
+  endpoint:
+    path: /refreshJobPost
+    method: POST
+- name: Edit Job Post
+  endpoint:
+    path: /editJobPost
+    method: POST
+- name: Re-post Job
+  endpoint:
+    path: /repostJob
+    method: POST
+- name: Delete Single Job Post
+  endpoint:
+    path: /deleteSingleJobPost
+    method: POST
+- name: Delete All Job Post
+  endpoint:
+    path: /deleteAllJobPosts
+    method: POST
+- name: refund_request
+  endpoint:
+    path: /api/refunds
+    method: POST
+- name: webhook
+  endpoint:
+    path: <<webhook-url>>
+    method: POST
+- name: payment
+  endpoint:
+    path: /payment
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: refund
+  endpoint:
+    path: /refund
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: jobs
+  endpoint:
+    path: /services/api/x/bulk-api/v1/jobs
+    method: POST
+    data_selector: ''
+- name: country_codes
+  endpoint:
+    path: /api/country-codes
+    method: GET
+    data_selector: codes
+- name: trainingArchived
+  endpoint:
+    data_selector: data
+- name: bulk_api_load_report
+  endpoint:
+    path: /services/api/x/bulk-api/v1/import/{import_id}/report
+    method: GET
+- name: create_job
+  endpoint:
+    path: /services/api/x/bulk-api/v1/jobs
+    method: POST
+- name: create_import
+  endpoint:
+    path: /services/api/x/bulk-api/v1/imports/{import_id}
+    method: POST
+- name: get_job_status
+  endpoint:
+    path: /services/api/x/bulk-api/v1/jobs/{job_id}
+    method: GET
+- name: get_import_results
+  endpoint:
+    path: /services/api/x/bulk-api/v1/imports/{import_id}/report
+    method: GET
+- name: schema
+  endpoint:
+    path: /services/api/x/bulk-api/v1/schemas
+    method: POST
+    data_selector: schema
+    params: {}
+- name: job
+  endpoint:
+    path: /services/api/x/bulk-api/v1/jobs
+    method: POST
+    data_selector: job
+    params: {}
+- name: training_completed
+  endpoint:
+    path: /events/training_completed
+    method: GET
+    data_selector: records
+- name: employee_created
+  endpoint:
+    path: /events/employee_created
+    method: GET
+    data_selector: records
+- name: employee_updated
+  endpoint:
+    path: /events/employee_updated
+    method: GET
+    data_selector: records
+notes:
+- Managers may lock a goal at the end of the goal period or at the beginning of a
+  review period.
+- When goals are locked, they cannot be updated either from the UI or the API until
+  unlocked once again.
+- The API key is created by generating a GUID string without the dashes
+- The x-api-key header will be included in all outgoing requests and cannot be used
+  as a custom header for webhooks as it will already be included
+- The external service needs to support TLS 1.2 for its communication with Cornerstone.
+- Certain Cornerstone APIs support sending an XML request body in a POST or PUT operation
+  for nullable fields.
+- If the nullable XML element is present in the request body with an empty value,
+  the API responds differently based on the field type.
+- Only one job distribution vendor can be integrated in your Cornerstone portal using
+  the connector.
+- The vendor should decrypt this information using the secret key defined in the Client
+  Settings page in Edge.
+- Cornerstone uses Basic Auth for all the actions supported by the vILT Connector.
+- The Bulk API currently does not support loading data to secure custom fields and
+  sensitive personally identifiable (SPII) fields.
+- 'If you attempt to use the Bulk API to load employee/OU data while the corresponding
+  DLW loads are turned on, you will see the following error message in the Bulk API
+  load results: *HR data cannot be loaded while Data Load Wizard (DLW) is enabled.*'
+- Uses OAuth2 for authentication
+- Throttle limits apply to all authenticated APIs calls.
+- Throttle limits are for each environment.
+- Secret Key is used for SHA256 hashing of payload.
+- Success Code is required to indicate successful payment or refund.
+- This application integrated with Custom Gateway is referred as middleware from here
+  on.
+- If you need to bypass this Secret Key configuration (not recommended), refer to
+  product help documentation.
+- This API would need to send response as shown below to indicate a successful refund.
+- Webhook can be used for sending delayed confirmation/rejection of payment or refund.
+- This secret key is used for SHA256 hashing of the payload.
+- Hashing is important to ensure the integrity of the message exchanged.
+- The Bulk API has certain limits for the number of jobs and number of imports that
+  can be added to Cornerstone's processing queues for concurrent processing.
+- Cornerstone will respond with an HTTP 429 error for every request after these limits
+  have reached.
+- We recommend programming your integration to handle HTTP 429 errors by implementing
+  exponential back-off retry mechanism.
+- Cornerstone only supports OAuth 2.0's Client Credential grant type.
+- Access tokens are valid for 3600 seconds by default.
+- Allows multiple imports in a single job (up to a limit of 20)
+- Supports dependency resolution for inter load dependencies
+- The URL must be an HTTPS endpoint. Including an HTTP endpoint in the callback field
+  within the create job request body will result in a validation error.
+- Cornerstone does not support any authentication on the callback URL. However, we
+  recommend that you embed a single-use token within the URL for each job request.
+- If the callback request from Cornerstone fails, Cornerstone does not retry the request.
+- If a request is made after the throttle limit is reached, Cornerstone will respond
+  with HTTP 429 error.
+- Customers are encouraged to maintain a timer on their end, to pause their calls
+  as soon as they hit their minute limit.
+- The user account associated with your OAuth 2.0 application needs security permissions
+  to perform loads via the Bulk API.
+- Access Edge Bulk API History permission is required to view the load attempts in
+  the Edge Import UI.
+- The callback is only valid for 100 days after the assessment is initiated.
+- Field projections are currently supported for employee and training webhooks.
+- To access the Bulk API History page, you need the Access Edge Bulk API History security
+  permission.
+- Cornerstone enforces limits at both the jobs and import levels.
+- Each OAuth 2.0 application must be associated with a user account that functions
+  as a 'service account'.
+- Ensure to select the Bulk API scopes while registering your application.
+- The Bulk API supports loading data to time zone fields such as the time zone in
+  a user record or the time zone for a location OU.
+- If you choose to use the time zone code, note that certain codes are ambiguous.
+- Refer to the template guide for a list of valid time zone IDs.
+- The Bulk API will only load records up to the maximum limit. The Bulk API will ignore
+  any additional records in your payload beyond the maximum limit.
+- If your payload to the imports endpoint is larger than 20 MB consider gzip compression.
+  Just remember to include content-encoding = gzip in the header.
+- Cornerstone retains import results and the actual import payloads for 30 days from
+  the day the import was created.
+- You can download results only five times for a given import. Any attempts to call
+  the /services/api/x/bulk-api/v1/imports/{import_id}/report endpoint more than that
+  limit will result in HTTP 410 errors.
+- The job status and the import results returned by the Bulk API do not contain information
+  about any post-processing steps.
+- Task Name and/OR Task ID is required.
+- If Task Name is not unique in your portal, all reviews with that task name will
+  be included in the response.
+- Ensure your data is in CSV or JSON format. The Bulk API does not support any other
+  format.
+- Check for and remove duplicate records in your data. Bulk API recognizes duplicates
+  based on the primary identifier in your payload.
+- For employee load, the primary identifier is the User ID or the GUID.
+- For OU load, the primary identifier is the OU ID.
+- Ensure that at a minimum you are including the required fields for your load type.
+- Check the field size limitations for each field in the schema response and ensure
+  that data in all fields in your payload are within those limits.
+- If your data contains special characters such as accents or umlaut UTF encode your
+  payload.
+- Use User IDs and OU IDs while associating records with users and OUs respectively.
+- For enumerated fields use valid values as defined in the schema.
+- You can specify the format of dates in your payload using the datetime_culture field.
+- You can specify the format of numeric fields in your payload using the number_culture
+  field.
+- If your data contains time zone fields, review the guidance around using time zone
+  IDs instead of time zone codes.
+- Some Cornerstone API's support localization of the values in the request and response
+  fields.
+- Event payloads include various employee and training related details.
+- Ensure to handle different event cases such as TrainingCompleted, EmployeeCreated,
+  and EmployeeUpdated.
+- We enforce gzip content compression on the data being received by the endpoints.
+- Once started, webhooks will send out a heartbeat event every 5 minutes.
+- If the configured endpoint for a webhook returns an HTTP response code from the
+  list, we will retry with backoff.
+- The maximum number of records in a batch depends on the customer's selected tier.
+- Webhooks produce a heartbeat event every 5 minutes in order to inform consumers
+  that the webhook is running.
+errors:
+- 'PermissionDenied: Provided user does not have application permissions and/or constraints
+  to perform this operation.'
+- 'MissingArgument: The following Arguments are missing: GoalItem'
+- 'CustomException: Goal Title Missing.'
+- 'CustomException: User Id Missing.'
+- 'CustomException: Invalid User.'
+- HR data cannot be loaded while Data Load Wizard (DLW) is enabled.
+- '429: CSOD Too many requests.'
+- '200: Transaction is not eligible for refund'
+- '401 Unauthorized: Recheck API key or authorization'
+- 'Invalid Secret Key: Check if the correct secret key is being used.'
+- 'Invalid Payment Response: Verify the payment response fields sent by middleware.'
+- 'HTTP 429: Too Many Requests'
+- '400 Bad Request: Usually indicates that your request is malformed. Refer to the
+  API specifications and ensure your request is formatted correctly. For POST, PUT,
+  and PATCH operations, use the examples provided as a starting point to construct
+  your request.'
+- '401 Unauthorized: Indicates that either your access token is invalid, has expired,
+  or does not have the ''scope'' to perform this operation. This error can also indicate
+  that the user associated with your OAuth 2.0 application does not have the required
+  permissions or constraints.'
+- '404 Not Found: Indicates that the API endpoint or resource isn''t correct.'
+- '429 CSOD Too many requests: Indicates that you have exceeded the throttling limits
+  for the API.'
+- '500 Internal Server Error: Errors in the 5xx range indicate that something went
+  wrong on Cornerstone''s end. These should be rare. We recommend that you add retry
+  logic in your code to handle what likely is an ephemeral issue. If you see these
+  frequently, please log a case with Global Product Support so that we can investigate.'
+- '503 Service Unavailable: Errors in the 5xx range indicate that something went wrong
+  on Cornerstone''s end. These should be rare. We recommend that you add retry logic
+  in your code to handle what likely is an ephemeral issue. If you see these frequently,
+  please log a case with Global Product Support so that we can investigate.'
+- '504 Gateway Timeout: Errors in the 5xx range indicate that something went wrong
+  on Cornerstone''s end. These should be rare. We recommend that you add retry logic
+  in your code to handle what likely is an ephemeral issue. If you see these frequently,
+  please log a case with Global Product Support so that we can investigate.'
+- '400 Bad Request: Invalid credentials.'
+- '401 Unauthorized: Token is invalid or insufficient scope.'
+- 'HTTP 429: CSOD Too many requests.'
+- 'HTTP 410: Attempted to call report endpoint more than five times for a given import.'
+- '400 Bad Request: Verify that your clientId and clientSecret are correct.'
+- '401 Unauthorized: Token expired or invalid.'
+- Invalid format. Time zone code provided is ambiguous. Please use time zone ID instead.
+- 'HTTP 410: Attempted to call the report endpoint more than five times.'
+- RequestTimeout
+- InternalServerError
+- ServiceUnavailable
+- GatewayTimeout
+- BadGateway
+auth_info:
+  mentioned_objects:
+  - OAuth 2.0
+  - service account
+client:
+  auth:
+    type: oauth2
+    scope:
+    - goal:create
+    - goal:updatefull
+    location: header
+    header_name: Authorization
+    flow: client_credentials
+    token_url: https://{corpname}.csod.com/services/api/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+  headers:
+    x-api-key: ''
+    x-csod-edge-api-key: '{API Key for your connector}'
+    Accept: application/json
+    prefer: odata.maxpagesize=N
+    Refund API Header Parameters: ''
+    Content-Type: application/json
+    Authorization: Bearer {token}
+  base_url: Base Service URL
+  paginator:
+    type: none
+    cursor_param: '@odata.nextlink'
+    page_size_param: odata.maxpagesize
+  params:
+    Refund API Request Parameters: ''
+source_metadata: null

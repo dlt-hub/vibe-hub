@@ -1,0 +1,138 @@
+resources:
+- name: access_token
+  endpoint:
+    path: /oauth/accesstoken
+    method: POST
+    data_selector: access_token
+    params: {}
+- name: refresh_token
+  endpoint:
+    path: /oauth/refreshtoken
+    method: POST
+    data_selector: access_token
+    params: {}
+- name: members
+  endpoint:
+    path: /members/
+    method: GET
+    data_selector: members
+- name: voicemails
+  endpoint:
+    path: /rest/1/voicemails
+    method: GET
+    data_selector: voicemails.voicemails
+- name: delete_phone_number
+  endpoint:
+    path: /rest/1/phonenumber/{phone_number}
+    method: DELETE
+- name: tags
+  endpoint:
+    path: /rest/1/tags/{tag_id}
+    method: PUT
+    data_selector: tag
+- name: contacts
+  endpoint:
+    path: /rest/1/contacts
+    method: GET
+    params: {}
+- name: create_contact
+  endpoint:
+    path: /rest/1/contacts
+    method: POST
+    params: {}
+- name: delete_contacts
+  endpoint:
+    path: /rest/1/contacts
+    method: DELETE
+    params: {}
+- name: get_contact
+  endpoint:
+    path: /rest/1/contacts/{contact_id}
+    method: GET
+    params: {}
+- name: update_contact
+  endpoint:
+    path: /rest/1/contacts/{contact_id}
+    method: PUT
+    params: {}
+- name: delete_contact
+  endpoint:
+    path: /rest/1/contacts/{contact_id}
+    method: DELETE
+    params: {}
+- name: voicemails
+  endpoint:
+    path: /rest/1/voicemails
+    method: GET
+    params: {}
+- name: delete_phone_number
+  endpoint:
+    path: /rest/1/phonenumber/{phone_number}
+    method: DELETE
+    params: {}
+- name: voicemails
+  endpoint:
+    path: /rest/1/voicemails
+    method: GET
+    data_selector: voicemails.voicemails
+- name: delete_phone_number
+  endpoint:
+    path: /rest/1/phonenumber/{phone_number}
+    method: DELETE
+- name: update_tag
+  endpoint:
+    path: /rest/1/tags/{tag_id}
+    method: PUT
+notes:
+- The client_secret is required but not verified in the version of the OAuth2 client
+  currently being used.
+- The refresh token does expire but has a longer duration than the access_token.
+- Client is required to use the Site and Services in full compliance with all applicable
+  laws and regulations.
+- This policy is effective Feb 10, 2025
+- Authorization Header required for protected resources
+- A successful response for DELETE is '204 No Content'.
+- Default page size for GET requests is 25.
+- Default sort order is 'DESC'.
+errors:
+- The request is missing a required parameter, includes an invalid parameter value,
+  includes a parameter more than once, or is otherwise malformed. Check the "client_id"
+  parameter.
+- 'access_denied: The resource owner or authorization server denied the request.'
+- 'invalid client_id: invalid client_id: 878x518e02c5e4bbf38784a0644db99feabe55a89'
+- 'invalid_grant: The provided authorization grant is invalid, expired, revoked, does
+  not match the redirection URI used in the authorization request, or was issued to
+  another client. Check the "code" parameter.'
+- '401 Unauthorized: Login Failure: Authorization Header required'
+- 400 Bad Request
+- 401 Unauthorized
+- 403 Forbidden
+- 404 Not Found
+- 405 Method Not Allowed
+- 500 Internal Server Error
+- 501 Not Implemented
+- 503 Service Unavailable
+- '204 No Content: Successful deletion'
+- '401 Unauthorized: Invalid authorization token'
+- '204 No Content: Successful delete operation.'
+- '401 Unauthorized: Invalid or expired token.'
+- '204 No Content: Successful response for DELETE operations.'
+auth_info:
+  mentioned_objects:
+  - access_token
+  - refresh_token
+client:
+  base_url: https://www.phoneburner.com
+  auth:
+    type: apikey
+    flow: authorization_code
+    token_url: https://www.phoneburner.com/oauth/accesstoken
+    client_id: '{{ dlt.secrets[''client_id''] }}'
+    client_secret: '{{ dlt.secrets[''client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  paginator:
+    default_page_size: 25
+    page_size_param: page_size
+source_metadata: null

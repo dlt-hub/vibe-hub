@@ -1,0 +1,55 @@
+resources:
+- name: messages
+  endpoint:
+    path: /api/messages/
+    method: POST
+    data_selector: messages
+    params: {}
+- name: pushedMessages
+  endpoint:
+    path: /api/pushedMessages/
+    method: POST
+    data_selector: pushedMessages
+    params: {}
+- name: clients
+  endpoint:
+    path: /api/clients/:id
+    method: GET
+    data_selector: clients
+    params: {}
+- name: end_user_data
+  endpoint:
+    path: /api/end_user_data
+    method: GET
+    data_selector: data
+    params: {}
+notes:
+- The Site and Services are intended solely for persons who are 13 or older.
+- Requests are limited to 60 per minute per account. Status code '429 Too Many Requests'
+  is returned when the throttle limit has been reached.
+- Chatra may sell, transfer or otherwise share some or all of its assets, including
+  your Personal Information, in connection with a merger, acquisition, reorganization
+  or sale of assets or in the event of bankruptcy.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- code: 400
+  message: Invalid data format
+- code: 429
+  message: Too Many Requests
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://app.chatra.io
+  auth:
+    type: apikey
+    flow: refresh_token
+    token_url: https://login.chatra.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''chatra_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''chatra_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''chatra_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+source_metadata: null

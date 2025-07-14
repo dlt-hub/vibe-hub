@@ -1,0 +1,45 @@
+resources:
+- name: payments
+  endpoint:
+    path: /payments
+    method: POST
+- name: transactions
+  endpoint:
+    path: /transactions
+    method: GET
+- name: disputes
+  endpoint:
+    path: /disputes
+    method: GET
+- name: customers
+  endpoint:
+    path: /customers
+    method: POST
+- name: identity-verifications
+  endpoint:
+    path: /identity-verifications
+    method: POST
+notes:
+- Uses OAuth2 for authentication
+- Ensure to handle token expiration
+errors:
+- '401 Unauthorized: Recheck OAuth token or credentials'
+- '400 Bad Request: Validate request parameters'
+- '404 Not Found: Resource not found'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.checkout.com
+  auth:
+    type: oauth2
+    token_url: https://access.checkout.com/connect/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

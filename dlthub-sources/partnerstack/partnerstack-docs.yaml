@@ -1,0 +1,140 @@
+resources:
+- name: leads
+  endpoint:
+    path: /v1/leads
+    method: GET
+    data_selector: data
+- name: deals
+  endpoint:
+    path: /v1/deals
+    method: GET
+    data_selector: data
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: leads
+  endpoint:
+    path: /leads
+    method: GET
+    data_selector: data
+    params: {}
+- name: deals
+  endpoint:
+    path: /deals
+    method: GET
+    data_selector: data
+    params: {}
+- name: leads
+  endpoint:
+    path: /api/v1/leads
+    method: GET
+    data_selector: data
+    params: {}
+- name: deals
+  endpoint:
+    path: /api/v1/deals
+    method: GET
+    data_selector: data
+    params: {}
+- name: leads
+  endpoint:
+    path: /v1/leads
+    method: GET
+    data_selector: data
+- name: deals
+  endpoint:
+    path: /v1/deals
+    method: GET
+    data_selector: data
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: leads
+  endpoint:
+    path: /api/leads
+    method: GET
+    data_selector: data
+    params: {}
+- name: deals
+  endpoint:
+    path: /api/deals
+    method: GET
+    data_selector: data
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in PartnerStack
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Uses OAuth2 with refresh token â€” requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Uses OAuth2 with refresh token — requires setup of connected app in partnerstack
+- Some objects may return nulls in deeply nested fields
+- Requires OAuth2 setup in PartnerStack
+- Requires setup of connected app in PartnerStack
+- Some responses may include rate limits
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'INVALID_CREDENTIALS: Check your client ID and secret'
+- 'ACCESS_DENIED: Ensure you have the correct permissions'
+- '400 Bad Request: Check request parameters'
+- '401 Unauthorized: Verify credentials'
+- '429 Too Many Requests: Throttle API calls'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.partnerstack.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.partnerstack.com/oauth/token
+    client_id: '{{ dlt.secrets[''partnerstack_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''partnerstack_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''partnerstack_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    page_size_param: pageSize
+    default_page_size: 200
+source_metadata: null

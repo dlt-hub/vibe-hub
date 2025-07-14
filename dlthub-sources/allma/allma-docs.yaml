@@ -1,0 +1,293 @@
+resources:
+- name: courses
+  endpoint:
+    path: /api/courses
+    method: GET
+- name: reading_lists
+  endpoint:
+    path: /api/reading_lists
+    method: GET
+- name: workflows
+  endpoint:
+    path: /workflows
+    method: GET
+- name: credentials
+  endpoint:
+    path: /credentials
+    method: GET
+- name: executions
+  endpoint:
+    path: /executions
+    method: GET
+- name: templates
+  endpoint:
+    path: /templates
+    method: GET
+- name: variables
+  endpoint:
+    path: /variables
+    method: GET
+- name: users
+  endpoint:
+    path: /almaws/v1/users
+    method: GET
+    data_selector: records
+    params: {}
+- name: Core Nodes
+  endpoint:
+    path: /core-nodes
+    method: GET
+    data_selector: nodes
+- name: Cluster Nodes
+  endpoint:
+    path: /cluster-nodes
+    method: GET
+    data_selector: nodes
+- name: Ex Libris Nodes
+  endpoint:
+    path: /ex-libris-nodes
+    method: GET
+    data_selector: nodes
+- name: External Integration Nodes
+  endpoint:
+    path: /external-integration-nodes
+    method: GET
+    data_selector: nodes
+- name: Trigger Nodes
+  endpoint:
+    path: /trigger-nodes
+    method: GET
+    data_selector: nodes
+- name: challenge_message
+  endpoint:
+    path: '{listener_url}?challenge={random_text}'
+    method: GET
+- name: webhook_messages
+  endpoint:
+    path: '{listener_url}'
+    method: POST
+- name: interchange
+  endpoint:
+    path: /api/edi/interchange
+    method: GET
+    data_selector: interchange_segments
+    params: {}
+- name: Alma
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: Primo
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: Leganto
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: Rosetta
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: Summon
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: Esploro
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: GetRecord
+  endpoint:
+    path: /view/oai/<institution code>/request
+    method: GET
+    data_selector: ''
+    params: {}
+- name: Identify
+  endpoint:
+    path: /view/oai/<institution code>/request
+    method: GET
+    data_selector: ''
+    params: {}
+- name: ListIdentifiers
+  endpoint:
+    path: /view/oai/<institution code>/request
+    method: GET
+    data_selector: ''
+    params: {}
+- name: ListMetadataFormats
+  endpoint:
+    path: /view/oai/<institution code>/request
+    method: GET
+    data_selector: ''
+    params: {}
+- name: ListRecords
+  endpoint:
+    path: /view/oai/<institution code>/request
+    method: GET
+    data_selector: ''
+    params: {}
+- name: ListSets
+  endpoint:
+    path: /view/oai/<institution code>/request
+    method: GET
+    data_selector: ''
+    params: {}
+- name: 3M RFID Staff Workstation
+  endpoint:
+    path: /TagService
+    method: GET
+- name: Bibliotheca
+  endpoint:
+    path: /BibliothecaRFIDPadService.svc
+    method: GET
+- name: Nedap
+  endpoint:
+    path: /NedapRfidWebService.asmx
+    method: GET
+- name: MK Solutions
+  endpoint:
+    path: /mkStaffStation_Alma
+    method: GET
+- name: explain
+  endpoint:
+    path: /view/sru/<institution_code>
+    method: GET
+    params:
+      version: '1.2'
+      operation: explain
+- name: searchRetrieve
+  endpoint:
+    path: /view/sru/<institution_code>
+    method: GET
+    params:
+      version: '1.2'
+      operation: searchRetrieve
+- name: service_document
+  endpoint:
+    path: /sd
+    method: GET
+- name: deposit_details
+  endpoint:
+    path: /edit/<deposit-id>
+    method: GET
+- name: replace_metadata
+  endpoint:
+    path: /edit/<deposit-id>
+    method: PUT
+- name: create_resource
+  endpoint:
+    path: /collection/<deposit_profile_id>
+    method: POST
+- name: add_content
+  endpoint:
+    path: /edit-media/<deposit_id>
+    method: POST
+- name: delete_content
+  endpoint:
+    path: /edit-media/<deposit_id>/<filename>
+    method: DELETE
+- name: withdraw_deposit
+  endpoint:
+    path: /edit/<deposit-id>
+    method: DELETE
+- name: submit_in_progress_deposit
+  endpoint:
+    path: /edit/<deposit-id>
+    method: PUT
+- name: z39.50 server
+  endpoint:
+    path: /z39.50
+    method: GET
+notes:
+- Only GET requests are permitted in the guest sandbox.
+- Your application should connect to the API gateways only via HTTPS using TLS 1.2
+  or TLS 1.3.
+- Users must log out of Rosetta in order to end a Rosetta session (single sign-out
+  is not supported).
+- Only one SAML profile can be defined as the default authentication preference.
+- Uses OAuth2 with refresh token â€” requires setup of connected app in Voyager
+- Credentials must be provided by institutions to access services.
+- Ex Libris APIs and API Materials are made available for use and access by Members
+  that are customers of the relevant Ex Libris programs and services for their internal
+  purposes.
+- Requests are sent with a defined timeout of 5 seconds.
+- SSL connections must be secured with a certificate issued by a recognized certificate
+  authority.
+- Alma sends the webhooks asynchronous to the updates in Alma’s DB.
+- EDI communication should work with any vendor that uses the EDI message types used
+  by Alma, but it has not been tested.
+- The file name of EDI files in the input directory is limited to 100 characters,
+  including the full path from the FTP root directory, including the directory.
+- When using the ListRecords verb to query a set, the deleted records which are not
+  in the set anymore, will not be presented as part of the results.
+- When using the GetRecord verb with an explicit identifier, if the record was published
+  by several profiles, you will get the latest version of the record.
+- Nginx isn’t needed for Nedap & Seret – link directly to the RFID driver.
+- Nginx can be configured to listen on any port.
+- Using an SSL/TLS encryption wrapper is mandatory, as all communications between
+  Alma and third-party integrations must be secured with SSL.
+- The SIP2 integration is intended for use with self-check machines, laptop lockers,
+  scanning wands, sorting machines, payment kiosks, etc. Using the SIP2 protocol for
+  other workflows such as bulk actions using automatically run scripts is not supported.
+- An institution must turn on the SRU target functionality.
+- The query can be limited to only return non-suppressed records by adding 'alma.mms_tagSuppressed=false'
+  to the search query.
+- The integration is intended for inter-library loan, copy catalog, or selection.
+- The Z39.50 integration is intended for integrating Alma search with other automated
+  systems for the purposes of inter-library loan, copy catalog, or selection.
+- Using the Z39.50 integration for other workflows, such as performing bulk export
+  of records, is not supported.
+errors:
+- Untrusted Server Certificate Chain
+- '500: GENERAL_ERROR: A Gateway error has occurred – Make sure you add an appropriate
+  apikey as a parameter or a header.'
+- '400: GENERAL_ERROR: A Gateway error: XML was received but content-type header was
+  not set to: application/xml'
+- '400: UNAUTHORIZED: API-key not defined or not configured to allow this API.'
+- '403: UNAUTHORIZED: If your account has not been authorized, your requests are directed
+  to the demo server and only GET requests are allowed.'
+- '403: UNAUTHORIZED: HTTP requests for this API Plan (${planName}) must be GET only.'
+- '403: INVALID_REQUEST: Rejected by gateway due to invalid API-key.'
+- '429: PER_SECOND_THRESHOLD: HTTP requests are more than allowed per second'
+- '429: DAILY_THRESHOLD: HTTP requests are more than allowed per day'
+- '403: REQUEST_TOO_LARGE: Rejected by gateway due to message size limit. The current
+  size limit is 512kb.'
+- '403: FORBIDDEN: HTTP requests from IP address ${remoteIP} are not allowed.'
+- '400: GENERAL_ERROR: A Gateway error has occurred: XML is not well-formed'
+- '503: ROUTING_ERROR: No response from Alma: ${server} (down for maintenance)'
+- '429: DAILY_THRESHOLD: Daily API Request Threshold has been reached.'
+- '429: PER_SECOND_THRESHOLD: HTTP requests are more than allowed per second.'
+- 200 in case of success
+- 4XX in case of logical failure
+auth_info:
+  mentioned_objects:
+  - Workflow Automation User
+  - Workflow Automation Admin
+client:
+  base_url: https://your-instance.api-name.com
+  auth:
+    type: basic
+    location: header
+    header_name: Authorization
+    flow: refresh_token
+    token_url: https://login.voyager.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''voyager_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''voyager_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''voyager_refresh_token''] }}'
+  headers:
+    Accept: application/json
+    Content-Type: text/plain charset=UTF-8
+    On-behalf-of: valid Alma user
+source_metadata: null

@@ -1,0 +1,162 @@
+resources:
+- name: map_rights
+  endpoint:
+    path: /maps//rights
+    method: GET
+- name: user_profile
+  endpoint:
+    path: /users/me
+    method: GET
+    params: {}
+- name: Users
+  endpoint:
+    path: /users
+    method: GET
+- name: Maps
+  endpoint:
+    path: /maps
+    method: GET
+- name: Files
+  endpoint:
+    path: /files
+    method: GET
+- name: user_preferences
+  endpoint:
+    path: /user_preferences/{name}
+    method: GET
+- name: map_metadata
+  endpoint:
+    path: /maps/{id}
+    method: GET
+- name: map
+  endpoint:
+    path: /maps/{id}.pptx
+    method: GET
+- name: presentation
+  endpoint:
+    path: /maps/{id}/presentation.zip
+    method: GET
+    data_selector: presentation
+- name: imageget
+  endpoint:
+    path: /map_images/{id}
+    method: GET
+- name: attachment
+  endpoint:
+    path: /files/{id}/attachmentGet
+    method: GET
+- name: image
+  endpoint:
+    path: /files/{id}/imageGet
+    method: GET
+- name: user_preferences
+  endpoint:
+    path: /user_preferences
+    method: POST
+- name: access_right
+  endpoint:
+    path: /maps/{map_id}/rights/{id}
+    method: GET
+    data_selector: '{}'
+- name: maps
+  endpoint:
+    path: /maps/
+    method: GET
+- name: map
+  endpoint:
+    path: /maps/{id}.rtf
+    method: GET
+    data_selector: null
+    params: {}
+- name: user_preferences
+  endpoint:
+    path: /user_preferences
+    method: GET
+- name: me
+  endpoint:
+    path: /users/me
+    method: GET
+- name: theme_background
+  endpoint:
+    path: /files/{id}/theme_background
+    method: GET
+- name: user_preferences
+  endpoint:
+    path: /user_preferences/{name}
+    method: PUT
+- name: me
+  endpoint:
+    path: /users/me
+    method: GET
+- name: map_docx
+  endpoint:
+    path: /maps/{id}.docx
+    method: GET
+    data_selector: map
+    params: {}
+notes:
+- The authorization status can be checked with ML.authorized()
+- The old permissions level read is replaced by the scope mindmeister.readonly.
+- The permissions write and delete are replaced by the scope mindmeister.
+- The OAuth 2.0 access token replaces the old API key and the old auth token.
+- Each API endpoint requires different scopes.
+- Scopes mindmeister.readonly mindmeister
+- Pro subscription required
+- The resource owner must have a valid subscription of the Pro plan to get the map
+  as a pptx file.
+- '🚧Presentation not found: If the requested map doesn''t contain a presentation then
+  the response is 404 Not Found.'
+- Personal subscription required
+- The resource owner must have a valid subscription of the Personal plan to get the
+  map as an image.
+- The resource owner must have a valid subscription of the Personal plan to get the
+  map as a pdf file.
+- Scopes mindmeister.readonly
+- Scopes mindmeister
+- This end-point is deprecated and should be replaced by /map_images/{id}.
+- Personal subscription required.
+- The token info endpoint works only with access tokens which are neither expired
+  nor revoked.
+- Scopes userinfo.profile, access to profile information except for the email address.
+- userinfo.email, access to the email address.
+- The OAuth 2.0 endpoints are explained in detail.
+- If you just need onetime API access using your own account, you might want to skip
+  the OAuth 2.0 flows and create a personal access token directly.
+- Pro subscription required. The resource owner must have a valid subscription of
+  the Pro plan to get the map as a docx file.
+errors:
+- 'internalServerError: An internal server error occured. Please submit a request
+  to get this fixed soon.'
+- 'notFound: The requested resource is not found.'
+- 'notAcceptable: The requested resource is not available due to the Accept header
+  format.'
+- 'unprocessableEntity: The request resource couldn''t be processed due to semantic
+  errors.'
+- 'forbidden: The request was refused due to insufficient permissions.'
+- 'invalidCredentials: The request was refused because authentication failed.'
+- 'unauthorizedScopes: The provided scopes are insufficient.'
+- 'productUnknown: The product parameter is missing or unknown.'
+- 'userInvalid: The user resource is invalid due to semantic errors.'
+- 'accessTokenInvalid: The access token is invalid due to semantic errors.'
+- 'resourceInvalid: The requested resource is invalid due to semantic errors.'
+- '404 Not Found: Presentation not found'
+auth_info:
+  mentioned_objects:
+  - mindmeister.readonly
+  - userinfo.profile
+  - userinfo.email
+client:
+  base_url: https://www.mindmeister.com/api/v2
+  auth:
+    type: oauth2
+    flow: implicit
+    location: header
+    header_name: Authorization
+    token_url: https://www.mindmeister.com/oauth2/token
+    client_id: CLIENT_ID
+    client_secret: CLIENT_SECRET
+    scopes: userprofile.email mindmeister
+  headers:
+    Authorization: Bearer ACCESS_TOKEN
+    Accept: application/json
+source_metadata: null

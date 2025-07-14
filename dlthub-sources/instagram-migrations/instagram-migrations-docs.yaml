@@ -1,0 +1,70 @@
+source_name: instagram
+version: 4.0.0
+authentication_required: true
+api_types_available:
+  - REST
+
+client:
+  base_url: https://graph.instagram.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://graph.facebook.com/v10.0/oauth/access_token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: paging.next
+    cursor_param: after
+    page_size_param: limit
+    default_page_size: 100
+
+resources:
+  - name: media_insights
+    endpoint:
+      path: /me/media_insights
+      method: GET
+      data_selector: data
+      params: {
+                "metric": "engagement,impressions,reach,total_interactions",
+                "period": "day"
+      }
+
+  - name: user_lifetime_insights
+    endpoint:
+      path: /me/insights
+      method: GET
+      data_selector: data
+      params: {
+                "metric": "follower_demographics",
+                "period": "lifetime"
+      }
+
+  - name: story_insights
+    endpoint:
+      path: /me/stories_insights
+      method: GET
+      data_selector: data
+      params: {
+                "metric": "exits,taps_back,taps_forward",
+                "period": "day"
+      }
+
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+notes:
+  - Requires setup of connected app in Facebook Developer Console
+  - Ensure metrics are updated as per the latest API version
+
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Reduce frequency of API calls
+  - QUERY_TIMEOUT: Simplify queries or increase selectivity
+  - 401 Unauthorized: Verify OAuth token validity and permissions

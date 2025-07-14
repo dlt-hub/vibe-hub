@@ -1,0 +1,73 @@
+resources:
+- name: user_goals
+  endpoint:
+    path: /users/me/goals.json
+    method: GET
+    data_selector: goals
+- name: create_charge
+  endpoint:
+    path: /charges.json
+    method: POST
+    data_selector: charge
+- name: charges
+  endpoint:
+    path: /charges
+    method: POST
+    data_selector: goal
+    params: {}
+- name: datapoints
+  endpoint:
+    path: /users/{username}/goals/{goal}/datapoints.json
+    method: POST
+    data_selector: datapoints
+    params: {}
+- name: user
+  endpoint:
+    path: /users/{username}.json
+    method: GET
+    data_selector: user
+    params: {}
+- name: goal
+  endpoint:
+    path: /users/{username}/goals/{slug}.json
+    method: GET
+    data_selector: goal
+    params: {}
+- name: datapoint
+  endpoint:
+    path: /users/{username}/goals/{slug}/datapoints.json
+    method: GET
+    data_selector: datapoints
+    params: {}
+- name: charges
+  endpoint:
+    path: /charges
+    method: POST
+    data_selector: id
+    params:
+      user_id: ''
+      amount: ''
+      note: ''
+notes:
+- All API endpoints require authentication.
+- Common mistakes include using an incorrect URL or HTTP method.
+errors:
+- '401 Unauthorized: Recheck your authentication token.'
+- '400: Bad Request'
+- '401: Unauthorized — Wrong / missing key. (Check your parameter name?)'
+- '404: Not Found — Couldn''t find that resource, or path requested.'
+- '406: Not Acceptable — Check the format of your params?'
+- '500: Internal Server Error — We had a problem with our server. Try again later.'
+- '503: Service Unavailable — We''re temporarily offline for maintenance. Please try
+  again later.'
+auth_info:
+  mentioned_objects:
+  - auth_token
+  - access_token
+client:
+  base_url: https://www.beeminder.com/api/v1
+  auth:
+    type: apikey
+    location: query
+    header_name: auth_token
+source_metadata: null

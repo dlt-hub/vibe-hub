@@ -1,0 +1,126 @@
+resources:
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: donate_button
+  endpoint:
+    path: /donate/sdk/donate-sdk.js
+    method: GET
+    data_selector: script
+    params: {}
+- name: list_disputes
+  endpoint:
+    path: /disputes
+    method: GET
+    data_selector: disputes
+- name: show_dispute_details
+  endpoint:
+    path: /disputes/{case_id}
+    method: GET
+    data_selector: dispute_details
+- name: send_message
+  endpoint:
+    path: /disputes/{case_id}/messages
+    method: POST
+    data_selector: message_response
+- name: make_offer
+  endpoint:
+    path: /disputes/{case_id}/offers
+    method: POST
+    data_selector: offer_response
+- name: escalate_dispute
+  endpoint:
+    path: /disputes/{case_id}/escalate
+    method: POST
+    data_selector: escalation_response
+- name: provide_evidence
+  endpoint:
+    path: /disputes/{case_id}/evidence
+    method: POST
+    data_selector: evidence_response
+- name: accept_claim
+  endpoint:
+    path: /disputes/{case_id}/accept
+    method: POST
+    data_selector: accept_response
+- name: appeal_dispute
+  endpoint:
+    path: /disputes/{case_id}/appeal
+    method: POST
+    data_selector: appeal_response
+notes:
+- PayPal APIs use REST, authenticate with OAuth 2.0 access tokens.
+- Requires OAuth2 setup with proper credentials.
+- Ensure to handle different response codes for error management.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Yes, the single-use token that is returned on the client can be saved to the vault
+  prior to creating a transaction on your server.
+- Be aware that we only support saving when using the store_in_save_on_success boolean
+  in the transaction.sale() request.
+- Fastlane does not support a flow where a customer or payment_method is created prior
+  to a transaction.
+- 'Let your payers know that PayPal is processing the payment using one of the following
+  options: At checkout, include this text and link to the PayPal privacy notice: ''By
+  paying with your card, you acknowledge that your data will be processed by PayPal
+  subject to the PayPal Privacy Statement available at PayPal.com.'''
+- 'Before payment, include this in your privacy notice: ''We use PayPal for payments
+  and other services. If you wish to use one of these services and pay on our website,
+  PayPal may collect the personal data you provide, such as payment and other identifying
+  information. PayPal uses this information to operate and improve the services it
+  provides to us and others, including for fraud detection, harm and loss prevention,
+  authentication, analytics related to the performance of its services, and to comply
+  with applicable legal requirements. The processing of this information will be subject
+  to the PayPal Privacy Statement available at PayPal.com.'''
+- PayPal Card Fields is a PCI DSS service provider. Use the Card Fields integration
+  to comply with PCI compliance when collecting card information from buyers.
+- Use sandbox for testing before going live.
+- Replace sandbox data with live data for production.
+- DropZone as a client is the preferred integration option and may require fewer consultations
+  with PayPal.
+- Files delivered to your storage system over DropZone are encrypted. You'll need
+  to decrypt these files.
+errors:
+- 'AUTHORIZATION_EXPIRED: The transaction spent too much time in the AUTHORIZED status.'
+- 'PROCESSOR_DECLINED: The processor declined the transaction while attempting to
+  authorize it.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Onboarding process may take longer to ensure compliance with PayPal’s security requirements.
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://www.sandbox.paypal.com
+  auth:
+    type: SSH
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    location: authentication system
+    header_name: Authorization
+    flow: refresh_token
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+  headers:
+    Content-Type: application/json
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    page_size_param: pageSize
+    default_page_size: 200
+source_metadata: null

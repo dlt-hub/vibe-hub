@@ -1,0 +1,55 @@
+resources:
+- name: feeds
+  endpoint: /feeds
+  methods:
+  - GET
+  - POST
+  description: Manage RSS feeds
+  parameters:
+  - feed_id
+  - url
+  - title
+- name: articles
+  endpoint: /articles
+  methods:
+  - GET
+  description: Retrieve articles from feeds
+  parameters:
+  - feed_id
+  - limit
+  - offset
+- name: categories
+  endpoint: /categories
+  methods:
+  - GET
+  - POST
+  description: Manage categories for organization
+  parameters:
+  - category_id
+  - name
+notes:
+- 'Rate limiting: 1000 requests per hour'
+- Pagination available on list endpoints
+- Webhook support for real-time updates
+errors:
+- '401: Unauthorized - Invalid API key'
+- '429: Too Many Requests - Rate limit exceeded'
+- '404: Not Found - Resource not found'
+auth_info:
+  mentioned_objects:
+  - api_key
+  - authentication_header
+  auth_flow: API key must be included in the Authorization header for all requests.
+  env_var_for_auth: FEEDLYBOARD_API_KEY
+client:
+  base_url: https://api.feedlyboard.com
+  auth:
+    type: api_key
+    location: header
+    key_name: Authorization
+    env_var: FEEDLYBOARD_API_KEY
+source_metadata:
+  name: Feedlyboard
+  variable_name: service_name
+  base_url: https://api.feedlyboard.com
+  original_source_url: https://forum.ghost.org/t/rss-feed-importer-for-a-news-site.../51911

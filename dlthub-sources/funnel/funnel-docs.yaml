@@ -1,0 +1,203 @@
+resources:
+- name: lead_capture
+  endpoint:
+    path: /contact-widget/v1/integration.js
+    method: GET
+- name: lead
+  endpoint:
+    path: /webhook/lead
+    method: POST
+    data_selector: lead
+    params: {}
+- name: single_employee_group
+  endpoint:
+    path: /api/v2/group/<group_id>
+    method: GET
+    data_selector: data
+    params:
+      group_id: integer
+- name: prospect
+  endpoint:
+    path: /prospects
+    method: POST
+    data_selector: prospect-details
+    params: {}
+- name: available_times
+  endpoint:
+    path: /api/v2/appointments/group/<group_id>/available-times/
+    method: GET
+    data_selector: available_times
+    params: {}
+- name: book_appointment
+  endpoint:
+    path: /api/v2/appointments/group/<group_id>/book/
+    method: POST
+    data_selector: data
+    params: {}
+- name: get_appointments
+  endpoint:
+    path: /api/v2/clients/<client_id>/appointments/
+    method: GET
+    data_selector: appointments
+    params: {}
+- name: delete_appointment
+  endpoint:
+    path: /api/v2/appointments/<appointment_id>/
+    method: DELETE
+    data_selector: data
+    params: {}
+- name: reschedule_appointment
+  endpoint:
+    path: /api/v2/appointments/<appointment_id>/group/<group_id>/book/
+    method: POST
+    data_selector: appointment
+    params: {}
+- name: verify_widget
+  endpoint:
+    path: /api/v2/group/<group_id>/verify-widget/?widget=lead_capture_appointment
+    method: GET
+    data_selector: layout_options
+    params: {}
+- name: floorplans
+  endpoint:
+    path: /api/v2/communities/<community_id>/floorplans/
+    method: GET
+    data_selector: items
+    params: {}
+- name: communities
+  endpoint:
+    path: /api/v2/communities/<community_id>/
+    method: GET
+    data_selector: data
+- name: discovery_sources
+  endpoint:
+    path: /api/v2/discovery-sources
+    method: GET
+    data_selector: data.discovery_sources
+    params: {}
+- name: clients
+  endpoint:
+    path: /api/v2/clients/<client_id>
+    method: POST
+- name: renter_created
+  endpoint:
+    path: /renter/created
+    method: POST
+    data_selector: data
+- name: renter_status_change
+  endpoint:
+    path: /renter/status-change
+    method: POST
+    data_selector: data
+- name: appointment_updated
+  endpoint:
+    path: /appointment/updated
+    method: POST
+    data_selector: data
+- name: move_in
+  endpoint:
+    data_selector: data
+    params: {}
+- name: move_in_canceled
+  endpoint:
+    data_selector: data
+    params: {}
+- name: listings
+  endpoint:
+    path: /listings/residential/rentals/
+    method: GET
+notes:
+- Parameters include key, group, color, location, campaignInfo, onComplete, submitLabel,
+  unit, buttonTextColor, textColor.
+- If UTM parameters and or referrers do not map to a phone number, no replacement
+  will occur, so we strongly recommend including a default phone number in the page
+  source.
+- CSS style must be inlined, as <style> tags are stripped by most email service providers.
+- Do NOT use a CSS class to hide the div.
+- If the UTM parameters and or referrers do not map to a phone number, no replacement
+  will occur, so we strongly recommend including a default phone number in the page
+  source.
+- Ensure the script tags for Google Tag Manager are included on the page you are embedded
+  the Funnel widget.
+- Section 8 accepted, please contact community for more information
+- 'The `status` field for appointments can have values: completed, no-show, cancelled,
+  unknown.'
+- Funnel will retry sending the event 3 times, for a total of 4 attempts before considering
+  the event publish a failure.
+- We don't enforce a specific rate limit for requests made to our API, but simply
+  ask that you be reasonable and polite.
+- We will not limit your usage for normal website traffic, but we ask that you do
+  not hammer our API with rapid requests made by an automated script.
+- If you have a use case that requires polling the API data for changes on a regular
+  basis, or syncing large amounts of data at one time from the API to your system
+  we require using the Listings Sync Endpoint.
+- Requests are made using the HTTP Basic Authentication protocol. The username is
+  your key and the password is blank.
+errors:
+- DCRPhone and DCRPhoneHref are on phone numbers with DNI (DCRPhoneHref is only needed
+  to make it a link)
+- '400: Widget is inactive'
+- '400: Appointment id does not exist'
+- '400: Person requires either an email or a phone number.'
+- '400: Missing data for required field.'
+- '400: Not a valid choice.'
+- '400: missing or invalid data'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://nestiolistings.com/api/v2
+  headers:
+    Accept: application/json
+    apiKey: '"FUNNEL_API_KEY_HERE"'
+    communityId: FUNNEL_COMMUNITY_ID_HERE
+    timeout: 0
+    leadSourceId: LEAD_SOURCE_ID_HERE
+    defaultPaddingRight: '''10px'''
+    defaultPaddingBottom: '''10px'''
+    reactivePaddingRight: '''20px'''
+    reactivePaddingBottom: '''40px'''
+    key: <your_key>
+  auth:
+    type: basic
+    location: header
+  paginator: {}
+  people:
+  - first_name: John
+    last_name: Doe
+    email: johndoe@example.com
+    phone_1: '5101234567'
+    phone_2: ''
+    is_primary: true
+  - first_name: Jane
+    last_name: Doe
+    email: janedoe@example.com
+    phone_1: ''
+    phone_2: ''
+    is_primary: false
+  move_in_date: '1970-01-01'
+  layout:
+  - studio
+  - 1br
+  price_floor: 1500
+  price_ceiling: 2500
+  notes: looking for affordable neighborhood with bars and restaurants
+  group: 12
+  broker_company: Jerry Company
+  broker_email: jerry@seinfeld.com
+  broker_first_name: Jerry
+  broker_last_name: Seinfeld
+  broker_phone: '4101230987'
+  client_referral: Company Website
+  campaign_id: Test-Campaign
+  campaign_info: GooglePPC
+  unit: 5309
+  device: phone
+  source_type: organic
+  resources:
+  - name: lead_capture
+    endpoint:
+      path: /
+      method: POST
+      data_selector: ''
+      params: {}
+source_metadata: null

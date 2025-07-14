@@ -1,0 +1,139 @@
+resources:
+- name: agent_sessions
+  endpoint:
+    path: /services/v13.0/agent-sessions
+    method: GET
+- name: agent_sessions
+  endpoint:
+    path: /services/v12.0/agent-sessions
+    method: POST
+    data_selector: sessionId
+    params: {}
+- name: get_next_event
+  endpoint:
+    path: /services/v13.0/agent-sessions/{sessionId}/get-next-event
+    method: GET
+    data_selector: events
+    params:
+      timeout: between 0 and 60 seconds
+- name: dial_phone
+  endpoint:
+    path: /services/v13.0/agent-sessions/{sessionId}/dial-phone
+    method: POST
+    data_selector: response
+    params: {}
+- name: AgentSessionStart
+  endpoint:
+    path: /AgentSessionStart
+    method: POST
+    data_selector: Type
+    params: {}
+- name: AgentSessionEnd
+  endpoint:
+    path: /AgentSessionEnd
+    method: POST
+    data_selector: Type
+    params: {}
+- name: RemoteAgentSessionEnd
+  endpoint:
+    path: /RemoteAgentSessionEnd
+    method: POST
+    data_selector: Type
+    params: {}
+- name: AgentState
+  endpoint:
+    path: /AgentState
+    method: POST
+    data_selector: Type
+    params: {}
+- name: AgentLeg
+  endpoint:
+    path: /AgentLeg
+    method: POST
+    data_selector: Type
+    params: {}
+- name: AgentError
+  endpoint:
+    path: /AgentError
+    method: POST
+    data_selector: Type
+    params: {}
+- name: NaturalCallingSkillList
+  endpoint:
+    path: /NaturalCallingSkillList
+    method: POST
+    data_selector: Type
+    params: {}
+- name: CallContactEvent
+  endpoint:
+    path: /CallContactEvent
+    method: POST
+    data_selector: Type
+    params: {}
+- name: WorkItemContactEvent
+  endpoint:
+    path: /WorkItemContactEvent
+    method: POST
+    data_selector: Type
+    params: {}
+- name: ChatContactEvent
+  endpoint:
+    path: /ChatContactEvent
+    method: POST
+    data_selector: Type
+    params: {}
+- name: HoursOfOperation
+  endpoint:
+    path: /HoursOfOperation
+    method: POST
+    data_selector: Type
+    params: {}
+- name: messages
+  endpoint:
+    path: /channels/{channelId}/messages
+    method: POST
+- name: outbound_messages
+  endpoint:
+    path: /channels/{channelId}/outbound
+    method: POST
+- name: custom_field_definitions
+  endpoint:
+    path: /customers/custom-field-definitions
+    method: PUT
+notes:
+- Contact Data needs at least 15 minutes to migrate to the data warehouse before it
+  should be queried/requested and expected to be 100% accurate.
+- Different APIs may implement pagination differently, and the top parameter (or equivalent)
+  might represent varying page sizes depending on the API.
+- CXone authentication is based on OAuth 2 and OpenID Connect.
+- For Authentication related APIs having multiple options for post data to API so
+  'Try Out' button not available.
+- Polling for events must begin as soon as the session is started.
+- Timeout value must be an integer between 0 and 60 seconds.
+- Verify entity permissions, because authorization checks are applied and may result
+  in success or unauthorized.
+- Do Not Open the Authorization Page Within an Iframe
+- Validate id_token After Login
+- Allow for Clock Skew Tolerance
+- Do Not Impose Token Size Restrictions
+- To access Erasure API, you need to enable Privacy -> Erasure permission.
+- Use of these APIs may require additional fees.
+- To use these APIs, you must create an Access Key and then generate a CXone API token
+  to use as a bearer token.
+errors:
+- '304 Not Modified: No new events.'
+- 'Invalid timeout value: Must be between 0 and 60.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://your-instance.api-name.com
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+    token_url: https://na1.nice-incontact.com/authentication/v1/token/access-key
+  headers:
+    Content-Type: application/json
+  paginator:
+    type: none
+source_metadata: null

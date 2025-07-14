@@ -1,0 +1,74 @@
+# Source Metadata
+source_name: imagga
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.imagga.com/v2
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+    api_secret: "{{ dlt.secrets['api_secret'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: categorizers
+    endpoint:
+      path: /categorizers
+      method: GET
+      data_selector: result
+  - name: croppings
+    endpoint:
+      path: /croppings
+      method: GET
+      data_selector: result
+  - name: colors
+    endpoint:
+      path: /colors
+      method: GET
+      data_selector: result
+  - name: faces_detections
+    endpoint:
+      path: /faces/detections
+      method: GET
+      data_selector: result
+  - name: text
+    endpoint:
+      path: /text
+      method: GET
+      data_selector: result
+  - name: usage
+    endpoint:
+      path: /usage
+      method: GET
+      data_selector: result
+  - name: barcodes
+    endpoint:
+      path: /barcodes
+      method: GET
+      data_selector: result
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Key
+    - API Secret
+
+# Known Quirks or Risks, Caveats
+notes:
+  - No support for incremental loading
+  - All streams do not support full sync
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check your API key and secret
+  - 404 Not Found: Verify the endpoint path and parameters

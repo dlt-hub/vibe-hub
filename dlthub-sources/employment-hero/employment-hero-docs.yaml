@@ -1,0 +1,158 @@
+resources:
+- name: organisations
+  endpoint:
+    path: /api/v1/organisations
+    method: GET
+    data_selector: data.items
+    params: {}
+- name: employees
+  endpoint:
+    path: /api/v1/organisations/:id/employees
+    method: GET
+    data_selector: data.items
+    params: {}
+- name: leave_requests
+  endpoint:
+    path: /v1/organisations/:organisation_id/leave_requests
+    method: GET
+    data_selector: data.items
+    params:
+      organisation_id: uuid
+- name: timesheet_entries
+  endpoint:
+    path: /v1/organisations/:organisation_id/employees/:employee_id/timesheet_entries
+    method: GET
+    data_selector: data.items
+    params:
+      organisation_id: uuid
+      employee_id: uuid
+      start_date: string
+      end_date: string
+- name: employment_histories
+  endpoint:
+    path: /v1/organisations/:organisation_id/employees/:employee_id/employment_histories
+    method: GET
+    data_selector: data.items
+    params:
+      organisation_id: uuid
+      employee_id: uuid
+- name: emergency_contacts
+  endpoint:
+    path: /v1/organisations/:organisation_id/employees/:employee_id/emergency_contacts
+    method: GET
+    data_selector: data.items
+    params:
+      organisation_id: uuid
+      employee_id: uuid
+- name: bank_accounts
+  endpoint:
+    path: /v1/organisations/:organisation_id/employees/:employee_id/bank_accounts
+    method: GET
+    data_selector: data.items
+    params:
+      organisation_id: uuid
+      employee_id: uuid
+- name: teams
+  endpoint:
+    path: /v1/organisations/:organisation_id/teams
+    method: GET
+    data_selector: data.items
+    params:
+      organisation_id: uuid
+- name: pay_details
+  endpoint:
+    path: /v1/organisations/:organisation_id/employees/:employee_id/pay_details
+    method: GET
+    data_selector: data.items
+    params: {}
+- name: tax_declaration
+  endpoint:
+    path: /v1/organisations/:organisation_id/employees/:employee_id/tax_declaration
+    method: GET
+    data_selector: data
+    params: {}
+- name: superannuation_detail
+  endpoint:
+    path: /v1/organisations/:organisation_id/employees/:employee_id/superannuation_detail
+    method: GET
+    data_selector: data
+    params: {}
+- name: custom_fields
+  endpoint:
+    path: /v1/organisations/:organisation_id/custom_fields
+    method: GET
+    data_selector: data.items
+    params: {}
+- name: employee_custom_fields
+  endpoint:
+    path: /v1/organisations/:organisation_id/employees/:employee_id/custom_fields
+    method: GET
+    data_selector: data.items
+    params: {}
+- name: rostered_shifts
+  endpoint:
+    path: /organisations/:organisation_id/rostered_shifts
+    method: GET
+    data_selector: data.items
+    params:
+      organisation_id: uuid
+      page_index: 1
+      item_per_page: 20
+- name: unavailabilities
+  endpoint:
+    path: /organisations/:organisation_id/unavailabilities
+    method: GET
+    data_selector: data.items
+    params:
+      organisation_id: uuid
+      page_index: 1
+      item_per_page: 20
+- name: employee_data
+  endpoint:
+    path: /employee_data
+    method: POST
+    data_selector: data
+- name: leave_request_data
+  endpoint:
+    path: /leave_request_data
+    method: POST
+    data_selector: data
+- name: bank_account_data
+  endpoint:
+    path: /bank_account_data
+    method: POST
+    data_selector: data
+- name: employment_history_data
+  endpoint:
+    path: /employment_history_data
+    method: POST
+    data_selector: data
+notes: []
+errors:
+- 400 Bad Request -- Your request is invalid.
+- 401 Unauthorized -- Your API key is wrong.
+- 403 Forbidden -- The resource requested is hidden for administrators only.
+- 404 Not Found -- The specified resource could not be found.
+- 406 Not Acceptable -- You requested a format that isn't json.
+- 429 Too Many Requests -- You have exceeded the rate limit. Please try again later.
+- 500 Internal Server Error -- We had a problem with our server. Try again later.
+- 503 Service Unavailable -- We're temporarily offline for maintenance. Please try
+  again later.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.employmenthero.com/api/v1
+  auth:
+    type: apikey
+    flow: refresh_token
+    token_url: https://oauth.employmenthero.com/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  paginator:
+    type: page
+    page_size_param: item_per_page
+    default_page_size: 20
+source_metadata: null

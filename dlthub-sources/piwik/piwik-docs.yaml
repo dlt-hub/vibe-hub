@@ -1,0 +1,122 @@
+# Source Metadata
+source_name: piwik
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.piwik.pro
+  auth:
+    type: oauth2
+    flow: client_credentials
+    token_url: https://your-instance.piwik.pro/api/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: users
+    endpoint:
+      path: /api/users
+      method: GET
+      data_selector: records
+
+  - name: users-me
+    endpoint:
+      path: /api/users/me
+      method: GET
+      data_selector: records
+
+  - name: user-groups
+    endpoint:
+      path: /api/user-groups
+      method: GET
+      data_selector: records
+
+  - name: tracker_settings
+    endpoint:
+      path: /api/tracker-settings
+      method: GET
+      data_selector: records
+
+  - name: modules
+    endpoint:
+      path: /api/modules
+      method: GET
+      data_selector: records
+
+  - name: meta-sites
+    endpoint:
+      path: /api/meta-sites
+      method: GET
+      data_selector: records
+
+  - name: meta-sites_apps
+    endpoint:
+      path: /api/meta-sites/apps
+      method: GET
+      data_selector: records
+
+  - name: meta-sites_apps-with-meta-sites
+    endpoint:
+      path: /api/meta-sites/apps-with-meta-sites
+      method: GET
+      data_selector: records
+
+  - name: container-settings_settings
+    endpoint:
+      path: /api/container-settings
+      method: GET
+      data_selector: records
+
+  - name: apps
+    endpoint:
+      path: /api/apps
+      method: GET
+      data_selector: records
+
+  - name: audit-log_entries
+    endpoint:
+      path: /api/audit-log/entries
+      method: GET
+      data_selector: records
+
+  - name: apps_details
+    endpoint:
+      path: /api/apps/details
+      method: GET
+      data_selector: records
+
+  - name: access-control_actions
+    endpoint:
+      path: /api/access-control/actions
+      method: GET
+      data_selector: records
+
+  - name: access-control_meta-site_permission_user
+    endpoint:
+      path: /api/access-control/meta-site-permission-user
+      method: GET
+      data_selector: records
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses OAuth2.0 - Client credentials authentication
+  - Ensure correct organization_id is provided for API access
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check client_id and client_secret
+  - 403 Forbidden: Verify permissions for the requested resource

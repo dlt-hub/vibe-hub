@@ -1,0 +1,174 @@
+resources:
+- name: create_download_task
+  endpoint:
+    path: /aggregation-service/public/transaction/excel
+    method: POST
+    data_selector: id
+    params:
+      type: Payment
+      status: 2
+      dateFrom: 1674507600000
+      dateTo: 1679678900200
+- name: create_payment_form
+  endpoint:
+    path: /initPayment
+    method: POST
+    data_selector: form_url
+    params:
+      account: EUR-sandbox
+      amount: 1000
+      currency: EUR
+      order_id: sandboxFormId_1015
+      merchant_site: https://merchant.site
+      customer_first_name: John
+      customer_last_name: Doe
+      customer_address: 10 Downing Street
+      customer_city: London
+      customer_zip_code: 121165
+      customer_country: GB
+      customer_phone: '+442079460612'
+      customer_email: '[email protected]'
+      customer_ip_address: 127.0.0.1
+      success_url: https://site.com/success
+      fail_url: https://site.com/fail
+      callback_url: https://site.com/callback
+      status_url: https://site.com/redir
+- name: check_transaction_status
+  endpoint:
+    path: /check
+    method: POST
+    data_selector: order_id
+    params:
+      order_id: sandboxId_1015
+- name: refund_transaction
+  endpoint:
+    path: /refund
+    method: POST
+    data_selector: refund_id
+    params:
+      order_id: sandboxId_1015
+      amount: 1000
+      reason: refund
+- name: create_recurrent_payment
+  endpoint:
+    path: /recurrent
+    method: POST
+    data_selector: payment_id
+    params:
+      order_id: sandboxRecurId_1015
+      parent_order_id: sandboxId_1015
+      amount: 1000
+      purpose: test recurrent
+- name: withdrawal_tokenize_form
+  endpoint:
+    path: /withdrawal/tokenize-form
+    method: POST
+    data_selector: form_url
+    params:
+      account: EUR-sandbox-payout
+      order_id: tokenizeOrderId_1050
+      callback_url: https://site.com/callback
+      success_url: https://site.com/success
+      fail_url: https://site.com/fail
+- name: init_withdrawal
+  endpoint:
+    path: /withdrawal/init
+    method: POST
+    data_selector: order_id
+    params:
+      account: EUR-sandbox-payout
+      order_id: testPayout_1050
+      amount: 10000
+      payment_method: card
+      customer_card_number: '4123540003981114'
+      merchant_site: https://merchant.site
+      customer_first_name: John
+      customer_middle_name: Jerom
+      customer_last_name: Doe
+      customer_phone: '+442079460612'
+      customer_birthdate: 06.06.1997
+      customer_zip_code: '121165'
+      callback_url: https://site.com/callback
+- name: get_balance
+  endpoint:
+    path: /withdrawal/balance/get
+    method: POST
+    data_selector: balance
+    params:
+      account: EUR-sandbox-payout
+- name: authorize_payment
+  endpoint:
+    path: /authorize
+    method: POST
+    data_selector: form_url
+    params:
+      account: EUR-sandbox
+      amount: 1000
+      currency: EUR
+      order_id: sandboxId_1016
+      merchant_site: https://merchant.site
+      recurrent: false
+      purpose: description
+      customer_first_name: John
+      customer_last_name: Doe
+      customer_address: 10 Downing Street
+      customer_city: London
+      customer_zip_code: 121165
+      customer_country: GB
+      customer_phone: '+442079460612'
+      customer_email: '[email protected]'
+      success_url: https://site.com/success
+      fail_url: https://site.com/fail
+      callback_url: https://site.com/callback
+      status_url: https://site.com/redir
+      card_holder: John Doe
+      card_number: '4012000000003010'
+      card_exp_month: '02'
+      card_exp_year: '25'
+      card_cvv: '123'
+- name: capture_payment
+  endpoint:
+    path: /capture
+    method: POST
+    data_selector: order_id
+    params:
+      order_id: sandboxId_1016
+- name: cancel_payment
+  endpoint:
+    path: /cancel
+    method: POST
+    data_selector: order_id
+    params:
+      order_id: sandboxId_1016
+- name: create_download_task
+  endpoint:
+    path: /aggregation-service/public/transaction/excel
+    method: POST
+    data_selector: id
+    params:
+      type: Payment
+      status: 2
+      dateFrom: 1674507600000
+      dateTo: 1679678900200
+- name: get_task_status
+  endpoint:
+    path: /aggregation-service/public/transaction/excel/task/{taskId}
+    method: GET
+    data_selector: status
+- name: get_task_result
+  endpoint:
+    path: /aggregation-service/public/transaction/excel/task/{taskId}/result
+    method: GET
+notes: []
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://chd-api.smartcore.pro
+  auth:
+    type: basic
+    location: header
+    header_name: Authorization
+  headers:
+    Content-Type: application/json
+source_metadata: null

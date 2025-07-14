@@ -1,0 +1,103 @@
+resources:
+- name: interactions
+  endpoint:
+    path: /interactions
+    method: GET
+    data_selector: results
+- name: notes
+  endpoint:
+    path: /notes
+    method: GET
+    data_selector: results
+- name: goals
+  endpoint:
+    path: /goals
+    method: GET
+    data_selector: results
+- name: deals
+  endpoint:
+    path: /deals
+    method: GET
+    data_selector: results
+- name: tickets
+  endpoint:
+    path: /tickets
+    method: GET
+    data_selector: results
+- name: invoices
+  endpoint:
+    path: /invoices
+    method: GET
+    data_selector: results
+- name: event
+  endpoint:
+    path: /events
+    method: POST
+    data_selector: events
+    params: {}
+- name: identify
+  endpoint:
+    path: /identify
+    method: POST
+    data_selector: identifies
+    params: {}
+- name: group
+  endpoint:
+    path: /group
+    method: POST
+    data_selector: groups
+    params: {}
+- name: user_event
+  endpoint:
+    path: /api/v1/events/user
+    method: POST
+    data_selector: event_data
+    params:
+      userId: '{{ user_id }}'
+      accountId: '{{ account_id }}'
+      productId: '{{ product_id }}'
+      moduleId: '{{ module_id }}'
+      featureId: '{{ feature_id }}'
+- name: account_event
+  endpoint:
+    path: /api/v1/events/account
+    method: POST
+    data_selector: event_data
+    params:
+      accountId: '{{ account_id }}'
+      details: '{{ details }}'
+notes:
+- Invalid api / auth keys result in POST 401 (Unauthorized) errors
+- If userId and/or accountId are not set, events will be anonymous and features/modules
+  will not be tracked
+- Integration requires setup of workflows to process data before it becomes visible
+  in the UI.
+- The API operates entirely using HTTP POST requests.
+- Each event must be separated by an end-of-line marker, indicated either by '\r\n'
+  or '\n'.
+- Events MUST NOT be formatted as a JSON array.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400 Bad Request: Check if required fields are missing or incorrectly formatted.'
+- '401 Unauthorized: Verify apiKey and authKey.'
+- '429 Too Many Requests: Reduce the rate of API calls.'
+- '400 BAD REQUEST: Invalid request type or invalid path.'
+- '200 OK: Server is reachable.'
+auth_info:
+  mentioned_objects:
+  - apiKey
+  - authKey
+client:
+  base_url: https://events-us.freshsuccess.com/v1/[yourAuthKey]/[yourApiKey]
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  paginator:
+    type: page
+    page_size_param: page
+    default_page_size: 1000
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+source_metadata: null

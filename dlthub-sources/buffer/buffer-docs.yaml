@@ -1,0 +1,162 @@
+resources:
+- name: profiles
+  endpoint:
+    path: /profiles.json
+    method: GET
+    data_selector: '[*]'
+- name: profile_details
+  endpoint:
+    path: /profiles/{id}.json
+    method: GET
+    data_selector: '[*]'
+- name: profile_schedules
+  endpoint:
+    path: /profiles/{id}/schedules.json
+    method: GET
+    data_selector: '[*]'
+- name: update_profile_schedules
+  endpoint:
+    path: /profiles/{id}/schedules/update.json
+    method: POST
+- name: updates
+  endpoint:
+    path: /updates
+    method: GET
+    data_selector: updates
+- name: pending_updates
+  endpoint:
+    path: /profiles/{profile_id}/updates/pending
+    method: GET
+    data_selector: updates
+- name: sent_updates
+  endpoint:
+    path: /profiles/{profile_id}/updates/sent
+    method: GET
+    data_selector: updates
+- name: create_update
+  endpoint:
+    path: /updates/create
+    method: POST
+- name: edit_update
+  endpoint:
+    path: /updates/{update_id}/update
+    method: POST
+- name: delete_update
+  endpoint:
+    path: /updates/{update_id}/destroy
+    method: POST
+- name: twitter_profile
+  endpoint:
+    path: /info/configuration.json
+    method: GET
+    data_selector: services.twitter.types.profile
+- name: facebook_profile
+  endpoint:
+    path: /info/configuration.json
+    method: GET
+    data_selector: services.facebook.types.profile
+- name: linkedin_profile
+  endpoint:
+    path: /info/configuration.json
+    method: GET
+    data_selector: services.linkedin.types.profile
+- name: google_profile
+  endpoint:
+    path: /info/configuration.json
+    method: GET
+    data_selector: services.google.types.profile
+- name: profiles
+  endpoint:
+    path: /profiles
+    method: GET
+- name: profile
+  endpoint:
+    path: /profile/:id
+    method: GET
+- name: updates
+  endpoint:
+    path: /updates/:id
+    method: GET
+- name: sent_updates
+  endpoint:
+    path: /profiles/:id/updates/sent
+    method: GET
+- name: user
+  endpoint:
+    path: /1/user.json
+    method: GET
+    data_selector: _id
+- name: deauthorize_user
+  endpoint:
+    path: /1/user/deauthorize.json
+    method: POST
+    data_selector: success
+notes:
+- The Buffer API is rate limited to 60 authenticated requests per user per minute.
+- If you make more than 60 requests within a 60 seconds window period, you will receive
+  a HTTP code 429 response.
+- Currently the only available response format is JSON.
+- Favorites are equivalent to likes for Twitter updates.
+- All requests to the Buffer API must end with the desired response format. Currently
+  the only available response format is JSON.
+errors:
+- 'HTTP code 429: Too Many Requests'
+- '429: Too Many Requests'
+- '400 Bad Request: Verify request parameters.'
+- '401 Unauthorized: Check OAuth token.'
+- '404 Not Found: Ensure resource exists.'
+- '401: Unauthorized.'
+- '403: Permission denied.'
+- '404: Endpoint not found.'
+- '405: Method not allowed.'
+- '429: Too Many Requests.'
+- '500: An unknown error occurred.'
+- '403: Access token required.'
+- '403: Not within application scope.'
+- '400: Parameter not recognized.'
+- '400: Required parameter missing.'
+- '406: Unsupported response format.'
+- '400: Parameter value not within bounds.'
+- '400: An existing matching record has been found.'
+- '404: Profile could not be found.'
+- '403: No authorization to access profile.'
+- '400: Profile did not save successfully.'
+- '403: Profile schedule limit reached.'
+- '403: Profile limit for user has been reached.'
+- '403: Profile could not be destroyed.'
+- '400: Profile buffer could not be emptied.'
+- '404: Update could not be found.'
+- '403: No authorization to access update.'
+- '400: Update did not save successfully.'
+- '403: Update limit for profile has been reached.'
+- '403: Update limit for team profile has been reached.'
+- '400: Update was recently posted, can''t post duplicate content.'
+- '400: Update must be in error status to requeue.'
+- '400: Update must be in buffer and not custom scheduled in order to move to top.'
+- '403: Update soft limit for profile reached.'
+- '400: Event type not supported.'
+- '400: Media filetype not supported.'
+- '400: Media filesize out of acceptable range.'
+- '400: Unable to post image to LinkedIn group(s).'
+- '400: Comments can only be posted to Facebook at this time.'
+- '400: Cannot schedule updates in the past.'
+- '400: User did not save successfully.'
+- '404: Client could not be found.'
+- '403: No authorization to access client.'
+- '403: Tag limit reached.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.bufferapp.com
+  headers:
+    Content-Type: application/x-www-form-urlencoded
+    Accept: application/json
+  auth:
+    type: oauth2
+    flow: authorization_code
+    token_url: https://api.bufferapp.com/1/oauth2/token.json
+    client_id: '...'
+    client_secret: '...'
+    location: header
+    header_name: Authorization
+source_metadata: null

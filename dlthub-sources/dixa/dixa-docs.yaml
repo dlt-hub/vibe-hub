@@ -1,0 +1,158 @@
+resources:
+- name: activitylog
+  endpoint:
+    path: /v1/conversations/activitylog
+    method: GET
+- name: activitylog_for_conversation
+  endpoint:
+    path: /v1/conversations/{conversationId}/activitylog
+    method: GET
+- name: historical_message
+  endpoint:
+    path: /v1/conversations/{conversationId}/messages
+    method: POST
+- name: create_conversation
+  endpoint:
+    path: /v1/conversations
+    method: POST
+- name: internal_notes
+  endpoint:
+    path: /v1/conversations/{conversationId}/notes
+    method: GET
+- name: messages_within_conversation
+  endpoint:
+    path: /v1/conversations/{conversationId}/messages
+    method: GET
+- name: single_conversation
+  endpoint:
+    path: /v1/conversations/{conversationId}
+    method: GET
+- name: anonymization_request
+  endpoint:
+    path: /v1/anonymization/request/{requestId}
+    method: GET
+- name: schedule_anonymization
+  endpoint:
+    path: /v1/conversations/{conversationId}/anonymize
+    method: PATCH
+- name: endpoints_list
+  endpoint:
+    path: /v1/endpoints
+    method: GET
+- name: endpoint_by_id
+  endpoint:
+    path: /v1/endpoints/{contactEndpointId}
+    method: GET
+- name: current_flows
+  endpoint:
+    path: /v1/flows
+    method: GET
+- name: queues_list
+  endpoint:
+    path: /v1/queues
+    method: GET
+- name: queue_by_id
+  endpoint:
+    path: /v1/queues/{queueId}
+    method: GET
+- name: tags_list
+  endpoint:
+    path: /v1/tags
+    method: GET
+- name: create_user
+  endpoint:
+    path: /v1/users
+    method: POST
+- name: requested_conversations
+  endpoint:
+    path: /v1/endusers/{userId}/conversations
+    method: GET
+- name: users_list
+  endpoint:
+    path: /v1/endusers
+    method: GET
+- name: single_user
+  endpoint:
+    path: /v1/endusers/{userId}
+    method: GET
+- name: presence
+  endpoint:
+    path: /GET/PRESENCE
+    method: GET
+- name: notes
+  endpoint:
+    path: /POST/notes
+    method: POST
+- name: agents
+  endpoint:
+    path: /PUT/agents
+    method: PUT
+- name: teams
+  endpoint:
+    path: /PATCH/teams
+    method: PATCH
+- name: delete_agent
+  endpoint:
+    path: /DELETE/agent
+    method: DELETE
+- name: conversations
+  endpoint:
+    path: /v1/conversation_export
+    method: GET
+    data_selector: JSON array
+- name: messages
+  endpoint:
+    path: /v1/message_export
+    method: GET
+    data_selector: JSON array
+- name: webhook
+  endpoint:
+    path: /webhooks
+    method: POST
+    data_selector: webhook
+    params: {}
+- name: endusers
+  endpoint:
+    path: /v1/endusers
+    method: GET
+    data_selector: data
+    params: {}
+- name: conversations
+  endpoint:
+    path: /v1/conversations/{conversationId}/messages
+    method: GET
+    data_selector: data
+    params: {}
+- name: anonymization_request
+  endpoint:
+    path: /v1/anonymization/request/{requestId}
+    method: GET
+    data_selector: data
+    params: {}
+notes:
+- All Dixa API endpoints are rate limited and exceeding the rate limit is not considered
+  misuse.
+- Dixa holds the right to change rate limit values and API vulnerabilities to secure
+  against misuse.
+- Bearer authentication requires sending token in Authorization header
+- No query can span more than 1 month (31 days).
+- The export messages endpoint does not contain internal notes.
+- Webhook delivery can fail for different reasons.
+- 4XX HTTP error - A webhook delivery with this type of error response will not be
+  retried.
+errors:
+- '429 Too Many Requests: Throttle API calls or reduce frequency'
+- '429 Too Many Requests: Exceeded API Rate Limits'
+- '4XX: Client error - Intervention required.'
+- '5XX: Server error - Will attempt redeliver up to 3 times.'
+auth_info:
+  mentioned_objects: []
+client:
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  base_url: https://dev.dixa.io
+  headers:
+    Accept: application/json
+source_metadata: null

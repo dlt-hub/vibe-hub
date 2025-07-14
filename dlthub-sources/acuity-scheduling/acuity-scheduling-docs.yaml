@@ -1,0 +1,301 @@
+resources:
+- name: metaMetadata
+  endpoint:
+    path: /api/v1/metaMetadata
+    method: GET
+    data_selector: fields
+    params: {}
+- name: blocks
+  endpoint:
+    path: /blocks
+    method: POST
+- name: appointments
+  endpoint:
+    path: /appointments
+    method: GET
+    data_selector: appointments
+    params:
+      canceled: 'false'
+- name: availability_times
+  endpoint:
+    path: /availability/times
+    method: GET
+    data_selector: available_times
+- name: appointments
+  endpoint:
+    path: /appointments/
+    method: GET
+    data_selector: appointments
+- name: cancel_appointment
+  endpoint:
+    path: /api/v1/appointments//cancel
+    method: PUT
+    params:
+      admin: 'true'
+      noEmail: 'true'
+- name: update_appointment
+  endpoint:
+    path: /api/v1/appointments/{id}
+    method: PUT
+    data_selector: fields
+    params:
+      admin: 'true'
+- name: certificates
+  endpoint:
+    path: /certificates
+    method: POST
+    data_selector: certificate
+    params: {}
+- name: delete_client
+  endpoint:
+    path: /api/v1/clients
+    method: DELETE
+    data_selector: null
+    params: {}
+- name: appointment_addons
+  endpoint:
+    path: /appointment-addons
+    method: GET
+- name: account_info
+  endpoint:
+    path: /api/v1/me
+    method: GET
+    data_selector: account_information
+    params: {}
+- name: payments
+  endpoint:
+    path: /appointments//payments
+    method: GET
+    data_selector: transactions
+    params: {}
+- name: calendars
+  endpoint:
+    path: /calendars
+    method: GET
+- name: clients
+  endpoint:
+    path: /clients
+    method: GET
+- name: appointments
+  endpoint:
+    path: /appointments
+    method: GET
+- name: check_times
+  endpoint:
+    path: /availability/check-times
+    method: POST
+    data_selector: valid
+    params: {}
+- name: intake_forms
+  endpoint:
+    path: /intake/forms
+    method: GET
+    data_selector: forms
+    params: {}
+- name: products
+  endpoint:
+    path: /api/v1/products
+    method: GET
+    data_selector: products
+    params: {}
+- name: check_certificate
+  endpoint:
+    path: /certificates/check
+    method: GET
+- name: reschedule_appointment
+  endpoint:
+    path: /api/v1/appointments//reschedule
+    method: PUT
+    params:
+      admin: 'true'
+      noEmail: 'true'
+- name: block
+  endpoint:
+    path: /blocks/:idget
+    method: GET
+- name: appointments
+  endpoint:
+    path: /appointments
+    method: GET
+    data_selector: data
+- name: availability_dates
+  endpoint:
+    path: /availability/dates
+    method: GET
+    data_selector: dates
+    params: {}
+- name: certificates
+  endpoint:
+    path: /certificates
+    method: GET
+- name: appointments
+  endpoint:
+    path: /appointments
+    method: GET
+- name: clients
+  endpoint:
+    path: /clients
+    method: GET
+- name: blocks
+  endpoint:
+    path: /blocks/{id}
+    method: GET
+- name: clients
+  endpoint:
+    path: /clients
+    method: POST
+    data_selector: null
+    params: {}
+- name: blocks
+  endpoint:
+    path: /blocksGet
+    method: GET
+- name: orders
+  endpoint:
+    path: /orders
+    method: GET
+    data_selector: orders
+    params: {}
+- name: appointments
+  endpoint:
+    path: /appointments
+    method: GET
+- name: orders
+  endpoint:
+    path: /orders/:id
+    method: GET
+- name: appointments
+  endpoint:
+    path: /appointments
+    method: POST
+    data_selector: null
+    params: {}
+- name: appointments
+  endpoint:
+    path: /appointments
+    method: GET
+- name: availability_classes
+  endpoint:
+    path: /availability/classes
+    method: GET
+    data_selector: classes
+    params: {}
+- name: clients
+  endpoint:
+    path: /clients
+    method: PUT
+    data_selector: null
+    params:
+      status_code: 400
+      message: Client does not exist.
+      error: client_not_found
+- name: certificates
+  endpoint:
+    path: /certificates/{id}
+    method: DELETE
+- name: appointments
+  endpoint:
+    path: /appointments
+    method: GET
+- name: clients
+  endpoint:
+    path: /clients
+    method: GET
+- name: labels
+  endpoint:
+    path: /labels
+    method: GET
+notes:
+- A list of IPv4 or IPv6 CIDRs from which webhooks will originate.
+- By default, canceled appointments are not returned.
+- Canceled appointments include a field, `noShow`, which is true if the appointment
+  was marked as a no-show by an admin and false if the appointment is simply canceled.
+- The `scheduledBy` field contains the username of the user or logged in client who
+  scheduled the appointment. If an appointment was scheduled by a client not logged
+  in, it will be null.
+- Webhook calls are retried with exponential backoff over a 24 hour period.
+- If a webhook continues to fail because of a 500 HTTP error or because of connection
+  issues over a period of 5 days, we will disable the webhook.
+- Acuity does not support cross origin requests as client side requests expose any
+  authentication that you're using.
+- If client does not exist, a 400 message of 'Client does not exist' will be returned.
+- The payment processors authorize.net and braintree are no longer supported and are
+  documented for legacy users only.
+- This API is not needed to integrate Acuity Scheduling with your website, it is intended
+  for developers to access information outside of a website or develop custom applications.
+- Advanced CSS allows you to customize the appearance of your Client Scheduling Page
+  with supported selectors.
+- Designating supported selectors helps prioritize consistent behavior and avoid broken
+  customizations during platform updates.
+- OAuth2 is recommended only if you're developing an application where many different
+  users on Acuity need to authenticate.
+- Use /availability/dates together with /availability/times to find available slots
+  for creating an appointment.
+- Returns 200 on success. Returns 404 if not found.
+- Custom sidebar requests are signed by Acuity using your API key.
+- If client already exists, a 400 message of 'That client already exists' will be
+  returned.
+errors:
+- '422 Unprocessable Entity: Not able to parse data or invalid parameter passed'
+- 'cancel_not_allowed: Clients are not allowed to cancel.'
+- 'cancel_too_close: Clients are not allowed to cancel this close to the time of the
+  appointment.'
+- 'required_first_name: Attribute "firstName" is required.'
+- 'required_last_name: Attribute "lastName" is required.'
+- 'required_email: Attribute "email" is required.'
+- 'invalid_email: Invalid "email" attribute value.'
+- 'invalid_fields: The field "1" does not exist on this appointment.'
+- 'required_field: The field "4" is required.'
+- 'required_appointment_type_id: The parameter "appointmentTypeID" is required.'
+- 'invalid_appointment_type: The appointment type "987654321" does not exist.'
+- 'invalid_calendar: The calendar "987654321" does not exist.'
+- 'required_datetime: The parameter "datetime" is required.'
+- 'invalid_timezone: Invalid timezone "Aint/No_Timezone".'
+- 'invalid_datetime: The datetime "asdf" is invalid.'
+- 'no_available_calendar: We could not find an available calendar.'
+- 'not_available_min_hours_in_advance: The time "2016-01-05T16:00:00-0800" is not
+  far enough in advance.'
+- 'not_available_max_days_in_advance: The time "2017-02-07T16:00:00" is too far in
+  advance.'
+- 'not_available: The time "2016-03-08T05:00:00-0800" is not an available time slot.'
+- 'invalid_certificate: The certificate "NOCODENOPROBLEM" is invalid.'
+- 'expired_certificate: The certificate "EXPIRED" is expired.'
+- 'certificate_uses: The certificate "8013DA6F" has no remaining uses for appointment
+  type "1".'
+- 'invalid_certificate_type: The certificate "E5E5325C" is invalid for appointment
+  type "5".'
+- '401 Unauthorized: Authentication failure'
+- '400: Client does not exist'
+- 'reschedule_not_allowed: Clients are not allowed to reschedule.'
+- 'reschedule_too_close: Clients are not allowed to reschedule this close to the time
+  of the appointment.'
+- 'reschedule_series: Class series may not be rescheduled.'
+- 'reschedule_canceled: Canceled appointments may not be rescheduled.'
+- '401 Unauthorized: Recheck User ID or API Key'
+- 'invalid_request: The request is missing a required parameter, includes an invalid
+  parameter value, includes a parameter more than once, or is otherwise malformed.
+  Check the ''code'' parameter.'
+- '400: Bad Request: The request requires a JSON body, but we couldn''t parse it.'
+- '401: Unauthorized: We don''t know who you are! Either the request didn''t include
+  authentication or the authentication wasn''t valid.'
+- '403: Forbidden: The request included authentication and we know who you are, but
+  you don''t have access to the resource.'
+- '404: Not Found: The requested resource could not be found.'
+- '405: Method Not Allowed: The resource exists but the HTTP method is not supported.'
+- '429: Too Many Requests: Rate limit reached. Limit 10req/s and 20 concurrent connections.'
+- '500: Internal Server Error: Something unexpected happened.'
+- '400: Bad Request: Can not clear the field "firstName".'
+- '422: Unprocessable Entity: End is before start.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://acuityscheduling.com/api/v1
+  headers:
+    Content-Type: application/json
+    Accept: application/json
+  auth:
+    type: Basic
+    location: header
+    header_name: Authorization
+source_metadata: null

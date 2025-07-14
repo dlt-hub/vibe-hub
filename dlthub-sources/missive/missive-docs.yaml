@@ -1,0 +1,244 @@
+resources:
+- name: chat
+  endpoint:
+    path: /missive.js
+    method: GET
+- name: webhook_missive
+  endpoint:
+    path: https://callback.missiveapp.com/twilio
+    method: POST
+    data_selector: '{}'
+    params: {}
+- name: create_analytics_report
+  endpoint:
+    path: /analytics/reports
+    method: POST
+    data_selector: reports
+    params:
+      organization: 0d9bab85-a74f-4ece-9142-0f9b9f36ff92
+      start: 1691812800
+      end: 1692371867
+      time_zone: America/Montreal
+- name: get_analytics_report
+  endpoint:
+    path: /analytics/reports/{id}
+    method: GET
+    data_selector: reports
+- name: create_contact
+  endpoint:
+    path: /contacts
+    method: POST
+    data_selector: contacts
+- name: list_contacts
+  endpoint:
+    path: /contacts
+    method: GET
+    data_selector: contacts
+    params:
+      limit: 50
+      offset: 0
+- name: list_contact_books
+  endpoint:
+    path: /contact_books
+    method: GET
+    data_selector: contact_books
+    params:
+      limit: 50
+      offset: 0
+- name: list_contact_groups
+  endpoint:
+    path: /contact_groups
+    method: GET
+    data_selector: contact_groups
+- name: conversations
+  endpoint:
+    path: /v1/conversations
+    method: GET
+    data_selector: conversations
+    params:
+      limit: '25'
+- name: conversation_messages
+  endpoint:
+    path: /v1/conversations/{id}/messages
+    method: GET
+    data_selector: messages
+    params:
+      limit: '10'
+- name: conversation_comments
+  endpoint:
+    path: /v1/conversations/{id}/comments
+    method: GET
+    data_selector: comments
+    params:
+      limit: '10'
+- name: drafts
+  endpoint:
+    path: /v1/drafts
+    method: POST
+    data_selector: drafts
+    params: {}
+- name: create_message
+  endpoint:
+    path: /v1/messages
+    method: POST
+    data_selector: messages
+    params: {}
+- name: get_message
+  endpoint:
+    path: /v1/messages/{id}
+    method: GET
+    data_selector: messages
+    params: {}
+- name: list_messages
+  endpoint:
+    path: /v1/messages
+    method: GET
+    data_selector: messages
+    params:
+      email_message_id: ''
+- name: list_organizations
+  endpoint:
+    path: /v1/organizations
+    method: GET
+    data_selector: organizations
+    params: {}
+- name: list_responses
+  endpoint:
+    path: /v1/responses
+    method: GET
+    data_selector: responses
+    params: {}
+- name: get_response
+  endpoint:
+    path: /v1/responses/{id}
+    method: GET
+    data_selector: responses
+    params: {}
+- name: posts
+  endpoint:
+    path: /v1/posts
+    method: POST
+    data_selector: posts
+    params: {}
+- name: shared_labels
+  endpoint:
+    path: /v1/shared_labels
+    method: POST
+    data_selector: shared_labels
+    params: {}
+- name: teams
+  endpoint:
+    path: /v1/teams
+    method: GET
+    data_selector: teams
+    params: {}
+- name: users
+  endpoint:
+    path: /v1/users
+    method: GET
+    data_selector: users
+    params: {}
+- name: tasks
+  endpoint:
+    path: /v1/tasks
+    method: POST
+    data_selector: tasks
+    params: {}
+- name: create_webhook
+  endpoint:
+    path: /v1/hooks
+    method: POST
+    data_selector: hooks
+    params:
+      type: ''
+      url: ''
+      organization: 'null'
+      content_contains: 'null'
+      content_starts_with: 'null'
+      content_ends_with: 'null'
+      is_task: 'false'
+      author: 'null'
+      mention: 'null'
+- name: delete_webhook
+  endpoint:
+    path: /v1/hooks/:id
+    method: DELETE
+    data_selector: hooks
+    params: {}
+- name: labels
+  endpoint:
+    path: /add_shared_labels
+    method: POST
+- name: conversations
+  endpoint:
+    path: /conversations
+    method: GET
+- name: messages
+  endpoint:
+    path: /messages
+    method: GET
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+- name: labels
+  endpoint:
+    path: /labels
+    method: GET
+notes:
+- Missive Live Chat works on top of Twilio’s Conversations API.
+- Requires setup of connected app in Missive.
+- Implement authentication logic in your iFrame itself so your users have to log in
+  before seeing the iFrame content.
+- Pass a token in the integration URL parameters that your server will use to authenticate
+  the request before serving the iFrame content.
+- Delegate OAuth flow to Missive with initiateCallback.
+- Maximum of 5 concurrent requests at any given time
+- 300 requests per minute (equivalent to 5 requests per second)
+- 900 requests per 15 minutes (equivalent to 1 request per second)
+- 'When a rate limit is reached, Missive API will return the following HTTP error
+  status code: 429 Too Many Requests'
+- Reports must be fetched 5 seconds after creation and retried every 5 seconds until
+  successful.
+- Be extremely careful when using the quote_previous_message parameter.
+- Requires OAuth2 authentication with a valid token.
+- The API may return nulls for some fields in the response.
+- If a webhook rule fails more than 50 times in a row, the rule will be automatically
+  disabled.
+- You must transmit your user token as a Bearer token in the Authorization HTTP header.
+- Securing your integration is crucial, even when using AI or low-code tools, to protect
+  sensitive data.
+- While these tools make building easier, they don't eliminate security risks.
+errors:
+- '429 Too Many Requests: Rate limit reached'
+- '401 Unauthorized: Check token validity or scopes.'
+- '404 Not Found: Ensure the resource exists.'
+- '400 Bad Request: Review the payload structure for errors.'
+- If the webhook request returns an error status code or does not return a response
+  within 15 seconds, the request will be retried up to 5 times over a period of 8
+  minutes.
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+client:
+  base_url: https://public.missiveapp.com/v1
+  headers:
+    Accept: application/json
+    X-Hook-Signature: hash
+    Content-Type: application/json
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+    flow: refresh_token
+    token_url: https://api.missiveapp.com/oauth/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+  paginator:
+    type: page
+    cursor_param: until
+    page_size_param: limit
+    default_page_size: 50
+source_metadata: null

@@ -1,0 +1,135 @@
+resources:
+- name: basic_post
+  endpoint:
+    path: /posts/basic
+    method: GET
+    data_selector: posts
+- name: image_post
+  endpoint:
+    path: /posts/image
+    method: GET
+    data_selector: posts
+- name: event_post
+  endpoint:
+    path: /posts/event
+    method: GET
+    data_selector: posts
+- name: auth_token
+  endpoint:
+    path: /api/v1/headless/auth_token
+    method: POST
+    data_selector: access_token
+- name: member_api
+  endpoint:
+    path: /api/headless/v1/home
+    method: GET
+    data_selector: records
+- name: ChatRoomChannel
+  endpoint:
+    path: chat-room-channel-#{community_member.id}
+    method: WebSocket
+    data_selector: message
+    params: {}
+- name: NotificationChannel
+  endpoint:
+    path: notification-channel-#{community_member_id}
+    method: WebSocket
+    data_selector: notification
+    params: {}
+- name: CommunityMemberThreadsChannel
+  endpoint:
+    path: chat-community-member-#{community_member_id}-threads-channel
+    method: WebSocket
+    data_selector: chat_thread
+    params: {}
+- name: direct_upload
+  endpoint:
+    path: /direct_uploads
+    method: POST
+    data_selector: direct_upload
+- name: blocks
+  endpoint:
+    path: /tiptap/blocks
+    method: GET
+    data_selector: blocks
+- name: chat_room
+  endpoint:
+    path: /api/chat_rooms
+    method: GET
+    data_selector: chat_rooms
+- name: chat_room_message
+  endpoint:
+    path: /api/chat_room_messages
+    method: GET
+    data_selector: messages
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: posts
+  endpoint:
+    path: /comments/posts
+    method: GET
+    params:
+      space_id: '999'
+      page: '1'
+      per_page: '20'
+      status: published
+notes:
+- MAU is the number of unique users that create or consume content on Circle servers
+  through SDK or API within a monthly billing cycle.
+- All service requests except authentication are counted as MAU.
+- Authentication endpoints are not taken into account, so you can use them without
+  increasing your MAU count.
+- Use token type 'Headless Auth' for it to work with the Auth APIs.
+- The admin API is not meant to be used on the client side, or to re-create your own
+  Circle experience from scratch.
+- After October 2024, we strongly recommend using the admin API v2 whenever possible.
+- Requests are admin-authenticated, which means the API can only be used to build
+  administrative tooling and automations.
+- Requests are member-authenticated via the member-specific JWT tokens.
+- SGID is crucial for identifying elements within a block.
+- All content must be wrapped in a paragraph node
+- Links require both href and target attributes
+- Mentions require a valid SGID
+- Attachments must be uploaded separately first to obtain signed IDs
+- Line breaks can be added between any content nodes using hardBreak type
+- Uses OAuth2 with refresh token â€” requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://app.circle.so/api/admin/v2
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+  paginator:
+    type: cursor
+    page_size_param: per_page
+    default_page_size: 20
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+  headers:
+    Origin: https://your-whitelisted-domain.com
+    Authorization: Bearer HEADLESS_MEMBER_ACCESS_TOKEN
+    Content-Type: application/json
+    Accept: application/json
+source_metadata: null

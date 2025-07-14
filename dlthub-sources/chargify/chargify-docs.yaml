@@ -1,0 +1,43 @@
+# Source Metadata
+source_name: Chargify
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-domain.chargify.com
+  auth:
+    type: apikey
+  headers:
+    Authorization: Basic {{ dlt.secrets['chargify_api_key'] }}
+
+# Resources (per endpoint/object)
+resources:
+  - name: customers
+    endpoint:
+      path: /customers
+      method: GET
+      data_selector: customers
+
+  - name: subscriptions
+    endpoint:
+      path: /subscriptions
+      method: GET
+      data_selector: subscriptions
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Full Refresh syncs only for Customers and Subscriptions endpoints
+  - No incremental sync or delete replication supported
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key validity
+  - 404 Not Found: Verify endpoint path and resource availability

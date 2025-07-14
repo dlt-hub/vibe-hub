@@ -1,0 +1,103 @@
+resources:
+- name: categories
+  endpoint:
+    path: /api/v2/categories
+    method: GET
+- name: users
+  endpoint:
+    path: /api/v2/users
+    method: GET
+- name: discussions
+  endpoint:
+    path: /api/v2/discussions
+    method: GET
+- name: leaderboard
+  endpoint:
+    path: /api/v2/analytics/leaderboard
+    method: GET
+    data_selector: records
+- name: analytics_query
+  endpoint:
+    path: /api/v2/analytics/query
+    method: POST
+    data_selector: result
+- name: users
+  endpoint:
+    path: /users.csv
+    method: GET
+    data_selector: records
+    params:
+      page: 1
+      limit: 5000
+- name: users
+  endpoint:
+    path: /api/v2/users/:userID
+    method: GET
+- name: subcommunities
+  endpoint:
+    path: /api/v2/subcommunities
+    method: GET
+- name: products
+  endpoint:
+    path: /api/v2/products
+    method: GET
+- name: role_token
+  endpoint:
+    path: /api/v2/tokens/roles
+    method: POST
+- name: discussions
+  endpoint:
+    path: /api/v2/discussions
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Make sure this secret stays on your server; otherwise, your authentication may be
+  compromised.
+- Currently, there's no official way to disable the regular JWT SSO.
+- If a smart ID resolves to multiple rows, or none at all, a fatal error will be generated.
+- A smart ID must resolve to exactly one row.
+- The 5,000 record limit is only available when exporting to CSV. If making a standard
+  API call, the limit is 500 users.
+- Role tokens are valid for one to three minutes, with expiration every two minutes.
+- Role tokens should be passed as a role-token query parameter.
+- New endpoints will be available as they are completed.
+- Results per page can be lower than the limit due to user permissions.
+- Co-Deploy goes a step further, allowing Enterprise+ customers to fully customize
+  and extend their Vanilla forums to meet specific brand requirements and business
+  objectives.
+- Code collaboration is limited to the official client repository under our organization
+  on GitHub.
+- All code changes must be submitted for review via pull requests.
+- Each customer is limited to 8 collaborators.
+- All code authored by Vanilla staff remains the property of Vanilla.
+- HLV does not engage in code reviews on customer code.
+- Outputs are generated through machine learning processes and are not tested, verified,
+  endorsed or guaranteed to be accurate, complete or current by Higher Logic.
+- Spoofing is a powerful tool, but it requires caution because you're allowing access
+  to other user accounts.
+- Only ever spoof with an access token on the server. Never pass spoof headers in
+  the client with JavaScript, in a mobile app, etc.
+- Do not use spoofing as a workaround for SSO. Think of spoofing as a tool for administrators
+  or server integrations such as automated posts on behalf of users.
+- When you spoof as a user, the API call will be as that user and will be limited
+  by that user's permissions.
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  auth:
+    type: Bearer
+    location: header
+    header_name: Authorization
+  base_url: https://example.com/api/v2
+  paginator:
+    type: numbered
+    page_size_param: limit
+    default_page_size: 30
+    page: page
+    limit: limit
+  headers:
+    Authorization: Bearer <Access Token>
+    X-Vanilla-Spoof: <userID>
+source_metadata: null

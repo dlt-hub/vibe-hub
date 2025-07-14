@@ -1,0 +1,208 @@
+resources:
+- name: invoice_webhook_subscribe
+  endpoint:
+    path: /my/invoicedemo/v1/invoices/subscribe
+    method: POST
+- name: invoice_webhook_unsubscribe
+  endpoint:
+    path: /my/invoicedemo/v1/invoices/unsubscribe
+    method: POST
+- name: visibility_webhook_subscribe
+  endpoint:
+    path: /my/visibilitydemo/v1/shipments/subscribe
+    method: POST
+- name: visibility_webhook_unsubscribe
+  endpoint:
+    path: /my/visibilitydemo/v1/shipments/unsubscribe/{subscriptionEvent}
+    method: POST
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: Validate booking
+  endpoint:
+    path: /validate
+    method: POST
+- name: Submit new booking
+  endpoint:
+    path: /submit
+    method: POST
+- name: Label Printing
+  endpoint:
+    path: /label
+    method: GET
+- name: Tracking
+  endpoint:
+    path: /tracking
+    method: GET
+- name: Document download
+  endpoint:
+    path: /document/download
+    method: GET
+- name: Document upload
+  endpoint:
+    path: /document/upload
+    method: POST
+- name: Visibility
+  endpoint:
+    path: /visibility
+    method: GET
+- name: Invoice
+  endpoint:
+    path: /invoice
+    method: GET
+- name: Webhook
+  endpoint:
+    path: /webhook
+    method: POST
+- name: PreAdvice
+  endpoint:
+    path: /pre-advice
+    method: POST
+    data_selector: preAdviceData
+- name: Despatch
+  endpoint:
+    path: /despatch
+    method: POST
+    data_selector: despatchData
+- name: SKU
+  endpoint:
+    path: /sku
+    method: POST
+    data_selector: skuData
+- name: Inventory
+  endpoint:
+    path: /inventory
+    method: GET
+    data_selector: inventoryData
+- name: StatusReport
+  endpoint:
+    path: /status-report
+    method: GET
+    data_selector: statusData
+- name: Confirmation
+  endpoint:
+    path: /confirmation
+    method: GET
+    data_selector: confirmationData
+- name: shipments_by_reference
+  endpoint:
+    path: /my/tracking/v2/shipments/reference/{reference}
+    method: GET
+- name: shipments_by_bookingId
+  endpoint:
+    path: /my/tracking/v2/shipments/bookingId/{bookingId}
+    method: GET
+- name: shipments_by_tmsId
+  endpoint:
+    path: /my/tracking/v2/shipments/tmsId/{tmsId}
+    method: GET
+- name: shipments_list
+  endpoint:
+    path: /my/tracking/v2/shipments/list
+    method: GET
+notes:
+- A primary key and a secondary key are allocated per subscribed product.
+- A supplier must be registered within the myDSV platform as part of an existing organization
+  before an admin user can link them to a customer’s account.
+- Suppliers are granted access solely to the shipments and data of the specific customer(s)
+  they are authorized for.
+- The XPress Booking API requires you to pass a certification process, as a prerequisite
+  for moving to Production.
+- Must have a Shopify Store
+- Make sure you have at least 1 Pickup Address configured.
+- Make sure you have at least 1 MDM number configured.
+- Basic auth method will continue to be supported until January, 2026
+- After February 1st, 2026, the legacy authentication method will no longer be supported
+- OAuth 2.0 is now live for all Generic APIs.
+- All new integrations must use OAuth, and existing ones should migrate before January
+  31st, 2026.
+- Always use HTTPS to prevent unauthorized access, as tokens contain sensitive information.
+- If the refresh token expires, you will need to log in again with your username and
+  password to request a new one.
+- Uses OAuth2 with refresh token â€” requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- OAuth 2.0 is now the standard authentication method for all DSV Generic APIs, replacing
+  the legacy DSV-Service-Auth.
+- All new integrations must use OAuth 2.0, and existing integrations must migrate
+  by January 31st, 2026 to avoid service disruptions.
+- An active account at DSV is required to use the APIs.
+- Use the DSV Access Token API to receive the Access Token.
+errors:
+- '401 - Unauthorized: The API request is not authenticated correctly.'
+- '403 - Forbidden: Access denied due to missing API role'
+- '404 - Not Found: The request contains incorrect or missing parameters, which resulted
+  in the resource not being found.'
+- '500 - Internal Server Error: The server encountered an unexpected condition that
+  prevented it from fulfilling the request.'
+- '400 - Bad Request: Invalid Pickup Date'
+- '400 - Bad Request: Autobook Disabled Due to Previous Errors'
+- '400 - Bad Request: Invalid Package Quantity'
+- '400 - Bad Request: Missing Address details'
+- '400 - Bad Request: Unsupported Label Format'
+- '403 - Forbidden: Unauthorized Shipment Access'
+- '404 - Not Found: Document Not Available'
+- '415 - Unsupported Media Type: Incorrect File Format'
+- '404 - Not Found: Invoice Does Not Exist'
+- '400 - Bad Request: Invalid Shipment Data'
+- '401 - Unauthorized: Missing OAuth Token'
+- '400 - Bad Request: Invalid Booking Details'
+- '400 - Bad Request: Invalid Shipment Details'
+- '400 - Bad Request: Invalid Shipment Query'
+- '404 - Not Found: Shipment ID Does Not Exist'
+- '400 - Bad Request: Invalid Load Plan Structure'
+- '400 - Bad Request: Missing Required Fields'
+- '404 - Not Found: No Shipments Match Criteria'
+- '400 - Bad Request: Invalid Event Type'
+- '403 - Forbidden: Unauthorized Access'
+- '401 Unauthorized: This error often means your access token has expired. Use your
+  refresh token to obtain a new one.'
+- '403 Forbidden: This may indicate invalid credentials or insufficient permissions.
+  Double-check your credentials and access scopes.'
+- 'Invalid Token Format: Ensure the token follows the correct format (Bearer {token}).'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - user-email
+  - password
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - Access Token
+  - DSV-Subscription-Key
+client:
+  headers:
+    DSV-Subscription-Key: your_api_key
+    Authorization: Bearer {access_token}
+    DSV-Service-Auth: ''
+    x-pat: ''
+    Accept: application/json
+    Actor: your_actor_token
+  auth:
+    type: oauth2
+    location: header
+    header_name: DSV-Subscription-Key
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+  base_url: https://dsv.api.com
+  paginator:
+    type: cursor
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    page_size_param: pageSize
+    default_page_size: 200
+source_metadata: null

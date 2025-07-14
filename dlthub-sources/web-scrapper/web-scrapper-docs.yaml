@@ -1,0 +1,62 @@
+# Source Metadata
+source_name: web_scraper
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://cloud.webscraper.io/api
+  auth:
+    type: apikey
+    api_token: "{{ dlt.secrets['api_token'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: sitemap_list
+    endpoint:
+      path: /sitemaps
+      method: GET
+      data_selector: sitemaps
+
+  - name: sitemap_detail
+    endpoint:
+      path: /sitemaps/{id}
+      method: GET
+      data_selector: sitemap
+
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: users
+
+  - name: scraping_jobs
+    endpoint:
+      path: /scraping-jobs
+      method: GET
+      data_selector: jobs
+
+  - name: scraping_job_data_quality
+    endpoint:
+      path: /scraping-jobs/{id}/data-quality
+      method: GET
+      data_selector: data_quality
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Token
+
+# Known Quirks or Risks, Caveats
+notes:
+  - No pagination support for users and scraping_job_data_quality endpoints
+  - Only full sync is supported for all the resources
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check your API token
+  - 404 Not Found: Verify the resource ID or endpoint path

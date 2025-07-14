@@ -1,0 +1,90 @@
+resources:
+- name: resources
+  endpoint:
+    path: /v1/example-corp/resources
+    method: GET
+- name: me
+  endpoint:
+    path: /v1/me
+    method: GET
+- name: clients
+  endpoint:
+    path: /clients
+    method: GET
+    data_selector: clients
+- name: projects
+  endpoint:
+    path: /projects
+    method: GET
+    data_selector: projects
+- name: resources
+  endpoint:
+    path: /resources
+    method: GET
+    data_selector: resources
+- name: bookings
+  endpoint:
+    path: /bookings
+    method: GET
+    data_selector: bookings
+- name: downtimes
+  endpoint:
+    path: /downtimes
+    method: GET
+    data_selector: downtimes
+- name: clients
+  endpoint:
+    path: /clients
+    method: GET
+    data_selector: clients
+    params:
+      limit: '50'
+      offset: '0'
+- name: projects
+  endpoint:
+    path: /projects
+    method: GET
+    data_selector: projects
+    params:
+      limit: '50'
+      offset: '0'
+- name: resources
+  endpoint:
+    path: /resources
+    method: GET
+    data_selector: resources
+    params:
+      limit: '50'
+      offset: '0'
+notes:
+- Webhooks provide a way for Resource Guru to send real-time information to other
+  apps.
+errors:
+- '429 Rate Limit Exceeded: Too many requests per minute'
+- '401 Unauthorized: Invalid OAuth token'
+- '403 Forbidden: Access denied to the resource'
+- name: string
+  date: '2020-12-31T14:29:29.000Z'
+  code: 0
+  message: string
+auth_info:
+  mentioned_objects: []
+client:
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.resourceguruapp.com/oauth/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    redirect_uri: http://localhost/oauth
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  base_url: https://api.resourceguruapp.com
+  headers:
+    Accept: application/json
+  paginator:
+    type: offset
+    page_size_param: limit
+    default_page_size: 50
+source_metadata: null

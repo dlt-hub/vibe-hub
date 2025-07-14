@@ -1,0 +1,47 @@
+resources:
+- name: faxes
+  endpoint: /restapi/v1.0/account/{accountId}/fax
+  methods:
+  - GET
+  - POST
+  description: Send and receive faxes.
+  parameters:
+  - faxId
+  - to
+  - from
+  - attachment
+  - subject
+- name: fax statuses
+  endpoint: /restapi/v1.0/account/{accountId}/fax/{faxId}
+  methods:
+  - GET
+  description: Retrieve the status of a fax.
+  parameters:
+  - faxId
+notes:
+- 'Rate limiting: 1000 requests per hour'
+- Pagination is available for retrieving lists of faxes
+- Webhook support for real-time fax status updates
+errors:
+- '401: Unauthorized - Invalid or expired token'
+- '429: Too Many Requests - Rate limit exceeded'
+- '404: Not Found - Fax not found'
+- '400: Bad Request - Invalid fax parameters'
+auth_info:
+  mentioned_objects:
+  - bearer_token
+  auth_flow: OAuth 2.0 is used for authentication, requiring a token to be sent in
+    the Authorization header.
+  env_var_for_auth: RINGCENTRAL_API_TOKEN
+client:
+  base_url: https://api.ringcentral.com
+  auth:
+    type: oauth
+    location: header
+    key_name: Authorization
+    env_var: RINGCENTRAL_API_TOKEN
+source_metadata:
+  name: Faxes
+  variable_name: faxes
+  base_url: https://api.ringcentral.com
+  original_source_url: https://developers.ringcentral.com/fax-api

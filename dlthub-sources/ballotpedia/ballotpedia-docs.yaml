@@ -1,0 +1,137 @@
+resources:
+- name: election_dates_by_point
+  endpoint:
+    path: /election_dates/point
+    method: GET
+    data_selector: data.elections
+    params:
+      lat: latitude
+      long: longitude
+- name: election_dates_by_parameters
+  endpoint:
+    path: /election_dates/list
+    method: GET
+    data_selector: data.elections
+    params: {}
+- name: current_officeholders
+  endpoint:
+    path: /officeholders
+    method: GET
+    data_selector: data
+    params:
+      lat: ''
+      long: ''
+      collections: contact
+- name: elections_by_state
+  endpoint:
+    path: /data/elections_by_state
+    method: GET
+    params:
+      state: ''
+      election_date: ''
+      collections: social,contact
+      office_level: Federal,State,Local
+      office_branch: Legislative,Executive,Judicial
+      district_type: Country,Congress,State,State Legislative (Upper),State Legislative
+        (Lower),Judicial District,County,County subdivision,City-town,School District,State
+        subdivision,Special district subdivision,Judicial district subdivision,Special
+        District,City-town subdivision,School district subdivision
+      page: ''
+- name: elections
+  endpoint:
+    path: /elections_by_state
+    method: GET
+    data_selector: data
+    params: {}
+- name: elections
+  endpoint:
+    path: /elections_by_state
+    method: GET
+    data_selector: data
+    params: {}
+- name: elections
+  endpoint:
+    path: /elections_by_state
+    method: GET
+    data_selector: races
+    params: {}
+- name: elections
+  endpoint:
+    path: /elections_by_state
+    method: GET
+    data_selector: data
+    params: {}
+- name: elections
+  endpoint:
+    path: /elections_by_state
+    method: GET
+    data_selector: data
+    params: {}
+- name: election_dates
+  endpoint:
+    path: /election_dates
+    method: GET
+- name: elections_by_point
+  endpoint:
+    path: /elections_by_point
+    method: GET
+- name: officeholders
+  endpoint:
+    path: /officeholders
+    method: GET
+- name: query_list
+  endpoint:
+    path: /getQueryList
+    method: GET
+    data_selector: data
+- name: query_results
+  endpoint:
+    path: /getQueryResults
+    method: POST
+    data_selector: data
+    params: {}
+- name: elections
+  endpoint:
+    path: /elections_by_point
+    method: GET
+    params:
+      lat: ''
+      long: ''
+      election_date: ''
+notes:
+- Data is refreshed every 24 hours
+- Contact Ballotpedia’s data sales team to request password changes
+- This API is rate-limited using the token bucket algorithm.
+- 'Rate: 5 requests per second'
+- 'Burst Capacity: 100 requests'
+- 'Total Daily Quota: 200k requests'
+- If the request rate is exceeded, a response with HTTP 429 Too Many Requests is sent.
+- 'To avoid throttling: Keep steady usage at or below 5 requests per second. Implement
+  exponential backoff with retry logic to space out retries.'
+- Requests from non-whitelisted origin domains will receive a preflight CORS permissions
+  error.
+- 'Required parameters: lat, long'
+- 'Optional parameters: collections=social,contact'
+- When a race utilizes Ranked Choice Voting, is_ranked_choice will be true.
+- The URL for the downloadable file expires after 5 minutes.
+- Files are re-generated daily and will always return only the last generated file.
+- If the election date is in the future, a list of candidates and ballot measures
+  are returned who are on the ballot in the upcoming election.
+- If the election date is in the past, a list of candidates and ballot measures will
+  be returned who were on the ballot for that past election.
+errors:
+- '429 Too Many Requests: Request rate exceeded'
+- 4xx or 5xx type response codes for unsuccessful queries.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api4.ballotpedia.org
+  headers:
+    Accept: application/json
+    x-api-key: your_api_key
+    Content-Type: application/json
+  paginator:
+    type: offset
+    page_size_param: pageSize
+    default_page_size: 25
+source_metadata: null

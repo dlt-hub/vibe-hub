@@ -1,0 +1,41 @@
+resources:
+- name: monitor_fields
+  endpoint:
+    path: /api/v1/webhooks/monitor_fields
+    method: GET
+- name: fields
+  endpoint:
+    path: /api/v1/meta/fields/
+    method: GET
+- name: employees_directory
+  endpoint:
+    path: /{subdomain}/v1/employees/directory
+    method: GET
+    data_selector: employees
+    params: {}
+notes:
+- You will need to parse the form submission data
+- Changes to the API user's permissions can invalidate a Permissioned Webhook or prevent
+  it from accessing certain fields.
+- If the user account associated with a Permissioned Webhook's API key is deactivated
+  (e.g., employee departure), the webhook will stop functioning.
+- Access levels are managed by admin users.
+- Webhooks created by a user will stop functioning if that user's account is deactivated.
+- Rate limit maximum of 1 time every 60 seconds.
+- Each user may have one or more secret API keys that identify that user to the API.
+- If an unknown API key is used repeatedly, the API will disable access for a period
+  of time.
+errors:
+- Permission denied to the following fields
+- monitorFieldViolations
+- postFieldViolations
+- '403 Forbidden: Access is disabled due to repeated unknown API key usage.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.bamboohr.com/api/gateway.php
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+source_metadata: null

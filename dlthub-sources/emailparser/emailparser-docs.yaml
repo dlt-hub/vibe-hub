@@ -1,0 +1,45 @@
+resources:
+- name: email
+  endpoint: /email
+  methods:
+  - GET
+  - POST
+  description: Parse and manage email messages
+  parameters:
+  - raw_email
+  - headers
+  - body
+- name: headers
+  endpoint: /headers
+  methods:
+  - GET
+  description: Manage and retrieve email headers
+  parameters:
+  - header_name
+  - header_value
+notes:
+- 'Rate limiting: 100 requests per hour'
+- Pagination available on list endpoints
+- Webhook support for email notifications
+errors:
+- '401: Unauthorized - Invalid API key'
+- '429: Too Many Requests - Rate limit exceeded'
+- '404: Not Found - Resource not found'
+auth_info:
+  mentioned_objects:
+  - api_key
+  - authentication_header
+  auth_flow: Authenticate using Basic Auth with an API key in the Authorization header.
+  env_var_for_auth: SERVICE_API_KEY
+client:
+  base_url: https://api.example.com
+  auth:
+    type: basic_auth
+    location: header
+    key_name: Authorization
+    env_var: SERVICE_API_KEY
+source_metadata:
+  name: Emailparser
+  variable_name: service_name
+  base_url: https://api.example.com
+  original_source_url: https://docs.python.org/3/library/email.parser.html

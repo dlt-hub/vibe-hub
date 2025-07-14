@@ -1,0 +1,82 @@
+resources:
+- name: databases
+  endpoint:
+    path: /Databases
+    method: GET
+    data_selector: /DATA/value
+    params: {}
+- name: cubes
+  endpoint:
+    path: /Databases({id})/Cubes
+    method: GET
+    data_selector: records
+    params: {}
+- name: cells
+  endpoint:
+    path: /Databases({id})/Cubes({id})/Cells?disablepaging=true
+    method: GET
+    data_selector: records
+    params: {}
+- name: views
+  endpoint:
+    path: /Databases({id})/Views
+    method: GET
+    data_selector: records
+    params: {}
+- name: view_cells
+  endpoint:
+    path: /Databases({id})/Views({id})/Cells?disablepaging=true
+    method: GET
+    data_selector: records
+    params: {}
+- name: default-db-right
+  endpoint:
+    path: /default-db-right
+    method: GET
+    data_selector: records
+    params: {}
+- name: session-timeout
+  endpoint:
+    path: /session-timeout
+    method: GET
+    data_selector: records
+    params: {}
+- name: Integrator Job
+  endpoint:
+    path: /Integrator('globalprojects')/projects('sampleBiker')/jobs('default')/Run(waitForTermination=true)
+    method: GET
+notes:
+- The Power BI API has some limitations, including an hourly limit of 1,000,000 rows
+  per dataset.
+- MFA (Multi Factor Authentication) is not supported.
+- The server browser interface is protected by a username and password.
+- User and password credentials are the only supported form of authentication for
+  the JDBC connection, regardless of the type(s) of authentication supported in the
+  source / target system of the connection.
+- The JDBC connection only allows read access (extract types Relational and RelationalTable)
+  and usage in load type RelationalSQL. "Relational" type loads are not allowed.
+- The connection refers to the name of the Jedox connection in the Jedox Integrator
+  project.
+- New fresh System DB is created when System database.csv file is missing.
+- Organizational account and other options are not supported at this time, but may
+  appear in a future update of the OData Service.
+errors:
+- ERROR_splash_THRESHOLD_EXCEEDED = 5027
+auth_info:
+  mentioned_objects: []
+client:
+  auth:
+    type: basic
+    username: admin
+    password: admin
+    location: header
+    header_name: Authorization
+  base_url: https://olap.name.cloud.jedox.com/api
+  headers:
+    Username: your_username
+    Password: your_password
+    Accept: application/json
+  paginator:
+    type: none
+    default_page_size: 1000
+source_metadata: null

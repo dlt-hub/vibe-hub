@@ -1,0 +1,64 @@
+resources:
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- To prevent abuse, SprinxCRM imposes rate limits on API calls.
+- PayStream API implements rate limits to prevent excessive API usage and maintain
+  system stability.
+- Intercom enforces rate limits to ensure the stability and performance of its platform.
+- HubSpot implements rate limits to manage the volume of API requests.
+- MindTickle implements rate limits on API requests, ensuring fair access and maintaining
+  system stability.
+- ActiveCampaign implements rate limits to manage API usage and prevent overloading.
+- Uses OAuth2 with refresh token â€” requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Rate limits ensure the stability and performance of the API by controlling the number
+  of requests per second, preventing excessive usage and maintaining optimal system
+  responsiveness.
+errors:
+- 100 requests per minute
+- 1,000 requests per minute
+- 5,000 requests per minute
+- 100 requests per minute for Free plan
+- 500 requests per minute for Starter plan
+- 1,000 requests per minute for Pro plan
+- 2,500 requests per minute for Premier plan
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://your-instance.api-name.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    page_size_param: pageSize
+    default_page_size: 200
+source_metadata: null

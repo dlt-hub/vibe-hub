@@ -1,0 +1,46 @@
+# Source Metadata
+source_name: open_exchange_rates
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://openexchangerates.org/api
+  auth:
+    type: apikey
+    location: query
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: open_exchange_rates
+    endpoint:
+      path: /currencies.json
+      method: GET
+      data_selector: currencies
+
+  - name: exchange_rates
+    endpoint:
+      path: /latest.json
+      method: GET
+      data_selector: rates
+      params: {
+                "app_id": "{{ dlt.secrets['app_id'] }}"
+              }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - app_id
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Free subscription limits to 1000 API calls per month and default base currency as USD.
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - INVALID_APP_ID: Recheck the app_id provided in the request

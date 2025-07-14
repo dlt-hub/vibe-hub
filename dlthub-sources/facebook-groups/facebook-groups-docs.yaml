@@ -1,0 +1,47 @@
+resources:
+- name: groups
+  endpoint: /{group-id}
+  methods:
+  - GET
+  - POST
+  - DELETE
+  description: Manage Facebook groups
+  parameters:
+  - group-id
+  - name
+  - description
+- name: members
+  endpoint: /{group-id}/members
+  methods:
+  - GET
+  - POST
+  description: Manage group members
+  parameters:
+  - user-id
+  - role
+notes:
+- 'Rate limiting: 200 requests per hour per user.'
+- Pagination available on list endpoints.
+- Webhook support for real-time updates on group activities.
+errors:
+- '401: Unauthorized - Invalid access token.'
+- '403: Forbidden - Insufficient permissions.'
+- '404: Not Found - Resource not found.'
+auth_info:
+  mentioned_objects:
+  - access_token
+  - authentication_header
+  auth_flow: OAuth 2.0 is used for authentication, requiring an access token.
+  env_var_for_auth: FACEBOOK_ACCESS_TOKEN
+client:
+  base_url: https://graph.facebook.com/v12.0
+  auth:
+    type: oauth
+    location: header
+    key_name: Authorization
+    env_var: FACEBOOK_ACCESS_TOKEN
+source_metadata:
+  name: Facebook Groups
+  variable_name: facebook_groups
+  base_url: https://graph.facebook.com/v12.0
+  original_source_url: https://developers.facebook.com/docs/

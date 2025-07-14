@@ -1,0 +1,60 @@
+resources:
+- name: users
+  endpoint: /users
+  methods:
+  - GET
+  - POST
+  description: Manage user accounts
+  parameters:
+  - user_id
+  - email
+  - name
+- name: workouts
+  endpoint: /workouts
+  methods:
+  - GET
+  - POST
+  - PUT
+  description: Manage workout entries
+  parameters:
+  - workout_id
+  - date
+  - type
+  - duration
+- name: events
+  endpoint: /events
+  methods:
+  - GET
+  - POST
+  description: Manage event registrations
+  parameters:
+  - event_id
+  - user_id
+  - status
+notes:
+- 'Rate limiting: 1000 requests per hour'
+- Pagination available on list endpoints
+- Webhook support for real-time updates
+errors:
+- '401: Unauthorized - Invalid API key'
+- '429: Too Many Requests - Rate limit exceeded'
+- '404: Not Found - Resource not found'
+- '500: Internal Server Error - Unexpected server error'
+auth_info:
+  mentioned_objects:
+  - api_key
+  - authentication_header
+  auth_flow: Authenticate by including the API key in the Authorization header.
+  env_var_for_auth: SERVICE_API_KEY
+client:
+  base_url: https://api.finalsurge.com
+  auth:
+    type: api_key
+    location: header
+    key_name: Authorization
+    env_var: SERVICE_API_KEY
+source_metadata:
+  name: Finalsurge
+  variable_name: service_name
+  base_url: https://api.finalsurge.com
+  original_source_url: https://github.com/alexandear/final-surge-bot

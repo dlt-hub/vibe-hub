@@ -1,0 +1,105 @@
+# Source Metadata
+source_name: FreshBooks
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.freshbooks.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.freshbooks.com/auth/oauth/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['client_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: user
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: users
+
+  - name: clients
+    endpoint:
+      path: /clients
+      method: GET
+      data_selector: clients
+
+  - name: invoices
+    endpoint:
+      path: /invoices
+      method: GET
+      data_selector: invoices
+      params: {
+                "incremental": "updated_at"
+      }
+
+  - name: expenses
+    endpoint:
+      path: /expenses
+      method: GET
+      data_selector: expenses
+
+  - name: expense_summaries
+    endpoint:
+      path: /expense_summaries
+      method: GET
+      data_selector: expense_summaries
+
+  - name: expense_categories
+    endpoint:
+      path: /expense_categories
+      method: GET
+      data_selector: expense_categories
+
+  - name: invoice_details
+    endpoint:
+      path: /invoices/{invoiceid}
+      method: GET
+      data_selector: invoice_details
+
+  - name: expense_details
+    endpoint:
+      path: /expenses/{expenseid}
+      method: GET
+      data_selector: expense_details
+
+  - name: accounts
+    endpoint:
+      path: /accounts
+      method: GET
+      data_selector: accounts
+
+  - name: taxes
+    endpoint:
+      path: /taxes
+      method: GET
+      data_selector: taxes
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires setup of connected app in FreshBooks
+  - Some endpoints may have rate limits
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check token validity or permissions
+  - 404 Not Found: Verify endpoint path or resource identifiers
+  - 429 Too Many Requests: Implement exponential backoff for retries

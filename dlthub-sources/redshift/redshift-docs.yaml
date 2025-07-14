@@ -1,0 +1,49 @@
+# Source Metadata
+source_name: redshift
+version: 0.5.3
+authentication_required: true
+api_types_available:
+  - JDBC
+
+# Client / Connection Config
+client:
+  base_url: jdbc:redshift://<cluster-id>.<region>.redshift.amazonaws.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextCursor
+    cursor_param: cursor
+    page_size_param: limit
+    default_page_size: 1000
+
+# Resources (per endpoint/object)
+resources:
+  - name: table_data
+    endpoint:
+      path: /tables/<table_name>/data
+      method: GET
+      data_selector: records
+      params: {
+                "incremental": "updated_at"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - RedshiftCluster
+    - RedshiftUser
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Incremental syncs require a user-defined cursor field such as updated_at
+  - Replicate Incremental Deletes not supported in Redshift
+
+# Troubleshooting & Error Patterns
+errors:
+  - CONNECTION_FAILED: Check cluster accessibility and network settings
+  - AUTHENTICATION_ERROR: Validate credentials and permissions
+  - TIMEOUT: Increase timeout settings or optimize query performance

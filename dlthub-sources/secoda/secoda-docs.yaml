@@ -1,0 +1,56 @@
+# Source Metadata
+source_name: secoda
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.secoda.co
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.secoda.co/oauth/token
+    client_id: "{{ dlt.secrets['secoda_client_id'] }}"
+    client_secret: "{{ dlt.secrets['secoda_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['secoda_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: collections
+    endpoint:
+      path: /collections
+      method: GET
+      data_selector: data
+
+  - name: tables
+    endpoint:
+      path: /tables
+      method: GET
+      data_selector: data
+
+  - name: terms
+    endpoint:
+      path: /terms
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth2
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Only supports full refresh syncs, no incremental sync available.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check credentials and permissions.
+  - 403 Forbidden: Verify API access rights for the requested resource.
+  - 404 Not Found: Ensure the endpoint path is correct.

@@ -1,0 +1,113 @@
+resources:
+- name: import
+  endpoint:
+    path: /import
+    method: POST
+    data_selector: imports
+    params: {}
+- name: spreadsheet_import
+  endpoint:
+    path: /api/v1/spreadsheet_import
+    method: POST
+    data_selector: data
+    params: {}
+- name: csv_file_generation
+  endpoint:
+    path: /api/v1/csv_file_generation
+    method: POST
+    data_selector: data
+    params: {}
+- name: CSV Generator
+  endpoint:
+    path: /generate_csv
+    method: POST
+    data_selector: data
+    params: {}
+- name: scheduled_fetcher
+  endpoint:
+    path: /fetcher
+    method: POST
+    data_selector: results
+- name: Virtual Output Field
+  endpoint:
+    path: /virtual-output-fields
+    method: POST
+    data_selector: fields
+- name: import
+  endpoint:
+    path: /upload
+    method: POST
+    data_selector: imported_data
+    params:
+      importer_email: user_email
+- name: tasks
+  endpoint:
+    path: /v1/Workspaces/WSXXXXXXXXXX/Tasks
+    method: POST
+    data_selector: Attributes
+notes:
+- Zapier is limited to 1500 rows per import.
+- Use Webhooks by Zapier to handle more than 1500 records.
+- EasyCSV submits data to Salesforce as Bulk Jobs. This is the recommended way to
+  submit data to Salesforce as it is more efficient and faster.
+- Contact EasyCSV via email or chat if you have any issues.
+- Each row being imported will trigger your scenario separately. Be aware of your
+  plan limits if importing large CSV files.
+- Temp files last for 24 hours by default
+- Public Temp File & URL are enabled by default for CSV files generated from Zapier
+- This feature is ONLY available on higher plan levels or custom plans.
+- Shopify typically takes between 1-8 seconds to create one new Product with a couple
+  images via their API.
+- In order for your imports to process in a respectable amount of time EasyCSV limits
+  image file sizes for images to be 5 MB or less.
+- 'You need to select the following scopes for BOTH Read & Write so EasyCSV can make
+  the API calls needed: crm.schemas.companies.write, crm.objects.contacts.write, crm.schemas.deals.read,
+  crm.schemas.deals.write, crm.objects.custom.read, crm.objects.custom.write, crm.objects.contacts.read,
+  crm.schemas.companies.read'
+- At this time we only create Invoices, Credit Notes, Bills, and Manual Journal Entries
+  as well as their supporting objects like Contacts and Items/Products.
+- Google requires that interaction to be done via a Google Project Service Account.
+- Only allow uploads from specific web domain(s) to enhance security.
+- Rate limit is 120 file imports allowed per hour for embedded forms.
+- The number of records being POSTed per chunk being imported is too large for your
+  Bubble.io monthly plan.
+- Bubble.io databases are very picky. The Key values in the custom json you are POSTing
+  from EasyCSV need to EXACLY match what is in your Bubble.io database.
+- Asana has different rate limits for their free plan and their paid plans.
+- Make sure the profile has the correct permissions to be allowed to push data into
+  your Caspio database.
+- Follow the directions from Caspio to generate your Authentication token via OAuth.
+- For creating records from CSV imports, choose POST request.
+- For updating records, choose PUT request.
+- Default port number for FTP is 21 and for SFTP it is 22.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.'
+- '524: The number of records being POSTed per chunk being imported is too large.'
+- 'unknown column name: The Key values in the custom json need to EXACLY match the
+  column names in your Bubble.io database.'
+- '503: Random errors from Knack''s API.'
+- 'Timeout: Random errors from Knack''s API.'
+auth_info:
+  mentioned_objects:
+  - Web Services Profiles
+client:
+  base_url: https://your-instance.easycsv.com
+  headers:
+    tenant: spectrawinery
+    Authorization: Basic result_string_from_btoa_command
+    Accept: application/json
+    X-Knack-REST-API-KEY: '{{ API_KEY }}'
+    X-Knack-Application-Id: '{{ APPLICATION_ID }}'
+  auth:
+    type: basic
+    location: header
+    header_name: Authorization
+  paginator:
+    default_page_size: 50
+  resources:
+  - name: records
+    endpoint:
+      path: /objects/object_X/records
+      method: POST
+      data_selector: records
+source_metadata: null

@@ -1,0 +1,130 @@
+resources:
+- name: add_to_calendar_button
+  endpoint:
+    path: /atc.min.js
+    method: GET
+    data_selector: button
+    params: {}
+- name: calendar
+  endpoint:
+    path: /api/calendar
+    method: GET
+    data_selector: events
+- name: event_creation
+  endpoint:
+    path: /dir/
+    method: GET
+- name: event_page
+  endpoint:
+    path: /dir/
+    method: GET
+    data_selector: event
+    params: {}
+- name: calendar_service
+  endpoint:
+    path: /dir/
+    method: GET
+    data_selector: event
+    params: {}
+- name: email_attachment
+  endpoint:
+    path: /dir/
+    method: GET
+    data_selector: event
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: event
+  endpoint:
+    path: /events
+    method: GET
+    data_selector: events
+- name: calendar
+  endpoint:
+    path: /calendars
+    method: GET
+    data_selector: calendars
+- name: Add to Calendar Button
+  endpoint:
+    path: /stc.min.js
+    method: GET
+    data_selector: script
+    params: {}
+- name: event
+  endpoint:
+    path: /events
+    method: GET
+    data_selector: records
+- name: calendar
+  endpoint:
+    path: /calendars
+    method: GET
+    data_selector: records
+notes:
+- This button is for singular events.
+- Advanced settings can change labels in the dropdown and control button behaviour.
+- For more information about all of your tools, checkout our homepage.
+- Occurs monthly on the third Monday of the month, starting from Jun 21, 2021, forever
+  (PDT)
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- AddEvent can be customized to look any way you like it.
+- The provided email is invalid. Please use a valid email address.
+- We already found an account with that email address. Proceed to Sign In or Forgot
+  Password.
+- The service you connected with did not return enough data. Name and E-mail are required
+  data. Please select a different one.
+- Please enter your email address, your name and a password (minimum 14 characters
+  with at least 1 uppercase letter and 1 lowercase letter).
+- The Hobby plan has a 'hard limit' which means that when a limit has been reached,
+  the functionality which exceeded the limit will become unavailable for the rest
+  of the month.
+- All paid plans have 'soft limits' which means that when a limit has been reached,
+  our system will notify the account admin and request that you upgrade your account,
+  but you will not automatically lose any of your plan's functionality.
+- We do not knowingly collect Personal Data from children under the age of thirteen
+  (13).
+- You can request access to some of your Personal Data being stored by us.
+errors:
+- Your email or password is incorrect.
+- The recaptcha code is required.
+- Please fill out e-mail and password.
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://cdn.addevent.com/libs/stc/1.0.2
+  headers:
+    Accept: application/json
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  paginator:
+    type: cursor
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    page_size_param: pageSize
+    default_page_size: 200
+source_metadata: null

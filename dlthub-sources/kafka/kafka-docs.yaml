@@ -1,0 +1,48 @@
+# Source Metadata
+source_name: kafka
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-kafka-cluster.api.name.com
+  auth:
+    type: sasl
+    protocol: SASL PLAINTEXT
+    sasl_mechanism: OAUTHBEARER
+    oauthbearer_token_endpoint: https://your-token-endpoint.com
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+
+# Resources (per endpoint/object)
+resources:
+  - name: kafka_messages
+    endpoint:
+      path: /topics/{topic_name}
+      method: GET
+      data_selector: messages
+      params: {
+                "polling_time": 100,
+                "group_id": "group.id"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - SASL Mechanism
+    - OAUTHBEARER
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Must have access to Kafka topics before reading
+  - Requires specifying subscription method (list of topics or pattern)
+
+# Troubleshooting & Error Patterns
+errors:
+  - AUTHENTICATION_FAILURE: Check SASL JAAS Config or OAuth token
+  - TOPIC_NOT_FOUND: Ensure that specified topics exist in the cluster
+  - POLLING_TIMEOUT: Adjust polling time or check topic availability

@@ -1,0 +1,67 @@
+# Source Metadata
+source_name: smaily
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://{subdomain}.smaily.com/api/v1
+  auth:
+    type: basic
+    headers:
+      Authorization: Basic {base64_encoded(username:password)}
+  paginator:
+    type: offset
+    page_size_param: per_page
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: users
+  - name: segments
+    endpoint:
+      path: /segments
+      method: GET
+      data_selector: segments
+  - name: campaigns
+    endpoint:
+      path: /campaigns
+      method: GET
+      data_selector: campaigns
+  - name: templates
+    endpoint:
+      path: /templates
+      method: GET
+      data_selector: templates
+  - name: automations
+    endpoint:
+      path: /automations
+      method: GET
+      data_selector: automations
+  - name: ab_tests
+    endpoint:
+      path: /ab-tests
+      method: GET
+      data_selector: ab_tests
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - username
+    - password
+    - subdomain
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Only supports full refresh sync
+  - Rate limit of 5 API requests per second per IP-address
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency

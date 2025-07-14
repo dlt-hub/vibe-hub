@@ -1,0 +1,38 @@
+# Source Metadata
+source_name: couchbase
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: couchbases://cb.<your-cluster-id>.cloud.couchbase.com
+  auth:
+    type: basic
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: bucket_streams
+    endpoint:
+      path: /<bucket_name>/collections
+      method: GET
+      data_selector: collections
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - CouchbaseUser
+    - ClusterCredentials
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Connector is rate limited by Couchbase server or Couchbase Capella cluster's capacity
+  - Performance limits and pricing tier may affect data replication
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check username and password
+  - 429 Too Many Requests: Reduce request rate or batch size

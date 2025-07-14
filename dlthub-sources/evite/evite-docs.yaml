@@ -1,0 +1,47 @@
+resources:
+- name: invites
+  endpoint: /invites
+  methods:
+  - POST
+  description: Send invites to users
+  parameters:
+  - email
+  - message
+  - event_id
+- name: users
+  endpoint: /users
+  methods:
+  - GET
+  - POST
+  description: Manage user accounts
+  parameters:
+  - user_id
+  - email
+  - name
+notes:
+- 'Rate limiting: 1000 requests per hour'
+- Webhook support for real-time updates
+- Ensure to handle token expiration and refresh accordingly
+errors:
+- '401: Unauthorized - Invalid bearer token'
+- '429: Too Many Requests - Rate limit exceeded'
+- '404: Not Found - Resource not found'
+auth_info:
+  mentioned_objects:
+  - bearer_token
+  - authentication_header
+  auth_flow: Users must obtain a bearer token through OAuth 2.0 authentication flow
+    to access the API.
+  env_var_for_auth: BOX_API_TOKEN
+client:
+  base_url: https://api.box.com
+  auth:
+    type: bearer_token
+    location: header
+    key_name: Authorization
+    env_var: BOX_API_TOKEN
+source_metadata:
+  name: Evite
+  variable_name: service_name
+  base_url: https://api.box.com
+  original_source_url: https://developer.box.com/reference/resources/invite/

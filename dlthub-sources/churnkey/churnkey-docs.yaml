@@ -1,0 +1,178 @@
+resources:
+- name: customer_data
+  endpoint:
+    path: /customer-data
+    method: POST
+    data_selector: customerId
+    params: {}
+- name: customer_health
+  endpoint:
+    path: /customer_health
+    method: GET
+- name: watchlist
+  endpoint:
+    path: /watchlist
+    method: GET
+- name: custom_events
+  endpoint:
+    path: /custom_events
+    method: POST
+- name: session_outcomes
+  endpoint:
+    path: /sessions/outcomes
+    method: GET
+    data_selector: outcomes
+    params: {}
+- name: activity_stream
+  endpoint:
+    path: /sessions/activity_stream
+    method: GET
+    data_selector: activities
+    params: {}
+- name: customer_data
+  endpoint:
+    path: /customer-data
+    method: POST
+    data_selector: customerData
+    params: {}
+- name: single_customer_update
+  endpoint:
+    path: /v1/api/events/customer-update/set-users
+    method: POST
+    data_selector: null
+    params: {}
+- name: bulk_update
+  endpoint:
+    path: /v1/api/events/customer-update/set-users/bulk
+    method: POST
+    data_selector: null
+    params: {}
+- name: events_new
+  endpoint:
+    path: /v1/api/events/new
+    method: POST
+- name: events_bulk
+  endpoint:
+    path: /v1/api/events/bulk
+    method: POST
+- name: customer_update
+  endpoint:
+    path: /v1/api/events/customer-update
+    method: POST
+- name: customer
+  endpoint:
+    path: /customer
+    method: POST
+    data_selector: records
+    params: {}
+- name: pause_wall
+  endpoint:
+    path: /pause_wall
+    method: POST
+    data_selector: response
+    params:
+      customerId: CUSTOMER_ID
+      authHash: HMAC_HASH
+      appId: YOUR_APP_ID
+      provider: stripe
+      mode: live
+      softWall: false
+      forceCheck: false
+- name: failed_payment_wall
+  endpoint:
+    path: /path/to/failed_payment_wall
+    method: POST
+    data_selector: data
+    params: {}
+- name: boosted_revenue
+  endpoint:
+    path: /path/to/boosted_revenue
+    method: GET
+    data_selector: data
+- name: revenue_categories
+  endpoint:
+    path: /path/to/revenue_categories
+    method: GET
+    data_selector: data
+- name: sessions
+  endpoint:
+    path: /sessions
+    method: GET
+    data_selector: sessions
+    params:
+      limit: '100'
+      max: '10000'
+- name: user_data_delete
+  endpoint:
+    path: /dsr/delete
+    method: POST
+    data_selector: deleted
+    params: {}
+notes:
+- In order for Churnkey to track reactivation rates, you need to add a webhook in
+  your Chargebee account.
+- Sandbox credentials are optional, but great to add if you want to test your Cancel
+  Flow in a staging environment before going live with Churnkey.
+- Sessions track every customer's interaction with the Cancel Flow
+- Bounced sessions are marked if multiple sessions are created within 24 hours
+- Customer data endpoint is particularly relevant for email based setups.
+- Brand your Churnkey Cancel Flow with your own CSS
+- Use the Subscription ID instead of Customer ID for creating the HMAC hash
+- Keep your Churnkey API Key safe
+- For business logic related directly to customer billing and subscriptions, we recommend
+  you use Stripe webhooks.
+- The API key that you associate with Churnkey must have sufficient user and role
+  permissions.
+- You must enable notifications for all subscription events.
+- Feature support for Stripe, Chargebee, Paddle, and Braintree
+- Churnkey's Precision Retries are designed to occur within a 30 day window after
+  a failed payment.
+- Churnkey will not automatically change the subscription status to uncollectible
+  or unpaid.
+- If a handler callback for a customer event is defined, Churnkey will not take action
+  on your behalf when this event occurs.
+- Head to https://app.churnkey.co/flows/settings to change fallback behavior in case
+  of error.
+- Churnkey cannot edit subscriptions created by another 3rd party Stripe connection
+- Each mode corresponds to the billing provider (Stripe, Braintree, Chargebee, etc.)
+  environment you're working in.
+- If you want Churnkey to make changes more broadly across the customer's entire billing
+  record, you should omit the subscriptionId parameter while still including the required
+  customerId parameter.
+- Ensure the Churnkey script is loaded
+- Add the check function to your application initialization
+- Currently available for Stripe only
+- Connect Churnkey with your organization's Slack to send session notifications.
+- Create a new Auth Code for Churnkey at Paddle | Authentication
+- Make sure to use this auth code instead of the SDK API key
+- In addition to English, we have pre-built support for French, Spanish, German, and
+  45 additional languages.
+- 'Recommended: Once an API key is created, you can navigate back to the API Keys
+  page and add a description to it to help you identify it as the Churnkey API key.'
+- The Save Rate shows the percentage of sessions that ended up as Saved compared to
+  all of your valid sessions.
+- Use it to have a first understanding of the performance of your flows.
+- Tracks long-term revenue generated after customer engages with Churnkey Cancel Flow.
+errors:
+- Webhook signature is invalid or has been tampered with.
+- PAUSE_WALL_INITIALIZATION_ERROR
+- PAUSE_WALL_CANCEL_ERROR
+- PAUSE_WALL_RESUME_ERROR
+- FAILED_PAYMENT_WALL_INITIALIZATION_ERROR
+- FAILED_PAYMENT_WALL_UPDATE_CARD_ERROR
+- FAILED_PAYMENT_WALL_CANCEL_ERROR
+auth_info:
+  mentioned_objects: []
+client:
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+    x-ck-api-key: data_your_key...
+    x-ck-app: appIdHere
+    content-type: application/json
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  base_url: https://api.churnkey.co/v1/data
+source_metadata: null

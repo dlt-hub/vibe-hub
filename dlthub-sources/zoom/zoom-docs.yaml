@@ -1,0 +1,62 @@
+resources:
+- name: users
+  endpoint: /users
+  methods:
+  - GET
+  - POST
+  description: Manage user accounts
+  parameters:
+  - user_id
+  - email
+  - name
+- name: meetings
+  endpoint: /meetings
+  methods:
+  - GET
+  - POST
+  - DELETE
+  description: Schedule and manage meetings
+  parameters:
+  - meeting_id
+  - topic
+  - start_time
+  - duration
+- name: webinars
+  endpoint: /webinars
+  methods:
+  - GET
+  - POST
+  description: Manage webinars
+  parameters:
+  - webinar_id
+  - topic
+  - start_time
+  - duration
+notes:
+- 'Rate limiting: 100 requests per minute'
+- Pagination available on list endpoints
+- Webhook support for real-time updates
+errors:
+- '401: Unauthorized - Invalid API key or token'
+- '429: Too Many Requests - Rate limit exceeded'
+- '404: Not Found - Resource not found'
+auth_info:
+  mentioned_objects:
+  - api_key
+  - authentication_header
+  - bearer_token
+  auth_flow: OAuth 2.0 authentication is used, requiring a token to be sent in the
+    Authorization header.
+  env_var_for_auth: ZOOM_API_KEY
+client:
+  base_url: https://api.zoom.us/v2
+  auth:
+    type: oauth
+    location: header
+    key_name: Authorization
+    env_var: ZOOM_API_KEY
+source_metadata:
+  name: Zoom
+  variable_name: service_name
+  base_url: https://api.zoom.us/v2
+  original_source_url: https://developers.zoom.us/docs/api/

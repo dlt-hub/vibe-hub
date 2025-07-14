@@ -1,0 +1,48 @@
+# Source Metadata
+source_name: Recruitee
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.recruitee.com
+  auth:
+    type: apikey
+    headers:
+      Authorization: Bearer "{{ dlt.secrets['api_key'] }}"
+
+# Resources (per endpoint/object)
+resources:
+  - name: candidates
+    endpoint:
+      path: /candidates
+      method: GET
+      data_selector: data
+  - name: offers
+    endpoint:
+      path: /offers
+      method: GET
+      data_selector: data
+  - name: departments
+    endpoint:
+      path: /departments
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - Company ID
+    - API Key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Only supports full refresh sync; no incremental sync available.
+  - SSL connection is supported.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key and permissions.
+  - 404 Not Found: Verify endpoint path and parameters.

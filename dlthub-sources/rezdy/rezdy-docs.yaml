@@ -1,0 +1,129 @@
+resources:
+- name: products
+  endpoint:
+    path: /v1/products
+    method: GET
+    data_selector: products
+    params: {}
+- name: bookings
+  endpoint:
+    path: /v1/bookings
+    method: GET
+    data_selector: bookings
+    params:
+      orderStatus: CONFIRMED
+- name: products
+  endpoint:
+    path: /v1/products
+    method: GET
+    data_selector: products
+- name: availability
+  endpoint:
+    path: /v1/availability
+    method: GET
+    data_selector: sessions
+- name: bookings
+  endpoint:
+    path: /v1/bookings
+    method: POST
+    data_selector: booking
+- name: customers
+  endpoint:
+    path: /v1/customers
+    method: POST
+    data_selector: customer
+- name: categories
+  endpoint:
+    path: /v1/categories
+    method: GET
+    data_selector: categories
+- name: products
+  endpoint:
+    path: /products
+    method: GET
+    data_selector: products
+- name: availability
+  endpoint:
+    path: /availability
+    method: GET
+    data_selector: sessions
+- name: reservation
+  endpoint:
+    path: /reservation
+    method: POST
+    data_selector: bookings
+- name: booking
+  endpoint:
+    path: /booking
+    method: PUT
+    data_selector: bookings
+- name: cancellation
+  endpoint:
+    path: /cancellation
+    method: DELETE
+    data_selector: bookings
+- name: new_order
+  endpoint:
+    path: /webhooks/new_order
+    method: POST
+- name: updated_order
+  endpoint:
+    path: /webhooks/updated_order
+    method: POST
+- name: cancelled_order
+  endpoint:
+    path: /webhooks/cancelled_order
+    method: POST
+- name: new_product
+  endpoint:
+    path: /webhooks/new_product
+    method: POST
+- name: updated_product
+  endpoint:
+    path: /webhooks/updated_product
+    method: POST
+- name: deleted_product
+  endpoint:
+    path: /webhooks/deleted_product
+    method: POST
+- name: new_contact
+  endpoint:
+    path: /webhooks/new_contact
+    method: POST
+notes:
+- Use the Staging environment for testing before going live.
+- API calls require a valid API Key. It must be passed as a query parameter or HTTP
+  header.
+- Requests must use HTTPS.
+- Rezdy supports OAuth2 bearer tokens for authentication.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck API key or permissions'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck API key or token expiration'
+- 'RC_INVALID_DATA: Rezdy sent invalid data.'
+- 'RC_NO_AVAILABILITY: The reservation or booking confirmation could not be fulfilled
+  due to a lack of remaining availability.'
+- 'RC_AUTH_ERROR: Rezdy did not provide the required authentication data or is not
+  authorised to perform the call.'
+auth_info:
+  mentioned_objects:
+  - User
+  - Customer
+  - Booking
+  - apiKey
+  - OAuthToken
+client:
+  base_url: https://your-instance.api-name.com
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+    Content-Type: application/json; charset=UTF-8
+  paginator:
+    type: offset
+    page_size_param: limit
+    default_page_size: 100
+source_metadata: null

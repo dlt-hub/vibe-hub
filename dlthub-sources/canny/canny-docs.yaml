@@ -1,0 +1,151 @@
+resources:
+- name: identify
+  endpoint:
+    path: /identify
+    method: POST
+- name: authenticateCannyLink
+  endpoint:
+    path: /authenticateCannyLink
+    method: POST
+- name: changelog
+  endpoint:
+    path: /initChangelog
+    method: POST
+    data_selector: entries
+    params:
+      appID: YOUR_APP_ID
+      position: bottom
+      align: left
+      labelIDs:
+      - 5f1234567890abcdef123111
+      - 5f1234567890abcdef123222
+      theme: light
+      omitNonEssentialCookies: true
+- name: widget
+  endpoint:
+    path: /widget
+    method: GET
+    data_selector: widgetData
+- name: changelog_widget
+  endpoint:
+    path: /sdk.js
+    method: GET
+    data_selector: widget
+- name: users
+  endpoint:
+    path: /identify
+    method: POST
+    data_selector: user
+    params: {}
+- name: boards
+  endpoint:
+    path: /boards/list
+    method: POST
+    data_selector: boards
+    params:
+      apiKey: YOUR_API_KEY
+- name: users
+  endpoint:
+    path: /users/list
+    method: POST
+    data_selector: users
+    params: {}
+- name: posts
+  endpoint:
+    path: /posts/list
+    method: POST
+    data_selector: posts
+    params: {}
+- name: boards
+  endpoint:
+    path: /boards/list
+    method: POST
+    data_selector: boards
+    params: {}
+- name: categories
+  endpoint:
+    path: /categories/list
+    method: POST
+    data_selector: categories
+    params: {}
+- name: tags
+  endpoint:
+    path: /tags/list
+    method: POST
+    data_selector: tags
+    params: {}
+- name: list_users
+  endpoint:
+    path: /users/list
+    method: POST
+    data_selector: users
+    params:
+      limit: '100'
+- name: retrieve_user
+  endpoint:
+    path: /users/retrieve
+    method: POST
+    data_selector: ''
+    params: {}
+- name: create_or_update_user
+  endpoint:
+    path: /users/create_or_update
+    method: POST
+    data_selector: ''
+    params: {}
+- name: delete_user
+  endpoint:
+    path: /users/delete
+    method: POST
+    data_selector: ''
+    params: {}
+- name: identify
+  endpoint:
+    path: /identify
+    method: POST
+    data_selector: user
+    params: {}
+notes:
+- The widget is an advanced feature. For most cases, we recommend using your full
+  Canny site instead (your-company.canny.io).
+- In some cases, you may want to be informed when the web widget has finished loading.
+- Generate user hash on your server using your secret API key.
+- Ensure that requests without valid hashes will be rejected.
+- The mobile widget only works with SSO, so if you aren't planning on using it then
+  link users to your-company.canny.io instead.
+- The data-canny-link attribute is very important, otherwise user authentication will
+  not work.
+- Canny Identify won't identify admins. When you're testing, use a non-admin account.
+- Single Sign-On tokens can't authenticate users who are admin users for other companies.
+- The JWT expiry field exp is optional, but is respected when provided.
+- The widget is an advanced feature.
+- For most cases, we recommend using your full Canny site instead.
+- You can only initialize the widget once, re-initializations may result in errors
+  or unpredictable behaviour.
+- You can only initialize once, re-initializations may result in errors or unpredictable
+  behaviour.
+- Each API request uses one Autopilot credit.
+- When in manual mode, the Autopilot inbox has a limit of 100 items.
+errors:
+- invalid post id
+- REQUEST_LIMIT_EXCEEDED
+- QUERY_TIMEOUT
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck API key'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://canny.io/api/v2
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+  auth:
+    type: apikey
+    location: body
+    header_name: apiKey
+  paginator:
+    type: cursor
+    cursor_param: cursor
+    page_size_param: limit
+    default_page_size: 100
+source_metadata: null

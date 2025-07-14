@@ -1,0 +1,44 @@
+resources:
+- name: leadgen_forms
+  endpoint: /{form_id}
+  methods:
+  - GET
+  - POST
+  description: Manage lead generation forms.
+  parameters:
+  - form_id
+  - access_token
+- name: leads
+  endpoint: /{form_id}/leads
+  methods:
+  - GET
+  description: Retrieve leads generated from a specific lead form.
+  parameters:
+  - form_id
+  - access_token
+notes:
+- 'Rate limiting: Varies based on app and usage.'
+- Webhooks can be used for real-time lead updates.
+- Ensure compliance with Facebook's data policies.
+errors:
+- '401: Unauthorized - Invalid access token.'
+- '404: Not Found - Resource not found.'
+- '500: Internal Server Error - An unexpected error occurred.'
+auth_info:
+  mentioned_objects:
+  - bearer_token
+  - authentication_header
+  auth_flow: OAuth 2.0 authentication flow is used, requiring a valid access token.
+  env_var_for_auth: FACEBOOK_ACCESS_TOKEN
+client:
+  base_url: https://graph.facebook.com/v12.0
+  auth:
+    type: oauth
+    location: header
+    key_name: Authorization
+    env_var: FACEBOOK_ACCESS_TOKEN
+source_metadata:
+  name: Facebook-lead-ads
+  variable_name: service_name
+  base_url: https://graph.facebook.com/v12.0
+  original_source_url: https://developers.facebook.com/docs/marketing-api/guides/lead-ads/

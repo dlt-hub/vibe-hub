@@ -1,0 +1,119 @@
+# Source Metadata
+source_name: PandaDoc
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.pandadoc.com
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: documents
+    endpoint:
+      path: /documents
+      method: GET
+      data_selector: documents
+      params: {
+                "incremental": "updated_at"
+      }
+
+  - name: document_attachment
+    endpoint:
+      path: /documents/attachments
+      method: GET
+      data_selector: attachments
+
+  - name: document_field
+    endpoint:
+      path: /documents/fields
+      method: GET
+      data_selector: fields
+
+  - name: document_section
+    endpoint:
+      path: /documents/sections
+      method: GET
+      data_selector: sections
+
+  - name: templates
+    endpoint:
+      path: /templates
+      method: GET
+      data_selector: templates
+
+  - name: forms
+    endpoint:
+      path: /forms
+      method: GET
+      data_selector: forms
+
+  - name: contacts
+    endpoint:
+      path: /contacts
+      method: GET
+      data_selector: contacts
+
+  - name: members
+    endpoint:
+      path: /members
+      method: GET
+      data_selector: members
+
+  - name: api_logs
+    endpoint:
+      path: /api_logs
+      method: GET
+      data_selector: logs
+
+  - name: document_folders
+    endpoint:
+      path: /document_folders
+      method: GET
+      data_selector: folders
+
+  - name: template_folders
+    endpoint:
+      path: /template_folders
+      method: GET
+      data_selector: folders
+
+  - name: workspaces
+    endpoint:
+      path: /workspaces
+      method: GET
+      data_selector: workspaces
+
+  - name: webhook_subscriptions
+    endpoint:
+      path: /webhook_subscriptions
+      method: GET
+      data_selector: subscriptions
+
+  - name: webhook_events
+    endpoint:
+      path: /webhook_events
+      method: GET
+      data_selector: events
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - ApiKey
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Some endpoints may have limitations on pagination and incremental loading
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key validity
+  - 404 Not Found: Verify endpoint path
+  - 429 Too Many Requests: Implement exponential backoff for rate limiting

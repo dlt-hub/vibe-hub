@@ -1,0 +1,228 @@
+resources:
+- name: TenantSettings
+  endpoint:
+    path: /TenantSettings
+    method: GET
+- name: users
+  endpoint:
+    path: /v3/Users
+    method: GET
+- name: notes
+  endpoint:
+    path: /v3/Notes
+    method: POST
+- name: work_items
+  endpoint:
+    path: /v3/WorkItems
+    method: GET
+- name: contacts
+  endpoint:
+    path: /v3/Contacts
+    method: GET
+- name: organizations
+  endpoint:
+    path: /v3/Organizations
+    method: GET
+- name: timesheets
+  endpoint:
+    path: /Timesheets
+    method: GET
+    data_selector: records
+    params: {}
+- name: file_list
+  endpoint:
+    path: /FileList/{EntityType}?EntityKey={Key}
+    method: GET
+    data_selector: Attachments
+    params: {}
+- name: files
+  endpoint:
+    path: /Files?token={token}
+    method: GET
+    data_selector: File
+    params: {}
+- name: custom_field_definitions
+  endpoint:
+    path: /v3/CustomFields
+    method: GET
+    data_selector: value
+    params: {}
+- name: custom_field_values
+  endpoint:
+    path: /v3/CustomFieldValues/{EntityKey}
+    method: GET
+    data_selector: CustomFieldValueDTOs
+    params: {}
+- name: create_custom_field
+  endpoint:
+    path: /v3/CustomFields
+    method: POST
+    data_selector: null
+    params: {}
+- name: update_custom_field_values
+  endpoint:
+    path: /v3/CustomFieldValues/{EntityKey}
+    method: PUT
+    data_selector: null
+    params: {}
+- name: delete_custom_field
+  endpoint:
+    path: /v3/CustomFields/{CustomFieldDefinitionKey}
+    method: DELETE
+    data_selector: null
+    params: {}
+- name: WorkItems
+  endpoint:
+    path: /v3/WorkItems/{WorkItemKey}
+    method: GET
+    data_selector: UserRoleAssignments
+- name: ManualPayments
+  endpoint:
+    path: /ManualPayments
+    method: POST
+    data_selector: response
+    params: {}
+- name: WebhookSubscriptions
+  endpoint:
+    path: /WebhookSubscriptions
+    method: POST
+    data_selector: response
+    params: {}
+- name: users
+  endpoint:
+    path: /v3/Users
+    method: GET
+- name: notes
+  endpoint:
+    path: /v3/Notes
+    method: POST
+- name: work_items
+  endpoint:
+    path: /v3/WorkItems
+    method: GET
+- name: contacts
+  endpoint:
+    path: /v3/Contacts
+    method: GET
+- name: organizations
+  endpoint:
+    path: /v3/Organizations
+    method: GET
+- name: contacts
+  endpoint:
+    path: /Contacts
+    method: GET
+    data_selector: records
+    params: {}
+- name: organizations
+  endpoint:
+    path: /Organizations
+    method: GET
+    data_selector: records
+    params: {}
+- name: webhook_subscriptions
+  endpoint:
+    path: /WebhookSubscriptions
+    method: POST
+    data_selector: records
+    params: {}
+- name: client_groups
+  endpoint:
+    path: /ClientGroups
+    method: GET
+- name: contacts
+  endpoint:
+    path: /Contacts
+    method: GET
+- name: organizations
+  endpoint:
+    path: /Organizations
+    method: GET
+- name: users
+  endpoint:
+    path: /Users
+    method: GET
+- name: client_groups
+  endpoint:
+    path: /ClientGroups
+    method: POST
+- name: contacts
+  endpoint:
+    path: /Contacts
+    method: POST
+- name: organizations
+  endpoint:
+    path: /Organizations
+    method: POST
+notes:
+- Values for Primary Work Statuses are controlled across all Karbon accounts - only
+  Secondary status types can be edited.
+- Within Karbon, admin users can specify which Secondary statuses apply to which Work
+  Types - meaning some statuses may not be valid for use with specific Work Types.
+- The May 1, 2025 Karbon API release adds new API endpoints for Custom Fields
+- The February 12, 2025 Karbon API release includes several updates to our billing
+  APIs
+- The December 2, 2024 Karbon API release adds compressed responses and introduces
+  API rate limiting
+- The November 20, 2024 Karbon API release adds the ability to retrieve and update
+  User Role Assignments on Work and a new Webhook subscription type for Estimate Summaries
+- The September 23, 2024 Karbon API release adds the ability set or update the complete
+  Client Team record for Client Groups, Contacts and Organizations. It also triggers
+  a Contact webhook notification when the Client Team is updated.
+- The September 3, 2024 Karbon API release adds the ability to retrieve the complete
+  record of the client team for Client Groups, Contacts and Organizations
+- The August 12, 2024 Karbon API release includes updates to filter by Contact Type,
+  HMAC payload signing for Webhook Subscriptions and UK specific additions to Accounting
+  Details
+- The July 22, 2024 Karbon API release includes updates to the Timesheets API to show
+  billed status, and new endpoints to List and Download Files.
+- The June 10, 2024 Karbon API release includes a updates for customers using Karbon
+  Billing, including a new API endpoint to make Manual Payments on an Invoice and
+  a new Webhook subscription type for Invoice status changes.
+- The March 18, 2024 Karbon API release includes a new API endpoint to retrieve account
+  specific information about Work Types, Contact Types and Work Statuses.
+- Tokens will only work to download a file for 15 minutes from the point they are
+  generated in the FileList request.
+- There is some rate limiting applied to downloads, you should attempt no more than
+  a maximum of two concurrent downloads at a time.
+- Fields created through this endpoint are specific to a single Karbon account and
+  immediately available for assignment to Contacts and Organizations.
+- Once created, field definitions are immutable and cannot be edited via public API.
+- roles, budgets and tasks cannot be reassigned individually
+- unassigned tasks will have null
+- it is possible to leave these as UserProfileKey to avoid reassignment
+- it is not possible to unassign a previously assigned role - a role cannot be assigned
+  to an inactive user
+- It is only possible to have one subscription per type of WebhookSubscription
+- Target URLs for Webhook Subscriptions must begin with https://
+- The Karbon API can now compress response payloads - this often significantly reduces
+  the size of the transmitted response and the total time taken to complete the request.
+- We recommend API users keep to a maximum of 120 requests per minute (2 requests
+  per second) and implement handling of HTTP 429
+- Teams will never be assigned to a specific role (e.g. ClientManager), but can be
+  assigned to the ClientTeam.
+- The ClientTeam property does duplicate the existing ClientManager and ClientOwner
+  properties on client records.
+- Teams can never be assigned to a specific role (e.g. ClientManager), but can be
+  assigned to the ClientTeam.
+- It is possible to assign Users with a pending registration status to a Client Team
+  role.
+- It is not possible to assign an archived Users to a Client Team role.
+errors:
+- '400: Token has expired or invalid.'
+- '400 Bad Request: Value must match the expected data type for the field definition.'
+- '400: Target URL must begin with https://'
+- '429: Rate limit exceeded - implement handling of HTTP 429'
+- '201 Created: Successful creation of Client Group'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.karbonhq.com/v3
+  headers:
+    AccessKey: eyJ0eXAiOiJKV1QiL...
+    Authorization: Bearer 60a39912-382f-40a2...
+    Accept: application/json
+  auth:
+    type: oauth2
+    flow: refresh_token
+source_metadata: null

@@ -1,0 +1,80 @@
+resources:
+- name: analytic_data
+  endpoint:
+    path: /anapi/data
+    method: GET
+- name: daily_summary_feed
+  endpoint:
+    path: /anapi/daily_summary_feed
+    method: GET
+- name: alerts_feed
+  endpoint:
+    path: /anapi/alerts_feed
+    method: GET
+- name: highlights_feed
+  endpoint:
+    path: /anapi/highlights_feed
+    method: GET
+- name: highlights_post
+  endpoint:
+    path: /anapi/highlights_post
+    method: POST
+- name: focustime_started_feed
+  endpoint:
+    path: /anapi/focustime_started_feed
+    method: GET
+- name: focustime_ended_feed
+  endpoint:
+    path: /anapi/focustime_ended_feed
+    method: GET
+- name: start_focustime
+  endpoint:
+    path: /anapi/start_focustime
+    method: POST
+- name: end_focustime
+  endpoint:
+    path: /anapi/end_focustime
+    method: POST
+- name: offline_time_post
+  endpoint:
+    path: /anapi/offline_time_post
+    method: POST
+- name: activity
+  endpoint:
+    path: /api/data
+    method: GET
+    data_selector: data
+    params:
+      incremental: last_updated
+notes:
+- Highlights are a feature of RescueTime premium. This API will return a 400 response
+  for non-premium users.
+- Focus Sessions are a feature of RescueTime premium. This API will return a 400 response
+  for non-premium users.
+- Offline Time is a feature of RescueTime premium. This API will return a 400 response
+  for non-premium users.
+- RescueTime uses OAuth2 for authentication.
+- Users of RescueTime have the right to access all information our system collects
+  about them
+- You have the right to terminate or cancel your membership at any time
+errors:
+- '401 Unauthorized: Check your OAuth token.'
+- '403 Forbidden: Ensure you have the correct permissions.'
+auth_info:
+  mentioned_objects:
+  - client_id
+  - client_secret
+client:
+  base_url: https://www.rescuetime.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://www.rescuetime.com/oauth/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

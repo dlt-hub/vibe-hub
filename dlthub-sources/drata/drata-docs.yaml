@@ -1,0 +1,264 @@
+resources:
+- name: personnel
+  endpoint:
+    path: /personnel
+    method: GET
+    data_selector: records
+    params: {}
+- name: events
+  endpoint:
+    path: /public/events
+    method: GET
+    data_selector: data
+    params:
+      sort: CREATED
+      sortDir: DESC
+- name: Not Monitored Controls
+  endpoint:
+    path: /controls
+    method: GET
+    data_selector: controls
+    params: {}
+- name: GCP APIs
+  endpoint:
+    path: /services/data/vXX.X/gcp/apis
+    method: GET
+    data_selector: apis
+    params: {}
+- name: Logs are Centrally Stored
+  endpoint:
+    path: /api/v1/logs
+    method: GET
+- name: Only Authorized Users can Access Log Sinks
+  endpoint:
+    path: /api/v1/roles
+    method: GET
+- name: Logs are Retained for 365 Days
+  endpoint:
+    path: /api/v1/logs/archives
+    method: GET
+- name: Logs Are Monitored For Suspicious Activity
+  endpoint:
+    path: /api/v1/security/logs
+    method: GET
+- name: Capacity and Usage Monitoring
+  endpoint:
+    path: /api/v1/usage
+    method: GET
+- name: example_evidence
+  endpoint:
+    path: /evidence
+    method: GET
+    data_selector: evidence_records
+- name: personnel
+  endpoint:
+    path: /public/personnel
+    method: GET
+    data_selector: data
+    params:
+      q: '[email protected]'
+- name: upload_document
+  endpoint:
+    path: /public/users/{userId}/documents
+    method: POST
+    data_selector: ''
+    params: {}
+- name: DrataAutopilotRole
+  endpoint:
+    path: /services/data/vXX.X/sobjects/DrataAutopilotRole
+    method: GET
+    data_selector: records
+    params: {}
+- name: user_access_review
+  endpoint:
+    path: /services/data/vXX.X/sobjects/UserAccessReview
+    method: GET
+- name: evidence_controls
+  endpoint:
+    path: /evidence/controls
+    method: GET
+    data_selector: evidence
+- name: incident_report
+  endpoint:
+    path: /api/v1/incidents
+    method: GET
+    data_selector: data
+    params: {}
+- name: incident_response
+  endpoint:
+    path: /api/v1/responses
+    method: POST
+    data_selector: data
+    params: {}
+- name: NDA_Checkbox
+  endpoint:
+    path: /services/data/vXX.X/sobjects/NDA_Checkbox__c
+    method: GET
+    data_selector: records
+    params: {}
+- name: macOS Compliance Policy
+  endpoint:
+    path: /devices/compliancePolicies
+    method: POST
+- name: macOS Updates Profile
+  endpoint:
+    path: /devices/configurationProfiles
+    method: POST
+- name: macOS Lock Screen Profile
+  endpoint:
+    path: /devices/configurationProfiles
+    method: POST
+- name: FileVault Profile
+  endpoint:
+    path: /endpointSecurity/diskEncryption
+    method: POST
+- name: drata_integration
+  endpoint:
+    path: /integrations/drata
+    method: POST
+notes:
+- Drata only requires read access, which is the default setting for all Kolide API
+  tokens.
+- This document should not be interpreted as legal advice.
+- Be sure to review https://help.drata.com/en/articles/6116924-gdpr-where-do-i-start
+  if you have not already.
+- Only one configuration source per machine will be read, with the Drata agent taking
+  precedence.
+- Mobile Device Management is not offered for the Workspace ONE Employee Essentials
+  and Desktop Essentials plans.
+- Due to SOAP API constraints, the password should not have an '&' symbol.
+- A rate limit of 500 requests / minute will be enforced per unique source IP.
+- Be specific about the query parameters to filter events.
+- Ensure you are signed into Microsoft 365 already or you will be prompted to do so
+  upon connection from Drata.
+- You must be enforcing MFA on Microsoft 365 via Conditional Access Policies or Security
+  Defaults.
+- There can be delays from the Microsoft API in syncing all users, so please wait
+  a few minutes before verifying all user accounts have synced.
+- Please ensure you have toggled the setting for 'Third-party application access via
+  OAuth' to ON under Organization Settings -> Policies.
+- Custom Device Connections are available on the Advanced and Enterprise plans.
+- The third-party platform configuration as well as the automation of the workflow
+  and its cadence is set by the customer.
+- A daily PDF is generated, reported, and syncs to Drata as 'Miscellaneous evidence'.
+- A control with the code AIKIDO is created and linked to the relevant SOC 2 and ISO
+  27001 requirements.
+- Chromebooks satisfy Hard Drive Encryption by default.
+- Chromebooks can be made to satisfy Screensaver Lock with a 15 Minute Timeout and
+  a Password Manager by adjusting settings and installing a password manager from
+  the Google Chrome Web Store.
+- Chromebooks support Automatic Updates by default, but this feature can be disabled.
+- Chromebooks have limited support for Anti-Virus/Anti-Malware; third party solutions
+  are recommended.
+- If your Chromebook does not support Screensaver Lock, consult your auditor.
+- Tokens cannot be shared across workspaces. To add a separate workspace you must
+  obtain a new token from the workspace and create a new Fibery connection.
+- This connection supports the first 350 accounts detected in your organization.
+- AWS organizational units sync across your workspaces.
+- The DrataAutopilotRole will not be created in the single account where the CloudFormation
+  StackSet was deployed.
+- Ensure specific APIs are enabled in the project.
+- GCP service account must have access to Google Workspace account through domain-wide
+  delegation.
+- You must be assigned the TriNet role of 'Integration Administrator' or work with
+  someone in your company with the appropriate access.
+- Ensure you save the API key expiration date. You will have to update the API key
+  within Drata before it expires to ensure you stay connected.
+- If your role has read-only permissions enabled, you can only view, filter, and download
+  the data on the pages available to your role. You cannot modify the data or do certain
+  actions available on that page.
+- Requires AWS infrastructure integration for certain tests.
+- Datadog Service Account needs Usage Read Permission.
+- Password for the Integration System User should not have an '&' symbol due to SOAP
+  API constraints.
+- Rapid7 InsightVM reports are only accessible through an InsightVM console server.
+- The console must be on a public network and access must be made available to Drata
+  IP addresses.
+- There is a delay between the initial connection and the first import of user accounts,
+  which should take no more than one hour for customers with hundreds of users.
+- Drata does not support nested groups. Only top-level group members will be synced.
+- We recommend that you require this where possible. However, depending on the locality
+  of the employee/contractor, this may not always be possible due to legal/privacy
+  laws and regulations in specific jurisdictions.
+- Regardless of who owns the device, compliance frameworks like SOC 2 and ISO 27001
+  do contain controls around securing workstations.
+- If the devices cannot access Protected Health Information (PHI) they will be out
+  of scope. If they can access PHI, they will be in-scope.
+- You must enable Multi-Factor Authentication (MFA) to view MFA data on the Drata
+  platform.
+- The IdP connection is the only required connection on Drata, which will pull in
+  your personnel and allow them to authenticate into their My Drata page.
+- The HRIS connection will enrich the personnel records with audit-ready 'source of
+  truth' data to better paint a picture of your personnel during your audit period.
+- API keys should be treated as 'house keys' and not shared with unauthorized individuals.
+- API keys currently have an expiration date (set to approximately two years in the
+  future). Users can adjust the expiration date as desired.
+- Drata will pull up to 1,000 new or updated vulnerabilities for each connection daily,
+  ordered by severity from critical to low.
+- You must have a DocuSign plan with the Organization Management feature enabled.
+- You must also be assigned the Organization Admin role within DocuSign to complete
+  the connection.
+- Ensure you have Admin (ACCOUNTADMIN) access to your company's Snowflake account.
+- You may need to highlight the command and then run to only run that command.
+- Certn connection is not available for EU-based customers
+- OneID, also known as Enhanced Identity Verification, is required for Canadian and
+  International background checks. It is also recommended for US background checks.
+- Kandji cannot natively pick up browser extensions, so if those are being used as
+  a password manager, that compliance check will fail.
+- Ensure that the app shows on the device's Application List.
+- JumpCloud's APIs do not expose installed applications on Linux devices.
+- JumpCloud’s Patch Management feature is not fully supported at this time.
+- Microsoft 365 must be your connected IdP
+- You must be enforcing MFA on Microsoft 365 via Conditional Access Policies or Security
+  Defaults
+- Ensure specific APIs are enabled in the project
+- Drata does not support pulling members within groups
+- Auditors may request additional evidence for each control.
+- Drata only requires the ability to view Alerts to satisfy the requirements for this
+  integration.
+- As of this beta, only ‘View’ permissions on ‘Alerts’ are needed.
+- Your API token carries the same privileges as your user, so be sure to keep it secret.
+- Tokens cannot be shared across workspaces.
+- Drata does not support custom fields when creating Azure DevOps Boards Work Items.
+- A 400 error will occur if a Work Item requires custom fields.
+- Ensure to follow the incident response procedures as outlined in the documentation.
+- If a Work Item requires custom fields, a 400 error will occur.
+- This is a partner connection that is externally managed.
+- Use the exact secret names (`DRATA_API_KEY`, `JIT_CLIENT_ID`, and `JIT_CLIENT_SECRET`)
+  to ensure the integration functions correctly.
+- Ensure you are on MacOS Monterey 12 or later.
+- If you did not install one of the supported antivirus software options, follow the
+  requirements below.
+- These items should be enabled by default on Mac computers, but we recommend you
+  double-check their configuration.
+- If you fail the AV check, it means XProtect or Gatekeeper was not enabled AND that
+  no supported antivirus app was found.
+- There is a delay between the initial connection and the first import of user accounts.
+  At the longest this should take no more than one hour for customers with hundreds
+  of users.
+- Drata does not support nested groups. We will sync members in the top level of the
+  specified group, but not members in any second-level or further groups.
+errors:
+- '400 error: Custom fields required for Work Item.'
+- '404 Not Found: Verify the incident ID is correct.'
+- '500 Internal Server Error: Retry the request after some time.'
+- '400 error: Occurs when custom fields are required in Work Items.'
+auth_info:
+  mentioned_objects: []
+client:
+  auth:
+    type: apikey
+    token_url: https://{{REGION}}.uemauth.vmwservices.com/connect/token
+    client_id: Company ID
+    client_secret: Client Secret
+    location: header
+    header_name: Authorization
+  base_url: https://console.jumpcloud.com
+  headers:
+    Authorization: Bearer ${process.env.API_KEY}
+    Accept: application/json
+  paginator:
+    type: page
+    page_size_param: limit
+    default_page_size: 50
+source_metadata: null

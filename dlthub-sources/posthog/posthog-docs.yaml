@@ -1,0 +1,78 @@
+# Source Metadata
+source_name: PostHog
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://app.posthog.com
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: projects
+    endpoint:
+      path: /api/projects/
+      method: GET
+      data_selector: results
+
+  - name: annotations
+    endpoint:
+      path: /api/annotations/
+      method: GET
+      data_selector: results
+
+  - name: cohorts
+    endpoint:
+      path: /api/cohorts/
+      method: GET
+      data_selector: results
+
+  - name: events
+    endpoint:
+      path: /api/event/
+      method: GET
+      data_selector: results
+      params: {
+                "incremental": "timestamp"
+      }
+
+  - name: feature_flags
+    endpoint:
+      path: /api/feature_flags/
+      method: GET
+      data_selector: results
+
+  - name: insights
+    endpoint:
+      path: /api/insights/
+      method: GET
+      data_selector: results
+
+  - name: persons
+    endpoint:
+      path: /api/persons/
+      method: GET
+      data_selector: results
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - api_key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Rate limits apply to all analytics endpoints.
+  - Public POST-only endpoints are not rate limited.
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - 401 Unauthorized: Recheck API key or permissions

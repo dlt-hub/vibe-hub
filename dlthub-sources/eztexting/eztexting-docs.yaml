@@ -1,0 +1,59 @@
+resources:
+- name: contacts
+  endpoint: /contacts
+  methods:
+  - GET
+  - POST
+  - DELETE
+  description: Manage contact lists
+  parameters:
+  - contact_id
+  - phone_number
+  - name
+- name: messages
+  endpoint: /messages
+  methods:
+  - GET
+  - POST
+  description: Send and manage SMS messages
+  parameters:
+  - message_id
+  - recipient
+  - content
+- name: campaigns
+  endpoint: /campaigns
+  methods:
+  - GET
+  - POST
+  description: Manage SMS campaigns
+  parameters:
+  - campaign_id
+  - name
+  - start_time
+notes:
+- 'Rate limiting: 1000 requests per hour'
+- Pagination available on list endpoints
+- Webhook support for real-time updates
+errors:
+- '401: Unauthorized - Invalid API key'
+- '429: Too Many Requests - Rate limit exceeded'
+- '404: Not Found - Resource not found'
+- '500: Internal Server Error - Something went wrong on the server'
+auth_info:
+  mentioned_objects:
+  - api_key
+  - authentication_header
+  auth_flow: API key must be included in the Authorization header for each request.
+  env_var_for_auth: EZTEXTING_API_KEY
+client:
+  base_url: https://api.eztexting.com
+  auth:
+    type: api_key
+    location: header
+    key_name: Authorization
+    env_var: EZTEXTING_API_KEY
+source_metadata:
+  name: Eztexting
+  variable_name: service_name
+  base_url: https://api.eztexting.com
+  original_source_url: https://www.eztexting.com/developers/sms-api-documentation

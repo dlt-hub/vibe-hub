@@ -1,0 +1,45 @@
+# Source Metadata
+source_name: klarna
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.klarna.com
+  auth:
+    type: basic
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: payouts
+    endpoint:
+      path: /settlements/v1/payouts
+      method: GET
+      data_selector: payouts
+
+  - name: transactions
+    endpoint:
+      path: /settlements/v1/transactions
+      method: GET
+      data_selector: transactions
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - Username (UID)
+    - Password
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Klarna Source Connector does not support OAuth at this time due to limitations outside of control.
+  - API has rate limiting of 200 requests per second for operations.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 429: "Rate limit exceeded. Throttle API calls or reduce frequency."

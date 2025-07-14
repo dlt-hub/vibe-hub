@@ -1,0 +1,61 @@
+resources:
+- name: users
+  endpoint: /users
+  methods:
+  - GET
+  - POST
+  description: Manage user accounts
+  parameters:
+  - user_id
+  - email
+  - name
+- name: processes
+  endpoint: /processes
+  methods:
+  - GET
+  - POST
+  - PUT
+  description: Manage processes within the service
+  parameters:
+  - process_id
+  - name
+  - status
+- name: checklists
+  endpoint: /checklists
+  methods:
+  - GET
+  - POST
+  description: Manage checklists associated with processes
+  parameters:
+  - checklist_id
+  - process_id
+  - status
+notes:
+- 'Rate limiting: 1000 requests per hour'
+- Pagination available on list endpoints
+- Webhook support for real-time updates
+errors:
+- '401: Unauthorized - Invalid API key'
+- '429: Too Many Requests - Rate limit exceeded'
+- '404: Not Found - Resource not found'
+- '500: Internal Server Error - Something went wrong on the server side'
+auth_info:
+  mentioned_objects:
+  - api_key
+  - authentication_header
+  - bearer_token
+  auth_flow: Users must provide an API key in the Authorization header to access the
+    API.
+  env_var_for_auth: PROCESS_STREET_API_KEY
+client:
+  base_url: https://api.process.st
+  auth:
+    type: api_key
+    location: header
+    key_name: Authorization
+    env_var: PROCESS_STREET_API_KEY
+source_metadata:
+  name: Process Street
+  variable_name: process_street
+  base_url: https://api.process.st
+  original_source_url: https://www.process.st/help/docs/process-street-api/

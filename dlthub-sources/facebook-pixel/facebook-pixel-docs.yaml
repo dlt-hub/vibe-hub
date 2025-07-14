@@ -1,0 +1,50 @@
+resources:
+- name: events
+  endpoint: /{pixel-id}/events
+  methods:
+  - GET
+  - POST
+  description: Manage pixel events.
+  parameters:
+  - event_name
+  - event_time
+  - user_data
+- name: pixels
+  endpoint: /{pixel-id}
+  methods:
+  - GET
+  - POST
+  - DELETE
+  description: Manage pixel settings and retrieve pixel details.
+  parameters:
+  - pixel_id
+  - name
+  - status
+notes:
+- 'Rate limiting: 200 requests per hour per app.'
+- Use pagination for large data sets.
+- Webhooks available for real-time event notifications.
+errors:
+- '400: Bad Request - Invalid parameters supplied.'
+- '401: Unauthorized - Invalid access token.'
+- '429: Too Many Requests - Rate limit exceeded.'
+- '404: Not Found - Resource not found.'
+auth_info:
+  mentioned_objects:
+  - oauth
+  - access_token
+  - authorization_header
+  auth_flow: Use OAuth 2.0 to obtain an access token for API calls.
+  env_var_for_auth: FACEBOOK_ACCESS_TOKEN
+client:
+  base_url: https://graph.facebook.com/v12.0/
+  auth:
+    type: oauth
+    location: header
+    key_name: Authorization
+    env_var: FACEBOOK_ACCESS_TOKEN
+source_metadata:
+  name: Facebook-pixel
+  variable_name: service_name
+  base_url: https://graph.facebook.com/v12.0/
+  original_source_url: https://developers.facebook.com/docs/meta-pixel/.../marketing-api/

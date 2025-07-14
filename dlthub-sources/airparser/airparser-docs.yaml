@@ -1,0 +1,67 @@
+resources:
+- name: Document Parsed
+  endpoint:
+    method: GET
+- name: Extract Data From a Document
+  endpoint:
+    method: POST
+- name: upload_document
+  endpoint:
+    path: /inboxes/<inbox_id>/upload
+    method: POST
+    data_selector: Document ID
+    params: {}
+- name: get_document
+  endpoint:
+    path: /docs/<document_id>/extended
+    method: GET
+    data_selector: parsed data
+    params: {}
+- name: list_documents
+  endpoint:
+    path: /inboxes/<inbox_id>/docs
+    method: GET
+    data_selector: documents
+    params: {}
+- name: list_inboxes
+  endpoint:
+    path: /inboxes
+    method: GET
+    data_selector: inboxes
+    params: {}
+- name: delete_inbox
+  endpoint:
+    path: /inboxes/<inbox_id>
+    method: DELETE
+    data_selector: null
+    params: {}
+- name: create_edit_extraction_schema
+  endpoint:
+    path: /inboxes/<inbox_id>/schema
+    method: POST
+    data_selector: success
+    params: {}
+- name: clone_extraction_schema
+  endpoint:
+    path: /inboxes/<inbox_id>/schema-clone
+    method: POST
+    data_selector: success
+    params: {}
+notes:
+- Newly received documents will be processed using this schema automatically.
+- Click Reprocess to parse old documents again using the updated schema.
+- Reprocessing documents without changing the schema is useful for triggering integrations—Airparser
+  will resend the parsed data, which can help with debugging and setting up integrations
+  without using extra parsing credits.
+- However, changing the schema requires a full reprocessing, which consumes credits.
+errors:
+- 'HTTP 401 Unauthorized: API key missing or invalid'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.airparser.com
+  auth:
+    type: apikey
+    location: header
+    header_name: X-API-Key
+source_metadata: null

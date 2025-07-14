@@ -1,0 +1,149 @@
+resources:
+- name: subscribers
+  endpoint:
+    path: /1.0/accounts/{accountId}/lists/{listId}/subscribers
+    method: GET
+    data_selector: entries
+- name: web_forms
+  endpoint:
+    path: /1.0/accounts/{accountId}/lists/{listId}/web_forms
+    method: GET
+    data_selector: entries
+- name: web_form_split_tests
+  endpoint:
+    path: /1.0/accounts/{accountId}/lists/{listId}/web_form_split_tests
+    method: GET
+    data_selector: entries
+- name: accounts
+  endpoint:
+    path: /accounts
+    method: GET
+    data_selector: entries
+- name: subscribers
+  endpoint:
+    path: /accounts/{accountId}/lists/{listId}/subscribers
+    method: GET
+    data_selector: entries
+- name: web_forms
+  endpoint:
+    path: /accounts/{accountId}/lists/{listId}/web_forms
+    method: GET
+    data_selector: entries
+- name: subscribers
+  endpoint:
+    path: /1.0/accounts/{accountId}/lists/{listId}/subscribers
+    method: GET
+    data_selector: entries
+    params:
+      ws.start: 0
+      ws.size: 100
+      sort_order: asc
+- name: add_subscriber
+  endpoint:
+    path: /1.0/accounts/{accountId}/lists/{listId}/subscribers
+    method: POST
+    data_selector: null
+    params: {}
+- name: update_subscriber
+  endpoint:
+    path: /1.0/accounts/{accountId}/lists/{listId}/subscribers/{subscriberId}
+    method: PUT
+    data_selector: null
+    params: {}
+- name: delete_subscriber
+  endpoint:
+    path: /1.0/accounts/{accountId}/lists/{listId}/subscribers/{subscriberId}
+    method: DELETE
+    data_selector: null
+    params: {}
+- name: get_activity
+  endpoint:
+    path: /1.0/accounts/{accountId}/lists/{listId}/subscribers/{subscriberId}
+    method: GET
+    data_selector: entries
+    params:
+      ws.op: getActivity
+- name: find_subscriber
+  endpoint:
+    path: /1.0/accounts/{accountId}/lists/{listId}/subscribers
+    method: GET
+    data_selector: entries
+    params:
+      ws.op: find
+- name: accounts
+  endpoint:
+    path: /accounts
+    method: GET
+    data_selector: entries
+- name: subscribers
+  endpoint:
+    path: /accounts/{accountId}/lists/{listId}/subscribers
+    method: GET
+    data_selector: entries
+    params:
+      ws.start: 0
+      ws.size: 100
+- name: web_forms
+  endpoint:
+    path: /accounts/{accountId}/lists/{listId}/web_forms
+    method: GET
+    data_selector: entries
+notes:
+- Connecting your integration to an AWeber customer account requires the use of OAuth
+  2.0.
+- The AWeber API supports webhooks for subscriber events.
+- Ensure to verify requests from AWeber using the provided verification key.
+- Webhooks enabled for subscriber events.
+- Webhooks are not guaranteed to be published. They are sent on a best effort basis.
+- Duplicate webhook requests may be sent.
+- The AWeber API uses OAuth 2.0 for authentication.
+- Requires setup of a developer account and app in AWeber
+- OAuth 2.0 is required for authentication
+errors:
+- '400 Bad Request: Missing required parameter.'
+- '401 Unauthorized: Check your OAuth token.'
+- '404 Not Found: Resource not found.'
+- '401 Unauthorized: Consumer key is invalid.'
+- This error is raised when your access token key is expired or invalid.
+- This error is raised when the AWeber Customer account is no longer active.
+- This error is raised when your application attempts to communicate to the AWeber
+  API without using the OAuth 2.0 protocol.
+- This error is raised when the AWeber Customer account is temporarily suspended.
+- This error is raised when the AWeber Customer account is on hold.
+- This error is raised when you make a request to create or schedule a Broadcast,
+  but your application has not been authorized by the AWeber Customer to manage email.
+- This error is raised when the number of API requests made by your application exceed
+  its predefined limit.
+- This error is raised when the subscriber email address is not currently acceptable.
+- Missing required argument(s)
+- Required parameter 'oauth_nonce' missing
+- '401 Unauthorized: Invalid or expired access token.'
+auth_info:
+  mentioned_objects:
+  - subscriber.added
+  - subscriber.subscribed
+  - subscriber.unsubscribed
+  - OauthToken
+  - AuthProvider
+client:
+  base_url: https://auth.aweber.com
+  auth:
+    type: oauth2
+    token_url: https://auth.aweber.com/oauth2/token
+    flow: authorization_code
+    client_id: MY_CLIENT_ID
+    location: header
+    header_name: Authorization
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    scope:
+    - account.read
+    - list.read
+    - subscriber.read
+    redirect_uri: MY_REDIRECT_URI
+  headers:
+    Accept: application/json
+  paginator:
+    type: page
+    page_size_param: ws.size
+    default_page_size: 100
+source_metadata: null

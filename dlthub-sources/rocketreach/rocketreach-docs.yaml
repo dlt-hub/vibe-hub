@@ -1,0 +1,82 @@
+resources:
+- name: check_status
+  endpoint:
+    path: /search
+    method: POST
+    data_selector: status
+    params: {}
+- name: create_api_key
+  endpoint:
+    path: /api/v2/account/key/
+    method: POST
+- name: people_search
+  endpoint:
+    path: /api/search
+    method: POST
+    data_selector: results
+- name: account
+  endpoint:
+    path: /api/v2/account/
+    method: GET
+- name: person_lookup
+  endpoint:
+    path: /api/v2/person/lookup
+    method: GET
+    data_selector: profiles
+- name: bulk_lookup
+  endpoint:
+    path: /bulkLookup
+    method: POST
+    data_selector: queries
+    params: {}
+- name: profile_company_lookup
+  endpoint:
+    path: /api/v2/profile-company/lookupPerson
+    method: GET
+    data_selector: data
+- name: account_usage
+  endpoint:
+    path: /v2/account
+    method: GET
+- name: search_company
+  endpoint:
+    path: /api/v2/searchCompany
+    method: POST
+- name: company_lookup
+  endpoint:
+    path: /api/v2/company/lookup/
+    method: GET
+    data_selector: metadata
+- name: search_company
+  endpoint:
+    path: /api/v2/searchCompany
+    method: POST
+notes:
+- Encourages use of webhooks instead of polling the checkStatus endpoint.
+- Ensure correct API key usage in headers
+- Up to 100 profiles per page - Max 10,000 results per query
+- Company exports are required for this endpoint. Talk [email protected] to purchase
+  access.
+errors:
+- 'HTTP: 429 "Too Many Requests"'
+- '401 Unauthorized: API Key is missing or invalid.'
+- '400 Bad Request: The request is malformed or missing required parameters.'
+- '429 Too Many Requests: API request limit reached—slow down requests.'
+- '404 Not Found: The requested resource (e.g., profile) does not exist.'
+- '500 Internal Server Error: Unexpected error on RocketReach’s servers. Try again
+  later.'
+- '404 Not Found: Check the endpoint URL'
+- '401 Unauthorized: Verify API key'
+- '429: Rate limited'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.rocketreach.co
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Content-Type: application/json
+    Accept: application/json
+source_metadata: null

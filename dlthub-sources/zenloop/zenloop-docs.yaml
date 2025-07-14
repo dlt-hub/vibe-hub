@@ -1,0 +1,69 @@
+# Source Metadata
+source_name: Zenloop
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://app.zenloop.com
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: answers
+    endpoint:
+      path: /api/v1/answers
+      method: GET
+      data_selector: data
+      params: {
+                "survey_id": "optional"
+      }
+
+  - name: surveys
+    endpoint:
+      path: /api/v1/surveys
+      method: GET
+      data_selector: data
+
+  - name: answersSurveyGroup
+    endpoint:
+      path: /api/v1/answers/survey-group
+      method: GET
+      data_selector: data
+      params: {
+                "survey_group_id": "optional"
+      }
+
+  - name: surveyGroups
+    endpoint:
+      path: /api/v1/survey-groups
+      method: GET
+      data_selector: data
+
+  - name: properties
+    endpoint:
+      path: /api/v1/properties
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API token
+
+# Known Quirks or Risks, Caveats
+notes:
+  - The `Answers`, `AnswersSurveyGroup`, and `Properties` streams have an optional survey_id parameter.
+  - If not provided, answers for all surveys (groups) will be pulled.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API token validity
+  - 403 Forbidden: Ensure proper permissions for API token

@@ -1,0 +1,59 @@
+resources:
+- name: users
+  endpoint: /users
+  methods:
+  - GET
+  - POST
+  description: Manage user accounts and preferences
+  parameters:
+  - user_id
+  - email
+  - preferences
+- name: streams
+  endpoint: /streams
+  methods:
+  - GET
+  description: Retrieve content from streams
+  parameters:
+  - stream_id
+  - count
+  - rank
+- name: subscriptions
+  endpoint: /subscriptions
+  methods:
+  - GET
+  - POST
+  - DELETE
+  description: Manage user subscriptions to feeds
+  parameters:
+  - feed_id
+  - user_id
+notes:
+- 'Rate limiting: 100 requests per minute, 600 requests per hour.'
+- Pagination available on list endpoints.
+- Webhook support for real-time updates.
+- Make sure to handle token expiration and refresh tokens as needed.
+errors:
+- '401: Unauthorized - Invalid or missing access token.'
+- '403: Forbidden - Access denied to the requested resource.'
+- '404: Not Found - Resource not found.'
+- '429: Too Many Requests - Rate limit exceeded.'
+auth_info:
+  mentioned_objects:
+  - oauth
+  - access_token
+  - authentication_header
+  auth_flow: OAuth 2.0 authentication with access token required for API calls.
+  env_var_for_auth: FEEDLY_ACCESS_TOKEN
+client:
+  base_url: https://cloud.feedly.com/v3
+  auth:
+    type: oauth
+    location: header
+    key_name: Authorization
+    env_var: FEEDLY_ACCESS_TOKEN
+source_metadata:
+  name: Feedly
+  variable_name: service_name
+  base_url: https://cloud.feedly.com/v3
+  original_source_url: https://developers.feedly.com/reference/introduction

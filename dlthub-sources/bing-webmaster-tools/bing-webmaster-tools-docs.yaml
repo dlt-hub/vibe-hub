@@ -1,0 +1,39 @@
+resources:
+- name: SubmitUrl
+  endpoint:
+    path: /webmaster/api.svc/json/SubmitUrl
+    method: POST
+    data_selector: response
+    params: {}
+- name: Microsoft Learn Profile
+  endpoint:
+    path: /learn/profile
+    method: GET
+    data_selector: profileData
+    params: {}
+notes:
+- Uses OAuth2 with authorization code flow — requires setup of OAuth client in Bing
+  Webmaster
+- Access tokens have limited lifetimes and become invalid upon expiry
+- Access to this page requires authorization.
+- You may need a Microsoft account, Azure Active Directory account or Microsoft Learn
+  Profile account to access some of the Services.
+errors:
+- 'access_denied: User did not grant permission'
+- 'redirect_uri_mismatch: Ensure redirect URI matches exactly'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'HTTP/1.1 400 Error: InvalidApiKey'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://ssl.bing.com/webmaster/api.svc
+  auth:
+    type: apikey
+    flow: authorization_code
+    token_url: https://www.bing.com/webmasters/oauth/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: query
+    header_name: apikey
+source_metadata: null

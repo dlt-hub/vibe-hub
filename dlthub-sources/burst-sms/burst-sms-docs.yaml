@@ -1,0 +1,123 @@
+resources:
+- name: link_hit
+  endpoint:
+    path: /events/link_hit
+    method: POST
+    data_selector: link_hit
+    params: {}
+- name: opt_out
+  endpoint:
+    path: /events/opt_out
+    method: POST
+    data_selector: opt_out
+    params: {}
+- name: mms_inbound
+  endpoint:
+    path: /events/mms_inbound
+    method: POST
+    data_selector: mo
+    params: {}
+- name: mms_status
+  endpoint:
+    path: /events/mms_status
+    method: POST
+    data_selector: status
+    params: {}
+- name: sms_inbound
+  endpoint:
+    path: /events/sms_inbound
+    method: POST
+    data_selector: mo
+    params: {}
+- name: sms_status
+  endpoint:
+    path: /events/sms_status
+    method: POST
+    data_selector: status
+    params: {}
+- name: rcs_status
+  endpoint:
+    path: /events/rcs_status
+    method: POST
+    data_selector: status
+    params: {}
+- name: contact_added
+  endpoint:
+    path: /webhook
+    method: POST
+- name: send_rcs_message
+  endpoint:
+    path: /v2/rcs
+    method: post
+- name: add_contacts_bulk
+  endpoint:
+    path: /add-contacts-bulk.json
+    method: POST
+- name: add_contacts_bulk_progress
+  endpoint:
+    path: /add-contacts-bulk-progress
+    method: GET
+- name: sms
+  endpoint:
+    path: /sms
+    method: GET
+- name: get_sms
+  endpoint:
+    path: /get-sms.json
+    method: POST
+- name: rcs
+  endpoint:
+    path: /v2/rcs
+    method: POST
+    data_selector: data
+    params: {}
+notes:
+- 100% delivery to carrier guarantee through direct connections with local carriers.
+- Access to high-quality virtual mobile numbers for consistent branding.
+- Ensure compliance with regulations such as GDPR and the CAN-SPAM Act.
+- The return code 200 is only used to indicate that the API call has successfully
+  hit our server. It in no way indicates if the contacts have been added/updated successfully.
+- Some older handsets models have limited support some images, so results may vary
+  when sending to them.
+- Privacy by Design means embedding privacy and data protection into your systems,
+  policies, and customer interactions from the beginning.
+- The OAIC can now issue direct fines for infractions like poor privacy policies or
+  non-compliant direct marketing practices.
+- You retain all rights and ownership of Data.
+- We do not claim any ownership rights in Data.
+- All phone numbers must be in E.164 international format.
+- RCS Agent IDs must be pre-registered with your account.
+- Currently available for Australian recipients.
+errors:
+- 'AUTH_FAILED_NO_DATA: You have not provided auth data.'
+- 'AUTH_FAILED: The auth data you have provided is invalid.'
+- 'NOT_IMPLEMENTED: The method you are requesting is unsupported.'
+- 'OVER_LIMIT: You have exceeded the request limit.'
+- 'FIELD_EMPTY: Required field is empty.'
+- 'FIELD_INVALID: Field has invalid format (see proper format in the description).'
+- 'NO_ACCESS: You don''t have access to this feature'
+- 'KEY_EXISTS: The resource with this key already exists.'
+- 'LEDGER_ERROR: Insufficient funds to carry out debit'
+- 'BAD_CALLER_ID: The sender ID you have set is not valid or number is inactive or
+  expired'
+- '401 Unauthorised: The auth data you have provided is invalid.'
+- 'Poor privacy policies: Fines can be issued without going to court.'
+- 'Non-compliant direct marketing (e.g., no opt-out options): Fines can be issued
+  without going to court.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://your-instance.api-name.com
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+  headers:
+    Content-Type: application/json
+    Accept: application/json
+source_metadata: null

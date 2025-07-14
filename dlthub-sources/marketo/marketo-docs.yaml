@@ -1,0 +1,94 @@
+# Source Metadata
+source_name: Marketo
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.mktorest.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://your-instance.mktorest.com/identity/oauth/token
+    client_id: "{{ dlt.secrets['marketo_client_id'] }}"
+    client_secret: "{{ dlt.secrets['marketo_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['marketo_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextPage
+    cursor_param: nextPageToken
+    page_size_param: pageSize
+    default_page_size: 200
+
+# Resources (per endpoint/object)
+resources:
+  - name: activities_send_email
+    endpoint:
+      path: /rest/v1/activities/sendEmail.json
+      method: GET
+      data_selector: result
+      params: {}
+
+  - name: activity_types
+    endpoint:
+      path: /rest/v1/activities/types.json
+      method: GET
+      data_selector: result
+      params: {}
+
+  - name: campaigns
+    endpoint:
+      path: /rest/v1/campaigns.json
+      method: GET
+      data_selector: result
+      params: {}
+
+  - name: leads
+    endpoint:
+      path: /rest/v1/leads.json
+      method: GET
+      data_selector: result
+      params: {}
+
+  - name: lists
+    endpoint:
+      path: /rest/v1/lists.json
+      method: GET
+      data_selector: result
+      params: {}
+
+  - name: programs
+    endpoint:
+      path: /rest/v1/programs.json
+      method: GET
+      data_selector: result
+      params: {}
+
+  - name: segmentations
+    endpoint:
+      path: /rest/v1/segmentations.json
+      method: GET
+      data_selector: result
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Default API call limit is 50,000 calls per day.
+  - The connector is capped at 40,000 API calls per day by default.
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

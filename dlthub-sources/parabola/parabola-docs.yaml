@@ -1,0 +1,141 @@
+resources:
+- name: track
+  endpoint:
+    path: /track/
+    method: GET
+- name: subscribers
+  endpoint:
+    path: /subscribers
+    method: GET
+- name: saved_search
+  endpoint:
+    path: /services/rest/record/v1/saved_search
+    method: GET
+    data_selector: records
+- name: Pull from Email Attachment
+  endpoint:
+    path: /pull-from-email-attachment
+    method: GET
+    data_selector: data
+    params: {}
+- name: Pull from Google Sheets
+  endpoint:
+    path: /pull-from-google-sheets
+    method: GET
+    data_selector: data
+    params: {}
+- name: Pull from NetSuite
+  endpoint:
+    path: /pull-from-netsuite
+    method: GET
+    data_selector: data
+    params: {}
+- name: Pull from API
+  endpoint:
+    path: /pull-from-api
+    method: GET
+    data_selector: data
+    params: {}
+- name: Send to API
+  endpoint:
+    path: /send-to-api
+    method: POST
+    data_selector: data
+    params: {}
+- name: collection_items
+  endpoint:
+    path: /v2/collections/:collection_id/items
+    method: GET
+- name: document_details
+  endpoint:
+    path: /v2/documents/{attributes document_id}/
+    method: GET
+    data_selector: data
+    params:
+      include: document_fields
+      extra_fields[document_fields]: extraction_candidates
+- name: Send to Snowflake
+  endpoint:
+    path: /api/auth/snowflake
+    method: POST
+- name: template
+  endpoint:
+    path: /templates/{Template ID}
+    method: GET
+notes:
+- If you have multiple rows of JSON and the data is not fully expanding as expecting,
+  review the JSON body in the top row of your data.
+- This integration is currently in beta.
+- Use Production Keys to connect to live production data in Parabola.
+- ShipStation is a beta integration which requires a slightly more involved setup
+  process than our native integrations.
+- This integration is currently in beta— additional functionality is available via
+  API.
+- Rate limits protect the DHL infrastructure from suspicious requests that exceed
+  defined thresholds.
+- Ensure the user/role configured for the integration has sufficient permissions to
+  access all necessary saved searches and results
+- By default, we pull in 20 pages of data (2,000 records).
+- Parabola supports working with messy, unstructured data.
+- AI steps help automate processes and extract structured data.
+- Webflow APIs use Offset & Limit pagination - set both the offset and the limit to
+  100.
+- Twilio will charge you according to your account per message.
+- Twilio has a rate limit on sending messages. They will only send as fast as one
+  per second, or 60 per minute.
+- Pagination for Advanced Filter Endpoints uses Offset and Limit style.
+- You need to encode your Client ID and Client Secret separated by a colon.
+- We do not sell your personal information.
+- If you do not provide information indicated as required or mandatory within the
+  Service, or that is otherwise necessary to provide a requested service or feature
+  within the Service, that portion or all of the Service may be unavailable to you
+  and we may deactivate your account.
+- The Pull from API step cannot extract dynamic ranges, such as date.
+- Parabola will never limit API calls according to a user’s plan—rate limiting is
+  at the discretion of the user, and may be restricted natively by the API.
+- Spotify requires you to base64 encode your client_id and client_secret.
+- 'You''ll be asked to provide a ''redirect URL.'' You can supply the following URL:
+  https://parabola.io/api/steps/generic_api/callback'
+- API key should be passed as a Bearer Token in all API requests.
+- The user will need to have User or Admin permissions in Looker in order to be able
+  to find Looks and run them.
+- Parabola cannot support the API’s cursor-style pagination at this time.
+- Configuring a smaller, dynamic date range with frequent Flow runs is highly recommended.
+- Step cannot create or remove tables within Snowflake. A database table must already
+  exist in Snowflake.
+errors:
+- 250 calls per day with a maximum of 1 call every 5 seconds.
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '404: The Look may not exist in the Production environment and needs to be pushed
+  to production.'
+- '404: The authenticated user may not have the right permissions to run the Look
+  and needs to get access in Looker.'
+- '404: The Look may have been deleted.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://marketplace.walmartapis.com
+  auth:
+    type: apikey
+    token_url: https://marketplace.walmartapis.com/v3/token
+    client_id: '{{ dlt.secrets[''client_id''] }}'
+    client_secret: '{{ dlt.secrets[''client_secret''] }}'
+    location: header
+    header_name: WM_SEC.ACCESS_TOKEN
+    flow: expiring_access_token
+    refresh_token: '{{ dlt.secrets[''UPS_refresh_token''] }}'
+    oauth_client: custom
+    oauth_client_type: CONFIDENTIAL
+    oauth_redirect_uri: https://parabola.io/api/auth/snowflake/callback
+    oauth_issue_refresh_tokens: true
+    oauth_refresh_token_validity: 10368000
+  headers:
+    Accept: application/json
+    User-Agent: your_name_here
+    X-API-KEY: '{{ dlt.secrets[''api_key''] }}'
+    Authorization: Basic {encoded credentials here}
+    WM_QOS.CORRELATION_ID: '{GUID}'
+  paginator:
+    type: offset
+    default_page_size: 500
+source_metadata: null

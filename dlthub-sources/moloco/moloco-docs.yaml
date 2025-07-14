@@ -1,0 +1,147 @@
+resources:
+- name: log
+  endpoint:
+    path: /cm/v1/logs
+    method: POST
+    data_selector: log
+    params: {}
+- name: log_status
+  endpoint:
+    path: /cm/v1/logs/$LOG_ID/status
+    method: GET
+    data_selector: status
+    params: {}
+- name: customer_set
+  endpoint:
+    path: /cm/v1/customer-sets
+    method: POST
+    data_selector: customer_set
+- name: audience_target
+  endpoint:
+    path: /cm/v1/audience-targets
+    method: POST
+    data_selector: audience_target
+- name: ad_group
+  endpoint:
+    path: /cm/v1/ad-groups
+    method: PUT
+    data_selector: ad_group
+- name: ad_account
+  endpoint:
+    path: /cm/v1/ad-accounts
+    method: POST
+    data_selector: ad_account
+- name: product
+  endpoint:
+    path: /cm/v1/products
+    method: POST
+    data_selector: product
+- name: tracking_link
+  endpoint:
+    path: /cm/v1/tracking-links
+    method: POST
+    data_selector: tracking_link
+- name: creative
+  endpoint:
+    path: /cm/v1/creatives
+    method: POST
+    data_selector: creative
+- name: creative_group
+  endpoint:
+    path: /cm/v1/creative-groups
+    method: POST
+    data_selector: creative_group
+- name: campaign
+  endpoint:
+    path: /cm/v1/campaigns
+    method: POST
+    data_selector: campaign
+    params:
+      ad_account_id: $AD_ACCOUNT_ID
+      product_id: $PRODUCT_ID
+- name: create_report
+  endpoint:
+    path: /reports
+    method: POST
+    data_selector: id
+- name: report_status
+  endpoint:
+    path: /reports/{REPORT_ID}/status
+    method: GET
+    data_selector: status
+notes:
+- The Log API is disabled by default and is only available upon request.
+- We impose limits on the number of API calls an ad account or a user can make within
+  a specified timeframe.
+- Exceeding these limits results in API requests from one or more users under the
+  ad account being throttled.
+- Each Workplace will have a quota of the total number of entities that can be created.
+- There will be a limitation on the total number of campaigns, apps, creatives, and
+  more.
+- All creative assets must be uploaded to Google Cloud Storage before you can create
+  a creative object.
+- An API that lets you upload a creative asset and create a creative object all at
+  once will be made available soon.
+- Campaign status is set to SUBMITTED by default after creation.
+- It usually takes about 2 hours for the ML model for your campaign to finish training.
+- Campaign status updates to ACTIVE when enabling_state is set to ENABLED.
+- Each workplace has its own access token. To make changes to entities in another
+  workplace, you must get a new token for that workplace.
+- An access token is valid for 16 hours, and you must create a new token using your
+  API key before it expires.
+- Transport Layer Security (TLS) ver. 1.2 or later is required starting August 4,
+  2023
+- We strongly advise against specifying multiple API versions across a single organization.
+- Report will be available until one month from the date of creation.
+errors:
+- API quota exceeded. Please try again later. code = ResourceExhausted
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Requests are rejected if access token is missing, incorrect, or expired.
+- Requests are rejected if an access token is not included, if the incorrect token
+  is included, or if the token has expired.
+- 'REQUIRED: The required field is missing.'
+- 'CANNOT_DELETE_REFERENCED: The field''s value is invalid. You can check the error
+  message for more description.'
+- 'CANNOT_DELETE_REFERENCED: The value should be unset.'
+- 'CANNOT_DELETE_REFERENCED: The field attempted to be mutated is immutable.'
+- 'CANNOT_DELETE_REFERENCED: The value is not a valid timestamp.'
+- 'CANNOT_DELETE_REFERENCED: The resource is not found.'
+- 'CANNOT_DELETE_REFERENCED: The request field has exceed its size limit.'
+- 'CANNOT_DELETE_REFERENCED: The time range is invalid.'
+- 'CANNOT_DELETE_REFERENCED: The entity trying to update is not in the same state
+  on the server.'
+- 'CANNOT_DELETE_REFERENCED: The value is not supported for the request.'
+- 'CANNOT_DELETE_REFERENCED: The target field must be same for all resources on bulk
+  API request.'
+- 'CANNOT_DELETE_REFERENCED: The end value of range must be greater than the start
+  value.'
+- 'CANNOT_DELETE_REFERENCED: The end value of range must be equal or greater than
+  the start value.'
+- 'CANNOT_DELETE_REFERENCED: The value cannot be a negative value.'
+- 'CANNOT_DELETE_REFERENCED: Requested field is not set or only contains whitespaces.'
+- 'CANNOT_DELETE_REFERENCED: The request try to update same entities in bulk.'
+- 'CANNOT_DELETE_REFERENCED: Specified field cannot be empty.'
+- 'CANNOT_DELETE_REFERENCED: Length of target fields should be same.'
+- 'CANNOT_DELETE_REFERENCED: Cannot set both fields.'
+- 'CANNOT_DELETE_REFERENCED: The date should be in the format of YYYY-MM-DD.'
+- 'CANNOT_DELETE_REFERENCED: The referenced entity does not exists.'
+- 'CANNOT_DELETE_REFERENCED: Request has a field containing nil entity.'
+- 'CANNOT_DELETE_REFERENCED: Specified field cannot have the same value.'
+- 'CANNOT_DELETE_REFERENCED: Number of entities has reached the limit.'
+- 'CANNOT_DELETE_REFERENCED: Entity counter value has invalid value(below 0).'
+- 'CANNOT_DELETE_REFERENCED: User doesn''t have permission to make the action.'
+- 'CANNOT_DELETE_REFERENCED: Authentication failed. Please check for credentials.'
+- 'CANNOT_DELETE_REFERENCED: The entity is referenced from the other entity.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.moloco.cloud/cm/v1
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+    flow: refresh_token
+  headers:
+    Content-Type: application/json
+    Accept: application/json
+source_metadata: null

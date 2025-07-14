@@ -1,0 +1,144 @@
+resources:
+- name: ExplanationOfBenefit
+  endpoint:
+    path: /v2/fhir/ExplanationOfBenefit/
+    method: GET
+- name: Patient
+  endpoint:
+    path: /v2/fhir/Patient/
+    method: GET
+- name: Coverage
+  endpoint:
+    path: /v2/fhir/Coverage/
+    method: GET
+- name: UserInfo
+  endpoint:
+    path: /connect/userinfo
+    method: GET
+- name: ExplanationOfBenefit
+  endpoint:
+    path: /v2/fhir/ExplanationOfBenefit/
+    method: GET
+    data_selector: records
+- name: ExplanationOfBenefit
+  endpoint:
+    path: /v2/fhir/ExplanationOfBenefit/
+    method: GET
+- name: Patient
+  endpoint:
+    path: /v2/fhir/Patient/
+    method: GET
+- name: Coverage
+  endpoint:
+    path: /v2/fhir/Coverage/
+    method: GET
+- name: UserInfo
+  endpoint:
+    path: /connect/userinfo
+    method: GET
+- name: Patient
+  endpoint:
+    path: /Patient
+    method: GET
+    data_selector: Bundle.entry
+    params: {}
+- name: Coverage
+  endpoint:
+    path: /Coverage
+    method: GET
+    data_selector: Bundle.entry
+    params: {}
+- name: ExplanationOfBenefit
+  endpoint:
+    path: /ExplanationOfBenefit
+    method: GET
+    data_selector: Bundle.entry
+    params: {}
+- name: Patient
+  endpoint:
+    path: /v1/fhir/Patient
+    method: GET
+    data_selector: records
+- name: Explanation of Benefit
+  endpoint:
+    path: /v1/fhir/ExplanationOfBenefit
+    method: GET
+    data_selector: records
+- name: Coverage
+  endpoint:
+    path: /v1/fhir/Coverage
+    method: GET
+    data_selector: records
+- name: ExplanationOfBenefit
+  endpoint:
+    path: /v1/fhir/ExplanationOfBenefit
+    method: GET
+    data_selector: resource
+    params: {}
+- name: Patient
+  endpoint:
+    path: /v1/fhir/Patient
+    method: GET
+    data_selector: resource
+    params: {}
+- name: Coverage
+  endpoint:
+    path: /v1/fhir/Coverage
+    method: GET
+    data_selector: resource
+    params: {}
+- name: UserInfo
+  endpoint:
+    path: /v1/connect/userinfo
+    method: GET
+    data_selector: sub
+    params: {}
+notes:
+- The Blue Button 2.0 API only supports confidential client type.
+- Uses OAuth2 Authorization Code flow with PKCE extension.
+- Data from the CCW is pulled into the BB2.0 API database on a weekly basis.
+- The BB2.0 API is for single data calls for an individual Medicare enrollee.
+- Synthetic user accounts are provided for testing.
+- The Blue Button 2.0 API only supports the authorization code grant type.
+- PKCE is required for authorization.
+- Synthetic data are realistic-but-not-real data.
+- The Blue Button 2.0 API uses the HL7 FHIR standard for beneficiary data and the
+  OAuth 2.0 standard for beneficiary authorization.
+- If the beneficiary declines to share information that your application needs to
+  function, you may display a message explaining why that information is needed and
+  request reauthorization.
+- Medicare Part A, B, and D claims data will be refreshed weekly.
+- Gzip compression is turned off by default. Compression can be activated for specific
+  content types.
+errors:
+- 'invalid_grant: Refresh token can only be used once.'
+- 'invalid_client: Check client credentials or permissions.'
+- 'invalid_grant: The authorization for accessing user data has expired.'
+- invalid_grant
+- invalid_client
+- '400 Bad Request: Invalid combination of claim types or wrong case'
+- '403 Forbidden: Beneficiary declined to share demographic information.'
+- '401 Unauthorized: Check client credentials and token expiration.'
+- '400 Bad Request: not a valid value'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+client:
+  base_url: https://sandbox.bluebutton.cms.gov
+  auth:
+    type: oauth2
+    flow: authorization_code
+    location: header
+    header_name: Authorization
+    token_url: https://sandbox.bluebutton.cms.gov/v1/o/token/
+    client_id: '{The Client ID assigned to your App in the sandbox}'
+    client_secret: '{The Client Secret assigned to your App in the sandbox}'
+  headers:
+    Accept: application/json
+    Accept-Encoding: gzip
+  paginator:
+    type: page
+    page_size_param: _count
+    default_page_size: 10
+source_metadata: null

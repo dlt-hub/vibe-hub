@@ -1,0 +1,508 @@
+resources:
+- name: event
+  endpoint:
+    path: /v2/events/{eventId}
+    method: GET
+    data_selector: ''
+- name: vessel_search
+  endpoint:
+    path: /v3/vessels/search
+    method: GET
+    data_selector: entries
+    params: {}
+- name: fishing_events
+  endpoint:
+    path: /v3/events
+    method: GET
+    data_selector: entries
+    params: {}
+- name: bins
+  endpoint:
+    path: /v2/4wings/bins/{z}
+    method: GET
+    params:
+      datasets[0]: public-global-fishing-effort:latest
+      temporal-aggregation: 'false'
+      num-bins: 9
+      interval: 10days
+- name: interaction
+  endpoint:
+    path: /v2/4wings/interaction/{z}/{x}/{y}/{cells}
+    method: GET
+    params:
+      datasets[0]: public-global-fishing-effort:latest
+- name: report
+  endpoint:
+    path: /v2/4wings/report
+    method: POST
+    data_selector: entries
+- name: generate_png_tiles_temporal_filter
+  endpoint:
+    path: /generate-png
+    method: POST
+    data_selector: response
+    params:
+      interval: 10days
+      datasets[0]: public-global-fishing-effort:latest
+      date-range: 2020-01-01,2020-01-31
+- name: generate_png_tiles_gear_type_temporal_filter
+  endpoint:
+    path: /generate-png
+    method: POST
+    data_selector: response
+    params:
+      interval: 10days
+      datasets[0]: public-global-fishing-effort:latest
+      filters[0]: geartype in ("tuna_purse_seines","driftnets")
+      date-range: 2020-01-01,2020-01-31
+- name: get_png_tile_by_coordinates
+  endpoint:
+    path: /tile/heatmap/{z}/{x}/{y}
+    method: GET
+    data_selector: response
+    params:
+      format: png
+      interval: 10days
+      datasets[0]: public-global-fishing-effort:latest
+      date-range: 2020-01-01,2020-01-31
+- name: fishing_events
+  endpoint:
+    path: /v2/events
+    method: GET
+    params:
+      datasets: public-global-fishing-events:latest
+      limit: 1
+      offset: 0
+- name: encounter_events
+  endpoint:
+    path: /v2/events
+    method: GET
+    params:
+      datasets: public-global-encounters-events:latest
+      limit: 1
+      offset: 0
+- name: loitering_events
+  endpoint:
+    path: /v2/events
+    method: GET
+    params:
+      datasets: public-global-loitering-events-carriers:latest
+      limit: 1
+      offset: 0
+- name: port_visits
+  endpoint:
+    path: /v2/events
+    method: GET
+    params:
+      datasets: public-global-port-visits-c2-events:latest
+      limit: 1
+      offset: 0
+- name: vessel_stats
+  endpoint:
+    path: /v2/4wings/stats
+    method: GET
+    data_selector: records
+    params:
+      datasets[0]: public-global-fishing-effort:latest
+- name: vessel_search
+  endpoint:
+    path: /v2/vessels/search
+    method: GET
+    data_selector: entries
+    params:
+      limit: 10
+      offset: 0
+- name: vessel_advanced_search
+  endpoint:
+    path: /v2/vessels/advanced-search
+    method: GET
+    data_selector: entries
+    params:
+      limit: 1
+      offset: 0
+- name: vessel_by_ids
+  endpoint:
+    path: /v2/vessels
+    method: GET
+    data_selector: entries
+    params: {}
+- name: vessel_by_id
+  endpoint:
+    path: /v2/vessels/{vesselId}
+    method: GET
+    data_selector: ''
+    params: {}
+- name: events
+  endpoint:
+    path: /
+    method: POST
+    data_selector: entries
+    params:
+      limit: 1
+      offset: 0
+- name: events_stats
+  endpoint:
+    path: /v2/events/stats
+    method: POST
+    data_selector: response
+    params: {}
+- name: events_stats
+  endpoint:
+    path: /events/stats
+    method: GET
+    data_selector: records
+    params: {}
+- name: stats_response
+  endpoint:
+    path: /stats/response
+    method: GET
+    data_selector: records
+    params: {}
+- name: report
+  endpoint:
+    path: /v3/4wings/report
+    method: POST
+    data_selector: entries
+    params: {}
+- name: report
+  endpoint:
+    path: /report
+    method: POST
+    data_selector: null
+    params:
+      format: JSON
+- name: bulk_reports
+  endpoint:
+    path: /v3/bulk-reports
+    method: POST
+    data_selector: id
+    params: {}
+- name: interaction
+  endpoint:
+    path: /v3/4wings/interaction/{z}/{x}/{y}/{cells}
+    method: GET
+    data_selector: entries
+    params:
+      datasets[0]: public-global-fishing-effort:latest
+- name: vessels
+  endpoint:
+    path: /v2/vessels
+    method: GET
+    data_selector: entries
+- name: events
+  endpoint:
+    path: /v2/events
+    method: POST
+    data_selector: entries
+- name: reports
+  endpoint:
+    path: /v3/4wings/report
+    method: POST
+    data_selector: entries
+- name: vessels
+  endpoint:
+    path: /v2/vessels
+    method: GET
+    data_selector: entries
+    params:
+      datasets: public-global-fishing-vessels:latest
+      query: '{{ vessel_id }}'
+- name: fishing_events
+  endpoint:
+    path: /v2/events
+    method: POST
+    data_selector: entries
+    params:
+      datasets: public-global-fishing-events:latest
+      startDate: '2020-01-01'
+      endDate: '2020-12-31'
+      geometry:
+        type: Polygon
+        coordinates:
+        - - - -76.11328125
+            - -26.273714024406416
+          - - -76.201171875
+            - -26.980828590472093
+          - - -76.376953125
+            - -27.527758206861883
+          - - -76.81640625
+            - -28.30438068296276
+          - - -77.255859375
+            - -28.767659105691244
+          - - -77.87109375
+            - -29.152161283318918
+          - - -78.486328125
+            - -29.45873118535532
+          - - -79.189453125
+            - -29.61167011519739
+          - - -79.892578125
+            - -29.6880527498568
+          - - -80.595703125
+            - -29.61167011519739
+          - - -81.5625
+            - -29.382175075145277
+          - - -82.177734375
+            - -29.07537517955835
+          - - -82.705078125
+            - -28.6905876542507
+          - - -83.232421875
+            - -28.071980301779845
+          - - -83.49609375
+            - -27.683528083787756
+          - - -83.759765625
+            - -26.980828590472093
+          - - -83.84765625
+            - -26.35249785815401
+          - - -83.759765625
+            - -25.64152637306576
+          - - -83.583984375
+            - -25.16517336866393
+          - - -83.232421875
+            - -24.447149589730827
+          - - -82.705078125
+            - -23.966175871265037
+          - - -82.177734375
+            - -23.483400654325635
+          - - -81.5625
+            - -23.241346102386117
+          - - -80.859375
+            - -22.998851594142906
+          - - -80.15625
+            - -22.917922936146027
+          - - -79.453125
+            - -22.998851594142906
+          - - -78.662109375
+            - -23.1605633090483
+          - - -78.134765625
+            - -23.40276490540795
+          - - -77.431640625
+            - -23.885837699861995
+          - - -76.9921875
+            - -24.28702686537642
+          - - -76.552734375
+            - -24.846565348219727
+          - - -76.2890625
+            - -25.48295117535531
+          - - -76.11328125
+            - -26.273714024406416
+- name: events
+  endpoint:
+    path: /v3/events
+    method: GET
+    params:
+      limit: '1'
+      offset: '0'
+      datasets: public-global-fishing-events:latest
+- name: encounter_events
+  endpoint:
+    path: /v3/events
+    method: GET
+    params:
+      limit: '1'
+      offset: '0'
+      datasets: public-global-encounters-events:latest
+- name: loitering_events
+  endpoint:
+    path: /v3/events
+    method: GET
+    params:
+      limit: '1'
+      offset: '0'
+      datasets: public-global-loitering-events-carriers:latest
+- name: port_visits
+  endpoint:
+    path: /v3/events
+    method: GET
+    params:
+      limit: '1'
+      offset: '0'
+      datasets: public-global-port-visits-events:latest
+- name: vessels_search
+  endpoint:
+    path: /vessels/search
+    method: GET
+    data_selector: entries
+    params:
+      limit: 30
+- name: fishing_events
+  endpoint:
+    path: /v2/events
+    method: POST
+    data_selector: entries
+    params:
+      datasets[0]: public-global-fishing-events:latest
+      startDate: '2022-01-01'
+      endDate: '2022-01-31'
+      limit: 1
+      offset: 0
+- name: vessels
+  endpoint:
+    path: /v2/vessels
+    method: GET
+    data_selector: entries
+- name: reports
+  endpoint:
+    path: /v3/4wings/report
+    method: POST
+    data_selector: entries
+- name: events
+  endpoint:
+    path: /events
+    method: POST
+    data_selector: entries
+    params:
+      limit: limit
+      offset: offset
+- name: event
+  endpoint:
+    path: /v3/events/{eventId}
+    method: GET
+    data_selector: event
+    params:
+      dataset: public-global-port-visits-events:latest
+- name: events_stats
+  endpoint:
+    path: /v3/events/stats
+    method: POST
+    data_selector: numEvents
+    params: {}
+- name: insights_by_vessels
+  endpoint:
+    path: /v3/insights/vessels
+    method: POST
+    data_selector: apparentFishing
+    params: {}
+- name: bulk_report
+  endpoint:
+    path: /v3/bulk-reports
+    method: POST
+    data_selector: id
+    params: {}
+- name: bulk_reports
+  endpoint:
+    path: /bulk-reports
+    method: POST
+    data_selector: null
+    params: {}
+- name: bulk_reports
+  endpoint:
+    path: /v3/bulk-reports/{report_id}/query
+    method: GET
+    params:
+      limit: 50
+      offset: 0
+      sort: detection_date
+- name: bulk_reports
+  endpoint:
+    path: /v3/bulk-reports/adbb9b62-5c08-4142-82e0-b2b575f3e058/query
+    method: GET
+    params:
+      limit: '50'
+      offset: '1'
+      sort: label
+- name: bulk_reports
+  endpoint:
+    path: /bulk-reports
+    method: GET
+    data_selector: entries
+    params:
+      limit: 10
+      offset: 5
+notes:
+- Global Fishing Watch APIs are only available for non-commercial purposes.
+- Make sure to replace [TOKEN] with your API Access Token.
+- Remember to create your STYLE that specifies how the fishing effort will be visualized.
+- Change the API Dataset to select the event type.
+- Expanded Functionality with new endpoints and enhanced Vessel API
+- Improved Documentation for better user experience
+- API version 3 is the standard as of April 30, 2024.
+- Noncommercial Use Only. The Services are available for noncommercial use only in
+  accordance with the CC BY-NC 4.0 license.
+- Users may not exceed 50,000 DAILY API requests per day and 1,550,000 per month.
+- Data accessed through the Global Fishing Watch APIs is as accurate as possible,
+  but should be used with the data caveats described in each dataset in mind.
+- Global Fishing Watch qualifies all designations of events as apparent rather than
+  certain.
+- API v3 is the standard as of April 30, 2024
+- Users should plan to start using the CURRENT version.
+- Ensure to replace [TOKEN] with your API Access Token.
+- Uses OAuth2 with refresh token â€” requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Certain jurisdictions do not allow exclusions or limitations on certain damages
+  and liabilities.
+- You must fully comply with all applicable export laws, including U.S. law.
+- The Site and the Services are provided for Non-Commercial use only in accordance
+  with the CC BY-NC 4.0 license.
+- Cookies can be deleted from your hard drive.
+- Managing cookies may reduce functionality of the Site and the Service.
+errors:
+- '429 Too Many Requests: Your application token is not currently enabled to perform
+  more than one concurrent report.'
+- '401 Unauthorized: No Unauthorized.'
+- '403 Forbidden: You do not have permissions to do the action.'
+- '422 Unprocessable Entity: Validation error.'
+- '429 Too Many Requests: Too Many Request.'
+- '503 Service Unavailable: Service Unavailable.'
+- '500 Internal Server Error: Server side issue.'
+- '401 Unauthorized: Your API Access Token is wrong or your don''t have permissions
+  to access that dataset.'
+- '403 Forbidden: The server understood the request but refuses to authorize it.'
+- '404 Not Found: The specified data could not be found.'
+- '422 Unprocessable Entity: The server understands the content type of the request
+  entity, and the syntax of the request entity is correct but was unable to process
+  the contained instructions.'
+- '429 Too Many Requests: The server received more requests than the user can do.'
+- '503 Service Unavailable: We''re temporarily offline for maintenance.'
+- '429: Too Many Requests - Your application token is not currently enabled to perform
+  more than one concurrent report.'
+- '200: OK - The request has succeeded.'
+- '401: Unauthorized - Your API Access Token is wrong or you don''t have permissions
+  to access that dataset.'
+- '403: Forbidden - The server understood the request but refuses to authorize it.'
+- '404: Not Found - The specified data could not be found.'
+- '422: Unprocessable Entity - The server understands the content type of the request
+  entity, and the syntax of the request entity is correct but was unable to process
+  the contained instructions.'
+- '429: Too Many Requests - The server received more requests than the user can do.'
+- '503: Service Unavailable - The server is temporarily offline for maintenance.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- code: 401
+  message: Unauthorized - Your API Access Token is wrong or you don't have permissions
+    to access that dataset.
+- code: 429
+  message: Too Many Requests - The server received more requests than the user can
+    do.
+- code: 503
+  message: Service Unavailable - We're temporarily offline for maintenance.
+- '422 Unprocessable Entity: Unprocessable Entity. Validation error.'
+- '401 Unauthorized: Your request did not include a valid API token.'
+- '403 Forbidden: You do not have permission to access these reports.'
+- '422 Unprocessable Entity: Your query parameters are invalid or malformed.'
+- '500 Internal Server Error: A server-side issue occurred.'
+- Not authorized
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.globalfishingwatch.org
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+    flow: refresh_token
+    token_url: https://login.globalfishingwatch.org/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+  headers:
+    Content-Type: application/json
+    Accept: application/json
+  paginator:
+    type: none
+    page_size_param: limit
+    default_page_size: 100
+source_metadata: null

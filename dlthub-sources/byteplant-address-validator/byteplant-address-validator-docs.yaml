@@ -1,0 +1,100 @@
+resources:
+- name: verify
+  endpoint:
+    path: /api/verify
+    method: GET
+- name: bulk_verify
+  endpoint:
+    path: /api/bulk-verify
+    method: POST
+- name: search
+  endpoint:
+    path: /api/search
+    method: GET
+- name: fetch
+  endpoint:
+    path: /api/fetch
+    method: GET
+- name: phone_validation
+  endpoint:
+    path: /verify
+    method: POST
+    data_selector: result
+- name: bulk_phone_validation
+  endpoint:
+    path: /bulk-verify
+    method: POST
+    data_selector: result
+- name: search
+  endpoint:
+    path: /api/search
+    method: GET
+    data_selector: results
+    params:
+      Query: ''
+      CountryCode: ''
+      MatchLevel: locality
+      APIKey: ''
+      MaxResults: '5'
+      Timeout: '10'
+- name: fetch
+  endpoint:
+    path: /api/fetch
+    method: GET
+    data_selector: ''
+    params:
+      ID: ''
+      APIKey: ''
+      Geocoding: 'false'
+      Timeout: '10'
+- name: email_verification
+  endpoint:
+    path: /api/verify
+    method: GET
+    data_selector: status
+    params: {}
+- name: bulk_email_verification
+  endpoint:
+    path: /api/bulk-verify
+    method: POST
+    data_selector: status
+    params: {}
+notes:
+- We do not process or store addresses for any purpose other than validation.
+- All data from API requests and batch/list processing will be automatically deleted
+  within 14 days after the data has been made available to us.
+- API requests will be typically answered within 125ms.
+- The Bulk API allows you to upload up to 100K phone numbers for validation with a
+  single API request.
+- API requests will typically be answered within 750ms.
+- Guarantees an availability of 99.9%
+- API requests will typically be answered within 750ms
+- All processing is done on our servers, your IP addresses and domains are not affected
+  in any way by the Email-Validator.net service - absolutely no blacklisting risk
+  for your IPs and domains.
+- API requests will be typically answered within 750ms.
+- To guarantee short response times to customers providing online services or running
+  call centers, the Email Validator API implements rate limiting.
+errors:
+- UNVERIFIED
+- DELAYED
+- RATE_LIMIT_EXCEEDED
+- API_KEY_INVALID_OR_DEPLETED
+- RESTRICTED
+- INTERNAL_ERROR
+- resultcode 200, 207, 215 - valid
+- resultcode 215 - can be retried to update catch-all status
+- resultcode 114 - greylisting, wait 5min and retry
+- resultcode 118 - api rate limit, wait 5min and retry
+- '114: The check could not be completed within the request timeout period.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.email-validator.net
+  headers:
+    Content-Type: application/x-www-form-urlencoded
+  auth:
+    type: apikey
+    location: body
+    header_name: APIKey
+source_metadata: null

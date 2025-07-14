@@ -1,0 +1,107 @@
+# Source Metadata
+source_name: intercom
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.intercom.io
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.intercom.io/auth/eagle/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next_page
+    cursor_param: page
+    page_size_param: per_page
+    default_page_size: 50
+
+# Resources (per endpoint/object)
+resources:
+  - name: admins
+    endpoint:
+      path: /admins
+      method: GET
+      data_selector: admins
+  - name: companies
+    endpoint:
+      path: /companies
+      method: GET
+      data_selector: companies
+  - name: company_segments
+    endpoint:
+      path: /companies/{id}/segments
+      method: GET
+      data_selector: segments
+  - name: conversations
+    endpoint:
+      path: /conversations
+      method: GET
+      data_selector: conversations
+  - name: conversation_parts
+    endpoint:
+      path: /conversations/{id}/parts
+      method: GET
+      data_selector: parts
+  - name: data_attributes
+    endpoint:
+      path: /data_attributes
+      method: GET
+      data_selector: attributes
+  - name: customer_attributes
+    endpoint:
+      path: /data_attributes/customers
+      method: GET
+      data_selector: attributes
+  - name: company_attributes
+    endpoint:
+      path: /data_attributes/companies
+      method: GET
+      data_selector: attributes
+  - name: contacts
+    endpoint:
+      path: /contacts
+      method: GET
+      data_selector: contacts
+  - name: segments
+    endpoint:
+      path: /segments
+      method: GET
+      data_selector: segments
+  - name: tags
+    endpoint:
+      path: /tags
+      method: GET
+      data_selector: tags
+  - name: teams
+    endpoint:
+      path: /teams
+      method: GET
+      data_selector: teams
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - AccessToken
+    - OAuthApp
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Limited by Intercom request limitations
+  - Incremental loading requires a specified start date
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check OAuth token or scopes
+  - 403 Forbidden: Ensure correct permissions are set for the app
+  - 429 Too Many Requests: Implement rate limiting in your requests

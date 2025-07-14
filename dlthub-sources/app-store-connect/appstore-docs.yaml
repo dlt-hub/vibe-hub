@@ -1,0 +1,74 @@
+# Source Metadata
+source_name: appstore
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.appstoreconnect.apple.com/v1
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://appleid.apple.com/auth/token
+    client_id: "{{ dlt.secrets['key_id'] }}"
+    client_secret: "{{ dlt.secrets['private_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: sales
+    endpoint:
+      path: /sales
+      method: GET
+      data_selector: data
+      params: {
+                "startDate": "2020-11-16T00:00:00Z"
+      }
+
+  - name: subscription
+    endpoint:
+      path: /subscriptions
+      method: GET
+      data_selector: data
+      params: {
+                "startDate": "2020-11-16T00:00:00Z"
+      }
+
+  - name: subscription_event
+    endpoint:
+      path: /subscriptionEvents
+      method: GET
+      data_selector: data
+      params: {
+                "startDate": "2020-11-16T00:00:00Z"
+      }
+
+  - name: subscriber
+    endpoint:
+      path: /subscribers
+      method: GET
+      data_selector: data
+      params: {
+                "startDate": "2020-11-16T00:00:00Z"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - Key ID
+    - Private Key
+    - Issuer ID
+    - Vendor ID
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Only supports incremental syncs.
+  - Data may not be available for periods older than 365 days or for today/yesterday.
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Check API request limits and reduce frequency.
+  - DATA_NOT_AVAILABLE: Ensure requested data is within available timeframe.

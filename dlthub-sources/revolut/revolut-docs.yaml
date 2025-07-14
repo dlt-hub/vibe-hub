@@ -1,0 +1,47 @@
+resources:
+- name: customer
+  endpoint:
+    path: /customers
+    method: POST
+    data_selector: customer
+    params: {}
+- name: payment_method
+  endpoint:
+    path: /payment_methods
+    method: GET
+    data_selector: payment_methods
+    params: {}
+notes:
+- 'Access tokens can be issued with four security scopes: READ, WRITE, PAY, READ_SENSITIVE_CARD_DATA.'
+- If you enable the READ_SENSITIVE_CARD_DATA scope for your access token, you must
+  set up IP whitelisting.
+- You must use a transport certificate and its private key in order to request an
+  access token.
+- Never share your access_token with anyone, as it can be used to access the banking
+  data that you have access to and initiate transactions.
+- The Create an order endpoint was updated to a new version and now returns token
+  as the public identifier for the order.
+- Previous integrations might still use the deprecated endpoint returning public_id.
+- In the Sandbox environment, you cannot add real people and businesses as Revolut
+  counterparties.
+- If you are on a freelancer account, to be compliant with PSD2 Strong Customer Authentication
+  regulations, you must manually approve the counterparty with 2-factor authentication
+  (2FA) on the Revolut Business Portal before you can make a transfer.
+- Revolut will retry the webhook event three more times, each with a 10-minute interval.
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://oba-auth.revolut.com
+  auth:
+    type: oauth2
+    flow: client_credentials
+    token_url: https://oba-auth.revolut.com/token
+    location: header
+    header_name: Authorization
+  headers:
+    Authorization: Bearer <yourSecretApiKey>
+    Content-Type: application/x-www-form-urlencoded
+    X-API-KEY: '{your_API_key}'
+    Revolut-Api-Version: '2024-09-01'
+source_metadata: null

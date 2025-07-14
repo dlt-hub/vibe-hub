@@ -1,0 +1,42 @@
+# Source Metadata
+source_name: KYVE
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.kyve.network
+  auth:
+    type: api_key
+    location: header
+    header_name: X-API-Key
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: pool_data
+    endpoint:
+      path: /pools/{pool_id}/data
+      method: GET
+      data_selector: data
+      params: {
+                "bundle_start_id": "optional"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - Pool-ID
+    - Bundle-Start-ID
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Only trust data validated on Mainnet
+
+# Troubleshooting & Error Patterns
+errors:
+  - 404 Not Found: Check the Pool-ID or Bundle-Start-ID
+  - 401 Unauthorized: Verify API Key validity

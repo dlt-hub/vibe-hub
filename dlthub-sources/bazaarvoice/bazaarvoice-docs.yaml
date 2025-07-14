@@ -1,0 +1,43 @@
+resources:
+- name: answers
+  endpoint:
+    path: /answers.json
+    method: GET
+    data_selector: answers
+    params:
+      incremental: ApiVersion
+- name: answers
+  endpoint:
+    path: /data/answers.[FORMAT]
+    method: GET
+    data_selector: Results
+    params:
+      ApiVersion: '[latestApiVersion]'
+      Include: Questions,Authors
+      Sort: SubmissionTime:desc
+notes:
+- A key in Pending state requires approval from a Technical Administrator.
+- Requests for content type that do not include a ProductId, AuthorId, CategoryAncestorId,
+  SubmissionId, or Answer Id filter will only work with API keys that are configured
+  to exclude syndicated content.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- 'ERROR_ACCESS_DENIED: Insufficient privileges to perform the operation'
+- 'ERROR_PARAM_INVALID_API_KEY: Invalid API Key value'
+- 'ERROR_REQUEST_LIMIT_REACHED: Rate limiting error, i.e. too many requests per time
+  interval'
+- '404 - Request not found: Confirm the request URL is correct'
+- 'ERROR_NOT_FOUND: You requested a valid content type, but it is not enabled for
+  your Bazaarvoice client instance'
+- 'ERROR_PARAM_INVALID_API_KEY: The passkey provided is invalid'
+- 'ERROR_UNSUPPORTED: Feature is not supported for the client'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: http://api.bazaarvoice.com
+  auth:
+    type: apikey
+    location: query
+    header_name: passkey
+source_metadata: null

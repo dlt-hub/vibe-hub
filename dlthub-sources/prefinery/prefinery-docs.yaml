@@ -1,0 +1,121 @@
+resources:
+- name: personal_data
+  endpoint:
+    path: /services/data/vXX.X/personal_data
+    method: GET
+- name: data_exporter
+  endpoint:
+    path: /data_exporter
+    method: GET
+    data_selector: records
+    params: {}
+- name: data_importer
+  endpoint:
+    path: /data_importer
+    method: GET
+    data_selector: records
+    params: {}
+- name: addUser
+  endpoint:
+    path: /addUser
+    method: POST
+    data_selector: user
+    params: {}
+- name: authenticateUser
+  endpoint:
+    path: /authenticateUser
+    method: POST
+    data_selector: user
+    params: {}
+- name: getUser
+  endpoint:
+    path: /getUser
+    method: GET
+    data_selector: user
+    params: {}
+- name: triggerRewards
+  endpoint:
+    path: /triggerRewards
+    method: POST
+    data_selector: rewards
+    params: {}
+- name: getReferralCode
+  endpoint:
+    path: /getReferralCode
+    method: GET
+    data_selector: code
+    params: {}
+- name: getReferrerCode
+  endpoint:
+    path: /getReferrerCode
+    method: GET
+    data_selector: code
+    params: {}
+- name: popupReferralPage
+  endpoint:
+    path: /popupReferralPage
+    method: GET
+    data_selector: referralPage
+    params: {}
+- name: embedReferralPage
+  endpoint:
+    path: /embedReferralPage
+    method: POST
+    data_selector: embed
+    params: {}
+- name: embedLeaderboard
+  endpoint:
+    path: /embedLeaderboard
+    method: GET
+    data_selector: leaderboard
+    params: {}
+- name: recordFormImpression
+  endpoint:
+    path: /recordFormImpression
+    method: POST
+    data_selector: impression
+    params: {}
+- name: initForms
+  endpoint:
+    path: /initForms
+    method: POST
+    data_selector: init
+    params: {}
+notes:
+- Personal data is ingested on a continuous basis.
+- Data can be ingested through manual entries or automated log collections.
+- Parties must ensure they comply with local laws and practices affecting data transfer.
+- You do not have to accept cookies to use the Prefinery Service.
+- Prefinery observes your right not to be tracked and respects your browser's Do Not
+  Track preference.
+- All data sent to or from Prefinery is encrypted in-transit using 256-bit encryption.
+- Prefinery services have been built with disaster recovery in mind.
+- All create and update requests must send a proper Content-Type header of application/json.
+- 'If your API requests trigger our rate limiting, you will receive a HTTP Error 503:
+  Service Unavailable.'
+errors:
+- '400: Bad Request - The request could not be understood due to malformed syntax.'
+- '401: Unauthorized - Authentication credentials were missing or incorrect.'
+- '402: Payment Required - The account''s plan does not have API access enabled.'
+- '403: Forbidden - The API key does not have permissions to perform this action.'
+- '404: Not Found - The URI requested is invalid or the resource requested does not
+  exist.'
+- '422: Unprocessable Entity - Returned when fields are either absent or invalid.'
+- '500: Internal Server Error - Something is broken.'
+- '503: Service Unavailable - The rate limit has been reached.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.prefinery.com/api/v2
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.prefinery.com/oauth/token
+    client_id: '{{ dlt.secrets[''prefinery_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''prefinery_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''prefinery_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

@@ -1,0 +1,60 @@
+resources:
+- name: users
+  endpoint: /users
+  methods:
+  - GET
+  - POST
+  description: Manage user accounts
+  parameters:
+  - user_id
+  - email
+  - name
+- name: goals
+  endpoint: /goals
+  methods:
+  - GET
+  - POST
+  - PUT
+  description: Manage organizational goals
+  parameters:
+  - goal_id
+  - title
+  - description
+  - status
+- name: feedback
+  endpoint: /feedback
+  methods:
+  - GET
+  - POST
+  description: Manage feedback submissions
+  parameters:
+  - feedback_id
+  - user_id
+  - comment
+notes:
+- 'Rate limiting: 1000 requests per hour'
+- Pagination available on list endpoints
+- Webhook support for real-time updates
+errors:
+- '401: Unauthorized - Invalid API key'
+- '429: Too Many Requests - Rate limit exceeded'
+- '404: Not Found - Resource not found'
+- '400: Bad Request - Invalid request format'
+auth_info:
+  mentioned_objects:
+  - api_key
+  - authentication_header
+  auth_flow: API key must be included in the Authorization header for all requests.
+  env_var_for_auth: BETTERWORKS_API_KEY
+client:
+  base_url: https://api.betterworks.com
+  auth:
+    type: api_key
+    location: header
+    key_name: Authorization
+    env_var: BETTERWORKS_API_KEY
+source_metadata:
+  name: Betterworks
+  variable_name: service_name
+  base_url: https://api.betterworks.com
+  original_source_url: https://developers.betterworks.com/

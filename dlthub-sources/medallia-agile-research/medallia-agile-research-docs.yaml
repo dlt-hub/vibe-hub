@@ -1,0 +1,320 @@
+resources:
+- name: surveys
+  endpoint:
+    path: /3/surveys
+    method: GET
+- name: contactgroups
+  endpoint:
+    path: /3/contactgroups
+    method: GET
+- name: lookup
+  endpoint:
+    path: /3/lookup
+    method: GET
+- name: contactfolders
+  endpoint:
+    path: /3/contactfolders
+    method: GET
+- name: respondents
+  endpoint:
+    path: /3/surveys/{SurveyId}/respondents
+    method: GET
+    data_selector: responses
+    params:
+      filter: ResponseDate ge DateTime'YYYY-MM-DD' and ResponseDate lt DateTime'YYYY-MM-DD'
+- name: import_config
+  endpoint:
+    path: /3/contacts/import/configs
+    method: POST
+    data_selector: Data
+    params: {}
+- name: import_contacts
+  endpoint:
+    path: /3/contacts/import/{ImportConfigId}
+    method: POST
+    data_selector: Data
+    params: {}
+- name: import_status
+  endpoint:
+    path: /3/contacts/import/{QueueItemId}
+    method: GET
+    data_selector: Data
+    params: {}
+- name: contacts
+  endpoint:
+    path: 3/contacts
+    method: GET
+    data_selector: ''
+    params: {}
+- name: optouts
+  endpoint:
+    path: 3/contacts/optouts
+    method: GET
+    data_selector: ''
+    params: {}
+- name: import_configs
+  endpoint:
+    path: 3/contacts/import/configs
+    method: GET
+    data_selector: ''
+    params: {}
+- name: import_result
+  endpoint:
+    path: 3/contacts/import/result/{queueitemid}
+    method: GET
+    data_selector: ''
+    params: {}
+- name: target_columns
+  endpoint:
+    path: 3/contacts/import/targetcolumns
+    method: GET
+    data_selector: ''
+    params: {}
+- name: respondents
+  endpoint:
+    path: /3/surveys/{SurveyId}/respondents
+    method: GET
+    data_selector: Responses
+    params: {}
+- name: question_result
+  endpoint:
+    path: /3/surveys/{surveyid}/questions/{QuestionId}/result
+    method: GET
+    data_selector: Responses
+    params: {}
+- name: contacts
+  endpoint:
+    path: /3/contacts
+    method: POST
+    data_selector: Data
+    params: {}
+- name: contact_details
+  endpoint:
+    path: /3/contacts/{ContactId}
+    method: GET
+    data_selector: Data
+    params: {}
+- name: panelist_details
+  endpoint:
+    path: /3/surveys/{SurveyId}/panelists/{ContactId}
+    method: GET
+    data_selector: Data
+    params: {}
+- name: surveys
+  endpoint:
+    path: /3/surveys
+    method: GET
+    data_selector: surveys
+    params:
+      select: Id,Title,StartDate
+      filter: SurveyStatusId eq 2
+- name: contacts
+  endpoint:
+    path: /3/contacts
+    method: GET
+    data_selector: records
+    params: {}
+- name: contacts_import
+  endpoint:
+    path: /3/contacts/import/{importconfigid}
+    method: POST
+    data_selector: records
+    params: {}
+- name: contacts_optouts
+  endpoint:
+    path: /3/contacts/optouts
+    method: GET
+    data_selector: records
+    params: {}
+- name: surveys
+  endpoint:
+    path: /3/surveys
+    method: GET
+- name: contactgroups
+  endpoint:
+    path: /3/contactgroups
+    method: GET
+- name: lookup
+  endpoint:
+    path: /3/lookup
+    method: GET
+- name: contactfolders
+  endpoint:
+    path: /3/contactfolders
+    method: GET
+- name: contacts
+  endpoint:
+    path: 3/contacts
+    method: GET
+    data_selector: records
+- name: optouts
+  endpoint:
+    path: 3/contacts/optouts
+    method: GET
+    data_selector: records
+- name: import_configs
+  endpoint:
+    path: 3/contacts/import/configs
+    method: GET
+    data_selector: records
+- name: media
+  endpoint:
+    path: 3/media
+    method: GET
+    data_selector: records
+- name: surveys
+  endpoint:
+    path: 3/surveys
+    method: GET
+    data_selector: records
+- name: text_analysis
+  endpoint:
+    path: 3/textanalysis
+    method: GET
+    data_selector: records
+- name: surveys_questions
+  endpoint:
+    path: /3/surveys/{surveyid}/questions
+    method: GET
+    data_selector: Data
+    params:
+      filter: PageNumber eq 1
+- name: surveys_respondents
+  endpoint:
+    path: /3/surveys/{surveyid}/respondents
+    method: POST
+    data_selector: Data
+    params: {}
+- name: optouts
+  endpoint:
+    path: 3/contacts/optouts
+    method: GET
+    data_selector: Data
+- name: add_optouts
+  endpoint:
+    path: 3/contacts/optouts
+    method: POST
+    data_selector: null
+- name: contacts
+  endpoint:
+    path: /3/contacts
+    method: GET
+    data_selector: contacts
+    params: {}
+- name: optouts
+  endpoint:
+    path: /3/contacts/optouts
+    method: GET
+    data_selector: optouts
+    params: {}
+- name: import_configs
+  endpoint:
+    path: /3/contacts/import/configs
+    method: GET
+    data_selector: import_configs
+    params: {}
+- name: media
+  endpoint:
+    path: /3/media
+    method: GET
+    data_selector: media
+    params: {}
+- name: surveys
+  endpoint:
+    path: /3/surveys
+    method: GET
+    data_selector: surveys
+    params: {}
+- name: text_analysis
+  endpoint:
+    path: /3/textanalysis
+    method: GET
+    data_selector: text_analysis
+    params: {}
+- name: surveys
+  endpoint:
+    path: /3/surveys
+    method: GET
+    data_selector: results
+    params:
+      select: Id,Title,StartDate
+      filter: SurveyStatusId eq 2
+notes:
+- Use TLS 1.2 for secure connections.
+- Some api request will be cache server side. This is indicated in the API Reference
+  - Cached time column.
+- For client side caching, in addition to MaxAge, we will issue Etags. You can use
+  the Etag value to make a request with If-None-Match header. If the resource is still
+  valid, server will then response with a 304 status code.
+- Uses OAuth2 with refresh token â€” requires setup of connected app in api
+- The actual description of the error will be available in the PayLoad.Data property
+  of the response.
+- Append querystring parameter "statusok" to your url to always get a 200 status.
+- When requesting a resource which might be cached with the If-None-Match header,
+  you will get an empty 304 response to indicate the cache is still valid.
+- The Content-Type header is required for all POST/PUT operation. Please check if
+  the request body matches the Content-Type header.
+- Currently we support XML and JSON for all request. Except for the import, where
+  you can sent files directly.
+- The import configuration is a required parameter when adding contacts in bulk.
+- Cached Time for contacts is 10 minutes.
+- Cached Time for optouts is 1 day.
+- Cached Time for import configurations and target columns is 1 day.
+- API keys must have access to the demo survey and at least Results (Read) rights
+- In order to avoid a 403 Forbidden response, please make sure you have the required
+  roles as indicated in the API Reference.
+- Cached Time for GET requests is 10 minutes
+- Cached Time for lookup requests is 1 day
+- TLS 1.0 is considered unsafe, we highly recommend to use TLS1.2.
+- Computing capacity has limits, and as those limits are approached users will see
+  the performance of the application begin to degrade.
+- It is our responsibility to protect our customers from anyone who, deliberately
+  or otherwise, tries to flood the Medallia Agile Research API with so many requests
+  that performance suffers.
+- Each account can execute a limited number of API request per day and per minute.
+- If your account generates more then these limits you will get a 429 response.
+- We discard all requests that are throttled. Only the first request which violated
+  the throttling rules for your account will be logged.
+- Make sure to handle the throttleexception when requests are throttled.
+- 'Cached Time for contacts: 10 minutes'
+- 'Cached Time for import configurations: 1 day'
+- 'Cached Time for lookups: 1 day'
+- 'Cached Time for surveys: 1 minute'
+- 'Cached Time for text analysis: 1 minute'
+- Cached Time for lookups and other resources is 1 day.
+errors:
+- '403: You are trying to connect to our API using http instead of https.'
+- '403: You didn''t specify the region in the URI as explained in the HTTP-request
+  requirements.'
+- '403: You are using a key which doesn''t have the correct access rights to perform
+  your request.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '403 Forbidden: Ensure you have the required roles'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '403: You are trying to connect to our API using http instead of https. Https is
+  required for all connections.'
+- '429: Throttle API calls or reduce frequency'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api-us.agileresearch.medallia.com
+  headers:
+    X-Master-Key: '{MasterKey}'
+    X-Key: '{Key}'
+    Authorization: ''
+    Accept: application/json
+    Content-type: application/json
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+  paginator:
+    type: cursor
+    default_page_size: 25
+source_metadata: null

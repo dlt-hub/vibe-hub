@@ -1,0 +1,58 @@
+resources:
+- name: users
+  endpoint: /1/user/[user-id]/profile.json
+  methods:
+  - GET
+  description: Retrieve user profile information
+  parameters:
+  - user_id
+- name: activities
+  endpoint: /1/user/[user-id]/activities.json
+  methods:
+  - GET
+  description: Get activities data for a user
+  parameters:
+  - user_id
+  - date
+- name: sleep
+  endpoint: /1/user/[user-id]/sleep.json
+  methods:
+  - GET
+  description: Get sleep data for a user
+  parameters:
+  - user_id
+  - date
+- name: heart
+  endpoint: /1/user/[user-id]/heart.json
+  methods:
+  - GET
+  description: Get heart rate data for a user
+  parameters:
+  - user_id
+  - date
+notes:
+- 'Rate limiting: 150 requests per hour per user'
+- Data is available in real-time
+- Webhook support for real-time updates
+errors:
+- '401: Unauthorized - Invalid or expired token'
+- '429: Too Many Requests - Rate limit exceeded'
+- '404: Not Found - Resource not found'
+auth_info:
+  mentioned_objects:
+  - bearer_token
+  - authentication_header
+  auth_flow: OAuth 2.0 flow with user consent for access tokens
+  env_var_for_auth: FITBIT_API_KEY
+client:
+  base_url: https://api.fitbit.com
+  auth:
+    type: oauth
+    location: header
+    key_name: authorization
+    env_var: FITBIT_API_KEY
+source_metadata:
+  name: Fitbit
+  variable_name: service_name
+  base_url: https://api.fitbit.com
+  original_source_url: https://www.fitbit.com/dev

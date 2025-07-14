@@ -1,0 +1,61 @@
+resources:
+- name: recognition
+  endpoint:
+    path: /api/v1/recognition
+    method: GET
+    data_selector: records
+- name: rewards
+  endpoint:
+    path: /api/v1/rewards
+    method: GET
+    data_selector: records
+- name: recognition_trends
+  endpoint:
+    path: /analytics/recognition_rates
+    method: GET
+    data_selector: data
+    params: {}
+- name: reward_catalog
+  endpoint:
+    path: /rewards/catalog
+    method: GET
+    data_selector: rewards
+    params: {}
+- name: donations
+  endpoint:
+    path: /rewards/donations
+    method: GET
+    data_selector: donations
+    params: {}
+notes:
+- Uses OAuth2 with refresh token.
+- New streamlined admin navigation experience built to increase efficiency and save
+  you time!
+- Admins can now create announcements targeted to a specific group or groups!
+- Uses OAuth2 with refresh token — requires setup of connected app in Bonusly
+- Some endpoints may return data in nested fields
+- Some features and rewards may vary by region.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://bonus.ly
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://bonus.ly/oauth/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

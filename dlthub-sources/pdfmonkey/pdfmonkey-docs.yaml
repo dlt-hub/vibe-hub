@@ -1,0 +1,249 @@
+resources:
+- name: Tailwind CSS v2.0.3
+  endpoint:
+    path: https://pdfmonkey-resources.s3.eu-west-3.amazonaws.com/css/tailwind-light.min.css
+    method: GET
+- name: Tailwind CSS v3.0.23
+  endpoint:
+    path: https://pdfmonkey-resources.s3-eu-west-3.amazonaws.com/js/tailwindcss-3.0.23.js
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: template
+  endpoint:
+    path: /templates
+    method: POST
+    data_selector: template
+    params: {}
+- name: document
+  endpoint:
+    path: /documents
+    method: POST
+    data_selector: document
+    params: {}
+- name: current_user
+  endpoint:
+    path: /api/v1/current_user
+    method: GET
+- name: generate_document
+  endpoint:
+    path: /generate/document
+    method: POST
+- name: document
+  endpoint:
+    path: /document
+    method: POST
+    data_selector: document
+    params: {}
+- name: template_specific_webhook
+  endpoint:
+    path: /documents/generation.success
+    method: POST
+    params:
+      channels: template-07C63E0B-620F-44A9-AF9F-4CA0DA025A0A
+- name: folder_webhook
+  endpoint:
+    path: /documents/generation.success
+    method: POST
+    params:
+      channels: folder-440DA20B-C5A0-A0A9-C62F-4070FAF963EA
+- name: documents
+  endpoint:
+    path: /api/v1/documents
+    method: POST
+    data_selector: document
+    params: {}
+- name: document_cards
+  endpoint:
+    path: /api/v1/document_cards/ID
+    method: GET
+    data_selector: document_card
+    params: {}
+- name: documents
+  endpoint:
+    path: /api/v1/documents
+    method: POST
+    data_selector: document
+- name: document_cards
+  endpoint:
+    path: /api/v1/document_cards
+    method: GET
+    data_selector: document_cards
+    params:
+      page[number]: '1'
+- name: document_templates
+  endpoint:
+    path: /api/v1/document_templates
+    method: POST
+    data_selector: document_template
+    params: {}
+- name: document_template_cards
+  endpoint:
+    path: /api/v1/document_template_cards
+    method: GET
+    data_selector: document_template_cards
+    params: {}
+- name: generate_image
+  endpoint:
+    path: /api/v1/documents
+    method: POST
+    data_selector: document
+    params: {}
+- name: generate_image_sync
+  endpoint:
+    path: /api/v1/documents/sync
+    method: POST
+    data_selector: document
+    params: {}
+- name: document_sync
+  endpoint:
+    path: /api/v1/documents/sync
+    method: POST
+    data_selector: document_card
+- name: template
+  endpoint:
+    path: /templates
+    method: POST
+    data_selector: template
+    params: {}
+- name: document
+  endpoint:
+    path: /documents
+    method: POST
+    data_selector: document
+    params: {}
+- name: document
+  endpoint:
+    path: /documents
+    method: POST
+    data_selector: document
+    params: {}
+- name: lineItems
+  endpoint:
+    path: /lineItems
+    method: GET
+    data_selector: items
+    params: {}
+notes:
+- Including stylesheets based on their URL is only possible on a paid account.
+- An exception is made for CSS hosted on our own servers.
+- Frameworks like Bootstrap have enforced opinions when it comes to print styles.
+- We recommend using libraries with a lighter touch.
+- Uses OAuth2 with refresh token â€” requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- You cannot insert data using the {{movieTitle}} syntax.
+- If you're concerned about the time it takes to generate your PDF, using smaller
+  image is a very good start.
+- The smaller the images, the faster they are to load and thus, the faster your Document
+  generation will be.
+- Our recommendation is to favor formats that provide small images.
+- PDFMonkey supports recent image formats like Webp and AVIF.
+- Another good idea is using inlined SVG or data-uri images as they will not need
+  to load.
+- This technique uses JavaScript and is thus only usable on a paid account or during
+  your 14-day trial.
+- Avoid animations; otherwise the QR Code might not finish its animation before 'printing',
+  resulting in an absent or incomplete QR Code.
+- Fonts won't apply in header and footer due to CSS tab limitations.
+- Fonts must be inlined as data-uri in header/footer content.
+- Paid account only
+- Documents including external fonts will fail on a free account.
+- Channels are case-sensitive!
+- Always make sure you paste Template ID in upper-case.
+- You can change the size of your Document's pages in the Template Settings tab.
+- Sizes are expressed in millimeters, if you need inches, 1 in = 25.4 mm.
+- If you're defining header and/or footer in the settings, you will need to give them
+  space by adding margin at the top and/or bottom of the Document.
+- If you have a very simple document and just want nice margins around it, that's
+  fine too.
+- If you need to have a full-page background color or image, margin will reduce the
+  'printed' content size and prevent the color/image from going border to border.
+- If you are make a Powerpoint-like document and need each content page to fill an
+  entire actual page using the pixel sizes listed above, don't use margin or it will
+  mess it up.
+- The current page number can only be displayed inside the header and footer content.
+- In Powerpoint-like documents, page numbers can be inserted using CSS counters.
+- Generating the Document upon creation can be done by setting the status to 'pending'.
+- Attaching meta data can influence the generated filename.
+- Always prefer DocumentCard unless you really need access to payload
+- Store any data you need later on in meta instead of (or in addition to) payload
+- The simplest way to force a page break to happen is using CSS.
+- You can use the `page-break-before` property to define a class.
+- You can apply this class to any element you want to insert a page break before.
+- If you want to avoid a section of your document from being broken between pages,
+  you can use the `page-break-inside` CSS property.
+- For fixed content, replace accented and special characters with their HTML Entity
+  counterpart.
+- Header and footer advanced content accepts dynamic data but may require help from
+  the entities filter for accented characters.
+- Download URL is only valid for 1h, refresh to get new Download URL.
+- JSON doesn't support values that include line breaks.
+- Use 'Bearer YOUR_SECRET_TOKEN' for authorization.
+- By default a webp image will be created.
+- You can set dimensions and choose background transparency when creating templates.
+- Make sur that you're using the same variable name between your Template and the
+  payload you send.
+- If your Template contains `{{someVariable}}` the Document payload should contain
+  this.
+- Be careful that the response from the API call will be a DocumentCard and not a
+  Document.
+- You will not be able to sign in until your account is confirmed.
+- The Document’s status can be either pending or generating when you receive the response
+  to your creating request.
+- You need to fetch the Document again in a loop until its status becomes success
+  or failure.
+- Don't use preview_url; it is not a download URL.
+- All commands accept the -k or --api-key option to specify an API key.
+- You can also set the PDFMONKEY_API_KEY environment variable.
+- Forgetting to publish your template is a frequent mistake, especially when switching
+  back and forth between Make and PDFMonkey.
+- Using an external JS library will only work on a paid account.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400 Bad Request: Check request body for validity.'
+- '404 Not Found: Ensure the document ID exists.'
+- '401 Unauthorized: Verify API key.'
+- 'failure: In case the Document''s status is failure, this field will contain the
+  reason of the failure.'
+- '422 Responses: Ensure values are escaped properly before sending.'
+- Document template must exist
+- 'Failed to open TCP connection to api.pdfmonkey.io:443 (getaddrinfo: nodename nor
+  servname provided, or not known)'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.pdfmonkey.io
+  auth:
+    type: apikey
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: '*/*'
+    Content-Type: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    page_size_param: pageSize
+    default_page_size: 200
+source_metadata: null

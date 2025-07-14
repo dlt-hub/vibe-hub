@@ -1,0 +1,79 @@
+# Source Metadata
+source_name: Linnworks
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.linnworks.net
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.linnworks.net/token
+    client_id: "{{ dlt.secrets['application_id'] }}"
+    client_secret: "{{ dlt.secrets['application_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: page
+    page_size_param: pageSize
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: ProcessedOrders
+    endpoint:
+      path: /Api/Method/ProcessedOrders-SearchProcessedOrders
+      method: GET
+      data_selector: records
+      params: {}
+
+  - name: ProcessedOrderDetails
+    endpoint:
+      path: /Api/Method/Orders-GetOrdersById
+      method: GET
+      data_selector: records
+      params: {}
+
+  - name: StockItems
+    endpoint:
+      path: /Api/Method/Stock-GetStockItemsFull
+      method: GET
+      data_selector: records
+      params: {}
+
+  - name: StockLocations
+    endpoint:
+      path: /Api/Method/Inventory-GetStockLocations
+      method: GET
+      data_selector: records
+      params: {}
+
+  - name: StockLocationDetails
+    endpoint:
+      path: /Api/Method/Locations-GetLocation
+      method: GET
+      data_selector: records
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - Application ID
+    - Application Secret
+    - API Token
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Rate limits vary across endpoints; refer to individual endpoint documentation for details.
+  - Ensure correct application setup to avoid authentication issues.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 429: Throttle API calls to avoid rate limits.
+  - 401: Validate API Token and ensure correct permissions.

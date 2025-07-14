@@ -1,0 +1,74 @@
+resources:
+- name: personal_information
+  endpoint:
+    path: /privacy/personal_information
+    method: GET
+    data_selector: personal_data
+- name: subprocessors
+  endpoint:
+    path: /privacy/subprocessors
+    method: GET
+    data_selector: subprocessors
+- name: issues
+  endpoint:
+    path: /api/issues
+    method: GET
+    data_selector: records
+- name: user_stories
+  endpoint:
+    path: /api/user_stories
+    method: GET
+    data_selector: records
+- name: product_development_process
+  endpoint:
+    path: /product-development/process
+    method: GET
+    data_selector: process_steps
+    params: {}
+- name: product_development_frameworks
+  endpoint:
+    path: /product-development/frameworks
+    method: GET
+    data_selector: frameworks_list
+    params: {}
+notes:
+- An external application must be registered with Aha! before it can use OAuth2 to
+  authenticate users.
+- The user must be a valid Aha! user to authorize the application.
+- You need to be a workspace owner in Aha! Roadmaps for the workspace you wish to
+  integrate.
+- You will need an Azure DevOps account with create/edit records permissions in the
+  project you plan to integrate.
+- A high speed Internet connection is required for proper transmission of the Service.
+- Aha! does not sell Personal Information.
+- Aha! does not share Personal Information of California users for cross-context advertising.
+- The product development process is iterative and may require revisiting earlier
+  stages.
+errors:
+- 403 - the authentication information is incorrect.
+- 400 - there is an error in the construction of the request.
+- 404 - the requested record could not be found.
+- 429 - the request exceeded the rate limit.
+- 500 - something went wrong on the server.
+- 504 - the request timed out as a result of requesting too much data.
+- 'Request to access personal information failed: Ensure proper authorization.'
+- 'Request to delete personal information not processed: Verify legal exceptions.'
+auth_info:
+  mentioned_objects: []
+client:
+  auth:
+    type: oauth2
+    flow: authorization_code
+    token_url: https://<subdomain>.aha.io/oauth/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    location: header
+    header_name: Authorization
+  base_url: https://<yourcompany>.aha.io
+  paginator:
+    type: page
+    page_size_param: per_page
+    default_page_size: 30
+  headers:
+    User-Agent: Test data generation script (fred@aha.io)
+source_metadata: null

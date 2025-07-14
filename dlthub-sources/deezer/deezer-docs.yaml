@@ -1,0 +1,63 @@
+resources:
+- name: users
+  endpoint: /user
+  methods:
+  - GET
+  - POST
+  description: Manage user accounts and retrieve user information.
+  parameters:
+  - user_id
+  - email
+  - name
+- name: tracks
+  endpoint: /track
+  methods:
+  - GET
+  description: Retrieve information about specific tracks.
+  parameters:
+  - track_id
+- name: playlists
+  endpoint: /playlist
+  methods:
+  - GET
+  - POST
+  description: Manage playlists and retrieve playlist information.
+  parameters:
+  - playlist_id
+  - title
+  - description
+- name: albums
+  endpoint: /album
+  methods:
+  - GET
+  description: Retrieve information about specific albums.
+  parameters:
+  - album_id
+notes:
+- 'Rate limiting: 100 requests per hour for standard users, higher for premium users.'
+- Pagination is supported for list endpoints using 'limit' and 'offset' parameters.
+- Webhook support is available for real-time updates on user actions.
+errors:
+- '401: Unauthorized - Invalid or missing access token.'
+- '429: Too Many Requests - Rate limit exceeded.'
+- '404: Not Found - Resource not found.'
+- '500: Internal Server Error - Something went wrong on the server.'
+auth_info:
+  mentioned_objects:
+  - oauth
+  - access_token
+  auth_flow: OAuth 2.0 flow where users must authorize the application to access their
+    data.
+  env_var_for_auth: DEEZER_API_KEY
+client:
+  base_url: https://api.deezer.com
+  auth:
+    type: oauth
+    location: header
+    key_name: Authorization
+    env_var: DEEZER_API_KEY
+source_metadata:
+  name: Deezer
+  variable_name: service_name
+  base_url: https://api.deezer.com
+  original_source_url: https://developers.deezer.com/api

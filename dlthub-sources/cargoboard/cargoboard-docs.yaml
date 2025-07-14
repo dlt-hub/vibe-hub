@@ -1,0 +1,186 @@
+resources:
+- name: orders
+  endpoint:
+    path: /v1/orders
+    method: POST
+- name: quotation
+  endpoint:
+    path: /v1/quotations
+    method: POST
+    data_selector: ''
+    params: {}
+- name: invoices
+  endpoint:
+    path: /v1/invoices
+    method: GET
+- name: quotations
+  endpoint:
+    path: /v1/quotations
+    method: GET
+    data_selector: ''
+    params: {}
+- name: orders
+  endpoint:
+    path: /v1/orders
+    method: POST
+    data_selector: lines
+    params: {}
+- name: invoice_pdf
+  endpoint:
+    path: /v1/invoices/{id}/pdf
+    method: GET
+- name: quotations
+  endpoint:
+    path: /v1/quotations
+    method: POST
+    data_selector: null
+    params: {}
+- name: quotation
+  endpoint:
+    path: /quotation
+    method: POST
+    data_selector: lines
+    params: {}
+- name: order
+  endpoint:
+    path: /order
+    method: POST
+    data_selector: lines
+    params: {}
+- name: print_confirmation
+  endpoint:
+    path: /orders//print-confirmation
+    method: GET
+    params: {}
+- name: quotations
+  endpoint:
+    path: /v1/quotations
+    method: POST
+- name: orders
+  endpoint:
+    path: /v1/orders
+    method: GET
+- name: quotations
+  endpoint:
+    path: /v1/quotations
+    method: POST
+    data_selector: data
+    params: {}
+- name: cancel_order
+  endpoint:
+    path: /orders//cancel
+    method: POST
+    params:
+      id: CUID or reference of order
+- name: book_order
+  endpoint:
+    path: /v1/quotations/{id}/book
+    method: POST
+- name: order
+  endpoint:
+    path: /v1/orders
+    method: POST
+    data_selector: data
+    params: {}
+- name: order_links
+  endpoint:
+    path: /v1/order/{id}
+    method: GET
+    data_selector: links
+    params: {}
+- name: orders
+  endpoint:
+    path: /v1/orders
+    method: POST
+    data_selector: data
+- name: order_tracking
+  endpoint:
+    path: /v1/orders/{order_id}/tracking
+    method: GET
+    data_selector: data
+- name: order_cancel
+  endpoint:
+    path: /v1/orders/{order_id}/cancel
+    method: POST
+    data_selector: data
+- name: order_print_confirmation
+  endpoint:
+    path: /v1/orders/{order_id}/print-confirmation
+    method: GET
+    data_selector: data
+- name: order_print_labels
+  endpoint:
+    path: /v1/orders/{order_id}/print-shipment-labels
+    method: GET
+    data_selector: data
+- name: orders_tracking
+  endpoint:
+    path: /v1/orders//tracking
+    method: GET
+    params: {}
+- name: orders
+  endpoint:
+    path: /v1/orders/{id}
+    method: GET
+- name: lines
+  endpoint:
+    path: /api/lines
+    method: POST
+    data_selector: lines
+    params: {}
+- name: print_shipment_labels
+  endpoint:
+    path: /v1/orders//print-shipment-labels
+    method: GET
+- name: quotation
+  endpoint:
+    path: /v1/quotations/{id}
+    method: GET
+notes:
+- The request body for quotation and booking requests is completely identical.
+- For a quotation request, significantly less address information is mandatory than
+  for a booking request.
+- Minimum request parameters include product, shipper, consignee, and lines.
+- Status updates are sent immediately after they are generated.
+- A response of listing endpoints could include up to 50 results per request.
+- To access more results the pagination has to be used.
+errors:
+- '400 - Unexpected Token / Invalid Syntax: You will get this error if you send an
+  invalid formatted JSON body. You can check and validate your JSON body here'
+- '401 - Unauthorized: You will get this error if you use no API key. Please check
+  the specification of the API key in the header. The API key must be passed as "X-API-KEY"
+  in the header.'
+- '403 - Forbidden: You will get this error if you use an incorrect API key. Please
+  check the specification of the API key in the header. The API key must be passed
+  as "X-API-KEY" in the header. Please also make sure that you are using the correct
+  API Key for the correct environment. There are different keys for test and production
+  environment.'
+- '404 - Not Found: If you get this error, you probably have the wrong URL. Please
+  check the URL.'
+- '422 - Unprocessable Entity: You will get this error if you have an error in the
+  request body. For this error, you will always receive a "message" in the response
+  that explains the error in more detail.'
+- '500 - Internal Server Error: If you get this error, there is a bug in the body
+  or in our system that is not further specified. Please contact us here and send
+  us your request body or cURL.'
+- '502 - Bad Gateway: If you receive this error, we will probably have a problem with
+  our system. By the time you receive this error, we will already be aware of it and
+  working on a solution.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api-sandbox.cargoboard.com
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+    X-API-KEY: YOUR KEY HERE
+  paginator:
+    type: cursor
+    cursor_param: cursor
+    page_size_param: take
+    default_page_size: 50
+source_metadata: null

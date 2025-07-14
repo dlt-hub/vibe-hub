@@ -1,0 +1,60 @@
+resources:
+- name: lists
+  endpoint:
+    path: /api/public/lists
+    method: GET
+- name: sent_emails
+  endpoint:
+    path: /api/public/sent
+    method: GET
+- name: sequences
+  endpoint:
+    path: /api/public/sequences
+    method: GET
+- name: replies
+  endpoint:
+    path: /api/public/replies
+    method: GET
+- name: clicks
+  endpoint:
+    path: /api/public/clicks
+    method: GET
+- name: contacts
+  endpoint:
+    path: /api/public/contacts
+    method: POST
+- name: remove_contacts
+  endpoint:
+    path: /api/public/contacts/remove
+    method: POST
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- SalesBlink is an AI powered cold email outreach automation tool.
+- Cohere provides access to advanced Large Language Models and NLP tools.
+errors:
+- '400: Bad Request -- Your request is invalid.'
+- '401: Unauthorized -- Your API key is wrong.'
+- '403: Forbidden -- The request is hidden for administrators only.'
+- '404: Not Found -- The specified kitten could not be found.'
+- '405: Method Not Allowed -- You tried to access SalesBlink with an invalid method.'
+- '406: Not Acceptable -- You requested a format that isn''t json.'
+- '429: Too Many Requests -- You''re requesting too many kittens! Slow down!'
+- '500: Internal Server Error -- We had a problem with our server. Try again later.'
+- '503: Service Unavailable -- We''re temporarily offline for maintenance. Please
+  try again later.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://salesblink.io
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+    flow: refresh_token
+    token_url: https://salesblink.io/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+  headers:
+    Accept: application/json
+source_metadata: null

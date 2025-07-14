@@ -1,0 +1,138 @@
+resources:
+- name: foods
+  endpoint:
+    path: /foods
+    method: GET
+    data_selector: foods
+- name: channels_auth
+  endpoint:
+    path: /pusher/channels-auth
+    method: POST
+- name: login
+  endpoint:
+    path: /login
+    method: POST
+    data_selector: ok
+- name: room
+  endpoint:
+    path: /room
+    method: POST
+    data_selector: ok
+- name: beams_auth
+  endpoint:
+    path: /pusher/beams-auth
+    method: GET
+    data_selector: beamsToken
+- name: trigger_notification
+  endpoint:
+    path: /trigger
+    method: POST
+    data_selector: response
+- name: votes
+  endpoint:
+    path: /my-channel/my-event
+    method: POST
+    data_selector: message
+- name: user_auth
+  endpoint:
+    path: /pusher/user-auth
+    method: POST
+- name: is_logged_in
+  endpoint:
+    path: /isLoggedIn
+    method: GET
+- name: new_user
+  endpoint:
+    path: /new/user
+    method: POST
+- name: messages
+  endpoint:
+    path: /messages
+    method: GET
+- name: accounts
+  endpoint:
+    path: /eventdb/accounts
+    method: GET
+    data_selector: records
+- name: tracks
+  endpoint:
+    path: /tracks
+    method: GET
+    data_selector: tracks
+- name: current
+  endpoint:
+    path: /current
+    method: GET
+    data_selector: current
+- name: tick
+  endpoint:
+    path: /tick
+    method: POST
+    data_selector: response
+- name: auth
+  endpoint:
+    path: /auth
+    method: GET
+- name: push
+  endpoint:
+    path: /push
+    method: POST
+- name: slack
+  endpoint:
+    path: /slack
+    method: POST
+- name: stock_prices
+  endpoint:
+    path: /trigger
+    method: POST
+notes:
+- Requires setup of Pusher Channels app and ngrok for local testing
+- EnsureAuthenticated function checks token validity.
+- Channel naming convention is private-userchannel-<userId>.
+- ChatKit has been retired from the Pusher product stack as of April, 2020.
+- Ensure you have a valid GitHub session for authentication.
+- Uses Pusher Channels for real-time updates.
+- Pusher's free sandbox plan comes with 200,000 messages per day and 100 concurrent
+  connections
+- This tutorial uses a ticket number as a password for demonstration purposes only.
+- Uses GitHub OAuth for authentication
+- Session secret should be a randomly generated secret
+- Data passed through Pusher APIs is ephemeral and is not stored by our system.
+- An exception applies to users of the Cache Channels feature on Pusher Channels.
+  The feature is designed as a convenient way for clients to fetch the latest value
+  from the edge of the network and is not a permanent store of data; cache values
+  are only stored in memory and are removed after 30 minutes.
+- Uses Pusher for real-time event triggering.
+- Webhook events of type v1.UserNotificationOpen are processed.
+- Ensure to match the expected hash for webhook verification.
+- Cache channels store the latest triggered event and expire after 30 minutes.
+- Uses GitHub OAuth for authentication.
+errors:
+- 'services/chatkit/not_found/user_not_found: User not found.'
+- 'services/chatkit/not_found/room_not_found: Room not found.'
+auth_info:
+  mentioned_objects:
+  - Pusher
+  - ChatManager
+  - TokenProvider
+  - GitHubStrategy
+  - passport
+client:
+  base_url: https://NGROK.ngrok.io
+  auth:
+    type: oauth2
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''pusher_app_id''] }}'
+    client_secret: '{{ dlt.secrets[''pusher_app_secret''] }}'
+    location: header
+    header_name: Authorization
+    flow: refresh_token
+    authUrl: https://some-auth-url.com/secure
+    headers:
+      Content-Type: application/json
+    queryParams:
+      page: '1'
+    credentials: omit
+  headers:
+    Accept: application/json
+source_metadata: null

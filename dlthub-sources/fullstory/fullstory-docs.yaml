@@ -1,0 +1,104 @@
+resources:
+- name: rage_click_event
+  endpoint:
+    path: fullstory/rageclick
+    method: GET
+    data_selector: detail
+- name: events
+  endpoint:
+    path: /api/events
+    method: GET
+    data_selector: events
+    params: {}
+- name: defined_objects
+  endpoint:
+    path: /api/defined_objects
+    method: GET
+    data_selector: defined_objects
+    params: {}
+- name: users
+  endpoint:
+    path: /v2/users
+    method: POST
+    data_selector: null
+    params: {}
+- name: events
+  endpoint:
+    path: /v2/events
+    method: POST
+    data_selector: null
+    params: {}
+- name: getSession
+  endpoint:
+    path: FS('getSession')
+    method: GET
+    data_selector: null
+    params:
+      format: url
+- name: getSessionAsync
+  endpoint:
+    path: FS('getSessionAsync')
+    method: GET
+    data_selector: null
+    params:
+      format: url.now
+- name: set_properties
+  endpoint:
+    path: /setProperties
+    method: POST
+    data_selector: properties
+    params:
+      type: page
+- name: track_event
+  endpoint:
+    path: /trackEvent
+    method: POST
+    data_selector: properties
+    params: {}
+- name: users
+  endpoint:
+    path: /v2/users
+    method: POST
+    data_selector: properties
+    params: {}
+notes:
+- Rage Click events can be triggered via the browser client API.
+- Be careful about which behaviors you trigger via this event, as it can be spoofed
+  by a malicious actor.
+- Events may be duplicated in your warehouse (less than 1%).
+- Use version 2.0 of the Fullstory snippet
+- Use a version of fs.js later than August 3rd, 2023
+- The Fullstory API employs a number of safeguards against bursts of incoming traffic
+  to help maximize its stability.
+- When a rate limit is hit a `Retry-After` header will be included with the response.
+- Property names can only contain a sequence of alphanumeric characters A-Z, a-z,
+  or 0-9 and underscores ('_').
+- The maximum property name length is 512 characters.
+- Properties have a maximum value size of 8192 bytes.
+- A session url or ID can only be returned by FS('getSession') if capture has begun.
+- To be assured of getting a session url, you can use FS('observe') or FS('getSessionAsync').
+- The Fullstory Browser API is available once the Fullstory data capture snippet is
+  installed on your users' browser.
+- Once the Fullstory script loads, it captures all web based interactions and mutations.
+- The V2 API allows for user data creation and management for users that have not
+  already been captured in a session.
+- Capture up to 50 unique properties (exclusive of pageName) on a single page.
+- Capture up to 500 unique properties across all pages.
+- pageName field is limited to 1,000 unique pageName values across your site.
+- Type annotations for custom properties are no longer necessary in version 2.
+- Field types will be inferred from the values in the properties field.
+errors:
+- '429: Too Many Requests - Rate limit exceeded.'
+- 'Cardinality limit exceeded for POST /users or POST /events: New property names
+  will be rejected.'
+- '404: user not found'
+- '429: Too Many Requests'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.fullstory.com
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+source_metadata: null

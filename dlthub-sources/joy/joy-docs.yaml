@@ -1,0 +1,192 @@
+resources:
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: schema
+  endpoint:
+    path: /validate
+    method: POST
+    data_selector: value
+    params: {}
+notes:
+- Always end statements with ;
+- No implicit or single statement scopes
+- Use uppercase variable names for imported modules
+- 'Every module can only have two top level globals: exports and internals'
+- Uses OAuth2 with refresh token â€” requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- This Code of Conduct is adapted from the Contributor Covenant, version 2.0, available
+  at https://www.contributor-covenant.org/version/2/0/code_of_conduct.html.
+- Community Impact Guidelines were inspired by Mozilla's code of conduct enforcement
+  ladder.
+- The empty string is not allowed by default and must be enabled with allow('').
+- The schema defines constraints for username, password, access_token, birth_year,
+  and email.
+- The schema defines constraints for validation of data types.
+- Uses Joi for schema validation
+- Strings are utf-8 encoded by default
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Instances of abusive, harassing, or otherwise unacceptable behavior may be reported
+  to the community leaders responsible for enforcement at tsc@hapi.dev.
+- ValidationError
+- alternatives.all
+- alternatives.any
+- alternatives.match
+- alternatives.one
+- alternatives.types
+- any.custom
+- any.default
+- any.failover
+- any.invalid
+- any.only
+- any.ref
+- any.required
+- any.unknown
+- array.base
+- array.excludes
+- array.includesRequiredBoth
+- array.includesRequiredKnowns
+- array.includesRequiredUnknowns
+- array.includes
+- array.length
+- array.max
+- array.min
+- array.orderedLength
+- array.sort
+- array.sort.mismatching
+- array.sort.unsupported
+- array.sparse
+- array.unique
+- array.hasKnown
+- array.hasUnknown
+- binary.base
+- binary.length
+- binary.max
+- binary.min
+- boolean.base
+- date.base
+- date.format
+- date.greater
+- date.less
+- date.max
+- date.min
+- date.strict
+- function.arity
+- function.class
+- function.maxArity
+- function.minArity
+- number.base
+- number.greater
+- number.infinity
+- number.integer
+- number.less
+- number.max
+- number.min
+- number.multiple
+- number.negative
+- number.port
+- number.positive
+- number.precision
+- number.unsafe
+- object.unknown
+- object.and
+- object.assert
+- object.base
+- object.length
+- object.max
+- object.min
+- object.missing
+- object.nand
+- object.pattern.match
+- object.refType
+- object.regex
+- object.rename.multiple
+- object.rename.override
+- object.schema
+- object.instance
+- object.with
+- object.without
+- object.xor
+- object.oxor
+- string.alphanum
+- string.base64
+- string.base
+- string.creditCard
+- string.dataUri
+- string.domain
+- string.email
+- string.empty
+- string.guid
+- string.hexAlign
+- string.hex
+- string.hostname
+- string.ipVersion
+- string.ip
+- string.isoDate
+- string.isoDuration
+- string.length
+- string.lowercase
+- string.max
+- string.min
+- string.normalize
+- string.pattern.base
+- string.pattern.name
+- string.pattern.invert.base
+- string.pattern.invert.name
+- string.token
+- string.trim
+- string.uppercase
+- string.uri
+- string.uriCustomScheme
+- string.uriRelativeOnly
+- symbol.base
+- symbol.map
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://your-instance.api-name.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    page_size_param: pageSize
+    default_page_size: 200
+source_metadata: null

@@ -1,0 +1,65 @@
+# Source Metadata
+source_name: spotify_ads
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.spotify.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://accounts.spotify.com/api/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: page
+    page_size_param: limit
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: ad_accounts
+    endpoint:
+      path: /v1/ad_accounts
+      method: GET
+      data_selector: ad_accounts
+      params: {}
+
+  - name: campaigns
+    endpoint:
+      path: /v1/campaigns
+      method: GET
+      data_selector: campaigns
+      params: {}
+
+  - name: campaign_performance
+    endpoint:
+      path: /v1/campaign_performance
+      method: GET
+      data_selector: performance_metrics
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AdAccount
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires Spotify Developer application with Partner API access
+  - Valid Spotify Ad Account ID must be provided
+
+# Troubleshooting & Error Patterns
+errors:
+  - 400 Bad Request: Check if the parameters are correct
+  - 401 Unauthorized: Verify OAuth tokens and permissions
+  - 404 Not Found: Ensure the requested resource exists

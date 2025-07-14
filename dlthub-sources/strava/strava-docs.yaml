@@ -1,0 +1,57 @@
+# Source Metadata
+source_name: Strava
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://www.strava.com/api/v3
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://www.strava.com/oauth/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: page
+    page_size_param: per_page
+    default_page_size: 30
+
+# Resources (per endpoint/object)
+resources:
+  - name: athlete_stats
+    endpoint:
+      path: /athletes/:id/stats
+      method: GET
+      data_selector: 
+      params: {}
+
+  - name: activities
+    endpoint:
+      path: /athlete/activities
+      method: GET
+      data_selector: 
+      params: {
+                "incremental": "start_date"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuthToken
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Strava API has limitations to 100 requests every 15 minutes, 1000 daily.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401: Unauthorized - Check OAuth scopes or refresh token validity
+  - 403: Forbidden - Check for rate limits or insufficient permissions

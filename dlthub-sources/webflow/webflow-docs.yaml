@@ -1,0 +1,116 @@
+resources:
+- name: webhook
+  endpoint:
+    path: /api/v1/webhooks
+    method: POST
+    params:
+      triggerType: form_submission
+- name: 301_redirects
+  endpoint:
+    path: /301_redirects
+    method: GET
+- name: workspace
+  endpoint:
+    path: /workspace
+    method: POST
+- name: cms_items
+  endpoint:
+    path: /cms_items
+    method: POST
+- name: sites
+  endpoint:
+    path: /sites
+    method: GET
+    data_selector: sites
+- name: collections
+  endpoint:
+    path: /cms/collections
+    method: GET
+    data_selector: collections
+- name: items
+  endpoint:
+    path: /cms/items
+    method: GET
+    data_selector: items
+notes:
+- You must protect all Personal Information using reasonable and appropriate technical
+  and organizational measures.
+- You are required to maintain a privacy policy for your Application.
+- Webflow Apps must run on HTTPS URLs, and Ngrok provides a secure tunnel for your
+  local server.
+- Webhooks created through the dashboard will not include the request headers needed
+  to validate request signatures.
+- Two-factor authentication is enabled for an admin account on the workspace
+- Your app must meet all technical requirements to be made publicly available
+- API tokens expire after 365 consecutive days of inactivity.
+- Each site can have up to 5 tokens.
+- On July 7, 2025, we’re releasing important updates to how CMS items are published
+  and managed via the API.
+- Updating an item’s isDraft property to true on a live item will no longer unpublish
+  it.
+- Test your integrations using the beta API endpoints.
+- Designer APIs only access content on the current page, not other sites or pages.
+- Only Workspace admins can upload new bundles. If you’re not an admin, contact your
+  Workspace administrator to upload the bundle or grant you the necessary permissions.
+- Available scopes are determined by the type of token you’re creating.
+- Each API endpoint lists its required scopes in the description.
+- Only request scopes your app actually needs.
+- Only Workspace admins can create apps, view client secrets, upload bundles, and
+  modify app settings.
+- Never commit your Client Secret to version control
+- Rotate your Client Secret if it’s ever exposed
+- Store secrets in environment variables or a secure secret management system
+- Implement proper CORS policies for Designer Extensions
+- Files you upload to the assets panel aren’t restricted — that is, they’re publicly
+  available and discoverable.
+- When uploading a file, Webflow requires an MD5 hash generated from the contents
+  of the file to ensure data integrity.
+- Uses llms.txt standard for AI developer tools
+- Documentation accessible via markdown versions
+- If you exceed your rate limit, Webflow’s API will return an HTTP `429` Too Many
+  Requests error.
+- The `Retry-After` header will tell you how long to wait before attempting new requests—typically,
+  this reset time is 60 seconds.
+- Site Publish operations are limited to one successful publish per minute.
+- Rate limits are applied on a per API key basis.
+- Webflow provides three key HTTP response headers with every API request to help
+  monitor and manage your API usage.
+- Ensure you have the correct OAuth scopes set up for your application.
+- Permission from Webflow, Inc. is required to use the Webflow name or logo as part
+  of any project, product, service, domain name, or company name.
+- Domain names containing 'Webflow' are restricted to officially recognized Webflow
+  communities only.
+- As of Sep 22, 2023, we only support writing to Text and Rich Text to the DOM. We
+  do not support updating images via this API.
+errors:
+- 'Non-200 HTTP status code response: If we receive any response other than a valid
+  HTTP 200 response, it is regarded as a failure.'
+- 'Redirects: If the webhook encounters redirects while attempting to deliver the
+  payload, it will be treated as a failure.'
+- 'SSL Certificate Issues: If we cannot successfully negotiate or validate your server’s
+  SSL certificate, it will be marked as a failure.'
+- 'Timeouts: Webflow expects a swift response during webhook delivery. If there are
+  prolonged delays in receiving a response from your server, it will be considered
+  a failure.'
+- '429 Too Many Requests: Handle retries effectively and respect the `Retry-After`
+  header.'
+- '401 Unauthorized: Check your credentials and token expiration.'
+- '404 Not Found: Verify the endpoint and resource identifiers.'
+auth_info:
+  mentioned_objects: []
+client:
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+    flow: refresh_token
+    token_url: https://api.webflow.com/oauth/access_token
+    client_id: '{{ dlt.secrets[''webflow_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''webflow_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''webflow_refresh_token''] }}'
+  headers:
+    Content-Type: application/json
+    Authorization: YOUR_API_TOKEN
+    Accept: application/json
+  base_url: https://api.webflow.com
+source_metadata: null

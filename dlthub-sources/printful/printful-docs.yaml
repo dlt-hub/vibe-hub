@@ -1,0 +1,65 @@
+resources:
+- name: orders
+  endpoint:
+    path: /orders
+    method: POST
+    data_selector: result
+    params: {}
+- name: products
+  endpoint:
+    path: /products
+    method: GET
+    data_selector: result
+    params: {}
+- name: categories
+  endpoint:
+    path: /categories
+    method: GET
+    data_selector: result
+    params: {}
+- name: mockup_generator
+  endpoint:
+    path: /mockup-generator/create-task/{product_id}
+    method: POST
+    data_selector: result
+    params: {}
+- name: orders
+  endpoint:
+    path: /orders
+    method: POST
+    data_selector: data
+- name: catalog_products
+  endpoint:
+    path: /catalog-products/{product_id}/sizes
+    method: GET
+    data_selector: data
+notes:
+- Ensure you handle pagination for large datasets.
+- Verify the availability of product variants before creating orders.
+- Uses private token for authorization.
+- V2 API includes enhancements like real-time webhook updates and better performance.
+- Rate limit is 120 requests per 60 seconds.
+errors:
+- '401 Unauthorized: Check your access token.'
+- '404 Not Found: Resource may not exist or you may not have access.'
+- '429 Too Many Requests: Rate limit exceeded.'
+- '404 Not Found: The resource that you tried to access does not exist.'
+- '400 Bad Request: Missing or invalid parameters.'
+- '401 Unauthorized: Malformed Authorization header.'
+- '400 Bad Request: Missing required parameters.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.printful.com/v2
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+  paginator:
+    type: page
+    page_size_param: limit
+    default_page_size: 100
+source_metadata: null

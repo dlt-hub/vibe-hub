@@ -1,0 +1,256 @@
+resources:
+- name: patient
+  endpoint:
+    path: /patient
+    method: GET
+    data_selector: entry
+- name: audit_events
+  endpoint:
+    path: /audit_events
+    method: GET
+    params:
+      organizationId: required
+      userId: number
+      startDate: string
+      stopDate: string
+      status: string
+      actionType: array
+      resourceType: string
+      resourceId: string
+      _page: number
+      _count: number
+- name: config_modifiers
+  endpoint:
+    path: /config/modifiers
+    method: GET
+    params:
+      environmentId: ''
+- name: oauth_api_keys
+  endpoint:
+    path: /oauth/api_keys
+    method: GET
+- name: environments
+  endpoint:
+    path: /environments
+    method: GET
+    data_selector: environments
+- name: alerts
+  endpoint:
+    path: /alerts
+    method: GET
+    data_selector: alerts
+    params:
+      environmentId: required
+- name: product_classifications
+  endpoint:
+    path: /product_classifications
+    method: GET
+    data_selector: payload.activeProductClassifications
+    params:
+      organizationId: required
+      includeInactive: boolean
+      includeDuplicates: boolean
+      meta: object
+      version: string
+- name: log
+  endpoint:
+    path: /logs/{organizationId}/{logId}
+    method: GET
+    data_selector: result
+    params: {}
+- name: organization_role_assignments
+  endpoint:
+    path: /organization/{organizationId}/roles
+    method: GET
+    data_selector: payload.memberships
+    params:
+      organizationId: required
+- name: destinations
+  endpoint:
+    path: /destinations
+    method: GET
+    data_selector: payload.destinations
+    params:
+      environmentId: required
+- name: subscription_filters
+  endpoint:
+    path: /filters
+    method: GET
+    data_selector: filters
+    params:
+      subscriptionId: required
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: promote_asset
+  endpoint:
+    path: /promote/asset
+    method: POST
+    data_selector: promotedAssetsArray
+- name: sources
+  endpoint:
+    path: /sources
+    method: GET
+    data_selector: payload.sources
+    params:
+      environmentId: required
+notes:
+- Your system needs to manage several identifier types to exchange data.
+- Each patient should have a unique identifier.
+- To refer to a specific patient visit or case, you must also manage visit identifiers
+  or case identifiers.
+- Just like a patient should have a unique identifier, so should an individual provider
+  or clinician.
+- Multiple results can be sent when set to false, otherwise none are sent when set
+  to true.
+- We provide after-hours support for critical production issues.
+- For critical issues, we provide after-hours support during non-business days.
+- Only Redox organization owners or admins can use this endpoint.
+- Platform API requests are limited to about 1 minute before timing out and returning
+  a 504 Gateway Timeout.
+- Your connection should plan to provide the following team members.
+- Anyone in a Redox organization can view translation sets and related value sets
+  or links, but you must be assigned to an engineer or support role to update or delete
+  them.
+- After go-live, we strongly encourage you to conduct a thorough retrospective with
+  your implementation team.
+- Make sure to review all aspects of the project, including technical designs and
+  decision-making.
+- You may find you need to update scope for your system or the integration as a whole.
+- We suggest intentionally setting aside time for a retrospective while the implementation
+  project is still fresh after go-live.
+- Include your Redox integration manager so our team can provide any relevant feedback
+  we have from your implementation project.
+- Redox offers data on demand to support queries when your connection only supports
+  polling or push notifications.
+- Redox has message and file limits for both incoming and outgoing traffic.
+- To protect you and our other customers, we employ rate limiting across our APIs.
+- The dashboard times out after 15 minutes of inactivity, whether you use single sign-on
+  (SSO) or not. You must re-authenticate your session any time your session times
+  out or is closed.
+- We implemented this timeout to meet HITRUST standards, which include specific requirements
+  for timeout mechanisms.
+- Uses OAuth2 with refresh token â€” requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Retrieve a list of environments that you're a member of.
+- The response contains the details for each configured environment.
+- Implementation includes a few different phases of testing to make sure your integration
+  is up to par for your intended workflow(s).
+- Connectivity testing is complete when you're able to exchange data between Redox
+  and your connection.
+- 'The functional unit testing phase is complete when you can answer ''yes'' to these
+  questions: Can your system successfully send or request data for all in-scope methods?
+  Did you confirm that the expected data elements were present and mapped appropriately?'
+- The application testing phase is complete when you and your connection are confident
+  in all aspects of your integration, including trigger events, data elements, and
+  workflow fulfillment.
+- Even with the best-laid plans, implementations may not always go quickly or as expected.
+  The average time we see from kickoff to go-live is about 6 to 10 weeks.
+- Share timelines early and have weekly check-ins.
+- Consider implementing in phases, i.e., going live as you complete development in
+  stages.
+- The purpose of a kickoff call is to help you get started with implementation and
+  align all involved integration parties.
+- 'A typical kickoff agenda looks something like this: Introduction to all parties,
+  Introduction to your system and solution, Overview of the integrated workflow between
+  your system and your connection’s system, Overview and confirmation of implementation
+  scope, Proposal for project timelines and milestones, Discussion of next steps.'
+- Production and staging applications must use HTTPS.
+- You have a strategy for handling any identifiers (e.g., patient, visit, order) and
+  mappings.
+- You have a strategy for managing source, destination, and API key identifiers for
+  your connection's systems.
+- You can construct and send any scoped data models or FHIR® resources you plan to
+  send to your connection's system.
+- If applicable, you can send files successfully.
+- You can test your workflow by using developer test tools and testing your configured
+  destinations in the Redox dashboard.
+- If your Redox organization is enabled for single sign-on (SSO), you may run into
+  some of these errors.
+- You may see a user in your IdP but not in the Redox organization (whether in the
+  dashboard or via the Platform API).
+- You're unable to see the Invitations tab on the Users page of the Redox dashboard.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Your endpoint URL is correct (i.e., no typos).
+- Your system is configured to handle verification tokens and support POST requests.
+- Your system is running and receiving POST requests.
+- Redox sends SSO requests with a JSON Web Token (JWT) signed using HMAC with SH-256,
+  or HS256.
+- The JWT is sent in the Authorization header as a bearer token.
+- Validate that the Authorization header JWT coming from Redox is correctly signed
+  using the secret value set in the Redox dashboard.
+- If your Redox organization is enabled for single sign-on (SSO), you may run into
+  some errors.
+- Redox only supports an SP-initiated login, meaning you should log in via the Redox
+  dashboard, which launches the SSO workflow.
+- SSO-enabled organizations must first add a user in your IdP. Then, the new user
+  must log in to the Redox dashboard, which triggers a sync between the IdP and Redox.
+- You're unable to see the Invitations tab on the Users page of the Redox dashboard.
+  This is expected if you're part of an SSO-enabled organization.
+errors:
+- 'HTTP 429: Rate limit exceeded'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- OAuth API key errors
+- verification errors for an endpoint
+- SSO errors
+- FHIR® writeback errors
+- sending request errors
+- alert errors in the Redox dashboard
+- Carequality Interoperability Framework errors
+- TEFCA-CommonWell errors
+- 4XX HTTP response code if your system considers the verification request invalid.
+- 'ENOTFOUND: The destination endpoint isn’t publicly accessible.'
+- 'Destination endpoint is not available: Another Redox organization is already using
+  that endpoint URL.'
+- 'Production and staging applications must use HTTPS: The endpoint URL is missing
+  the s in https.'
+- 'UNABLE_TO_VERIFY_LEAF_SIGNATURE: There’s a certificate issue with the destination
+  system.'
+- Missing grant_type parameter or The grant_type parameter should equal 'client_credentials'
+- Missing client assertion type or Invalid client assertion type
+- Missing client assertion
+- JWT header kid property is required
+- Public key not found, check client_id, kid and Redox dashboard settings
+- Unexpected X claim value
+- '"X" claim timestamp check failed'
+- '"iat" claim timestamp check failed'
+- JWTs must have three components
+- JWT is malformed
+- x-www-form-urlencoded content-type required
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.redoxengine.com/endpoint
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  paginator:
+    type: cursor
+    page_size_param: pageSize
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    default_page_size: 200
+  headers:
+    Accept: application/json
+source_metadata: null

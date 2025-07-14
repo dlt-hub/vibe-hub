@@ -1,0 +1,251 @@
+# Source Metadata
+source_name: zoho_desk
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.zoho.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: "{{ dlt.secrets['token_refresh_endpoint'] }}"
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: organization
+    endpoint:
+      path: /api/v1/organizations
+      method: GET
+      data_selector: data
+
+  - name: all_organizations
+    endpoint:
+      path: /api/v1/organizations/all
+      method: GET
+      data_selector: data
+
+  - name: accessible_organizations
+    endpoint:
+      path: /api/v1/organizations/accessible
+      method: GET
+      data_selector: data
+
+  - name: agent
+    endpoint:
+      path: /api/v1/agents
+      method: GET
+      data_selector: data
+
+  - name: list_agents
+    endpoint:
+      path: /api/v1/agents
+      method: GET
+      data_selector: data
+
+  - name: agent_details_by_id
+    endpoint:
+      path: /api/v1/agents/{id}
+      method: GET
+      data_selector: data
+
+  - name: profiles
+    endpoint:
+      path: /api/v1/profiles
+      method: GET
+      data_selector: data
+
+  - name: list_roles
+    endpoint:
+      path: /api/v1/roles
+      method: GET
+      data_selector: data
+
+  - name: teams
+    endpoint:
+      path: /api/v1/teams
+      method: GET
+      data_selector: data
+
+  - name: team_members
+    endpoint:
+      path: /api/v1/teams/{id}/members
+      method: GET
+      data_selector: data
+
+  - name: list_departments
+    endpoint:
+      path: /api/v1/departments
+      method: GET
+      data_selector: data
+
+  - name: channels
+    endpoint:
+      path: /api/v1/channels
+      method: GET
+      data_selector: data
+
+  - name: list_tickets
+    endpoint:
+      path: /api/v1/tickets
+      method: GET
+      data_selector: data
+
+  - name: list_all_threads
+    endpoint:
+      path: /api/v1/threads
+      method: GET
+      data_selector: data
+
+  - name: get_latest_thread
+    endpoint:
+      path: /api/v1/threads/latest
+      method: GET
+      data_selector: data
+
+  - name: list_contacts
+    endpoint:
+      path: /api/v1/contacts
+      method: GET
+      data_selector: data
+
+  - name: webhooks
+    endpoint:
+      path: /api/v1/webhooks
+      method: GET
+      data_selector: data
+
+  - name: list_accounts
+    endpoint:
+      path: /api/v1/accounts
+      method: GET
+      data_selector: data
+
+  - name: list_contracts
+    endpoint:
+      path: /api/v1/contracts
+      method: GET
+      data_selector: data
+
+  - name: list_tasks
+    endpoint:
+      path: /api/v1/tasks
+      method: GET
+      data_selector: data
+
+  - name: list_products
+    endpoint:
+      path: /api/v1/products
+      method: GET
+      data_selector: data
+
+  - name: list_articles
+    endpoint:
+      path: /api/v1/articles
+      method: GET
+      data_selector: data
+
+  - name: list_events
+    endpoint:
+      path: /api/v1/events
+      method: GET
+      data_selector: data
+
+  - name: modules
+    endpoint:
+      path: /api/v1/modules
+      method: GET
+      data_selector: data
+
+  - name: list_users
+    endpoint:
+      path: /api/v1/users
+      method: GET
+      data_selector: data
+
+  - name: ticket_activities
+    endpoint:
+      path: /api/v1/tickets/{id}/activities
+      method: GET
+      data_selector: data
+
+  - name: list_attachments
+    endpoint:
+      path: /api/v1/attachments
+      method: GET
+      data_selector: data
+
+  - name: product
+    endpoint:
+      path: /api/v1/products/{id}
+      method: GET
+      data_selector: data
+
+  - name: task_attachments
+    endpoint:
+      path: /api/v1/tasks/{id}/attachments
+      method: GET
+      data_selector: data
+
+  - name: list_calls
+    endpoint:
+      path: /api/v1/calls
+      method: GET
+      data_selector: data
+
+  - name: call
+    endpoint:
+      path: /api/v1/calls/{id}
+      method: GET
+      data_selector: data
+
+  - name: list_call_comments
+    endpoint:
+      path: /api/v1/calls/{id}/comments
+      method: GET
+      data_selector: data
+
+  - name: dashboard_created_tickets
+    endpoint:
+      path: /api/v1/dashboard/tickets/created
+      method: GET
+      data_selector: data
+
+  - name: list_user_groups
+    endpoint:
+      path: /api/v1/user_groups
+      method: GET
+      data_selector: data
+
+  - name: dashboard_onhold_tickets
+    endpoint:
+      path: /api/v1/dashboard/tickets/onhold
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+    - NamedCredential
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires setup of connected app in Zoho
+  - Some responses may contain nulls in deeply nested fields
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - QUERY_TIMEOUT: Break down filters or add selectivity
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

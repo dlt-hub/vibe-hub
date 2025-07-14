@@ -1,0 +1,65 @@
+resources:
+- name: create_chat
+  endpoint:
+    path: /create-chat
+    method: POST
+- name: create_chat_completion
+  endpoint:
+    path: /create-chat-completion
+    method: POST
+- name: get_chat
+  endpoint:
+    path: /get-chat
+    method: GET
+- name: list_chat
+  endpoint:
+    path: /list-chat
+    method: GET
+- name: end_chat
+  endpoint:
+    path: /end-chat
+    method: POST
+- name: create_phone_call
+  endpoint:
+    path: /v2/create-phone-call
+    method: POST
+    data_selector: object
+- name: chat_widget
+  endpoint:
+    path: /embed/chat
+    method: GET
+notes:
+- Authentication header containing API key (find it in dashboard). The format is "Bearer
+  YOUR_API_KEY".
+- Start with LLM Playground - Begin by manually chatting with your agent to iteratively
+  improve its capabilities.
+- Progress to LLM Simulation Testing - Once you have a functional agent, test it with
+  predefined customer scenarios to evaluate its performance.
+- Conduct Web Call/Phone Call Testing - Test your agent in real-world conditions through
+  actual phone calls to assess its handling of voice interactions.
+- Implement Batch Testing - Create and run multiple test cases to ensure your agent
+  maintains stability and performance across various scenarios, especially after making
+  changes.
+- To improve the visibility into why outbound call dialing fails, we are refactoring
+  the disconnection reasons and call status field for these unconnected calls.
+- Existing disconnections reasons related to unconnected calls will stay, but 'dial_failed'
+  will contain less scenarios — representing cases where SIP error codes are not available,
+  or error unknown.
+- These unconnected calls will not have a status of 'error', but instead will have
+  a status of 'not_connected'.
+- This change will be a breaking change for some users' existing codebase, so it’s
+  recommended to not rely on status filter to find these unconnected calls.
+- Original settings are still supported in API until 6/30/2025, after that they will
+  be deprecated.
+- Uses the Retell public key system for direct API calls from the frontend
+errors:
+- '201: Successfully made an outbound call.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://your-instance.api-name.com
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+source_metadata: null

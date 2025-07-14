@@ -1,0 +1,123 @@
+# Source Metadata
+source_name: Zoho Books
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://{region}.zoho.com/books/api/v3
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://accounts.zoho.com/oauth/v2/token
+    client_id: "{{ dlt.secrets['client_id'] }}"
+    client_secret: "{{ dlt.secrets['client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: users
+  - name: banking
+    endpoint:
+      path: /banking
+      method: GET
+      data_selector: banking
+  - name: organizations
+    endpoint:
+      path: /organizations
+      method: GET
+      data_selector: organizations
+  - name: contacts
+    endpoint:
+      path: /contacts
+      method: GET
+      data_selector: contacts
+  - name: bills
+    endpoint:
+      path: /bills
+      method: GET
+      data_selector: bills
+  - name: estimates
+    endpoint:
+      path: /estimates
+      method: GET
+      data_selector: estimates
+  - name: items
+    endpoint:
+      path: /items
+      method: GET
+      data_selector: items
+  - name: invoices
+    endpoint:
+      path: /invoices
+      method: GET
+      data_selector: invoices
+  - name: expenses
+    endpoint:
+      path: /expenses
+      method: GET
+      data_selector: expenses
+  - name: creditnotes
+    endpoint:
+      path: /creditnotes
+      method: GET
+      data_selector: creditnotes
+  - name: customerpayments
+    endpoint:
+      path: /customerpayments
+      method: GET
+      data_selector: customerpayments
+  - name: purchaseorders
+    endpoint:
+      path: /purchaseorders
+      method: GET
+      data_selector: purchaseorders
+  - name: salesorders
+    endpoint:
+      path: /salesorders
+      method: GET
+      data_selector: salesorders
+  - name: journals
+    endpoint:
+      path: /journals
+      method: GET
+      data_selector: journals
+  - name: taxes
+    endpoint:
+      path: /taxes
+      method: GET
+      data_selector: taxes
+  - name: transactions
+    endpoint:
+      path: /transactions
+      method: GET
+      data_selector: transactions
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OAuth
+    - API
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Requires setup of OAuth client in Zoho
+  - Ensure correct region code is used in base_url
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check OAuth credentials and token validity
+  - 403 Forbidden: Verify permission scopes for the OAuth token
+  - 404 Not Found: Ensure the endpoint path is correct

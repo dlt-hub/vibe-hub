@@ -1,0 +1,176 @@
+resources:
+- name: stats_report
+  endpoint:
+    path: /stats/report
+    method: POST
+    data_selector: report_id
+- name: get_report
+  endpoint:
+    path: /stats/report/{report_id}
+    method: GET
+    data_selector: csv_output
+- name: user_authentication
+  endpoint:
+    method: POST
+    data_selector: payload
+- name: enable_current_tab
+  endpoint:
+    method: POST
+    data_selector: payload
+- name: initiate_call
+  endpoint:
+    method: POST
+    data_selector: payload
+- name: call_ringing
+  endpoint:
+    method: POST
+    data_selector: payload
+- name: end_all_calls
+  endpoint:
+    method: POST
+    data_selector: payload
+- name: ivr_types
+  endpoint:
+    path: /ivr/types
+    method: GET
+    data_selector: types
+    params: {}
+- name: callrouter
+  endpoint:
+    path: /callrouters
+    method: POST
+    data_selector: id
+    params: {}
+- name: assign_number
+  endpoint:
+    path: /callrouters/id/assign_number
+    method: POST
+    data_selector: ''
+    params: {}
+- name: delete_callrouter
+  endpoint:
+    path: /callrouters/id
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: patch_callrouter
+  endpoint:
+    path: /callrouters/id
+    method: PATCH
+    data_selector: ''
+    params: {}
+- name: agent_status_event
+  endpoint:
+    path: /agent_status_events
+    method: POST
+    data_selector: payload
+    params: {}
+- name: call_events
+  endpoint:
+    path: /call_events
+    method: POST
+    data_selector: payload
+- name: call_events
+  endpoint:
+    path: /v1/call_events
+    method: GET
+    data_selector: events
+    params:
+      incremental: date_started
+- name: contact_event
+  endpoint:
+    path: /webhook/contact-events
+    method: POST
+    data_selector: event
+notes:
+- OAuth2 authentication is required.
+- Only Company Admins can create API keys on Dialpad.
+- API keys are more powerful than passwords as they allow a consumer to perform actions
+  across all users in the company.
+- OAuth should be used by application developers who wish to build an integration
+  to be used across multiple companies in Dialpad.
+- We are currently testing our integration using the Dialpad CTI. While we are able
+  to initiate and receive calls through the CTI interface, we are not receiving any
+  webhook events on our configured endpoint.
+- I have connected zapier and Dialpad. I am using the call state 'hangup' and 'transcription'
+  in the zap.
+- Dialpad suggests to use is_today when querying current day data and days_ago for
+  historical data.
+- '"hid" access will need to be added to your Dialpad iframe by end of Jan 2023.'
+- The formatting for the payload properties is not currently standardized and may
+  be subject to change.
+- Subscriptions are limited to 100 per subscription type for all targets combined
+  under a Dialpad Company.
+- Subscriptions targeting the Company itself are limited to 10 per subscription type.
+- Events are sent in the JWT format and signed with a secret.
+- Call routers can be assigned multiple numbers.
+- Call routers can be configured to send JWT payloads for additional security.
+- The launch URL can be used to invoke the Dialpad desktop application.
+- Payloads sent to your webhook will contain fields related to agent status changes.
+- The websocket connection will be disconnected after 1 hour to ensure connections
+  remain secure.
+- WSS is recommended for security.
+- Requires setup of connected app in Dialpad
+- Some endpoints may have rate limits
+- This is an Early Access Program feature. Please contact your Customer Success Manager
+  to request access.
+- Payloads sent to your webhook will be either JWT encoded or JSON encoded.
+- Requires OAuth2 setup for access tokens.
+- Events are generated for various call states.
+- Bearer token is the recommended approach for authentication.
+- Table last updated March 7th, 2023.
+- By default, SMS text content is not included in events to ensure data privacy.
+- If you are using API keys, please create a new key and add the 'message_content_export'
+  when a target is specified with an event subscription, otherwise 'message_content_export:all'
+  scope is required to enable this.
+- For OAuth apps, contact [email protected] and request the `message_content_export,
+  message_content_export:all` OAuth scopes.
+- Events are sent to a webhook that you provide.
+- Payloads sent to your webhook will be JWT encoded.
+errors:
+- '400 Bad Request: The request could not be processed by the server due to malformed
+  syntax, for example, missing required parameters.'
+- '401 Unauthorized: Authentication information is missing or invalid.'
+- '403 Forbidden: The request contained valid authentication data and was understood
+  by the server, but the server is refusing action.'
+- '404 Not Found: The server has not found anything matching the request.'
+- '409 Conflict: The request could not be completed due to a conflict with the current
+  state of the resource.'
+- '413 Request Entity Too Large: The server is refusing to process a request because
+  the request entity is larger than the what server is willing or able to process.'
+- '429 Too Many Requests: The client has sent too many requests in a given amount
+  of time.'
+- '503 Service Unavailable: The server cannot handle the request due to an internal
+  server error or service is overloaded.'
+- If the endpoint takes more than 5 seconds to respond or if there are more than 10
+  failures in an hour, the call router will be automatically disabled.
+- '401 Unauthorized: Check token validity.'
+- '404 Not Found: Verify endpoint and parameters.'
+auth_info:
+  mentioned_objects:
+  - OAuth application
+  - AuthProvider
+  - OauthToken
+client:
+  base_url: https://dialpad.com/api/v2
+  auth:
+    type: oauth2
+    token_url: https://login.dialpad.com/oauth/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+    flow: refresh_token
+  headers:
+    Accept: application/json
+    allow: microphone; speaker-selection; autoplay; camera; display-capture; hid
+    accept: application/json
+    content-type: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextPage
+    cursor_param: next_cursor
+    page_size_param: page_size
+    default_page_size: 100
+source_metadata: null

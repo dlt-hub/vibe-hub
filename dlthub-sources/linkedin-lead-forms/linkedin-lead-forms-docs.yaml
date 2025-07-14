@@ -1,0 +1,50 @@
+resources:
+- name: leadForms
+  endpoint: /leadForms
+  methods:
+  - GET
+  - POST
+  - DELETE
+  description: Manage LinkedIn lead generation forms
+  parameters:
+  - form_id
+  - name
+  - description
+  - status
+- name: leadGenEvents
+  endpoint: /leadGenEvents
+  methods:
+  - GET
+  - POST
+  description: Retrieve lead generation event data
+  parameters:
+  - event_id
+  - lead_id
+  - created_at
+notes:
+- 'Rate limiting: 100 requests per second'
+- Webhook support for real-time lead updates
+- Ensure proper permissions are granted for accessing lead data
+errors:
+- '401: Unauthorized - Invalid or missing access token'
+- '403: Forbidden - Insufficient permissions'
+- '404: Not Found - Resource not found'
+auth_info:
+  mentioned_objects:
+  - bearer_token
+  - authentication_header
+  auth_flow: OAuth 2.0 is used for authentication, requiring a bearer token in the
+    header.
+  env_var_for_auth: LINKEDIN_ACCESS_TOKEN
+client:
+  base_url: https://api.linkedin.com/v2
+  auth:
+    type: oauth
+    location: header
+    key_name: Authorization
+    env_var: LINKEDIN_ACCESS_TOKEN
+source_metadata:
+  name: LinkedIn Lead Forms
+  variable_name: linkedin_lead_forms
+  base_url: https://api.linkedin.com/v2
+  original_source_url: https://developer.linkedin.com/product-catalog/marketing/lead-generation

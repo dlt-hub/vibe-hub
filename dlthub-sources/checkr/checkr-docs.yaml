@@ -1,0 +1,153 @@
+resources:
+- name: candidates
+  endpoint:
+    path: /v1/candidates
+    method: GET
+    data_selector: data
+    params:
+      page: 1
+      per_page: 25
+- name: reports
+  endpoint:
+    path: /v1/reports
+    method: POST
+    data_selector: id
+- name: invitations
+  endpoint:
+    path: /v1/invitations
+    method: POST
+    data_selector: id
+- name: driver_licenses
+  endpoint:
+    path: /v1/candidates/{candidate_id}/driver_licenses
+    method: GET
+    data_selector: data
+- name: schools
+  endpoint:
+    path: /v1/candidates/{candidate_id}/schools
+    method: GET
+    data_selector: data
+- name: session_tokens
+  endpoint:
+    path: /web_sdk/session_tokens
+    method: POST
+    data_selector: token
+- name: invitation
+  endpoint:
+    path: /web_sdk/invitations
+    method: POST
+    data_selector: invitation
+- name: reports
+  endpoint:
+    path: /web_sdk/reports
+    method: GET
+    data_selector: report
+- name: candidates
+  endpoint:
+    path: /v1/candidates
+    method: POST
+    data_selector: id
+- name: invitations
+  endpoint:
+    path: /v1/invitations
+    method: POST
+    data_selector: id
+- name: reports
+  endpoint:
+    path: /v1/reports
+    method: GET
+    data_selector: id
+- name: nodes
+  endpoint:
+    path: /v1/nodes
+    method: GET
+    data_selector: data
+- name: packages
+  endpoint:
+    path: /v1/packages
+    method: GET
+    data_selector: data
+- name: account
+  endpoint:
+    path: /v1/account
+    method: GET
+    data_selector: authorized
+- name: candidates
+  endpoint:
+    path: /v1/candidates
+    method: GET
+    data_selector: data
+    params: {}
+- name: invitations
+  endpoint:
+    path: /v1/invitations
+    method: POST
+    data_selector: data
+    params: {}
+- name: reports
+  endpoint:
+    path: /v1/reports
+    method: GET
+    data_selector: data
+    params: {}
+- name: nodes
+  endpoint:
+    path: /v1/nodes
+    method: GET
+    data_selector: data
+    params: {}
+- name: packages
+  endpoint:
+    path: /v1/packages
+    method: GET
+    data_selector: data
+    params: {}
+notes:
+- Checkr API requires API keys for authentication.
+- Embeds rely on style and script elements rendered inside the iframe. If your application
+  uses a Content Security Policy, these elements might be blocked by your rules.
+- Checkr requires compliance with FCRA regulations for background checks.
+- Webhook events are used to notify about changes in the Checkr environment.
+- Checkr requires candidates to provide required information for screenings.
+- Webhooks must be configured with a public HTTPS endpoint.
+errors:
+- '400: Invalid request parameters'
+- '403: Forbidden'
+- '409: Conflict with existing records'
+- This account has not been approved for use
+- Contact Checkr to enable Account Hierarchy for your account
+- Could not load Account data
+- '422 Unprocessable Entity: Check the provided parameters and required fields.'
+- '401 Unauthorized: Verify your access token and its scopes.'
+- '404 Not Found: The requested resource could not be found.'
+- '422: Invalid request parameters.'
+- '401: Unauthorized access - check your access token.'
+- '404: Resource not found.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - Account
+  - Candidate
+  - Invitation
+  - Report
+  - access_token
+  - client_id
+  - client_secret
+client:
+  base_url: https://api.checkr.com
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+    flow: authorization_code
+    token_url: https://api.checkr.com/oauth/tokens
+    client_id: '{{ dlt.secrets[''client_id''] }}'
+    client_secret: '{{ dlt.secrets[''client_secret''] }}'
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+  paginator:
+    type: page
+    page_size_param: per_page
+    default_page_size: 25
+source_metadata: null

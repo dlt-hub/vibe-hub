@@ -1,0 +1,138 @@
+resources:
+- name: calls
+  endpoint:
+    path: /2010-04-01/Accounts/{AccountSID}/Calls.json
+    method: POST
+    data_selector: call
+    params: {}
+- name: mail_send
+  endpoint:
+    path: /mail/send
+    method: POST
+    data_selector: null
+    params: {}
+- name: calls
+  endpoint:
+    path: /2010-04-01/Accounts/{AccountSid}/Calls.json
+    method: POST
+    data_selector: call
+    params: {}
+- name: services
+  endpoint:
+    path: /Services
+    method: POST
+    data_selector: service
+    params: {}
+- name: verifications
+  endpoint:
+    path: /Services/{service_sid}/Verifications
+    method: POST
+    data_selector: verification
+    params: {}
+- name: verification_checks
+  endpoint:
+    path: /Services/{service_sid}/VerificationCheck
+    method: POST
+    data_selector: verificationCheck
+    params: {}
+- name: calls
+  endpoint:
+    path: /2010-04-01/Accounts/{AccountSid}/Calls.json
+    method: POST
+    data_selector: call
+    params: {}
+- name: calls
+  endpoint:
+    path: /2010-04-01/Accounts/{account_sid}/Calls.json
+    method: POST
+    data_selector: calls
+    params: {}
+- name: Origination SIP URI
+  endpoint:
+    path: /sip/uris
+    method: POST
+    data_selector: uris
+    params:
+      priority: '10'
+      weight: '60'
+- name: Disaster Recovery URL
+  endpoint:
+    path: /sip/disaster-recovery
+    method: POST
+    data_selector: url
+    params:
+      fallback_url: http://fallback.example.com/index
+- name: origination_sip_uri
+  endpoint:
+    path: /services/data/vXX.X/origination_sip_uris
+    method: GET
+    data_selector: sip_uris
+    params: {}
+- name: disaster_recovery_url
+  endpoint:
+    path: /services/data/vXX.X/disaster_recovery_url
+    method: GET
+    data_selector: urls
+    params: {}
+- name: Origination SIP URI
+  endpoint:
+    path: /services/data/vXX.X/origination_sip_uri
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- You can only send mass text messages to customers who have given opt-in permission.
+- If you don’t respect recipients’ opt-in preferences, you could be flagged as a non-compliant
+  sender and carriers may not pass through your messaging traffic.
+- Find your Account SID and Auth Token at twilio.com/console and set the environment
+  variables.
+- Twilio recommends using API keys for authentication in production apps.
+- For local testing, you can use your Account SID as the username and your Auth token
+  as the password.
+- Paga solo lo que utilizas sin suscripciones.
+- The Twilio Email API is a powerful tool that enables you to send, receive, and manage
+  emails programmatically.
+- Emails sent using an Email API package are counted separately from emails that you
+  send using a Marketing Campaigns package.
+- New Line Type Overrides API enables correction of inaccurate classifications.
+- Twilio APIは、既存のシステム、カスタマイズされたロジック、新たに登場したAIと迅速に統合できます。
+- メッセージの遅延や未配信で、顧客を待たせることはありません。
+- デベロッパー向けのAPIとクライアントライブラリにより、迅速で確実な導入を実現できます。
+- PII不要、HIPAA認定、SOC 2 Type 2
+- Twilio strongly recommends the use of TLS version 1.2 when connecting your SIP infrastructure.
+- CNAM Lookup must be enabled on a per Trunk basis
+- CNAM Lookup is only supported for US/CA phone numbers
+- Twilio supports a single redirection per call
+- CNAM Lookup is billed per successful lookup (this includes the case where the Name
+  is not available for a Number in the CNAM National databases). It is known that
+  many AT&T numbers are not published to the CNAM National databases.
+- CNAM Lookup is billed per successful lookup, even if the call itself fails
+- Twilio does not guarantee which edge location the media will egress from.
+- CNAM Lookup is only supported for US/CA phone numbers.
+- Elastic SIP Trunking Origination URI configurations using the sips URI scheme in
+  order to enable end-to-end encryption is NOT supported by Twilio.
+- Twilio strongly suggests not using sips schemes in your Twilio SIP configurations,
+  as this could cause possibly unintended behavior.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck API key or permissions'
+- '2xx: No failover to the next origination SIP URI.'
+- '400: Bad Request - Check the request format.'
+- '404: Not Found - Ensure the URI is correct.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.twilio.com
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+    flow: refresh_token
+    token_url: https://login.twilio.com/oauth2/token
+    client_id: '{{ dlt.secrets[''twilio_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''twilio_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''twilio_refresh_token''] }}'
+  headers:
+    Content-Type: application/json
+    Accept: application/json
+source_metadata: null

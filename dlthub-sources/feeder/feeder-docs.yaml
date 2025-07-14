@@ -1,0 +1,45 @@
+resources:
+- name: feeds
+  endpoint: /feeds
+  methods:
+  - GET
+  - POST
+  - DELETE
+  description: Manage feed submissions
+  parameters:
+  - feed_id
+  - feed_type
+  - marketplace_id
+- name: feedSubmission
+  endpoint: /feeds/submission
+  methods:
+  - GET
+  description: Retrieve feed submission details
+  parameters:
+  - submission_id
+notes:
+- 'Rate limiting: 1000 requests per hour'
+- Pagination available on list endpoints
+- Webhook support for real-time updates
+errors:
+- '401: Unauthorized - Invalid access token'
+- '429: Too Many Requests - Rate limit exceeded'
+- '404: Not Found - Resource not found'
+auth_info:
+  mentioned_objects:
+  - oauth
+  - authentication_header
+  auth_flow: OAuth 2.0 authentication flow required to obtain access tokens
+  env_var_for_auth: SERVICE_API_KEY
+client:
+  base_url: https://api.example.com
+  auth:
+    type: oauth
+    location: header
+    key_name: authorization
+    env_var: SERVICE_API_KEY
+source_metadata:
+  name: Feeder
+  variable_name: service_name
+  base_url: https://api.example.com
+  original_source_url: https://developer-docs.amazon.com/sp-api/reference/feeds-v2021-06-30

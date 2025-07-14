@@ -1,0 +1,33 @@
+resources:
+- name: users
+  endpoint:
+    path: /api/v2/users/myself
+    method: GET
+    data_selector: user
+    params:
+      apiKey: '{{ dlt.secrets[''api_key''] }}'
+- name: space
+  endpoint:
+    path: /api/v2/space
+    method: GET
+    data_selector: space
+    params: {}
+notes:
+- Access token expires in 3600 seconds (1 hour).
+errors:
+- '401 Unauthorized: The access token is invalid or expired.'
+auth_info:
+  mentioned_objects: []
+client:
+  auth:
+    type: oauth2
+    flow: authorization_code
+    client_id: '{{ dlt.secrets[''client_id''] }}'
+    client_secret: '{{ dlt.secrets[''client_secret''] }}'
+    token_url: /api/v2/oauth2/token
+    location: header
+    header_name: Authorization
+  base_url: https://api.apps.nulab.com/spaces/{YOUR_SPACE_KEY}/scim/v2/
+  headers:
+    Content-Type: application/scim+json
+source_metadata: null

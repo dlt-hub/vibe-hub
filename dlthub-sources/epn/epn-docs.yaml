@@ -1,0 +1,46 @@
+resources:
+- name: transactions
+  endpoint: /transactions
+  methods:
+  - GET
+  description: Retrieve transaction details
+  parameters:
+  - transaction_id
+  - date_range
+  - status
+- name: reports
+  endpoint: /reports
+  methods:
+  - GET
+  - POST
+  description: Generate and retrieve reports
+  parameters:
+  - report_type
+  - start_date
+  - end_date
+notes:
+- 'Rate limiting: 1000 requests per hour'
+- Pagination available on list endpoints
+- Webhook support for real-time updates
+errors:
+- '401: Unauthorized - Invalid bearer token'
+- '429: Too Many Requests - Rate limit exceeded'
+- '404: Not Found - Endpoint does not exist'
+auth_info:
+  mentioned_objects:
+  - bearer_token
+  - authentication_header
+  auth_flow: Users must obtain a bearer token by authenticating with their credentials.
+  env_var_for_auth: SERVICE_API_KEY
+client:
+  base_url: https://api.example.com
+  auth:
+    type: bearer_token
+    location: header
+    key_name: Authorization
+    env_var: SERVICE_API_KEY
+source_metadata:
+  name: Epn
+  variable_name: service_name
+  base_url: https://api.example.com
+  original_source_url: https://partnerhelp.ebay.com/.../EPN-Transaction-Detail-Report-TDR-API-...

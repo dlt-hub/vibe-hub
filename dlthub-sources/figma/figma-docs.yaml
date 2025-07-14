@@ -1,0 +1,52 @@
+resources:
+- name: files
+  endpoint: /files/:file_key
+  methods:
+  - GET
+  description: Retrieve the content of a Figma file.
+  parameters:
+  - file_key
+- name: images
+  endpoint: /images/:file_key
+  methods:
+  - GET
+  description: Get images of a Figma file.
+  parameters:
+  - file_key
+  - ids
+  - scale
+  - format
+- name: components
+  endpoint: /components/:component_key
+  methods:
+  - GET
+  description: Get component details.
+  parameters:
+  - component_key
+notes:
+- 'Rate limiting: 60 requests per minute per user.'
+- Use pagination for requests that return large sets of data.
+- Webhooks available for receiving real-time updates on file changes.
+errors:
+- '401: Unauthorized - Invalid or missing API token.'
+- '429: Too Many Requests - Rate limit exceeded.'
+- '404: Not Found - Resource not found.'
+auth_info:
+  mentioned_objects:
+  - bearer_token
+  - authentication_header
+  auth_flow: Authentication is done using a Bearer token that is passed in the Authorization
+    header of the request.
+  env_var_for_auth: FIGMA_API_TOKEN
+client:
+  base_url: https://api.figma.com/v1
+  auth:
+    type: bearer_token
+    location: header
+    key_name: Authorization
+    env_var: FIGMA_API_TOKEN
+source_metadata:
+  name: Figma
+  variable_name: service_name
+  base_url: https://api.figma.com/v1
+  original_source_url: https://www.figma.com/developers/api

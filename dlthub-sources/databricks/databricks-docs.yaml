@@ -1,0 +1,62 @@
+resources:
+- name: clusters
+  endpoint: /api/2.0/clusters
+  methods:
+  - GET
+  - POST
+  - DELETE
+  description: Manage clusters for running jobs.
+  parameters:
+  - cluster_id
+  - cluster_name
+  - spark_version
+- name: jobs
+  endpoint: /api/2.0/jobs
+  methods:
+  - GET
+  - POST
+  - DELETE
+  description: Manage jobs in Databricks.
+  parameters:
+  - job_id
+  - name
+  - status
+- name: notebooks
+  endpoint: /api/2.0/workspace/notebooks
+  methods:
+  - GET
+  - POST
+  - DELETE
+  description: Manage notebooks in the workspace.
+  parameters:
+  - path
+  - language
+  - content
+notes:
+- 'Rate limiting: 100 requests per minute'
+- All endpoints support pagination where applicable.
+- Webhook support is available for event notifications.
+errors:
+- '401: Unauthorized - Invalid or missing authentication token'
+- '429: Too Many Requests - Rate limit exceeded'
+- '404: Not Found - Resource not found'
+- '400: Bad Request - Invalid request parameters'
+auth_info:
+  mentioned_objects:
+  - bearer_token
+  - authentication_header
+  auth_flow: Bearer token authentication is used. The token must be included in the
+    Authorization header.
+  env_var_for_auth: DATABRICKS_API_TOKEN
+client:
+  base_url: https://api.databricks.com
+  auth:
+    type: bearer_token
+    location: header
+    key_name: Authorization
+    env_var: DATABRICKS_API_TOKEN
+source_metadata:
+  name: Databricks
+  variable_name: service_name
+  base_url: https://api.databricks.com
+  original_source_url: https://docs.databricks.com/api/

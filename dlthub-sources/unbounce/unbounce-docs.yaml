@@ -1,0 +1,129 @@
+resources:
+- name: accounts
+  endpoint:
+    path: /accounts
+    method: GET
+    data_selector: records
+- name: accounts
+  endpoint:
+    path: /accounts
+    method: GET
+    data_selector: pages
+    params:
+      sort_order: asc
+- name: users
+  endpoint:
+    path: /users/{user_id}
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: sub_accounts
+  endpoint:
+    path: /sub_accounts/{sub_account_id}
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: users
+  endpoint:
+    path: /users/{user_id}
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: self
+  endpoint:
+    path: /users/self
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: leads
+  endpoint:
+    path: /leads/{lead_id}
+    method: GET
+    data_selector: form_data
+    params: {}
+- name: users
+  endpoint:
+    path: /users/{user_id}
+    method: GET
+    data_selector: pages
+    params: {}
+- name: domains
+  endpoint:
+    path: /domains/{domain_id}
+    method: GET
+    data_selector: metadata
+    params:
+      sort_order: asc
+      count: true
+      from: '2014-12-31T00:00:00.000Z'
+      to: '2014-12-31T23:59:59.999Z'
+      offset: 3
+      limit: 100
+- name: pages
+  endpoint:
+    path: /pages
+    method: GET
+    data_selector: pages
+    params:
+      sort_order: asc
+      count: true
+      limit: 50
+- name: pages
+  endpoint:
+    path: /page_groups/{page_group_id}/pages
+    method: GET
+    data_selector: pages
+    params:
+      sort_order: asc
+      count: false
+      offset: 0
+      limit: 50
+- name: user
+  endpoint:
+    path: /users/{user_id}
+    method: GET
+    data_selector: user
+    params: {}
+notes:
+- All connections require encryption via SSL
+- API keys currently act like Unbounce account administrators
+- Retrieve a particular user using their user_id.
+- Retrieve the current user using the /users/self endpoint.
+- API limits the number of results returned to 1000.
+- Pagination is based on offset.
+- Ensure the page_group_id and user_id are valid for successful requests.
+errors:
+- '400: Bad Request'
+- '401: Unauthorized Request'
+- '403: Forbidden Access'
+- '404: Not Found'
+- '409: Version Conflict'
+- '429: Too many requests'
+- '500: Server Error'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '404 Not Found: Check if the resource exists'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  auth:
+    type: oauth2
+    token_url: https://login.unbounce.com/oauth/token
+    client_id: '{{ dlt.secrets[''unbounce_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''unbounce_client_secret''] }}'
+    location: header
+    header_name: Authorization
+    flow: refresh_token
+    refresh_token: '{{ dlt.secrets[''unbounce_refresh_token''] }}'
+  base_url: https://api.unbounce.com
+  headers:
+    Accept: application/json
+  paginator:
+    type: offset
+    page_size_param: limit
+    default_page_size: 50
+source_metadata: null

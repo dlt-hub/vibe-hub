@@ -1,0 +1,378 @@
+resources:
+- name: fundWallet
+  endpoint:
+    path: /fundWallet
+    method: POST
+    data_selector: response
+    params:
+      chain: optional
+      asset: optional
+      amount: required if asset is set
+      cluster: optional
+- name: terms_of_service
+  endpoint:
+    path: /users/{user_id}/fiat/tos
+    method: POST
+    data_selector: null
+    params: {}
+- name: kyc_status
+  endpoint:
+    path: /users/{user_id}/fiat/kyc
+    method: GET
+    data_selector: null
+    params: {}
+- name: submit_kyc
+  endpoint:
+    path: /users/{user_id}/fiat/kyc
+    method: POST
+    data_selector: null
+    params: {}
+- name: onramp
+  endpoint:
+    path: /users/{user_id}/fiat/onramp
+    method: POST
+    data_selector: null
+    params: {}
+- name: register_fiat_account
+  endpoint:
+    path: /users/{user_id}/fiat/accounts
+    method: POST
+    data_selector: null
+    params: {}
+- name: offramp
+  endpoint:
+    path: /users/{user_id}/fiat/offramp
+    method: POST
+    data_selector: null
+    params: {}
+- name: sendCode
+  endpoint:
+    path: /sendCode
+    method: POST
+    data_selector: response
+    params: {}
+- name: loginWithCode
+  endpoint:
+    path: /loginWithCode
+    method: POST
+    data_selector: response
+    params: {}
+- name: createEthereumWallet
+  endpoint:
+    path: /createEthereumWallet
+    method: POST
+    data_selector: response
+    params: {}
+- name: createSolanaWallet
+  endpoint:
+    path: /createSolanaWallet
+    method: POST
+    data_selector: response
+    params: {}
+- name: signMessage
+  endpoint:
+    path: /signMessage
+    method: POST
+    data_selector: response
+    params: {}
+- name: login_with_cross_app_account
+  endpoint:
+    path: /loginWithCrossAppAccount
+    method: POST
+    data_selector: response
+    params: {}
+- name: sign_message
+  endpoint:
+    path: /signMessage
+    method: POST
+    data_selector: response
+    params: {}
+- name: accounts
+  endpoint:
+    path: /api/v1/accounts
+    method: POST
+- name: quotes
+  endpoint:
+    path: /api/v1/quotes
+    method: GET
+- name: transactions
+  endpoint:
+    path: /api/v1/transactions
+    method: POST
+- name: create_bot
+  endpoint:
+    path: /newbot
+    method: POST
+- name: create_wallet
+  endpoint:
+    path: /createWallet
+    method: POST
+    data_selector: wallet
+- name: swap_tokens
+  endpoint:
+    path: /swap
+    method: POST
+    data_selector: swap
+- name: mainnet
+  endpoint:
+    path: /fast
+    method: POST
+- name: sepolia
+  endpoint:
+    path: /
+    method: POST
+- name: holesky
+  endpoint:
+    path: /
+    method: POST
+- name: quote
+  endpoint:
+    path: /swap/permit2/quote
+    method: GET
+    params:
+      chainId: 8453
+      sellToken: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
+      buyToken: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
+      sellAmount: 100000000
+      taker: wallet.address
+- name: create_wallet
+  endpoint:
+    path: /v1/wallets
+    method: POST
+    data_selector: id
+    params:
+      chain_type: ethereum
+- name: sign_message
+  endpoint:
+    path: /v1/wallets/{wallet_id}/rpc
+    method: POST
+    data_selector: data.signature
+    params:
+      method: personal_sign
+      encoding: utf-8
+- name: send_transaction
+  endpoint:
+    path: /v1/wallets/{wallet_id}/rpc
+    method: POST
+    data_selector: data.hash
+    params:
+      method: eth_sendTransaction
+      caip2: eip155:11155111
+      chain_type: ethereum
+- name: farcaster_login
+  endpoint:
+    path: /user-management/authentication/socials
+    method: POST
+- name: wallets
+  endpoint:
+    path: /v1/wallets
+    method: GET
+- name: send_transaction
+  endpoint:
+    path: /transaction/send
+    method: POST
+    data_selector: transactionResponse
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: wallet
+  endpoint:
+    path: /wallet
+    method: POST
+    data_selector: wallets
+    params: {}
+- name: assets
+  endpoint:
+    path: /api/assets
+    method: GET
+- name: orders
+  endpoint:
+    path: /api/orders
+    method: POST
+- name: mentions
+  endpoint:
+    path: /2/tweets
+    method: GET
+    data_selector: data
+- name: embedded_wallets
+  endpoint:
+    path: /embedded_wallets
+    method: POST
+    data_selector: wallets
+    params: {}
+- name: external_wallets
+  endpoint:
+    path: /external_wallets
+    method: GET
+    data_selector: wallets
+    params: {}
+- name: usePhantomDeeplinkWalletConnector
+  endpoint:
+    method: GET
+    data_selector: configuration_options
+    params: {}
+notes:
+- Users can fund their wallets through Moonpay.
+- When entering in payment details, do not use a real payment method. Use the test
+  credit card listed in the demo.
+- Users can fund their wallets with Apple Pay and Google Pay natively within the application.
+- React 18 or higher
+- TypeScript 5 or higher
+- US- and Canada-only region support is included at no additional cost on all plans
+  (Developer, Pro, and Enterprise).
+- International region support is available on the Enterprise plan.
+- If you enable SMS login, you may be responsible for additional charges per SMS sent.
+- After submission, the KYC process takes about 1-2 minutes to undergo review. Sometimes,
+  a manual review is required, which can take longer (a few hours).
+- You must provide the phone number in E.164 format.
+- If the provided OTP/phone number combination is invalid, loginWithCode will return
+  Result.failure.
+- If true, will allow the user to create a Bitcoin wallet regardless if it is their
+  first Bitcoin wallet or an additional Bitcoin wallet. If false, createWallet will
+  succeed only if the user is creating their first wallet. Defaults to false.
+- The React Native SDK for Privy stores session state in the Expo Secure Store, powered
+  by the Keychain on iOS.
+- To clear the state on a fresh install, keep a flag in your app’s storage to check
+  for reinstallation.
+- Migration occurs automatically, all client-side features will be immediately available.
+- Only wallets that have been migrated to TEEs will support server-side features.
+- User-managed recovery (like cloud recovery) will no longer be prompted on new devices
+  and will be disabled after migration.
+- This is a one-way change, and on-device execution is disabled once migration occurs.
+- Use node-telegram-bot-api library to interact with Telegram
+- Managed wallets provide a secure way to manage wallets on your backend
+- Privy allows developers to choose when to take advantage of Privy’s UI and when
+  to customize the experience with their own UI.
+- Your Worldcoin Mini App now supports SIWE authentication with Privy and World App!
+- Currently, Privy’s wagmi integration only supports using a smart account with embedded
+  wallets, not external wallets (e.g. MetaMask).
+- Once the login method is transferred to the current user, the previous account will
+  then be deleted.
+- Please ensure that the embedded wallet associated with the previous account has
+  either been exported or that its assets have been transferred out prior to the account
+  deletion.
+- Currently, login method transfer is only supported when the orphan account is associated
+  with a single login method.
+- Flashbots Protect currently only supports Ethereum mainnet, the Ethereum Sepolia
+  testnet, and the Ethereum Holesky testnet.
+- With Privy, you can style your login modal to match your user’s system preferences
+  for light or dark mode.
+- You can simply query the prefers-color-scheme CSS media feature to determine if
+  your user prefers light or dark mode.
+- Guest accounts are valid for 30 days.
+- User data and embedded wallets from guest sessions cannot be merged into an existing
+  user account.
+- The protocol (https) is required.
+- Trailing paths (/path) are not supported.
+- Wildcards (*) are only supported as a subdomain (*.domain.com), but not as a domain
+  alone (*.com).
+- Partial wildcards of the form *-sometext.domain.com are not supported.
+- Localhost (http://localhost:port) is supported but you must specify the port number.
+- We do not recommend listing localhost as an allowed domain for production apps.
+- We recommend adding both (with and without the www subdomain) domains as allowed
+  origins to the dashboard.
+- Currently Mini Apps do not support httpOnly cookies.
+- Automatic embedded wallet creation is currently not supported for Farcaster Mini
+  Apps.
+- Securing this symmetric key is essential for the security of all of your app’s Telegram
+  logins.
+- Authorization keys are the core primitive for managing wallets in Privy.
+- PrivyProvider requires that the QueryClientProvider wraps the WagmiProvider.
+- Some Solana wallet connectors do not gracefully support autoConnect, which will
+  result in an extension pop-up on page load.
+- A user must always have an embedded wallet to use Farcaster embedded signers.
+- MFA cannot be enabled when using Farcaster embedded signers.
+- Passwords on embedded wallets cannot be added when using Farcaster embedded signers.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- To send USDC, use the contract address specific to the network.
+- Decimals for USDC is usually 6.
+- The URL must be an exact match for the redirect URL; query params and trailing slashes
+  will error.
+- The URL must be at a domain listed in allowed domains.
+- Wildcards (*) are not supported.
+- If no URLs are listed, users can be redirected to any URL.
+- Privy wallets are designed with security at their core.
+- Policies are rules that govern what actions can be taken with a wallet.
+- The Privy core SDK supports a variety of authentication options including email,
+  SMS, OAuth and JWT-based auth.
+- We do not recommend using an actual auth token issued by Privy’s production service.
+- Privy uses an asymmetric ECDSA P256 keypair for signing & verification.
+- Ensure API keys and wallet configurations are correctly set up.
+- Manually set a verification key for authorization to avoid API requests for fetching
+  the verification key.
+- Using Privy’s identity tokens can help remove network calls to get user data.
+- Cookies are recommended for production applications only
+- Privy will set a cookie with the name `privy-token` to store your user’s session
+- Consider using the filtered stream for real-time events.
+- For the best user experience, consider implementing fallbacks for when a user doesn’t
+  have the wallet installed.
+- Log in with Farcaster enables log in and read access to a user’s Farcaster account
+  but does not provide write access to the account today.
+- Test accounts can be used to build automated tests, for local development, or to
+  reduce friction during Apple’s App Store review process for mobile apps.
+- Test accounts have a lighter authentication rate limit for apps in development.
+errors:
+- Result.failure if the user is not authenticated
+- Result.failure if a user already has 9 or more wallets
+- Result.failure if the network call to create the wallet fails
+- The user is not authenticated
+- The user already has an embedded Bitcoin wallet of the provided chainType and createAdditional
+  was not set to true
+- If there is another error during wallet creation, such as the user exiting prematurely
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - provider
+  - accessToken
+  - refreshToken
+  - scopes
+  - ASAuthorizationAppleIDButton
+  - ASAuthorizationController
+  - OAuthProvider
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - PrivyUser
+client:
+  auth:
+    type: test
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    location: header
+    header_name: Authorization
+    app_id: Your Privy application ID
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+  base_url: https://your-instance.privy.com
+  headers:
+    Content-Type: application/json
+    privy-app-id: insert-your-app-id
+    Accept: application/json
+    privy-authorization-signature: signature
+    0x-api-key: process.env.API_KEY_0X
+    0x-version: v2
+    Privy-App-ID: '{{ dlt.secrets[''privy_app_id''] }}'
+    Privy-App-Secret: '{{ dlt.secrets[''privy_app_secret''] }}'
+    Authorization: Bearer ${(await getAccessToken()) || ''}
+  paginator:
+    type: cursor
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    page_size_param: pageSize
+    default_page_size: 200
+source_metadata: null

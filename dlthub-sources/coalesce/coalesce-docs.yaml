@@ -1,0 +1,69 @@
+resources:
+- name: environments
+  endpoint:
+    path: /api/v1/environments
+    method: GET
+    data_selector: data
+    params: {}
+- name: environment_nodes
+  endpoint:
+    path: /api/v1/environments/{environmentID}/nodes
+    method: GET
+    data_selector: data
+    params:
+      limit: '10'
+      orderBy: id
+- name: workspace_nodes
+  endpoint:
+    path: /api/v1/workspaces/{workspaceID}/nodes
+    method: GET
+    data_selector: data
+    params:
+      limit: '25'
+      orderBy: id
+- name: runs
+  endpoint:
+    path: /api/v1/runs
+    method: GET
+    data_selector: data
+    params:
+      orderBy: runStartTime
+      orderByDirection: desc
+- name: run_details
+  endpoint:
+    path: /api/v1/runs/{runID}
+    method: GET
+    data_selector: data
+    params: {}
+- name: environments
+  endpoint:
+    path: /environments
+    method: GET
+    data_selector: data
+    params:
+      detail: 'false'
+notes:
+- Ensure Snowflake data is set to READ for source tables (data read by Coalesce).
+- Ensure targets are set to READ/WRITE (where Coalesce writes transformed data).
+- Inbound traffic from Coalesce must be allowed.
+- Outbound traffic to Coalesce must be allowed.
+- An Organization Administrator must create a new Project inside Coalesce.
+- Each environment should have its own Database and Schema.
+- You cannot have a Workspace and Environment share the same schemas unless the Workspace
+  is used read-only.
+- Coalesce documentation can't be exported
+- Monitor deployment and refresh status.
+- Analyze deployment results and understand error messages.
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://app.coalescesoftware.io
+  headers:
+    accept: application/json
+    authorization: Bearer replace-with-your-token
+  auth:
+    type: Bearer Authentication
+    location: header
+    header_name: Authorization
+source_metadata: null

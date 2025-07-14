@@ -1,0 +1,110 @@
+resources:
+- name: list_leads
+  endpoint:
+    path: /lead/{?_limit, _skip, _fields}
+    method: GET
+- name: create_lead
+  endpoint:
+    path: /lead/
+    method: POST
+- name: retrieve_lead
+  endpoint:
+    path: /lead/{id}/{?_fields}
+    method: GET
+- name: update_lead
+  endpoint:
+    path: /lead/{id}/
+    method: PUT
+- name: delete_lead
+  endpoint:
+    path: /lead/{id}/
+    method: DELETE
+- name: merge_leads
+  endpoint:
+    path: /lead/merge/
+    method: POST
+- name: lead
+  endpoint:
+    params:
+      _limit: 100
+      _skip: 0
+- name: contact
+  endpoint:
+    path: /api/v1/data/search/
+    method: POST
+    data_selector: data
+notes:
+- 'The response contains two fields: data containing the list of objects and has_more,
+  which indicates if you reached the last page.'
+- There is a maximum limit that can vary per resource. You will get a 400 response
+  with an appropriate message if you exceed it.
+- If you need to paginate for more than a few pages, update your query to return smaller
+  batches of objects.
+- If you receive a response status code of 429 (Too Many Requests), please sleep/pause
+  for the number of seconds specified by the rate_reset value before making additional
+  requests to that endpoint.
+- API requests are limited at a per Organization level across all users' API keys.
+- The per Organization limit is currently 3 times higher than individual API key rate
+  limits.
+- Most API responses will have the `ratelimit` header to provide rate limiting statistics
+  about the limit it's closest to hitting.
+- Default returns only IDs; specify _fields to get more data.
+- Results can be limited using results_limit.
+- Most endpoints support a `_fields` parameter that lets you specify which fields
+  you require in the response. For example, if you only need `id` and `display_name`
+  when listing Leads, add `?_fields=id,display_name` to the URL. This will improve
+  performance of your API calls.
+- In some cases, an API response can include fields that are not listed in the sample
+  response for that endpoint below. Non-custom fields that are not included in the
+  sample response for an endpoint should not be used in integrations, as they may
+  change without warning.
+- Failed deliveries are retried with a retry interval that exponentially backs off
+  up to every 20 minutes.
+- Event ordering is not guaranteed due to event consolidation, delivery parallelism/retries
+  and other factors.
+- A subscription will automatically be paused and its queue cleared when the event
+  queue reaches 100,000 backlogged events.
+- Warning emails will be sent to admins when there is more than 80,000 backlogged
+  events.
+- All event delivery fails for 3 days results in a subscription pause.
+- Email notifications are sent to admins when a subscription is paused.
+- Paused subscriptions must be manually re-activated via the API.
+- It is recommended to process Webhook events asynchronously.
+- Historical events can be accessed via the event log API for up to 30 days.
+- SSL certificate validation is enabled by default but can be disabled via the verify_ssl
+  field.
+- To prevent problems with long URLs, parameters can also be specified in a JSON-encoded
+  dictionary in the request body under the _params key.
+- GET requests with a request body are against the specification, we support the x-http-method-override
+  HTTP header that lets you override the request method.
+- Access Token has a limited lifetime and expires in expires_in seconds from the moment
+  it was issued.
+- A new Refresh Token is issued when refreshing the Access Token, and the old Refresh
+  Token must be discarded.
+errors:
+- '400: Response when exceeding maximum limit'
+- '400: when there was an issue with the request.'
+- '401: when the request needs to be authenticated.'
+- '402: when the request could not be completed, because a limit of your current plan
+  was reached.'
+- '403: when an operation was not allowed.'
+- '404: when the URL was not found.'
+- '405: when the HTTP method was not supported.'
+- '415: when the request used an unsupported format.'
+- 'Event queue reaches 100,000 backlogged events: Subscription automatically paused.'
+- 'All event delivery fails for 3 days: Warning emails sent before pause.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.close.com
+  headers:
+    Content-Type: application/json
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+    token_url: https://api.close.com/oauth2/token/
+    client_id: '{{ dlt.secrets[''client_id''] }}'
+    client_secret: '{{ dlt.secrets[''client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''refresh_token''] }}'
+source_metadata: null

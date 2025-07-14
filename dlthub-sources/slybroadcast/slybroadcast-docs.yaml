@@ -1,0 +1,68 @@
+resources:
+- name: submit_campaign
+  endpoint:
+    path: /gateway/vmb.php
+    method: POST
+    data_selector: response
+    params:
+      c_uid: test@slybroadcast.com
+      c_password: xxxxxxxx
+      c_phone: 6173999980,6173999981
+      c_callerID: '6173999982'
+      c_date: now
+      c_title: My First Broadcast
+      mobile_only: '1'
+- name: get_audio_list
+  endpoint:
+    path: /gateway/vmb.aflist.php
+    method: POST
+    data_selector: audio_list
+    params:
+      c_method: get_audio_list
+- name: get_audio_list_with_duration
+  endpoint:
+    path: /gateway/vmb.aflist.php
+    method: POST
+    data_selector: audio_list_with_duration
+    params:
+      c_method: get_audio_list_with_duration
+- name: campaign_submission
+  endpoint:
+    path: /gateway/vmb.json.php
+    method: POST
+    data_selector: acknowledgment
+    params: {}
+- name: audio_list
+  endpoint:
+    path: /gateway/vmb.json.php
+    method: POST
+    data_selector: audio_files
+    params:
+      c_method: get_audio_list
+- name: phone_list
+  endpoint:
+    path: /gateway/vmb.json.php
+    method: POST
+    data_selector: phone_lists
+    params:
+      c_method: get_phone_list
+notes:
+- All campaigns are sent out in Eastern Time and use the 24-hour clock.
+- Audio files must be greater than five seconds.
+- Users must acknowledge receipt of each call status by returning 'OK'.
+errors:
+- 'Missing c_uid or c_password: Ensure both fields are provided.'
+- 'Invalid c_phone format: Ensure phone numbers are valid.'
+- 'Missing variables: Check required fields for campaign submission'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://www.slybroadcast.com/gateway/vmb.json.php
+  auth:
+    type: none
+  headers:
+    Content-Type: application/x-www-form-urlencoded
+    Accept: application/json
+  paginator:
+    type: none
+source_metadata: null

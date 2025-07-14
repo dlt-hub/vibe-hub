@@ -1,0 +1,82 @@
+# Source Metadata
+source_name: fastly
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.fastly.com
+  auth:
+    type: apikey
+    auth: "{{ dlt.secrets['fastly_api_token'] }}"
+    location: header
+    header_name: Fastly-Key
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: current_user
+    endpoint:
+      path: /current_user
+      method: GET
+      data_selector: data
+
+  - name: service
+    endpoint:
+      path: /service
+      method: GET
+      data_selector: data
+
+  - name: service_details
+    endpoint:
+      path: /service/{service_id}
+      method: GET
+      data_selector: data
+
+  - name: service_version
+    endpoint:
+      path: /service/{service_id}/version
+      method: GET
+      data_selector: data
+
+  - name: service_dictionaries
+    endpoint:
+      path: /service/{service_id}/dictionary
+      method: GET
+      data_selector: data
+
+  - name: service_backend
+    endpoint:
+      path: /service/{service_id}/backend
+      method: GET
+      data_selector: data
+
+  - name: service_domain
+    endpoint:
+      path: /service/{service_id}/domain
+      method: GET
+      data_selector: data
+
+  - name: service_acl
+    endpoint:
+      path: /service/{service_id}/acl
+      method: GET
+      data_selector: data
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - FastlyKey
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Ensure the Fastly API token has the appropriate scope for your use case.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API token validity or permissions.
+  - 404 Not Found: Verify the endpoint path and service ID.
+  - 429 Too Many Requests: Implement exponential backoff for rate limiting.

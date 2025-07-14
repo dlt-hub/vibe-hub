@@ -1,0 +1,61 @@
+# Source Metadata
+source_name: google_directory
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://admin.googleapis.com/admin/directory/v1
+  auth:
+    type: oauth2
+    flow: authorization_code
+    token_url: https://oauth2.googleapis.com/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: users
+      params: {}
+
+  - name: groups
+    endpoint:
+      path: /groups
+      method: GET
+      data_selector: groups
+      params: {}
+
+  - name: group_members
+    endpoint:
+      path: /groups/{groupKey}/members
+      method: GET
+      data_selector: members
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - GoogleServiceAccount
+    - OAuthScopes
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Full Refresh Sync only; no incremental sync supported
+  - Rate limits apply as per Google Directory's Limits and Quotas
+
+# Troubleshooting & Error Patterns
+errors:
+  - 403: Insufficient permissions for the requested operation
+  - 404: Resource not found, check the endpoint path or parameters
+  - 401: Invalid credentials or token expired

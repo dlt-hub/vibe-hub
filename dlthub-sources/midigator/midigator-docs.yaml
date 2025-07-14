@@ -1,0 +1,244 @@
+resources:
+- name: resolve_prevention_alert
+  endpoint:
+    path: /resolve
+    method: POST
+    data_selector: resolution
+    params: {}
+- name: evidence
+  endpoint:
+    path: /evidence
+    method: POST
+    data_selector: evidence
+    params: {}
+- name: order
+  endpoint:
+    path: /order
+    method: POST
+    data_selector: order
+    params: {}
+- name: subscribe
+  endpoint:
+    path: /subscribe
+    method: POST
+    data_selector: ''
+    params: {}
+- name: ping
+  endpoint:
+    path: /ping
+    method: GET
+    data_selector: ''
+    params: {}
+- name: order_validation_new
+  endpoint:
+    path: /order_validation/new
+    method: POST
+    data_selector: order_validation
+    params: {}
+- name: order_validation_match
+  endpoint:
+    path: /order_validation/match
+    method: POST
+    data_selector: order_validation
+    params: {}
+- name: prevention_new
+  endpoint:
+    path: /prevention/new
+    method: POST
+    data_selector: prevention
+    params: {}
+- name: prevention_match
+  endpoint:
+    path: /prevention/match
+    method: POST
+    data_selector: prevention
+    params: {}
+- name: rdr_new
+  endpoint:
+    path: /rdr/new
+    method: POST
+    data_selector: rdr
+    params: {}
+- name: rdr_match
+  endpoint:
+    path: /rdr/match
+    method: POST
+    data_selector: rdr
+    params: {}
+- name: order_validation
+  endpoint:
+    path: /order_validation/{order_guid}
+    method: GET
+    data_selector: order_validation
+    params: {}
+- name: prevention
+  endpoint:
+    path: /prevention/{prevention_guid}
+    method: GET
+    data_selector: prevention
+    params: {}
+- name: ping_response
+  endpoint:
+    path: /ping/{event_type}
+    method: GET
+    data_selector: urls
+    params: {}
+- name: prevention.match
+  endpoint:
+    path: /prevention/match
+    method: POST
+    data_selector: payload
+- name: rdr.new
+  endpoint:
+    path: /rdr/new
+    method: POST
+    data_selector: payload
+- name: rdr.match
+  endpoint:
+    path: /rdr/match
+    method: POST
+    data_selector: payload
+- name: registration.new
+  endpoint:
+    path: /registration/new
+    method: POST
+    data_selector: payload
+- name: subscribe
+  endpoint:
+    path: /subscribe
+    method: POST
+    data_selector: payload
+- name: subscription_confirmation
+  endpoint:
+    path: /subscription/confirmation
+    method: GET
+    data_selector: payload
+- name: subscription_update
+  endpoint:
+    path: /subscription/update
+    method: PUT
+    data_selector: payload
+- name: chargeback_new
+  endpoint:
+    path: /chargeback/new
+    method: POST
+    data_selector: chargeback.new
+    params: {}
+- name: chargeback_match
+  endpoint:
+    path: /chargeback/match
+    method: POST
+    data_selector: chargeback.match
+    params: {}
+- name: chargeback_result
+  endpoint:
+    path: /chargeback/result
+    method: POST
+    data_selector: chargeback.result
+    params: {}
+- name: chargeback_dnf
+  endpoint:
+    path: /chargeback/dnf
+    method: POST
+    data_selector: chargeback.dnf
+    params: {}
+- name: order
+  endpoint:
+    path: /order/{order_guid}
+    method: GET
+    data_selector: order
+    params: {}
+- name: order
+  endpoint:
+    path: /order
+    method: POST
+    data_selector: order_guid
+- name: evidence
+  endpoint:
+    path: /evidence
+    method: POST
+    data_selector: evidence
+    params: {}
+- name: shipping_details
+  endpoint:
+    path: /shipping_details
+    method: POST
+    data_selector: shipping_details
+    params: {}
+- name: proof
+  endpoint:
+    path: /proof
+    method: POST
+    data_selector: proof
+    params: {}
+- name: items
+  endpoint:
+    path: /items
+    method: POST
+    data_selector: items
+    params: {}
+- name: notes
+  endpoint:
+    path: /notes
+    method: POST
+    data_selector: notes
+    params: {}
+- name: match
+  endpoint:
+    path: /match
+    method: POST
+    data_selector: match
+    params: {}
+notes:
+- Only application/json content type is allowed for this resource.
+- When a new subscription is created, the value of 'active' is set to 'false'. 'active'
+  will be set to 'true' once the webhook is tested.
+- Midigator will automatically try the activation process 8 more times over the following
+  24 hour period if the vetting check fails.
+- For any response code other than a 200, Midigator will attempt to send the event
+  again.
+- Uses OAuth2 with refresh token â€” requires setup of connected app in Midigator
+- Uses OAuth2 with refresh token — requires setup of connected app in Midigator
+- Authentication to Midigator APIs is performed by requesting a short-lived bearer
+  token using a long-lived API secret.
+- The bearer token received from the /auth/ endpoint will be used as the Authentication
+  header in all other Midigator API calls.
+errors:
+- 'VALIDATION_ERROR: The request was unacceptable, usually because a required parameter
+  was omitted.'
+- 'INVALID_API_KEY: A valid API key wasn’t provided.'
+- 'SERVER_ERROR: Midigator experienced a problem (rare).'
+- The request was unacceptable, usually because a required parameter was omitted.
+- A valid API key wasn’t provided.
+- One or more conditions in the header were false when tested on the server.
+- The server understands the content type and the syntax is correct but was unable
+  to process the instructions.
+- The request was invalid, usually because of missing or invalid parameters or headers.
+- An invalid authorization header was provided.
+- Invalid request
+- Invalid authorization header
+- Data entity not found
+- '400 Bad Request: The request was invalid, usually because of missing or invalid
+  parameters or headers.'
+- '401 Unauthorized: An invalid authorization header was provided.'
+auth_info:
+  mentioned_objects:
+  - username
+  - password
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.midigator.com/auth/v1
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+  headers:
+    Accept: application/json
+source_metadata: null

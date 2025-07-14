@@ -1,0 +1,108 @@
+resources:
+- name: placements
+  endpoint:
+    path: /reporting/placements
+    method: GET
+    data_selector: reporting entries
+- name: container_reports
+  endpoint:
+    path: /reporting/containers
+    method: GET
+    data_selector: '[]'
+- name: campaign_line
+  endpoint:
+    path: /management/line/
+    method: PUT
+- name: campaign_line_report
+  endpoint:
+    path: /reporting/lines/
+    method: GET
+    data_selector: reporting_entries
+    params:
+      Date: required
+      CompanyId: optional
+- name: key_values
+  endpoint:
+    path: /key-values
+    method: GET
+    data_selector: key_values
+    params: {}
+- name: reporting
+  endpoint:
+    path: /reporting
+    method: GET
+    data_selector: reports
+    params: {}
+- name: creative_template
+  endpoint:
+    path: /Delivery/Creatives/CreativeTemplates
+    method: POST
+    data_selector: template
+    params: {}
+- name: campaign_report
+  endpoint:
+    path: /reporting/campaigns/
+    method: GET
+    data_selector: array of reporting entries
+notes:
+- Placements reports are refreshed once a day around UTC 11:00 AM.
+- The query and response are OData V4 format.
+- You can integrate consent management in multiple ways.
+- In order to acquire consent for Google Ad Manager or Programmatic, you will need
+  to acquire consent from users via your CMP.
+- Container reports are refreshed once a day around UTC 11:00 AM.
+- Allows modifying the budget, bid amount or both at once.
+- OpenWeb will cover transfer fees of up to $5 per transaction - any excess expenses
+  will be deducted from your payment.
+- Any aggregated amount over $50 will be paid monthly.
+- Publishers are eligible to receive early payment offers (subject to relevant fees)
+  via our processor Tipalti, and based on their terms and conditions.
+- If the Billing section does not appear, your account may be missing the required
+  permissions. Please contact your account manager to get access.
+- Campaign line reports are refreshed once an hour.
+- Queries are limited to a maximum time range of 31 days.
+- URL macros in click & impression tracking URLs
+- Macros used to track inventory, allowing identification of specific campaigns, lines,
+  creatives and publishers.
+- The majority of email traffic on our network happens via proxies, such as Gmail,
+  Yahoo, Outlook or Apple.
+- Some proxies may require looking up the ISP from the IP, or relying on IP ranges
+  data set from the different email / proxy vendors.
+- Proxies also hide the full geo-location. Only rely on the country level when targeting
+  proxy traffic.
+- Traffic geo-location for state or city may suffer from a significant mismatch rate.
+- Key-values must be marked as reportable to appear in reports
+- Due to additional features and design options, rendering the images takes a bit
+  longer and does not happen in real time.
+- When you traffic a new creative, it will not serve immediately and the first few
+  requests will result in backfill ads.
+- Campaign reports are refreshed once an hour.
+- Reports become final 12h after the end of the previous day in the UTC timezone.
+- We require all publishers to comply with all relevant laws and regulations, to provide
+  data subjects with relevant information and to collect unconditional consents in
+  accordance with our Monetization Terms and Condition and Data Processing Agreement.
+- If you need to opt users out of data sale and personalized advertising, we provide
+  multiple options from a form your users can opt-out from to ingestion of your own
+  opt-out data via email or API.
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://powerinbox.azure-api.net
+  paginator:
+    type: cursor
+    cursor_path: next
+    cursor_param: next
+    page_size_param: PageSize
+    default_page_size: 100
+  headers:
+    Accept: application/json
+  auth:
+    type: oauth2
+    flow: client_credentials
+    token_url: https://login.microsoftonline.com/revenuestripe.onmicrosoft.com/oauth2/v2.0/token
+    client_id: '{{ dlt.secrets[''client_id''] }}'
+    client_secret: '{{ dlt.secrets[''client_secret''] }}'
+    location: header
+    header_name: Authorization
+source_metadata: null

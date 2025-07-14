@@ -1,0 +1,126 @@
+resources:
+- name: customers
+  endpoint:
+    path: /v1/customers
+    method: GET
+    params:
+      PageSize: 10
+      PageIndex: 1
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: webhooks
+  endpoint:
+    path: /v1/webhooks
+    method: POST
+    data_selector: id
+    params: {}
+- name: list_webhooks
+  endpoint:
+    path: /v1/Webhooks
+    method: GET
+    data_selector: webhooks
+    params: {}
+- name: unregister_webhook
+  endpoint:
+    path: /v1/webhooks
+    method: DELETE
+    data_selector: status
+    params: {}
+- name: webhook
+  endpoint:
+    path: /Webhooks
+    method: DELETE
+    data_selector: id
+    params:
+      id: integer <int32>
+      url: string
+- name: webhook
+  endpoint:
+    path: /Webhooks
+    method: DELETE
+    data_selector: id
+    params:
+      id: integer <int32>
+      url: string
+- name: Webhooks
+  endpoint:
+    path: /Webhooks
+    method: DELETE
+    params:
+      id: Webhook ID
+      url: Webhook URL
+- name: webhook
+  endpoint:
+    path: /Webhooks
+    method: DELETE
+    params:
+      id: integer <int32>
+      url: string
+- name: webhooks
+  endpoint:
+    path: /v1/Webhooks
+    method: DELETE
+    data_selector: id
+    params: {}
+- name: webhook
+  endpoint:
+    path: /Webhooks
+    method: DELETE
+    data_selector: ''
+    params:
+      id: integer <int32>
+      url: string
+- name: webhook
+  endpoint:
+    path: /Webhooks
+    method: DELETE
+    params:
+      id: integer <int32>
+      url: string
+notes:
+- Be careful! This will override all entity values with the new ones including the
+  fact that none provided values will get default values.
+- Polling servers is something you should avoid at much as possible. It's good for
+  nobody. It consumes precious resources unnecessarily.
+- Uses OAuth2 with refresh token â€” requires setup of connected app in api
+- The URL for webhooks must be public and accessible from Altoviz servers.
+- API are protected by a rate limit of 100 calls per minute.
+- If you reach this limitation, you will get an HTTP code 429 'Too many requests.
+  Please try again later'.
+- You can get the next opportunity time evaluation in the 'retry-after' header in
+  milliseconds.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Not Found
+- '200'
+- '404'
+- '429 Too many requests: Please try again later'
+auth_info:
+  mentioned_objects:
+  - X-SIGNATURE
+client:
+  paginator:
+    type: page
+    page_size_param: PageSize
+    default_page_size: 10
+  base_url: https://api.altoviz.com/v1
+  auth:
+    type: apikey
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    location: header
+    header_name: X-API-KEY
+  headers:
+    Accept: application/json
+    content-type: application/json
+source_metadata: null

@@ -1,0 +1,184 @@
+resources:
+- name: codaPayment
+  endpoint:
+    path: /services/data/vXX.X/sobjects/c2g__codaPayment__c
+    method: POST
+    data_selector: records
+- name: codaTransactionLineItem
+  endpoint:
+    path: /services/data/vXX.X/sobjects/c2g__codaTransactionLineItem__c
+    method: GET
+    data_selector: records
+- name: PaymentsPlusService
+  endpoint:
+    path: /services/data/vXX.X/PaymentsPlusService
+    method: POST
+    data_selector: records
+- name: FinancialTransactions
+  endpoint:
+    path: /services/data/vXX.X/sobjects/FinancialTransactions
+    method: GET
+    data_selector: records
+    params: {}
+- name: Checklist_Item
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Checklist_Item__c
+    method: GET
+    data_selector: records
+    params: {}
+- name: Material
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Material__c
+    method: GET
+    data_selector: records
+    params: {}
+- name: Material_Group
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Material_Group__c
+    method: GET
+    data_selector: records
+    params: {}
+- name: BillingDocument
+  endpoint:
+    path: /services/data/vXX.X/sobjects/fferpcore__BillingDocument__c
+    method: GET
+    data_selector: records
+    params: {}
+- name: BillingDocumentLineItem
+  endpoint:
+    path: /services/data/vXX.X/sobjects/fferpcore__BillingDocumentLineItem__c
+    method: GET
+    data_selector: records
+    params: {}
+- name: Proj
+  endpoint:
+    path: /services/data/vXX.X/sobjects/pse__Proj__c
+    method: GET
+    data_selector: records
+    params: {}
+- name: Estimate
+  endpoint:
+    path: /services/data/vXX.X/sobjects/ffscpq__Estimate__c
+    method: GET
+    data_selector: records
+    params: {}
+- name: Region
+  endpoint:
+    path: /services/data/vXX.X/sobjects/pse__Region__c
+    method: GET
+    data_selector: records
+    params: {}
+- name: Practice
+  endpoint:
+    path: /services/data/vXX.X/sobjects/pse__Practice__c
+    method: GET
+    data_selector: records
+    params: {}
+- name: Grp
+  endpoint:
+    path: /services/data/vXX.X/sobjects/pse__Grp__c
+    method: GET
+    data_selector: records
+    params: {}
+- name: AccountingTransaction
+  endpoint:
+    path: /services/data/v15.0/c2g/TransactionService
+    method: POST
+- name: AccountingTransactionLine
+  endpoint:
+    path: /services/data/v15.0/c2g/TransactionService/AccountingTransactionLine
+    method: POST
+- name: project
+  endpoint:
+    path: /services/data/vXX.X/sobjects/pse__Proj__c
+    method: GET
+    data_selector: records
+    params: {}
+- name: version
+  endpoint:
+    path: /services/data/vXX.X/sobjects/pse.VersionService.Version
+    method: POST
+    data_selector: records
+    params: {}
+- name: create_project
+  endpoint:
+    path: /services/CreateProjectFromTemplate
+    method: POST
+    data_selector: projResponse
+    params: {}
+- name: Milestone
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Milestone
+    method: GET
+    data_selector: records
+    params: {}
+- name: Project Version
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Version
+    method: POST
+    data_selector: records
+    params: {}
+- name: Opportunity
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Opportunity
+    method: GET
+- name: OpportunityLineItem
+  endpoint:
+    path: /services/data/vXX.X/sobjects/OpportunityLineItem
+    method: GET
+- name: Product2
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Product2
+    method: GET
+- name: pse__Proj__c
+  endpoint:
+    path: /services/data/vXX.X/sobjects/pse__Proj__c
+    method: GET
+notes:
+- Payments Plus API requires setup of connected app in API
+- Some objects may return nulls in deeply nested fields
+- Checklist items are set to unchecked as default
+- Material Groups get copied but not Companies
+- Multiple Certinia packages use the Pluggable Trigger Framework.
+- We recommend against using pluggable and non-pluggable triggers on the same SObject
+  where possible.
+- Make sure you have the correct permission controls set up for your selected projects
+  to allow versioning.
+- Job is scheduled to run on the first of every month using a CRON expression.
+- The API allows creating a project from a template without requiring a full-featured
+  UI.
+- Make sure the user has the correct permission controls set up to allow versioning
+- If an error occurs from versioning, the process builder states that the flow failed
+  to trigger instead of the Version Service error message
+- The CPFT API does not permit creating two projects simultaneously by default.
+- Chaining queueable methods is not allowed in a test environment.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Flow failed to trigger: explore alternative means to communicate errors'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://your-instance.api-name.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    page_size_param: pageSize
+    default_page_size: 200
+source_metadata: null

@@ -1,0 +1,249 @@
+resources:
+- name: reward_notifiers
+  endpoint:
+    path: /api/reward_notifiers
+    method: POST
+- name: proposal
+  endpoint:
+    path: /create_proposal
+    method: POST
+- name: simulation
+  endpoint:
+    path: /run_simulation
+    method: POST
+- name: multisig_overview
+  endpoint:
+    path: /multisig/overview
+    method: GET
+    data_selector: multisig_info
+    params: {}
+- name: governance_process
+  endpoint:
+    path: /multisig/governance_process
+    method: GET
+    data_selector: governance_info
+    params: {}
+- name: drawbacks
+  endpoint:
+    path: /multisig/drawbacks
+    method: GET
+    data_selector: drawbacks_info
+    params: {}
+- name: daos_using_multisig
+  endpoint:
+    path: /multisig/daos
+    method: GET
+    data_selector: daos_info
+    params: {}
+- name: voting_parameters
+  endpoint:
+    path: /governor/config
+    method: POST
+    data_selector: config
+    params:
+      votingDelay: time after proposal creation
+      votingPeriod: time proposal is open
+- name: proposal
+  endpoint:
+    path: /proposals
+    method: POST
+    data_selector: proposals
+    params: {}
+- name: HasVoted
+  endpoint:
+    path: /HasVoted
+    method: GET
+    data_selector: value
+- name: accounts
+  endpoint:
+    path: /accounts
+    method: POST
+    data_selector: data.accounts
+    params: {}
+- name: chains
+  endpoint:
+    path: /chains
+    method: POST
+    data_selector: data.chains
+    params: {}
+- name: delegate
+  endpoint:
+    path: /delegate
+    method: POST
+    data_selector: data.delegate
+    params: {}
+- name: delegatee
+  endpoint:
+    path: /delegatee
+    method: POST
+    data_selector: data.delegatee
+    params: {}
+- name: delegates
+  endpoint:
+    path: /delegates
+    method: POST
+    data_selector: data.delegates
+    params: {}
+- name: organizations
+  endpoint:
+    path: /organizations
+    method: POST
+    data_selector: data.organizations
+    params: {}
+- name: proposals
+  endpoint:
+    path: /proposals
+    method: POST
+    data_selector: data.proposals
+    params: {}
+- name: token
+  endpoint:
+    path: /token
+    method: POST
+    data_selector: data.token
+    params: {}
+- name: votes
+  endpoint:
+    path: /votes
+    method: POST
+    data_selector: data.votes
+    params: {}
+- name: account
+  endpoint:
+    path: /account
+    method: GET
+    data_selector: records
+    params: {}
+- name: tokenContract
+  endpoint:
+    path: /tokenContract
+    method: GET
+    data_selector: records
+    params: {}
+- name: block
+  endpoint:
+    path: /block
+    method: GET
+    data_selector: records
+    params: {}
+- name: Gnosis Safe
+  endpoint:
+    path: /safes
+    method: POST
+    data_selector: safes
+    params: {}
+- name: Link Gnosis Safe
+  endpoint:
+    path: /safes/link
+    method: POST
+    data_selector: linkedSafes
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: staking_portal
+  endpoint:
+    path: /staking/portal
+    method: GET
+notes:
+- The design opens up several unique opportunities for DAO management including SubDAOs
+  and decentralized Grants programs.
+- Multisigs can act against the will of their community or voters.
+- Identifiable signers make multisigs a clear target for regulation.
+- Free Tally API keys are rate-limited to ~1 request per second.
+- Seatbelt automates proposal simulations and translates technical details into clear,
+  actionable insights for all governance participants.
+- The data in your Tally Profile is a mix of onchain data and off-chain data.
+- Always use the latest version of the library to ensure you have the most up-to-date
+  security patches and features.
+- OpenZeppelin Governor is a modular and upgradeable smart contract.
+- Define quorum amounts and voting durations that strike a balance between providing
+  ample time for participants to review and vote on proposals.
+- A token wrapper does come with tradeoffs. Users will have to wrap their tokens to
+  vote, and then unwrap them to use them in places that expect the unwrapped version.
+- OpenZeppelin Governor can be deployed and used without a timelock if desired
+- Always verify the address before sending any tokens.
+- Ensure you're sending tokens on the expected network.
+- Contact our support team if you need assistance or have any questions.
+- 'Remember: blockchain transactions are irreversible. If you send funds to an incorrect
+  address, we may not be able to recover them.'
+- Requires OAuth2 authentication with refresh token.
+- Endpoints support pagination through cursor-based methods.
+- delegation is required to stake OBOL and earn rewards
+- The native staking system does not have a fee, aside from the gas costs of staking
+  and distributing rewards.
+- Liquidity risk is minimal, because unstaking is instant.
+- Governors can generally update their parameters with an onchain proposal.
+- If the parameters are set too high, it will be hard to make the onchain proposal
+  that updates the parameters.
+- The purpose of the threshold is to prevent spam proposals and to make sure that
+  anyone making a proposal has either direct economic exposure or trust from delegators.
+- Once the distribution of voting power is known, it’s a good idea to have a medium-size
+  group of delegates over the threshold.
+- Picking a good quorum is tough, because it depends on voter turnout.
+- Most DAOs pick a period between 3 and 7 days for voting period.
+- The delay gives token holders time to delegate their voting power before the vote
+  starts.
+- For Governors that control a DeFi protocol where users might want to withdraw their
+  funds before a big protocol change, we usually see timelock delays closer to 7 days.
+- Uses OAuth2 with refresh token â€” requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Staking contracts have modules for calculating earning power, hooking up sources
+  of rewards, and extensions.
+- Staker uses a streaming reward mechanism, where rewards are added as lump sums,
+  then distributed evenly over time.
+- Distribute rewards at reasonable intervals, e.g., weekly or monthly.
+- Ensure reward tokens are transferred to the staking contract before notification
+- Check that the reward notifier has sufficient balance or approval
+- If using an oracle-based calculator, tools like OpenZeppelin Defender can push earning
+  power updates onchain
+- The PauseGuardian should monitor the oracle’s updates and react quickly if the oracle
+  goes offline or posts incorrect earning power
+- Earning power doesn’t automatically update
+- Anyone can run a bot to update earning power
+- We recommend running the scripts in the staker-bots repo as a backup, in case the
+  MEV searchers don’t
+- Users will have to wrap their tokens to vote, and then unwrap them to use them in
+  places that expect the unwrapped version.
+- 'One thing to note is that setting up voting already requires setup: token holders
+  have to delegate their votes – even to themselves – before voting.'
+- Delegation is required to stake RARI and earn rewards
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://your-instance.api-name.com
+  headers:
+    Api-Key: YOUR_KEY_HERE
+    Accept: application/json
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+  paginator:
+    type: cursor
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    page_size_param: pageSize
+    default_page_size: 200
+source_metadata: null

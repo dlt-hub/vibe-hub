@@ -1,0 +1,64 @@
+resources:
+- name: create_podcast
+  endpoint:
+    path: /podcast
+    method: POST
+- name: check_episode_status
+  endpoint:
+    path: /podcast/{job_id}
+    method: GET
+- name: scripted_podcast
+  endpoint:
+    path: /podcast/scripted
+    method: POST
+- name: podcast_job
+  endpoint:
+    path: /podcast
+    method: POST
+    data_selector: job_id
+- name: podcast_status
+  endpoint:
+    path: /podcast/{job_id}
+    method: GET
+- name: podcast_scripted
+  endpoint:
+    path: /podcast/scripted
+    method: POST
+    data_selector: ''
+    params: {}
+- name: podcast
+  endpoint:
+    path: /podcast
+    method: POST
+    data_selector: ''
+    params: {}
+notes:
+- You’ll need to be on a paid plan to access the API.
+- Please note, there is currently a limit of 5 concurrent jobs.
+- The music_spec field is optional. If omitted, no background music will be added.
+- 'Automatic Trimming: The music track is automatically trimmed to match the duration
+  of the generated podcast episode. If the episode is shorter than the music track,
+  playback stops at the episode’s end.'
+- 'Music Placement: The music always starts at the beginning of the podcast and cannot
+  be placed at other positions.'
+- 'Validation: Ensure the music_id is valid and that fade_in_ms, fade_out_ms, playback_start,
+  and playback_end are within the bounds of the music track’s duration.'
+errors:
+- '422: Validation error'
+- '429: Too many concurrent jobs'
+- 404 if job_id is invalid
+- '429: if the user has too many jobs in flight'
+- '422: if provided voice_ids are not unique'
+- '400: if any voice_ids or music_ids provided are invalid'
+- '400: if any voice_id or music_id provided is invalid'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.wondercraft.ai
+  auth:
+    type: apikey
+    location: header
+    header_name: X-API-KEY
+  headers:
+    X-API-TOKEN: ''
+source_metadata: null

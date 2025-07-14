@@ -1,0 +1,55 @@
+# Source Metadata
+source_name: openweather_one_call
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.openweathermap.org/data/2.5
+  auth:
+    type: apikey
+    location: query
+    header_name: ""
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: current_weather
+    endpoint:
+      path: /weather
+      method: GET
+      data_selector: ""
+      params: {
+                "appid": "{{ dlt.secrets['openweather_api_key'] }}",
+                "lat": "latitude",
+                "lon": "longitude"
+      }
+
+  - name: forecast_weather
+    endpoint:
+      path: /forecast
+      method: GET
+      data_selector: ""
+      params: {
+                "appid": "{{ dlt.secrets['openweather_api_key'] }}",
+                "lat": "latitude",
+                "lon": "longitude"
+      }
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Free plan allows 60 calls per minute and 1,000,000 calls per month
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401: "Invalid API key" 
+  - 404: "City not found" 
+  - 429: "Too many requests"

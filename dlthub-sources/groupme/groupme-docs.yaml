@@ -1,0 +1,94 @@
+resources:
+- name: groups
+  endpoint:
+    path: /groups
+    method: GET
+    data_selector: response
+    params:
+      per_page: '10'
+- name: former_groups
+  endpoint:
+    path: /groups/former
+    method: GET
+    data_selector: response
+- name: membership_results
+  endpoint:
+    path: /groups/:group_id/members/results/:results_id
+    method: GET
+    data_selector: members
+- name: blocks
+  endpoint:
+    path: /blocks
+    method: GET
+    data_selector: blocks
+- name: me
+  endpoint:
+    path: /users/me
+    method: GET
+    data_selector: response
+- name: bots
+  endpoint:
+    path: /bots
+    method: POST
+    data_selector: response.bot
+    params: {}
+- name: groups
+  endpoint:
+    path: /groups
+    method: GET
+    data_selector: response
+    params: {}
+- name: post_messages
+  endpoint:
+    path: /bots/post
+    method: POST
+    data_selector: response
+    params: {}
+- name: pictures
+  endpoint:
+    path: /pictures
+    method: POST
+    data_selector: payload
+    params:
+      access_token: required
+notes:
+- JSON strings in the POST body must use double quotes, for some reason single quotes
+  returns a bad request
+- Signature must refresh every hour
+- Bots can only send messages to the app via push.
+- Bots cannot send SMS messages to users in SMS-mode.
+- Highly recommended that your callback url using https.
+- All data is sent and received as JSON.
+- It is especially important to send data as JSON in the request body to ensure consistent
+  hash ordering.
+errors:
+- '400: Name is required'
+- '404: Not Found'
+- '503: Service Unavailable'
+- '400: Bad Request - Returned when an invalid format or invalid data is specified
+  in the request.'
+- '401: Unauthorized - Authentication credentials were missing or incorrect.'
+- '403: Forbidden - The request is understood, but it has been refused.'
+- '404: Not Found - The URI requested is invalid or the resource requested does not
+  exist.'
+- '420: Enhance Your Calm - Returned when you are being rate limited.'
+- '500: Internal Server Error - Something unexpected occurred.'
+- '502: Bad Gateway - GroupMe is down or being upgraded.'
+- '503: Service Unavailable - The GroupMe servers are up, but overloaded with requests.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://image.groupme.com
+  headers:
+    Content-Type: application/json
+  paginator:
+    type: page
+    page_size_param: per_page
+    default_page_size: 10
+  auth:
+    type: apikey
+    location: header
+    header_name: X-Access-Token
+    flow: implicit
+    client_id: CLIENT_ID
+source_metadata: null

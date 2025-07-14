@@ -1,0 +1,75 @@
+resources:
+- name: articles
+  endpoint:
+    path: /v3/get
+    method: POST
+    data_selector: list
+    params: {}
+- name: request_token
+  endpoint:
+    path: /v3/oauth/request
+    method: POST
+- name: authorize
+  endpoint:
+    path: /v3/oauth/authorize
+    method: POST
+- name: add
+  endpoint:
+    path: /v3/add
+    method: POST
+- name: items
+  endpoint:
+    path: /v3/get
+    method: POST
+    data_selector: items
+    params: {}
+notes:
+- You can manage your settings for cookies from this Cookie Preferences tool.
+- Requires user authentication to access saved content.
+- Each user is limited to 320 calls per hour.
+- Each application is limited to 10,000 calls per hour.
+- Check out the Pocket Authentication API - it has everything you need.
+- Subscriptions to our paid Pocket Premium service are available on monthly and yearly
+  subscription plans.
+- YOUR PAID POCKET PREMIUM SUBSCRIPTION WILL BE AUTOMATICALLY RENEWED, AND THE SUBSCRIPTION
+  FEE CHARGED, AT THE END OF EACH SUBSCRIPTION PERIOD UNTIL YOU CANCEL.
+- If you cancel or decide not to renew, you will be downgraded to our free service
+  upon cancellation or at the end of your subscription period, as applicable.
+- Requires user authentication through OAuth2.
+- Some features may require a Pocket Premium subscription.
+- TO CANCEL YOUR SUBSCRIPTION, PLEASE SEND AN EMAIL TO CANCEL@GETPOCKET.COM, OR FOLLOW
+  THE INSTRUCTIONS FOR CANCELLATION THAT ARE AVAILABLE ON OUR WEBSITE.
+- The Pocket Technologies are provided solely for your personal, noncommercial use.
+errors:
+- '400 Bad Request: Check request parameters.'
+- '401 Unauthorized: Verify client credentials or token.'
+- Your application should be looking for rate limit status codes and back off until
+  the reset time.
+- '400: 138: Missing consumer key.'
+- '400: 140: Missing redirect url.'
+- '403: 152: Invalid consumer key.'
+- '50X: 199: Pocket server issue.'
+- '403 Forbidden: Check if your API key is valid.'
+- '404 Not Found: Ensure the requested resource exists.'
+- '401 Unauthorized: Verify your OAuth token is active.'
+auth_info:
+  mentioned_objects:
+  - OAuth2
+  - AccessToken
+  - OAuth
+  - Application
+client:
+  base_url: https://getpocket.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    location: header
+    header_name: Authorization
+    token_url: https://getpocket.com/v3/oauth/request
+    client_id: '{{ dlt.secrets[''pocket_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''pocket_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''pocket_refresh_token''] }}'
+  headers:
+    Accept: application/json
+    Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+source_metadata: null

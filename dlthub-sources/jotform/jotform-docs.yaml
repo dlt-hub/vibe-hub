@@ -1,0 +1,75 @@
+# Source Metadata
+source_name: jotform
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.jotform.com
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: submissions
+    endpoint:
+      path: /submissions
+      method: GET
+      data_selector: content
+      params: {
+                "start_date": "start_date",
+                "end_date": "end_date"
+      }
+
+  - name: reports
+    endpoint:
+      path: /reports
+      method: GET
+      data_selector: content
+
+  - name: forms
+    endpoint:
+      path: /forms
+      method: GET
+      data_selector: content
+
+  - name: questions
+    endpoint:
+      path: /questions
+      method: GET
+      data_selector: content
+      params: {
+                "form_id": "form_id"
+      }
+
+  - name: form_properties
+    endpoint:
+      path: /form_properties
+      method: GET
+      data_selector: content
+
+  - name: form_files
+    endpoint:
+      path: /form_files
+      method: GET
+      data_selector: content
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - APIKey
+
+# Known Quirks or Risks, Caveats
+notes:
+  - No pagination for reports, questions, and form_properties
+  - Incremental loading supported for submissions, forms, and form_files
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key validity
+  - 404 Not Found: Ensure the endpoint path is correct

@@ -1,0 +1,198 @@
+resources:
+- name: rmas
+  endpoint:
+    path: /api/v1/rmas
+    method: GET
+    data_selector: rmas
+    params:
+      page: 1
+      page_size: 50
+- name: batches
+  endpoint:
+    path: /api/v1/batches
+    method: POST
+    data_selector: order_statuses
+- name: shipping_rates
+  endpoint:
+    path: /services/rates
+    method: POST
+    data_selector: rates
+    params:
+      incremental: updated_at
+- name: tracking
+  endpoint:
+    path: /services/track
+    method: GET
+    data_selector: tracking_info
+    params: {}
+- name: po_receipts
+  endpoint:
+    path: /api/v1/po_receipts
+    method: GET
+    data_selector: po_receipts
+    params:
+      page: 1
+      page_size: 100
+- name: rmas
+  endpoint:
+    path: /api/v2/rmas
+    method: POST
+    data_selector: null
+    params: {}
+- name: items_returns
+  endpoint:
+    path: /api/v1/items/returns
+    method: GET
+    data_selector: returns
+    params:
+      issued_date_from: ''
+      issued_date_to: ''
+      p_receipt_date_from: ''
+      p_receipt_date_to: ''
+      return_type: ''
+      return_status: ''
+      page: 1
+      page_size: 500
+- name: batches
+  endpoint:
+    path: /api/sandbox/batches
+    method: POST
+    data_selector: order_statuses
+    params: {}
+- name: po_notifications
+  endpoint:
+    path: /api/v1/po_notifications
+    method: POST
+    data_selector: response_post_po_notifications
+    params: {}
+- name: batches
+  endpoint:
+    path: /api/v1/batches
+    method: POST
+- name: rmas
+  endpoint:
+    path: /api/v1/rmas
+    method: GET
+- name: rmas_v2
+  endpoint:
+    path: /api/v2/rmas
+    method: GET
+- name: orders
+  endpoint:
+    path: /api/v1/orders
+    method: GET
+- name: items
+  endpoint:
+    path: /api/v1/items
+    method: GET
+- name: documents
+  endpoint:
+    path: /api/v1/documents
+    method: GET
+- name: po_receipts
+  endpoint:
+    path: /api/v1/po_receipts
+    method: GET
+- name: po_notifications
+  endpoint:
+    path: /api/v1/po_notifications
+    method: POST
+- name: items
+  endpoint:
+    path: /api/v1/items
+    method: GET
+    data_selector: items
+    params: {}
+- name: cancel_order
+  endpoint:
+    path: /api/v1/orders/cancel
+    method: PUT
+    data_selector: response_put_orders
+    params: {}
+- name: rmas
+  endpoint:
+    path: /api/v2/rmas
+    method: GET
+    data_selector: rmas
+    params:
+      page: 1
+      page_size: 50
+- name: rma
+  endpoint:
+    path: /api/v1/rmas
+    method: POST
+    data_selector: error_code
+    params: {}
+- name: po_notifications
+  endpoint:
+    path: /api/v1/po_notifications
+    method: PUT
+    data_selector: ''
+    params: {}
+- name: orders
+  endpoint:
+    path: /api/v1/orders
+    method: GET
+    params:
+      page: 1
+      page_size: 100
+      extended_date: false
+- name: orders
+  endpoint:
+    path: /api/v1/orders
+    method: GET
+    data_selector: orders
+    params: {}
+- name: documents
+  endpoint:
+    path: /api/v1/documents
+    method: GET
+    data_selector: documents
+    params:
+      document_type: ''
+      reference1: ''
+      reference2: ''
+      fields: ''
+notes:
+- API requires client credentials setup for OAuth2.
+- Rate limits may apply based on usage.
+- DCL RESTful API works only with SSL.
+- To avoid 429 error, try to submit multiple orders with a single POST api/v1/batches
+  call.
+- Account number is required with a max length of 10
+- Order number is required with a max length of 25
+- Uses OAuth2 with refresh token â€” requires setup of connected app in api
+errors:
+- '401 Unauthorized: Check your credentials.'
+- '429 Too Many Requests: Rate limit exceeded.'
+- Zero if no errors
+- '400: Bad Request'
+- '401: Unauthorized'
+- '429: Too Many Requests'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OAuth2
+  - Authorization Code
+client:
+  base_url: https://your-instance.api-name.com
+  headers:
+    Accept: application/json
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  paginator:
+    type: cursor
+    page_size_param: pageSize
+    default_page_size: 200
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+source_metadata: null

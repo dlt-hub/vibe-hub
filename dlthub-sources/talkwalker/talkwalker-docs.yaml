@@ -1,0 +1,270 @@
+resources:
+- name: create_stream
+  endpoint:
+    path: /api/v3/stream/s/{stream_id}
+    method: PUT
+- name: stream_results
+  endpoint:
+    path: /api/v3/stream/s/{stream_id}/results
+    method: GET
+- name: detect_images
+  endpoint:
+    path: /api/v2/detect/images/<type>
+    method: GET
+    data_selector: result_processing.match
+    params: {}
+- name: global_index_summary
+  endpoint:
+    path: /global/index/summary
+    method: GET
+    data_selector: results
+    params: {}
+- name: talkwalker_project_summary
+  endpoint:
+    path: /talkwalker/project/summary
+    method: GET
+    data_selector: results
+    params: {}
+- name: projects
+  endpoint:
+    path: /api/v1/search/info
+    method: GET
+    params: {}
+- name: topics
+  endpoint:
+    path: /api/v2/talkwalker/p/a2ce1ade-a513-413f-868c-fafc25ba9a23/resources
+    method: GET
+    params:
+      type: search
+- name: documents
+  endpoint:
+    path: /api/v1/search/p/<project_id>/results
+    method: GET
+    params:
+      topic: <topic_id>
+- name: search_info
+  endpoint:
+    path: /api/v1/search/info
+    method: GET
+    params: {}
+- name: resources
+  endpoint:
+    path: /api/v2/talkwalker/p/<project_id>/resources
+    method: GET
+    params:
+      type: search,filter
+- name: search_results
+  endpoint:
+    path: /api/v1/search/results
+    method: GET
+    data_selector: result_content.data
+- name: stream
+  endpoint:
+    path: /api/v3/stream/s/<stream_id>
+    method: PUT
+    data_selector: rules
+    params: {}
+- name: stream_results
+  endpoint:
+    path: /api/v3/stream/s/<stream_id>/results
+    method: GET
+    data_selector: data
+    params: {}
+- name: collector
+  endpoint:
+    path: /api/v3/stream/c/<collector_id>
+    method: PUT
+    data_selector: collector_query
+    params: {}
+- name: projects
+  endpoint:
+    path: /projects
+    method: GET
+- name: documents
+  endpoint:
+    path: /documents
+    method: GET
+- name: reports
+  endpoint:
+    path: /v1/reports
+    method: GET
+    data_selector: data
+    params: {}
+- name: stream_results
+  endpoint:
+    path: /api/v3/stream/c/<collector_id>/results
+    method: GET
+    data_selector: data
+- name: export_task
+  endpoint:
+    path: /api/v3/stream/p/<project_id>/export
+    method: POST
+    data_selector: data
+- name: create_collector
+  endpoint:
+    path: /api/v3/stream/c/<collector_id>
+    method: PUT
+    data_selector: data
+- name: get_resources
+  endpoint:
+    path: /api/v2/talkwalker/p/<project_id>/resources
+    method: GET
+    data_selector: result_resources
+- name: resources
+  endpoint:
+    path: /p/<project_id>/resources
+    method: GET
+    params:
+      access_token: <access_token>
+- name: views
+  endpoint:
+    path: /p/<project_id>/views
+    method: GET
+    params:
+      access_token: <access_token>
+- name: tags
+  endpoint:
+    path: /p/<project_id>/tags
+    method: GET
+    params:
+      access_token: <access_token>
+- name: data_retrieval_settings
+  endpoint:
+    path: /data/retrieval/settings
+    method: GET
+- name: custom_tags
+  endpoint:
+    path: /custom/tags
+    method: GET
+- name: views
+  endpoint:
+    path: /views
+    method: GET
+- name: custom_metrics
+  endpoint:
+    path: /custom/metrics
+    method: GET
+- name: add_custom_metrics
+  endpoint:
+    path: /custom/metrics
+    method: POST
+- name: update_custom_metrics
+  endpoint:
+    path: /custom/metrics
+    method: PUT
+- name: delete_specific_custom_metric
+  endpoint:
+    path: /custom/metrics/{id}
+    method: DELETE
+- name: delete_custom_metrics
+  endpoint:
+    path: /custom/metrics
+    method: DELETE
+- name: monitor_project
+  endpoint:
+    path: /api/v3/stream/p/<project_id>/results
+    method: GET
+    params:
+      access_token: <access_token>
+- name: create_update_collector
+  endpoint:
+    path: /api/v3/stream/c/<collector_id>
+    method: PUT
+    data_selector: collector_query
+    params:
+      access_token: <access_token>
+- name: country
+  endpoint:
+    path: /country-options
+    method: GET
+    data_selector: countries
+- name: occupations
+  endpoint:
+    path: /occupations
+    method: GET
+    data_selector: occupations
+    params: {}
+- name: interests
+  endpoint:
+    path: /interests
+    method: GET
+    data_selector: interests
+    params: {}
+- name: devices
+  endpoint:
+    path: /devices
+    method: GET
+    data_selector: devices
+    params: {}
+- name: results
+  endpoint:
+    path: /api/v1/search/p/<project_id>/results
+    method: GET
+    data_selector: data
+    params: {}
+notes:
+- 'The demo token allows only for predefined queries: `cats`, `dogs`, and `cats AND
+  dogs`.'
+- Accessing the Talkwalker API with the demo token will not return social media results,
+  only results from blogs, forums, and news.
+- This endpoint is limited to 300 calls per minute.
+- By default, it sorts the results by engagement descending, like in Talkwalker UI.
+- Credits correspond to the number of calls that were made plus the number of results
+  that are exported using the API.
+- Monthly new results in Talkwalker projects are reset on the first of a new month
+  at 0:00 UTC.
+- To respect Facebook platform terms and policies, content are not exportable via
+  APIs or any automated mechanism.
+- Metrics on aggregated data can be exported via the histogram API.
+- Exported fields for X (Twitter) data are limited to the tweet ID, author ID, and
+  sentiment score deducted by Talkwalker.
+- X (Twitter) restricts the number of exported tweets to 1.5M docs per month and per
+  account.
+- Due to copyright policies, we are not allowed to export the full content from online
+  news articles and TV Eyes documents.
+- The content is truncated, but matching keywords from the topic are highlighted in
+  the field `content_snippet`.
+- Once the collector is created and active, all new articles and mentions will be
+  pushed to the collector.
+- To restart from the last known article in the collector, store the offset ID and
+  use it in the parameter resume_offset.
+- To read a collector as a stream, set the parameter end_behaviour to the value wait.
+- To read a collector as a queue, set the parameter end_behaviour to the value stop.
+- Ensure to set up your API keys in the Talkwalker Dashboard
+- Collector can be used to collect both past and live data.
+- Using an empty collector does not collect live data.
+- This endpoint is limited to 20 calls per minute, the result should be stored.
+- This endpoint is limited to 120 calls per minute.
+- The maximum number of results per page cannot exceed 500.
+- The maximum offset value cannot exceed 10,000.
+errors:
+- 'Rate Limit: This endpoint is limited to 10 calls per minute.'
+- 240 calls/min outside a project for Search API
+- 60 calls/min inside a project for Search API
+- 60 calls/min outside a project for Histogram API
+- 30 calls/min inside a project for Histogram API
+- 120 calls/min for Document import API
+- '401 Unauthorized: Invalid client credentials'
+- '403 Forbidden: Access denied for the requested resource'
+- 'result_limit_reached: The export task exceeds the result limit.'
+auth_info:
+  mentioned_objects:
+  - Token
+  - Client
+client:
+  base_url: https://api.talkwalker.com
+  auth:
+    type: apikey
+    location: query
+    header_name: access_token
+    flow: refresh_token
+    token_url: https://api.talkwalker.com/oauth/token
+    client_id: '{{ dlt.secrets[''talkwalker_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''talkwalker_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''talkwalker_refresh_token''] }}'
+  headers:
+    Content-Type: application/json; charset=UTF-8
+    Accept-Encoding: gzip
+  paginator:
+    default_page_size: 5120
+source_metadata: null

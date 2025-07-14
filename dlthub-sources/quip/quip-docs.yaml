@@ -1,0 +1,106 @@
+resources:
+- name: Users
+  endpoint:
+    path: /2/Users
+    method: GET
+    data_selector: Resources
+    params:
+      count: 10
+      startIndex: 1
+- name: Groups
+  endpoint:
+    path: /2/Groups
+    method: GET
+    data_selector: Resources
+    params:
+      count: 10
+      startIndex: 1
+- name: edit_document
+  endpoint:
+    path: /1/threads/edit-document
+    method: POST
+    data_selector: string
+- name: edit_document
+  endpoint:
+    path: /1/threads/edit-document
+    method: POST
+    data_selector: null
+    params: {}
+- name: edit_document
+  endpoint:
+    path: /threads/edit-document
+    method: POST
+    data_selector: string
+    params: {}
+- name: add_members
+  endpoint:
+    path: /threads/add-members
+    method: POST
+    data_selector: string
+    params: {}
+- name: copy_document
+  endpoint:
+    path: /threads/copy-document
+    method: POST
+    data_selector: string
+    params: {}
+- name: get_current_user_threads
+  endpoint:
+    path: /users/current/threads
+    method: GET
+    data_selector: string
+    params:
+      limit: 50
+- name: threads
+  endpoint:
+    path: /2/threads
+    method: GET
+- name: users
+  endpoint:
+    path: /2/admin/users
+    method: GET
+- name: folders
+  endpoint:
+    path: /2/folders
+    method: GET
+- name: events
+  endpoint:
+    path: /2/events
+    method: GET
+notes:
+- Authorization tokens are only available for Quip Enterprise customers.
+- Rate limit is 600 requests per minute.
+- The API requires a Bearer token for authentication.
+- Tokens expire every 30 days. Use the Token Endpoint to refresh your tokens before
+  the 30-day expiration.
+- You may use Quip only if you are 13 years or older and are not barred from using
+  Quip under applicable law.
+- API calls are subject to rate limits based on the number of requests per minute
+  per user.
+- Tokens expire every 30 days. Use the token endpoint to refresh tokens.
+errors:
+- '409 Conflict: Email already associated with an active user.'
+- '404 Not Found: Group or user not found.'
+- '400 Bad Request: Invalid request parameters.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400 Bad Request: Check request parameters and body content'
+auth_info:
+  mentioned_objects:
+  - API key
+  - access token
+  - OauthToken
+  - AuthProvider
+client:
+  base_url: https://platform.quip.com
+  auth:
+    location: header
+    header_name: Authorization
+    type: oauth2
+    flow: authorizationCode
+    token_url: https://platform.quip.com/1/oauth/access_token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+  headers:
+    Content-Type: application/json
+    Accept: application/json
+source_metadata: null

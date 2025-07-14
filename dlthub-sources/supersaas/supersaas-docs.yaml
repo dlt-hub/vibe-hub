@@ -1,0 +1,193 @@
+resources:
+- name: widget
+  endpoint:
+    path: /schedule/demo/Therapist
+    method: GET
+    data_selector: widget
+    params: {}
+- name: users
+  endpoint:
+    path: /api/users
+    method: POST
+    data_selector: user
+    params: {}
+- name: user_details
+  endpoint:
+    path: /api/users/{id}
+    method: GET
+    data_selector: user
+    params: {}
+- name: ipn
+  endpoint:
+    path: /api/ipn
+    method: POST
+    data_selector: response
+    params: {}
+- name: single_appointment
+  endpoint:
+    path: /api/bookings/{id}.jsonxml
+    method: GET
+    data_selector: booking
+    params: {}
+- name: multiple_appointments
+  endpoint:
+    path: /api/bookings.json
+    method: GET
+    data_selector: appointments
+    params:
+      limit: X
+- name: update_appointment
+  endpoint:
+    path: /api/bookings/{id}.json
+    method: PUT
+    data_selector: update_response
+    params: {}
+- name: delete_appointment
+  endpoint:
+    path: /api/bookings/{id}.json
+    method: DELETE
+    data_selector: delete_response
+    params: {}
+- name: recent_changes
+  endpoint:
+    path: /api/changes/
+    method: GET
+    data_selector: bookings
+- name: list_appointments
+  endpoint:
+    path: /api/range/
+    method: GET
+    data_selector: bookings
+- name: agenda
+  endpoint:
+    path: /api/agenda/
+    method: GET
+    data_selector: bookings
+- name: availability
+  endpoint:
+    path: /api/free/
+    method: GET
+    data_selector: slots
+- name: appointments
+  endpoint:
+    path: /api/bookings
+    method: POST
+    data_selector: booking
+- name: webhooks
+  endpoint:
+    path: /api/hooks
+    method: POST
+    data_selector: null
+    params: {}
+- name: multiple_forms
+  endpoint:
+    path: /
+    method: GET
+    data_selector: ''
+    params:
+      form_id: <form_id>
+      account: <account_name>
+      api_key: '*your_api_key*'
+- name: single_form
+  endpoint:
+    path: /
+    method: GET
+    data_selector: ''
+    params:
+      id: <id>
+      account: <account_name>
+      api_key: '*your_api_key*'
+- name: schedules
+  endpoint:
+    path: /api/schedules
+    method: GET
+    params:
+      account: accountname
+      api_key: your_api_key
+- name: super_forms
+  endpoint:
+    path: /api/super_forms
+    method: GET
+    params:
+      account: accountname
+      api_key: your_api_key
+- name: resources
+  endpoint:
+    path: /api/resources
+    method: GET
+    params:
+      schedule_id: schedule_id
+- name: field_list
+  endpoint:
+    path: /api/field_list
+    method: GET
+    params:
+      schedule_id: schedule_id
+- name: groups
+  endpoint:
+    path: /api/groups
+    method: GET
+    params:
+      account: accountname
+      api_key: your_api_key
+- name: promotions
+  endpoint:
+    path: /promotions.json
+    method: GET
+    data_selector: promotions
+    params:
+      account_name: <account_name>
+      api_key: <your_api_key>
+- name: duplicate_promotion
+  endpoint:
+    path: /promotions.json
+    method: POST
+    data_selector: ''
+    params:
+      id: <promotion_code>
+      template_code: <template_code>
+      account_name: <account_name>
+      api_key: <your_api_key>
+- name: webhook
+  endpoint:
+    path: /api/1.0/messages/send-raw.json
+    method: POST
+    data_selector: ''
+    params: {}
+notes:
+- The API accepts data as URL parameters, JSON, or XML.
+- To avoid syncing issues, implement a continuous sync from your server.
+- The product supports standard assistive technologies and is therefore not subject
+  to the Closed Functionality criteria described in this Chapter.
+- The product does not offer two-way voice communication and is therefore not subject
+  to the requirements of this section.
+- The application does not include video content.
+- The product is a web software application and is not subject to the requirements
+  of this section.
+- The product does not include non-web documents and is therefore not subject to the
+  requirements of this section.
+- To be able to use the API you would first need to create an API key on the Account
+  Info page inside your account to be able to authenticate.
+- Webhook feature is only available to subscribers.
+- Webhook messages will be retried upon failure.
+- Bookings only get a status if payment or approval settings are enabled for a schedule,
+  so it’s possible for a schedule to have both bookings with and without a status
+  code if the setting was recently changed.
+- Custom webhooks are only available to SuperSaaS subscribers.
+- The free version has a limit of 50 appointments and advertisements are displayed
+  on the calendar page.
+errors:
+- '422 Unprocessable Entity: Check for invalid email address or duplicate key.'
+- '404 Not Found: User ID does not exist.'
+- '410 Gone: Webhook will be removed immediately if this status is received.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://www.supersaas.com/api
+  headers:
+    Accept: application/json
+  auth:
+    type: apikey
+    location: header
+    header_name: api_key
+source_metadata: null

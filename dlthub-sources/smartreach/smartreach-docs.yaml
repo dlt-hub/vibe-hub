@@ -1,0 +1,45 @@
+# Source Metadata
+source_name: smartreach
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.smartreach.io
+  auth:
+    type: apikey
+    api_key: "{{ dlt.secrets['api_key'] }}"
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: campaigns
+    endpoint:
+      path: /campaigns
+      method: GET
+      data_selector: campaigns
+
+  - name: prospects
+    endpoint:
+      path: /prospects
+      method: GET
+      data_selector: prospects
+      paginator:
+        type: DefaultPaginator
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - APIKey
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Campaigns support full sync but not incremental loading.
+  - Prospects support full sync and use default pagination.
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check if API Key is correct or has sufficient permissions.

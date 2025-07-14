@@ -1,0 +1,71 @@
+# Source Metadata
+source_name: Paperform
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://paperform.co/api/v1
+  auth:
+    type: apikey
+    auth_key: "{{ dlt.secrets['api_key'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+
+# Resources (per endpoint/object)
+resources:
+  - name: forms
+    endpoint:
+      path: /forms
+      method: GET
+      data_selector: forms
+
+  - name: form_fields
+    endpoint:
+      path: /forms/{form_id}/fields
+      method: GET
+      data_selector: fields
+
+  - name: submissions
+    endpoint:
+      path: /submissions
+      method: GET
+      data_selector: submissions
+
+  - name: partial_submissions
+    endpoint:
+      path: /partial_submissions
+      method: GET
+      data_selector: partial_submissions
+
+  - name: coupons
+    endpoint:
+      path: /coupons
+      method: GET
+      data_selector: coupons
+
+  - name: products
+    endpoint:
+      path: /products
+      method: GET
+      data_selector: products
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - API Key
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Pagination is handled with DefaultPaginator
+  - No incremental loading is supported for any streams
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Check API key validity
+  - 404 Not Found: Verify endpoint path and resource existence
+  - 429 Too Many Requests: Reduce request frequency

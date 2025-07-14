@@ -1,0 +1,59 @@
+resources:
+- name: ronin_mainnet
+  endpoint:
+    path: /rpc
+    method: GET
+- name: saigon_testnet
+  endpoint:
+    path: /rpc
+    method: GET
+- name: validator_node
+  endpoint:
+    path: /run/validator
+    method: POST
+- name: rpc_node
+  endpoint:
+    path: /run/rpc
+    method: POST
+- name: staking_rewards
+  endpoint:
+    path: /rewards
+    method: GET
+    data_selector: rewards
+    params: {}
+notes:
+- Setting the --gasprice flag explicitly is required to work around the issue with
+  the provider used by Hardhat ignoring the gas price set in hardhat.config.js.
+- There is a difference between unlocked supply and circulating supply.
+- Circulating supply increases in the event that tokens are distributed from the original
+  allocations or staking contracts as rewards to users and other parties.
+- These public RPC endpoints are rate limited and should not be used in a production
+  environment.
+- For SLA-based RPC access, please check out our list of Node providers.
+- A validator must not publish two distinct votes for the same height.
+- Validators can schedule temporary maintenance, during which they don't get slashed
+  for unavailability.
+errors:
+- 'Double-sign validator: A serious error when a validator signs more than one block
+  with the same height.'
+- 'Unavailability validator: If a validator misses more than 100 blocks in a day,
+  they don''t earn commission and the staking reward on that day.'
+- 'Unavailability validator: If a validator misses more than 500 blocks in a day,
+  the validator is slashed 1,000 of self-delegated RON.'
+auth_info:
+  mentioned_objects: []
+client:
+  networks:
+    ronin:
+      chainId: 2020
+      url: https://api.roninchain.com/rpc
+      accounts:
+      - 0xYourPrivateKey
+    saigon:
+      chainId: 2021
+      url: https://saigon-testnet.roninchain.com/rpc
+      accounts:
+      - 0xYourPrivateKey
+  solidity: 0.8.28
+  base_url: https://api.roninchain.com/rpc
+source_metadata: null

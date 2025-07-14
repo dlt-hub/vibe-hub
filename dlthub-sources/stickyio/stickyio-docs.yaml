@@ -1,0 +1,301 @@
+resources:
+- name: fulfillment_profile
+  endpoint:
+    path: /settings/providers
+    method: POST
+- name: gateway
+  endpoint:
+    path: /Payments/Gateways
+    method: POST
+    data_selector: gateway_parameters
+    params: {}
+- name: new_order
+  endpoint:
+    path: /new_order
+    method: POST
+    data_selector: response
+    params: {}
+- name: gateway_parameters
+  endpoint:
+    path: /payments/gateways
+    method: POST
+    data_selector: gateway
+    params: {}
+- name: fulfillment_profile
+  endpoint:
+    path: /settings/providers
+    method: POST
+    params:
+      type: Fulfillment
+      provider: Rapid
+- name: gateway_parameters
+  endpoint:
+    path: /payments/gateways
+    method: POST
+    data_selector: gateway
+    params: {}
+- name: gateway_profile
+  endpoint:
+    params:
+      alias: Create a name for this profile.
+      seller_id: This uniquely identifies the merchant.
+      access_key: You get this identifier from Amazon Seller Central.
+      secret_key: You get this identifier from Amazon Seller Central.
+      currency: Amazon Pay currently supports USD, EUR, GBP, and CAD currencies.
+      test_mode: Set to YES if you would like to use this gateway in test mode.
+- name: headless_checkout
+  endpoint:
+    path: /checkout
+    method: GET
+- name: headless_consumer_portal
+  endpoint:
+    path: /consumer_portal
+    method: GET
+- name: subscriptions
+  endpoint:
+    path: /subscriptions
+    method: GET
+- name: subscription_actions
+  endpoint:
+    path: /subscription/actions
+    method: POST
+- name: gateway_configuration
+  endpoint:
+    path: /merchants/login.php
+    method: POST
+    data_selector: response
+    params: {}
+- name: new_order
+  endpoint:
+    path: /path/to/new_order
+    method: POST
+    data_selector: response
+    params:
+      three_d_redirect_url: three_d_redirect_url
+      radar_session: radar_session
+- name: order
+  endpoint:
+    path: /orders
+    method: POST
+- name: prospect
+  endpoint:
+    path: /prospects
+    method: POST
+- name: chargeback
+  endpoint:
+    path: /chargeback
+    method: POST
+- name: order
+  endpoint:
+    path: /neworder
+    method: POST
+- name: auto_responder
+  endpoint:
+    path: /api/auto_responder
+    method: POST
+- name: campaign
+  endpoint:
+    path: /campaigns
+    method: GET
+- name: gateway
+  endpoint:
+    path: /payments/gateways
+    method: POST
+- name: merchant_account_details
+  endpoint:
+    params:
+      descriptor: MID Descriptor
+      customer_service_number: Customer service number assigned to the MID
+- name: limits_and_fees
+  endpoint:
+    params:
+      global_monthly_cap: Sales amount allowed monthly on this MID
+- name: Single Sign On
+  endpoint:
+    path: /sso/0
+    method: POST
+- name: List Ids
+  endpoint:
+    params: {}
+- name: gateway_parameters
+  endpoint:
+    path: /Payments/Gateways
+    method: POST
+- name: merchant_account
+  endpoint:
+    path: /api/merchant_account
+    method: POST
+    data_selector: account
+    params:
+      descriptor: MID Descriptor
+      customer_service_number: Customer Service Number
+      global_monthly_cap: Global Monthly Cap
+- name: gateway_parameters
+  endpoint:
+    path: /payments/gateways
+    method: POST
+    data_selector: gateway_parameters
+- name: campaign
+  endpoint:
+    params:
+      Prospect Id: List Id provided by your auto responder
+      Customer Id: List Id provided by your auto responder
+- name: Provider Profile
+  endpoint:
+    params:
+      Alias: internal purposes only
+      Access Token: provided by Access Development
+      Organization Customer ID: provided by Access Development
+      Program Customer ID: campaign Id/configuration inside Access Development
+      Test Mode: 'YES'
+- name: gateway_parameters
+  endpoint:
+    path: /payments/gateways
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: payment_token
+  endpoint:
+    path: /tokenize
+    method: POST
+    data_selector: token
+    params: {}
+- name: customer_requests
+  endpoint:
+    path: /api/customer_requests
+    method: POST
+    data_selector: data
+    params: {}
+notes:
+- The API Key and API Secret expire within ShipStation every 6 months or so, which
+  will cause issues with orders posting to fulfillment.
+- Using this new integration for new orders in new campaigns will be fine.
+- Currently switching a campaign from a sticky Braintree provider to a Braintree Payments
+  provider is not supported if you are using Apple Pay, Google Pay or PayPal for orders
+  within Braintree Provider.
+- Webhooks trigger on bulk operations affecting multiple variants.
+- You must configure your product SKUs with the selected Fulfillment Center before
+  your orders will successfully post to fulfillment.
+- When reposting orders to ShipBob, a new shipment will be created so you will need
+  to go into your terminal and cancel the initial fulfillment post.
+- Tracking numbers are not fetched, they are received via webhooks. You will need
+  to configure the Webhook for tracking inside your ShipBob terminal.
+- Alias is for internal identification of the gateway account.
+- Test Mode can be set to YES for testing purposes.
+- Rocket Gateway Integration uses XML and is currently not compatible with Flex Charge.
+- 3D Secure is dynamic to each transaction and the processing bank determines if 3D
+  Secure is needed on each transaction.
+- If you have additional products purchased with your order we will append the product
+  id, name and price for each of these products to your URL.
+- For digitally delivered goods, the Digital URL and any applicable Digital Usernames
+  and Digital Passwords will be appended similarly.
+- Specify if you would like to delay the system from pushing the orders to your fulfillment
+  center for an 'X' amount of hours.
+- The campaign must be configured to 'Include Returns'.
+- Authorize.net will provide you with the API Login.
+- Authorize.net will provide you with the Trans Key.
+- Authorize.net currently supports USD, CAD, GBP, and EUR currencies.
+- If a subscription rebill attempt fails for one of the reasons listed, the subscription
+  will not proceed through decline salvage.
+- Company Id, Password, Campaign Id, and Username will be provided by Tungsten Revenue.
+- Pre-Auth Filter service applies to initial orders only.
+- Subscription rebill attempts that fail for certain reasons will be placed on immediate
+  hold.
+- 0.00 initial transactions are not supported when using Stripe gateway.
+- 3D Secure 2.0 is automatically enabled with Stripe Connect.
+- 3Dredirect URL is essential to be submitted with the New Order request.
+- There are circumstances where the bank will require 3DS on the rebill transaction.
+- Classic Automations are supported.
+- If you see the message 'This order was placed by unlinked API user', it just means
+  that the user has not been updated to include the newly added user data fields.
+- This is critical and must be completed before you launch
+- Clients MUST turn on PayPal Vaulting on their PayPal Mids
+- if you use Wallet Info AND there is no Customer data for email, name and address
+  in the new_order_API call you make to us for an order AND PayPal does not return
+  any wallet data for the order THEN sticky will populate the missing fields with
+  dummy data.
+- if you use either delayed settlement feature below it is IMPERATIVE that you do
+  not change the gateway if your Order status is pending.
+- Orders that have passed the Kount fraud check will be sent to your payment gateway.
+- Orders that have failed the Kount fraud check will not be sent to your payment gateway.
+- Payment tokens generated using this method are valid for 24 hours after creation.
+- If a token is not used to place an order within 24 hours, the token will expire.
+- Tokens are one-time use and are removed after the first successful order is placed
+  using the token.
+- Using a token after its expiration or passing a previously used token in a second
+  new order request will result in an error response.
+- If you are working with 3DS the checkout page will need to be coded to handle the
+  3DS redirect.
+- 'Currently, the following alternative payment methods are not compatible with the
+  sticky.io iFrame: Apple Pay, PayPal, Google Pay.'
+- This is a standard auto responder integration, so only customer and prospect information
+  will be sent such as First Name, Last Name, Email and Phone number.
+- Do NOT add either the BT* or PAYPAL* prefix to the Descriptor you add in the profile.
+  The prefixes are automatically inserted by sticky.io.
+- A whitelist of IP addresses from the call center must be provided to sticky.io.
+- A successful response will return a success of 1 and code of 200.
+- Please note that this is a standard auto responder integration, so only customer
+  and prospect information will be sent to ActiveCampaign such as First Name, Last
+  Name, Email and Phone number.
+- NMI's integration with Apple Pay and Google Pay are straight-sale only and do not
+  support subscription billing.
+- Username and Password are provided by PayKings.
+- Enable Customer Vault must be set on the gateway's end as well.
+- Alias helps identify a specific gateway account among several in your CRM.
+- Enable Delayed Capture allows payment authorization to occur on day 1 and capture
+  in a specified number of days.
+- Always check the type field first to determine how to handle the notification
+- For created and updated events, the structure stays the same, which makes processing
+  easier
+- Store the id values - they're essential for linking notifications to your local
+  data
+- Pay attention to timestamps for accurate record-keeping
+- Pinpoint's technology uses a pixel post to gather device and consumer information
+  on the pre-sale page.
+- The pixel HTML listed below is provided with our web form technology, and it does
+  not need any modification.
+- Checkout.com is deprecating their HUB Merchant accounts by 1/31/24. Contact checkout.com
+  to change your existing HUB mids to NAS mids before this date.
+- A Yotpo account must be created and there are important steps that must be taken
+  to get set up with Yotpo before setting up an integration with sticky.io.
+- Certain circumstances may require 3DS on the rebill transaction.
+- Select 'Chargeback' as the type when adding a new provider profile.
+- Merchants must provide customers with emailed receipts after every billing.
+- Merchants must provide all customers with an electronic way to cancel their subscriptions.
+- Disclosures must be made at the point of payment to inform customers about the terms
+  of the trial or subscription.
+- Merchants using subscription billing models with periods between billing of six
+  months or longer will need to send subscription reminders to consumers.
+- Tokens are one-time use and are removed after the first successful order.
+- When creating a new list in Klaviyo, the list defaults to double opt in.
+- Creating API users is how you whitelist the types of API calls that can be made
+  using a secure set of credentials.
+- It's encouraged that this part of the platform is restricted to Administrators and
+  Technical Users (developers) only.
+errors:
+- '250: Pick up card'
+- '251: Lost card'
+- '252: Stolen card'
+- '253: Fraudulent card'
+- Any failures will return a success of 0, the code for the failure that occurred,
+  and a message with a description of why the request has failed.
+- 'Token expired or already used: Check if the token is still valid.'
+auth_info:
+  mentioned_objects: []
+client:
+  auth:
+    type: apikey
+    username: provided by SolvePath
+    password: provided by SolvePath
+    client_id: PayPal will provide you with the Client ID.
+    client_secret: PayPal will provide you with the Client Secret.
+    location: header
+    header_name: Authorization
+  base_url: https://demoaws.sticky.io
+  headers:
+    Accept: application/json
+    API-Key: provided by the email provider
+    Content-type: application/json
+    Content-Type: application/json
+  paginator: {}
+source_metadata: null

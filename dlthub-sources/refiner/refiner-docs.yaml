@@ -1,0 +1,87 @@
+resources:
+- name: reporting
+  endpoint:
+    path: /reporting
+    method: GET
+    data_selector: data
+- name: account
+  endpoint:
+    path: /account
+    method: GET
+    data_selector: subscription
+- name: contacts
+  endpoint:
+    path: /contacts
+    method: GET
+    data_selector: ''
+- name: forms
+  endpoint:
+    path: /forms
+    method: GET
+    data_selector: ''
+- name: segments
+  endpoint:
+    path: /segments
+    method: GET
+    data_selector: ''
+- name: Contacts
+  endpoint:
+    path: /api/v1/contacts
+    method: POST
+    data_selector: data
+    params: {}
+- name: Surveys
+  endpoint:
+    path: /api/v1/surveys
+    method: GET
+    data_selector: data
+    params: {}
+- name: account_information
+  endpoint:
+    path: /account
+    method: GET
+- name: responses
+  endpoint:
+    path: /responses
+    method: GET
+    params:
+      with_attributes: true
+- name: survey_response
+  endpoint:
+    path: /api/survey_responses
+    method: POST
+    data_selector: data
+notes:
+- The Service does not include any long-term storage and backup of User Data.
+- User Data is kept by REFINER for a period of 180 calendar days maximum by default.
+- The API allows tagging survey responses using REST.
+- Refiner SAS acts as a Sub-Processor for your data under the GDPR framework.
+errors:
+- '400: Bad Request -- Your request is invalid.'
+- '401: Unauthorized -- Your API key is wrong.'
+- '403: Forbidden -- The kitten requested is hidden for administrators only.'
+- '404: Not Found -- The specified kitten could not be found.'
+- '429: Too Many Requests -- You''re requesting too many kittens! Slow down!'
+- '500: Internal Server Error -- We had a problem with our server. Try again later.'
+- '503: Service Unavailable -- We''re temporarily offline for maintenance. Please
+  try again later.'
+- '400 Bad Request: Ensure all required fields are included.'
+- '401 Unauthorized: Check your authentication credentials.'
+- '429 Too Many Requests: Rate limit exceeded.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://refiner.io
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+    flow: refresh_token
+    token_url: https://api.refiner.io/oauth/token
+    client_id: '{{ dlt.secrets[''refiner_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''refiner_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''refiner_refresh_token''] }}'
+  headers:
+    Accept: application/json
+    Email: contact@refiner.io
+source_metadata: null

@@ -1,0 +1,199 @@
+resources:
+- name: cameras
+  endpoint:
+    path: /users/me/cameras
+    method: GET
+    data_selector: cameras
+- name: record_video
+  endpoint:
+    path: /users/{user_id}/cameras/{camera_id}/content/{timestamp}.mp4
+    method: PUT
+    data_selector: upload
+- name: record_image
+  endpoint:
+    path: /users/{user_id}/cameras/{camera_id}/content/{timestamp}.jpeg
+    method: PUT
+    data_selector: upload
+- name: register_callback
+  endpoint:
+    path: /users/me/hooks
+    method: POST
+    data_selector: hook
+- name: accounts
+  endpoint:
+    path: /accounts/
+    method: GET
+    data_selector: user_id
+    params:
+      user: test@example.com
+- name: user_accounts
+  endpoint:
+    path: /users/:user/accounts
+    method: GET
+    data_selector: user_id
+    params: {}
+- name: guests
+  endpoint:
+    path: /users/:user/guests
+    method: GET
+    data_selector: guest
+    params: {}
+- name: create_guest
+  endpoint:
+    path: /users/:user/guests
+    method: PUT
+    data_selector: guest
+    params: {}
+- name: delete_guest
+  endpoint:
+    path: /users/:user/guests/:guest_email
+    method: DELETE
+    data_selector: 204 No Content
+    params: {}
+- name: hosts
+  endpoint:
+    path: /users/:user/hosts
+    method: GET
+    data_selector: guest
+    params: {}
+- name: pinned_queries
+  endpoint:
+    path: /users/me/queries/pinned
+    method: GET
+    data_selector: id
+    params: {}
+- name: create_pinned_query
+  endpoint:
+    path: /users/:user/queries/pinned
+    method: PUT
+    data_selector: id
+    params: {}
+- name: domains
+  endpoint:
+    path: /domains
+    method: PUT
+    data_selector: name
+    params: {}
+- name: sites
+  endpoint:
+    path: /sites
+    method: GET
+    data_selector: date_updated
+    params: {}
+- name: get_site
+  endpoint:
+    path: /sites/:site_id
+    method: GET
+    data_selector: server_name
+    params: {}
+- name: users_cameras
+  endpoint:
+    path: /users/me/cameras
+    method: GET
+- name: cameras_discovered
+  endpoint:
+    path: /api/cameras/discovered
+    method: GET
+- name: live_stream_session
+  endpoint:
+    path: /api/cameras/sessions
+    method: GET
+- name: cameras_labels
+  endpoint:
+    path: /api/cameras/labels
+    method: GET
+- name: faces_labels
+  endpoint:
+    path: /api/faces/labels
+    method: GET
+- name: hooks
+  endpoint:
+    path: /users/:user/hooks
+    method: POST
+- name: hook_responses
+  endpoint:
+    path: /users/:user/hooks/:hook/responses
+    method: GET
+- name: search_video
+  endpoint:
+    path: /search
+    method: GET
+- name: content
+  endpoint:
+    path: /content
+    method: POST
+- name: croppings
+  endpoint:
+    path: /api/content/croppings
+    method: POST
+    data_selector: croppings
+- name: jobs
+  endpoint:
+    path: /api/jobs/:job_id
+    method: GET
+    data_selector: job_id
+- name: camios
+  endpoint:
+    path: /api/users/me/camios
+    method: GET
+    data_selector: ''
+- name: annotations
+  endpoint:
+    path: /api/users/:upload_token/devices/:device_id/annotations
+    method: PUT
+    data_selector: ''
+- name: Get Settings
+  endpoint:
+    path: /settings
+    method: GET
+    data_selector: settings
+- name: Get Settings (Local Camio Box)
+  endpoint:
+    path: /box/settings
+    method: GET
+    data_selector: settings
+- name: Get a Profile
+  endpoint:
+    path: /users/:user/profile
+    method: GET
+    data_selector: profile
+- name: Event Counters
+  endpoint:
+    path: /data/counters/events
+    method: GET
+    data_selector: events
+- name: Incident Counters
+  endpoint:
+    path: /data/counters/incidents
+    method: GET
+    data_selector: incidents
+notes:
+- No Authorization HTTP Header needed for uploads using Upload Token.
+- Authorization token is required for accessing endpoints
+- Upload Token can be used for uploading content without OAuth
+- Uses OAuth2 for authentication.
+errors:
+- '401 Unauthorized: Ensure the OAuth token is valid.'
+- '403 Forbidden: Insufficient permissions or invalid token.'
+- 204 (No Content)
+- 404 Not Found
+- '401 Unauthorized: Recheck token'
+- '401 Unauthorized: Recheck OAuth token'
+- '204 No Content: Successful request without any content returned'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'EMAIL_ADDRESS_IN_USE: email is already in use with a Camio account. Please sign
+  in with Email.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+client:
+  base_url: https://camio.com/api
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+  headers:
+    Content-Type: application/json
+source_metadata: null
