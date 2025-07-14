@@ -11,16 +11,16 @@ from dlt.sources.rest_api import (
 def seven_shifts_source(access_token=dlt.secrets.value):
     config: RESTAPIConfig = {
         "client": {
-            "base_url": "https://your-instance.7shifts.com",
+            "base_url": "https://api.7shifts.com/v/",
             "auth": {
                 "type": "bearer",
                 "token": access_token,
             },
         },
         "resources": [
-            "/companies",
-            "/locations",
-            "/departments"
+            "time_off",
+            "time_punches",
+            "locations"
             ],
     }
 
@@ -50,18 +50,10 @@ def get_data() -> None:
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from seven_shifts’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- Companies: Retrieve information about companies.
-- Locations: Fetch data related to different locations.
-- Departments: Access details about departments.
-- Roles: Get data on various roles within the company.
-- Users: Retrieve user information.
-- Wages: Access wage information for employees.
-- Assignments: Fetch assignment details.
-- Location Assignments: Get assignment details specific to locations.
-- Department Assignments: Access assignments specific to departments.
-- Role Assignments: Retrieve role-specific assignment details.
-- Time Punches: Access records of time punches.
-- Shifts: Get data on shifts.
+- Time Management: Endpoints related to time off requests, time punches, and scheduling.
+- Location Management: Endpoints for listing and managing company locations.
+- User and Role Management: Endpoints to manage user roles, assignments, and contact information.
+- Company Data: Access to company-specific data like departments, employment records, and inactive reasons.
 
 You can combine these endpoints to build pipelines that extract structured content from 7shifts workspaces at scale — via REST APIs or webhook ingestion.
 
@@ -77,7 +69,7 @@ Before getting started, let's make sure Cursor is set up correctly:
 
 Now you're ready to get started! 
 
-### 1. ⚙️ **Execute these commands in a new Cursor shell.**
+1. ⚙️ **Execute these commands in a new Cursor shell.**
     
     Install dlt with duckdb support:
     ```shell
@@ -94,13 +86,13 @@ Now you're ready to get started!
     pip install -r requirements.txt
     ```
     
-### 2. 🤠 **Start vibe-coding**
+2. 🤠 **Start vibe-coding**
     
     Here’s a nice prompt for you to start: 
     
     ```prompt
     Please generate a REST API Source for 7shifts API, as specified in @seven_shifts-docs.yaml 
-    Start with 2 endpoints that look the most important and skip incremental loading for now. 
+    Start with endpoints "time_off" and "time_punches" and skip incremental loading for now. 
     Place the code in seven_shifts_pipeline.py and name the pipeline seven_shifts_pipeline. 
     If the file exists, use it as a starting point. 
     Do not add or modify any other files. 
@@ -109,14 +101,14 @@ Now you're ready to get started!
     ```
 
     
-### 3. 🔒 **Setup credentials** 
+3. 🔒 **Setup credentials** 
     
-    Authentication is required using an API key passed as a header. The header name is 'Authorization' and the key should be prefixed with 'Bearer '.
+    Authentication requires an API key and uses the Bearer token method. The key must be included in the header for all requests. The token is obtained via the OAuth 2.0 client credentials flow.
     
     To get appropriate API keys, please visit the original source at https://www.7shifts.com/.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
     
-### 4. 🏃‍♀️ **Run the pipeline in the Python terminal in Cursor**
+4. 🏃‍♀️ **Run the pipeline in the Python terminal in Cursor**
     
     ```shell
     python seven_shifts_pipeline.py
@@ -131,25 +123,25 @@ Now you're ready to get started!
     Load package 1749667187.541553 is LOADED and contains no failed jobs
     ```
     
-### 5. 📈 **See data**
+5. 📈 **See data**
     
     ```shell
     dlt pipeline seven_shifts_pipeline show --marimo
     ```
     
-### 6. 🐍 **Get your data in Python**
+6. 🐍 **Get your data in Python**
     
     ```python
     import dlt
 
    data = dlt.pipeline("seven_shifts_pipeline").dataset()
-   # get "/companies" table as Pandas frame
-   data."/companies".df().head()
+   # get time_off table as Pandas frame
+   data.time_off.df().head()
     ```
 
 ## Running into errors?
 
-There is no pagination support for wages, assignments, location_assignments, department_assignments, and role_assignments. Users should handle potential large data returns efficiently. Always ensure the access token is valid to avoid 401 Unauthorized errors.
+Access tokens provide admin level access but cannot be scoped to specific resources or actions, which could pose security risks. The API enforces rate limits and uses versioning that requires attention to header settings. Certain features and endpoints require specific plans.
 
 ### Extra resources:
 

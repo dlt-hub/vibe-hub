@@ -1,0 +1,109 @@
+# Source Metadata
+source_name: zoho_campaigns
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.zoho.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://accounts.zoho.com/oauth/v2/token
+    client_id: "{{ dlt.secrets['client_id_2'] }}"
+    client_secret: "{{ dlt.secrets['client_secret_2'] }}"
+    refresh_token: "{{ dlt.secrets['client_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: next_cursor
+    cursor_param: next_cursor
+    page_size_param: page_size
+    default_page_size: 200
+
+# Resources (per endpoint/object)
+resources:
+  - name: recent_campaigns
+    endpoint:
+      path: /recent_campaigns
+      method: GET
+      data_selector: records
+
+  - name: campaign_recipients
+    endpoint:
+      path: /campaign_recipients
+      method: GET
+      data_selector: records
+
+  - name: campaign_details
+    endpoint:
+      path: /campaign_details
+      method: GET
+      data_selector: records
+
+  - name: campaign_reports
+    endpoint:
+      path: /campaign_reports
+      method: GET
+      data_selector: records
+
+  - name: recent_sent_campaigns
+    endpoint:
+      path: /recent_sent_campaigns
+      method: GET
+      data_selector: records
+
+  - name: mailing_lists
+    endpoint:
+      path: /mailing_lists
+      method: GET
+      data_selector: records
+
+  - name: subscribers
+    endpoint:
+      path: /subscribers
+      method: GET
+      data_selector: records
+
+  - name: lists
+    endpoint:
+      path: /lists
+      method: GET
+      data_selector: records
+
+  - name: total_contacts
+    endpoint:
+      path: /total_contacts
+      method: GET
+      data_selector: records
+
+  - name: topics
+    endpoint:
+      path: /topics
+      method: GET
+      data_selector: records
+
+  - name: all_tags
+    endpoint:
+      path: /all_tags
+      method: GET
+      data_selector: records
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses OAuth2 with refresh token  requires setup of connected app in Zoho
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Recheck OAuth credentials or token expiration

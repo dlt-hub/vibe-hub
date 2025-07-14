@@ -1,0 +1,241 @@
+# Source Metadata
+source_name: QuickBooks
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://quickbooks.api.intuit.com/v3/company
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: offset
+    page_size_param: maxResults
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: Accounts
+    endpoint:
+      path: /{realmId}/account
+      method: GET
+      data_selector: QueryResponse.Account
+      params: {}
+
+  - name: BillPayments
+    endpoint:
+      path: /{realmId}/billpayment
+      method: GET
+      data_selector: QueryResponse.BillPayment
+      params: {}
+
+  - name: Budgets
+    endpoint:
+      path: /{realmId}/budget
+      method: GET
+      data_selector: QueryResponse.Budget
+      params: {}
+
+  - name: Bills
+    endpoint:
+      path: /{realmId}/bill
+      method: GET
+      data_selector: QueryResponse.Bill
+      params: {}
+
+  - name: Classes
+    endpoint:
+      path: /{realmId}/class
+      method: GET
+      data_selector: QueryResponse.Class
+      params: {}
+
+  - name: CreditMemos
+    endpoint:
+      path: /{realmId}/creditmemo
+      method: GET
+      data_selector: QueryResponse.CreditMemo
+      params: {}
+
+  - name: Customers
+    endpoint:
+      path: /{realmId}/customer
+      method: GET
+      data_selector: QueryResponse.Customer
+      params: {}
+
+  - name: Departments
+    endpoint:
+      path: /{realmId}/department
+      method: GET
+      data_selector: QueryResponse.Department
+      params: {}
+
+  - name: Deposits
+    endpoint:
+      path: /{realmId}/deposit
+      method: GET
+      data_selector: QueryResponse.Deposit
+      params: {}
+
+  - name: Employees
+    endpoint:
+      path: /{realmId}/employee
+      method: GET
+      data_selector: QueryResponse.Employee
+      params: {}
+
+  - name: Estimates
+    endpoint:
+      path: /{realmId}/estimate
+      method: GET
+      data_selector: QueryResponse.Estimate
+      params: {}
+
+  - name: Invoices
+    endpoint:
+      path: /{realmId}/invoice
+      method: GET
+      data_selector: QueryResponse.Invoice
+      params: {}
+
+  - name: Items
+    endpoint:
+      path: /{realmId}/item
+      method: GET
+      data_selector: QueryResponse.Item
+      params: {}
+
+  - name: JournalEntries
+    endpoint:
+      path: /{realmId}/journalentry
+      method: GET
+      data_selector: QueryResponse.JournalEntry
+      params: {}
+
+  - name: Payments
+    endpoint:
+      path: /{realmId}/payment
+      method: GET
+      data_selector: QueryResponse.Payment
+      params: {}
+
+  - name: PaymentMethods
+    endpoint:
+      path: /{realmId}/paymentmethod
+      method: GET
+      data_selector: QueryResponse.PaymentMethod
+      params: {}
+
+  - name: Purchases
+    endpoint:
+      path: /{realmId}/purchase
+      method: GET
+      data_selector: QueryResponse.Purchase
+      params: {}
+
+  - name: PurchaseOrders
+    endpoint:
+      path: /{realmId}/purchaseorder
+      method: GET
+      data_selector: QueryResponse.PurchaseOrder
+      params: {}
+
+  - name: RefundReceipts
+    endpoint:
+      path: /{realmId}/refundreceipt
+      method: GET
+      data_selector: QueryResponse.RefundReceipt
+      params: {}
+
+  - name: SalesReceipts
+    endpoint:
+      path: /{realmId}/salesreceipt
+      method: GET
+      data_selector: QueryResponse.SalesReceipt
+      params: {}
+
+  - name: TaxAgencies
+    endpoint:
+      path: /{realmId}/taxagency
+      method: GET
+      data_selector: QueryResponse.TaxAgency
+      params: {}
+
+  - name: TaxCodes
+    endpoint:
+      path: /{realmId}/taxcode
+      method: GET
+      data_selector: QueryResponse.TaxCode
+      params: {}
+
+  - name: TaxRates
+    endpoint:
+      path: /{realmId}/taxrate
+      method: GET
+      data_selector: QueryResponse.TaxRate
+      params: {}
+
+  - name: Terms
+    endpoint:
+      path: /{realmId}/term
+      method: GET
+      data_selector: QueryResponse.Term
+      params: {}
+
+  - name: TimeActivities
+    endpoint:
+      path: /{realmId}/timeactivity
+      method: GET
+      data_selector: QueryResponse.TimeActivity
+      params: {}
+
+  - name: Transfers
+    endpoint:
+      path: /{realmId}/transfer
+      method: GET
+      data_selector: QueryResponse.Transfer
+      params: {}
+
+  - name: VendorCredits
+    endpoint:
+      path: /{realmId}/vendorcredit
+      method: GET
+      data_selector: QueryResponse.VendorCredit
+      params: {}
+
+  - name: Vendors
+    endpoint:
+      path: /{realmId}/vendor
+      method: GET
+      data_selector: QueryResponse.Vendor
+      params: {}
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+    - RealmID
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses OAuth2 with refresh token  requires setup of connected app in QuickBooks
+  - Data may vary depending on permissions and realm ID
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - QUERY_TIMEOUT: Break down filters or add selectivity
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

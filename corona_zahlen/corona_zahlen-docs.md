@@ -18,9 +18,9 @@ def corona_zahlen_source(access_token=dlt.secrets.value):
             },
         },
         "resources": [
-            "districts",
-            "germany_history_hospitalization",
-            "germany_age_groups"
+            "germany",
+            "age",
+            "daily"
             ],
     }
 
@@ -50,9 +50,8 @@ def get_data() -> None:
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from corona_zahlen’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- Districts: Provides historical data regarding frozen incidence rates over specified days.
-- Germany History: Includes endpoints for hospitalization, deaths, and recovered cases over specific time periods.
-- Germany Age Groups: Access demographic data segregated by age groups and their respective COVID-19 case numbers.
+- Germany Data: Provides overall Covid-19 statistics for Germany.
+- Daily Metrics: Offers detailed daily statistics for cases, deaths, recoveries, and more for Germany.
 
 You can combine these endpoints to build pipelines that extract structured content from Corona-Zahlen workspaces at scale — via REST APIs or webhook ingestion.
 
@@ -91,7 +90,7 @@ Now you're ready to get started!
     
     ```prompt
     Please generate a REST API Source for Corona-Zahlen API, as specified in @corona_zahlen-docs.yaml 
-    Start with endpoints "districts" and "germany_history_hospitalization" and skip incremental loading for now. 
+    Start with endpoints "germany" and "age" and skip incremental loading for now. 
     Place the code in corona_zahlen_pipeline.py and name the pipeline corona_zahlen_pipeline. 
     If the file exists, use it as a starting point. 
     Do not add or modify any other files. 
@@ -102,9 +101,9 @@ Now you're ready to get started!
     
 3. 🔒 **Setup credentials** 
     
-    Uses OAuth2 authentication with a refresh token flow. It requires setting up a connected app and handling token refresh mechanisms to maintain access.
+    No specific authentication information provided; assumes no authentication required for access.
     
-    To get appropriate API keys, please visit the original source at https://api.corona-zahlen.org/.
+    To get appropriate API keys, please visit the original source at https://www.corona-zahlen.org/.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
     
 4. 🏃‍♀️ **Run the pipeline in the Python terminal in Cursor**
@@ -134,13 +133,13 @@ Now you're ready to get started!
     import dlt
 
    data = dlt.pipeline("corona_zahlen_pipeline").dataset()
-   # get districts table as Pandas frame
-   data.districts.df().head()
+   # get germany table as Pandas frame
+   data.germany.df().head()
     ```
 
 ## Running into errors?
 
-Take care of OAuth2 setup and ensure refresh tokens are handled properly to avoid authorization errors. Be aware of potential null values in deeply nested fields of some objects like Contact. Throttle API usage to avoid exceeding request limits and consider breaking down queries to avoid timeouts.
+Requires a start date to be selected for syncing data which might affect data retrieval for incremental syncs. Supports both Full Refresh and Incremental syncs which should be considered when setting up data synchronization.
 
 ### Extra resources:
 

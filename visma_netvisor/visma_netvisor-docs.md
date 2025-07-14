@@ -1,10 +1,6 @@
-# How to load Visma Netvisor data in Python using dlt
+In this guide, we'll set up a complete Visma Netvisor data pipeline from API credentials to your first data load in just 10 minutes. You'll end up with a fully declarative Python pipeline based on dlt's REST API connector.
 
-**Build a Visma Netvisor-to-database or-dataframe pipeline in Python using dlt with automatic Cursor support.**
-
-Your outcome will be a fully declarative python pipeline based on dlt’s REST API connector
-
-```python
+```python-outcome
 import dlt
 from dlt.sources.rest_api import (
     RESTAPIConfig,
@@ -15,16 +11,16 @@ from dlt.sources.rest_api import (
 def visma_netvisor_source(access_token=dlt.secrets.value):
     config: RESTAPIConfig = {
         "client": {
-            "base_url": "https://developer.visma.com/api/netvisor",
+            "base_url": "https://developer.visma.com/api/netvisor/",
             "auth": {
                 "type": "bearer",
                 "token": access_token,
             },
         },
         "resources": [
-            "/api/netvisor/accounts",
-            "/api/netvisor/customers",
-            "/api/netvisor/suppliers"
+            "accounts",
+            "customers",
+            "invoices"
             ],
     }
 
@@ -42,29 +38,37 @@ def get_data() -> None:
     print(load_info)  # noqa
 ```
 
-**Why use dlt for this?**
+### Why use dlt for this?
 
-- Fully declarative while being python native and enabling imperative customisation.
-- Schema evolution with type inference for resilient, low maintenance pipelines.
+- dlt is fully declarative, while being python-native and enabling imperative customization
+- Offers schema evolution with type inference for resilient, low maintenance pipelines
 - Performance and scalability control
-- Easy to extend by team member, shallow learning curve
-- Tool of choice for Pythonic Iceberg  Lakehouses
+- Shallow learning curve - the pipeline is easy to extend by any team member
+- dlt is the tool of choice for Pythonic Iceberg Lakehouses
 
 ## What you’ll do
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from visma_netvisor’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- Financial Management: Includes endpoints for managing accounts, ledgers, and vouchers.
-- Customer and Supplier Management: Endpoints for managing customers, suppliers, and related transactions like invoices.
-- Resource Management: Manages fixed assets, user data, and accounting details.
+- Financial Management: Includes endpoints for managing accounts, invoices, ledgers, vouchers, and fixed assets.
+- Customer and Supplier Management: Manage customer and supplier data, including creating and retrieving details.
+- Operational Data: Access and manage user data, accounting details, and company information.
 
 You can combine these endpoints to build pipelines that extract structured content from Visma Netvisor workspaces at scale — via REST APIs or webhook ingestion.
 
-## Steps to follow:
+## Setup & steps to follow
 
-The steps are:
+```default
+Before getting started, let's make sure Cursor is set up correctly:
+   - Use a model like Claude 3.7 Sonnet or better
+   - Add the specification file **@visma_netvisor-docs.yaml** as context
+   - Index the REST API Source tutorial: https://dlthub.com/docs/dlt-ecosystem/verified-sources/rest_api/ and add it to context as **@dlt rest api**
+   - [Read our full steps on setting up Cursor](https://dlthub.com/docs/dlt-ecosystem/llm-tooling/cursor-restapi#23-configuring-cursor-with-documentation)
+```
 
-1. **Execute these commands in a new Cursor shell.**
+Now you're ready to get started! 
+
+1. ⚙️ **Execute these commands in a new Cursor shell.**
     
     Install dlt with duckdb support:
     ```shell
@@ -76,46 +80,40 @@ The steps are:
     dlt init dlthub:visma_netvisor duckdb
     ```
 
-    The `init` command will setup some important files and folders, including `requirments.txt`. Install the requirements for the rest of the project.
+    The `init` command will setup some important files and folders, including `requirements.txt`. Install the requirements for the rest of the project.
     ```shell
     pip install -r requirements.txt
     ```
     
-2. **Start vibe-coding**
+2. 🤠 **Start vibe-coding**
     
     Here’s a nice prompt for you to start: 
     
-    ```
-    Please generate REST API Source for Visma Netvisor API as specified in @visma_netvisor-docs.yaml 
-    Start with 2 endpoints that look the most important and skip incremental loading for now. 
+    ```prompt
+    Please generate a REST API Source for Visma Netvisor API, as specified in @visma_netvisor-docs.yaml 
+    Start with endpoints "accounts" and "customers" and skip incremental loading for now. 
     Place the code in visma_netvisor_pipeline.py and name the pipeline visma_netvisor_pipeline. 
-    If the file exists use it as a starting point. 
+    If the file exists, use it as a starting point. 
     Do not add or modify any other files. 
-    Use @dlt rest api as tutorial. 
-    After adding the endpoints allow the user to run the pipeline with python visma_netvisor_pipeline.py and await further instructions.
-    
+    Use @dlt rest api as a tutorial. 
+    After adding the endpoints, allow the user to run the pipeline with python visma_netvisor_pipeline.py and await further instructions.
     ```
+
     
-    **Suggestions for the best results:**
-    - Use model like Claude 3.7 Sonnet or better
-    - **@visma_netvisor-docs.yaml** - add specification file to context
-    - Index REST API Source tutorial: https://dlthub.com/docs/dlt-ecosystem/verified-sources/rest_api/ and add it to context as **@dlt rest api**
-    - Read more here: https://dlthub.com/docs/dlt-ecosystem/llm-tooling/cursor-restapi#23-configuring-cursor-with-documentation
+3. 🔒 **Setup credentials** 
     
-3. **Setup credentials** 
+    The API uses OAuth 2.0 for authentication. Tokens are passed in the Authorization header as Bearer tokens.
     
-    Authentication is implemented using OAuth 2.0. It requires obtaining a bearer token from Visma Connect, which is then used in the Authorization header for subsequent requests.
-    
-    To get appropriate API keys, please visit the original source at https://developer.visma.com.
+    To get appropriate API keys, please visit the original source at https://www.visma.com/.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
     
-4. **Run the pipeline in the Python terminal in Cursor**
+4. 🏃‍♀️ **Run the pipeline in the Python terminal in Cursor**
     
     ```shell
     python visma_netvisor_pipeline.py
     ```
     
-    If your pipeline runs correctly you’ll se something like
+    If your pipeline runs correctly you’ll see something like the following:
     
     ```shell
     Pipeline visma_netvisor load step completed in 0.26 seconds
@@ -124,31 +122,31 @@ The steps are:
     Load package 1749667187.541553 is LOADED and contains no failed jobs
     ```
     
-5. **See data**
+5. 📈 **See data**
     
     ```shell
     dlt pipeline visma_netvisor_pipeline show --marimo
     ```
     
-6. **Get your data in Python**
+6. 🐍 **Get your data in Python**
     
     ```python
     import dlt
-    
-    data = pipeline.attach("visma_netvisor_pipeline").dataset()
-    # get docs table as pandas
-    print(data.docs.df())
+
+   data = dlt.pipeline("visma_netvisor_pipeline").dataset()
+   # get accounts table as Pandas frame
+   data.accounts.df().head()
     ```
 
 ## Running into errors?
 
-Users can revoke access at any time, which means that the application must handle token expiration and renewal adequately. It is also worth noting that there is no explicit pagination support mentioned, which could be a limitation for data-heavy requests.
+Users can revoke access at any time, which may interrupt service continuity. Ensure robust error handling and token refresh mechanisms are in place.
 
 ### Extra resources:
 
 - [Learn more with our 1h vibe coding course!](https://www.youtube.com/watch?v=GGid70rnJuM)
 
-## What’s next
+## Next steps
 
-- [REST API Sources with Cursor](https://dlthub.com/docs/dlt-ecosystem/llm-tooling/cursor-restapi)
-- [Deploy a pipeline](https://dlthub.com/docs/walkthroughs/deploy-a-pipeline)
+- [How to deploy a pipeline](https://dlthub.com/docs/walkthroughs/deploy-a-pipeline)
+- [How-to guide: Creating REST API Sources with Cursor](https://dlthub.com/docs/dlt-ecosystem/llm-tooling/cursor-restapi)

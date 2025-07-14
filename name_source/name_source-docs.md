@@ -11,16 +11,16 @@ from dlt.sources.rest_api import (
 def name_source_source(access_token=dlt.secrets.value):
     config: RESTAPIConfig = {
         "client": {
-            "base_url": "https://your-instance.api.name.com/",
+            "base_url": "https://your-instance.api.name.com/v",
             "auth": {
                 "type": "bearer",
                 "token": access_token,
             },
         },
         "resources": [
-            "shipments",
-            "quotes",
-            "tracking"
+            "users",
+            "databases",
+            "tables"
             ],
     }
 
@@ -50,9 +50,10 @@ def get_data() -> None:
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from name_source’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- Shipments: Handles operations related to the shipment details.
-- Quotes: Allows fetching of pricing and service quotes for shipping.
-- Tracking: Provides tracking information for shipments.
+- User Management: Allows operations related to users.
+- Database Management: Involves operations for handling databases.
+- Table Management: Encompasses actions on database tables.
+- Query Execution: Supports running queries against the database.
 
 You can combine these endpoints to build pipelines that extract structured content from Name workspaces at scale — via REST APIs or webhook ingestion.
 
@@ -91,7 +92,7 @@ Now you're ready to get started!
     
     ```prompt
     Please generate a REST API Source for Name API, as specified in @name_source-docs.yaml 
-    Start with endpoints "shipments" and "quotes" and skip incremental loading for now. 
+    Start with endpoints "users" and "databases" and skip incremental loading for now. 
     Place the code in name_source_pipeline.py and name the pipeline name_source_pipeline. 
     If the file exists, use it as a starting point. 
     Do not add or modify any other files. 
@@ -102,7 +103,7 @@ Now you're ready to get started!
     
 3. 🔒 **Setup credentials** 
     
-    Authentication is via OAuth2, utilizing a refresh token flow. Client ID and Client Secret are required for obtaining the access token.
+    Authentication is performed using a password type.
     
     To get appropriate API keys, please visit the original source at https://www.name.com/.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
@@ -134,13 +135,13 @@ Now you're ready to get started!
     import dlt
 
    data = dlt.pipeline("name_source_pipeline").dataset()
-   # get shipments table as Pandas frame
-   data.shipments.df().head()
+   # get users table as Pandas frame
+   data.users.df().head()
     ```
 
 ## Running into errors?
 
-Supports full sync but does not support incremental loading for all streams. Errors such as 401 Unauthorized and 403 Forbidden indicate issues with client credentials or permissions.
+Requires a dedicated read-only user for better permission control. SSL and SSH tunneling are supported for secure connections. Possible errors include 401 Unauthorized, indicating issues with permissions or credentials; 404 Not Found, suggesting incorrect endpoint paths or resource names; and 500 Internal Server Error, which requires contacting support.
 
 ### Extra resources:
 

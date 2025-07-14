@@ -11,7 +11,7 @@ from dlt.sources.rest_api import (
 def salesforce_migration_source(access_token=dlt.secrets.value):
     config: RESTAPIConfig = {
         "client": {
-            "base_url": "https://your-instance.salesforce.com/",
+            "base_url": "https://your-instance.api-name.com/",
             "auth": {
                 "type": "bearer",
                 "token": access_token,
@@ -49,8 +49,8 @@ def get_data() -> None:
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from salesforce_migration’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- Campaign Member: Access and manage campaign member data.
-- Contact: Retrieve and manage contact information.
+- Campaign Member Management: Handles operations related to campaign members, such as retrieving and managing their details.
+- Contact Management: Manages contact information, allowing retrieval and updating of contact records.
 
 You can combine these endpoints to build pipelines that extract structured content from Salesforce workspaces at scale — via REST APIs or webhook ingestion.
 
@@ -100,7 +100,7 @@ Now you're ready to get started!
     
 3. 🔒 **Setup credentials** 
     
-    Authentication is managed through OAuth2 with a flow using refresh tokens. The token URL is used for acquiring new access tokens using the refresh token.
+    Authentication is managed via OAuth2 with a refresh token flow. It involves setting up a connected app within Salesforce, using client ID, client secret, and refresh token to obtain access tokens.
     
     To get appropriate API keys, please visit the original source at https://www.salesforce.com/.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
@@ -138,7 +138,7 @@ Now you're ready to get started!
 
 ## Running into errors?
 
-Salesforce API usage may encounter issues such as request limits, query timeouts, and authorization denials. It is essential to manage API call frequencies, ensure query optimization, and verify OAuth scopes and token validity regularly.
+Throttling limits may be encountered, requiring API call reduction or frequency adjustment. Deeply nested fields in objects like Contact may return null, necessitating checks on data integrity. Query timeouts can occur, requiring filter adjustments or increased selectivity. Unauthorized errors may need rechecking of OAuth scopes or token validity.
 
 ### Extra resources:
 

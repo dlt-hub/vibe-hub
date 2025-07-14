@@ -1,0 +1,117 @@
+# Source Metadata
+source_name: workflowmax
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://api.workflowmax2.com
+  auth:
+    type: oauth2
+    flow: authorization_code
+    token_url: https://oauth.workflowmax2.com/oauth/token
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: DefaultPaginator
+
+# Resources (per endpoint/object)
+resources:
+  - name: stafflist
+    endpoint:
+      path: /stafflist
+      method: GET
+      data_selector: staff
+  - name: clientlist
+    endpoint:
+      path: /clientlist
+      method: GET
+      data_selector: clients
+  - name: clients_documents
+    endpoint:
+      path: /clients_documents
+      method: GET
+      data_selector: documents
+  - name: clientgrouplist
+    endpoint:
+      path: /clientgrouplist
+      method: GET
+      data_selector: groups
+  - name: costlist
+    endpoint:
+      path: /costlist
+      method: GET
+      data_selector: costs
+  - name: invoice_current
+    endpoint:
+      path: /invoice_current
+      method: GET
+      data_selector: current_invoice
+  - name: invoicelist
+    endpoint:
+      path: /invoicelist
+      method: GET
+      data_selector: invoices
+      params: {
+                "incremental": "updated_at"
+      }
+  - name: joblist
+    endpoint:
+      path: /joblist
+      method: GET
+      data_selector: jobs
+  - name: job_tasks
+    endpoint:
+      path: /job_tasks
+      method: GET
+      data_selector: tasks
+  - name: leadlist
+    endpoint:
+      path: /leadlist
+      method: GET
+      data_selector: leads
+  - name: purchaseorderlist
+    endpoint:
+      path: /purchaseorderlist
+      method: GET
+      data_selector: purchase_orders
+  - name: tasklist
+    endpoint:
+      path: /tasklist
+      method: GET
+      data_selector: tasks
+  - name: quotelist
+    endpoint:
+      path: /quotelist
+      method: GET
+      data_selector: quotes
+  - name: supplierlist
+    endpoint:
+      path: /supplierlist
+      method: GET
+      data_selector: suppliers
+  - name: timelist
+    endpoint:
+      path: /timelist
+      method: GET
+      data_selector: time_entries
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - bearer_token
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses bearer token authentication  requires setup of access token
+
+# Troubleshooting & Error Patterns
+errors:
+  - 401 Unauthorized: Recheck access token validity
+  - 403 Forbidden: Check permissions for the requested resources

@@ -1,10 +1,6 @@
-# How to load SafetyCulture data in Python using dlt
+In this guide, we'll set up a complete SafetyCulture data pipeline from API credentials to your first data load in just 10 minutes. You'll end up with a fully declarative Python pipeline based on dlt's REST API connector.
 
-**Build a SafetyCulture-to-database or-dataframe pipeline in Python using dlt with automatic Cursor support.**
-
-Your outcome will be a fully declarative python pipeline based on dlt’s REST API connector
-
-```python
+```python-outcome
 import dlt
 from dlt.sources.rest_api import (
     RESTAPIConfig,
@@ -15,16 +11,16 @@ from dlt.sources.rest_api import (
 def safety_culture_source(access_token=dlt.secrets.value):
     config: RESTAPIConfig = {
         "client": {
-            "base_url": "https://api.safetyculture.com",
+            "base_url": "https://api.safetyculture.com/v1/",
             "auth": {
-                "type": "bearer",
-                "token": access_token,
+                "type": "apikey",
+                "token": access_token
             },
         },
         "resources": [
-            "/accounts/scim/v2",
-            "/integrations/v1/apps",
-            "/integrations/v1/apps/{app_id}/installations"
+            "feed_users",
+            "groups",
+            "connections"
             ],
     }
 
@@ -42,32 +38,43 @@ def get_data() -> None:
     print(load_info)  # noqa
 ```
 
-**Why use dlt for this?**
+### Why use dlt for this?
 
-- Fully declarative while being python native and enabling imperative customisation.
-- Schema evolution with type inference for resilient, low maintenance pipelines.
+- dlt is fully declarative, while being python-native and enabling imperative customization
+- Offers schema evolution with type inference for resilient, low maintenance pipelines
 - Performance and scalability control
-- Easy to extend by team member, shallow learning curve
-- Tool of choice for Pythonic Iceberg  Lakehouses
+- Shallow learning curve - the pipeline is easy to extend by any team member
+- dlt is the tool of choice for Pythonic Iceberg Lakehouses
 
 ## What you’ll do
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from safety_culture’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- Platform management: Manage organizations, sites, credentials, and users.
-- SCIM User Provisioning: Manage user provisioning via SCIM protocol.
-- Asset Management: Handle operations related to assets.
-- Inspections: Manage and retrieve inspections and their related items.
-- Issues Management: Operations related to issue tracking and management.
-- Single Sign-On: Manage authentication through single sign-on capabilities.
+- User Feeds: Access user-specific feed data.
+- Group Management: Manage and retrieve group information.
+- Asset Tracking: Track and manage assets.
+- Folder Management: Organize and retrieve folder data.
+- Response Sets: Manage global response sets for standardized replies.
+- Scheduling: Retrieve and manage scheduled items or tasks.
+- Action Items: Manage and track action items.
+- Template Management: Retrieve and manage templates for various uses.
+- Issue Tracking: Manage and track issues.
 
 You can combine these endpoints to build pipelines that extract structured content from SafetyCulture workspaces at scale — via REST APIs or webhook ingestion.
 
-## Steps to follow:
+## Setup & steps to follow
 
-The steps are:
+```default
+Before getting started, let's make sure Cursor is set up correctly:
+   - Use a model like Claude 3.7 Sonnet or better
+   - Add the specification file **@safety_culture-docs.yaml** as context
+   - Index the REST API Source tutorial: https://dlthub.com/docs/dlt-ecosystem/verified-sources/rest_api/ and add it to context as **@dlt rest api**
+   - [Read our full steps on setting up Cursor](https://dlthub.com/docs/dlt-ecosystem/llm-tooling/cursor-restapi#23-configuring-cursor-with-documentation)
+```
 
-1. **Execute these commands in a new Cursor shell.**
+Now you're ready to get started! 
+
+1. ⚙️ **Execute these commands in a new Cursor shell.**
     
     Install dlt with duckdb support:
     ```shell
@@ -79,46 +86,40 @@ The steps are:
     dlt init dlthub:safety_culture duckdb
     ```
 
-    The `init` command will setup some important files and folders, including `requirments.txt`. Install the requirements for the rest of the project.
+    The `init` command will setup some important files and folders, including `requirements.txt`. Install the requirements for the rest of the project.
     ```shell
     pip install -r requirements.txt
     ```
     
-2. **Start vibe-coding**
+2. 🤠 **Start vibe-coding**
     
     Here’s a nice prompt for you to start: 
     
-    ```
-    Please generate REST API Source for SafetyCulture API as specified in @safety_culture-docs.yaml 
-    Start with 2 endpoints that look the most important and skip incremental loading for now. 
+    ```prompt
+    Please generate a REST API Source for SafetyCulture API, as specified in @safety_culture-docs.yaml 
+    Start with endpoints "feed_users" and "groups" and skip incremental loading for now. 
     Place the code in safety_culture_pipeline.py and name the pipeline safety_culture_pipeline. 
-    If the file exists use it as a starting point. 
+    If the file exists, use it as a starting point. 
     Do not add or modify any other files. 
-    Use @dlt rest api as tutorial. 
-    After adding the endpoints allow the user to run the pipeline with python safety_culture_pipeline.py and await further instructions.
-    
+    Use @dlt rest api as a tutorial. 
+    After adding the endpoints, allow the user to run the pipeline with python safety_culture_pipeline.py and await further instructions.
     ```
+
     
-    **Suggestions for the best results:**
-    - Use model like Claude 3.7 Sonnet or better
-    - **@safety_culture-docs.yaml** - add specification file to context
-    - Index REST API Source tutorial: https://dlthub.com/docs/dlt-ecosystem/verified-sources/rest_api/ and add it to context as **@dlt rest api**
-    - Read more here: https://dlthub.com/docs/dlt-ecosystem/llm-tooling/cursor-restapi#23-configuring-cursor-with-documentation
+3. 🔒 **Setup credentials** 
     
-3. **Setup credentials** 
+    Authentication is managed via API keys. The key must be included in the header of each request.
     
-    Authentication is managed through OAuth2 with bearer token authentication. The API token must be passed in the Authorization header for each request.
-    
-    To get appropriate API keys, please visit the original source at https://developer.safetyculture.com.
+    To get appropriate API keys, please visit the original source at https://www.safetyculture.com/.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
     
-4. **Run the pipeline in the Python terminal in Cursor**
+4. 🏃‍♀️ **Run the pipeline in the Python terminal in Cursor**
     
     ```shell
     python safety_culture_pipeline.py
     ```
     
-    If your pipeline runs correctly you’ll se something like
+    If your pipeline runs correctly you’ll see something like the following:
     
     ```shell
     Pipeline safety_culture load step completed in 0.26 seconds
@@ -127,31 +128,31 @@ The steps are:
     Load package 1749667187.541553 is LOADED and contains no failed jobs
     ```
     
-5. **See data**
+5. 📈 **See data**
     
     ```shell
     dlt pipeline safety_culture_pipeline show --marimo
     ```
     
-6. **Get your data in Python**
+6. 🐍 **Get your data in Python**
     
     ```python
     import dlt
-    
-    data = pipeline.attach("safety_culture_pipeline").dataset()
-    # get docs table as pandas
-    print(data.docs.df())
+
+   data = dlt.pipeline("safety_culture_pipeline").dataset()
+   # get feed_users table as Pandas frame
+   data.feed_users.df().head()
     ```
 
 ## Running into errors?
 
-API rate limits are enforced, and certain endpoints may require specific permissions or plan levels. Ensure that inspections with media are fully synced before export to avoid corrupt files. The API uses OAuth 2.0 with Resource Owner Password Credentials Grant, and API tokens expire after 30 days of inactivity.
+API usage is limited to paid plans only. Ensure the API key is valid and properly set in the headers to avoid a 401 Unauthorized error.
 
 ### Extra resources:
 
 - [Learn more with our 1h vibe coding course!](https://www.youtube.com/watch?v=GGid70rnJuM)
 
-## What’s next
+## Next steps
 
-- [REST API Sources with Cursor](https://dlthub.com/docs/dlt-ecosystem/llm-tooling/cursor-restapi)
-- [Deploy a pipeline](https://dlthub.com/docs/walkthroughs/deploy-a-pipeline)
+- [How to deploy a pipeline](https://dlthub.com/docs/walkthroughs/deploy-a-pipeline)
+- [How-to guide: Creating REST API Sources with Cursor](https://dlthub.com/docs/dlt-ecosystem/llm-tooling/cursor-restapi)

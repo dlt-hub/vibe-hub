@@ -1,0 +1,181 @@
+# Source Metadata
+source_name: zendesk_sell
+version: 1.0
+authentication_required: true
+api_types_available:
+  - REST
+
+# Client / Connection Config
+client:
+  base_url: https://your-instance.zendesk.com/api/v2
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://your-instance.zendesk.com/oauth/tokens
+    client_id: "{{ dlt.secrets['api_client_id'] }}"
+    client_secret: "{{ dlt.secrets['api_client_secret'] }}"
+    refresh_token: "{{ dlt.secrets['api_refresh_token'] }}"
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: offset
+    page_size_param: page[size]
+    default_page_size: 100
+
+# Resources (per endpoint/object)
+resources:
+  - name: call_outcomes
+    endpoint:
+      path: /call_outcomes
+      method: GET
+      data_selector: outcomes
+
+  - name: calls
+    endpoint:
+      path: /calls
+      method: GET
+      data_selector: calls
+
+  - name: collaborations
+    endpoint:
+      path: /collaborations
+      method: GET
+      data_selector: collaborations
+
+  - name: contacts
+    endpoint:
+      path: /contacts
+      method: GET
+      data_selector: contacts
+
+  - name: deal_sources
+    endpoint:
+      path: /deal_sources
+      method: GET
+      data_selector: deal_sources
+
+  - name: deal_unqualified_reason
+    endpoint:
+      path: /deal_unqualified_reasons
+      method: GET
+      data_selector: reasons
+
+  - name: deals
+    endpoint:
+      path: /deals
+      method: GET
+      data_selector: deals
+
+  - name: lead_conversions
+    endpoint:
+      path: /lead_conversions
+      method: GET
+      data_selector: conversions
+
+  - name: lead_sources
+    endpoint:
+      path: /lead_sources
+      method: GET
+      data_selector: lead_sources
+
+  - name: lead_unqualified_reason
+    endpoint:
+      path: /lead_unqualified_reasons
+      method: GET
+      data_selector: reasons
+
+  - name: leads
+    endpoint:
+      path: /leads
+      method: GET
+      data_selector: leads
+
+  - name: loss_reasons
+    endpoint:
+      path: /loss_reasons
+      method: GET
+      data_selector: reasons
+
+  - name: notes
+    endpoint:
+      path: /notes
+      method: GET
+      data_selector: notes
+
+  - name: orders
+    endpoint:
+      path: /orders
+      method: GET
+      data_selector: orders
+
+  - name: pipelines
+    endpoint:
+      path: /pipelines
+      method: GET
+      data_selector: pipelines
+
+  - name: products
+    endpoint:
+      path: /products
+      method: GET
+      data_selector: products
+
+  - name: stages
+    endpoint:
+      path: /stages
+      method: GET
+      data_selector: stages
+
+  - name: tags
+    endpoint:
+      path: /tags
+      method: GET
+      data_selector: tags
+
+  - name: tasks
+    endpoint:
+      path: /tasks
+      method: GET
+      data_selector: tasks
+
+  - name: text_messages
+    endpoint:
+      path: /text_messages
+      method: GET
+      data_selector: messages
+
+  - name: users
+    endpoint:
+      path: /users
+      method: GET
+      data_selector: users
+
+  - name: visit_outcomes
+    endpoint:
+      path: /visit_outcomes
+      method: GET
+      data_selector: outcomes
+
+  - name: visits
+    endpoint:
+      path: /visits
+      method: GET
+      data_selector: visits
+
+# Auth Details from Docs (for validation or onboarding)
+auth_info:
+  mentioned_objects:
+    - OauthToken
+    - AuthProvider
+
+# Known Quirks or Risks, Caveats
+notes:
+  - Uses OAuth2 with refresh token  requires setup of connected app in Zendesk
+  - Ensure proper permissions for API token
+
+# Troubleshooting & Error Patterns
+errors:
+  - REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency
+  - 401 Unauthorized: Recheck OAuth scopes or token expiration

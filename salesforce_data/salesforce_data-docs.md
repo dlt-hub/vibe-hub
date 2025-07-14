@@ -11,15 +11,16 @@ from dlt.sources.rest_api import (
 def salesforce_data_source(access_token=dlt.secrets.value):
     config: RESTAPIConfig = {
         "client": {
-            "base_url": "https://your-instance.api.name.com/",
+            "base_url": "https://your-instance.salesforce.com/",
             "auth": {
                 "type": "bearer",
                 "token": access_token,
             },
         },
         "resources": [
-            "campaign_member",
-            "contact"
+            "account",
+            "contact",
+            "opportunity"
             ],
     }
 
@@ -49,8 +50,9 @@ def get_data() -> None:
 
 We’ll show you how to generate a readable and easily maintainable Python script that fetches data from salesforce_data’s API and loads it into Iceberg, DataFrames, files, or a database of your choice. Here are some of the endpoints you can load:
 
-- Campaign Member: Access and manage campaign member records.
-- Contact: Retrieve and manage contact information.
+- Accounts: Manage account records.
+- Contacts: Handle contact details.
+- Opportunities: Administer sales opportunities.
 
 You can combine these endpoints to build pipelines that extract structured content from Salesforce workspaces at scale — via REST APIs or webhook ingestion.
 
@@ -89,7 +91,7 @@ Now you're ready to get started!
     
     ```prompt
     Please generate a REST API Source for Salesforce API, as specified in @salesforce_data-docs.yaml 
-    Start with endpoints "campaign_member" and "contact" and skip incremental loading for now. 
+    Start with endpoints "account" and "contact" and skip incremental loading for now. 
     Place the code in salesforce_data_pipeline.py and name the pipeline salesforce_data_pipeline. 
     If the file exists, use it as a starting point. 
     Do not add or modify any other files. 
@@ -100,7 +102,7 @@ Now you're ready to get started!
     
 3. 🔒 **Setup credentials** 
     
-    Uses OAuth2 with a refresh token flow, requiring the setup of a connected app within Salesforce for authentication.
+    Uses OAuth2 authentication with a refresh token flow. Requires setting up a connected app in Salesforce and handling refresh tokens securely.
     
     To get appropriate API keys, please visit the original source at https://www.salesforce.com/.
     If you want to protect your environment secrets in a production environment, look into [setting up credentials with dlt](https://dlthub.com/docs/walkthroughs/add_credentials).
@@ -132,13 +134,13 @@ Now you're ready to get started!
     import dlt
 
    data = dlt.pipeline("salesforce_data_pipeline").dataset()
-   # get campaign_member table as Pandas frame
-   data.campaign_member.df().head()
+   # get account table as Pandas frame
+   data.account.df().head()
     ```
 
 ## Running into errors?
 
-Be aware of request limits to avoid exceeding API call quotas; handle potential nulls in deeply nested fields within certain objects like Contact; manage query time-outs by optimizing filters.
+Be aware of API request limits and ensure to handle exceptions such as request limits exceeded and query timeouts. Additionally, some objects may require specific read permissions.
 
 ### Extra resources:
 
