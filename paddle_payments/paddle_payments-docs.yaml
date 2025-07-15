@@ -1,0 +1,73 @@
+Based on the provided documentation and requirements, here is the YAML configuration for the Paddle Payments REST API source:
+
+client:
+  base_url: "https://api.paddle.com/"
+  auth:
+    type: "bearer"
+    # Additional auth parameters if needed
+
+resources:
+  - name: "brand-customize-inline-checkout"
+    endpoint: "/checkout/customize"
+    method: "GET"
+    params:
+      - name: "language"
+        required: false
+        description: "Language for checkout customization"
+      - name: "payment_method"
+        required: false
+        description: "Payment method restrictions"
+    data_selector: "$"  # JSONPath to select data from response
+
+  - name: "paddle/paddle.js"
+    endpoint: "/paddle.js"
+    method: "GET"
+    params: []
+    data_selector: "$"  # JSONPath to select data from response
+
+  - name: "checkout"
+    endpoint: "/checkout"
+    method: "POST"
+    params:
+      - name: "items"
+        required: true
+        description: "Items to include in the checkout"
+      - name: "currency"
+        required: false
+        description: "Currency for the transaction"
+    data_selector: "$"  # JSONPath to select data from response
+
+  - name: "environment-settings"
+    endpoint: "/settings/environment"
+    method: "GET"
+    params: []
+    data_selector: "$"  # JSONPath to select data from response
+
+  - name: "pricing-information"
+    endpoint: "/pricing/info"
+    method: "GET"
+    params:
+      - name: "product_id"
+        required: true
+        description: "ID of the product to retrieve pricing information"
+    data_selector: "$"  # JSONPath to select data from response
+
+notes:
+  - "Ensure to handle both client-side and server-side tokens for authentication."
+  - "Paddle API has rate limits; consult the documentation for specifics."
+  - "Manage environment settings correctly between sandbox and live modes."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 404  # Not Found
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements for server-side operations"
+    - "Client-side token for actions within Paddle.js"
+
+source_metadata:
+  description: "Paddle Payments API allows for checkout customization, payment management, and retrieval of pricing information."
+This YAML configuration captures the essential details from the scraped documentation about the Paddle Payments API, including the base URL, authentication method, main endpoints, parameters, and notes regarding usage and errors.

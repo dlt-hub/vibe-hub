@@ -1,0 +1,71 @@
+Based on the information provided in the scraped documentation, here is a complete YAML configuration for the REST API source `boldsign_documents`:
+
+client:
+  base_url: "https://api.boldsign.com/v1/"
+  auth:
+    type: "api_key"
+    token: "access_token"  # Replace with your access token
+
+resources:
+  - name: "create_brand"
+    endpoint: "/brands"
+    method: "POST"
+    params:
+      - name: "brand_name"
+        required: true
+        type: "string"
+      - name: "customization_options"
+        required: false
+        type: "object"
+    data_selector: "$.data"  # JSONPath to select data from response
+
+  - name: "document_send"
+    endpoint: "/documents/send"
+    method: "POST"
+    params:
+      - name: "document_id"
+        required: true
+        type: "string"
+      - name: "recipient_info"
+        required: true
+        type: "object"
+    data_selector: "$.data"  # JSONPath to select data from response
+
+  - name: "send_document"
+    endpoint: "/documents/send_document"
+    method: "POST"
+    params:
+      - name: "document_id"
+        required: true
+        type: "string"
+      - name: "message"
+        required: false
+        type: "string"
+    data_selector: "$.data"  # JSONPath to select data from response
+
+notes:
+  - "Ensure that the API key is included in the request header under 'X-API-KEY'."
+  - "Be cautious of API usage to prevent hitting rate limits."
+  - "You cannot use both 'fileUrls' and 'files' parameters in a single request."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "API key must be included in the request header."
+    - "Visit https://www.boldsign.com/ to obtain API keys."
+
+source_metadata:
+  description: "The BoldSign API provides features for document management, including sending and customizing documents."
+### Explanation of the YAML Configuration:
+- **Client Section**: The base URL is set to `https://api.boldsign.com/v1/`, and the authentication type is specified as `api_key`.
+- **Resources Section**: Three main endpoints are defined: `create_brand`, `document_send`, and `send_document`, along with their methods, required parameters, and JSONPath selectors for the response.
+- **Notes Section**: Important notes regarding API usage and restrictions are included.
+- **Errors Section**: Common HTTP error codes are listed.
+- **Auth Info Section**: This includes details about obtaining API keys and their usage.
+- **Source Metadata Section**: A brief description of the capabilities provided by the BoldSign API.
+
+This YAML configuration follows the specifications required and is structured for clarity and usability.

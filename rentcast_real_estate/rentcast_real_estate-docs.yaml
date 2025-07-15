@@ -1,0 +1,66 @@
+client:
+  base_url: "https://api.rentcast.io/v1/"
+  auth:
+    type: "api_key"
+
+resources:
+  - name: "properties"
+    endpoint: "/properties"
+    method: "GET"
+    params:
+      - name: "city"
+        required: false
+      - name: "state"
+        required: false
+    data_selector: "$.data"  # Assuming the response structure has a 'data' field
+
+  - name: "property_details"
+    endpoint: "/property_details"
+    method: "GET"
+    params:
+      - name: "address"
+        required: true
+    data_selector: "$.data"
+
+  - name: "owner_information"
+    endpoint: "/owner_information"
+    method: "GET"
+    params:
+      - name: "property_id"
+        required: true
+    data_selector: "$.data"
+
+  - name: "rent_estimates"
+    endpoint: "/rent_estimates"
+    method: "GET"
+    params:
+      - name: "address"
+        required: true
+    data_selector: "$.data"
+
+  - name: "sales_comparables"
+    endpoint: "/sales_comparables"
+    method: "GET"
+    params:
+      - name: "property_id"
+        required: true
+    data_selector: "$.data"
+
+notes:
+  - "API access is restricted if payment fails."
+  - "Free plan limits to 50 requests per month."
+  - "Data coverage and accuracy might vary depending on the availability of active listings."
+  - "Rate limits apply, and pagination requires consistent query parameters."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "API keys must be included in the header of each request."
+    - "Keep your API key secure to prevent unauthorized access."
+
+source_metadata:
+  description: "The RentCast API provides access to real estate property information including properties, detailed property data, owner information, rent estimates, and market trends."

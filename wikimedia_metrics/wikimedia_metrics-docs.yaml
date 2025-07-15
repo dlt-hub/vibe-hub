@@ -1,0 +1,68 @@
+Based on the provided documentation content, here’s a complete YAML configuration for the `wikimedia_metrics` REST API source:
+
+client:
+  base_url: "https://wikimedia.org/api/rest_v1/"
+  auth:
+    type: "api_key"  # Authentication method
+
+resources:
+  - name: "per-article"
+    endpoint: "/metrics/pageviews/per-article"
+    method: "GET"
+    params:
+      - name: "article"
+        required: true
+        type: "string"
+        description: "The title of the article for which to get metrics."
+      - name: "start"
+        required: false
+        type: "string"
+        description: "The start date for the metrics in YYYY-MM-DD format."
+      - name: "end"
+        required: false
+        type: "string"
+        description: "The end date for the metrics in YYYY-MM-DD format."
+    data_selector: "$.items"  # JSONPath to select data from response
+
+  - name: "top"
+    endpoint: "/metrics/pageviews/top"
+    method: "GET"
+    params:
+      - name: "project"
+        required: true
+        type: "string"
+        description: "The project from which to get top metrics (e.g., 'en.wikipedia')."
+      - name: "limit"
+        required: false
+        type: "integer"
+        description: "The number of top pages to return."
+    data_selector: "$.items"  # JSONPath to select data from response
+
+notes:
+  - "This API supports full refresh sync but does not support incremental sync."
+  - "Rate limits: 100 requests per second per endpoint."
+  - "Authentication requires an API key included in the header of each request."
+  - "Consult the official Wikimedia documentation for further details on endpoints."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements"
+    - "Authentication methods"
+
+source_metadata:
+  description: "This API provides metrics on pageviews for articles on Wikimedia projects."
+### Explanation of the Configuration:
+1. **Base URL**: Extracted from the provided documentation as `https://wikimedia.org/api/rest_v1/`.
+2. **Authentication Method**: Identified as `api_key`.
+3. **Endpoints/Resources**: Defined two main resources: `per-article` and `top`, each with their respective endpoints, methods, parameters, and data selectors.
+4. **Notes**: Included important information regarding rate limits and authentication requirements.
+5. **Errors**: Common error codes are listed for better error handling.
+6. **Auth Info**: Details about the authentication method are provided.
+7. **Source Metadata**: A brief description of the API's capabilities is included.
+
+This YAML configuration is structured and follows the requirements specified.

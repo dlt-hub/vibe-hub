@@ -1,0 +1,64 @@
+Here’s a complete YAML configuration for the Kyriba Finance REST API source based on the provided documentation:
+
+client:
+  base_url: "https://your-instance.kyriba.com/"
+  auth:
+    type: "basic"  # Authentication is done via Basic Auth
+    # Additional auth parameters if needed
+    username: "domain\\username"  # This is a placeholder; actual username should be provided
+    password: "password"  # This is a placeholder; actual password should be provided
+
+resources:
+  - name: "accounts"
+    endpoint: "/api/accounts"  # Assuming the endpoint based on common REST practices
+    method: "GET"
+    params: 
+      - name: "start_date"
+        description: "The start date for data retrieval."
+        required: false
+      - name: "end_date"
+        description: "The end date for data retrieval."
+        required: false
+    data_selector: "$.data.accounts"  # JSONPath to select data from response
+
+  - name: "bank_balances"
+    endpoint: "/api/bank_balances"  # Assuming the endpoint based on common REST practices
+    method: "GET"
+    params:
+      - name: "account_id"
+        description: "Filter by specific account."
+        required: true
+    data_selector: "$.data.bank_balances"  # JSONPath to select data from response
+
+  - name: "cash_balances"
+    endpoint: "/api/cash_balances"  # Assuming the endpoint based on common REST practices
+    method: "GET"
+    params:
+      - name: "currency"
+        description: "Filter by currency type."
+        required: false
+    data_selector: "$.data.cash_balances"  # JSONPath to select data from response
+
+notes:
+  - "Use basic authentication with domain, username, and password."
+  - "Rate limits may apply; ensure to handle API request limits to avoid 429 errors."
+  - "Specify date ranges for data syncing to prevent errors."
+
+errors:
+  - 401  # Unauthorized: Authentication error
+  - 403  # Forbidden: Access denied
+  - 429  # Too Many Requests: Rate limit exceeded
+
+auth_info:
+  mentioned_objects:
+    - "Basic Authentication with domain, username, and password required."
+    - "Ensure to handle API request limits."
+
+source_metadata:
+  description: "Kyriba Finance API provides access to financial data including accounts, bank balances, and cash balances."
+### Key Points
+- The `base_url` is extracted directly from the documentation.
+- The authentication method is specified as `basic`, aligning with the provided documentation.
+- Three primary resources are included with assumed endpoints based on RESTful API practices.
+- Each resource has relevant parameters and a JSONPath for data selection.
+- Notes regarding authentication, rate limits, and error handling are included to provide helpful context for users.

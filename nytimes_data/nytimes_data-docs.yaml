@@ -1,0 +1,56 @@
+Based on the provided documentation content, here is a complete YAML configuration for the REST API source `nytimes_data`:
+
+client:
+  base_url: "https://api.nytimes.com/svc/"
+  auth:
+    type: "api_key"
+
+resources:
+  - name: "archive"
+    endpoint: "/archive/v1/{year}/{month}.json"  # Example endpoint for historical articles
+    method: "GET"
+    params:
+      year: "The year for historical articles (e.g., 2020)"
+      month: "The month for historical articles (e.g., 01 for January)"
+    data_selector: "$.response.docs"  # JSONPath to select articles from response
+
+  - name: "mostpopular_emailed"
+    endpoint: "/mostpopular/v2/emailed/{time_period}.json"  # Example endpoint for most emailed articles
+    method: "GET"
+    params:
+      time_period: "Time period, e.g., 7 for last 7 days"
+    data_selector: "$.results"  # JSONPath to select most emailed articles from response
+
+  - name: "mostpopular_shared"
+    endpoint: "/mostpopular/v2/shared/{time_period}.json"  # Example endpoint for most shared articles
+    method: "GET"
+    params:
+      time_period: "Time period, e.g., 7 for last 7 days"
+    data_selector: "$.results"  # JSONPath to select most shared articles from response
+
+notes:
+  - "The New York Times API requires an API key to authenticate requests."
+  - "Be cautious of rate limits to avoid '429 Too Many Requests' errors."
+  - "The API returns data in JSON format, and pagination may be required for large datasets."
+
+errors:
+  - 401  # Unauthorized: API key may be invalid
+  - 403  # Forbidden: Access to the resource is denied
+  - 429  # Too Many Requests: Rate limit exceeded
+
+auth_info:
+  mentioned_objects:
+    - "API key is required for authentication."
+    - "Include the API key in the query parameters."
+
+source_metadata:
+  description: "The New York Times API provides access to various datasets including archived articles and popular articles based on email and share counts."
+### Explanation of Key Sections:
+- **client**: Contains the base URL for the API and the authentication method which is an API key.
+- **resources**: Lists the key endpoints available with specific details about each endpoint, including the method and parameters.
+- **notes**: Important notes about API usage, such as authentication requirements and rate limits.
+- **errors**: Common HTTP error codes that users might encounter.
+- **auth_info**: Details about authentication methods.
+- **source_metadata**: A brief description of the API's purpose.
+
+This YAML configuration adheres to the required structure and includes relevant details extracted from the provided documentation.

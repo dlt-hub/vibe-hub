@@ -1,0 +1,52 @@
+Based on the provided documentation, here is the YAML configuration for the Revolut Business REST API source:
+
+client:
+  base_url: "https://b2b.revolut.com/"
+  auth:
+    type: "api_key"
+
+resources:
+  - name: "orders"
+    endpoint: "/api/orders"
+    method: "GET"
+    params:
+      - updated_at: "timestamp"  # for incremental loading (currently skipped)
+    data_selector: "$.data"  # Assuming the response contains a 'data' field
+
+  - name: "customers"
+    endpoint: "/api/customers"
+    method: "GET"
+    params: []
+    data_selector: "$.data"  # Assuming the response contains a 'data' field
+
+  - name: "locations"
+    endpoint: "/api/locations"
+    method: "GET"
+    params: []
+    data_selector: "$.data"  # Assuming the response contains a 'data' field
+
+notes:
+  - "API key is required for authentication."
+  - "The customers and locations endpoints do not support pagination."
+  - "Be aware of potential 401, 404, and 429 HTTP errors indicating authorization problems, missing endpoints, or rate limits."
+  - "Incremental updates for orders can be achieved using the updated_at timestamp."
+
+errors:
+  - 401  # Unauthorized
+  - 404  # Not Found
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements: Obtain API keys from https://www.revolut.com/business."
+
+source_metadata:
+  description: "The Revolut Business API provides access to business-related data, including orders, customers, and locations."
+### Key Points:
+1. **Base URL**: Extracted from the documentation as `https://b2b.revolut.com/`.
+2. **Authentication Method**: The API key method is specified.
+3. **Endpoints/Resources**: Three main resources are listed: `orders`, `customers`, and `locations`.
+4. **Query Parameters**: The only relevant parameter mentioned is for `orders` (the `updated_at` timestamp for incremental updates).
+5. **Notes**: Important notes about pagination and potential errors are included.
+6. **Categorization**: The source is categorized as a REST API source for business data.
+7. **Valid YAML Structure**: The YAML follows the provided structure and is clean and valid.

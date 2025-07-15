@@ -1,0 +1,70 @@
+Based on the provided documentation and requirements, here is a structured YAML configuration for the `talkdesk_reports` REST API source:
+
+client:
+  base_url: "https://your-instance.talkdesk.com/"
+  auth:
+    type: "api_key"
+    
+resources:
+  - name: "calls_report"
+    endpoint: "/reports/calls"
+    method: "POST"
+    params:
+      - name: "start_date"
+        type: "string"
+        required: true
+      - name: "end_date"
+        type: "string"
+        required: true
+    data_selector: "$.data.calls"  # JSONPath to select calls data from response
+    
+  - name: "user_status_report"
+    endpoint: "/reports/user_status"
+    method: "POST"
+    params:
+      - name: "user_id"
+        type: "string"
+        required: true
+      - name: "date"
+        type: "string"
+        required: true
+    data_selector: "$.data.user_status"  # JSONPath to select user status data from response
+    
+  - name: "studio_flow_execution_report"
+    endpoint: "/reports/studio_flow_execution"
+    method: "POST"
+    params:
+      - name: "flow_id"
+        type: "string"
+        required: true
+      - name: "execution_date"
+        type: "string"
+        required: true
+    data_selector: "$.data.execution"  # JSONPath to select execution data from response
+
+notes:
+  - "Important: Requires generating a report via POST before fetching data with GET."
+  - "Rate limit: 15 simultaneous reports to avoid hitting the rate limit (429 Too Many Requests)."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements: Obtain an API key from the Talkdesk account."
+    - "Use the API key in the Authorization header for requests."
+
+source_metadata:
+  description: "Talkdesk Reports API provides access to various reporting endpoints including call reports, user statuses, and studio flow executions."
+### Explanation:
+1. **Base URL**: Extracted from the provided documentation as `"https://your-instance.talkdesk.com/"`.
+2. **Authentication Method**: Specified as `"api_key"`, as mentioned in the documentation.
+3. **Main API Endpoints**: Identified three endpoints based on the provided documentation.
+4. **Query Parameters**: Specified for each endpoint, indicating required parameters.
+5. **Helpful Notes**: Added notes regarding report generation and rate limits.
+6. **Error Codes**: Listed common error codes that might occur while using the API.
+7. **Source Metadata**: Provided a brief description of what the API offers. 
+
+This YAML configuration is structured to provide all the necessary information for utilizing the Talkdesk Reports API effectively.

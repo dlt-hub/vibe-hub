@@ -1,0 +1,60 @@
+Based on the provided documentation, here is the YAML configuration for the CoinGecko REST API source:
+
+client:
+  base_url: "https://api.coingecko.com/api/v3/"
+  auth:
+    type: "bearer"
+
+resources:
+  - name: "coins"
+    endpoint: "/coins/markets"
+    method: "GET"
+    params:
+      vs_currency: "usd"  # Example parameter to specify the fiat currency
+      order: "market_cap_desc"
+      per_page: "100"
+      page: "1"
+    data_selector: "$"  # Selects the entire response as the data
+
+  - name: "market_chart"
+    endpoint: "/coins/{id}/market_chart"
+    method: "GET"
+    params:
+      vs_currency: "usd"  # Example parameter to specify the fiat currency
+      days: "30"          # Example parameter for historical data
+    data_selector: "$"
+
+  - name: "history"
+    endpoint: "/coins/{id}/history"
+    method: "GET"
+    params:
+      vs_currency: "usd"  # Example parameter to specify the fiat currency
+      date: "{date}"      # Example parameter for specific historical date
+    data_selector: "$"
+
+notes:
+  - "CoinGecko API is a free service but has rate limits of 10-50 requests per minute."
+  - "No authentication is required to access the CoinGecko API."
+  - "Attribution is required when using their data."
+  - "The API only supports full refresh sync, meaning data should be fully reloaded rather than incrementally updated."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "No API key is required."
+    - "Bearer token is used in the source code but is not necessary for CoinGecko."
+
+source_metadata:
+  description: "CoinGecko API provides information about different cryptocurrencies, their market data, and historical data."
+### Key Information Included:
+1. **Base URL**: The actual base URL is extracted from the documentation.
+2. **Authentication Method**: The API uses bearer token authentication; however, no key is required.
+3. **Main API Endpoints**: The main endpoints include "coins", "market_chart", and "history" with their respective parameters.
+4. **Query Parameters**: Example query parameters are provided for each endpoint.
+5. **Notes**: Important notes about rate limits, authentication, and usage requirements are included.
+6. **Source Categorization**: The source is categorized appropriately as a cryptocurrency data API.
+7. **Valid YAML Structure**: The YAML format is clean and valid, following the structure specified.

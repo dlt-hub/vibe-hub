@@ -1,0 +1,58 @@
+Here's a complete YAML configuration for the `quickbooks_time` REST API source based on the provided documentation:
+
+client:
+  base_url: "https://rest.tsheets.com/api/v1/"
+  auth:
+    type: "bearer"
+    # Additional auth parameters if needed
+
+resources:
+  - name: "timesheets_deleted"
+    endpoint: "/timesheets/deleted"
+    method: "GET"
+    params:
+      - name: "start_date"
+        required: true
+        type: "string"  # Expected format: ISO 8601 date
+      - name: "end_date"
+        required: true
+        type: "string"  # Expected format: ISO 8601 date
+    data_selector: "$.results"  # JSONPath to select data from response
+
+  - name: "customfielditem_jobcode_filters"
+    endpoint: "/customfielditem/jobcode_filters"
+    method: "GET"
+    params: []
+    data_selector: "$.results"  # JSONPath to select data from response
+
+  - name: "customfielditem_user_filters"
+    endpoint: "/customfielditem/user_filters"
+    method: "GET"
+    params: []
+    data_selector: "$.results"  # JSONPath to select data from response
+
+notes:
+  - "API uses Bearer token for authentication. Ensure to handle token refresh logic."
+  - "Rate limits apply; be cautious of 429 errors."
+  - "Ensure to check API documentation for pagination details on large datasets."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "Bearer token required for all requests."
+    - "API credentials can be obtained from the TSheets website."
+
+source_metadata:
+  description: "The TSheets API provides access to timesheet management, including retrieving and managing timesheets, custom fields, users, job codes, groups, settings, and schedules."
+### Breakdown of Configuration:
+1. **Client Configuration**: The base URL is extracted from the documentation.
+2. **Authentication Method**: Identified as "bearer" token.
+3. **Resources**: Three main API endpoints are included, along with their respective HTTP methods and parameters.
+4. **Notes**: Important considerations regarding token usage and rate limits.
+5. **Error Codes**: Common HTTP status codes are listed for error handling.
+6. **Auth Info**: Additional authentication details.
+7. **Source Metadata**: A brief description of the API's capabilities.

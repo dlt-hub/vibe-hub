@@ -1,0 +1,61 @@
+client:
+  base_url: "https://api.mailjet.com/v3/"
+  auth:
+    type: "api_key"
+    client_id: "{{ dlt.secrets['MAILJET_API_KEY'] }}"
+    client_secret: "{{ dlt.secrets['MAILJET_SECRET_KEY'] }}"
+    location: "header"
+    header_name: "Authorization"
+
+resources:
+  - name: "contactlist"
+    endpoint: "/contactlist"
+    method: "GET"
+    params:
+      - name: "Limit"
+        type: "integer"
+        description: "The maximum number of results to return."
+      - name: "Offset"
+        type: "integer"
+        description: "The index of the first result to return."
+    data_selector: "$.Data"  # JSONPath to select data from response
+
+  - name: "contacts"
+    endpoint: "/contacts"
+    method: "GET"
+    params:
+      - name: "Limit"
+        type: "integer"
+        description: "The maximum number of results to return."
+      - name: "Offset"
+        type: "integer"
+        description: "The index of the first result to return."
+    data_selector: "$.Data"  # JSONPath to select data from response
+
+  - name: "message"
+    endpoint: "/send"
+    method: "POST"
+    params:
+      - name: "Messages"
+        type: "array"
+        description: "An array of message objects to send."
+    data_selector: "$.Messages"  # JSONPath to select data from response
+
+notes:
+  - "Mailjet supports a full refresh sync; incremental or differential updates are not available."
+  - "Be aware of rate limits to avoid 429 errors due to too many requests in a short period."
+  - "Authentication requires API keys to be provided in the request header."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too many requests
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements"
+    - "Authentication methods"
+
+source_metadata:
+  description: "The Mailjet API provides endpoints for managing contacts, sending messages, and accessing campaign statistics."
+This YAML configuration captures the essential aspects of the Mailjet API based on the provided documentation and structures it according to the requirements specified.

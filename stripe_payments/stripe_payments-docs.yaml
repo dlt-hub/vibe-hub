@@ -1,0 +1,58 @@
+Based on the provided documentation and the requirements, here is a complete YAML configuration for the `stripe_payments` REST API source:
+
+client:
+  base_url: "https://api.stripe.com/v1/"
+  auth:
+    type: "bearer"
+    # The access token is required for authentication
+
+resources:
+  - name: "payment_methods"
+    endpoint: "/payment_methods"
+    method: "GET"
+    params:
+      # Include optional parameters for filtering or pagination
+      - key: "customer"
+        description: "The ID of the customer whose payment methods you want to retrieve."
+      - key: "type"
+        description: "The type of payment method to retrieve, e.g., card."
+    data_selector: "$.data"  # JSONPath to select data from response
+
+  - name: "refunds"
+    endpoint: "/refunds"
+    method: "GET"
+    params:
+      # Include optional parameters for filtering or pagination
+      - key: "charge"
+        description: "The ID of the charge to retrieve refunds for."
+      - key: "limit"
+        description: "A limit on the number of objects to be returned."
+    data_selector: "$.data"  # JSONPath to select data from response
+
+notes:
+  - "Stripe uses OAuth 2.0 for authentication. Ensure that the access token is valid."
+  - "Rate limits are enforced by Stripe. Check the API response headers for limit information."
+  - "The API uses cursor-based pagination for managing large data sets efficiently."
+
+errors:
+  - 401  # Unauthorized: Invalid or missing authentication
+  - 403  # Forbidden: Insufficient permissions
+  - 429  # Too Many Requests: Rate limit exceeded
+
+auth_info:
+  mentioned_objects:
+    - "You need to set up a client ID, client secret, and a refresh token for OAuth."
+    - "Ensure that all requests include the 'Authorization' header with the Bearer token."
+
+source_metadata:
+  description: "The Stripe API provides access to payment methods and refund information for transactions."
+### Explanation of YAML Configuration:
+1. **Base URL:** Extracted from the documentation as `https://api.stripe.com/v1/`.
+2. **Authentication Method:** Identified as Bearer token via OAuth 2.0.
+3. **Main API Endpoints:** Included `payment_methods` and `refunds` as resources with their respective endpoints, methods, and relevant parameters.
+4. **Query Parameters:** Provided optional parameters for each endpoint that can be used to filter the results.
+5. **Helpful Notes:** Added notes about authentication, rate limits, and pagination to guide users in using the API effectively.
+6. **Error Codes:** Common HTTP error codes that may arise during API calls are included for better error handling.
+7. **Source Metadata:** A brief description of the API's purpose was included. 
+
+This YAML structure meets the specified requirements and captures the essential details for interacting with the Stripe API.

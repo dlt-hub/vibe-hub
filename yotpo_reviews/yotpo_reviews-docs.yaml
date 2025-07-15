@@ -1,0 +1,81 @@
+Here is a YAML configuration for the Yotpo Reviews REST API source based on the provided documentation:
+
+client:
+  base_url: "https://api.yotpo.com/v1/"
+  auth:
+    type: "bearer"
+    # Additional auth parameters if needed
+
+resources:
+  - name: "reviews"
+    endpoint: "/reviews"
+    method: "GET"
+    params:
+      - name: "product_id"
+        type: "string"
+        required: false
+        description: "The ID of the product to filter reviews by."
+      - name: "page"
+        type: "integer"
+        required: false
+        description: "The page number for pagination."
+      - name: "per_page"
+        type: "integer"
+        required: false
+        description: "The number of reviews to return per page."
+    data_selector: "$.response.reviews"  # JSONPath to select data from response
+
+  - name: "coupons"
+    endpoint: "/coupons"
+    method: "GET"
+    params:
+      - name: "coupon_code"
+        type: "string"
+        required: false
+        description: "The coupon code to retrieve."
+      - name: "page"
+        type: "integer"
+        required: false
+        description: "The page number for pagination."
+      - name: "per_page"
+        type: "integer"
+        required: false
+        description: "The number of coupons to return per page."
+    data_selector: "$.response.coupons"  # JSONPath to select data from response
+
+  - name: "users"
+    endpoint: "/users"
+    method: "GET"
+    params:
+      - name: "user_id"
+        type: "string"
+        required: false
+        description: "The ID of the user to retrieve."
+      - name: "page"
+        type: "integer"
+        required: false
+        description: "The page number for pagination."
+      - name: "per_page"
+        type: "integer"
+        required: false
+        description: "The number of users to return per page."
+    data_selector: "$.response.users"  # JSONPath to select data from response
+
+notes:
+  - "Yotpo API has a rate limit of 5000 requests per minute per app key."
+  - "Authentication requires a bearer token obtained through OAuth2."
+  - "Ensure to handle pagination when retrieving large sets of data."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "Bearer token is required for authentication."
+    - "Obtain API keys and tokens from Yotpo's dashboard."
+
+source_metadata:
+  description: "The Yotpo Reviews API allows you to manage and retrieve product reviews, coupons, and user data related to reviews."
+This configuration captures the necessary details about the Yotpo Reviews API, including the base URL, authentication method, key resources, and other relevant notes.

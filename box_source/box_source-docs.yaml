@@ -1,0 +1,62 @@
+Based on the provided documentation about the Box API, here is the YAML configuration for the `box_source` REST API source specification:
+
+client:
+  base_url: "https://api.box.com"
+  auth:
+    type: "bearer"
+    # Token is provided at runtime via the access_token parameter.
+
+resources:
+  - name: "events"
+    endpoint: "/events"
+    method: "GET"
+    params:
+      # Example of query parameters
+      limit: "number of events to return"
+      stream_position: "position of the last event retrieved"
+    data_selector: "$.entries"  # JSONPath to select data from response
+
+  - name: "files"
+    endpoint: "/files"
+    method: "GET"
+    params:
+      # Example of query parameters
+      fields: "fields to return (e.g., name, size)"
+      limit: "number of files to return"
+    data_selector: "$.entries"  # JSONPath to select data from response
+
+  - name: "users"
+    endpoint: "/users"
+    method: "GET"
+    params:
+      # Example of query parameters
+      limit: "number of users to return"
+    data_selector: "$.entries"  # JSONPath to select data from response
+
+notes:
+  - "Box supports full synchronization but does not offer incremental sync capabilities."
+  - "Ensure you have valid OAuth2 credentials to access the API."
+  - "Rate limits may apply; check Box's API documentation for details."
+
+errors:
+  - 401  # Unauthorized - Token might be invalid or expired
+  - 403  # Forbidden - Insufficient permissions
+  - 404  # Not Found - The requested resource does not exist
+  - 429  # Too Many Requests - Rate limit exceeded
+
+auth_info:
+  mentioned_objects:
+    - "OAuth2 Authentication via Bearer token"
+    - "Access token must be valid for successful requests"
+
+source_metadata:
+  description: "The Box API provides endpoints to manage files, track events, and handle user accounts within the Box environment."
+### Explanation:
+1. **Base URL**: Extracted from the documentation as `https://api.box.com`.
+2. **Authentication Method**: Specified as Bearer token via OAuth2.
+3. **Main API Endpoints**: Listed `events`, `files`, and `users` with example endpoints and parameters.
+4. **Query Parameters**: Included typical parameters for the endpoints based on standard API practices.
+5. **Helpful Notes**: Added notes about synchronization capabilities and rate limits.
+6. **Categorization**: The source is categorized under the Box API resources.
+
+This YAML configuration provides a structured overview of how to interact with the Box API while following the guidelines given in the documentation.

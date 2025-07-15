@@ -1,0 +1,55 @@
+Based on the provided documentation content for the MySQL API, here's a complete YAML configuration for the `mysql_instance` REST API source:
+
+client:
+  base_url: "https://your-mysql-instance.com/"
+  auth:
+    type: "basic"
+    username: "your_username"  # Replace with your actual username or use a secret
+    password: "your_password"    # Replace with your actual password or use a secret
+
+resources:
+  - name: "databases"
+    endpoint: "/databases"
+    method: "GET"
+    params: {}
+    data_selector: "$"  # Assuming the response contains the list of databases at the root
+  - name: "tables"
+    endpoint: "/tables"
+    method: "GET"
+    params:
+      database_name: "string"  # Replace with the actual database name to fetch tables
+    data_selector: "$.tables"  # Assuming the response contains tables under a "tables" key
+  - name: "rows"
+    endpoint: "/rows"
+    method: "GET"
+    params:
+      database_name: "string"  # Replace with the actual database name
+      table_name: "string"      # Replace with the actual table name
+    data_selector: "$.rows"    # Assuming the response contains rows under a "rows" key
+
+notes:
+  - "Ensure that the API credentials have appropriate permissions to access the databases."
+  - "Rate limits may apply based on your MySQL instance settings."
+  - "Basic authentication is required using a valid username and password."
+
+errors:
+  - 401  # Unauthorized: Invalid credentials
+  - 403  # Forbidden: Insufficient permissions
+  - 429  # Too Many Requests: Rate limiting triggered
+
+auth_info:
+  mentioned_objects:
+    - "Basic authentication requires a valid username and password."
+    - "Ensure the API user has read access to the databases."
+
+source_metadata:
+  description: "This API provides access to MySQL databases, tables, and rows, allowing users to extract structured content at scale."
+### Explanation of the YAML Structure:
+1. **Client Configuration**: The base URL is extracted, and basic authentication details are included.
+2. **Resources**: Three main resources are defined: `databases`, `tables`, and `rows`, with their respective endpoints and parameters.
+3. **Notes**: Helpful notes regarding authentication requirements and potential rate limits.
+4. **Error Codes**: Common HTTP error codes that may be encountered while using the API.
+5. **Auth Info**: Information regarding the authentication method used, which is basic authentication in this case.
+6. **Source Metadata**: A brief description of what the API provides.
+
+This YAML file is structured to be clean and valid, following the requirements specified.

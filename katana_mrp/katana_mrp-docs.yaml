@@ -1,0 +1,89 @@
+Based on the provided documentation for the Katana MRP API, here is the YAML configuration that adheres to the specified structure:
+
+client:
+  base_url: "https://api.katanamrp.com"
+  auth:
+    type: "bearer"
+
+resources:
+  - name: "customers"
+    endpoint: "/customers"
+    method: "GET"
+    params:
+      - name: "page"
+        type: "integer"
+        required: false
+        description: "Page number for pagination"
+      - name: "limit"
+        type: "integer"
+        required: false
+        description: "Number of records to fetch per page"
+    data_selector: "$.data"  # Assuming the response structure includes a 'data' field
+
+  - name: "shipping_fee"
+    endpoint: "/shipping_fee"
+    method: "GET"
+    params:
+      - name: "order_id"
+        type: "string"
+        required: true
+        description: "ID of the order for which shipping fee is to be retrieved"
+    data_selector: "$.shipping_fee"
+
+  - name: "costs"
+    endpoint: "/costs"
+    method: "GET"
+    params:
+      - name: "product_id"
+        type: "string"
+        required: true
+        description: "ID of the product to retrieve costs for"
+    data_selector: "$.costs"
+
+  - name: "products"
+    endpoint: "/products"
+    method: "GET"
+    params:
+      - name: "category"
+        type: "string"
+        required: false
+        description: "Filter products by category"
+      - name: "page"
+        type: "integer"
+        required: false
+        description: "Page number for pagination"
+    data_selector: "$.products"
+
+  - name: "sales_orders"
+    endpoint: "/sales_orders"
+    method: "GET"
+    params:
+      - name: "status"
+        type: "string"
+        required: false
+        description: "Filter sales orders by status (e.g., pending, completed)"
+      - name: "page"
+        type: "integer"
+        required: false
+        description: "Page number for pagination"
+    data_selector: "$.sales_orders"
+
+notes:
+  - "Authentication is managed via OAuth 2.0; you need an access token."
+  - "Rate limits may apply; check API documentation for specifics."
+  - "Handle 401 Unauthorized errors by ensuring the access token is valid."
+  - "For large datasets, consider pagination with 'page' and 'limit' parameters."
+
+errors:
+  - 401
+  - 403
+  - 429
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements: Obtain an access token from Katana MRP."
+    - "Authentication methods: Bearer token via OAuth 2.0."
+
+source_metadata:
+  description: "Katana MRP API provides access to various resources for managing customers, orders, products, and more."
+This YAML configuration captures the essential details about the Katana MRP API, including authentication, resources, parameters, and relevant notes.

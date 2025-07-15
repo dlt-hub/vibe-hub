@@ -1,0 +1,80 @@
+Based on the provided documentation content and requirements, here is the YAML configuration for the HeyPoplar REST API source:
+
+client:
+  base_url: "https://api.heypoplar.com/v1/"
+  auth:
+    type: "bearer"
+
+resources:
+  - name: "campaigns"
+    endpoint: "/campaigns"
+    method: "GET"
+    params:
+      - name: "status"
+        description: "Filter campaigns by their status (active, paused, etc.)"
+        required: false
+      - name: "page"
+        description: "Pagination parameter to specify the page number"
+        required: false
+    data_selector: "$.data.campaigns"  # Adjust the JSONPath according to the actual response structure
+
+  - name: "creatives"
+    endpoint: "/creatives"
+    method: "GET"
+    params:
+      - name: "campaign_id"
+        description: "Filter creatives by associated campaign ID"
+        required: false
+      - name: "page"
+        description: "Pagination parameter to specify the page number"
+        required: false
+    data_selector: "$.data.creatives"  # Adjust the JSONPath according to the actual response structure
+
+  - name: "audiences"
+    endpoint: "/audiences"
+    method: "GET"
+    params:
+      - name: "segment"
+        description: "Filter audiences by segment"
+        required: false
+      - name: "page"
+        description: "Pagination parameter to specify the page number"
+        required: false
+    data_selector: "$.data.audiences"  # Adjust the JSONPath according to the actual response structure
+
+  - name: "account_details"
+    endpoint: "/account"
+    method: "GET"
+    params: []
+    data_selector: "$.data.account"  # Adjust the JSONPath according to the actual response structure
+
+  - name: "mailings"
+    endpoint: "/mailings"
+    method: "GET"
+    params:
+      - name: "campaign_id"
+        description: "Filter mailings by associated campaign ID"
+        required: false
+      - name: "page"
+        description: "Pagination parameter to specify the page number"
+        required: false
+    data_selector: "$.data.mailings"  # Adjust the JSONPath according to the actual response structure
+
+notes:
+  - "Authentication is done via a Bearer token included in the Authorization header."
+  - "There is no pagination support for endpoints, which may limit the handling of large data sets."
+  - "Ensure the access token is valid to avoid 401 Unauthorized errors and verify API permissions to prevent 403 Forbidden errors."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "Bearer token required for authentication in the Authorization header."
+    - "API keys can be obtained from the HeyPoplar website."
+
+source_metadata:
+  description: "HeyPoplar API provides access to advertising campaigns, creatives, audiences, and account details for targeted advertising."
+This YAML configuration captures the essential details of the HeyPoplar API, including the base URL, authentication method, resources with their endpoints and parameters, important notes, error codes, and a description of the API's capabilities.

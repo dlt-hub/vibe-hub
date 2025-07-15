@@ -1,0 +1,77 @@
+Based on the provided documentation and requirements, here is the YAML configuration for the `pexels_photos_videos` REST API source:
+
+client:
+  base_url: "https://api.pexels.com/v1/"
+  auth:
+    type: "bearer"
+    
+resources:
+  - name: "search_photos"
+    endpoint: "/search"
+    method: "GET"
+    params:
+      - name: "query"
+        required: true
+        description: "The search term to find photos"
+      - name: "page"
+        required: false
+        description: "The page number for pagination"
+      - name: "per_page"
+        required: false
+        description: "Number of results per page"
+    data_selector: "$.photos"  # JSONPath to select data from response
+
+  - name: "curated_photos"
+    endpoint: "/curated"
+    method: "GET"
+    params:
+      - name: "page"
+        required: false
+        description: "The page number for pagination"
+      - name: "per_page"
+        required: false
+        description: "Number of results per page"
+    data_selector: "$.photos"  # JSONPath to select data from response
+
+  - name: "search_videos"
+    endpoint: "/videos/search"
+    method: "GET"
+    params:
+      - name: "query"
+        required: true
+        description: "The search term to find videos"
+      - name: "page"
+        required: false
+        description: "The page number for pagination"
+      - name: "per_page"
+        required: false
+        description: "Number of results per page"
+    data_selector: "$.videos"  # JSONPath to select data from response
+
+notes:
+  - "Authentication requires a valid API key which must be included in the header."
+  - "Rate limits may apply; check Pexels' API documentation for details on usage limits."
+  - "Pagination is supported via 'page' and 'per_page' query parameters."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 404  # Not Found
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements"
+    - "Bearer token authentication"
+
+source_metadata:
+  description: "The Pexels API provides access to a vast collection of photos and videos, allowing users to search for and retrieve media based on various criteria."
+### Explanation:
+1. **Base URL**: Extracted from the documentation as `https://api.pexels.com/v1/`.
+2. **Authentication**: Identified as a Bearer token.
+3. **Resources**: Three main endpoints are defined: `search_photos`, `curated_photos`, and `search_videos`, with relevant query parameters specified.
+4. **Notes**: Includes important information about authentication, rate limits, and pagination.
+5. **Errors**: Common error codes included.
+6. **Source Metadata**: A brief description of what the Pexels API provides. 
+
+This YAML configuration follows the specified structure and provides a clear representation of the Pexels API's capabilities.

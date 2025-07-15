@@ -1,0 +1,71 @@
+Here is the complete YAML configuration for the CIMIS data REST API source based on the provided documentation:
+
+client:
+  base_url: "https://wwwcimis.water.ca.gov/"
+  auth:
+    type: "api_key"
+
+resources:
+  - name: "data"
+    endpoint: "/data"
+    method: "GET"
+    params:
+      - name: "access_token"
+        type: "query"
+        required: true
+        description: "API key for authentication"
+      - name: "date"
+        type: "query"
+        required: false
+        description: "Julian date for the data retrieval"
+    data_selector: "$.data"  # JSONPath to select data from response
+
+  - name: "stations"
+    endpoint: "/stations"
+    method: "GET"
+    params:
+      - name: "access_token"
+        type: "query"
+        required: true
+        description: "API key for authentication"
+    data_selector: "$.stations"  # JSONPath to select data from response
+
+  - name: "spatial_zipcodes"
+    endpoint: "/spatial_zipcodes"
+    method: "GET"
+    params:
+      - name: "access_token"
+        type: "query"
+        required: true
+        description: "API key for authentication"
+      - name: "zipcode"
+        type: "query"
+        required: false
+        description: "Specific zip code to retrieve spatial data"
+    data_selector: "$.spatial_data"  # JSONPath to select data from response
+
+notes:
+  - "Ensure your API key is valid and included in the request parameters."
+  - "Rate limits and pagination details should be checked in the API documentation."
+  - "The Julian date format is used; conversion may be necessary for other formats."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements: Must be included in query parameters."
+    - "Authentication method: API key."
+
+source_metadata:
+  description: "CIMIS data API provides access to daily or hourly data, station information, and spatial data related to specific zip codes."
+### Explanation:
+1. **Base URL**: The base URL is extracted as "https://wwwcimis.water.ca.gov/".
+2. **Authentication Method**: The API uses an API key for authentication.
+3. **Endpoints/Resources**: Three main endpoints are listed: `data`, `stations`, and `spatial_zipcodes`, including their respective parameters.
+4. **Query Parameters**: Relevant parameters for each endpoint are specified, including the required API key.
+5. **Notes**: Helpful notes about authentication and potential issues, such as rate limits and the Julian date format, are included.
+6. **Errors**: Common error codes are specified for client-side issues.
+7. **Source Metadata**: A brief description of the API's functionality is provided.

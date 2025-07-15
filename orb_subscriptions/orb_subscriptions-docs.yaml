@@ -1,0 +1,69 @@
+Based on the provided documentation for the `orb_subscriptions` API, here is a complete YAML configuration that follows the specified structure:
+
+client:
+  base_url: "https://api.withorb.com/"
+  auth:
+    type: "api_key"
+    in: "header"  # Indicates where the API key should be included
+
+resources:
+  - name: "subscriptions"
+    endpoint: "/subscriptions"
+    method: "GET"
+    params:
+      - name: "customer_id"
+        required: false
+        description: "Filter subscriptions by customer ID"
+      - name: "status"
+        required: false
+        description: "Filter subscriptions by their status (e.g., active, canceled)"
+    data_selector: "$.data"  # Assuming the response contains a 'data' key with the relevant information
+
+  - name: "plans"
+    endpoint: "/plans"
+    method: "GET"
+    params:
+      - name: "active"
+        required: false
+        description: "Filter plans by their active status"
+    data_selector: "$.data"  # Assuming the response contains a 'data' key with the relevant information
+
+  - name: "customers"
+    endpoint: "/customers"
+    method: "GET"
+    params:
+      - name: "limit"
+        required: false
+        description: "Limit the number of customers returned"
+      - name: "offset"
+        required: false
+        description: "Offset for pagination"
+    data_selector: "$.data"  # Assuming the response contains a 'data' key with the relevant information
+
+notes:
+  - "Authentication is performed via API Key included in the header of requests."
+  - "Monitor API usage closely to avoid rate limits."
+  - "Full refreshes may be necessary to capture updates, as incremental syncs are based on creation timestamps."
+
+errors:
+  - 401  # Unauthorized: Invalid API Key
+  - 403  # Forbidden: Insufficient permissions
+  - 429  # Too Many Requests: Rate limit exceeded
+
+auth_info:
+  mentioned_objects:
+    - "API key must be included in the header for all requests."
+    - "Visit https://www.withorb.com/ to request an API key."
+
+source_metadata:
+  description: "The orb_subscriptions API provides access to subscription management, plan details, and customer data."
+### Explanation of the YAML Configuration:
+1. **Base URL**: Extracted from the documentation as `https://api.withorb.com/`.
+2. **Authentication Method**: Identified as `api_key` and specified to be included in the header.
+3. **API Resources**: Listed three main resources (`subscriptions`, `plans`, and `customers`) with their respective endpoints, methods, parameters, and data selectors.
+4. **Notes**: Included important information about authentication and API usage considerations.
+5. **Error Codes**: Provided common error codes that may be encountered when using the API.
+6. **Auth Info**: Mentioned the necessity of an API key and where to obtain it.
+7. **Source Metadata**: Provided a brief description of the API's functionality.
+
+This YAML configuration should serve as a comprehensive guide for interacting with the `orb_subscriptions` API via a RESTful approach.

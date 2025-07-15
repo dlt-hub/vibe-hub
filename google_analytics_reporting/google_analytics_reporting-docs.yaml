@@ -1,0 +1,52 @@
+Here's a YAML configuration for the `google_analytics_reporting` REST API source based on the information provided in the documentation:
+
+client:
+  base_url: "https://analyticsreporting.googleapis.com/v4/"
+  auth:
+    type: "service_account"  # Authentication method used
+
+resources:
+  - name: "reports:batchGet"
+    endpoint: "/reports:batchGet"
+    method: "POST"
+    params:
+      - name: "access_token"
+        required: true
+        description: "OAuth 2.0 access token, obtained through service account."
+    data_selector: "$.reports"  # JSONPath to select data from response
+
+  - name: "userActivity:search"
+    endpoint: "/userActivity:search"
+    method: "POST"
+    params:
+      - name: "access_token"
+        required: true
+        description: "OAuth 2.0 access token, obtained through service account."
+    data_selector: "$.userActivity"  # JSONPath to select data from response
+
+notes:
+  - "Authentication is performed via a service account."
+  - "Ensure to throttle API calls to avoid hitting rate limits."
+  - "Google Analytics Universal Analytics connector will be deprecated on July 1, 2024."
+
+errors:
+  - 401  # Unauthorized error
+  - 403  # Forbidden error
+  - 429  # Too many requests
+
+auth_info:
+  mentioned_objects:
+    - "Service account key required for authentication."
+    - "Access tokens must be securely managed."
+
+source_metadata:
+  description: "Google Analytics Reporting API provides access to analytics data reports and user activity data."
+### Explanation of the YAML structure:
+1. **Client Section**: Contains the base URL of the API and the type of authentication used.
+2. **Resources Section**: Lists the main resources (endpoints) of the API, including their HTTP method, parameters, and the JSONPath to extract relevant data from the API responses.
+3. **Notes Section**: Provides important information about authentication, rate limits, and deprecation warnings.
+4. **Errors Section**: Lists common HTTP error codes that users may encounter.
+5. **Auth Info Section**: Provides details on authentication requirements.
+6. **Source Metadata Section**: A brief description of what the API offers.
+
+This configuration captures the required details and adheres to the guidelines provided.

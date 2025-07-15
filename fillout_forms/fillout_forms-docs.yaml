@@ -1,0 +1,58 @@
+Here is the complete YAML configuration for the `fillout_forms` REST API source based on the provided documentation:
+
+client:
+  base_url: "https://api.fillout.com"
+  auth:
+    type: "api_key"
+    token: "access_token"  # This should be replaced with the actual token when used.
+
+resources:
+  - name: "forms"
+    endpoint: "/forms"
+    method: "GET"
+    params: 
+      # No specific query parameters mentioned in the documentation, but can be added if needed.
+    data_selector: "$"  # Selects the entire response as the data.
+
+  - name: "form_metadata"
+    endpoint: "/form_metadata"
+    method: "GET"
+    params:
+      # No specific query parameters mentioned in the documentation, but can be added if needed.
+    data_selector: "$"  # Selects the entire response as the data.
+
+  - name: "submissions"
+    endpoint: "/submissions"
+    method: "GET"
+    params:
+      submissionId: 
+        type: "string"
+        required: false  # Optional for incremental loading.
+    data_selector: "$"  # Selects the entire response as the data.
+
+notes:
+  - "Authentication is managed via API keys, which should be included in the request headers."
+  - "Ensure that the API key is valid to avoid 401 Unauthorized errors."
+  - "Only submissions data supports incremental updates based on submissionId."
+  - "Rate limits and pagination details are not specified; check the API documentation for more information."
+
+errors:
+  - 401  # Unauthorized - API key might be invalid.
+  - 403  # Forbidden - Access denied to the requested endpoint.
+  - 429  # Too Many Requests - Rate limit exceeded.
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements"
+    - "Include API key in request headers for authentication."
+
+source_metadata:
+  description: "FillOut Forms API provides access to forms, their metadata, and submissions data, enabling integration into data pipelines."
+### Explanation of Configuration
+- **Base URL**: Extracted from the provided documentation.
+- **Authentication**: Identified as API key based on the usage in the code snippet.
+- **Resources**: Three main API endpoints (`forms`, `form_metadata`, `submissions`) have been defined, along with their methods and data selectors.
+- **Notes**: Important information regarding authentication and error handling is included.
+- **Errors**: Common HTTP error codes are specified for better understanding of potential issues.
+- **Auth Info**: Highlights the importance of API key requirements.
+- **Source Metadata**: A brief description of the API's purpose.

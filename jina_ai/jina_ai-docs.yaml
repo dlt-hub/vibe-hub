@@ -1,0 +1,49 @@
+Here is a complete YAML configuration for the Jina AI REST API source based on the provided documentation:
+
+client:
+  base_url: "https://r.jina.ai/"
+  auth:
+    type: "bearer"
+
+resources:
+  - name: "reader"
+    endpoint: "/reader"
+    method: "GET"
+    params:
+      url: "string"  # URL of the content to fetch
+    data_selector: "$.data"  # Adjust JSONPath based on actual response structure
+
+  - name: "search"
+    endpoint: "/search"
+    method: "POST"
+    params:
+      query: "string"  # Search prompt
+    data_selector: "$.results"  # Adjust JSONPath based on actual response structure
+
+notes:
+  - "Authentication is done via a Bearer Token, which must be included in the Authorization header."
+  - "Ensure the Bearer Token is valid to avoid unauthorized errors."
+  - "Rate limits are enforced; manage request frequency to avoid being blocked."
+  - "No support for incremental sync; updates must be managed manually."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "Bearer Token must be included in the Authorization header."
+    - "API keys can be obtained from the official Jina AI website."
+
+source_metadata:
+  description: "Jina AI API provides endpoints for fetching content based on a URL and for searching using a search prompt. It enables building data pipelines to extract structured content from Jina AI workspaces."
+### Explanation of the YAML Structure:
+1. **Client Configuration**: Specifies the base URL and the authentication method (Bearer token).
+2. **Resources**: Lists two main API endpoints (`reader` and `search`), including their HTTP methods, parameters, and data selectors.
+3. **Notes**: Provides crucial information about authentication, rate limits, and other operational details.
+4. **Errors**: Lists common HTTP error codes that can be encountered.
+5. **Auth Info**: Mentions details about the required authentication method.
+6. **Source Metadata**: Offers a brief description of what the API provides.
+
+This YAML configuration is structured to be easily understood and directly usable for setting up the API source in a data pipeline.

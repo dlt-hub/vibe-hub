@@ -1,0 +1,76 @@
+Based on the provided documentation content, here is a structured YAML configuration for the Ticketmaster Discovery Feed REST API source:
+
+client:
+  base_url: "https://app.ticketmaster.com/discovery-feed/v2/"
+  auth:
+    type: "bearer"
+    # Additional auth parameters if needed
+
+resources:
+  - name: "events"
+    endpoint: "/events.json"
+    method: "GET"
+    params:
+      - name: "countryCode"
+        type: "string"
+        description: "Filter events by country code."
+      - name: "locale"
+        type: "string"
+        description: "Specify the locale for the event data."
+    data_selector: "$._embedded.events"  # JSONPath to select data from response
+    
+  - name: "events_list"
+    endpoint: "/events"
+    method: "GET"
+    params:
+      - name: "size"
+        type: "integer"
+        description: "Number of events to return per page."
+      - name: "page"
+        type: "integer"
+        description: "The page number of the results to return."
+    data_selector: "$._embedded.events"
+
+  - name: "support_contact_us"
+    endpoint: "/support/contact-us"
+    method: "POST"
+    params:
+      - name: "name"
+        type: "string"
+        description: "Name of the person contacting support."
+      - name: "email"
+        type: "string"
+        description: "Email address of the person contacting support."
+      - name: "message"
+        type: "string"
+        description: "Message content for support."
+    data_selector: "$.result"
+
+notes:
+  - "API key is mandatory for each request."
+  - "The public API has a quota limit of 2 requests per second and 5000 requests per day."
+  - "Discovery Feed data is refreshed hourly and is not subject to call limits."
+  - "Ensure compliance with API requirements to avoid common errors like rate limits exceeded or invalid request formats."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements"
+    - "Bearer token authentication method"
+
+source_metadata:
+  description: "The Ticketmaster Discovery Feed API provides detailed listings of events, attractions, and venues, allowing users to access events data globally or per country."
+### Explanation:
+1. **Base URL**: Extracted from the documentation as `https://app.ticketmaster.com/discovery-feed/v2/`.
+2. **Authentication Method**: Identified as "bearer" token.
+3. **API Endpoints**: Three main resources were identified, each with their respective endpoints and parameters.
+4. **Query Parameters**: Relevant parameters for each endpoint were added.
+5. **Notes**: Important notes regarding API usage and limits were included.
+6. **Errors**: Common error codes are listed for reference.
+7. **Source Metadata**: A brief description of what the API provides was included. 
+
+This YAML configuration provides a comprehensive overview of the Ticketmaster Discovery Feed API for use in a REST API source setup.

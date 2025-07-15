@@ -1,0 +1,74 @@
+Based on the provided documentation for the Gridly API, here’s a complete YAML configuration for the REST API source:
+
+client:
+  base_url: "https://api.gridly.com/"
+  auth:
+    type: "api_key"
+    header_name: "x-api-key"
+
+resources:
+  - name: "records"
+    endpoint: "/api/records"
+    method: "GET"
+    params:
+      - name: "grid_id"
+        required: true
+        description: "The ID of the grid to manage records for."
+    data_selector: "$.data.records"  # Assuming the response has records under this path
+
+  - name: "grids"
+    endpoint: "/api/grids"
+    method: "GET"
+    params:
+      - name: "workspace_id"
+        required: false
+        description: "Optional; specifies the workspace to filter grids."
+    data_selector: "$.data.grids"  # Assuming the response has grids under this path
+
+  - name: "branches"
+    endpoint: "/api/branches"
+    method: "GET"
+    params:
+      - name: "grid_id"
+        required: true
+        description: "The ID of the grid to manage branches."
+    data_selector: "$.data.branches"  # Assuming the response has branches under this path
+
+notes:
+  - "Authentication is required via API Key provided in the header."
+  - "Rate limits may apply; check the API documentation for details."
+  - "Ensure the correct Grid ID is used to avoid GRID_NOT_FOUND errors."
+  - "This API supports full refresh sync but does not support incremental sync."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements: An API key must be included in the headers."
+    - "Authentication method: API key."
+
+source_metadata:
+  description: "The Gridly API provides access to manage records, grids, and branches within Gridly workspaces."
+### Explanation of the YAML Configuration:
+1. **Client Configuration**: 
+   - The base URL is extracted from the documentation, which is `https://api.gridly.com/`.
+   - The authentication type is specified as `api_key`, and the required header name is given.
+
+2. **Resources**: 
+   - Three main API endpoints (`records`, `grids`, and `branches`) are defined, along with their respective HTTP methods and parameters.
+   - Each resource includes a `data_selector` that indicates where to find the relevant data in the API response.
+
+3. **Notes**: 
+   - Important information regarding authentication, rate limits, and error handling is included to aid users in understanding the API's requirements and limitations.
+
+4. **Errors**: 
+   - Common HTTP error codes are listed to provide insights into potential issues that may arise when interacting with the API.
+
+5. **Auth Info**: 
+   - Information about API key requirements and authentication methods is included for clarity.
+
+6. **Source Metadata**: 
+   - A brief description of what the API provides is included for easy reference.

@@ -1,0 +1,58 @@
+client:
+  base_url: "https://api.pingdom.com/api/3.1/"
+  auth:
+    type: "api_key"
+    token: "access_token"  # Placeholder for API key
+
+resources:
+  - name: "checks"
+    endpoint: "/checks"
+    method: "GET"
+    params:
+      - name: "id"
+        type: "string"
+        required: false
+        description: "The ID of the specific check to retrieve."
+    data_selector: "$.checks"  # JSONPath to select data from response
+
+  - name: "summary_performance"
+    endpoint: "/summary.performance"
+    method: "GET"
+    params:
+      - name: "start_date"
+        type: "string"
+        required: true
+        description: "The start date for the performance summary in YYYY-MM-DD format."
+      - name: "end_date"
+        type: "string"
+        required: false
+        description: "The end date for the performance summary in YYYY-MM-DD format."
+    data_selector: "$.summary"  # JSONPath to select data from response
+
+  - name: "trace"
+    endpoint: "/trace"
+    method: "GET"
+    params:
+      - name: "id"
+        type: "string"
+        required: true
+        description: "The ID of the check to trace."
+    data_selector: "$.trace"  # JSONPath to select data from response
+
+notes:
+  - "Authentication requires a valid API key included in the header as 'Authorization'."
+  - "Rate limits may apply; check Pingdom documentation for specific limits."
+  - "Ensure the 'start_date' parameter is included for performance data."
+
+errors:
+  - 401  # Unauthorized - invalid API key
+  - 403  # Forbidden - permission issues
+  - 429  # Too Many Requests - rate limiting
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements"
+    - "Authentication is done via header as 'Authorization'."
+
+source_metadata:
+  description: "Pingdom Monitoring API provides information about health checks, performance summaries, and trace data for monitoring website uptime and performance."

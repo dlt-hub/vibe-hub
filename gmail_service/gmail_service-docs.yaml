@@ -1,0 +1,74 @@
+Here's a YAML configuration for the `gmail_service` REST API source based on the provided documentation:
+
+client:
+  base_url: "https://gmail.googleapis.com/gmail/v1"
+  auth:
+    type: "bearer"  # OAuth 2.0 authentication
+
+resources:
+  - name: "Profile"
+    endpoint: "/users/me/profile"
+    method: "GET"
+    params: {}
+    data_selector: "$"  # Selects the entire response
+
+  - name: "Drafts"
+    endpoint: "/users/me/drafts"
+    method: "GET"
+    params:
+      - name: "maxResults"
+        description: "Maximum number of draft messages to return."
+        required: false
+      - name: "pageToken"
+        description: "Token to retrieve the next page of results."
+        required: false
+    data_selector: "$.drafts"  # Selects the drafts array from the response
+
+  - name: "Labels"
+    endpoint: "/users/me/labels"
+    method: "GET"
+    params: {}
+    data_selector: "$.labels"  # Selects the labels array from the response
+
+  - name: "Messages"
+    endpoint: "/users/me/messages"
+    method: "GET"
+    params:
+      - name: "maxResults"
+        description: "Maximum number of messages to return."
+        required: false
+      - name: "pageToken"
+        description: "Token to retrieve the next page of results."
+        required: false
+    data_selector: "$.messages"  # Selects the messages array from the response
+
+  - name: "Threads"
+    endpoint: "/users/me/threads"
+    method: "GET"
+    params:
+      - name: "maxResults"
+        description: "Maximum number of threads to return."
+        required: false
+      - name: "pageToken"
+        description: "Token to retrieve the next page of results."
+        required: false
+    data_selector: "$.threads"  # Selects the threads array from the response
+
+notes:
+  - "Ensure proper OAuth 2.0 setup for authentication, including refresh tokens."
+  - "Be aware of Google API usage limits and quotas to avoid service disruptions."
+  - "Use appropriate scopes like 'https://www.googleapis.com/auth/gmail.readonly' for read operations."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "Requires OAuth 2.0 credentials: client ID, client secret, and refresh token."
+    - "Bearer token must be included in the Authorization header."
+
+source_metadata:
+  description: "The Gmail API allows access to Gmail mailboxes, enabling management of emails, drafts, and labels."
+This YAML configuration captures the essential details about the Gmail API based on the provided documentation, including the base URL, authentication method, resources, and relevant notes.

@@ -1,0 +1,79 @@
+Based on the provided documentation content, here is a complete YAML configuration for the `ezo_inventory` REST API source:
+
+client:
+  base_url: "https://{{ subdomain }}.ezo.io/api/v1/"
+  auth:
+    type: "api_key"
+    # The API key should be included as a query parameter in each request
+
+resources:
+  - name: "inventories"
+    endpoint: "/inventories"
+    method: "GET"
+    params:
+      - name: "limit"
+        type: "integer"
+        description: "Number of records to return"
+      - name: "offset"
+        type: "integer"
+        description: "Offset for pagination"
+    data_selector: "$.data"  # Assuming the data is under a "data" key in the response
+
+  - name: "assets"
+    endpoint: "/assets"
+    method: "GET"
+    params:
+      - name: "status"
+        type: "string"
+        description: "Filter assets by their status"
+      - name: "limit"
+        type: "integer"
+        description: "Number of records to return"
+      - name: "offset"
+        type: "integer"
+        description: "Offset for pagination"
+    data_selector: "$.data"
+
+  - name: "checked_out_assets"
+    endpoint: "/checked_out_assets"
+    method: "GET"
+    params:
+      - name: "user_id"
+        type: "string"
+        description: "Filter checked out assets by user ID"
+      - name: "limit"
+        type: "integer"
+        description: "Number of records to return"
+      - name: "offset"
+        type: "integer"
+        description: "Offset for pagination"
+    data_selector: "$.data"
+
+notes:
+  - "Authentication requires an API key included as a query parameter in each request."
+  - "API access must be enabled in the platform settings."
+  - "Rate limits may apply; check Ezo Inventory documentation for details."
+  - "Ensure to handle pagination when dealing with large datasets."
+
+errors:
+  - 401  # Unauthorized access if API key is incorrect or missing
+  - 403  # Forbidden access if the API key does not have the necessary permissions
+  - 429  # Too many requests; rate limit exceeded
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements: Must be included in each request as a query parameter."
+    - "Authentication methods: API key."
+
+source_metadata:
+  description: "Ezo Inventory API provides endpoints for managing inventories, assets, and transaction records."
+### Explanation:
+1. **Base URL**: Extracted from the documentation, formatted to use a subdomain variable.
+2. **Authentication Method**: Specified as an API key, which is required for each request.
+3. **Resources**: Listed three main endpoints (`inventories`, `assets`, `checked_out_assets`) with their respective HTTP methods, parameters, and data selectors.
+4. **Notes**: Important information regarding authentication and rate limits is included.
+5. **Errors**: Common error codes related to authentication and rate limits are provided.
+6. **Auth Info**: Information on API key requirements and authentication methods.
+7. **Source Metadata**: A brief description of what the API provides. 
+
+This YAML configuration serves as a comprehensive guide for interacting with the Ezo Inventory API.

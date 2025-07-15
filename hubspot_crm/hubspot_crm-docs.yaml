@@ -1,0 +1,62 @@
+Based on the provided information and scraped documentation of the HubSpot CRM API, here is the YAML configuration for the REST API source:
+
+client:
+  base_url: "https://api.hubapi.com"
+  auth:
+    type: "bearer"  # Authentication method used is Bearer token
+
+resources:
+  - name: "campaigns"
+    endpoint: "/marketing/v3/campaigns"
+    method: "GET"
+    params:
+      - name: "limit"
+        type: "integer"
+        description: "The maximum number of results to return"
+      - name: "offset"
+        type: "integer"
+        description: "The offset for pagination"
+    data_selector: "$.results"  # JSONPath to select data from response
+
+  - name: "companies"
+    endpoint: "/crm/v3/objects/companies"
+    method: "GET"
+    params:
+      - name: "limit"
+        type: "integer"
+        description: "The maximum number of results to return"
+      - name: "properties"
+        type: "string"
+        description: "Comma-separated list of properties to return"
+      - name: "after"
+        type: "string"
+        description: "Pagination token"
+    data_selector: "$.results"  # JSONPath to select data from response
+
+  - name: "contact_lists"
+    endpoint: "/contacts/v1/lists/all"
+    method: "GET"
+    params:
+      - name: "count"
+        type: "integer"
+        description: "Number of results to return"
+    data_selector: "$.lists"  # JSONPath to select data from response
+
+notes:
+  - "Important notes about the API: Ensure OAuth tokens are refreshed regularly to maintain access."
+  - "Rate limits may vary based on your HubSpot account tier, monitor to avoid service interruptions."
+  - "Use pagination for resources that can return many results, such as companies and contacts."
+
+errors:
+  - 401  # Unauthorized access
+  - 403  # Forbidden access
+  - 429  # Too many requests
+
+auth_info:
+  mentioned_objects:
+    - "Bearer token required for authentication"
+    - "Refresh tokens must be managed for long-term access"
+
+source_metadata:
+  description: "HubSpot CRM API allows access to marketing campaigns, companies, contact lists, and other CRM objects."
+This YAML configuration provides a structured representation of the HubSpot CRM API source, including the base URL, authentication method, resources, and relevant information about using the API.

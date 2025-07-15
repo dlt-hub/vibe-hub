@@ -1,0 +1,78 @@
+Here's a YAML configuration for the `xero_finance` REST API source based on the provided documentation:
+
+client:
+  base_url: "https://api.xero.com"
+  auth:
+    type: "bearer"
+    # Additional auth parameters if needed
+
+resources:
+  - name: "accounts"
+    endpoint: "/api.xro/2.0/Accounts"
+    method: "GET"
+    params:
+      - name: "page"
+        type: "integer"
+        required: false
+        description: "The page of results to return."
+      - name: "if_modified_since"
+        type: "string"
+        required: false
+        description: "Only return results modified since this date."
+    data_selector: "$.Accounts"  # JSONPath to select data from response
+
+  - name: "bank_transactions"
+    endpoint: "/api.xro/2.0/BankTransactions"
+    method: "GET"
+    params:
+      - name: "page"
+        type: "integer"
+        required: false
+        description: "The page of results to return."
+      - name: "if_modified_since"
+        type: "string"
+        required: false
+        description: "Only return results modified since this date."
+    data_selector: "$.BankTransactions"  # JSONPath to select data from response
+
+  - name: "contacts"
+    endpoint: "/api.xro/2.0/Contacts"
+    method: "GET"
+    params:
+      - name: "page"
+        type: "integer"
+        required: false
+        description: "The page of results to return."
+      - name: "if_modified_since"
+        type: "string"
+        required: false
+        description: "Only return results modified since this date."
+    data_selector: "$.Contacts"  # JSONPath to select data from response
+
+notes:
+  - "Xero API uses OAuth 2.0 for authentication, requiring an access token for all requests."
+  - "Rate limits apply; ensure to handle token expiration and authorization errors."
+  - "For more information on setting up credentials, refer to Xero's API documentation."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "Bearer token is required for API access."
+    - "OAuth 2.0 authentication flow is necessary for obtaining the access token."
+
+source_metadata:
+  description: "The Xero Finance API provides access to financial transactions, employee management, and business details."
+### Explanation:
+1. **Base URL**: Extracted from the documentation (`https://api.xero.com`).
+2. **Authentication Method**: Identified as "bearer" token authentication using OAuth 2.0.
+3. **API Endpoints**: Listed three main resources (accounts, bank transactions, contacts) with specified endpoints.
+4. **Query Parameters**: Included relevant parameters for pagination and modification dates.
+5. **Helpful Notes**: Added notes on authentication, rate limits, and credential setup.
+6. **Errors**: Specified common error codes for API responses.
+7. **Source Metadata**: Provided a brief description of the API's capabilities. 
+
+This YAML structure provides a clear and organized representation of the API, ready for implementation or further expansion.

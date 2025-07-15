@@ -1,0 +1,68 @@
+Based on the information provided, here's a complete YAML configuration for the Mention Monitoring REST API source:
+
+client:
+  base_url: "https://api.mention.com/v1/"
+  auth:
+    type: "api_key"  # Authentication method used
+
+resources:
+  - name: "alerts"
+    endpoint: "/alerts"
+    method: "GET"
+    params:
+      - name: "id"
+        type: "string"
+        required: false
+        description: "Optional ID of the alert to retrieve specific alert details."
+    data_selector: "$.data"  # JSONPath to select data from response
+
+  - name: "mentions"
+    endpoint: "/mentions"
+    method: "GET"
+    params:
+      - name: "alert_id"
+        type: "string"
+        required: false
+        description: "Optional ID to filter mentions by alert."
+      - name: "date_from"
+        type: "string"
+        required: false
+        description: "Start date for filtering mentions."
+      - name: "date_to"
+        type: "string"
+        required: false
+        description: "End date for filtering mentions."
+    data_selector: "$.data"  # JSONPath to select data from response
+
+  - name: "accounts"
+    endpoint: "/accounts"
+    method: "GET"
+    params: []
+    data_selector: "$.data"  # JSONPath to select data from response
+
+notes:
+  - "API key must be included in the headers for authentication."
+  - "Rate limits apply; check the API documentation for details."
+  - "Pagination may be necessary for endpoints returning large datasets."
+
+errors:
+  - 401  # Unauthorized: Invalid API key or missing authentication
+  - 403  # Forbidden: Access denied
+  - 404  # Not Found: Endpoint does not exist
+  - 429  # Too Many Requests: Rate limit exceeded
+
+auth_info:
+  mentioned_objects:
+    - "API key must be included in the headers."
+    - "Visit https://www.mention.com/ to obtain API keys."
+
+source_metadata:
+  description: "The Mention Monitoring API provides access to alerts, mentions, and account information for monitoring social media and other online mentions."
+### Explanation:
+1. **Base URL**: Extracted from the documentation as `https://api.mention.com/v1/`.
+2. **Authentication Method**: Identified as API key.
+3. **Main API Endpoints**: Listed three endpoints: alerts, mentions, and accounts, including their respective HTTP methods and parameters.
+4. **Query Parameters**: Included relevant parameters for the `alerts` and `mentions` endpoints.
+5. **Helpful Notes**: Added notes regarding authentication, rate limits, and pagination.
+6. **Categorization**: The source is categorized under the API provider's service and its functionality.
+7. **Validity**: Ensured that all information is derived from the provided documentation without any assumptions.

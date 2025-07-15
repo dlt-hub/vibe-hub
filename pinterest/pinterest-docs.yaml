@@ -1,0 +1,45 @@
+client:
+  base_url: "https://api.pinterest.com/v5/"
+  auth:
+    type: "bearer"
+    token: "access_token"  # Replace with valid token at runtime
+
+resources:
+  - name: "boards"
+    endpoint: "/boards"
+    method: "GET"
+    params:
+      - name: "user_id"  # Optional: specify the user ID to get boards for a specific user
+    data_selector: "$.data"  # JSONPath to select data from response
+
+  - name: "campaigns"
+    endpoint: "/ads/campaigns"
+    method: "GET"
+    params:
+      - name: "account_id"  # Required: specify the account ID to get campaigns for a specific account
+    data_selector: "$.data"  # JSONPath to select data from response
+
+  - name: "ads"
+    endpoint: "/ads"
+    method: "GET"
+    params:
+      - name: "campaign_id"  # Optional: specify the campaign ID to get ads related to a specific campaign
+    data_selector: "$.data"  # JSONPath to select data from response
+
+notes:
+  - "Ensure OAuth scopes are correctly configured for access."
+  - "Be aware of API request limits to avoid throttling."
+  - "Handle pagination if responses exceed limit."
+
+errors:
+  - 401  # Unauthorized: Invalid or expired access token
+  - 403  # Forbidden: Insufficient permissions
+  - 429  # Too Many Requests: Rate limiting
+
+auth_info:
+  mentioned_objects:
+    - "Access token required via OAuth 2.0"
+    - "Refresh tokens must be managed to maintain session"
+
+source_metadata:
+  description: "The Pinterest API allows access to boards, campaigns, ads, and analytics data for effective content management."

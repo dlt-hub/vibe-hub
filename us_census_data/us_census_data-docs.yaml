@@ -1,0 +1,58 @@
+Here is the YAML configuration for the `us_census_data` REST API source based on the provided documentation:
+
+client:
+  base_url: "https://api.census.gov/data/"
+  auth:
+    type: "api_key"  # Authentication is done through an API key
+
+resources:
+  - name: "dataset"
+    endpoint: "/dataset"
+    method: "GET"
+    params:
+      - name: "year"
+        required: true
+        description: "Specify the year for the dataset"
+      - name: "table"
+        required: true
+        description: "Specify the table for demographic and economic data"
+    data_selector: "$"  # Selects the entire JSON response
+
+  - name: "year"
+    endpoint: "/year"
+    method: "GET"
+    params:
+      - name: "dataset"
+        required: true
+        description: "Specify the dataset to retrieve years for"
+    data_selector: "$"  # Selects the entire JSON response
+
+  - name: "table"
+    endpoint: "/table"
+    method: "GET"
+    params:
+      - name: "dataset"
+        required: true
+        description: "Specify the dataset to retrieve tables for"
+    data_selector: "$"  # Selects the entire JSON response
+
+notes:
+  - "Authentication requires an API key which should be included in the query parameters."
+  - "Rate limits may apply; please refer to the API documentation for specifics."
+  - "Ensure to specify required parameters like year and table for dataset queries."
+  - "Responses may include pagination for larger datasets."
+
+errors:
+  - 400  # Bad Request
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "API key required for access"
+    - "API key should be included in query parameters"
+
+source_metadata:
+  description: "Access various datasets from the US Census Data API for demographic and economic data."
+This YAML configuration captures the essential details about the `us_census_data` API, including the base URL, authentication method, key resources, parameters, notes, and error codes.

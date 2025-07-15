@@ -1,0 +1,63 @@
+Here is a YAML configuration for the `finage_finance` REST API source based on the provided documentation:
+
+client:
+  base_url: "https://api.finage.co.uk/v1/"
+  auth:
+    type: "api_key"
+    token: "your_access_token"  # Replace with your actual API key
+
+resources:
+  - name: "Market News"
+    endpoint: "/market-news"
+    method: "GET"
+    params:
+      - name: "symbol"
+        type: "string"
+        required: false
+        description: "Ticker symbol of the stock to get news for"
+      - name: "limit"
+        type: "integer"
+        required: false
+        description: "Number of news articles to return"
+    data_selector: "$.data"  # Adjust as necessary based on the actual response structure
+
+  - name: "Most Active US Stocks"
+    endpoint: "/most-active-us-stocks"
+    method: "GET"
+    params:
+      - name: "limit"
+        type: "integer"
+        required: false
+        description: "Number of stocks to return"
+    data_selector: "$.data"  # Adjust as necessary based on the actual response structure
+
+  - name: "Technical Indicators"
+    endpoint: "/technical-indicators"
+    method: "GET"
+    params:
+      - name: "symbol"
+        type: "string"
+        required: true
+        description: "Ticker symbol of the stock to get indicators for"
+    data_selector: "$.data"  # Adjust as necessary based on the actual response structure
+
+notes:
+  - "The API supports access to real-time market news, stock activity, and technical indicators."
+  - "Rate limits are in place; please refer to the API documentation for specifics."
+  - "The API does not support pagination, which may affect large datasets."
+
+errors:
+  - 401  # Unauthorized - invalid API key
+  - 404  # Not Found - incorrect endpoint
+  - 429  # Too Many Requests - rate limiting
+
+auth_info:
+  mentioned_objects:
+    - "API key required to access the API endpoints."
+    - "Include the API key in the request header under 'x-api-key'."
+
+source_metadata:
+  description: "Finage Finance API provides access to market news, stock activity, technical indicators, and financial data."
+### Notes:
+- The `data_selector` fields are set to `$.data` as placeholders, and may need adjustment based on the actual structure of the API responses, which should be verified against the API documentation or response examples.
+- Make sure to replace `"your_access_token"` with the actual token in your implementation.

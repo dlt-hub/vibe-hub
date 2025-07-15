@@ -1,0 +1,57 @@
+client:
+  base_url: "https://api.hellosign.com/v3/"
+  auth:
+    type: "api_key"
+
+resources:
+  - name: "Signature Requests"
+    endpoint: "/signature_request/list"
+    method: "GET"
+    params:
+      - name: "page"
+        description: "The page number to retrieve."
+      - name: "page_size"
+        description: "The number of results per page."
+    data_selector: "$.signature_requests"  # JSONPath to select data from response
+
+  - name: "Templates"
+    endpoint: "/template/list"
+    method: "GET"
+    params:
+      - name: "page"
+        description: "The page number to retrieve."
+      - name: "page_size"
+        description: "The number of results per page."
+    data_selector: "$.templates"  # JSONPath to select data from response
+
+  - name: "Send Signature Request"
+    endpoint: "/signature_request/send"
+    method: "POST"
+    params:
+      - name: "title"
+        description: "The title of the signature request."
+      - name: "subject"
+        description: "The subject of the signature request."
+      - name: "message"
+        description: "A message to the signers."
+      - name: "signers"
+        description: "An array of signers' emails and names."
+    data_selector: "$.signature_request"  # JSONPath to select data from response
+
+notes:
+  - "Authentication is done via an API key included in the header of HTTP requests."
+  - "Rate limits may apply; check the API documentation for details."
+  - "Pagination is supported for list endpoints; use 'page' and 'page_size' parameters."
+
+errors:
+  - 401  # Unauthorized: Invalid API key
+  - 403  # Forbidden: Insufficient permissions
+  - 429  # Too Many Requests: Rate limit exceeded
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements: Obtain from https://www.hellosign.com/"
+    - "Authentication methods: API key in the HTTP request header."
+
+source_metadata:
+  description: "HelloSign API provides endpoints to manage signature requests and document templates."

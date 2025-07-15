@@ -1,0 +1,72 @@
+Based on the provided documentation about the Polygon Finance API, here is a YAML configuration that adheres to the specified structure:
+
+client:
+  base_url: "https://api.polygon.io/v2/"
+  auth:
+    type: "api_key"
+    apiKey: "your_access_token_here"  # Replace with your actual API key
+
+resources:
+  - name: "Aggregates"
+    endpoint: "/aggs"
+    method: "GET"
+    params:
+      - name: "ticker"
+        required: true
+        type: "string"
+        description: "The ticker symbol of the stock."
+      - name: "timespan"
+        required: false
+        type: "string"
+        description: "The time span for the aggregates (e.g., 'day', 'minute')."
+      - name: "from"
+        required: false
+        type: "string"
+        description: "Start date for the aggregates in ISO format."
+      - name: "to"
+        required: false
+        type: "string"
+        description: "End date for the aggregates in ISO format."
+    data_selector: "$.results"  # Assuming the response structure contains a 'results' field
+
+  - name: "Ticker"
+    endpoint: "/ticker"
+    method: "GET"
+    params:
+      - name: "ticker"
+        required: true
+        type: "string"
+        description: "The ticker symbol of the stock."
+    data_selector: "$.results"  # Assuming the response structure contains a 'results' field
+
+  - name: "Stocks Ticker"
+    endpoint: "/stocksTicker"
+    method: "GET"
+    params:
+      - name: "ticker"
+        required: true
+        type: "string"
+        description: "The ticker symbol of the stock."
+    data_selector: "$.results"  # Assuming the response structure contains a 'results' field
+
+notes:
+  - "Polygon API only supports Full Refresh syncs."
+  - "The free plan allows only 5 API calls per minute."
+  - "Ensure to handle rate limits and errors like 401 Unauthorized."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements: Obtain your API key from https://www.polygon.io/."
+    - "Authentication method: Use the API key in the header of each request."
+
+source_metadata:
+  description: "Polygon Finance API provides real-time and historical financial data for various securities, including aggregates, ticker information, and market analytics."
+### Notes:
+- The `data_selector` fields are assumed based on typical API response structures; you may need to adjust them according to the actual API response format.
+- Ensure to replace `"your_access_token_here"` with the actual access token when implementing.
+- The YAML structure includes descriptions and parameters for the resources, providing a clear overview of the API capabilities.

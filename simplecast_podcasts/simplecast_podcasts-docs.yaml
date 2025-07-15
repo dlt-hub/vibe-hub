@@ -1,0 +1,79 @@
+Here's a YAML configuration for the `simplecast_podcasts` REST API source based on the provided documentation:
+
+client:
+  base_url: "https://your-instance.simplecast.com/v/"
+  auth:
+    type: "api_key"
+    # Additional auth parameters if needed
+
+resources:
+  - name: "podcasts"
+    endpoint: "/podcasts"
+    method: "GET"
+    params:
+      # Assuming possible query parameters, as specific ones are not mentioned
+      - name: "page"
+        type: "integer"
+        description: "The page number for pagination"
+      - name: "limit"
+        type: "integer"
+        description: "The number of items to return per page"
+    data_selector: "$.data"  # Assuming 'data' is the key containing the list of podcasts
+
+  - name: "episodes"
+    endpoint: "/episodes"
+    method: "GET"
+    params:
+      - name: "podcast_id"
+        type: "string"
+        description: "The ID of the podcast to retrieve episodes for"
+      - name: "page"
+        type: "integer"
+        description: "The page number for pagination"
+      - name: "limit"
+        type: "integer"
+        description: "The number of items to return per page"
+    data_selector: "$.data"  # Assuming 'data' is the key containing the list of episodes
+
+  - name: "analytics"
+    endpoint: "/analytics"
+    method: "GET"
+    params:
+      - name: "podcast_id"
+        type: "string"
+        description: "The ID of the podcast to retrieve analytics for"
+      - name: "date_range"
+        type: "string"
+        description: "The date range for the analytics data (e.g., 'last_30_days')"
+    data_selector: "$.analytics"  # Assuming 'analytics' is the key containing the analytics data
+
+  - name: "categories"
+    endpoint: "/categories"
+    method: "GET"
+    params: []
+    data_selector: "$.data"  # Assuming 'data' contains the list of categories
+
+  - name: "distribution_channels"
+    endpoint: "/distribution_channels"
+    method: "GET"
+    params: []
+    data_selector: "$.data"  # Assuming 'data' contains the distribution channel information
+
+notes:
+  - "Ensure to handle pagination when fetching large sets of data."
+  - "Rate limits may apply; refer to Simplecast documentation for specific limits."
+  - "Authentication is required via API key, included in the header as 'Authorization'."
+
+errors:
+  - 401  # Unauthorized: Invalid API token
+  - 404  # Not Found: Endpoint path or parameters issue
+  - 429  # Too Many Requests: Rate limit exceeded
+
+auth_info:
+  mentioned_objects:
+    - "API key is required for authentication."
+    - "Include the API key in the header under 'Authorization'."
+
+source_metadata:
+  description: "The Simplecast API provides access to podcast information, episodes, analytics, categories, and distribution channels."
+This YAML configuration captures the necessary elements based on the scraped documentation, including the base URL, authentication details, available resources, and important notes regarding usage.

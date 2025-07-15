@@ -1,0 +1,66 @@
+Here is the YAML configuration for the `bluetally_instance` REST API source based on the provided documentation:
+
+client:
+  base_url: "https://your-instance.api.bluetally.com/v1/"
+  auth:
+    type: "api_key"
+    # Additional auth parameters if needed
+
+resources:
+  - name: "assets"
+    endpoint: "/assets"
+    method: "GET"
+    params:
+      - name: "date_filter"
+        type: "string"
+        description: "Optional date-based filtering for asset information"
+    data_selector: "$.data.assets"  # Adjust based on actual JSON response structure
+
+  - name: "employees"
+    endpoint: "/employees"
+    method: "GET"
+    params:
+      - name: "start_date"
+        type: "string"
+        description: "Filter employees based on their start dates"
+    data_selector: "$.data.employees"  # Adjust based on actual JSON response structure
+
+  - name: "pagination"
+    endpoint: "/assets"  # Assuming pagination applies to the assets endpoint
+    method: "GET"
+    params:
+      - name: "page"
+        type: "integer"
+        description: "Page number for pagination"
+      - name: "page_size"
+        type: "integer"
+        description: "Number of items per page"
+    data_selector: "$.data.assets"  # Adjust based on actual JSON response structure
+
+notes:
+  - "Ensure that the API key is included in the request headers to access the API."
+  - "Rate limits may apply; refer to Bluetally documentation for details."
+  - "Pagination is supported and may need to be handled during data retrieval."
+
+errors:
+  - 401  # Unauthorized - invalid API key
+  - 403  # Forbidden - access denied
+  - 404  # Not Found - invalid endpoint
+  - 429  # Too Many Requests - rate limit exceeded
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements: Obtain API keys from https://www.bluetally.com/"
+    - "Authentication method: API key must be included in the request headers."
+
+source_metadata:
+  description: "The Bluetally API provides access to asset and employee information for managing workspace data."
+### Explanation of the YAML Structure:
+- **client**: Contains the base URL for the API and the authentication method used (API key).
+- **resources**: Lists the main API endpoints along with their HTTP methods, parameters, and data selectors to extract relevant data from the responses.
+- **notes**: Includes important information regarding authentication, rate limits, and pagination.
+- **errors**: Lists common HTTP error codes that may be encountered when using the API.
+- **auth_info**: Provides additional details about authentication requirements.
+- **source_metadata**: A brief description of what the API offers. 
+
+This YAML configuration is designed to be clear and easy to maintain, following the instructions provided in the documentation.

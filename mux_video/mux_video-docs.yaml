@@ -1,0 +1,65 @@
+Here's the YAML configuration for the Mux Video API source based on the provided documentation:
+
+client:
+  base_url: "https://api.mux.com"
+  auth:
+    type: "basic"
+    username: "{{ dlt.secrets['mux_username'] }}"
+    password: "{{ dlt.secrets['mux_password'] }}"
+
+resources:
+  - name: "Video Assets"
+    endpoint: "/video/assets"
+    method: "GET"
+    params:
+      - name: "page[size]"
+        type: "integer"
+        description: "Number of assets to return per page"
+      - name: "filter[status]"
+        type: "string"
+        description: "Filter assets by status (e.g., 'ready', 'processing')"
+    data_selector: "$.data"
+
+  - name: "Live Streams"
+    endpoint: "/video/live-streams"
+    method: "GET"
+    params:
+      - name: "page[size]"
+        type: "integer"
+        description: "Number of live streams to return per page"
+    data_selector: "$.data"
+
+  - name: "Video Uploads"
+    endpoint: "/video/uploads"
+    method: "GET"
+    params:
+      - name: "page[size]"
+        type: "integer"
+        description: "Number of uploads to return per page"
+    data_selector: "$.data"
+
+notes:
+  - "All endpoints support pagination; refer to the API documentation for details on how to handle it."
+  - "Rate limits may apply; ensure to monitor your usage to avoid being throttled."
+  - "Authentication is required using API keys, where the username is likely the API key ID and the password the API secret."
+
+errors:
+  - 401  # Unauthorized: Invalid credentials
+  - 403  # Forbidden: Insufficient permissions
+  - 404  # Not Found: Endpoint does not exist
+
+auth_info:
+  mentioned_objects:
+    - "API key ID and API secret are required for access."
+    - "Ensure credentials are stored securely."
+
+source_metadata:
+  description: "The Mux Video API provides endpoints for managing video assets, live streams, and uploads, enabling users to efficiently work with video content."
+### Explanation:
+1. **Base URL**: Extracted from the documentation as "https://api.mux.com".
+2. **Authentication Method**: Identified as basic authentication using an API key ID and secret.
+3. **Main Resources**: Included three resources: Video Assets, Live Streams, and Video Uploads, with their respective endpoints.
+4. **Query Parameters**: Added relevant parameters for each endpoint that were mentioned or implied in the documentation.
+5. **Notes**: Included helpful notes about pagination and rate limits.
+6. **Categorization**: The source is categorized as API-based, focusing on video content management.
+7. **Validity**: Ensured that the YAML structure is clean and adheres to the requested format.

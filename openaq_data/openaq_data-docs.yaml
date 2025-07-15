@@ -1,0 +1,55 @@
+Here is a complete YAML configuration for the OpenAQ REST API source, based on the information provided in the documentation:
+
+client:
+  base_url: "https://api.openaq.org/v2/"
+  auth:
+    type: "api_key"
+    api_key: "access_token"  # Placeholder for the actual API key
+
+resources:
+  - name: "instruments"
+    endpoint: "/instruments"
+    method: "GET"
+    params:
+      - name: "country_code"
+        required: false
+        description: "Filter by country code."
+      - name: "location_id"
+        required: false
+        description: "Filter by location ID."
+    data_selector: "$.results"  # JSONPath to select data from response
+
+  - name: "manufacturers"
+    endpoint: "/manufacturers"
+    method: "GET"
+    params:
+      - name: "country_code"
+        required: false
+        description: "Filter by country code."
+    data_selector: "$.results"  # JSONPath to select data from response
+
+  - name: "parameters"
+    endpoint: "/parameters"
+    method: "GET"
+    params: []
+    data_selector: "$.results"  # JSONPath to select data from response
+
+notes:
+  - "OpenAQ supports full sync but does not support incremental loading."
+  - "It's essential to manage request rates to avoid hitting the rate limits."
+  - "If the API key is invalid, the API could return a 401 Unauthorized error."
+  - "The API may return a 429 Too Many Requests error if rate limits are exceeded."
+
+errors:
+  - 401  # Unauthorized
+  - 429  # Too Many Requests
+  - 403  # Forbidden
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements: An API key is required for authentication."
+    - "Authentication methods: The API uses an API key included in the request headers."
+
+source_metadata:
+  description: "The OpenAQ API provides access to data about air quality measurements, including details about monitoring instruments, their manufacturers, and various parameters."
+This YAML configuration captures the essential details about the OpenAQ REST API, including the base URL, authentication method, main resources, relevant query parameters, notes on usage, and error handling.

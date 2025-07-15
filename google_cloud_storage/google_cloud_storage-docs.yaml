@@ -1,0 +1,49 @@
+client:
+  base_url: "https://storage.googleapis.com/"
+  auth:
+    type: "bearer"  # Authentication method used
+
+resources:
+  - name: "Files"
+    endpoint: "/storage/v1/b/{bucket}/o"  # Replace {bucket} with the actual bucket name
+    method: "GET"
+    params:
+      - name: "bucket"  # Required parameter for specifying the bucket
+      - name: "prefix"  # Optional parameter for filtering results
+      - name: "delimiter"  # Optional parameter for grouping results
+    data_selector: "$.items"  # JSONPath to select data from response
+
+  - name: "ServiceAccount"
+    endpoint: "/storage/v1/serviceAccount/{projectId}@gcp-sa-storage.iam.gserviceaccount.com"
+    method: "GET"
+    params:
+      - name: "projectId"  # Required parameter for specifying the project ID
+    data_selector: "$"  # Selects the entire response
+
+  - name: "IAMPermissions"
+    endpoint: "/storage/v1/b/{bucket}/iamPermissions"
+    method: "POST"
+    params:
+      - name: "bucket"  # Required parameter for specifying the bucket
+      - name: "permissions"  # Required parameter for specifying permissions to check
+    data_selector: "$"  # Selects the entire response
+
+notes:
+  - "Ensure that the service account has proper IAM permissions to access the resources."
+  - "Rate limits apply; check Google Cloud Storage documentation for details."
+  - "The API may return paginated responses; handle pagination appropriately."
+
+errors:
+  - 401  # Unauthorized access
+  - 403  # Forbidden access
+  - 404  # Not Found
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "Bearer token required for authentication."
+    - "Service account must have appropriate permissions."
+
+source_metadata:
+  description: "Google Cloud Storage API allows you to manage and interact with your storage buckets, files, and permissions."
+This YAML configuration captures the essence of the provided API documentation, specifying the base URL, authentication details, resources, and notes on usage.

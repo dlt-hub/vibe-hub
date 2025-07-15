@@ -1,0 +1,64 @@
+Based on the provided documentation and requirements, here is the YAML configuration for the Meraki Management REST API source:
+
+client:
+  base_url: "https://api.meraki.com/api/v1/"
+  auth:
+    type: "api_key"
+
+resources:
+  - name: "organizations"
+    endpoint: "/organizations"
+    method: "GET"
+    params:
+      - name: "organizationId"
+        required: false
+        description: "Optional ID of the organization to filter results."
+    data_selector: "$"  # Selects the entire response
+
+  - name: "datacenters"
+    endpoint: "/datacenters"
+    method: "GET"
+    params: []
+    data_selector: "$"
+
+  - name: "organization_networks"
+    endpoint: "/organizations/{organizationId}/networks"
+    method: "GET"
+    params:
+      - name: "organizationId"
+        required: true
+        description: "ID of the organization to fetch networks."
+    data_selector: "$"
+
+notes:
+  - "Authentication is performed via an API key included in the header of each request."
+  - "Be aware of API rate limits and ensure that the API key has the correct permissions to avoid 403 Forbidden errors."
+  - "Some endpoints require the organizationId parameter to function correctly."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 404  # Not Found
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "API key must be included in the header of each request."
+    - "Visit https://www.meraki.com/ to obtain API keys."
+
+source_metadata:
+  description: "Meraki Management API provides access to organization, network, and datacenter management functionalities."
+### Explanation of the YAML Configuration
+
+1. **Client Section**: The base URL for the API is specified along with the authentication type indicating that an API key will be used.
+2. **Resources Section**: Three main resources are defined:
+   - **Organizations**: Fetches organization details.
+   - **Datacenters**: Fetches datacenter information.
+   - **Organization Networks**: Fetches networks for a specified organization.
+3. **Params**: Relevant query parameters for each endpoint are included, where applicable. The organizationId is marked as required for fetching networks.
+4. **Notes**: Important information regarding authentication, API limits, and requirements are provided.
+5. **Errors**: Common HTTP error codes that may be encountered are listed.
+6. **Auth Info**: Provides additional context about obtaining API keys.
+7. **Source Metadata**: A brief description of what the API offers is included.
+
+This YAML configuration captures key aspects of the Meraki Management API based on the provided documentation.

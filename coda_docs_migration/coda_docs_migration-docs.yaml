@@ -1,0 +1,85 @@
+Based on the provided API documentation content, here is the complete YAML configuration for the `coda_docs_migration` REST API source:
+
+client:
+  base_url: "https://coda.io/apis/v1/"
+  auth:
+    type: "api_key"
+
+resources:
+  - name: "docs"
+    endpoint: "/docs"
+    method: "GET"
+    params:
+      - name: "include"
+        description: "Comma-separated list of additional fields to include in the response."
+        type: "string"
+      - name: "pageSize"
+        description: "The number of results to return per page."
+        type: "integer"
+      - name: "page"
+        description: "The page number to retrieve."
+        type: "integer"
+    data_selector: "$.items"  # Assuming the response has a structure with an 'items' key
+
+  - name: "permissions"
+    endpoint: "/permissions"
+    method: "GET"
+    params:
+      - name: "docId"
+        description: "The ID of the document to retrieve permissions for."
+        type: "string"
+    data_selector: "$.permissions"
+
+  - name: "categories"
+    endpoint: "/categories"
+    method: "GET"
+    params:
+      - name: "docId"
+        description: "The ID of the document to retrieve categories for."
+        type: "string"
+    data_selector: "$.categories"
+
+  - name: "pages"
+    endpoint: "/pages"
+    method: "GET"
+    params:
+      - name: "docId"
+        description: "The ID of the document to retrieve pages for."
+        type: "string"
+    data_selector: "$.pages"
+
+  - name: "tables"
+    endpoint: "/tables"
+    method: "GET"
+    params:
+      - name: "docId"
+        description: "The ID of the document to retrieve tables for."
+        type: "string"
+    data_selector: "$.tables"
+
+notes:
+  - "This API supports full refresh sync but does not support incremental sync."
+  - "Ensure the API key has the necessary permissions or a 401 Unauthorized error may occur."
+  - "Rate limits are not specified in the provided documentation; please refer to Coda's API documentation for details."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "API key is required and must be included in the header as 'Authorization'."
+
+source_metadata:
+  description: "The Coda API provides access to documents, permissions, categories, pages, and tables within Coda workspaces."
+### Explanation of the YAML Structure
+
+1. **Client Configuration**: Specifies the base URL and authentication method (API key).
+2. **Resources**: Lists the main API endpoints along with their HTTP methods, expected parameters, and data selectors for extracting relevant data from the API responses.
+3. **Notes**: Important notes regarding the API capabilities and limitations, such as sync support and potential errors related to authentication.
+4. **Errors**: Common HTTP error codes that may be encountered while using the API.
+5. **Auth Info**: Provides information about authentication requirements.
+6. **Source Metadata**: A brief description of what the API provides.
+
+This YAML configuration captures the necessary details to interact with the Coda API effectively based on the provided documentation.

@@ -1,0 +1,50 @@
+client:
+  base_url: "https://www.googleapis.com/webmasters/v3/"
+  auth:
+    type: "bearer"
+
+resources:
+  - name: "sites"
+    endpoint: "/sites"
+    method: "GET"
+    params:
+      - siteUrl: "string"  # The URL of the site to get information about
+    data_selector: "$.siteEntry"  # JSONPath to select data from response
+
+  - name: "sitemaps"
+    endpoint: "/sites/{siteUrl}/sitemaps"
+    method: "GET"
+    params:
+      - siteUrl: "string"  # The URL of the site to get sitemaps for
+    data_selector: "$.sitemap"  # JSONPath to select data from response
+
+  - name: "searchanalytics/query"
+    endpoint: "/sites/{siteUrl}/searchAnalytics/query"
+    method: "POST"
+    params:
+      - siteUrl: "string"  # The URL of the site to query search analytics data for
+      - startDate: "date"  # The start date for the data
+      - endDate: "date"    # The end date for the data
+      - dimensions: "array" # The dimensions to group by (e.g., query, page)
+      - rowLimit: "integer" # The maximum number of rows to return
+    data_selector: "$.rows"  # JSONPath to select data from response
+
+notes:
+  - "Data retention is only for the last 16 months."
+  - "Rate limits apply and may vary; check Google's API documentation for details."
+  - "Authentication uses OAuth2 with a refresh token flow."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 404  # Not Found
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "OAuth2 with a refresh token flow is required for authentication."
+    - "API keys must be obtained from the Google Search Console API portal."
+
+source_metadata:
+  description: "The Google Search Console API provides access to information about indexed sites, sitemaps, and search analytics data."
+This YAML configuration is structured according to the requirements and includes the relevant details extracted from the provided documentation.

@@ -1,0 +1,75 @@
+Based on the provided documentation content and requirements, here is the complete YAML configuration for the REST API source:
+
+client:
+  base_url: "https://your-mongodb-instance.com"
+  auth:
+    type: "bearer"
+    # Additional auth parameters if needed
+
+resources:
+  - name: "collections"
+    endpoint: "/collections"
+    method: "GET"
+    params:
+      - name: "limit"
+        type: "integer"
+        description: "The number of items to return."
+      - name: "offset"
+        type: "integer"
+        description: "The number of items to skip before starting to collect the result set."
+    data_selector: "$.data.collections"  # JSONPath to select data from response
+
+  - name: "oauth2_token"
+    endpoint: "/oauth2/token"
+    method: "POST"
+    params:
+      - name: "client_id"
+        type: "string"
+        description: "The client ID for OAuth2 authentication."
+      - name: "client_secret"
+        type: "string"
+        description: "The client secret for OAuth2 authentication."
+      - name: "refresh_token"
+        type: "string"
+        description: "The refresh token for OAuth2 authentication."
+    data_selector: "$.data.token"  # JSONPath to select data from response
+
+  - name: "cursor"
+    endpoint: "/cursor"
+    method: "GET"
+    params:
+      - name: "page_size"
+        type: "integer"
+        description: "The number of items per page."
+      - name: "page"
+        type: "integer"
+        description: "The page number of results to return."
+    data_selector: "$.data.items"  # JSONPath to select data from response
+
+notes:
+  - "Authentication is managed via OAuth2 with a refresh token flow."
+  - "Rate limits may apply based on your subscription level."
+  - "Use cursor-based pagination for large datasets."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "OAuth2 token requirements"
+    - "Bearer token authentication method"
+
+source_metadata:
+  description: "The MongoDB Instance API allows you to manage and retrieve information about database collections, handle OAuth2 authentication flows, and manage data retrieval through cursor-based pagination."
+### Explanation of the YAML structure:
+1. **client**: Contains the base URL and authentication type.
+2. **resources**: Lists the main API endpoints:
+   - Each resource has a name, endpoint, method, parameters, and a JSONPath for selecting data from the response.
+3. **notes**: Important notes about the API, including authentication and rate limits.
+4. **errors**: Common error codes that may be encountered.
+5. **auth_info**: Mentions authentication requirements related to the API.
+6. **source_metadata**: A brief description of what the API provides.
+
+This YAML configuration is structured to facilitate easy understanding and usage of the MongoDB API.

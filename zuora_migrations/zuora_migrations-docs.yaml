@@ -1,0 +1,68 @@
+Here is a complete YAML configuration for the `zuora_migrations` REST API source based on the provided documentation:
+
+client:
+  base_url: "https://rest.zuora.com/v1/"
+  auth:
+    type: "bearer"
+
+resources:
+  - name: "accounts"
+    endpoint: "/accounts"
+    method: "GET"
+    params:
+      - name: "page"
+        type: "integer"
+        description: "Page number for pagination"
+      - name: "pageSize"
+        type: "integer"
+        description: "Number of records per page"
+    data_selector: "$.accounts"  # JSONPath to select data from response
+
+  - name: "invoices"
+    endpoint: "/invoices"
+    method: "GET"
+    params:
+      - name: "accountId"
+        type: "string"
+        description: "ID of the account for which to retrieve invoices"
+      - name: "page"
+        type: "integer"
+        description: "Page number for pagination"
+      - name: "pageSize"
+        type: "integer"
+        description: "Number of records per page"
+    data_selector: "$.invoices"  # JSONPath to select data from response
+
+  - name: "subscriptions"
+    endpoint: "/subscriptions"
+    method: "GET"
+    params:
+      - name: "accountId"
+        type: "string"
+        description: "ID of the account for which to retrieve subscriptions"
+      - name: "page"
+        type: "integer"
+        description: "Page number for pagination"
+      - name: "pageSize"
+        type: "integer"
+        description: "Number of records per page"
+    data_selector: "$.subscriptions"  # JSONPath to select data from response
+
+notes:
+  - "API usage is subject to rate limits; ensure to manage requests accordingly."
+  - "Initial data synchronization may take time based on the volume of data."
+  - "Certain data might be inaccessible depending on the Zuora Subscription Plan."
+
+errors:
+  - 401  # Unauthorized access
+  - 403  # Forbidden access
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements"
+    - "Authentication methods: Bearer token via OAuth 2.0"
+
+source_metadata:
+  description: "The Zuora API provides access to customer account information, invoices, and subscription details."
+This YAML configuration captures the essential details from the provided documentation, including the base URL, authentication method, resources, and relevant notes about using the API.

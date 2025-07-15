@@ -1,0 +1,70 @@
+Based on the provided documentation content, here is a complete YAML configuration for the YNAB REST API source:
+
+client:
+  base_url: "https://api.ynab.com/v1"
+  auth:
+    type: "bearer"
+
+resources:
+  - name: "budgets"
+    endpoint: "/budgets"
+    method: "GET"
+    params:
+      # You can include budget_id as a query parameter if needed for specific budget details
+      - budget_id: "string"  # Replace with actual budget ID if applicable
+    data_selector: "$.data.budgets"  # Adjust as needed based on response structure
+
+  - name: "accounts"
+    endpoint: "/budgets/{budget_id}/accounts"
+    method: "GET"
+    params:
+      - budget_id: "string"  # Replace with actual budget ID
+    data_selector: "$.data.accounts"  # Adjust as needed based on response structure
+
+  - name: "categories"
+    endpoint: "/budgets/{budget_id}/categories"
+    method: "GET"
+    params:
+      - budget_id: "string"  # Replace with actual budget ID
+    data_selector: "$.data.category_groups"  # Adjust as needed based on response structure
+
+  - name: "payees"
+    endpoint: "/budgets/{budget_id}/payees"
+    method: "GET"
+    params:
+      - budget_id: "string"  # Replace with actual budget ID
+    data_selector: "$.data.payees"  # Adjust as needed based on response structure
+
+  - name: "transactions"
+    endpoint: "/budgets/{budget_id}/transactions"
+    method: "GET"
+    params:
+      - budget_id: "string"  # Replace with actual budget ID
+    data_selector: "$.data.transactions"  # Adjust as needed based on response structure
+
+notes:
+  - "Authentication is done via a Personal Access Token that is passed in the Authorization header as a Bearer token."
+  - "Ensure to handle rate limits imposed by YNAB to prevent errors."
+  - "Check the documentation for pagination and other specific requirements for each endpoint."
+
+errors:
+  - 401  # Invalid token
+  - 403  # Forbidden access
+  - 429  # Rate limit exceeded
+
+auth_info:
+  mentioned_objects:
+    - "Personal Access Token required for accessing the API."
+    - "Bearer token must be passed in the Authorization header."
+
+source_metadata:
+  description: "The YNAB API provides access to budget details, account information, category management, transaction handling, and more."
+### Explanation of the YAML Configuration:
+1. **Client Information**: The base URL is derived directly from the documentation, and the authentication method is specified as "bearer".
+2. **Resources**: Key endpoints are listed, including budgets, accounts, categories, payees, and transactions. Each resource includes the HTTP method and a placeholder for parameters.
+3. **Notes**: Important information regarding authentication and rate limits is included.
+4. **Errors**: Common error codes are specified for handling potential issues.
+5. **Auth Information**: Details regarding the required authentication method.
+6. **Source Metadata**: A brief description is provided to summarize the API's functionality. 
+
+This structure provides a clear and organized way to understand and implement the YNAB API interactions.

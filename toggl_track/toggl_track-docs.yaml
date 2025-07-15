@@ -1,0 +1,50 @@
+client:
+  base_url: "https://api.track.toggl.com/api/v8/"
+  auth:
+    type: "api_key"
+    token: "access_token"  # Placeholder for actual API token
+
+resources:
+  - name: "time_entries"
+    endpoint: "/time_entries"
+    method: "GET"
+    params:
+      - name: "start_date"
+        required: false
+        type: "string"
+        description: "Filter time entries by start date"
+      - name: "end_date"
+        required: false
+        type: "string"
+        description: "Filter time entries by end date"
+    data_selector: "$"  # JSONPath to select data from response
+
+  - name: "organizations"
+    endpoint: "/organizations"
+    method: "GET"
+    params: []
+    data_selector: "$"  # JSONPath to select data from response
+
+  - name: "workspaces"
+    endpoint: "/workspaces"
+    method: "GET"
+    params: []
+    data_selector: "$"  # JSONPath to select data from response
+
+notes:
+  - "This API supports full refresh syncs only; incremental loading is not supported."
+  - "Rate limits apply; excessive requests may result in a 429 HTTP error."
+  - "API keys must be included in the request header under 'Authorization'."
+
+errors:
+  - 401  # Unauthorized access
+  - 403  # Forbidden access
+  - 429  # Too many requests
+
+auth_info:
+  mentioned_objects:
+    - "API key requirements must be fulfilled to access the API."
+    - "Authorization header must contain the API key."
+
+source_metadata:
+  description: "The Toggl Track API provides endpoints for managing time entries, organizations, and workspaces."

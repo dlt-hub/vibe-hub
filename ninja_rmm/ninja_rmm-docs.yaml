@@ -1,0 +1,77 @@
+Based on the provided documentation for the NinjaRMM API, here’s a complete YAML configuration that adheres to the specified structure:
+
+client:
+  base_url: "https://app.ninjarmm.com"
+  auth:
+    type: "api_key"
+    token: "X-Api-Key"  # The API key should be provided in the header with this name
+
+resources:
+  - name: "organizations"
+    endpoint: "/api/organizations"  # Endpoint to manage and retrieve information about organizations
+    method: "GET"
+    params:
+      - name: "page"  # Pagination parameter
+        type: "integer"
+        required: false
+        description: "The page number to retrieve."
+      - name: "limit"  # Limit results per page
+        type: "integer"
+        required: false
+        description: "The number of results per page."
+    data_selector: "$.data"  # Adjust based on the actual JSON structure of the response
+
+  - name: "policies"
+    endpoint: "/api/policies"  # Endpoint to access and manage configuration policies
+    method: "GET"
+    params:
+      - name: "active"  # Filter for active policies
+        type: "boolean"
+        required: false
+        description: "Filter policies by their active status."
+    data_selector: "$.data"
+
+  - name: "activities"
+    endpoint: "/api/activities"  # Endpoint to track and list system activities
+    method: "GET"
+    params:
+      - name: "start_date"  # Filter by start date
+        type: "string"
+        required: false
+        description: "The start date for activities (format: YYYY-MM-DD)."
+      - name: "end_date"  # Filter by end date
+        type: "string"
+        required: false
+        description: "The end date for activities (format: YYYY-MM-DD)."
+    data_selector: "$.data"
+
+notes:
+  - "API key authentication is required in the request header under the name 'X-Api-Key'."
+  - "Be mindful of rate limits when making requests to the API."
+  - "Pagination may be necessary for endpoints returning large datasets."
+
+errors:
+  - 401  # Unauthorized
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "API key must be obtained from NinjaRMM."
+    - "Ensure the API key is kept secure."
+
+source_metadata:
+  description: "NinjaRMM API provides endpoints to manage organizations, policies, activities, and more for IT management."
+### Explanation of the Configuration:
+1. **Base URL**: The base URL is extracted as `https://app.ninjarmm.com`.
+2. **Authentication Method**: The API requires an API key, which should be sent in the header under `X-Api-Key`.
+3. **Main API Endpoints**: Three endpoints are listed with relevant details:
+   - Organizations
+   - Policies
+   - Activities
+4. **Query Parameters**: Each endpoint includes relevant query parameters that can be used.
+5. **Notes**: Helpful notes on API key authentication and rate limits are included.
+6. **Error Codes**: Common error codes that users might encounter are specified. 
+7. **Source Metadata**: A brief description of the API is provided.
+
+This YAML configuration can be used to integrate the NinjaRMM API into a data pipeline or documentation.

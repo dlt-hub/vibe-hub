@@ -1,0 +1,81 @@
+Here's a complete YAML configuration for the Okta Management REST API source based on the provided documentation:
+
+client:
+  base_url: "https://okta-domain.okta.com/api/v1/"
+  auth:
+    type: "bearer"
+    # Additional auth parameters if needed, such as token expiration
+
+resources:
+  - name: "users"
+    endpoint: "/users"
+    method: "GET"
+    params:
+      - name: "limit"
+        type: "integer"
+        description: "The maximum number of users to return."
+      - name: "after"
+        type: "string"
+        description: "The cursor for pagination."
+    data_selector: "$"  # JSONPath to select data from response
+
+  - name: "groups"
+    endpoint: "/groups"
+    method: "GET"
+    params:
+      - name: "limit"
+        type: "integer"
+        description: "The maximum number of groups to return."
+      - name: "after"
+        type: "string"
+        description: "The cursor for pagination."
+    data_selector: "$"
+
+  - name: "roles"
+    endpoint: "/roles"
+    method: "GET"
+    params:
+      - name: "limit"
+        type: "integer"
+        description: "The maximum number of roles to return."
+      - name: "after"
+        type: "string"
+        description: "The cursor for pagination."
+    data_selector: "$"
+
+  - name: "system_logs"
+    endpoint: "/logs"
+    method: "GET"
+    params:
+      - name: "limit"
+        type: "integer"
+        description: "The maximum number of logs to return."
+      - name: "after"
+        type: "string"
+        description: "The cursor for pagination."
+    data_selector: "$"
+
+notes:
+  - "API usage is subject to Okta's rate limits."
+  - "Authentication is managed via OAuth2, supporting a refresh token flow."
+  - "Ensure to handle pagination when fetching large datasets."
+
+errors:
+  - 401  # Unauthorized access
+  - 403  # Forbidden
+  - 429  # Too Many Requests
+
+auth_info:
+  mentioned_objects:
+    - "Access tokens are required for authentication."
+    - "Client credentials (client_id, client_secret) are used to obtain access tokens."
+
+source_metadata:
+  description: "The Okta Management API provides endpoints to manage users, groups, roles, and access system logs."
+### Summary of Key Points:
+1. **Base URL**: Derived from the documentation.
+2. **Authentication Method**: Bearer token via OAuth2.
+3. **Main API Endpoints**: Users, Groups, Roles, and System Logs.
+4. **Query Parameters**: Common parameters such as `limit` and `after` for pagination.
+5. **Helpful Notes**: Information on rate limits and authentication.
+6. **Categorization**: The source is categorized as a management API for user and group data.

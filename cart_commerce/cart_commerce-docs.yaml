@@ -1,0 +1,57 @@
+client:
+  base_url: "https://api.cart.com/"
+  auth:
+    type: "bearer"
+    # Additional auth parameters if needed
+
+resources:
+  - name: "customers"
+    endpoint: "/customers"
+    method: "GET"
+    params:
+      - name: "limit"
+        required: false
+        description: "The number of customers to return."
+      - name: "offset"
+        required: false
+        description: "The starting point to return customers."
+    data_selector: "$.data"  # Assuming the response has a "data" field containing the customer details
+
+  - name: "orders"
+    endpoint: "/orders"
+    method: "GET"
+    params:
+      - name: "status"
+        required: false
+        description: "Filter orders by their status."
+      - name: "customer_id"
+        required: false
+        description: "Retrieve orders for a specific customer."
+    data_selector: "$.data"  # Assuming the response has a "data" field containing the order details
+
+  - name: "order_payments"
+    endpoint: "/order_payments"
+    method: "GET"
+    params:
+      - name: "order_id"
+        required: true
+        description: "Retrieve payments associated with a specific order."
+    data_selector: "$.data"  # Assuming the response has a "data" field containing the payment details
+
+notes:
+  - "Ensure you manage API rate limits to avoid throttling."
+  - "Authentication is done using OAuth2 with a bearer token."
+  - "Refer to the official documentation for detailed API usage."
+
+errors:
+  - 401  # Unauthorized error, often related to invalid or missing token
+  - 403  # Forbidden error, typically due to insufficient permissions
+  - 429  # Too Many Requests, indicating rate limiting
+
+auth_info:
+  mentioned_objects:
+    - "Bearer token required for authentication"
+    - "Tokens must be refreshed using the provided token URL"
+
+source_metadata:
+  description: "The Cart Commerce API provides access to customer details, orders, and payment information."

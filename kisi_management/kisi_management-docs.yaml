@@ -1,0 +1,69 @@
+client:
+  base_url: "https://api.kisi.io/v1/"
+  auth:
+    type: "api_key"
+    api_key: "your_api_key_here"  # Replace with actual API key
+
+resources:
+  - name: "users"
+    endpoint: "/users"
+    method: "GET"
+    params:
+      - name: "page"
+        type: "integer"
+        required: false
+        description: "Pagination page number"
+      - name: "per_page"
+        type: "integer"
+        required: false
+        description: "Number of results per page"
+    data_selector: "$.users"  # JSONPath to select user data from response
+
+  - name: "locks"
+    endpoint: "/locks"
+    method: "GET"
+    params:
+      - name: "page"
+        type: "integer"
+        required: false
+        description: "Pagination page number"
+      - name: "per_page"
+        type: "integer"
+        required: false
+        description: "Number of results per page"
+    data_selector: "$.locks"  # JSONPath to select lock data from response
+
+  - name: "reports"
+    endpoint: "/reports"
+    method: "GET"
+    params:
+      - name: "type"
+        type: "string"
+        required: true
+        description: "Type of report to generate"
+      - name: "date_range"
+        type: "string"
+        required: false
+        description: "Date range for the report in YYYY-MM-DD format"
+    data_selector: "$.reports"  # JSONPath to select report data from response
+
+notes:
+  - "API key is required for authentication."
+  - "Rate limits apply; check the API documentation for specific limits."
+  - "Use pagination for endpoints returning large datasets to avoid timeouts."
+  - "Refer to the API documentation for detailed endpoint usage and examples."
+
+errors:
+  - 401  # Unauthorized access, check API key
+  - 403  # Forbidden access, check permissions
+  - 404  # Resource not found, check endpoint
+  - 429  # Too many requests, check rate limits
+
+auth_info:
+  mentioned_objects:
+    - "API key must be obtained from the Kisi account settings."
+    - "Make sure to protect your API key in production environments."
+
+source_metadata:
+  description: "Kisi Management API provides endpoints for user management, access control, and reporting functionalities."
+This YAML configuration encapsulates the necessary details for the Kisi Management API, including authentication, resources, and important notes for users.
