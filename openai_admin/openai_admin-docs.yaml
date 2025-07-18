@@ -1,0 +1,201 @@
+resources:
+- name: organization_costs
+  endpoint:
+    path: /organization/costs
+    method: GET
+    data_selector: data
+  params:
+    start_time:
+      required: true
+      type: integer
+      description: Start time (Unix seconds) of the query time range, inclusive
+    end_time:
+      required: false
+      type: integer
+      description: End time (Unix seconds) of the query time range, exclusive
+    bucket_width:
+      required: false
+      type: string
+      enum: [1d]
+      default: 1d
+      description: Width of each time bucket in response
+    project_ids:
+      required: false
+      type: array
+      items:
+        type: string
+      description: Return only costs for these projects
+    group_by:
+      required: false
+      type: array
+      items:
+        type: string
+        enum: [project_id, line_item]
+      description: Group the costs by the specified fields
+    limit:
+      required: false
+      type: integer
+      default: 7
+      description: A limit on the number of buckets to be returned (1-180)
+    page:
+      required: false
+      type: string
+      description: A cursor for use in pagination
+
+- name: organization_projects
+  endpoint:
+    path: /organization/projects
+    method: GET
+    data_selector: data
+  params:
+    limit:
+      required: false
+      type: integer
+      default: 20
+      description: A limit on the number of objects to be returned (1-100)
+    after:
+      required: false
+      type: string
+      description: A cursor for use in pagination
+    include_archived:
+      required: false
+      type: boolean
+      default: false
+      description: If true returns all projects including archived ones
+
+- name: retrieve_project
+  endpoint:
+    path: /organization/projects/{project_id}
+    method: GET
+    data_selector: .
+  params:
+    project_id:
+      required: true
+      type: string
+      description: The ID of the project
+
+- name: organization_usage_completions
+  endpoint:
+    path: /organization/usage/completions
+    method: GET
+    data_selector: data
+  params:
+    start_time:
+      required: true
+      type: integer
+      description: Start time (Unix seconds) of the query time range, inclusive
+    end_time:
+      required: false
+      type: integer
+      description: End time (Unix seconds) of the query time range, exclusive
+    bucket_width:
+      required: false
+      type: string
+      enum: [1m, 1h, 1d]
+      default: 1d
+      description: Width of each time bucket in response
+    project_ids:
+      required: false
+      type: array
+      items:
+        type: string
+      description: Return only usage for these projects
+    user_ids:
+      required: false
+      type: array
+      items:
+        type: string
+      description: Return only usage for these users
+    api_key_ids:
+      required: false
+      type: array
+      items:
+        type: string
+      description: Return only usage for these API keys
+    models:
+      required: false
+      type: array
+      items:
+        type: string
+      description: Return only usage for these models
+    batch:
+      required: false
+      type: boolean
+      description: If true return batch jobs only, if false return non-batch jobs only
+    group_by:
+      required: false
+      type: array
+      items:
+        type: string
+        enum: [project_id, user_id, api_key_id, model, batch]
+      description: Group the usage data by the specified fields
+    limit:
+      required: false
+      type: integer
+      description: Specifies the number of buckets to return
+    page:
+      required: false
+      type: string
+      description: A cursor for use in pagination
+
+- name: organization_users
+  endpoint:
+    path: /organization/users
+    method: GET
+    data_selector: data
+  params:
+    limit:
+      required: false
+      type: integer
+      default: 20
+      description: A limit on the number of objects to be returned (1-100)
+    after:
+      required: false
+      type: string
+      description: A cursor for use in pagination
+    emails:
+      required: false
+      type: array
+      items:
+        type: string
+      description: Filter by the email address of users
+
+notes:
+- API uses bearer token authentication with OpenAI Admin Key
+- All endpoints require Authorization header with Bearer token
+- Organization endpoints are for administrative access only
+- Pagination is cursor-based using 'after' parameter for most endpoints
+- Usage endpoints support time-based bucketing with configurable widths
+- Project endpoints support archiving but not deletion
+- User endpoints provide organization member information
+- Rate limits apply to all endpoints
+- All timestamps are in Unix seconds
+- Error responses follow standard HTTP status codes
+
+errors:
+- 401 Unauthorized: Check the validity of the bearer token
+- 403 Forbidden: Insufficient permissions for the requested operation
+- 404 Not Found: Resource not found or not accessible
+- 429 Too Many Requests: Rate limit exceeded, implement backoff
+- 500 Internal Server Error: Unexpected server error
+- Invalid_request: Check request parameters and format
+- validation_error: Request body does not match expected schema
+
+auth_info:
+  mentioned_objects:
+  - BearerToken
+  - OpenAIAdminKey
+  - ApiKeyAuth
+  - Authorization
+  - bearer
+  - admin_key
+
+client:
+  base_url: https://api.openai.com/v1
+  auth:
+    type: bearer
+    location: header
+    header_name: Authorization
+  headers:
+    Content-Type: application/json
+source_metadata: null 
