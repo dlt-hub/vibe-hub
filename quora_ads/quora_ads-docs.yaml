@@ -1,0 +1,198 @@
+resources:
+- name: campaign
+  endpoint:
+    path: /ads/v0/campaigns/{campaign-id}
+    method: GET
+    params:
+      attributionWindows:
+      - CLICK_28_DAY
+      - VIEW_1_DAY
+      endDate: '2018-05-02'
+      fields:
+      - conversions
+      - clicks
+      - cpc
+      granularity: DAY
+      sort: spend
+      sortConversionType: Generic
+      startDate: '2018-05-01'
+      summary: ''
+- name: ad_set
+  endpoint:
+    path: /ads/v0/ad-sets/{ad-set-id}
+    method: GET
+    params:
+      endDate: '2018-05-03'
+      fields:
+      - adSetName
+      - ctr
+      - impressions
+      - status
+      - bidAmount
+      - landingURL
+      level: AD
+      startDate: '2018-05-01'
+- name: current_user
+  endpoint:
+    path: /me
+    method: GET
+    data_selector: data
+- name: accounts
+  endpoint:
+    path: /accounts/
+    method: GET
+    data_selector: data
+- name: lead_gen_forms
+  endpoint:
+    path: /account/{account-id}/lead-gen-forms
+    method: GET
+    data_selector: data
+- name: recent_leads
+  endpoint:
+    path: /account/{account-id}/recent-leads
+    method: GET
+    data_selector: data
+- name: accounts
+  endpoint:
+    path: /accounts/
+    method: GET
+- name: account_lead_gen_forms
+  endpoint:
+    path: /account/{account-id}/lead-gen-forms
+    method: GET
+- name: recent_leads
+  endpoint:
+    path: /account/{account-id}/recent-leads
+    method: GET
+- name: me
+  endpoint:
+    path: /me
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: Colin Powell Case Study
+  endpoint:
+    path: /cases/colin_powell
+    method: GET
+    data_selector: data
+    params: {}
+- name: ads
+  endpoint:
+    path: /api/v1/ads
+    method: GET
+    data_selector: data
+    params: {}
+- name: situation_summary
+  endpoint:
+    path: /api/situation_summary
+    method: GET
+    data_selector: data
+    params: {}
+- name: show
+  endpoint:
+    path: /shows
+    method: GET
+    data_selector: results
+notes:
+- All monetary values are in local currency, in units of one ten-thousandth of the
+  local base currency.
+- Values for ratio metrics may be null, representing that the ratio is either infinite
+  (x/0) or undefined (0/0).
+- This API uses OAuth 2 under the authorization code flow. Refer to the specification
+  for general details and error information.
+- Authorization codes, access tokens, and refresh tokens are 30 characters.
+- Client IDs are 32 characters.
+- Client secrets are 44 characters.
+- Access to and use of the API, API documentation, and Quora Data are currently provided
+  at no charge.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Colin Powell had multiple myeloma, which compromised his immune system.
+- Breakthrough infections can occur even in vaccinated individuals with weakened immune
+  systems.
+- All communications between inmates and external channels are facilitated by approved
+  volunteers since inmates do not have access to the internet.
+- This program with Quora is part of The Last Mile San Quentin.
+- Requires setup of connected app in Quora
+- The humanitarian crisis in Syria is dire with millions displaced both internally
+  and externally.
+- The situation in Iraq is better than Syria, but still faces unrest.
+- Majoring in liberal arts is a nuanced decision and can depend on various factors,
+  including personal interests, career goals, and the broader job market.
+- Pursuing a degree in the liberal arts is among the wisest decisions a person can
+  make.
+- HBO provides creative freedom to its creators.
+- HBO invests heavily in production values.
+- Climate change is a fact, like the existence of the sun, moon, gravity.
+- Most scientists think that the recent increase in temperature is due to rising Carbon
+  Dioxide, Methane, and other gases.
+- Some vendors may process your data based on their legitimate interests, which does
+  not require your consent.
+errors:
+- 400 Bad request. See the message property for more details.
+- 401 Authentication failed.
+- 403 Authorization failed.
+- 404 Resource doesn't exist.
+- 429 Too many requests.
+- 500 Internal server error.
+- '400: Bad request. See the message property for more details.'
+- '401: Authentication failed.'
+- '403: Authorization failed.'
+- '404: Resource doesn''t exist.'
+- '429: Too many requests.'
+- '500: Internal server error.'
+- '400: Bad Request'
+- '401: Unauthorized'
+- '403: Forbidden'
+- '404: Not Found'
+- '429: Too Many Requests'
+- '500: Internal Server Error'
+- 'Error400Response: Bad request. See the message property for more details.'
+- 'Error401Response: Authentication failed.'
+- 'Error403Response: Authorization failed.'
+- 'Error404Response: Resource doesn''t exist.'
+- 'Error429Response: Too many requests.'
+- 'Error500Response: Internal server error.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- No specific errors mentioned.
+- Human caused climate change has never risen past the status of a hypothesis.
+- Claims about the theory of human caused global warming are unprovable.
+auth_info:
+  mentioned_objects:
+  - ads_read
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.quora.com/ads/v0
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''quora_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''quora_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''quora_refresh_token''] }}'
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextRecordsUrl
+    cursor_param: nextUrl
+    page_size_param: pageSize
+    default_page_size: 200
+source_metadata: null
