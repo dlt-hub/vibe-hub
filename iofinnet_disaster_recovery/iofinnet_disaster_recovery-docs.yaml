@@ -1,0 +1,125 @@
+resources:
+- name: disaster_recovery_process
+  endpoint:
+    path: /disaster-recovery
+    method: GET
+    data_selector: process_details
+- name: vaults
+  endpoint:
+    path: /reference/get_v1-vaults
+    method: GET
+- name: signatures
+  endpoint:
+    path: /reference/get_v1-vaults-vaultid-signatures
+    method: GET
+- name: transactions
+  endpoint:
+    path: /reference/get_v1-vaults-vaultid-assets-assetid-transactions
+    method: GET
+- name: mobile_device
+  endpoint:
+    path: /docs/mobile-device
+    method: GET
+    data_selector: signers
+- name: virtual_signer
+  endpoint:
+    path: /docs/virtual-signer
+    method: GET
+    data_selector: signers
+- name: signer
+  endpoint:
+    path: /api/v1/signer
+    method: POST
+- name: virtual_signer
+  endpoint:
+    path: /api/v1/register-vs-device
+    method: POST
+    data_selector: deviceId
+    params: {}
+- name: transaction_approval
+  endpoint:
+    path: /my-api/transaction-approval
+    method: POST
+    data_selector: status
+    params: {}
+- name: Approval Smart Contract
+  endpoint:
+    path: /docs/approvals-via-smart-contract
+    method: GET
+    data_selector: functions
+    params: {}
+- name: network_statement
+  endpoint:
+    path: /v1/vaults/{vaultId}/network/statement
+    method: GET
+    data_selector: data
+- name: directory_address
+  endpoint:
+    path: /v1/network/directory/address/{sendingAddress}
+    method: GET
+    data_selector: data
+notes:
+- Always back up your files to the cloud
+- Be sure to keep the files up to date
+- Regular Backups are important
+- Perform disaster recovery drills
+- io.vault supports both ECDSA and EdDSA across different blockchains.
+- 'MPC compatibility: In io.vault, HD key derivation is performed under threshold
+  control.'
+- Transaction signing uses threshold signing for enhanced security.
+- Approvals can be configured through API calls, smart contracts, or biometric confirmations
+  via the io.vault mobile app.
+- A web hook set up in your backend infrastructure to handle incoming approval request
+  calls from the Virtual Signer, or a smart contract that handles approvals.
+- The Virtual Signer writes sensitive data such as key shares to the disk where it
+  runs.
+- Data is encrypted at rest, and during use, at all times.
+- It is important to persist these files in between container restarts, so that the
+  data is not deleted.
+- You must stay with the same hardware when running an SGX Virtual Signer.
+- Proper log management is essential for production environments to prevent disk space
+  issues and maintain system performance.
+- After applying these settings, rotation will only affect new logs.
+- The Prometheus metrics endpoint is configured using the environment variable EDG_VS_PrometheusPort.
+- Prometheus metrics are exposed through the /metrics endpoint on port 2112.
+- The service that implements the customer API will receive requests from the Virtual
+  Signer with the Accept-Signature and VS-Nonce headers.
+- The smart contract must have three functions with the specified signatures.
+- The smart contract can decode the data using the provided functions.
+- These prices are indicative only and based on Azure's East US region pricing for
+  DCsv2-Type1 Dedicated Hosts.
+- Each Virtual Signer instance runs in its own isolated VM for maximum defense-in-depth
+  security.
+- The Dedicated Host is charged at the host level regardless of how many VMs are running.
+- 'Commitment terms affect pricing significantly: 1-year Reserved Instances offer
+  ~20% savings, 1-year Savings Plan offers ~17% savings, 3-year Reserved Instances
+  offer ~25% savings, 3-year Savings Plan offers ~38% savings.'
+- While it's possible to run multiple Virtual Signers on a single VM, we recommend
+  maintaining VM isolation for enhanced security.
+- io.vault will automatically detect the deposit of any new ERC-20 token to a vault
+  and display it on the dashboard.
+- Beware of deceptive, malicious and spam assets and always double check contract
+  addresses.
+- By default all vaults and their addresses are blocked on the io.network.
+- The access token returned from the authentication request should be passed in the
+  Authorization header.
+- For local testing and development (not production), you can run the virtual signer
+  in simulation mode without SGX enable by adding the environment variables OE_SIMULATION=1
+  and EDG_VS_RunningWithinSGX=false.
+errors: []
+auth_info:
+  mentioned_objects:
+  - OauthToken
+client:
+  base_url: https://api.iofinnet.com
+  auth:
+    type: oauth2
+    token_url: https://api.iofinnet.com/v1/auth/accessToken
+    client_id: 16fc281f-b6ca-4e21-9bf0-53887253db85
+    client_secret: Px7&nKFKx8vcjxeief256wX&...
+    location: header
+    header_name: Authorization
+  headers:
+    Content-Type: application/json
+    Accept: application/json
+source_metadata: null
