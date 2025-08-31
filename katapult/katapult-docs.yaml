@@ -1,0 +1,321 @@
+resources:
+- name: submit_verification_code
+  endpoint:
+    path: /user/auth/verify/
+    method: POST
+    data_selector: response
+    params: {}
+- name: funding_status
+  endpoint:
+    path: /api/v3/application/funding/
+    method: GET
+    data_selector: success
+    params:
+      uid: ''
+- name: request_verification_code
+  endpoint:
+    path: /user/auth/retailer/
+    method: POST
+    data_selector: response
+    params: {}
+- name: account_lookup
+  endpoint:
+    path: /api/v3/user/auth/lookup/
+    method: POST
+    data_selector: null
+    params: {}
+- name: customer_phone_lookup
+  endpoint:
+    path: /user/auth/customer_phone_lookup/
+    method: POST
+    data_selector: ''
+    params: {}
+- name: create_application
+  endpoint:
+    path: /api/v3/application/
+    method: POST
+    data_selector: application
+    params: {}
+- name: Build the Application
+  endpoint:
+    path: /application/{uid}/
+    method: PATCH
+- name: Submit Application for Underwriting
+  endpoint:
+    path: /{uid}/preapprove/
+    method: GET
+- name: initialize_lease
+  endpoint:
+    path: /application/initialize/
+    method: POST
+    data_selector: null
+    params: {}
+- name: Preview Lease Pricing
+  endpoint:
+    path: /application/preview/
+    method: POST
+- name: contract
+  endpoint:
+    path: /{uid}/contract/
+    method: GET
+    data_selector: contract
+    params:
+      type: user
+- name: first_payment
+  endpoint:
+    path: /v1/{uid}/first_payment/
+    method: POST
+- name: submit_delivery
+  endpoint:
+    path: /application/{uid}/delivery/
+    method: POST
+    data_selector: null
+    params: {}
+- name: multiple_delivery_submits
+  endpoint:
+    path: /application/delivery/
+    method: POST
+- name: funding_status
+  endpoint:
+    path: /application/funding/
+    method: GET
+    data_selector: funding_report
+    params: {}
+- name: cancel_order
+  endpoint:
+    path: /application/{uid}/cancel_order/
+    method: GET
+    data_selector: response
+    params:
+      uid: required
+- name: cancel_item
+  endpoint:
+    path: /api/v3/application/{uid}/cancel_item/
+    method: POST
+    data_selector: items
+    params: {}
+- name: confirm_order
+  endpoint:
+    path: /{uid}/confirm_order
+    method: POST
+- name: sync_origination
+  endpoint:
+    path: /application/sync/
+    method: POST
+    data_selector: ''
+- name: preapproval_lookup
+  endpoint:
+    path: /application/preapproval_lookup/
+    method: GET
+    data_selector: ''
+    params: {}
+- name: request_verification_code
+  endpoint:
+    path: /user/auth/retailer/
+    method: POST
+    data_selector: response
+    params: {}
+- name: create_application
+  endpoint:
+    path: /application/
+    method: POST
+    data_selector: response
+    params: {}
+- name: initialize_lease_checkout
+  endpoint:
+    path: /application/initialize/
+    method: POST
+- name: submit_delivery
+  endpoint:
+    path: /application/{uid}/delivery/
+    method: POST
+    data_selector: response
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: merchant_meta
+  endpoint:
+    path: /merchant_meta
+    method: POST
+    data_selector: merchant_meta
+- name: submit_delivery
+  endpoint:
+    path: /post_application-uid-delivery
+    method: POST
+- name: funding
+  endpoint:
+    path: /get_application-funding
+    method: GET
+- name: cancel_order
+  endpoint:
+    path: /get_application-uid-cancel-order
+    method: GET
+- name: cancel_item
+  endpoint:
+    path: /post_application-uid-cancel-item
+    method: POST
+- name: confirm_order
+  endpoint:
+    path: /post_application-uid-confirm-order
+    method: POST
+- name: funding_details
+  endpoint:
+    path: /shopify/funding
+    method: GET
+    data_selector: fundingRecords
+    params: {}
+- name: katapult_payment
+  endpoint:
+    path: /payments
+    method: POST
+    data_selector: payment
+    params:
+      minimum_order_total: Value provided in your integration onboarding email
+      maximum_order_total: $3500.00
+- name: bulk_update_leasable
+  endpoint:
+    path: /woocommerce/bulk-update-leasable
+    method: POST
+    data_selector: data
+    params: {}
+- name: bulk_update_non_leasable
+  endpoint:
+    path: /woocommerce/bulk-update-non-leasable
+    method: POST
+    data_selector: data
+    params: {}
+- name: Thank You Page
+  endpoint:
+    path: /bigcommerce-thank-you-page
+    method: GET
+- name: Tax Exemption
+  endpoint:
+    path: /bigcommerce-tax-exemption
+    method: GET
+- name: Submit Ship Date
+  endpoint:
+    path: /bigcommerce-submit-ship-date
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: katapultOrderUpdateSRFA
+  endpoint:
+    path: /path/to/katapultOrderUpdateSRFA
+    method: POST
+    data_selector: records
+    params: {}
+notes:
+- Whitelist https://sandbox.katapult.com, www.katapult.com or *.katapult.com to ensure
+  that you do not have any issues with the post callback.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- If you do not have the Katapult Javascript implemented on your site you will need
+  to add the Javascript snippet for the Katapult modal to launch.
+- merchant_meta is an optional field and backward compatible with the current JavaScript
+  plugin.
+- Enable Test Mode for sandbox testing
+- 'Minimum order amount allowed: Value provided in your integration onboarding email'
+- Katapult is classified as a wholesale merchant. This means Katapult is buying the
+  product from your business and reselling the goods to the customer.
+- Katapult is responsible for collecting the taxes from the customers.
+- The customer will never be double charged for taxes, and Katapult will only pull
+  in your product totals before taxes.
+- 'Private API Key: tokens supplied by Katapult'
+- 'Public API Key: tokens supplied by Katapult'
+- Environment - https://www.katapult.com/
+- Non-leasable tags are unavailable on Shopify. However, we can establish a price
+  minimum to capture non-leasable items at checkout as long as they are lower than
+  the minimum.
+- This configuration is intended for standard WooCommerce setups using native shipping
+  methods.
+- Non-standard delivery plugins or third-party shipping extensions are not currently
+  supported.
+- Katapult is a wholesale merchant and is responsible for collecting sales tax from
+  customers.
+- Merchants must ensure all items are passed to Katapult with the correct dollar value.
+- You will need to setup a custom Thank You Page for Katapult customers.
+- This is the URL that will be utilized in the Order Confirmation Redirect URL in
+  step 4 of installation.
+- Additional testing may be needed depending on your order management fulfillment
+  system and processes.
+- Since we use webhooks the LMS update will be reflected after around 1 minutes after
+  its updated on bigcommerce admin.
+- DO NOT modify service name(s) of any of the services
+- A Custom object katapult_transactions is used to handle multiple sessions and link
+  Katapult Order to SFCC Order, after that it will be cleaned, but is mandatory to
+  have this CO on your instance to be able to perform Katapult orders.
+- Katapult will periodically request invoice and/or delivery confirmation documents
+  for compliance.
+- Remember, your public token varies depending on whether you’re testing with the
+  Katapult sandbox or your project is live in production.
+errors:
+- 'BAD REQUEST: Invalid Verification Code'
+- 'INTERNAL SERVER ERROR: Invalid Request Payload'
+- 'NOT FOUND: Invalid Authorization Token'
+- 'UNAUTHORIZED: Invalid Authorization Token'
+- 'BAD REQUEST: phone Is Missing From Request Payload'
+- 'BAD REQUEST: phone or ssn4 Missing'
+- 'NOT FOUND: ssn4 Does Not Match / No Such Application Exist For The Given Phone'
+- 'BAD REQUEST: Invalid Request Payload / Missing Fields / Validation Error'
+- 'NOT FOUND: Invalid UID / Unable to Retrieve Application'
+- 'NOT FOUND: 404 No User Found'
+- 'BAD REQUEST: 400 Validation Error / Input Fields Differ From What Was Provided
+  During Preapproval'
+- 'INTERNAL SERVER ERROR: 500 Invalid Request Payload'
+- 'UNAUTHORIZED: 401 Invalid Authorization Token'
+- 'NOT FOUND: Invalid **state**'
+- 'NOT FOUND: Invalid Request Payload'
+- 'BAD REQUEST: Validation Error / Invalid Items in Request Payload / Invalid uid
+  /Transaction not found'
+- 'BAD REQUEST: Validation Error / Invalid Items in Request Payload / Invalid uid
+  /Transaction not found / Missing Mandatory Parameters'
+- 'NOT FOUND: Using Public Token in Authorization Header'
+- 'BAD REQUEST: Transaction Not Found / Invalid uid Provided'
+- 'BAD REQUEST: Transaction Not Found / Invalid uid Provided / Validation Error'
+- 'BAD REQUEST: Transaction not Found / Invalid uid Provided / Invalid Request'
+- 'BAD REQUEST: Invalid Request'
+- 'NOT FOUND: order_id not found'
+- '400 Bad Request: The request could not be understood or was missing the required
+  parameters'
+- '401 Unauthorized: Authentication failed or user does not have permissions for the
+  requested operation'
+- 'NOT FOUND: No User Found'
+- 'BAD REQUEST: Validation Error / Input Fields Differ From What Was Provided During
+  Preapproval'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- If the dates are found to be incorrect this could result in a customer dispute,
+  which will require detailed substantiation of the delivery/pick-up.
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://www.katapult.com/api/v3/user/auth/verify/
+  headers:
+    Accept: application/json
+    content-type: application/json
+source_metadata: null

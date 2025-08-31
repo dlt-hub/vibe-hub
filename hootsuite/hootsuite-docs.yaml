@@ -1,0 +1,134 @@
+resources:
+- name: me
+  endpoint:
+    path: /v1/me
+    method: GET
+    data_selector: data
+- name: organizations
+  endpoint:
+    path: /v1/me/organizations
+    method: GET
+    data_selector: data
+- name: socialProfiles
+  endpoint:
+    path: /v1/me/socialProfiles
+    method: get
+    data_selector: data
+- name: media
+  endpoint:
+    path: /v1/media
+    method: post
+    data_selector: data
+- name: members
+  endpoint:
+    path: /v1/members/{memberId}
+    method: get
+    data_selector: data
+- name: teams
+  endpoint:
+    path: /v1/teams/{teamId}
+    method: get
+    data_selector: data
+- name: messages
+  endpoint:
+    path: /v1/messages
+    method: GET
+    data_selector: data
+- name: message
+  endpoint:
+    path: /v1/messages/{messageId}
+    method: GET
+    data_selector: data
+- name: approve_message
+  endpoint:
+    path: /v1/messages/{messageId}/approve
+    method: POST
+- name: reject_message
+  endpoint:
+    path: /v1/messages/{messageId}/reject
+    method: POST
+- name: retrieve_team
+  endpoint:
+    path: /v1/teams/{teamId}
+    method: GET
+- name: socialProfiles
+  endpoint:
+    path: /v1/socialProfiles
+    method: GET
+    data_selector: data
+- name: socialProfile
+  endpoint:
+    path: /v1/socialProfiles/{socialProfileId}
+    method: GET
+    data_selector: data
+- name: messages_history
+  endpoint:
+    path: /v1/messages/{messageId}/history
+    method: GET
+- name: retrieve_comment
+  endpoint:
+    path: /v1/comments/{commentId}
+    method: GET
+- name: retrieve_team
+  endpoint:
+    path: /v1/organizations/{organizationId}/teams
+    method: GET
+- name: retrieve_organization_teams
+  endpoint:
+    path: /v1/organizations/{organizationId}/members
+    method: GET
+- name: create_user
+  endpoint:
+    path: /scim/v2/Users
+    method: POST
+- name: teams
+  endpoint:
+    path: /v1/socialProfiles/{socialProfileId}/teams
+    method: GET
+- name: retrieve_team
+  endpoint:
+    path: /v1/teams/{teamId}
+    method: GET
+- name: create_team
+  endpoint:
+    path: /v1/organizations/{organizationId}/teams
+    method: POST
+- name: retrieve_team_members
+  endpoint:
+    path: /v1/organizations/{organizationId}/teams/{teamId}/members
+    method: GET
+- name: retrieve_team_member_permissions
+  endpoint:
+    path: /v1/organizations/{organizationId}/teams/{teamId}/members/{memberId}/permissions
+    method: GET
+- name: retrieve_team_social_profiles
+  endpoint:
+    path: /v1/organizations/{organizationId}/teams/{teamId}/socialProfiles
+    method: GET
+notes:
+- The Team ID is required for retrieving a team.
+- Authorization is required for all API calls.
+- A bearer token string is used for authentication.
+errors:
+- '401 Unauthorized: Missing or invalid authentication'
+- '400 Bad Request: Invalid request, possibly due to missing parameters'
+- '1234: An error message'
+- '400 Bad Request: A required value was missing, or the value specified was not compatible
+  with the operation or attribute type.'
+- 400 Bad Request
+- 401 Unauthorized (Insufficient Permissions to View Profile)
+- 403 Forbidden (Insufficient permissions to view team)
+- 404 Not Found
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://platform.hootsuite.com
+  auth:
+    type: oauth2
+    token_url: https://platform.hootsuite.com/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+source_metadata: null

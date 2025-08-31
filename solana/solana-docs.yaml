@@ -1,0 +1,305 @@
+resources:
+- name: token_info
+  endpoint:
+    path: /tokens/{hash}
+    method: GET
+    data_selector: data
+    params:
+      hash: string
+- name: tagged_account_multiple
+  endpoint:
+    path: /accounts
+    method: POST
+    data_selector: array of objects
+    params: {}
+- name: tagged_account
+  endpoint:
+    path: /accounts/{hash}
+    method: GET
+    data_selector: <object>
+    params: {}
+- name: account_transaction_fees
+  endpoint:
+    path: /accounts/{hash}/fees
+    method: GET
+    data_selector: array of objects
+    params: {}
+- name: Owner Token Accounts
+  endpoint:
+    path: /addresses/{account-hash}/tokens
+    method: GET
+    data_selector: tokens
+    params:
+      account-hash: string
+      tokenType: string | null
+- name: account_transactions
+  endpoint:
+    path: /accounts/{hash}/transactions
+    method: GET
+    data_selector: transactions
+    params:
+      limit: '1000'
+      page: '1'
+- name: account_transfers
+  endpoint:
+    path: /accounts/{hash}/transfers
+    method: GET
+    data_selector: transfers
+    params: {}
+- name: transfers_csv_export
+  endpoint:
+    path: /v0/accounts/{hash}/transfers/csv
+    method: GET
+    data_selector: transactions
+    params:
+      page: 1
+- name: blocks
+  endpoint:
+    path: /blocks
+    method: GET
+    data_selector: data
+    params: {}
+- name: multiple_blocks
+  endpoint:
+    path: /blocks
+    method: POST
+    data_selector: result
+    params:
+      blockNumbers: required
+      hydration: null
+- name: block
+  endpoint:
+    path: /blocks/{block_number}
+    method: GET
+    data_selector: result
+    params:
+      block_number: required
+- name: accounts_domains
+  endpoint:
+    path: /reference/get_multiple_domains_and_subdomains_by_hash
+    method: POST
+- name: account_favourite_domains
+  endpoint:
+    path: /reference/get_favourite_domains_by_multiple_accounts
+    method: POST
+- name: user_favourite_domains
+  endpoint:
+    path: /reference/get_favourite_domains_by_account
+    method: GET
+- name: subdomains_of_multiple_accounts
+  endpoint:
+    path: /reference/get_subdomains_by_multiple_accounts
+    method: POST
+- name: account_subdomains
+  endpoint:
+    path: /reference/get_subdomains_by_account
+    method: GET
+- name: specific_account_domains
+  endpoint:
+    path: /reference/get_domains_and_subdomains_by_hash
+    method: GET
+- name: accounts_domains
+  endpoint:
+    path: /domains/bonfida
+    method: POST
+    data_selector: result
+    params:
+      accountHashes: []
+- name: account_favourite_domain
+  endpoint:
+    path: /domains/bonfida/favourites
+    method: POST
+    data_selector: result
+    params:
+      accountHashes: array of strings
+      fidaType: string
+- name: user_favourite_domains
+  endpoint:
+    path: /domains/bonfida/favourites/{hash}
+    method: GET
+    data_selector: result.domains
+    params:
+      hash: required
+- name: subdomains_of_multiple_accounts
+  endpoint:
+    path: /v0/domains/bonfida/subdomains
+    method: POST
+    data_selector: result
+- name: account_subdomains
+  endpoint:
+    path: /domains/bonfida/subdomains/{hash}
+    method: GET
+    data_selector: result.subdomains
+    params:
+      hash: string
+- name: specific_account_domains
+  endpoint:
+    path: /domains/bonfida/{hash}
+    method: GET
+    data_selector: result
+- name: solana_daily_transaction_fees
+  endpoint:
+    path: /stats/tx-fees
+    method: GET
+    data_selector: result
+    params:
+      date: string
+- name: SolanaFM Tagged Token List
+  endpoint:
+    path: /tokens
+    method: GET
+    data_selector: data
+    params: {}
+- name: tokens_multiple
+  endpoint:
+    path: /tokens
+    method: POST
+    data_selector: '[<object>]'
+    params:
+      tokenHashes: []
+- name: tokens_info
+  endpoint:
+    path: /tokens
+    method: POST
+    data_selector: object
+    params: {}
+- name: token_info
+  endpoint:
+    path: /tokens/{hash}
+    method: GET
+    data_selector: <object>
+    params: {}
+- name: user_token_accounts
+  endpoint:
+    path: /tokens/{hash}/token-accounts
+    method: POST
+    data_selector: tokenAccounts
+    params: {}
+- name: mint_token_accounts
+  endpoint:
+    path: /tokens/{mint}/holders
+    method: GET
+    data_selector: tokenAccounts
+    params:
+      page: null
+      pageSize: null
+- name: on_chain_token_data
+  endpoint:
+    path: /tokens/{mint}/info
+    method: GET
+    data_selector: data
+    params: {}
+- name: token_supply
+  endpoint:
+    path: /tokens/{mint}/supply
+    method: GET
+    data_selector: data
+- name: all_transfer_actions
+  endpoint:
+    path: /actions
+    method: GET
+    data_selector: response
+    params: {}
+- name: transaction_transfers_multiple
+  endpoint:
+    path: /v0/transfers
+    method: POST
+    data_selector: result
+    params:
+      transactionHashes: array of strings
+- name: transfer_transactions
+  endpoint:
+    path: /transfers/{hash}
+    method: GET
+    data_selector: result.data
+    params:
+      hash: transaction signature
+- name: tagged_account_multiple
+  endpoint:
+    path: /accounts
+    method: POST
+    data_selector: array
+    params: {}
+- name: blocks
+  endpoint:
+    path: /blocks
+    method: GET
+    data_selector: data
+    params: {}
+- name: solana_daily_transaction_fees
+  endpoint:
+    path: /stats/tx-fees
+    method: GET
+    data_selector: result
+    params:
+      date: string | null
+- name: tokens
+  endpoint:
+    path: /tokens
+    method: GET
+    data_selector: data
+    params: {}
+- name: all_transfer_actions
+  endpoint:
+    path: /actions
+    method: GET
+    data_selector: response
+    params: {}
+notes:
+- CNFTs owned by an account is not fully supported yet. The endpoint is still in Beta
+  mode.
+- Maximum number of ATAs to be returned is capped at 100 accounts.
+- The wallet hash that owns the domain is required.
+- This endpoint is still in the Beta stage.
+- This endpoint only returns you a list of token data that is retrieved from both
+  on and off chain.
+- Maximum number of transactionHashes you can query for is 50 per batch
+errors:
+- '400 Bad Request: The requested account doesn''t exist'
+- '404 Not Found: The requested account doesn''t exist'
+- '500 Internal Server Error: Server-side error'
+- '200 OK: Returns the data in the response body'
+- '400 Bad Request: Request parameter(s) provided is incorrectly formatted or not
+  provided'
+- '404 Not Found: The resource(s) requested is unavailable'
+- '429 Too many Requests: Rate-limit has been exceeded'
+- '500 Internal Server Error: The server encountered an unexpected error that prevented
+  it from fulfilling the request.'
+- '400: Bad Request: Request parameter(s) provided is incorrectly formatted or not
+  provided'
+- '404: Not Found: The resource(s) requested is unavailable'
+- '429: Too many Requests: Rate-limit has been exceeded'
+- '500: Internal Server Error: The server encountered an unexpected error that prevented
+  it from fulfilling the request.'
+- 400 Bad Request
+- 500 Internal Server Error
+- '400 Bad Request: client side'
+- 404 Account Not Found
+- '400 Bad Request: client side error'
+- '500 Internal Server Error: server side error'
+- '500 Internal Server Error: An error occurred on the server'
+- 400 = Bad Request (client side)
+- 500 = Internal Server Error (server side)
+- '400 Bad Request: The requested account doesn''t exist.'
+- '500 Internal Server Error: Server encountered an error.'
+- '500 Internal Server Error: Server encountered an error'
+- '400: Bad Request (client side)'
+- '500: Internal Server Error (server side)'
+- '400 Bad Request: The error code'
+- '500 Internal Server Error: The error code'
+- '400 Bad Request: The error code and message indicate which part of the query went
+  wrong'
+- '500 Internal Server Error: The error code and message indicate server side issues'
+- '400 Bad Request: The error code, message, and status will indicate which part of
+  the query went wrong'
+- '500 Internal Server Error: The error code, message, and status will indicate which
+  part of the query went wrong'
+- '400: Bad Request'
+- '500: Internal Server Error'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.solana.fm/v0
+  headers:
+    Accept: application/json
+source_metadata: null

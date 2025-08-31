@@ -1,0 +1,1909 @@
+resources:
+- name: auth
+  endpoint:
+    path: /v1/auth
+    method: POST
+    data_selector: token.token
+- name: scan_repository
+  endpoint:
+    path: /v1/scan/repository
+    method: POST
+    data_selector: result
+    params: {}
+- name: group
+  endpoint:
+    path: /v1/group
+    method: POST
+    data_selector: result
+    params: {}
+- name: policy_rule
+  endpoint:
+    path: /v1/policy/rule
+    method: PATCH
+    data_selector: result
+    params: {}
+- name: sniffer
+  endpoint:
+    path: /v1/sniffer
+    method: POST
+    data_selector: result
+    params: {}
+- name: auth
+  endpoint:
+    path: /v1/auth
+    method: POST
+    data_selector: token
+    params: {}
+- name: promote
+  endpoint:
+    path: /v1/fed/promote
+    method: POST
+    data_selector: ''
+    params: {}
+- name: join_token
+  endpoint:
+    path: /v1/fed/join_token
+    method: GET
+    data_selector: ''
+    params: {}
+- name: fed_member
+  endpoint:
+    path: /v1/fed/member
+    method: GET
+    data_selector: ''
+    params: {}
+- name: leave
+  endpoint:
+    path: /v1/fed/leave
+    method: POST
+    data_selector: ''
+    params: {}
+- name: kick
+  endpoint:
+    path: /v1/fed/cluster/$_CLUSTER_id_
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: quarantine_container
+  endpoint:
+    path: /v1/workload/:id
+    method: PATCH
+    data_selector: config
+- name: enable_debug_mode
+  endpoint:
+    path: /v1/system/config
+    method: PATCH
+    data_selector: config
+- name: check_debug_status
+  endpoint:
+    path: /v1/system/config
+    method: GET
+    data_selector: config
+- name: logout
+  endpoint:
+    path: /v1/auth
+    method: DELETE
+    data_selector: ''
+- name: scan_repository
+  endpoint:
+    path: /v1/scan/repository
+    method: POST
+    data_selector: request
+- name: get_cve_database_version
+  endpoint:
+    path: /v1/scan/scanner
+    method: GET
+    data_selector: scanners
+- name: list_federation_members
+  endpoint:
+    path: /v1/fed/member
+    method: GET
+    data_selector: ''
+- name: manager
+  endpoint:
+    path: manager
+    method: POST
+    data_selector: scale
+    params:
+      image: neuvector/manager
+      restart: always
+      environment:
+      - CTRL_SERVER_IP=controller
+      ports:
+      - 8443:8443
+- name: controller
+  endpoint:
+    path: controller
+    method: POST
+    data_selector: scale
+    params:
+      image: neuvector/controller
+      restart: always
+      cap_add:
+      - SYS_ADMIN
+      - NET_ADMIN
+      - SYS_PTRACE
+      security_opt:
+      - apparmor=unconfined
+      - seccomp=unconfined
+      - label=disable
+      environment:
+      - CLUSTER_JOIN_ADDR=controller
+      volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc:/host/proc:ro
+      - /sys/fs/cgroup:/host/cgroup:ro
+      - /var/neuvector:/var/neuvector
+- name: enforcer
+  endpoint:
+    path: enforcer
+    method: POST
+    data_selector: scale
+    params:
+      image: neuvector/enforcer
+      restart: always
+      cap_add:
+      - SYS_ADMIN
+      - NET_ADMIN
+      - SYS_PTRACE
+      - IPC_LOCK
+      security_opt:
+      - apparmor=unconfined
+      - seccomp=unconfined
+      - label=disable
+      environment:
+      - CLUSTER_JOIN_ADDR=controller
+      volumes:
+      - /lib/modules:/lib/modules
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc:/host/proc:ro
+      - /sys/fs/cgroup/:/host/cgroup/:ro
+      labels:
+        io.rancher.scheduler.global: true
+- name: neuvector-enforcer-pod
+  endpoint:
+    path: /neuvector/enforcer:5.4.3
+    method: GET
+    data_selector: ''
+    params: {}
+- name: neuvector-service-controller-fed-master
+  endpoint:
+    path: /neuvector-service-controller-fed-master
+    method: POST
+    data_selector: metadata
+    params: {}
+- name: neuvector-service-controller-fed-worker
+  endpoint:
+    path: /neuvector-service-controller-fed-worker
+    method: POST
+    data_selector: metadata
+    params: {}
+- name: neuvector-svc-crd-webhook
+  endpoint:
+    path: /neuvector/svc/crd/webhook
+    method: GET
+    data_selector: ports
+- name: neuvector-svc-admission-webhook
+  endpoint:
+    path: /neuvector/svc/admission/webhook
+    method: GET
+    data_selector: ports
+- name: neuvector-service-webui
+  endpoint:
+    path: /neuvector/service/webui
+    method: GET
+    data_selector: ports
+- name: neuvector-svc-controller
+  endpoint:
+    path: /neuvector/svc/controller
+    method: GET
+    data_selector: ports
+- name: neuvector-manager-pod
+  endpoint:
+    path: /neuvector/manager/pod
+    method: GET
+    data_selector: spec
+- name: neuvector-controller-pod
+  endpoint:
+    path: /neuvector/controller/pod
+    method: GET
+    data_selector: spec
+- name: neuvector-enforcer-pod
+  endpoint:
+    path: /neuvector/enforcer/pod
+    method: GET
+    data_selector: spec
+- name: neuvector-scanner-pod
+  endpoint:
+    path: /neuvector/scanner/pod
+    method: GET
+    data_selector: spec
+- name: neuvector-updater-pod
+  endpoint:
+    path: /neuvector/updater/pod
+    method: GET
+    data_selector: spec
+- name: neuvector-svc-crd-webhook
+  endpoint:
+    path: /apis/v1/namespaces/neuvector/services/neuvector-svc-crd-webhook
+    method: GET
+    data_selector: ports
+- name: neuvector-svc-admission-webhook
+  endpoint:
+    path: /apis/v1/namespaces/neuvector/services/neuvector-svc-admission-webhook
+    method: GET
+    data_selector: ports
+- name: neuvector-service-webui
+  endpoint:
+    path: /apis/v1/namespaces/neuvector/services/neuvector-service-webui
+    method: GET
+    data_selector: ports
+- name: neuvector-svc-controller
+  endpoint:
+    path: /apis/v1/namespaces/neuvector/services/neuvector-svc-controller
+    method: GET
+    data_selector: ports
+- name: neuvector-manager-pod
+  endpoint:
+    path: /apis/apps/v1/namespaces/neuvector/deployments/neuvector-manager-pod
+    method: GET
+    data_selector: spec
+- name: neuvector-controller-pod
+  endpoint:
+    path: /apis/apps/v1/namespaces/neuvector/deployments/neuvector-controller-pod
+    method: GET
+    data_selector: spec
+- name: neuvector-enforcer-pod
+  endpoint:
+    path: /apis/apps/v1/namespaces/neuvector/daemonsets/neuvector-enforcer-pod
+    method: GET
+    data_selector: spec
+- name: neuvector-scanner-pod
+  endpoint:
+    path: /apis/apps/v1/namespaces/neuvector/deployments/neuvector-scanner-pod
+    method: GET
+    data_selector: spec
+- name: neuvector-updater-pod
+  endpoint:
+    path: /apis/batch/v1/namespaces/neuvector/cronjobs/neuvector-updater-pod
+    method: GET
+    data_selector: spec
+- name: persistent_volume_claim
+  endpoint:
+    path: /var/neuvector
+    method: POST
+    data_selector: metadata
+    params: {}
+- name: build_phase_image_scanning
+  endpoint:
+    path: /scanning/build
+    method: GET
+    data_selector: records
+    params: {}
+- name: NvClusterSecurityRule
+  endpoint:
+    path: /api/v1/NvClusterSecurityRule
+    method: GET
+    data_selector: items
+    params: {}
+- name: NvSecurityRule
+  endpoint:
+    path: /api/v1/NvSecurityRule
+    method: GET
+    data_selector: items
+    params: {}
+- name: NvSecurityRule
+  endpoint:
+    path: /api/v1/neuvector/NvSecurityRule
+    method: POST
+    data_selector: rules
+    params: {}
+- name: NvClusterSecurityRule
+  endpoint:
+    path: /api/v1/neuvector/NvClusterSecurityRule
+    method: POST
+    data_selector: rules
+    params: {}
+- name: NvAdmissionControlSecurityRule
+  endpoint:
+    path: /v1/admission-control
+    method: GET
+    data_selector: rules
+    params: {}
+- name: NvSecurityRule
+  endpoint:
+    path: /v1/security-rules
+    method: GET
+    data_selector: rules
+    params: {}
+- name: NvClusterSecurityRule
+  endpoint:
+    path: /v1/cluster-security-rules
+    method: GET
+    data_selector: rules
+    params: {}
+- name: NvGroupDefinition
+  endpoint:
+    path: /v1/group-definitions
+    method: GET
+    data_selector: groups
+    params: {}
+- name: auth
+  endpoint:
+    path: /v1/auth
+    method: POST
+    data_selector: token.token
+    params: {}
+- name: scan_repository
+  endpoint:
+    path: /v1/scan/repository
+    method: POST
+    data_selector: result
+    params: {}
+- name: sniffer
+  endpoint:
+    path: /v1/sniffer
+    method: POST
+    data_selector: result.id
+    params: {}
+- name: eula
+  endpoint:
+    path: /v1/eula
+    method: GET
+    data_selector: eula
+    params: {}
+- name: quarantine_workload
+  endpoint:
+    path: /v1/workload/:id
+    method: PATCH
+    data_selector: null
+    params: {}
+- name: auth
+  endpoint:
+    path: /v1/auth
+    method: POST
+    data_selector: null
+    params: {}
+- name: set_debug
+  endpoint:
+    path: /v1/system/config
+    method: PATCH
+    data_selector: null
+    params: {}
+- name: check_debug_status
+  endpoint:
+    path: /v1/system/config
+    method: GET
+    data_selector: null
+    params: {}
+- name: scan_repository
+  endpoint:
+    path: /v1/scan/repository
+    method: POST
+    data_selector: null
+    params: {}
+- name: get_cve_database
+  endpoint:
+    path: /v1/scan/scanner
+    method: GET
+    data_selector: null
+    params: {}
+- name: federation_members
+  endpoint:
+    path: /v1/fed/member
+    method: GET
+    data_selector: null
+    params: {}
+- name: auth
+  endpoint:
+    path: /v1/auth
+    method: POST
+    data_selector: token.token
+- name: promote
+  endpoint:
+    path: /v1/fed/promote
+    method: POST
+    data_selector: ''
+- name: join_token
+  endpoint:
+    path: /v1/fed/join_token
+    method: GET
+    data_selector: join_token
+- name: join
+  endpoint:
+    path: /v1/fed/join
+    method: POST
+    data_selector: ''
+- name: fed_member
+  endpoint:
+    path: /v1/fed/member
+    method: GET
+    data_selector: ''
+- name: leave
+  endpoint:
+    path: /v1/fed/leave
+    method: POST
+    data_selector: ''
+- name: kick
+  endpoint:
+    path: /v1/fed/cluster/$_CLUSTER_id_
+    method: DELETE
+    data_selector: ''
+- name: manager
+  endpoint:
+    path: /manager
+    method: POST
+    data_selector: scale
+    params:
+      scale: 1
+- name: controller
+  endpoint:
+    path: /controller
+    method: POST
+    data_selector: scale
+    params:
+      scale: 3
+- name: enforcer
+  endpoint:
+    path: /enforcer
+    method: POST
+    data_selector: status
+    params: {}
+- name: manager
+  endpoint:
+    path: /manager
+    method: POST
+    data_selector: manager
+    params:
+      scale: 1
+      image: neuvector/manager
+      restart: always
+      environment:
+      - CTRL_SERVER_IP=controller
+      ports:
+      - 8443:8443
+- name: controller
+  endpoint:
+    path: /controller
+    method: POST
+    data_selector: controller
+    params:
+      scale: 3
+      image: neuvector/controller
+      restart: always
+      privileged: true
+      environment:
+      - CLUSTER_JOIN_ADDR=controller
+      volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc:/host/proc:ro
+      - /sys/fs/cgroup:/host/cgroup:ro
+      - /var/neuvector:/var/neuvector
+- name: enforcer
+  endpoint:
+    path: /enforcer
+    method: POST
+    data_selector: enforcer
+    params:
+      image: neuvector/enforcer
+      pid: host
+      restart: always
+      privileged: true
+      environment:
+      - CLUSTER_JOIN_ADDR=controller
+      volumes:
+      - /lib/modules:/lib/modules
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc:/host/proc:ro
+      - /sys/fs/cgroup/:/host/cgroup/:ro
+      labels:
+        io.rancher.scheduler.global: true
+- name: CVE_vulnerability_database
+  endpoint:
+    path: /var/neuvector
+    method: GET
+- name: neuvector-enforcer-pod
+  endpoint:
+    path: /neuvector/enforcer:5.4.3
+    method: GET
+- name: neuvector-manager
+  endpoint:
+    path: /manager
+    method: POST
+- name: neuvector-controller
+  endpoint:
+    path: /controller
+    method: POST
+- name: neuvector-enforcer
+  endpoint:
+    path: /enforcer
+    method: POST
+- name: neuvector-scanner
+  endpoint:
+    path: /scanner
+    method: POST
+- name: neuvector-updater
+  endpoint:
+    path: /updater
+    method: POST
+- name: neuvector_namespace
+  endpoint:
+    path: /api/v1/namespaces/neuvector
+    method: GET
+    data_selector: items
+    params: {}
+- name: neuvector_service_accounts
+  endpoint:
+    path: /api/v1/namespaces/neuvector/serviceaccounts
+    method: GET
+    data_selector: items
+    params: {}
+- name: neuvector_cluster_roles
+  endpoint:
+    path: /apis/rbac.authorization.k8s.io/v1/clusterroles
+    method: GET
+    data_selector: items
+    params: {}
+- name: neuvector_cluster_role_bindings
+  endpoint:
+    path: /apis/rbac.authorization.k8s.io/v1/clusterrolebindings
+    method: GET
+    data_selector: items
+    params: {}
+- name: neuvector_roles
+  endpoint:
+    path: /apis/rbac.authorization.k8s.io/v1/namespaces/neuvector/roles
+    method: GET
+    data_selector: items
+    params: {}
+- name: neuvector_role_bindings
+  endpoint:
+    path: /apis/rbac.authorization.k8s.io/v1/namespaces/neuvector/rolebindings
+    method: GET
+    data_selector: items
+    params: {}
+- name: neuvector-svc-crd-webhook
+  endpoint:
+    path: /neuvector-svc-crd-webhook
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-svc-admission-webhook
+  endpoint:
+    path: /neuvector-svc-admission-webhook
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-service-webui
+  endpoint:
+    path: /neuvector-service-webui
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-svc-controller
+  endpoint:
+    path: /neuvector-svc-controller
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-manager-pod
+  endpoint:
+    path: /neuvector-manager-pod
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-controller-pod
+  endpoint:
+    path: /neuvector-controller-pod
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-enforcer-pod
+  endpoint:
+    path: /neuvector-enforcer-pod
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-scanner-pod
+  endpoint:
+    path: /neuvector-scanner-pod
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-updater-pod
+  endpoint:
+    path: /neuvector-updater-pod
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-svc-crd-webhook
+  endpoint:
+    path: /neuvector-svc-crd-webhook
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-svc-admission-webhook
+  endpoint:
+    path: /neuvector-svc-admission-webhook
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-service-webui
+  endpoint:
+    path: /neuvector-service-webui
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-svc-controller
+  endpoint:
+    path: /neuvector-svc-controller
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-manager-pod
+  endpoint:
+    path: /neuvector-manager-pod
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-controller-pod
+  endpoint:
+    path: /neuvector-controller-pod
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-enforcer-pod
+  endpoint:
+    path: /neuvector-enforcer-pod
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-scanner-pod
+  endpoint:
+    path: /neuvector-scanner-pod
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-updater-pod
+  endpoint:
+    path: /neuvector-updater-pod
+    method: GET
+    data_selector: spec
+    params: {}
+- name: manager
+  endpoint:
+    path: /neuvector/manager
+    method: GET
+- name: controller
+  endpoint:
+    path: /neuvector/controller
+    method: GET
+- name: enforcer
+  endpoint:
+    path: /neuvector/enforcer
+    method: GET
+- name: scanner
+  endpoint:
+    path: /neuvector/scanner
+    method: GET
+- name: updater
+  endpoint:
+    path: /neuvector/updater
+    method: GET
+- name: neuvector-enforcer-pod
+  endpoint:
+    path: /apis/apps/v1/namespaces/neuvector/deployments/neuvector-enforcer-pod
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-scanner-pod
+  endpoint:
+    path: /apis/apps/v1/namespaces/neuvector/deployments/neuvector-scanner-pod
+    method: GET
+    data_selector: spec
+    params: {}
+- name: neuvector-updater-pod
+  endpoint:
+    path: /apis/batch/v1/namespaces/neuvector/cronjobs/neuvector-updater-pod
+    method: GET
+    data_selector: spec
+    params: {}
+- name: controller
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Controller
+    method: POST
+    data_selector: controller
+    params: {}
+- name: manager
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Manager
+    method: POST
+    data_selector: manager
+    params: {}
+- name: enforcer
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Enforcer
+    method: POST
+    data_selector: enforcer
+    params: {}
+- name: scanner
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Scanner
+    method: POST
+    data_selector: scanner
+    params: {}
+- name: AllowlistSynchronizer
+  endpoint:
+    path: /auto.gke.io/v1/AllowlistSynchronizer
+    method: POST
+    data_selector: status
+    params: {}
+- name: AllowlistSynchronizer
+  endpoint:
+    path: /api/v1/allowlists
+    method: POST
+    data_selector: allowlistPaths
+    params: {}
+- name: PodDisruptionBudget
+  endpoint:
+    path: /api/v1/poddisruptionbudgets
+    method: POST
+    data_selector: minAvailable
+    params: {}
+- name: core
+  endpoint:
+    path: /neuvector/core
+    method: GET
+- name: core
+  endpoint:
+    path: /neuvector-helm
+    method: GET
+    data_selector: charts
+    params: {}
+- name: core
+  endpoint:
+    path: /neuvector/core
+    method: GET
+    data_selector: charts
+- name: images
+  endpoint:
+    path: /neuvector/images
+    method: GET
+    data_selector: images
+- name: core
+  endpoint:
+    path: /neuvector-helm
+    method: GET
+    data_selector: charts
+    params: {}
+- name: Removing NeuVector Deployment
+  endpoint:
+    path: /deploying/remove
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: Resetting NeuVector
+  endpoint:
+    path: /deploying/reset
+    method: POST
+    data_selector: ''
+    params: {}
+- name: Resetting Admin Password
+  endpoint:
+    path: /deploying/reset-password
+    method: POST
+    data_selector: ''
+    params: {}
+- name: neuvector-default
+  endpoint:
+    path: /api/v1/neuvector
+    method: POST
+    data_selector: spec
+    params: {}
+- name: Primary_Rest_Info
+  endpoint:
+    path: /10.1.10.43:30020
+    method: GET
+- name: Managed_Rest_Info
+  endpoint:
+    path: /10.1.10.42:30010
+    method: GET
+- name: primary_cluster
+  endpoint:
+    path: /neuvector/svc-controller-fed-master
+    method: GET
+    data_selector: data
+    params: {}
+- name: managed_cluster
+  endpoint:
+    path: /neuvector/svc-controller-api
+    method: GET
+    data_selector: data
+    params: {}
+- name: fedinitcfg
+  endpoint:
+    path: /neuvector/fedinitcfg
+    method: GET
+    data_selector: data
+    params: {}
+- name: primary_rest_info
+  endpoint:
+    path: /neuvector/svc-controller-fed-master
+    method: GET
+    data_selector: records
+    params: {}
+- name: managed_rest_info
+  endpoint:
+    path: /neuvector/svc-controller-api
+    method: GET
+    data_selector: records
+    params: {}
+- name: fedinitcfg
+  endpoint:
+    path: /kubernetes/neuvector-init
+    method: POST
+    data_selector: data
+    params: {}
+- name: fedinitcfg
+  endpoint:
+    path: /services/data/vXX.X/sobjects/FedInitCfg
+    method: GET
+    data_selector: records
+    params: {}
+- name: passwordprofileinitcfg
+  endpoint:
+    path: /services/data/vXX.X/sobjects/PasswordProfileInitCfg
+    method: GET
+    data_selector: records
+    params: {}
+- name: roleinitcfg
+  endpoint:
+    path: /services/data/vXX.X/sobjects/RoleInitCfg
+    method: GET
+    data_selector: records
+    params: {}
+- name: ldapinitcfg
+  endpoint:
+    path: /services/data/vXX.X/sobjects/LdapInitCfg
+    method: GET
+    data_selector: records
+    params: {}
+- name: oidcinitcfg
+  endpoint:
+    path: /services/data/vXX.X/sobjects/OidcInitCfg
+    method: GET
+    data_selector: records
+    params: {}
+- name: samlinitcfg
+  endpoint:
+    path: /services/data/vXX.X/sobjects/SamlInitCfg
+    method: GET
+    data_selector: records
+    params: {}
+- name: sysinitcfg
+  endpoint:
+    path: /services/data/vXX.X/sobjects/SysInitCfg
+    method: GET
+    data_selector: records
+    params: {}
+- name: userinitcfg
+  endpoint:
+    path: /services/data/vXX.X/sobjects/UserInitCfg
+    method: GET
+    data_selector: records
+    params: {}
+- name: Primary_Rest_Info
+  endpoint:
+    path: /10.1.10.43:30020
+    method: GET
+- name: Managed_Rest_Info
+  endpoint:
+    path: /10.1.10.42:30010
+    method: GET
+- name: Primary_Rest_Info
+  endpoint:
+    path: /neuvector-svc-controller-fed-master
+    method: GET
+- name: Managed_Rest_Info
+  endpoint:
+    path: /neuvector-svc-controller-api
+    method: GET
+- name: Primary_Rest_Info
+  endpoint:
+    path: /10.1.10.43:30020
+    method: GET
+- name: Managed_Rest_Info
+  endpoint:
+    path: /10.1.10.42:30010
+    method: GET
+- name: fedinitcfg
+  endpoint:
+    path: /config/fedinitcfg
+    method: POST
+- name: passwordprofileinitcfg
+  endpoint:
+    path: /config/passwordprofileinitcfg
+    method: POST
+- name: roleinitcfg
+  endpoint:
+    path: /config/roleinitcfg
+    method: POST
+- name: ldapinitcfg
+  endpoint:
+    path: /config/ldapinitcfg
+    method: POST
+- name: oidcinitcfg
+  endpoint:
+    path: /config/oidcinitcfg
+    method: POST
+- name: samlinitcfg
+  endpoint:
+    path: /config/samlinitcfg
+    method: POST
+- name: sysinitcfg
+  endpoint:
+    path: /config/sysinitcfg
+    method: POST
+- name: userinitcfg
+  endpoint:
+    path: /config/userinitcfg
+    method: POST
+- name: fedinitcfg
+  endpoint:
+    path: /api/fedinitcfg
+    method: POST
+- name: passwordprofileinitcfg
+  endpoint:
+    path: /api/passwordprofileinitcfg
+    method: POST
+- name: roleinitcfg
+  endpoint:
+    path: /api/roleinitcfg
+    method: POST
+- name: ldapinitcfg
+  endpoint:
+    path: /api/ldapinitcfg
+    method: POST
+- name: oidcinitcfg
+  endpoint:
+    path: /api/oidcinitcfg
+    method: POST
+- name: samlinitcfg
+  endpoint:
+    path: /api/samlinitcfg
+    method: POST
+- name: sysinitcfg
+  endpoint:
+    path: /api/sysinitcfg
+    method: POST
+- name: userinitcfg
+  endpoint:
+    path: /api/userinitcfg
+    method: POST
+- name: fedinitcfg
+  endpoint:
+    path: /kubernetes/configMap
+    method: POST
+    data_selector: data
+    params: {}
+- name: fedinitcfg
+  endpoint:
+    path: /kubernetes/5.4.0/initcfg.yaml
+    method: GET
+    data_selector: data
+    params: {}
+- name: registry
+  endpoint:
+    path: /api/v1/registries
+    method: GET
+    data_selector: registries
+    params: {}
+- name: github_container_registry
+  endpoint:
+    path: /
+    method: GET
+    data_selector: packages
+    params: {}
+- name: Jenkins Plugin
+  endpoint:
+    path: /api/jenkins/plugin/neuvector
+    method: GET
+    data_selector: data
+    params: {}
+- name: scan_image
+  endpoint:
+    path: /neuvector/neuvector-orb
+    method: POST
+    data_selector: results
+    params:
+      registry_url: https://registry.hub.docker.com
+      repository: alpine
+      tag: '3.4'
+      scan_layers: 'false'
+      high_vul_to_fail: 0
+      medium_vul_to_fail: 3
+- name: vulnerability_scan
+  endpoint:
+    path: /v1/scan/repository
+    method: POST
+    data_selector: result
+    params: {}
+- name: auth
+  endpoint:
+    path: /v1/auth
+    method: POST
+    data_selector: token
+    params: {}
+- name: cve_database
+  endpoint:
+    path: /v1/scan/scanner
+    method: GET
+    data_selector: scanners
+- name: scanner
+  endpoint:
+    path: /v1/scan/scanner
+    method: GET
+    data_selector: scanners
+- name: scanner
+  endpoint:
+    path: /scanning/scanners
+    method: GET
+- name: updater
+  endpoint:
+    path: /scanning/updating
+    method: PATCH
+- name: NvAdmissionControlSecurityRule
+  endpoint:
+    path: /v1/admission-control
+    method: GET
+    data_selector: rules
+    params: {}
+- name: NvSecurityRule
+  endpoint:
+    path: /v1/security-rule
+    method: GET
+    data_selector: rules
+    params: {}
+- name: NvClusterSecurityRule
+  endpoint:
+    path: /v1/cluster-security-rule
+    method: GET
+    data_selector: rules
+    params: {}
+- name: NvGroupDefinition
+  endpoint:
+    path: /v1/group-definition
+    method: GET
+    data_selector: groups
+    params: {}
+- name: NvClusterSecurityRule
+  endpoint:
+    path: /api/v1/nvclustersecurityrules
+    method: POST
+    data_selector: items
+    params: {}
+- name: NvSecurityRule
+  endpoint:
+    path: /api/v1/nvsecurityrules
+    method: POST
+    data_selector: items
+    params: {}
+- name: NvSecurityRule
+  endpoint:
+    path: /api/v1/neuvector/crd
+    method: POST
+    data_selector: items
+- name: NvSecurityRule
+  endpoint:
+    path: /api/v1/neuvector/NvSecurityRule
+    method: POST
+    data_selector: spec
+    params: {}
+- name: NvClusterSecurityRule
+  endpoint:
+    path: /api/v1/neuvector/NvClusterSecurityRule
+    method: POST
+    data_selector: spec
+    params: {}
+- name: containers
+  endpoint:
+    path: /api/v1/nvclustersecurityrule
+    method: POST
+    data_selector: items
+    params: {}
+- name: nv.alpine.default
+  endpoint:
+    path: /api/v1/nvsecurityrule
+    method: POST
+    data_selector: items
+    params: {}
+- name: NvSecurityRule
+  endpoint:
+    path: /neuvector/crd
+    method: POST
+    data_selector: items
+    params: {}
+- name: NvClusterSecurityRule
+  endpoint:
+    path: /neuvector/crd
+    method: POST
+    data_selector: items
+    params: {}
+- name: Network Rules
+  endpoint:
+    path: /policy/networkrules
+    method: GET
+    data_selector: rules
+    params: {}
+- name: waf_sensor
+  endpoint:
+    path: /api/waf/sensors
+    method: GET
+    data_selector: items
+    params: {}
+- name: waf_group
+  endpoint:
+    path: /api/waf/groups
+    method: GET
+    data_selector: items
+    params: {}
+- name: policy_group
+  endpoint:
+    path: /policy/groups
+    method: POST
+    data_selector: rules
+    params: {}
+- name: GroupThresholdSetting
+  endpoint:
+    path: /set/group
+    method: POST
+    data_selector: settings
+    params: {}
+- name: Users and Roles
+  endpoint:
+    path: /5.3/configuration/users
+    method: GET
+- name: manager
+  endpoint:
+    path: /manager
+    method: GET
+- name: manager
+  endpoint:
+    path: /manager
+    method: GET
+    data_selector: progressDeadlineSeconds
+    params: {}
+- name: fed-master
+  endpoint:
+    path: /v1/eula
+    method: GET
+    data_selector: eula
+    params: {}
+- name: fed-managed
+  endpoint:
+    path: /v1/eula
+    method: GET
+    data_selector: eula
+    params: {}
+- name: SAML IDP Configuration
+  endpoint:
+    path: /integration/saml
+    method: GET
+    data_selector: configuration
+    params: {}
+- name: GlobalRole
+  endpoint:
+    path: /management.cattle.io/v3/GlobalRole
+    method: POST
+    data_selector: globalRoles
+    params: {}
+- name: ClusterRole
+  endpoint:
+    path: /management.cattle.io/v3/ClusterRole
+    method: POST
+    data_selector: clusterRoles
+    params: {}
+- name: ProjectRole
+  endpoint:
+    path: /management.cattle.io/v3/ProjectRole
+    method: POST
+    data_selector: projectRoles
+    params: {}
+- name: quarantine_workload
+  endpoint:
+    path: /v1/workload/:id
+    method: PATCH
+    data_selector: config
+- name: get_cve_database_version
+  endpoint:
+    path: /v1/scan/scanner
+    method: GET
+    data_selector: scanners
+- name: list_federation_members
+  endpoint:
+    path: /v1/fed/member
+    method: GET
+    data_selector: members
+- name: auth
+  endpoint:
+    path: /v1/auth
+    method: POST
+    data_selector: token.token
+- name: scan_repository
+  endpoint:
+    path: /v1/scan/repository
+    method: POST
+    data_selector: scan_repository.json
+- name: policy_rule
+  endpoint:
+    path: /v1/policy/rule
+    method: PATCH
+- name: sniffer
+  endpoint:
+    path: /v1/sniffer
+    method: POST
+- name: eula
+  endpoint:
+    path: /v1/eula
+    method: GET
+- name: user
+  endpoint:
+    path: /v1/user/admin
+    method: PATCH
+- name: auth
+  endpoint:
+    path: /v1/auth
+    method: POST
+    data_selector: token.token
+- name: promote
+  endpoint:
+    path: /v1/fed/promote
+    method: POST
+    data_selector: response
+- name: join_token
+  endpoint:
+    path: /v1/fed/join_token
+    method: GET
+    data_selector: join_token
+- name: join
+  endpoint:
+    path: /v1/fed/join
+    method: POST
+    data_selector: response
+- name: fed_member
+  endpoint:
+    path: /v1/fed/member
+    method: GET
+    data_selector: joint_clusters
+- name: leave
+  endpoint:
+    path: /v1/fed/leave
+    method: POST
+    data_selector: response
+- name: kick
+  endpoint:
+    path: /v1/fed/cluster/$_CLUSTER_id_
+    method: DELETE
+    data_selector: response
+- name: auth
+  endpoint:
+    path: /v1/auth
+    method: POST
+    data_selector: token.token
+- name: scan_repository
+  endpoint:
+    path: /v1/scan/repository
+    method: POST
+    data_selector: request
+- name: sniffer
+  endpoint:
+    path: /v1/sniffer
+    method: POST
+    data_selector: sniffer
+- name: policy_rule
+  endpoint:
+    path: /v1/policy/rule
+    method: PATCH
+    data_selector: insert.rules
+- name: quarantine
+  endpoint:
+    path: /v1/workload/:id
+    method: PATCH
+    data_selector: config
+- name: auth
+  endpoint:
+    path: /v1/auth
+    method: POST
+    data_selector: token
+- name: scan_repository
+  endpoint:
+    path: /v1/scan/repository
+    method: POST
+    data_selector: request
+- name: scanner
+  endpoint:
+    path: /v1/scan/scanner
+    method: GET
+    data_selector: scanners
+- name: federation_members
+  endpoint:
+    path: /v1/fed/member
+    method: GET
+    data_selector: members
+- name: auth
+  endpoint:
+    path: /v1/auth
+    method: POST
+    data_selector: token.token
+- name: promote
+  endpoint:
+    path: /v1/fed/promote
+    method: POST
+    data_selector: response
+- name: join_token
+  endpoint:
+    path: /v1/fed/join_token
+    method: GET
+    data_selector: join_token
+- name: fed_member
+  endpoint:
+    path: /v1/fed/member
+    method: GET
+    data_selector: members
+- name: leave
+  endpoint:
+    path: /v1/fed/leave
+    method: POST
+    data_selector: response
+- name: kick
+  endpoint:
+    path: /v1/fed/cluster/$_CLUSTER_id_
+    method: DELETE
+    data_selector: response
+- name: neuvector-data
+  endpoint:
+    path: /var/neuvector
+    method: GET
+    data_selector: records
+    params: {}
+- name: neuvector-controller
+  endpoint:
+    path: /kubernetes/neuvector-service-controller-fed-master
+    method: POST
+- name: neuvector-updater
+  endpoint:
+    path: /kubernetes/neuvector-service-controller-fed-worker
+    method: POST
+- name: neuvector-controller
+  endpoint:
+    path: /neuvector/controller
+    method: GET
+    data_selector: records
+    params: {}
+- name: neuvector-enforcer
+  endpoint:
+    path: /neuvector/enforcer
+    method: GET
+    data_selector: records
+    params: {}
+- name: neuvector-manager
+  endpoint:
+    path: /neuvector/manager
+    method: GET
+    data_selector: records
+    params: {}
+- name: neuvector-service-controller-fed-master
+  endpoint:
+    path: /neuvector-service-controller-fed-master
+    method: POST
+- name: neuvector-service-controller-fed-worker
+  endpoint:
+    path: /neuvector-service-controller-fed-worker
+    method: POST
+- name: neuvector-enforcer-pod
+  endpoint:
+    path: /apis/apps/v1/namespaces/neuvector/deployments/neuvector-enforcer-pod
+    method: GET
+    data_selector: spec.template.spec.containers
+    params: {}
+- name: neuvector-scanner-pod
+  endpoint:
+    path: /apis/apps/v1/namespaces/neuvector/deployments/neuvector-scanner-pod
+    method: GET
+    data_selector: spec.template.spec.containers
+    params: {}
+- name: neuvector-updater-pod
+  endpoint:
+    path: /apis/batch/v1/namespaces/neuvector/cronjobs/neuvector-updater-pod
+    method: GET
+    data_selector: spec.jobTemplate.spec.template.spec.containers
+    params: {}
+- name: allinone
+  endpoint:
+    path: /deploying/allinone
+    method: POST
+- name: enforcer
+  endpoint:
+    path: /deploying/enforcer
+    method: POST
+- name: scanner
+  endpoint:
+    path: /deploying/scanner
+    method: POST
+- name: controller
+  endpoint:
+    path: /neuvector/controller
+    method: POST
+    data_selector: controller
+    params: {}
+- name: manager
+  endpoint:
+    path: /neuvector/manager
+    method: POST
+    data_selector: manager
+    params: {}
+- name: enforcer
+  endpoint:
+    path: /neuvector/enforcer
+    method: POST
+    data_selector: enforcer
+    params: {}
+- name: scanner
+  endpoint:
+    path: /neuvector/scanner
+    method: POST
+    data_selector: scanner
+    params: {}
+- name: core
+  endpoint:
+    path: /neuvector/core
+    method: GET
+- name: hauler
+  endpoint:
+    path: /hauler
+    method: GET
+    data_selector: records
+- name: helm
+  endpoint:
+    path: /helm
+    method: GET
+    data_selector: records
+- name: core
+  endpoint:
+    path: /neuvector/core
+    method: GET
+    data_selector: charts
+    params: {}
+- name: images
+  endpoint:
+    path: /neuvector/images
+    method: GET
+    data_selector: images
+    params: {}
+- name: core
+  endpoint:
+    path: /neuvector-helm
+    method: GET
+    data_selector: charts
+    params:
+      version: 2.7.9
+- name: controller
+  endpoint:
+    path: /neuvector-helm
+    method: GET
+    data_selector: images
+    params:
+      version: 5.3.4
+- name: enforcer
+  endpoint:
+    path: /neuvector-helm
+    method: GET
+    data_selector: images
+    params:
+      version: 5.3.4
+- name: manager
+  endpoint:
+    path: /neuvector-helm
+    method: GET
+    data_selector: images
+    params:
+      version: 5.3.4
+- name: scanner
+  endpoint:
+    path: /neuvector-helm
+    method: GET
+    data_selector: images
+    params:
+      version: latest
+- name: updater
+  endpoint:
+    path: /neuvector-helm
+    method: GET
+    data_selector: images
+    params:
+      version: latest
+notes:
+- If you are making REST API calls with username/password, please be sure make a DELETE
+  call against /v1/auth when done. There is a maximum of 32 concurrent sessions for
+  each user.
+- If the image to be scanned is a remote image, the base image must also be a remote
+  image, starting with http or https.
+- If the image to be scanned is a local image, the base image must also be a local
+  image.
+- For configuration backup/HA, a RWX PVC of 1Gi or more is required.
+- 'Recommended browser: Chrome for better performance.'
+- Only NeuVector deployments through Rancher Extensions (NeuVector) of Rancher version
+  2.7.0+, or Apps & Marketplace of Rancher version 2.6.5+ can be managed directly.
+- Uninstalling the NeuVector UI extension will NOT uninstall the NeuVector app from
+  each cluster.
+- Users will need to manually add * (Verbs) / services/proxy (Resource) to NeuVector-related
+  Global/Cluster Roles.
+- Users will need to manually add * (Verbs) / services/proxy (Resource) to NeuVector-related
+  Project/Namespace Roles.
+- It is not recommended to deploy (scale) more than one manager behind a load balancer
+  due to potential session state issues.
+- If deploying from the Rancher Manager 2.6.5+ NeuVector chart, images are pulled
+  automatically from the Rancher Registry mirrored image repo.
+- if there is an extra info for taints as above, please add it here. This is required
+  to match all the taint info defined on the taint node. Otherwise, the Enforcer won't
+  deploy on the taint node
+- By default Kubernetes will not schedule pods on the master node.
+- To prevent the enforcer from being deployed on a controller node, if it is a dedicated
+  management node (without application containers to be monitored), add a nodeAffinity.
+- Use least-privileged service accounts instead of the default
+- Kubernetes 1.25+ requires Pod Security Admission for deploying
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects may return nulls in deeply nested fields
+- PKS is field tested and requires enabling privileged containers to the plan/tile.
+- Be sure to periodically export the configuration file from the console and save
+  it as a backup.
+- If a persistent volume is not mounted, NeuVector does NOT store the configuration
+  or policy as persistent data.
+- The default REST API port for plug-ins to call the scanner is 10443.
+- Updating the CRD generated rules in NeuVector is as simple as updating the appropriate
+  yaml file and applying the update
+- The CRD import behavior ignores the PolicyMode of any 'linked' group, leaving the
+  Policy mode unchanged if the linked group already exists.
+- If the linked group does not exist it will be automatically created and set to the
+  default New Services Mode in Settings -> Configuration.
+- CRDs are supported in Kubernetes 1.11 and later.
+- Custom created groups don't have a Protection mode.
+- NeuVector starts in Discover mode.
+- The default password requirement is minimum 8 characters length, 1 uppercase letter,
+  1 lowercase letter, 1 numeric character.
+- If a user has previously logged in through an enterprise integration, their Identify
+  Provider (e.g. OpenID Connect) will be listed.
+- Network rules are enforced in the order that they appear in the list, from top to
+  bottom.
+- If you edit (add, delete, change) rules, your changes are NOT applied until you
+  click the Save button at the top.
+- If you are making REST API calls with username/password, please be sure to make
+  a DELETE call against /v1/auth when done.
+- Token based authentication does not have a limit, but expires according to the time
+  limit selected when created.
+- You may need to install jq
+- In a multiple controller deployment the requests must be sent to a single controller
+  IP.
+- If the image to be scanned is a remote image, with 'registry' specified, the base
+  image must also be a remote image, and the name must start with http or https.
+- Quarantine means that all network traffic is blocked. The container will remain
+  and continue to run - just without any network connections.
+- 'Recommended browser: Chrome for better performance'
+- NeuVector can be integrated into the CI/CD workflow to provide automated scanning
+  and deployment.
+- On some systems, deployment without using privileged mode is supported.
+- To control which nodes the Manager and Controller are deployed on, label each node.
+- It is recommended to login directly to the NeuVector console as admin/admin to manually
+  change the admin password to a strong password.
+- Deployment on Rancher 2.x/Kubernetes should follow the Kubernetes reference section
+  and/or Helm based deployment.
+- Only NeuVector deployments through Rancher Extensions (NeuVector) of Rancher version
+  2.7.0+, or Apps & Marketplace of Rancher version 2.6.5+ can be managed directly
+  (single sign on to NeuVector console) through Rancher.
+- Only NeuVector deployments through Apps & Marketplace of Rancher version 2.6.5+
+  can be managed directly (single sign on to NeuVector console) through Rancher.
+- If adding clusters to Rancher with NeuVector already deployed, or where NeuVector
+  has been deployed directly onto the cluster, these clusters will not be enabled
+  for SSO integration.
+- The CVE database version can be seen in the Console in the Vulnerabilities tab.
+- You can also inspect the Updater container image.
+- NeuVector requires and supports Kubernetes network plugins such as flannel, weave,
+  or calico.
+- 'If deploying with the current NeuVector Helm chart (v1.8.9+), the following changes
+  should be made to values.yml: Update the registry to docker.io, Update image names/tags
+  to the current version on Docker hub.'
+- PKS is field tested and requires enabling privileged containers to the plan/tile,
+  and changing the yaml hostPath for Allinone, Controller, Enforcer.
+- Ensure that there is at least one Controller (or Allinone) running so that policies,
+  logs, and connection data is not lost.
+- Make sure that there is a minimum of 120 seconds between container updates so that
+  a new leader can be elected and the data synchronized between controllers.
+- PKS is field tested and requires enabling privileged containers to the plan/tile,
+  and changing the yaml hostPath as follows for Allinone, Controller, Enforcer.
+- Requires enabling privileged containers to the plan/tile.
+- Change the yaml hostPath for Allinone, Enforcer.
+- By default, OpenShift does not allow privileged containers.
+- By default OpenShift does not schedule pods on the Master node.
+- Type NodePort is used for the fed-master and fed-worker services instead of LoadBalancer.
+  You may need to adjust for your deployment.
+- The scanner image should be pulled regularly for CVE database updates from NeuVector.
+- Updating the CVE database requires regular pulling of the latest scanner image.
+- To trigger rolling updates, tag the image with a version.
+- NeuVector does not support mixed Kubernetes / Swarm clusters.
+- Using docker native does not support deploying the enforcer on the same node as
+  the controller.
+- Always use the :latest tag when pulling and running the scanner image to ensure
+  the latest CVE database is deployed.
+- NeuVector containers are not automatically started/restarted on nodes.
+- GKE Auto Pilot support is available with NeuVector v5.4.3 and later.
+- Deploys one manager and 3 controllers.
+- Enforcer is deployed on every node as a daemonset.
+- Not recommended to deploy more than one manager behind a load balancer.
+- Fetch the images and helm chart using hauler
+- Adjust the installation commands for airgapped environment
+- For supported customers, use the commands that fetch all artifacts from the respective
+  private registry.
+- Adjust helm install values for airgapped environment
+- Deployment on Amazon ECS is No Longer Supported
+- Please see the Kubernetes examples for EKS
+- NeuVector does not support partial restoration of objects (e.g. network rules only)
+  nor timestamped restoration (e.g. restore from date/time snapshots). Please use
+  automation scripts to regularly backup configuration files and manage timestamps.
+- The backup configuration files should not be edited in any way. Any changes to these
+  from their exported state could result in restoration errors and an unpredictable
+  result.
+- Backup configuration files should be used to restore a NeuVector state on the same
+  cluster from which they were exported. Applying a backup configuration file from
+  a different cluster could result in unpredictable results.
+- NeuVector container images are pulled from registry.connect.redhat.com using the
+  RedHat market place image pull secret.
+- OpenShift version >=4.6.
+- Remove the the pipe '|' character in each section, as shown below.
+- Note the removal of the pipe character below if using configmap sections in a secret,
+  enabled set to true, and uncomment out the section to be included in the secret.
+- Uses ConfigMap for automated configuration
+- Uses Kubernetes ConfigMap for deployment configurations.
+- Some objects like Contact may return nulls in deeply nested fields
+- NeuVector versions 5.4.2 and later must have users generate/replace internal certificates
+  before using NeuVector.
+- After March 2025, NeuVector versions prior to 5.4.2 must have users generate/replace
+  internal certificates before using NeuVector.
+- Make sure there is a NeuVector scanner container deployed and properly configured
+  to connect to the Allinone or Controller.
+- The default REST API port for plug-ins to call the scanner is 10443. This port must
+  be exposed through the Allinone or Controller through a service in Kubernetes or
+  a port map (e.g. - 10443:10443) in the Docker run or compose file.
+- Registry image scanning is performed by the scanner and the image is pulled and
+  expanded in memory.
+- If expanded image sizes larger than 500MB are expected, consider increasing the
+  scanner memory to 1.5GB or more to provide capacity and headroom for the scanner.
+- To increase registry scanning performance and scalability, multiple scanner pods
+  can be deployed on different nodes to distribute the scanning tasks across multiple
+  scanners.
+- At least one repository filter is required (can't be left blank).
+- Scanning will discover and list all Modules (ie, an inventory) in the image.
+- Token must have `read:packages` permission and `repo` if accessing private images.
+- Default REST API port is 10443.
+- Make sure there is a NeuVector scanner container deployed and configured to connect
+  to the Allinone or Controller.
+- NeuVector is able to scan distroless and PhotonOS based images.
+- Scanner auto-scaling is not supported when scanner is deployed with an OpenShift
+  operator, as the operator will always change the number of pods to its configured
+  value.
+- It is a best practice to not depend on user attributed accounts for integrations.
+- Ensure that the access is set to Basic —> Viewer for the service account.
+- Updating the CRD generated rules in NeuVector is as simple as updating the appropriate
+  yaml file and applying the update.
+- Policy mode configuration and Group definition is supported within the CRD configuration
+  yaml file.
+- CRDs are supported in Kubernetes 1.11 and later. Deploying the NeuVector security
+  rule CRD in earlier versions may not result in an error, but the CRD will not be
+  processed.
+- The CRD import behavior ignores the PolicyMode of any 'linked' group.
+- 'Avoid using names which start with fed., nv.ip., host:, or workload: which are
+  reserved for federated groups or ip based services.'
+- You can use node, external, or containers as a group name. However, this will be
+  the same as the reserved default group names, so a new group will not be created.
+- If the group name to be imported already exists in the destination system, then
+  the criteria must match between the imported CRD and the one in the destination
+  system. If there are differences, the CRD import will be rejected.
+- Custom created groups don't have a Protection mode. This is because they may contain
+  containers from different underlying groups, each of which may be in a different
+  mode, causing confusion about the behavior.
+- NeuVector supports many criteria for creating an Admission Control Rule.
+- Criteria with a disk icon require that the image be scanned and criteria with a
+  file icon will scan the deployment yaml.
+- If a criterion requires an image scan, but the image is NOT scanned, that part of
+  the rule will be ignored.
+- Admission Control feature is disabled by default.
+- Once the Admission Control feature is enabled successfully, the ValidatingWebhookConfiguration
+  resource will be created automatically.
+- If experiencing errors and you have access to the master node you can inspect the
+  kube-apiserver log to search for admission webhook events.
+- Deleting and recreating neuvector-binding-admission clusterrole/clusterrolebinding
+  usually the fastest fix.
+- Learned groups (not reserved or custom groups) can be automatically deleted by NeuVector
+  if there are no members (containers) in the group. The time period for this is configurable
+  in Settings -> Configuration.
+- Network connection violations of rules shown in the Network Rules for Nodes are
+  never blocked, even in Protect mode. Only process violations are blocked in Protect
+  mode on nodes.
+- If you edit (add, delete, change) rules, your changes are NOT applied until you
+  click the Save button.
+- There is a limitation when running on systems with the AUFS file system, whereby
+  a race condition can be experienced and the process rules are not enforced for blocking
+  (Protect mode). However, these violations are still reported in the security event
+  logs.
+- Kubernetes liveness probes are automatically allowed, and added to the learned process
+  rules even in Monitor/Protect mode.
+- Container platforms with the AUFS storage driver will introduce a delay in blocking
+  mechanism due to the driver’s limitations.
+- In Protect mode, system containers such as Kubernetes ones, will not enable the
+  block action but will generate a process violation event if there is a process violation.
+- NeuVector alerts, and does not block modifications to predefined files/directories
+  or in system containers such as Kubernetes ones.
+- Container platforms running the AUFS storage driver will not support the deny (block)
+  action in Protect mode for creating/modifying files due to the limitations of the
+  driver.
+- Quarantine action is not applicable to rule triggered for Host events
+- Action and Event parameters are mandatory; other parameters can be empty to match
+  broader conditions.
+- Multiple rules can match for a single log, which can result in multiple actions
+  taken.
+- It is possible to import or export WAF rules from the WAF screen.
+- Make sure the appropriate NVWafSecurityRule cluster role binding is created.
+- Extreme care should be taken when applying sensors to container traffic, as the
+  filtering function incurs additional system overhead and can impact performance
+  of the host.
+- DLP pattern matching does not occur for the traffic which is passing among workloads
+  that belong to same DLP group.
+- Any traffic passing in and out of a DLP group is scanned for pattern matches.
+- Multiple patterns per DLP/WAF rule (max 16 patterns are allowed per rule).
+- For performance reasons, only the first 16 rules are alerted and matched even if
+  the packet matches more than 16 rules.
+- The ability to create custom scripts is disabled by default to protect against misuse.
+- Custom scripts should be used with extreme caution.
+- Imported rules will overwrite any existing rules for the Group.
+- Rules that are set using the Kubernetes CRD functions cannot be modified through
+  the console or API.
+- We sample the past 60 seconds of traffic on average to see whether the metric breaks
+  the threshold or not for the DDoS detection feature.
+- For multiple clusters, the primary and managed clusters should be in the 5.4 build
+  so that federated groups with the DDoS detection threshold settings configured on
+  the primary cluster are deployed to managed clusters.
+- Default password requirement is minimum 8 characters length, 1 uppercase letter,
+  1 lowercase letter, 1 numeric character.
+- Users can be mapped to roles through group integration with LDAP/AD or other SSO
+  system integrations.
+- The admin user should update the account with a more secure password after the first
+  login.
+- The environment variables can be defined in the values.yaml file in the helm chart.
+- Set the banner color to DarkOrange (#ff8c00).
+- Specify the header text using a plain HTML or text, for example "You are accessing
+  a U.S. Government (USG) Information System (IS) that is provided for USG-authorized
+  use only.", remember to base64 encode it.
+- Customize the policy content using a plain HTML snippet or text and remember to
+  base64 encode it.
+- Customize the logo with a 300x80 pixel svg file and base64 encode it.
+- If false, manager will not be installed
+- Make sure this IP address and port are externally accessible (from the remote clusters).
+- The system clocks (time) must be the same for each primary and remote cluster in
+  order to function properly.
+- To enable auto-rotation, internal.autoRotateCert has to be set to true. (disabled
+  by default).
+- If internal.autoRotateCert is false, the upgrader job will still start but no actions
+  will be performed.
+- The default port is 389 for SSL disabled and 636 for SSL enabled.
+- The ‘test connection’ button will check if a username/password can be authenticated
+  by the configured LDAP server.
+- User name must be a user with read permission on the Base DN object.
+- The sAMAccountName attribute MUST be used to verify the test user.
+- The sAMAccountType attribute MUST be 268435456 for the Global Security group.
+- Assertion encryption must be unencrypted.
+- If group-based role mapping is not configured or the matched groups cannot be located,
+  the authenticated user will be assigned with the Default role.
+- ADFS SamlResponseSignature needs to be either MessageOnly or MessageAndAssertion.
+- Time synchronization between Kubernetes Nodes x ADFS Server is required for successful
+  authentication.
+- SAML characters must be case sensitive in NeuVector UI.
+- In Developer Mode, Okta allows customization of claims in the API page by managing
+  Authorization Servers
+- If a specific scope is configured, ensure to add it to NeuVector OpenID Connect
+  setting page
+- 'Make sure the following permissions have been set from Microsoft Graph: email,
+  openid, profile.'
+- Enable allatclaims, email, openid and profile scopes
+- This may need to be exposed as a service for access from outside the Kubernetes
+  cluster, similar to how the REST API is exposed as a service.
+- Configure syslog in NeuVector console
+- You can configure multiple clusters to send syslog to your splunk instance and your
+  splunk instance will receive these syslogs in real time.
+- This integration supports roles in Global, Cluster, Project, and Namespace levels.
+- If you are making REST API calls with username/password, please be sure make a DELETE
+  call against /v1/auth when done.
+- Token based authentication does not have a limit, but expire according to the time
+  limit selected when created.
+- If the image to be scanned is a remote image, the base image must also be a remote
+  image.
+- If the image to be scanned is a local image, then the base image must also be a
+  local image.
+- In a multiple controller deployment the requests must be sent to a single controller
+  IP
+- In a multiple controller deployment, requests must be sent to a single controller
+  IP for long-running image scans.
+- If the image to be scanned is a remote image, with 'registry' specified, the base
+  image must also be a remote image.
+- Idle time is required for logon session timeout and event processing.
+- Orchestration tools such as Kubernetes, RedHat OpenShift, and Rancher support rolling
+  updates with configurable policies.
+- Uses least-privileged service accounts instead of the default
+- Ensure to enable privileged containers in the PKS plan/tile
+- 'PKS is field tested and requires enabling privileged containers to the plan/tile,
+  and changing the yaml hostPath as follows for Allinone, Enforcer: hostPath: path:
+  /var/vcap/sys/run/docker/docker.sock'
+- If deploying with the current NeuVector Helm chart (v1.8.9+), update the registry
+  to docker.io and image names/tags to the current version on Docker hub.
+- All taint info must match to schedule Enforcers on nodes.
+- If there is additional taints as above, add these to the sample yaml tolerations
+  section.
+- In OpenShift 4.6+, change docker-registry.default.svc below to image-registry.openshift-image-registry.svc.
+- To enable the REST API, port 10443 must be configured as a NodePort service.
+- Deploying services with containers in privileged mode is not supported on Mirantis
+  Kubernetes Engine using Swarm.
+- Ensure internal and external ingress access is configured properly.
+- Requires setup of connected app in api
+- This documentation is for NeuVector 5.3, which is no longer actively maintained.
+- Ensure to use the correct registry-url for Prime or Carbide customers.
+- Uses hauler to fetch, package, and distribute container images and Helm chart
+- Requires setup of private registry for supported customers
+- Please see the Kubernetes examples for EKS.
+- NeuVector does not support partial restoration of objects (e.g. network rules only)
+  nor timestamped restoration (e.g. restore from date/time snapshots).
+- Backup configuration files should be used to restore a NeuVector state on the same
+  cluster from which they were exported.
+errors:
+- 'NoSchedule: Ensure all taint info matches to schedule Enforcers on nodes'
+- User "user1" cannot create resource "nvclustersecurityrules" in API group "neuvector.com"
+  at the cluster scope
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- authentication failure will occur if maximum of 32 concurrent sessions is exceeded
+- Scanning time varies depending on the size of the repository.
+- '403 Forbidden: Ensure your token has the correct scopes.'
+- 'invalid credentials: Check the registry URL format.'
+- 'Connection Success: Validates connection to the NeuVector Controller.'
+- 'Connection Failed: Check the NeuVector Controller IP and port.'
+- 'Error from server (Forbidden): User cannot create resource in API group at the
+  cluster scope.'
+- 'Error from server (Forbidden): error when creating "rbacnvclustnamespacengtargnvclustingress.yamltmp":
+  nvclustersecurityrules.neuvector.com is forbidden: User "user1" cannot create resource
+  "nvclustersecurityrules" in API group "neuvector.com" at the cluster scope.'
+- Error from server ....
+- '... is forbidden'
+- '1: URL not found'
+- '2: Success code when the fed-managed service responds'
+- 'Authentication Failed: Check groups, certificates and protocols.'
+- authentication failure will occur if maximum concurrent sessions for each user is
+  exceeded.
+- authentication failure will occur when exceeding maximum of 32 concurrent sessions
+  for each user.
+- '401 Unauthorized: Recheck username or password.'
+- '404 Not Found: Check endpoint path or resource.'
+- 'Unauthorized: Recheck authentication token or credentials.'
+auth_info:
+  mentioned_objects:
+  - GitHub Personal Access Token
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - Authorization Servers
+  - ID Token
+  - Application ID
+  - Client secret
+  - Issuer URL
+client:
+  base_url: https://neuvector.com
+  auth:
+    type: token
+source_metadata: null

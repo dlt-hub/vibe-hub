@@ -1,0 +1,184 @@
+resources:
+- name: create_brand
+  endpoint:
+    path: /v1/brand/create
+    method: POST
+    data_selector: brandId
+- name: createEmbeddedRequestUrl
+  endpoint:
+    path: /v1/document/createEmbeddedRequestUrl
+    method: POST
+    data_selector: documentId
+    params: {}
+- name: documents
+  endpoint:
+    path: /documents
+    method: GET
+- name: templates
+  endpoint:
+    path: /templates
+    method: GET
+- name: contacts
+  endpoint:
+    path: /contacts
+    method: GET
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+- name: send_document
+  endpoint:
+    path: /v1/document/send
+    method: POST
+    data_selector: ''
+    params: {}
+- name: get_embedded_sign_link
+  endpoint:
+    path: /v1/document/getEmbeddedSignLink
+    method: GET
+    data_selector: signLink
+    params:
+      documentId: required
+      signerEmail: required
+      signLinkValidTill: optional
+      redirectUrl: optional
+- name: documents
+  endpoint:
+    path: /documents
+    method: GET
+    data_selector: records
+- name: send_document_on_behalf
+  endpoint:
+    path: /v1/document/send
+    method: POST
+    data_selector: ''
+    params: {}
+- name: files
+  endpoint:
+    path: /files
+    method: POST
+    data_selector: files
+    params: {}
+- name: documents
+  endpoint:
+    path: /documents
+    method: GET
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+- name: teams
+  endpoint:
+    path: /teams
+    method: GET
+- name: sender_identity
+  endpoint:
+    path: /v1/senderIdentities/create
+    method: POST
+    data_selector: null
+    params: {}
+- name: template
+  endpoint:
+    path: /v1/template/create
+    method: POST
+    data_selector: null
+    params: {}
+- name: template
+  endpoint:
+    path: /api/templates
+    method: POST
+    data_selector: templates
+    params: {}
+- name: documents
+  endpoint:
+    path: /documents
+    method: GET
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+- name: create_user
+  endpoint:
+    path: /v1/users/create
+    method: POST
+    data_selector: users
+    params: {}
+- name: create_team
+  endpoint:
+    path: /v1/teams/create
+    method: POST
+    data_selector: null
+    params: {}
+notes:
+- Uses OAuth2
+- Uses OAuth2 with refresh token — requires setup of connected app in BoldSign
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Please create a ticket to support@boldsign.com to verify the domain name when creating
+  the brand with custom domain settings.
+- The document created using the embedded request will remain in the draft state until
+  the user completes and sends it out for signature.
+- The document creation process is asynchronous in nature.
+- Some objects may return nulls in deeply nested fields
+- The preferred file format is .pdf.
+- You can upload up to 25 files.
+- Each document may have a maximum of 1000 pages and must be no larger than 25 MB
+  in size.
+- The process of document send is asynchronous.
+- You must listen for webhooks to determine the success or failure of the document
+  transmission.
+- The default font family is Helvetica.
+- The default font style is Regular.
+- The default value for ValidationType is None.
+- The default value for date format is MM/dd/yyyy.
+- The default value for language is 1-English.
+- The default locale language is EN-English.
+- The default value for AutoDetectFields is false.
+- The default value for DocumentDownloadOption is Combined.
+- Please note that you must use either the `fileUrls` or `files` parameter in a request,
+  both cannot be used together.
+- Please note that you are responsible for verifying the signer's identity before
+  providing them access to the signing URL.
+- When enabled, it will convert all the tags defined in the document to BoldSign form
+  fields. The default value is `false`.
+- The text tags that are placed in the document will not be removed, so it is recommended
+  to set the color of the text tags to match the background color (mostly, it will
+  be white on white).
+- Uses OAuth2 authentication.
+- Supports both multipart/form-data and application/json content types.
+- Accepted formats are hh:mm tt, h:mm tt, HH:mm, H:mm, hh:mm:ss tt, h:mm:ss tt, HH:mm:ss,
+  H:mm:ss, None (Disabled, no time will be displayed)
+- Supports .pdf, .png, .jpg, and .docx file formats
+- You can upload up to 25 files, each up to 25 MB in size
+- 'For more details on OTP behavior, validity, and resend limits when using Email
+  or SMS OTP for signing, please refer to this article: [OTP limitation and Restriction](https://support.boldsign.com/kb/article/19836/otp-limitations-and-restrictions-in-boldsign).'
+- Multiple sender identities can be created.
+- Templates are created asynchronously, monitor webhook events for success or failure.
+- 'Supports file uploads in formats: .pdf, .png, .jpg, and .docx with a maximum of
+  25 files.'
+- Check API limits to avoid throttling
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- If you exceed the maximum number of retries, senders have the option to reset failed
+  signers for additional attempts.
+- 'SendFailed: Accompanying error message will be provided.'
+- 'Document not found: Monitor the `Sent` and `SendFailed` webhook events.'
+- '400 Bad Request: If you send the signer email which is not part of the document,
+  the API will throw an error.'
+- '400 Bad Request: Check file format and size constraints'
+- '401 Unauthorized: Verify authentication credentials'
+- '429 Too Many Requests: Rate limit exceeded, try again later'
+- 'TemplateCreateFailed: Indicates failure in template creation, check error message.'
+- '400 Bad Request: Check input data for validation errors.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration.'
+- '429 Too Many Requests: Throttle API calls or reduce frequency.'
+- 'INVALID_REQUEST: Check request parameters'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+client:
+  base_url: https://api.boldsign.com
+  auth:
+    type: oauth2
+source_metadata: null

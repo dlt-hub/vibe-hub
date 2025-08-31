@@ -1,0 +1,736 @@
+resources:
+- name: response
+  endpoint:
+    path: /responses
+    method: GET
+    data_selector: '200'
+    params: {}
+- name: repository
+  endpoint:
+    path: /paths/~12.0~1repositories~1{username}/get
+    method: GET
+    data_selector: '#/components/schemas/repository'
+- name: MyResponseType
+  endpoint:
+    data_selector: petType
+- name: repository
+  endpoint:
+    path: /repositories/{username}
+    method: GET
+    data_selector: repositories
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- description: a pet to be returned
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Pet'
+- description: Unexpected error
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/ErrorModel'
+- description: A complex object array response
+  content:
+    application/json:
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/VeryComplexType'
+- description: A simple string response
+  content:
+    text/plain:
+      schema:
+        type: string
+- description: A simple string response
+  content:
+    text/plain:
+      schema:
+        type: string
+        example: whoa!
+  headers:
+    X-Rate-Limit-Limit:
+      description: The number of allowed requests in the current period
+      schema:
+        type: integer
+    X-Rate-Limit-Remaining:
+      description: The number of remaining requests in the current period
+      schema:
+        type: integer
+    X-Rate-Limit-Reset:
+      description: The number of seconds left in the current period
+      schema:
+        type: integer
+- description: object created
+- name: header_parameter
+  endpoint:
+    params:
+      name: token
+      in: header
+      description: token to be passed as a header
+      required: true
+      schema:
+        type: array
+        items:
+          type: integer
+          format: int64
+      style: simple
+- name: path_parameter
+  endpoint:
+    params:
+      name: username
+      in: path
+      description: username to fetch
+      required: true
+      schema:
+        type: string
+- name: query_parameter_id
+  endpoint:
+    params:
+      name: id
+      in: query
+      description: ID of the object to fetch
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+- name: free_form_query_parameter
+  endpoint:
+    params:
+      in: query
+      name: freeForm
+      schema:
+        type: object
+        additionalProperties:
+          type: integer
+      style: form
+- name: coordinates_query_parameter
+  endpoint:
+    params:
+      in: query
+      name: coordinates
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - lat
+            - long
+            properties:
+              lat:
+                type: number
+              long:
+                type: number
+- name: animals
+  endpoint:
+    path: /animals
+    method: GET
+    data_selector: records
+- name: file_upload
+  endpoint:
+    path: /upload
+    method: POST
+    data_selector: files
+    params: {}
+- name: responses
+  endpoint:
+    path: /responses
+    method: GET
+    data_selector: responses
+    params: {}
+- name: address
+  endpoint:
+    path: /users/{userid}/address
+    method: GET
+    data_selector: the user's address
+    params:
+      userid: $request.path.id
+- name: repository
+  endpoint:
+    path: /repositories/{username}
+    method: GET
+    data_selector: '#/components/schemas/repository'
+    params:
+      username: $response.body#/username
+- name: repositories
+  endpoint:
+    path: /repositories/{username}
+    method: GET
+    data_selector: '#/components/schemas/repository'
+    params:
+      username: $response.body#/username
+- name: user_address
+  endpoint:
+    path: /users/{userid}/address
+    method: GET
+    data_selector: the user's address
+    params:
+      userid: $request.path.id
+- name: repositories
+  endpoint:
+    path: /repositories/{username}
+    method: GET
+    data_selector: response.body#/repositories
+    params:
+      username: $response.body#/username
+- name: repository
+  endpoint:
+    path: /repositories/{username}
+    method: GET
+- name: animals
+  endpoint:
+    path: /animals
+    method: GET
+    data_selector: items
+- name: image_png
+  endpoint:
+    path: /content/image/png
+    method: POST
+    data_selector: content
+- name: binary_file
+  endpoint:
+    path: /content/application/octet-stream
+    method: POST
+    data_selector: content
+- name: base64_image_png
+  endpoint:
+    path: /content/image/png/base64
+    method: POST
+    data_selector: schema
+- name: multipart_files
+  endpoint:
+    path: /content/multipart/form-data
+    method: POST
+    data_selector: schema
+- name: form_url_encoded
+  endpoint:
+    path: /content/application/x-www-form-urlencoded
+    method: POST
+    data_selector: schema
+- name: repository
+  endpoint:
+    path: /repositories/{username}
+    method: GET
+    data_selector: array
+    params:
+      username: $response.body#/username
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: repository
+  endpoint:
+    path: /repositories/{username}
+    method: GET
+    data_selector: '#/components/schemas/repository'
+- name: Pet
+  endpoint:
+    path: /components/schemas/Pet
+    method: GET
+    data_selector: schemas
+    params: {}
+- name: Cat
+  endpoint:
+    path: /components/schemas/Cat
+    method: GET
+    data_selector: schemas
+    params: {}
+- name: Dog
+  endpoint:
+    path: /components/schemas/Dog
+    method: GET
+    data_selector: schemas
+    params: {}
+- name: Lizard
+  endpoint:
+    path: /components/schemas/Lizard
+    method: GET
+    data_selector: schemas
+    params: {}
+- name: Monster
+  endpoint:
+    path: https://gigantic-server.com/schemas/Monster/schema.json
+    method: GET
+    data_selector: schemas
+    params: {}
+- name: mapping
+  endpoint:
+    path: /components/schemas/Dog
+    method: GET
+    data_selector: schemas
+    params: {}
+- name: repositories
+  endpoint:
+    path: /repositories/{username}
+    method: GET
+    data_selector: '#/components/schemas/repository'
+    params:
+      username: $response.body#/username
+- name: Pet
+  endpoint:
+    path: /pets
+    method: GET
+    data_selector: pets
+    params: {}
+- endpoint:
+    path: /
+    method: POST
+- name: address
+  endpoint:
+    path: /users/{userid}/address
+    method: GET
+    data_selector: the user's address
+    params:
+      userid: userId
+- name: default
+  endpoint:
+    description: Unexpected error
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/ErrorModel'
+- name: '200'
+  endpoint:
+    description: a pet to be returned
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Pet'
+- name: repository
+  endpoint:
+    path: /repositories/{username}
+    method: GET
+    data_selector: $response.body#/repositories
+- name: repository
+  endpoint:
+    path: /repositories/{username}
+    method: GET
+    data_selector: repositories
+    params: {}
+- name: Pet
+  endpoint:
+    path: /components/schemas/Pet
+    method: GET
+    data_selector: properties
+    params: {}
+- name: Cat
+  endpoint:
+    path: /components/schemas/Cat
+    method: GET
+    data_selector: properties
+    params: {}
+- name: Dog
+  endpoint:
+    path: /components/schemas/Dog
+    method: GET
+    data_selector: properties
+    params: {}
+- name: pet
+  endpoint:
+    path: /pets/{id}
+    method: GET
+    data_selector: pet response
+    params:
+      id:
+        in: path
+        description: ID of pet to use
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+- name: callback_payload
+  endpoint:
+    path: /callback
+    method: POST
+    data_selector: callback successfully processed
+- name: tag
+  endpoint:
+    path: /tags
+    method: POST
+    data_selector: tags
+    params: {}
+- name: reference
+  endpoint:
+    path: /references
+    method: GET
+    data_selector: references
+    params: {}
+- name: schema
+  endpoint:
+    path: /schemas
+    method: GET
+    data_selector: schemas
+    params: {}
+- name: Dog
+  endpoint:
+    path: /components/schemas/Dog
+    method: GET
+- name: Cat
+  endpoint:
+    path: /components/schemas/Cat
+    method: GET
+- name: Lizard
+  endpoint:
+    path: /components/schemas/Lizard
+    method: GET
+- name: responses
+  endpoint:
+    path: /responses
+    method: GET
+    data_selector: responses
+- requestBody:
+    content:
+      application/octet-stream:
+        schema:
+          type: string
+          format: binary
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            file:
+              type: array
+              items:
+                type: string
+                format: binary
+      application/x-www-form-urlencoded:
+        schema:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            address:
+              type: object
+              properties: {}
+- name: repositories
+  endpoint:
+    path: /repositories/{username}
+    method: GET
+    data_selector: '#/components/schemas/repository'
+    params:
+      username: $response.body#/username
+- name: repository
+  endpoint:
+    path: /repositories/{username}
+    method: GET
+    data_selector: '#/components/schemas/repository'
+- name: pets
+  endpoint:
+    path: /pets
+    method: GET
+    data_selector: application/json
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: pet
+  endpoint:
+    path: /pets
+    method: GET
+    data_selector: pets
+- name: error
+  endpoint:
+    path: /error
+    method: GET
+    data_selector: error
+- name: animals
+  endpoint:
+    path: /animals
+    method: GET
+    data_selector: items
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: upload_file
+  endpoint:
+    path: /upload
+    method: POST
+    data_selector: response
+    params: {}
+- name: repositories
+  endpoint:
+    path: /repositories/{username}
+    method: GET
+    data_selector: '#/components/schemas/repository'
+    params:
+      username: $response.body#/username
+- name: repository
+  endpoint:
+    path: /repositories/{username}
+    method: GET
+    data_selector: '#/components/schemas/repository'
+- name: pets
+  endpoint:
+    path: /pets
+    method: GET
+    data_selector: array
+    params: {}
+- name: titles
+  endpoint:
+    path: /titles
+    method: GET
+    data_selector: titles
+- endpoint:
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Pet'
+- endpoint:
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/ErrorModel'
+- name: animals
+  endpoint:
+    path: /animals
+    method: GET
+- name: token
+  endpoint:
+    path: /path/to/endpoint
+    method: GET
+    data_selector: records
+    params: {}
+- name: username
+  endpoint:
+    path: /path/to/username/endpoint
+    method: GET
+    data_selector: records
+    params: {}
+- name: file_upload
+  endpoint:
+    path: /upload
+    method: POST
+    data_selector: files
+    params: {}
+- name: ReferenceObject
+  endpoint:
+    path: /components/schemas/ReferenceObject
+    method: GET
+    data_selector: $ref
+    params: {}
+- name: SchemaObject
+  endpoint:
+    path: /components/schemas/SchemaObject
+    method: GET
+    data_selector: $ref
+    params: {}
+- name: pets
+  endpoint:
+    path: /pets
+    method: GET
+    data_selector: items
+- name: '200'
+  endpoint:
+    description: a pet to be returned
+- name: default
+  endpoint:
+    description: Unexpected error
+- name: token
+  endpoint:
+    path: /header
+    method: GET
+    data_selector: token
+    params: {}
+- name: username
+  endpoint:
+    path: /path
+    method: GET
+    data_selector: username
+    params: {}
+- name: id
+  endpoint:
+    path: /query
+    method: GET
+    data_selector: id
+    params: {}
+- name: freeForm
+  endpoint:
+    path: /query
+    method: GET
+    data_selector: freeForm
+    params: {}
+- name: coordinates
+  endpoint:
+    path: /query
+    method: GET
+    data_selector: coordinates
+    params: {}
+- name: pets
+  endpoint:
+    path: /pets
+    method: GET
+    data_selector: items
+    params: {}
+- name: X-Rate-Limit-Limit
+  endpoint:
+    description: The number of allowed requests in the current period
+    type: integer
+- name: X-Rate-Limit-Remaining
+  endpoint:
+    description: The number of remaining requests in the current period
+    type: integer
+- name: X-Rate-Limit-Reset
+  endpoint:
+    description: The number of seconds left in the current period
+    type: integer
+- name: fdx
+  endpoint:
+    path: /fdx
+    method: GET
+    data_selector: extensions created and used by Financial Data Exchange (FDX)
+- name: ms
+  endpoint:
+    path: /ms
+    method: GET
+    data_selector: extensions created and used by Microsoft
+- name: oai
+  endpoint:
+    path: /oai
+    method: GET
+    data_selector: reserved for uses defined by the OAI
+- name: oas-draft
+  endpoint:
+    path: /oas-draft
+    method: GET
+    data_selector: extensions created by OAI to indicate proposed changes to the OAS
+      specification
+- name: oas
+  endpoint:
+    path: /oas
+    method: GET
+    data_selector: reserved for uses defined by the OAI
+- name: sap
+  endpoint:
+    path: /sap
+    method: GET
+    data_selector: extensions created and used by SAP
+notes:
+- only accept png/jpeg
+- A property with name 'petType' MUST be present in the response payload.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- The value of `$schema` within a resource root Schema Object always overrides any
+  default.
+- Requires OAuth setup
+- An OpenAPI Description (OAD) formally describes the surface of an API and its semantics.
+- An OpenAPI Document is a single JSON or YAML document that conforms to the OpenAPI
+  Specification.
+- Mapping keys MUST be string values, but tooling MAY convert response values to strings
+  for comparison.
+- When used in conjunction with the anyOf construct, the use of the discriminator
+  can avoid ambiguity where multiple schemas may satisfy a single payload.
+- The expectation now is that a property with name `petType` MUST be present in the
+  response payload.
+- 'There are four possible parameter locations: path, query, header, and cookie.'
+- When used in conjunction with the anyOf construct, the use of the discriminator
+  can avoid ambiguity for serializers/deserializers where multiple schemas may satisfy
+  a single payload.
+- The presence of a link does not guarantee the caller’s ability to successfully invoke
+  it.
+- A linked operation MUST be identified using either an operationRef or operationId.
+- Some objects may return nulls in deeply nested fields
+- Supports multiple file uploads through multipart/form-data
+- Content must be stringified when using application/x-www-form-urlencoded
+errors:
+- 'default: Unexpected error'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'X-Rate-Limit-Limit: The number of allowed requests in the current period'
+- 'X-Rate-Limit-Remaining: The number of remaining requests in the current period'
+- 'X-Rate-Limit-Reset: The number of seconds left in the current period'
+- '200: a pet to be returned'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://na2.gigantic-server.com
+  headers:
+    Accept: application/json
+source_metadata: null

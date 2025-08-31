@@ -1,0 +1,720 @@
+resources:
+- name: organization_units
+  endpoint:
+    path: /organization-units
+    method: GET
+    data_selector: records
+- name: permanent_establishments
+  endpoint:
+    path: /permanent-establishments
+    method: GET
+    data_selector: records
+- name: holidays
+  endpoint:
+    path: /holidays
+    method: GET
+    data_selector: records
+- name: webhooks
+  endpoint:
+    path: /webhooks
+    method: GET
+    data_selector: records
+- name: persons
+  endpoint:
+    path: /persons
+    method: GET
+    data_selector: records
+    params: {}
+- name: persons_jobs
+  endpoint:
+    path: /persons/jobs/{jobId}
+    method: GET
+    data_selector: records
+    params: {}
+- name: persons_master_data
+  endpoint:
+    path: /persons/master-data
+    method: GET
+    data_selector: records
+    params: {}
+- name: available_working_hours
+  endpoint:
+    path: /persons/available-working-hours
+    method: GET
+    data_selector: records
+    params: {}
+- name: onboarding_documents
+  endpoint:
+    path: /persons/onboarding
+    method: GET
+    data_selector: records
+    params: {}
+- name: person_single
+  endpoint:
+    path: /persons/{personIdentifier}
+    method: GET
+    data_selector: records
+    params: {}
+- name: absences
+  endpoint:
+    path: /absences
+    method: GET
+    data_selector: results
+    params:
+      beginDate: required
+      endDate: required
+- name: jobs
+  endpoint:
+    path: /absences/jobs/{jobId}
+    method: GET
+    data_selector: result
+    params:
+      jobId: required
+- name: absence-types
+  endpoint:
+    path: /absences/absence-types
+    method: GET
+    data_selector: results
+    params: {}
+- name: leave-accounts
+  endpoint:
+    path: /absences/leave-accounts
+    method: GET
+    data_selector: results
+    params: {}
+- name: accumulated-values
+  endpoint:
+    path: /absences/accumulated-values
+    method: GET
+    data_selector: results
+    params:
+      beginDate: required
+      endDate: required
+- name: vacation-types
+  endpoint:
+    path: /absences/vacation-types
+    method: GET
+    data_selector: results
+    params: {}
+- name: person_leave_account
+  endpoint:
+    path: /persons/{personnelNumber}/leave-account
+    method: GET
+    data_selector: LeaveAccount
+    params:
+      personnelNumber: required
+      referenceDate: optional
+- name: single_person_master_data
+  endpoint:
+    path: /persons/{personIdentifier}/master-data
+    method: GET
+    data_selector: Person
+    params:
+      personIdentifierType: optional
+      personIdentifier: required
+- name: start_stop_working_time
+  endpoint:
+    path: /persons/{personIdentifier}/working-times
+    method: POST
+    data_selector: CreatePersonWorkingTimeResponse
+    params:
+      personIdentifier: required
+      action: required
+      type: optional
+      project: optional
+      kioskId: optional
+      comment: optional
+- name: working_time_status
+  endpoint:
+    path: /persons/{personIdentifier}/working-times/status
+    method: GET
+    data_selector: WorkingTimeStatus
+    params:
+      personIdentifier: required
+- name: personnel_file_entries
+  endpoint:
+    path: /persons/{personIdentifier}/personnel-file
+    method: GET
+    data_selector: ListPersonPersonnelFileEntriesResponse
+    params:
+      personIdentifierType: optional
+      personIdentifier: required
+      category: optional
+      hasDocuments: optional
+      isWageRelevant: optional
+      createdAfter: optional
+      createdBefore: optional
+- name: single_personnel_file_entry
+  endpoint:
+    path: /persons/{personIdentifier}/personnel-file/{personnelFileEntryId}
+    method: GET
+    data_selector: PersonnelFileEntry
+    params:
+      personIdentifierType: optional
+      personIdentifier: required
+      personnelFileEntryId: required
+- name: post_personnel_file_entry_file
+  endpoint:
+    path: /persons/{personIdentifier}/personnel-file/{personnelFileEntryId}/files
+    method: POST
+    data_selector: JobIdObject
+    params:
+      content-type: optional
+      fileName: required
+      personIdentifierType: optional
+      personIdentifier: required
+      personnelFileEntryId: required
+      url: optional
+- name: post_single_person_documents
+  endpoint:
+    path: /persons/{personIdentifier}/files
+    method: POST
+    data_selector: JobIdObject
+    params:
+      fileName: required
+      url: optional
+      personIdentifierType: optional
+      personIdentifier: required
+- name: post_personnel_file_entries
+  endpoint:
+    path: /persons/personnel-file
+    method: POST
+    data_selector: JobIdObject
+    params:
+      personIdentifierType: optional
+- name: get_personnel_file_jobs
+  endpoint:
+    path: /persons/personnel-file/jobs/{jobId}
+    method: GET
+    data_selector: oneOf
+    params:
+      jobId: required
+- name: post_person_documents
+  endpoint:
+    path: /persons/files
+    method: POST
+    data_selector: JobIdObject
+    params:
+      fileName: required
+      url: optional
+      personIdentifierType: optional
+      personIdentifier: required
+- name: sick_leaves
+  endpoint:
+    path: /sick-leaves
+    method: GET
+    data_selector: records
+    params: {}
+- name: sick_leaves_jobs
+  endpoint:
+    path: /sick-leaves/jobs/{jobId}
+    method: GET
+    data_selector: records
+    params: {}
+- name: sick_leave_types
+  endpoint:
+    path: /sick-leaves/sick-leave-types
+    method: GET
+    data_selector: records
+    params: {}
+- name: sick_leave_types_jobs
+  endpoint:
+    path: /sick-leaves/sick-leave-types/jobs/{jobId}
+    method: GET
+    data_selector: records
+    params: {}
+- name: single_sick_leave
+  endpoint:
+    path: /sick-leaves/{number}
+    method: GET
+    data_selector: records
+    params: {}
+- name: accumulated_sick_leaves
+  endpoint:
+    path: /sick-leaves/accumulated-values
+    method: GET
+    data_selector: records
+    params: {}
+- name: remote_work
+  endpoint:
+    path: /remote-work
+    method: GET
+    data_selector: data
+- name: remote_work_jobs
+  endpoint:
+    path: /remote-work/jobs/{jobId}
+    method: GET
+    data_selector: data
+- name: single_remote_work
+  endpoint:
+    path: /remote-work/{number}
+    method: GET
+    data_selector: data
+- name: accumulated_remote_work
+  endpoint:
+    path: /remote-work/accumulated-values
+    method: GET
+    data_selector: data
+- name: job_applications
+  endpoint:
+    path: /applicant-management/job-applications
+    method: GET
+    data_selector: data
+- name: posts
+  endpoint:
+    path: /applicant-management/posts
+    method: GET
+    data_selector: data
+- name: receipt_types
+  endpoint:
+    path: /travel-expenses/receipt-types
+    method: GET
+    data_selector: receiptTypes
+    params: {}
+- name: single_expense_report
+  endpoint:
+    path: /travel-expenses/expense-reports/{number}
+    method: GET
+    data_selector: expenseReport
+    params: {}
+- name: travel_requests
+  endpoint:
+    path: /travel-expenses/travel-requests
+    method: GET
+    data_selector: travelRequests
+    params: {}
+- name: single_travel_request
+  endpoint:
+    path: /travel-expenses/travel-requests/{number}
+    method: GET
+    data_selector: travelRequest
+    params: {}
+- name: working_times
+  endpoint:
+    path: /working-times
+    method: GET
+    data_selector: workingTimes
+    params: {}
+- name: time_accounts
+  endpoint:
+    path: /working-times/time-accounts
+    method: GET
+    data_selector: timeAccounts
+    params: {}
+- name: time_recording_regulations
+  endpoint:
+    path: /working-times/time-recording-regulations
+    method: GET
+    data_selector: timeRecordingRegulations
+    params: {}
+- name: time_tracking_projects
+  endpoint:
+    path: /working-times/projects
+    method: GET
+    data_selector: timeTrackingProjects
+    params: {}
+- name: single_post
+  endpoint:
+    path: /applicant-management/posts/{uuid}
+    method: GET
+    data_selector: data
+    params:
+      uuid: string
+- name: applicants
+  endpoint:
+    path: /applicant-management/applicants
+    method: GET
+    data_selector: data
+    params: {}
+- name: single_applicant
+  endpoint:
+    path: /applicant-management/applicants/{uuid}
+    method: GET
+    data_selector: data
+    params:
+      uuid: string
+- name: cost_centers
+  endpoint:
+    path: /cost-objects/cost-centers
+    method: GET
+    data_selector: data
+    params:
+      page: number
+- name: cost_centers_jobs
+  endpoint:
+    path: /cost-objects/cost-centers/jobs/{jobId}
+    method: GET
+    data_selector: data
+    params:
+      jobId: string
+- name: job_applications_jobs
+  endpoint:
+    path: /applicant-management/job-applications/jobs/{jobId}
+    method: GET
+    data_selector: data
+    params:
+      jobId: string
+- name: cost_objectives
+  endpoint:
+    path: /cost-objects/cost-objectives
+    method: GET
+    data_selector: data
+    params:
+      page: number
+- name: expense_reports
+  endpoint:
+    path: /travel-expenses/expense-reports
+    method: GET
+    data_selector: data
+    params:
+      persons: array
+      statusFilter: array
+      beginDate: string
+      endDate: string
+      usePersonnelNumbers: boolean
+      includeExpenseReportsWithoutTrip: boolean
+      interval: string
+      onlyActive: boolean
+      page: number
+- name: absence_type
+  endpoint:
+    path: /absenceTypes
+    method: GET
+    data_selector: absences
+    params: {}
+- name: applicant
+  endpoint:
+    path: /applicants
+    method: GET
+    data_selector: applicants
+    params: {}
+- name: time_tracking_project_jobs
+  endpoint:
+    path: /working-times/projects/jobs/{jobId}
+    method: GET
+    data_selector: application/json
+    params: {}
+- name: single_time_tracking_project
+  endpoint:
+    path: /working-times/projects/{id}
+    method: GET
+    data_selector: application/json
+    params: {}
+- name: time_tracking_project_assignments
+  endpoint:
+    path: /working-times/projects/assignments
+    method: POST
+    data_selector: application/json
+    params: {}
+- name: time_tracking_project_assignments_jobs
+  endpoint:
+    path: /working-times/projects/assignments/jobs/{jobId}
+    method: GET
+    data_selector: application/json
+    params: {}
+- name: project_customers
+  endpoint:
+    path: /working-times/projects/customers
+    method: GET
+    data_selector: application/json
+    params: {}
+- name: project_customers_jobs
+  endpoint:
+    path: /working-times/projects/customers/jobs/{jobId}
+    method: GET
+    data_selector: application/json
+    params: {}
+- name: single_project_customer
+  endpoint:
+    path: /working-times/projects/customers/{customerNumber}
+    method: GET
+    data_selector: application/json
+    params: {}
+- name: time_tracking_kiosks
+  endpoint:
+    path: /working-times/kiosks
+    method: GET
+    data_selector: application/json
+    params: {}
+- name: wage_types
+  endpoint:
+    path: /wage-and-salary/types
+    method: GET
+    data_selector: application/json
+    params: {}
+- name: payroll_file
+  endpoint:
+    path: /payroll/files
+    method: POST
+    data_selector: application/json
+    params: {}
+- name: payroll_files_jobs
+  endpoint:
+    path: /payroll/jobs/{jobId}
+    method: GET
+    data_selector: application/json
+    params: {}
+- name: EditSickLeaveTypesRequest
+  endpoint:
+    path: /EditSickLeaveTypesRequest
+    method: POST
+    data_selector: data
+- name: EditPermanentEstablishmentsRequest
+  endpoint:
+    path: /EditPermanentEstablishmentsRequest
+    method: POST
+    data_selector: data
+- name: EditRemoteWorkRequest
+  endpoint:
+    path: /EditRemoteWorkRequest
+    method: POST
+    data_selector: data
+- name: EditTimeTrackingProjectCustomersRequest
+  endpoint:
+    path: /EditTimeTrackingProjectCustomersRequest
+    method: POST
+    data_selector: data
+- name: EditWebhooksRequest
+  endpoint:
+    path: /EditWebhooksRequest
+    method: POST
+    data_selector: data
+- name: EditWorkingTimesRequest
+  endpoint:
+    path: /EditWorkingTimesRequest
+    method: POST
+    data_selector: data
+- name: OnboardingDocumentData
+  endpoint:
+    path: /onboarding/documents
+    method: POST
+    data_selector: data
+    params: {}
+- name: PermanentEstablishment
+  endpoint:
+    path: /v2/persons/personnel-file/categories
+    method: GET
+    data_selector: records
+    params: {}
+- name: SickLeave
+  endpoint:
+    path: /sickleave
+    method: GET
+    data_selector: records
+- name: SickLeaveData
+  endpoint:
+    path: /sickleave/data
+    method: POST
+    data_selector: record
+- name: JobApplication
+  endpoint:
+    path: /jobApplications
+    method: GET
+    data_selector: jobApplications
+    params: {}
+- name: JobApplicationStatus
+  endpoint:
+    path: /jobApplicationStatus
+    method: GET
+    data_selector: status
+    params: {}
+- name: JobIdObject
+  endpoint:
+    path: /jobId
+    method: POST
+    data_selector: jobId
+    params: {}
+- name: LeaveAccount
+  endpoint:
+    path: /leaveAccount
+    method: GET
+    data_selector: leaveAccount
+    params: {}
+- name: ListAbsencesAccumulatedResponse
+  endpoint:
+    path: /absencesAccumulated
+    method: GET
+    data_selector: absences
+    params: {}
+- name: ListAbsencesResponse
+  endpoint:
+    path: /absences
+    method: GET
+    data_selector: absences
+    params: {}
+- name: ListAbsenceTypesResponse
+  endpoint:
+    path: /absenceTypes
+    method: GET
+    data_selector: absenceTypes
+    params: {}
+- name: ListCostCentersResponse
+  endpoint:
+    path: /costCenters
+    method: GET
+    data_selector: costCenters
+    params: {}
+- name: ListCostObjectivesResponse
+  endpoint:
+    path: /costObjectives
+    method: GET
+    data_selector: costCenters
+    params: {}
+- name: ListExpenseReportsResponse
+  endpoint:
+    path: /expenseReports
+    method: GET
+    data_selector: expenseReports
+    params: {}
+- name: ListHolidaysReponse
+  endpoint:
+    path: /holidays
+    method: GET
+    data_selector: holidays
+    params: {}
+- name: ListJobApplicationsResponse
+  endpoint:
+    path: /jobApplications
+    method: GET
+    data_selector: jobApplications
+    params: {}
+- name: ListOnboardingDocumentsResponse
+  endpoint:
+    path: /onboardingDocuments
+    method: GET
+    data_selector: onboardingDocuments
+    params: {}
+- name: ListOrganizationUnitsReponse
+  endpoint:
+    path: /organizationUnits
+    method: GET
+    data_selector: organizationUnits
+    params: {}
+- name: ListPermanentEstablishmentsResponse
+  endpoint:
+    path: /permanentEstablishments
+    method: GET
+    data_selector: permanentEstablishments
+    params: {}
+- name: ListPersonnelFileCategoriesResponse
+  endpoint:
+    path: /personnelFileCategories
+    method: GET
+    data_selector: categories
+    params: {}
+- name: ListPersonsResponse
+  endpoint:
+    path: /persons
+    method: GET
+    data_selector: persons
+    params: {}
+- name: ListPostsResponse
+  endpoint:
+    path: /posts
+    method: GET
+    data_selector: posts
+    params: {}
+- name: ListReceiptTypesResponse
+  endpoint:
+    path: /receiptTypes
+    method: GET
+    data_selector: receiptTypes
+    params: {}
+- name: ListRemoteWorkAccumulatedResponse
+  endpoint:
+    path: /remoteWorkAccumulated
+    method: GET
+    data_selector: remoteWork
+    params: {}
+- name: ListRemoteWorkResponse
+  endpoint:
+    path: /remoteWork
+    method: GET
+    data_selector: remoteWork
+    params: {}
+- name: ListSickLeavesAccumulatedResponse
+  endpoint:
+    path: /sickLeavesAccumulated
+    method: GET
+    data_selector: sickLeaves
+    params: {}
+- name: ListSickLeavesResponse
+  endpoint:
+    path: /sickLeaves
+    method: GET
+    data_selector: sickLeaves
+    params: {}
+- name: ListSickLeaveTypesResponse
+  endpoint:
+    path: /sickLeaveTypes
+    method: GET
+    data_selector: sickLeaveTypes
+    params: {}
+- name: ListTimeRecordingRegulationsResponse
+  endpoint:
+    path: /timeRecordingRegulations
+    method: GET
+    data_selector: timeRecordingRegulations
+    params: {}
+- name: ListTravelRequestsResponse
+  endpoint:
+    path: /travelRequests
+    method: GET
+    data_selector: travelRequests
+    params: {}
+- name: ListVacationTypesResponse
+  endpoint:
+    path: /vacationTypes
+    method: GET
+    data_selector: vacationTypes
+    params: {}
+- name: ListWageAndSalaryTypesResponse
+  endpoint:
+    path: /wageAndSalaryTypes
+    method: GET
+    data_selector: wageAndSalaryTypes
+    params: {}
+- name: ListWebhooksResponse
+  endpoint:
+    path: /webhooks
+    method: GET
+    data_selector: webhooks
+    params: {}
+- name: ListWorkingTimeKiosksResponse
+  endpoint:
+    path: /workingTimeKiosks
+    method: GET
+    data_selector: kiosks
+    params: {}
+notes:
+- Use your credentials to receive an authorization Bearer token which is required
+  for all subsequent API calls.
+- The jobId returned with this call can be used to query the corresponding /jobs endpoint
+  for the result of the write operation.
+- The API allows access to job applications and posts management.
+- The maximum date interval for date parameters is one year.
+- Requires setup of connected app in HR WORKS
+errors:
+- '403: The credentials provided with the request were invalid.'
+- '400: The submitted jobId was invalid - no matching write request to the API could
+  be found.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'InvalidCredentialsError: The credentials provided with the request were invalid.'
+- 'MissingAuthorizationHeaderError: Your request did not include an authorization
+  header.'
+- 'InvalidBearerTokenError: The Bearer token provided in the request was invalid or
+  expired.'
+- 'MissingParameterError: At least one of the required parameters was missing in the
+  request.'
+- 'PermissionDeniedError: The credentials associated with this request do not have
+  the necessary permission for this API request.'
+auth_info:
+  mentioned_objects:
+  - Credentials
+  - Token
+  - ApiError
+client:
+  base_url: https://www.hrworks.de
+  auth:
+    type: oauth2
+source_metadata: null

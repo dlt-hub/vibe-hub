@@ -1,0 +1,36 @@
+resources:
+- name: hash_secret
+  endpoint:
+    path: /argon2.low_level.hash_secret
+    method: POST
+    data_selector: encoded_hash
+- name: verify_secret
+  endpoint:
+    path: /argon2.low_level.verify_secret
+    method: POST
+    data_selector: verification_result
+notes:
+- This is a 'Hazardous Materials' module. Use only if you are absolutely sure.
+- Argon2 is a secure password hashing algorithm.
+- 'Argon2 comes in three variants: Argon2d, Argon2i, and Argon2id.'
+- If you set ARGON2_CFFI_USE_SYSTEM to 1 (and only 1), argon2-cffi-bindings will not
+  build its bindings.
+- This approach can lead to problems around your build chain and you can run into
+  incompatibilities between Argon2 and argon2-cffi if the latter has been tested against
+  a different version.
+- The current memory requirement is set to rather conservative 64 MB.
+- In memory constrained environments such as Docker containers that can lead to problems.
+- You can probably just use argon2.PasswordHasher with its default values and be fine.
+- Finding the right parameters for a password hashing algorithm is a daunting task.
+- argon2-cffi offers a CLI interface that can be accessed using `python -m argon2`
+errors:
+- 'HashingError: If hashing fails.'
+- 'VerifyMismatchError: If verification fails because hash is not valid.'
+- 'VerifyMismatchError: The password does not match the supplied hash'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://pypi.org/project/argon2-cffi/
+  headers:
+    Accept: application/json
+source_metadata: null

@@ -1,0 +1,234 @@
+resources:
+- name: borrowers
+  endpoint:
+    path: /borrowers/consumer
+    method: POST
+    data_selector: records
+- name: applications
+  endpoint:
+    path: /applications
+    method: POST
+    data_selector: records
+- name: loan_agreements
+  endpoint:
+    path: /loan_agreements
+    method: POST
+    data_selector: records
+- name: facilities
+  endpoint:
+    path: /facilities
+    method: POST
+    data_selector: records
+- name: borrower
+  endpoint:
+    path: /borrowers/consumer
+    method: POST
+- name: application
+  endpoint:
+    path: /applications
+    method: POST
+- name: approve_application
+  endpoint:
+    path: /applications/app_ae982db618544da9ac6fad552cede6f0/approve
+    method: POST
+- name: loan_agreement
+  endpoint:
+    path: /loan_agreements
+    method: POST
+- name: sign_loan_agreement
+  endpoint:
+    path: /loan_agreements/doc_6f9c7af667024d5f837ae5a0fb942a8a/sign
+    method: POST
+- name: credit_facility
+  endpoint:
+    path: /facilities
+    method: POST
+- name: applications_approve
+  endpoint:
+    path: /applications/approve
+    method: POST
+    data_selector: error_code
+    params: {}
+- name: borrowers_consumer
+  endpoint:
+    path: /borrowers/consumer
+    method: POST
+    data_selector: status
+    params: {}
+- name: line_of_credit_offer
+  endpoint:
+    path: /api-reference/line_of_credit_offer
+    method: GET
+    data_selector: offer_details
+- name: line_of_credit_facility
+  endpoint:
+    path: /api-reference/line_of_credit_facility
+    method: GET
+    data_selector: facility_details
+- name: drawdowns
+  endpoint:
+    path: /disbursements
+    method: POST
+    data_selector: disbursement_results
+- name: buy_now_pay_later_application
+  endpoint:
+    path: /applications/buy_now_pay_later
+    method: POST
+    data_selector: application
+    params: {}
+- name: loan_offer
+  endpoint:
+    path: /loan_offers
+    method: POST
+    data_selector: loan_offer
+    params: {}
+- name: applications
+  endpoint:
+    path: /api/applications
+    method: POST
+    data_selector: ''
+    params: {}
+- name: applications
+  endpoint:
+    path: /api/applications
+    method: GET
+    data_selector: records
+- name: business_borrower
+  endpoint:
+    path: /api/borrowers/business
+    method: POST
+    data_selector: records
+notes:
+- Pier uses bearer auth to authenticate API requests.
+- Rate limit is set to 1,000 requests per minute.
+- Webhooks include a JWT in the 'pier-webhook-verification' header. The JWT payload
+  contains a 'sha256' signature for the webhook body in the 'request_body_sha256'
+  field.
+- Take care not to process the webhook body prior to computing the signature, otherwise
+  you may get a false negative when comparing signatures.
+- Credit application requires third_party_disbursement_destination.
+errors:
+- '429: Rate limit exceeded.'
+- '401: Unauthorized access.'
+- 'INTERNAL_SERVER_ERROR: An unexpected error occurred'
+- 'PRODUCT_NOT_SUPPORTED: This product is not supported for your api keys'
+- 'NON_ZERO_INTEREST_NOT_ENABLED: Your account is not permitted to create loans with
+  interest. Contact Pier to enable your account for loans with interest'
+- 'ENDPOINT_NOT_ALLOWED_IN_PRODUCTION: This endpoint is only allowed in the sandbox'
+- 'DUPLICATE_EIN: A borrower with that EIN already exists'
+- 'DUPLICATE_SSN: A borrower with that SSN already exists'
+- 'UNABLE_TO_DELETE_BORROWER: There was an error attempting to delete the borrower'
+- 'UNSUPPORTED_STATE: This state is not supported for your API keys. Contact Pier
+  to enable'
+- 'APPLICATION_NOT_FOUND: The application resource does not exist'
+- 'APPLICATION_CANNOT_BE_CREATED: The application credit type can’t be created for
+  this type of borrower'
+- 'APPLICATION_CANNOT_BE_APPROVED: The application’s status must be pending in order
+  to approve it'
+- 'APPLICATION_CANNOT_BE_REJECTED: The application’s status must be pending in order
+  to reject it'
+- 'APPLICATION_CANNOT_BE_EVALUATED: The application’s status must be pending in order
+  to evaluate it'
+- 'BORROWER_NOT_FOUND: The borrower resource does not exist'
+- 'CUSTOMER_ALREADY_EXISTS: A customer with this email already exists'
+- 'CUSTOMER_NOT_FOUND: The customer resource does not exist with this client id'
+- 'CUSTOMER_ALREADY_ENABLED: Account already enabled for production'
+- 'INVALID_BORROWER_ID: The borrower_id specified is invalid'
+- 'INVALID_APPLICATION_ID: The application_id specified is invalid'
+- 'INVALID_STATEMENT_ID: The statement_id specified is invalid'
+- 'STATEMENT_NOT_FOUND: The statement resource does not exist'
+- 'THIRD_PARTY_MISSING: For BNPL loans, a third_party_disbursement_destination field
+  must be provided with name of the third party'
+- 'LOAN_AGREEMENT_NOT_FOUND: The loan agreement resource does not exist'
+- 'LOAN_AGREEMENT_ALREADY_EXISTS: A pending loan agreement for this application already
+  exists'
+- 'INVALID_LOAN_AGREEMENT_ID: The loan_agreement_id specified is invalid'
+- 'LOAN_AGREEMENT_CANNOT_BE_CREATED: Can only create loan agreements for approved
+  applications'
+- 'LOAN_AGREEMENT_CANNOT_BE_SIGNED: The loan agreement’s status must be pending_signature
+  in order to sign it'
+- 'LOAN_AGREEMENT_CREATION_FAILED: The loan agreement could not be created. Please
+  retry'
+- 'STATE_NOT_SUPPORTED: The applicant’s state or territory is not supported'
+- 'UNSUPPORTED_OFFER_TERMS: The requested offer terms are not supported for this state'
+- 'UNAUTHORIZED: The API key is invalid. Make sure you are passing correct credentials.'
+- 'FACILITY_ALREADY_EXISTS: A facility already exists for this loan agreement'
+- 'FACILITY_CANNOT_BE_CREATED: The loan agreement must have a status of signed in
+  order to create a facility for it'
+- 'FACILITY_NOT_FOUND: The facility resource does not exist'
+- 'INVALID_FACILITY_ID: The facility_id specified is invalid'
+- 'FACILITY_CANNOT_BE_CLOSED: The facility is already closed'
+- 'MISSING_REPAYMENT_BANK_DETAILS: Invalid or missing repayment bank account & routing
+  info. Add repayment bank details before submitting a payment'
+- 'REPAYMENT_ACH_DISABLED: Your account is not enabled for ACH payments'
+- 'PAYMENT_NOT_FOUND: The payment resource does not exist'
+- 'INVALID_PAYMENT_ID: The payment_id specified is invalid'
+- 'UNABLE_TO_INITIATE_PAYMENT: Unable to initiate payment'
+- 'PAYMENT_ALREADY_SUBMITTED: Payment with this id has already been submitted to svb'
+- 'CREDIT_POLICY_NOT_FOUND: The credit policy resource does not exist'
+- 'CREDIT_POLICY_NOT_IN_DRAFTED_STATE: The credit policy must be in a drafted state
+  in order to submit it for approval'
+- 'CREDIT_POLICY_NOT_IN_APPROVED_STATE: The credit policy must be in an approved state
+  in order to deploy it'
+- 'CREDIT_POLICY_CHANGES_NOT_ALLOWED: The credit policy may not be changed in its
+  current state. Create a new one to make changes'
+- 'CREDIT_POLICY_NO_RULES: Cannot deploy or submit a policy with no rules'
+- 'CREDIT_POLICY_OFFER_LIMITS_INCOMPLETE: The credit policy’s offer limits are incomplete.
+  Please make sure all offer limits are specified'
+- 'INVALID_CREDIT_POLICY_ID: The credit_policy_id specified is invalid'
+- 'AUTOPAY_ALREADY_DISABLED: Autopay is already disabled for this facility'
+- 'DISBURSEMENT_ACH_DISABLED: Your account is not enabled for ACH disbursements'
+- 'DISBURSEMENT_ALREADY_SUBMITTED: Disbursement with this id has already been submitted
+  to svb'
+- 'DISBURSEMENT_AMOUNT_EXCEEDS_FACILITY_AMOUNT: The disbursement amount requested,
+  along with other disbursements on this facility, may not exceed the loan amount
+  for the facility'
+- 'DISBURSEMENT_AMOUNT_EXCEEDS_AVAILABLE_LIMIT: The requested disbursement exceeds
+  the available limit for the facility'
+- 'DISBURSEMENT_ERROR: Unable to initiate disbursement'
+- 'DISBURSEMENT_NOT_FOUND: The disbursement resource does not exist'
+- 'INVALID_DISBURSEMENT_ID: The disbursement_id specified is invalid'
+- 'OFFER_NOT_FOUND: The accepted offer id is invalid, does not exist or does not belong
+  to this application'
+- 'INVALID_WEBHOOK_URL: The webhook url is not a valid url.'
+- 'UNAVAILABLE_IN_PRODUCTION: This endpoint is not available in production'
+- 'KYC_NOT_APPROVED: The borrower’s KYC status must be approved'
+- 'BALANCE_REMAINING_LESS_THAN_PAYMENT: The remaining balance is less than the payment
+  submitted'
+- 'INVALID_INPUT: kyc_completion_date must be set unless Pier is performing KYC'
+- 'INVALID_INPUT: kyc_completion_date cannot be set if Pier is peforming KYC'
+- 'LEDGERING_DISABLED: Your account is not enabled for ledgering'
+- 'MISSING_DISBURSEMENT_BANK_DETAILS: Invalid or missing disbursement bank account
+  & routing info'
+- 'MISSING_LENDING_DETAILS: Invalid lending details for generating loan agreement'
+- 'CANNOT_CANCEL_TRANSACTION_INCORRECT_STATUS: Can only cancel Payment or Disbursement
+  if the transaction’s status is pending and ach has not been submitted'
+- 'CANNOT_REFUND_TRANSACTION_INCORRECT_STATUS: Can only refund Payment or Disbursement
+  if the transaction’s status is settled'
+- 'Webhook retries: If the webhook endpoint does not respond with a 2xx status code,
+  Pier will retry sending the webhook up to 5 times with an exponential backoff.'
+- 'KYC_NOT_APPROVED: The borrower''s KYC status must be approved'
+- 401 Unauthorized Error
+- 429 Rate Limit Error
+- 500 Server Error
+- '400: Invalid Input Error'
+- '401: Unauthorized Error'
+- '404: Borrower Not Found Error'
+- '429: Rate Limit Error'
+- '500: Server Error'
+- '400: Duplicate Ein Error'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://production.pier-finance.com
+  auth:
+    type: oauth2
+    flow: jwt
+    token_url: https://production.pier-finance.com/api/token
+    client_id: '1234567890'
+    client_secret: '1234567890'
+    location: header
+    header_name: Authorization
+  headers:
+    Content-Type: application/json
+source_metadata: null

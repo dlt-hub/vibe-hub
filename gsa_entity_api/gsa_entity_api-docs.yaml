@@ -1,0 +1,223 @@
+resources:
+- name: entityRegistration
+  endpoint:
+    path: /entityRegistration
+    method: GET
+    data_selector: records
+    params: {}
+- name: coreData
+  endpoint:
+    path: /coreData
+    method: GET
+    data_selector: records
+    params: {}
+- name: entityInformation
+  endpoint:
+    path: /entity/information
+    method: GET
+    data_selector: records
+- name: financialInformation
+  endpoint:
+    path: /financial/information
+    method: GET
+    data_selector: records
+- name: integrityInformation
+  endpoint:
+    path: /integrity/information
+    method: GET
+    data_selector: records
+- name: fARResponses
+  endpoint:
+    path: /fARResponses
+    method: GET
+    data_selector: list
+    params: {}
+- name: dFARResponses
+  endpoint:
+    path: /dFARResponses
+    method: GET
+    data_selector: list
+    params: {}
+- name: entities_v1
+  endpoint:
+    path: /v1/entities
+    method: GET
+    data_selector: records
+- name: entities_v2
+  endpoint:
+    path: /v2/entities
+    method: GET
+    data_selector: records
+- name: entities_v3
+  endpoint:
+    path: /v3/entities
+    method: GET
+    data_selector: records
+- name: entities_v4
+  endpoint:
+    path: /v4/entities
+    method: GET
+    data_selector: records
+- name: proceedings
+  endpoint:
+    path: /proceedings
+    method: GET
+    data_selector: listOfProceedings
+- name: responsibility_information
+  endpoint:
+    path: /responsibilityInformation
+    method: GET
+    data_selector: responsibilityInformationList
+- name: corporate_relationships
+  endpoint:
+    path: /corporateRelationships
+    method: GET
+    data_selector: corporateRelationships
+- name: goods_and_services
+  endpoint:
+    path: /goodsAndServices
+    method: GET
+    data_selector: naicsList
+- name: disaster_relief_data
+  endpoint:
+    path: /disasterReliefData
+    method: GET
+    data_selector: geographicalAreaServed
+- name: size_metrics
+  endpoint:
+    path: /sizeMetrics
+    method: GET
+    data_selector: sizeMetrics
+- name: edi_information
+  endpoint:
+    path: /ediInformation
+    method: GET
+    data_selector: ediInformation
+- name: financialAssistanceCertifications
+  endpoint:
+    path: /financialAssistanceCertifications
+    method: GET
+    data_selector: records
+    params: {}
+- name: pdfLinks
+  endpoint:
+    path: /pdfLinks
+    method: GET
+    data_selector: records
+    params: {}
+- name: governmentBusinessPOC
+  endpoint:
+    path: /governmentBusinessPOC
+    method: GET
+    data_selector: records
+    params: {}
+- name: electronicBusinessPOC
+  endpoint:
+    path: /electronicBusinessPOC
+    method: GET
+    data_selector: records
+    params: {}
+- name: pastPerformancePOC
+  endpoint:
+    path: /pastPerformancePOC
+    method: GET
+    data_selector: records
+    params: {}
+- name: entities_v2
+  endpoint:
+    path: /v2/entities
+    method: GET
+    data_selector: entityData
+- name: entities_v3
+  endpoint:
+    path: /v3/entities
+    method: GET
+    data_selector: entityData
+- name: entities
+  endpoint:
+    path: /v2/entities
+    method: GET
+    data_selector: entityData
+    params:
+      includeSections: entityRegistration,coreData
+- name: entities_v3
+  endpoint:
+    path: /v3/entities
+    method: GET
+    data_selector: entityData
+    params:
+      includeSections: entityRegistration,coreData
+- name: entities
+  endpoint:
+    path: /v3/entities
+    method: GET
+    data_selector: entityData
+    params:
+      api_key: < API Key >
+      samRegistered: 'No'
+      includeSections: entityRegistration
+- name: joint_venture_entities
+  endpoint:
+    path: /v3/entities
+    method: GET
+    data_selector: entityData
+    params:
+      api_key: < A valid FOUO API Key >
+      purposeOfRegistrationCode: Z1~Z2
+      q: (businessTypeDesc:'Joint Venture Women' OR businessTypeDesc:'Asian-Pacific')
+      includeSections: entityRegistration,coreData
+- name: entity_registration
+  endpoint:
+    path: /v3/entities
+    method: GET
+    data_selector: entityData
+    params:
+      includeSections: entityRegistration,coreData
+- name: integrity_information
+  endpoint:
+    path: /v3/entities
+    method: GET
+    data_selector: entityData
+    params:
+      includeSections: integrityInformation
+- name: entity_information
+  endpoint:
+    path: /entities
+    method: GET
+    data_selector: entityData
+    params:
+      samRegistered: 'No'
+notes:
+- 'Sensitivity Level: FOUO, which constitutes both the publicly available entities
+  and the entities that have opted out of public display with their CUI data'
+- Returns only the first 10,000 records for synchronous responses.
+- Returns 1,000,000 records for asynchronous responses.
+- Use api_key as a query parameter in the request URL.
+- Requires a valid FOUO API Key for access
+- Some fields may return null values.
+- Ensure proper API key usage to avoid rate limiting.
+- Responses include both v2 and v3 formats.
+- API Key is required in the query string for all requests.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Exceeding the daily limit for API requests.'
+- '401 Unauthorized: Invalid or missing API key.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '401 Unauthorized: Recheck API key validity'
+- '401 Unauthorized: Check your API key.'
+- '401 Unauthorized: Check API key or access permissions'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.sam.gov/entity-information
+  auth:
+    type: apikey
+    location: header
+    header_name: x-api-key
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+  paginator:
+    default_page_size: 10
+source_metadata: null
