@@ -1,0 +1,289 @@
+resources:
+- name: cluster
+  endpoint:
+    path: /cluster
+    method: GET
+    data_selector: members
+- name: history
+  endpoint:
+    path: /history
+    method: GET
+    data_selector: ''
+- name: config
+  endpoint:
+    path: /config
+    method: GET
+    data_selector: ''
+- name: switchover
+  endpoint:
+    path: /switchover
+    method: POST
+    data_selector: ''
+- name: failover
+  endpoint:
+    path: /failover
+    method: POST
+    data_selector: ''
+- name: restart
+  endpoint:
+    path: /restart
+    method: POST
+    data_selector: ''
+- name: reload
+  endpoint:
+    path: /reload
+    method: POST
+    data_selector: ''
+- name: reinitialize
+  endpoint:
+    path: /reinitialize
+    method: POST
+    data_selector: ''
+- name: health_check
+  endpoint:
+    path: /
+    method: GET
+- name: primary
+  endpoint:
+    path: /primary
+    method: GET
+- name: read_write
+  endpoint:
+    path: /read-write
+    method: GET
+- name: standby_leader
+  endpoint:
+    path: /standby-leader
+    method: GET
+- name: leader
+  endpoint:
+    path: /leader
+    method: GET
+- name: replica
+  endpoint:
+    path: /replica
+    method: GET
+- name: metrics
+  endpoint:
+    path: /metrics
+    method: GET
+- name: query
+  endpoint:
+    path: /patronictl/query
+    method: GET
+    data_selector: records
+- name: reinit
+  endpoint:
+    path: /patronictl/reinit
+    method: GET
+    data_selector: records
+- name: reload
+  endpoint:
+    path: /patronictl/reload
+    method: GET
+    data_selector: records
+- name: remove
+  endpoint:
+    path: /patronictl/remove
+    method: GET
+    data_selector: records
+- name: restart
+  endpoint:
+    path: /patronictl/restart
+    method: GET
+    data_selector: records
+- name: resume
+  endpoint:
+    path: /patronictl/resume
+    method: GET
+    data_selector: records
+- name: show_config
+  endpoint:
+    path: /show-config
+    method: GET
+    data_selector: dynamic_configuration
+    params: {}
+- name: switchover
+  endpoint:
+    path: /switchover
+    method: POST
+    data_selector: switchover_result
+    params: {}
+- name: topology
+  endpoint:
+    path: /topology
+    method: GET
+    data_selector: cluster_information
+    params: {}
+- name: version
+  endpoint:
+    path: /version
+    method: GET
+    data_selector: patronictl_version
+    params: {}
+- name: failover
+  endpoint:
+    path: /patronictl/failover
+    method: POST
+    data_selector: result
+    params:
+      CLUSTER_NAME: batman
+      candidate: postgresql2
+      force: true
+- name: flush
+  endpoint:
+    path: /patronictl/flush
+    method: POST
+    data_selector: result
+    params:
+      CLUSTER_NAME: batman
+      MEMBER_NAME: postgresql1, postgresql2
+      restart: true
+      force: true
+- name: history
+  endpoint:
+    path: /patronictl/history
+    method: GET
+    data_selector: events
+    params:
+      CLUSTER_NAME: batman
+- name: list
+  endpoint:
+    path: /patronictl/list
+    method: GET
+    data_selector: members
+    params:
+      CLUSTER_NAME: batman
+- name: pause
+  endpoint:
+    path: /patronictl/pause
+    method: POST
+    data_selector: result
+    params:
+      CLUSTER_NAME: batman
+      wait: true
+- name: synchronous_mode
+  endpoint:
+    path: /config
+    method: GET
+    data_selector: synchronous_mode
+    params: {}
+- name: synchronous_node_count
+  endpoint:
+    path: /config
+    method: GET
+    data_selector: synchronous_node_count
+    params: {}
+- name: standby_cluster
+  endpoint:
+    path: /standby_cluster
+    method: POST
+    data_selector: standby_cluster
+    params: {}
+- name: pause_resume
+  endpoint:
+    path: /{namespace}/{cluster}/config
+    method: PATCH
+    data_selector: null
+    params: {}
+- name: failsafe
+  endpoint:
+    path: /failsafe
+    method: POST
+    data_selector: members
+- name: config
+  endpoint:
+    path: /config
+    method: PATCH
+    data_selector: configuration
+- name: kubernetes_endpoints
+  endpoint:
+    path: /kubernetes/endpoints
+    method: GET
+- name: kubernetes_configmaps
+  endpoint:
+    path: /kubernetes/configmaps
+    method: GET
+- name: citus
+  endpoint:
+    path: /citus
+    method: GET
+    data_selector: records
+- name: coordinator
+  endpoint:
+    path: /citus/coordinator
+    method: GET
+    data_selector: records
+    params: {}
+- name: worker
+  endpoint:
+    path: /citus/worker
+    method: GET
+    data_selector: records
+    params: {}
+- name: metrics
+  endpoint:
+    path: /metrics
+    method: GET
+    data_selector: metrics
+- name: patroni
+  endpoint:
+    path: /patroni
+    method: GET
+    data_selector: status
+- name: rest_api
+  endpoint:
+    path: /patroni/rest/api
+    method: GET
+notes:
+- If the options changed are not part of the startup configuration, they are applied
+  asynchronously (upon the next wake up cycle) to every node, which gets subsequently
+  reloaded.
+- If an option that requires restart is changed, a pending_restart flag is set on
+  that node.
+- 'patronictl uses 3 sections of the configuration: ctl, restapi, DCS.'
+- If running patronictl in the same host as patroni, use the same configuration file.
+- Bootstrap methods are neither chained, nor fallen-back to the default one in case
+  the primary one fails
+- By default Patroni configures PostgreSQL for asynchronous replication.
+- Turning on synchronous_mode does not guarantee multi node durability of commits
+  under all circumstances.
+- By default Patroni will set up the watchdog to expire 5 seconds before TTL expires.
+- Currently watchdogs are only supported using Linux watchdog device interface.
+- The failsafe_mode could be enabled only via global dynamic configuration stored
+  in the DCS /config key.
+- Patroni version on all members must be up-to-date before enabling the failsafe_mode.
+- Patroni can use Kubernetes objects to store the state of the cluster and manage
+  the leader key.
+- Recommended mode is to use Endpoints, but it is turned off by default.
+- Citus database extension must be available on all nodes.
+- Cluster name must be the same for all Citus nodes.
+- Superuser credentials must be the same on coordinator and all worker nodes.
+- Uses Kubernetes for managing Citus clusters.
+- Running pg_upgrade on standby nodes is not supported by PostgreSQL.
+- patroni_barman config-switch requires that you have both Barman and pg-backup-api
+  configured in the Barman host, so it can execute a remote barman config-switch through
+  the backup API.
+- Patroni manages Postgres as a whole.
+- This version completes work on getting rid of the “master” term, in favor of “primary”.
+  This means a couple of breaking changes, please read the release notes carefully.
+- Compatibility with PostgreSQL v14
+- The old permanent logical replication slots feature will no longer work with PostgreSQL
+  v10 and older
+- Improvements in REST API
+- This version enables Patroni HA cluster to operate in a standby mode.
+- Experimental Windows support.
+- No known compatibility issues with the new version of Patroni.
+- Configuration from version 1.2 should work without any changes.
+- The configuration file format has changed since the v0.90.
+- Users are encouraged to update configuration files by referring to the dynamic configuration
+  documentation page.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- The restapi.connect_address must be accessible from all nodes of a given Patroni
+  cluster.
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: http://localhost:8008
+source_metadata: null

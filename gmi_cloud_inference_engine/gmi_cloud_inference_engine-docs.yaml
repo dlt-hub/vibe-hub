@@ -1,0 +1,78 @@
+resources:
+- name: list_models
+  endpoint:
+    path: /v1/models
+    method: GET
+    data_selector: data
+- name: create_chat_completion
+  endpoint:
+    path: /v1/chat/completions
+    method: POST
+    data_selector: choices
+- name: request_queue
+  endpoint:
+    path: /ie/requestqueue/apikey/requests/$REQUEST_ID
+    method: GET
+- name: list_video_models
+  endpoint:
+    path: /api/v1/ie/requestqueue/apikey/models
+    method: GET
+    data_selector: model_ids
+- name: show_model_details
+  endpoint:
+    path: /api/v1/ie/requestqueue/apikey/models/{model-id}
+    method: GET
+- name: create_requests
+  endpoint:
+    path: /api/v1/ie/requestqueue/apikey/requests
+    method: POST
+- name: observe_requests
+  endpoint:
+    path: /api/v1/ie/requestqueue/apikey/requests/$REQUEST_ID
+    method: GET
+- name: tasks
+  endpoint:
+    path: /inference-engine/resources/tasks
+    method: GET
+- name: artifacts
+  endpoint:
+    path: /inference-engine/resources/artifacts
+    method: GET
+notes:
+- API keys should be provided via HTTP Bearer authentication
+- Never expose API keys in client-side code
+- Default context handling differs from Other provider (truncates instead of erroring)
+- Data URI is convenient for small files. Large payloads may slow requests.
+- Hosted URL must be publicly accessible; some hosts block cross-site or rate-limit.
+- API keys should be provided via HTTP Bearer authentication.
+- Never expose API keys in client-side code.
+- 'Uses environment variables for authentication: GMI_CLOUD_EMAIL and GMI_CLOUD_PASSWORD'
+- Valid authentication credentials are required
+- Video generation requests are processed asynchronously
+- Processing time varies by model and video length
+- 'API rate limits are defined in two ways: TPM (Tokens per Minute) for LLM models
+  and RPH (Requests per Hour) for video models.'
+- These limits are enforced at the organization level.
+- Rate limits vary by tier and model.
+- We do not want or need any data about your race, ethnicity, religious or philosophical
+  beliefs, health or medical information, genetic or biometric identifiers, sexual
+  orientation, or political opinions.
+errors:
+- '401 Unauthorized: Check API key validity.'
+- '404 Not Found: Ensure the endpoint and parameters are correct.'
+- 'Validation error: Check the model parameters are valid'
+- 'Unexpected error: Review the error details in the response'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.gmi-serving.com
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

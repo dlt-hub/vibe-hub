@@ -1,0 +1,179 @@
+resources:
+- name: metrics_attributes
+  endpoint:
+    path: /v2/metrics/{dataset}/attributes
+    method: POST
+- name: metrics_export
+  endpoint:
+    path: /v2/metrics/{dataset}/export
+    method: GET
+- name: descriptors
+  endpoint:
+    path: /v2/metrics/{dataset}/descriptors
+    method: GET
+- name: metric_descriptors
+  endpoint:
+    path: /v2/metrics/{dataset}/descriptors/metrics
+    method: GET
+    data_selector: data
+- name: resource_descriptors
+  endpoint:
+    path: /v2/metrics/{dataset}/descriptors/resources
+    method: GET
+    data_selector: data
+- name: query_metrics
+  endpoint:
+    path: /v2/metrics/{dataset}/query
+    method: POST
+    data_selector: data
+- name: export_metrics
+  endpoint:
+    path: /v2/metrics/{dataset}/export
+    method: GET
+    data_selector: data
+- name: compute_pool_utilization
+  endpoint:
+    path: /io.confluent.flink/compute_pool_utilization
+    method: GET
+    data_selector: records
+- name: statement_utilization
+  endpoint:
+    path: /io.confluent.flink/statement_utilization
+    method: GET
+    data_selector: records
+- name: statement_status
+  endpoint:
+    path: /io.confluent.flink/statement_status
+    method: GET
+    data_selector: records
+- name: sent_records
+  endpoint:
+    path: /sent_records
+    method: GET
+    data_selector: records
+- name: connector_status
+  endpoint:
+    path: /connector_status
+    method: GET
+    data_selector: records
+- name: connector_task_status
+  endpoint:
+    path: /connector_task_status
+    method: GET
+    data_selector: records
+- name: connector_task_batch_size_avg
+  endpoint:
+    path: /connector_task_batch_size_avg
+    method: GET
+    data_selector: records
+- name: connector_task_batch_size_max
+  endpoint:
+    path: /connector_task_batch_size_max
+    method: GET
+    data_selector: records
+- name: received_records
+  endpoint:
+    path: /received_records
+    method: GET
+    data_selector: records
+- name: sent_bytes
+  endpoint:
+    path: /sent_bytes
+    method: GET
+    data_selector: records
+- name: received_bytes
+  endpoint:
+    path: /received_bytes
+    method: GET
+    data_selector: records
+- name: dead_letter_queue_records
+  endpoint:
+    path: /dead_letter_queue_records
+    method: GET
+    data_selector: records
+- name: records_lag_max
+  endpoint:
+    path: /records_lag_max
+    method: GET
+    data_selector: records
+- name: metrics_attributes
+  endpoint:
+    path: /v2/metrics/{dataset}/attributes
+    method: POST
+    data_selector: data
+    params:
+      metric: io.confluent.kafka.server/sent_bytes
+      group_by:
+      - metric.topic
+      limit: 3
+      intervals:
+      - 2019-10-16T16:30:20Z/2019-10-24T18:57:00Z
+- name: metric_descriptors
+  endpoint:
+    path: /v2/metrics/{dataset}/descriptors/metrics
+    method: GET
+    data_selector: metrics
+- name: resource_descriptors
+  endpoint:
+    path: /v2/metrics/{dataset}/descriptors/resources
+    method: GET
+    data_selector: resources
+- name: metric_values
+  endpoint:
+    path: /v2/metrics/{dataset}/export
+    method: POST
+    data_selector: metrics
+- name: label_values
+  endpoint:
+    path: /v2/metrics/{dataset}/descriptors/labels
+    method: POST
+    data_selector: labels
+- name: metric_descriptors
+  endpoint:
+    path: /v2/metrics/{dataset}/attributes
+    method: POST
+    data_selector: data
+    params:
+      page_size: 100
+- name: resource_descriptors
+  endpoint:
+    path: /v2/metrics/{dataset}/attributes
+    method: POST
+    data_selector: data
+    params:
+      page_size: 100
+- name: metric_values
+  endpoint:
+    path: /v2/metrics/{dataset}/attributes
+    method: POST
+    data_selector: data
+    params:
+      page_size: 100
+- name: export_metric_values
+  endpoint:
+    path: /v2/metrics/{dataset}/export
+    method: POST
+    data_selector: data
+    params: {}
+notes:
+- Cloud API Keys are required for the Metrics API.
+- All API requests must be made over HTTPS.
+- The maximum number of results to return is limited to 1000.
+- Data points returned per resource type per metric is limited to 30000.
+- Metrics available for both compute pool and Flink statement.
+errors:
+- '429: Rate Limit Exceeded'
+- '429 Too Many Requests: Rate limit exceeded.'
+- '400 Bad Request: Cursor may have expired.'
+- Rate Limit Exceeded
+- '429: Too many requests have been made for the following resources.'
+- 429 Rate Limit Exceeded
+- '400 Bad Request: Invalid request format.'
+- '404: HTTP 404 Not Found'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.telemetry.confluent.cloud
+  auth:
+    type: apikey
+source_metadata: null

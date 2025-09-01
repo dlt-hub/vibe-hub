@@ -1,0 +1,247 @@
+resources:
+- name: stations
+  endpoint:
+    path: /stations
+    method: GET
+- name: stations_by_id
+  endpoint:
+    path: /stations/{station-ids}
+    method: GET
+- name: nodes
+  endpoint:
+    path: /nodes
+    method: GET
+- name: nodes_by_id
+  endpoint:
+    path: /nodes/{node-ids}
+    method: GET
+- name: sensors
+  endpoint:
+    path: /sensors
+    method: GET
+- name: sensors_by_id
+  endpoint:
+    path: /sensors/{sensor-ids}
+    method: GET
+- name: sensor_activity
+  endpoint:
+    path: /sensor-activity
+    method: GET
+- name: sensor_activity_by_id
+  endpoint:
+    path: /sensor-activity/{sensor-ids}
+    method: GET
+- name: sensor_catalog
+  endpoint:
+    path: /sensor-catalog
+    method: GET
+- name: current_conditions
+  endpoint:
+    path: /current/{station-id}
+    method: GET
+- name: historic_data
+  endpoint:
+    path: /historic/{station-id}
+    method: GET
+- name: evapotranspiration_report
+  endpoint:
+    path: /report/et/{station-id}
+    method: GET
+- name: current_conditions
+  endpoint:
+    path: /v1/current_conditions
+    method: GET
+    data_selector: data
+- name: current_conditions
+  endpoint:
+    path: /v1/current_conditions
+    method: GET
+    data_selector: data.conditions
+- name: real_time
+  endpoint:
+    path: /v1/real_time
+    method: GET
+    data_selector: data
+- name: real_time
+  endpoint:
+    path: /v1/real_time
+    method: GET
+    data_selector: data
+    params: {}
+- name: stations
+  endpoint:
+    path: /stations
+    method: GET
+    data_selector: stations
+- name: current_conditions
+  endpoint:
+    path: /current/{station-id}
+    method: GET
+    data_selector: current_conditions
+- name: historic_data
+  endpoint:
+    path: /historic/{station-id}
+    method: GET
+    data_selector: historic_data
+    params:
+      start-timestamp: '1561964400'
+      end-timestamp: '1562050800'
+- name: stations
+  endpoint:
+    path: /stations
+    method: GET
+    params:
+      demo: 'true'
+- name: current_conditions
+  endpoint:
+    path: /current/9722cfc3-a4ef-47b9-befb-72f52592d6ed
+    method: GET
+    params:
+      demo: 'true'
+- name: historic_data
+  endpoint:
+    path: /historic/9722cfc3-a4ef-47b9-befb-72f52592d6ed
+    method: GET
+    params:
+      demo: 'true'
+- name: weather_observation_data
+  endpoint:
+    path: /v2-api/
+    method: GET
+    data_selector: sensors
+    params: {}
+- name: stations
+  endpoint:
+    path: /stations
+    method: GET
+    data_selector: stations
+- name: sensors
+  endpoint:
+    path: /sensors
+    method: GET
+    data_selector: sensors
+- name: current_conditions
+  endpoint:
+    path: /current
+    method: GET
+    data_selector: sensors
+- name: stations
+  endpoint:
+    path: /stations
+    method: GET
+    data_selector: stations
+    params: {}
+- name: sensor_catalog
+  endpoint:
+    path: /sensor-catalog
+    method: GET
+    data_selector: sensor_types
+- name: current_conditions
+  endpoint:
+    path: /current
+    method: GET
+    data_selector: data_structure
+- name: historic_data
+  endpoint:
+    path: /historic
+    method: GET
+    data_selector: data_structure
+- name: weather_data
+  endpoint:
+    path: /api/weather
+    method: GET
+    data_selector: data
+    params: {}
+- name: stations
+  endpoint:
+    path: /stations
+    method: GET
+    data_selector: ''
+    params: {}
+- name: nodes
+  endpoint:
+    path: /nodes
+    method: GET
+    data_selector: ''
+    params: {}
+- name: sensors
+  endpoint:
+    path: /sensors
+    method: GET
+    data_selector: ''
+    params: {}
+- name: sensor-activity
+  endpoint:
+    path: /sensor-activity
+    method: GET
+    data_selector: ''
+    params: {}
+- name: sensor-catalog
+  endpoint:
+    path: /sensor-catalog
+    method: GET
+    data_selector: ''
+    params: {}
+- name: current_conditions
+  endpoint:
+    path: /current/{station-id}
+    method: GET
+    data_selector: ''
+    params: {}
+- name: historic_data
+  endpoint:
+    path: /historic/{station-id}
+    method: GET
+    data_selector: ''
+    params: {}
+- name: evapotranspiration
+  endpoint:
+    path: /report/et/{station-id}
+    method: GET
+    data_selector: ''
+    params: {}
+notes:
+- The embedded web server can process approximately three requests per second.
+- Duration returned may be longer than the duration requested, if the broadcast is
+  already enabled.
+- If the new broadcast time requested is less than the time interval remaining for
+  the previous broadcast, the new request is ignored.
+- If the new broadcast time requested is greater than the time interval remaining
+  for the previous broadcast, then the broadcast time is reset to the new time and
+  the data broadcast is continued.
+- The API Key must be passed as a query parameter in all API requests.
+- The Sensor Catalog is a comprehensive list of all sensor types. Users should cache
+  the information since changes are infrequent.
+- The Sensor Catalog information presented here is for sensor types that are common
+  to all users and covers all types of sensors except the Sentek EnviroSCAN probe.
+- The WeatherLink v2 API is a shared resource between all API users.
+- All API requests will be rate limited by the API Key.
+- API requests for historic data requires a starting Unix timestamp parameter and
+  ending Unix timestamp parameter to define the time window of the data being requested.
+- The size of the time window is currently limited to 86,400 seconds, the equivalent
+  of 24 hours, to prevent the API servers from being overwhelmed by many large requests
+  at the same time.
+- We have created a WeatherLink Developers Discord to serve as a central location
+  for API related chat and support.
+- Add support for new sensor types.
+- Add support for demo mode.
+errors:
+- '404: HTTP Page Not Found'
+- '400: HTTP Bad Request'
+- '414: HTTP URI Too Long'
+- '409: No ISS Transmitters. Real Time broadcast not enabled'
+- Rate limits are 1,000 API calls per hour
+- Rate limits are 10 API calls per second
+auth_info:
+  mentioned_objects:
+  - api-key
+  - api-secret
+  - station-ids
+  - station-id
+  - node-ids
+  - sensor-ids
+  - start-timestamp
+  - end-timestamp
+client:
+  base_url: https://api.weatherlink.com/v2
+source_metadata: null

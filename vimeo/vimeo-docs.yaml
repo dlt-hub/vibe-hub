@@ -1,0 +1,141 @@
+resources:
+- name: videos
+  endpoint:
+    path: /api/reference/videos
+    method: GET
+    data_selector: videos
+- name: folders
+  endpoint:
+    path: /users/{user_id}/folders
+    method: GET
+    data_selector: folders
+- name: folder
+  endpoint:
+    path: /users/{user_id}/folders/{project_id}
+    method: GET
+    data_selector: folder
+- name: folder_items
+  endpoint:
+    path: /users/{user_id}/projects/{project_id}/items
+    method: GET
+    data_selector: items
+- name: create_folder
+  endpoint:
+    path: /users/{user_id}/folders
+    method: POST
+    data_selector: folder
+- name: delete_folder
+  endpoint:
+    path: /users/{user_id}/folders/{project_id}
+    method: DELETE
+    data_selector: deleted
+- name: text_tracks
+  endpoint:
+    path: /videos/{video_id}/texttracks
+    method: GET
+    data_selector: data
+    params: {}
+- name: video_pictures
+  endpoint:
+    path: /videos/{video_id}/pictures
+    method: GET
+    data_selector: data
+- name: video_thumbnail_upload
+  endpoint:
+    path: /videos/{video_id}/pictures
+    method: POST
+    data_selector: link
+- name: video_file_links
+  endpoint:
+    path: /videos/{video_id}
+    method: GET
+    data_selector: play
+- name: videos
+  endpoint:
+    path: /me/videos
+    method: POST
+    data_selector: upload
+    params: {}
+- name: video_versions
+  endpoint:
+    path: /videos/{video_id}/versions
+    method: POST
+    data_selector: ''
+    params: {}
+- name: users_feed
+  endpoint:
+    path: /me/feed
+    method: GET
+- name: user_pictures
+  endpoint:
+    path: /me/pictures
+    method: POST
+notes:
+- Working with the Player SDK
+- Basic authentication doesn't identify the end user of an app, but it does identify
+  the app itself.
+- Access tokens have varying expiration times.
+- Using the client_credentials grant provides access to public data only.
+- Requires an access token with the 'create', 'delete', 'edit', 'private', or 'interact'
+  scope.
+- For each of your users to have their own pool of requests, make sure that they're
+  all presenting authenticated access tokens.
+- If you use field filtering to specify exactly which data fields to return, we effectively
+  double your quota.
+- You can't currently add chapters to a video by uploading them through the API.
+- The Vimeo player doesn't currently support descriptions or metadata tracks.
+- Always include the Accept header in requests to ensure proper response format.
+- Ensure to set the Accept header to the given value for version 3.4.
+- The maximum file size is 250 GB, and the maximum duration is 24 hours.
+- The link must resolve directly to a video file.
+- Make sure to encode your data as UTF-8 to avoid errors.
+- If you specify a time that occurs in the future, we ignore it and return the usual
+  response.
+- Always include the Accept header with your API requests.
+- Many API calls pre 3.2 would return a 204 status code and an empty body. To reduce
+  the necessary amount of API calls necessary in a real world application, many of
+  those now return a 200 status code and a resource representation.
+- 'The player SDK works with any of the following browsers: Microsoft Edge, Internet
+  Explorer 11 or better, Chrome, Firefox, Safari, and Opera.'
+errors:
+- '400: 2204: You have an invalid value for the `grant_type` field.'
+- '401: 8001: We don''t recognize your API app.'
+- '400: You have an invalid value for the grant_type field.'
+- '401: We don''t recognize your API app.'
+- 'HTTP 200: Success'
+- 'HTTP 204: No Content'
+- 'HTTP 201: Created'
+- 'HTTP status code 429 and error code 9000: Exceeded rate limit.'
+- '400 Invalid Caption File: The API doesn''t recognize the format of the caption
+  file.'
+- '403 Forbidden: You''re attempting to send data to a bad or expired link.'
+- '405 Method Not Allowed: You''re using an unsupported HTTP method on the specified
+  endpoint.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '8003: unrecognized access token'
+- 'HTTP 200: Successful request.'
+- 'HTTP 201: Resource created.'
+- 'HTTP 400: Bad request — check your parameters.'
+- 'HTTP 401: Unauthorized — check your access token.'
+- 'HTTP 404: Not found — check the video ID.'
+- '200 OK: Successfully retrieved metadata'
+- '401 Unauthorized: Invalid access token or insufficient scopes'
+- '2204: parameter problem'
+- '2205: bad body format'
+- '2510: invalid URL'
+- '4101: not enough space'
+- '4102: not enough space'
+- '4104: not enough space'
+- '8002: unrecognized access token'
+- 'HTTP 409: Conflict - Check Upload-Offset and try again.'
+- '404 Not Found: The specified page does not exist.'
+auth_info:
+  mentioned_objects:
+  - access_token
+client:
+  base_url: https://api.vimeo.com
+  auth:
+    type: oauth2
+source_metadata: null

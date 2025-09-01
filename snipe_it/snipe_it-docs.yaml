@@ -1,0 +1,145 @@
+resources:
+- name: hardware
+  endpoint:
+    path: /hardware
+    method: GET
+    data_selector: records
+    params: {}
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+    data_selector: records
+    params: {}
+- name: companies
+  endpoint:
+    path: /companies
+    method: GET
+    data_selector: records
+    params: {}
+- name: image_library
+  endpoint:
+    path: /required/image/library/settings
+    method: GET
+    data_selector: library
+    params: {}
+- name: directory_permissions
+  endpoint:
+    path: /required/set/directory/permissions
+    method: GET
+    data_selector: permissions
+    params: {}
+- name: snipe-it
+  endpoint:
+    path: /services/data/vXX.X/sobjects/SnipeIT
+    method: GET
+    data_selector: records
+    params: {}
+- name: licenses
+  endpoint:
+    path: /licenses
+    method: GET
+- name: regenerate_asset_tags
+  endpoint:
+    path: /regenerate-asset-tags
+    method: POST
+    data_selector: results
+    params: {}
+- name: import_assets
+  endpoint:
+    path: /import
+    method: POST
+    data_selector: records
+    params: {}
+notes:
+- The API itself is still under development, so some things may not work exactly as
+  expected.
+- You’ll need to make sure that the `storage` directory and its subdirectories, as
+  well as the `uploads` directory within `public` are writable by your web server,
+  since caches, log files, and uploaded files get written there.
+- The easiest way to handle permissions is to have your non-privileged user that owns
+  your snipe-it project root set as belonging to the same group that the web server
+  runs as.
+- You’ll need to make sure that the storage directory and its subdirectories, as well
+  as the uploads directory within public are writable by your web server, since caches,
+  log files, and uploaded files get written there.
+- Uses Docker for deployment
+- Requires Azure services for hosting MySQL and storage
+- In general, we do not recommend using XAMPP for Snipe-IT.
+- There is a built-in alias for /licenses that you'll have to override.
+- If upload_max_size is set to 0, PHP will consider that to mean unlimited, however
+  that does not guarantee that the server can properly handle very large uploads without
+  exhausting memory.
+- This action is data destructive. It will permanently overwrite all of your asset
+  tags and cannot be undone.
+- To use the Google Maps API to display a map when an address is present for locations,
+  suppliers, etc, you must include a value for GOOGLE_MAPS_API in your .env.
+- If your Google Maps API is not authorized to use the Maps APIs, maps won't show
+  up.
+- Sending limit – With Gmail SMTP, users have a daily email sending limit, which depends
+  on the Gmail account they use. Exceeding this limit will cause errors or a temporary
+  suspension.
+- Rate limit – Another limit Gmail SMTP users have to deal with is the limit on how
+  many emails they can send per minute or per hour. Exceeding this limit will block
+  or delay your email sending.
+- Security – Sending emails through Gmail SMTP will require a secure connection such
+  as SSL or TLS, which you need to configure correctly in the Gmail SMTP settings.
+  Failing to do so will leave your emails and their data vulnerable to interception
+  and tampering. Google’s security settings also require proper configuration of things
+  such as two-factor authentication to avoid the blocking of email sending.
+- Custom domain – For sending emails from a custom domain such as 'yourcompany.com`
+  with Gmail SMTP, you need to configure the correct DNS settings. Not doing so will
+  cause your emails to fail SPF, DKIM, and DMARC authentication checks and thus be
+  marked as spam or simply rejected.
+- 'If you end up seeing the Blank Tables / 400 Error more than once after clearing
+  your cookies, change the following value in your .env from: BS_TABLE_STORAGE="cookieStorage"
+  to: BS_TABLE_STORAGE="localStorage".'
+- Check your `APP_URL`. This error usually means your `APP_URL` has been left blank.
+  If you've recently changed your `APP_URL` from `null` to a real URL, be sure to
+  run `php artisan config:clear` to refresh the configuration.
+- 'This usually means the TLS certificate of your mail server is invalid, misconfigured
+  or self-signed. You can try adding this line to your .env: MAIL_TLS_VERIFY_PEER=false'
+- Then clear your config cache and try again.
+- If your user's passwords are managed via LDAP, you should manage password policies
+  through your LDAP policies, since LDAP users will not be able to change their Snipe-IT
+  passwords through the Snipe-IT UI.
+- The minimum permitted value for password minimum characters is 8.
+- If your Azure AD tenant allows external or guest users, and you allow *all* authenticated
+  users to sign-in via SAML in Azure AD, it is recommended for security reasons that
+  you do NOT implement this truncated username functionality.
+- Google only will allow you to authenticate via full email address, not 'short usernames'.
+  TLS on your Snipe-IT server is required - the SSO federation will fail otherwise.
+- SCIM support did not previously support changing email addresses via Azure and some
+  other SCIM clients. Since v6.2, that has been fixed, but if you were depending on
+  the previous behavior, you may get unexpected results.
+- The importer isn't very smart. It currently does not do any validation other than
+  checking to see if the record already exists in the database.
+- The assets and users MUST already exist in the system, or they will be skipped.
+- Matching assets for history import happens against the asset tag.
+- Any additional fields will be ignored.
+- History should be ordered by date in ascending order.
+- Most of what we fail on for pa11y tests is color contrast, and the results can be
+  a little inconsistent - it's a work in progress.
+errors:
+- If you are NOT running Snipe-IT over SSL and you enable this feature, your users
+  will not be able to access the site.
+- '400 Error: Header too large'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Argument #1 ($uri) must be of type string, null given'
+- 'AADSTS75011: Authentication method ''X509, MultiFactor'' by which the user authenticated
+  with the service doesn''t match requested authentication method ''Password, ProtectedTransport''.
+  Contact the Snipe-IT application owner.'
+- 'AADSTS75011: Authentication method ''Multifactor, Fido'' by which the user authenticated
+  with the service doesn''t match requested authentication method ''Password, ProtectedTransport''.
+  Contact the Snipe-IT application owner.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: http://localhost
+  auth:
+    type: smtp
+  headers: {}
+  paginator: {}
+source_metadata: null

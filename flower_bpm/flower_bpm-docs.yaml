@@ -1,0 +1,135 @@
+resources:
+- name: spec
+  endpoint:
+    path: /flower/rest/api/1/spec
+    method: GET
+- name: endPoints
+  endpoint:
+    path: /flower/rest/api/1/endPoints
+    method: GET
+- name: launchFlowerProcessInstance
+  endpoint:
+    path: /flower/rest/api/1/{jiraInstance}/processInstance/
+    method: POST
+- name: createActivities
+  endpoint:
+    path: /flower/rest/api/1/{jiraInstance}/processInstance/{key}/activities
+    method: POST
+- name: getFlowerProcessInstance
+  endpoint:
+    path: /flower/rest/api/1/{jiraInstance}/processInstance/{key}/
+    method: GET
+- name: getFlowerExecutionContext
+  endpoint:
+    path: /flower/rest/api/1/{jiraInstance}/processInstance/{key}/executionContext
+    method: GET
+- name: getFlowerModel
+  endpoint:
+    path: /flower/rest/api/1/{jiraInstance}/model/{key}/
+    method: GET
+- name: getFlowerDMN
+  endpoint:
+    path: /flower/rest/api/1/{jiraInstance}/model/{key}/dmn/xml
+    method: GET
+- name: getFlowerBPMN
+  endpoint:
+    path: /flower/rest/api/1/{jiraInstance}/model/{key}/bpmn/{version}/xml
+    method: GET
+- name: getFlowerModel
+  endpoint:
+    path: /flower/rest/api/1/{jiraInstance}/model/{key}/bpmn/{version}/
+    method: GET
+- name: reportInstanceCountPerNode
+  endpoint:
+    path: /flower/rest/api/1/{jiraInstance}/model/{key}/reportInstanceCountPerNode
+    method: GET
+- name: Model Export
+  endpoint:
+    path: /flower/rest/api/1/{jiraInstance}/model/{key}/export
+    method: GET
+- name: jira_forms
+  endpoint:
+    path: /api/jira/forms
+    method: GET
+    data_selector: forms
+    params: {}
+- name: issue
+  endpoint:
+    path: /rest/api/3/issue/{issueIdOrKey}
+    method: GET
+    data_selector: fields
+    params: {}
+- name: issue
+  endpoint:
+    path: /rest/api/latest/issue/{issueIdOrKey}
+    method: GET
+    data_selector: fields
+- name: issue_properties
+  endpoint:
+    path: /rest/api/3/issue/{issueIdOrKey}/properties/{propertyKey}
+    method: PUT
+    data_selector: properties
+- name: jira_automation
+  endpoint:
+    path: /pro/hooks/xyz
+    method: POST
+    data_selector: data
+    params: {}
+- name: JSM Request
+  endpoint:
+    path: /rest/servicedesk/api/request
+    method: GET
+    data_selector: requests
+    params: {}
+- name: flower_entities
+  endpoint:
+    path: /search/flower_entities
+    method: GET
+    data_selector: issues
+    params: {}
+notes:
+- Flower does not store data separately – instead, it uses Jira issues to manage everything.
+- Flower integrates BPMN models, process instances, and tasks as Jira issues.
+- Default values define where BPMN elements are stored in Jira.
+- Issue Type Mapping enables Jira issues to automatically trigger BPMN workflows.
+- Every BPMN User Task creates a Jira issue.
+- Process execution depends on task completion.
+- Jira issue statuses are visualized in the BPMN model.
+- Jira settings (project, issue type) are defined per activity or inherited from defaults.
+- Forms in Jira are always tied to issue types.
+- Request Type is stored in a Jira custom field, which may vary between Jira instances.
+- The JSON data can be as complex as needed but must not exceed 32,768 bytes.
+- Each activity can only contain one timeout boundary event.
+- The due date can only be set in Jira if the field is on the edit screen.
+- The Jira form builder is only available in team-managed projects.
+- Mandatory fields cannot always be enforced because values might be unknown at process
+  start.
+- JSM requests can trigger BPMN processes in Flower, providing a structured automation
+  framework.
+- The JSM request itself acts as the process instance, storing all relevant data.
+- DMN evaluation is deprecated and will be removed soon.
+- Flower uses DMN to make decisions in BPMN models and updates Jira issues.
+- All Flower BPM entities are stored as Jira issues.
+- Flower provides the Software as-is and disclaims all warranties, express or implied.
+- If you would like to enable the CDN and have IE11 users, please reach out to our
+  Support Team.
+- Flower transforms Jira into a business process management system, helping you and
+  your organization easily automate complex workflows.
+errors:
+- '401 Unauthorized: Recheck your credentials or API token'
+- '404 Not Found: Ensure the issue ID or key is correct'
+- '400 Bad Request: Check the request payload and structure'
+- '500 - Internal Server Error: These errors are most commonly caused by an issue
+  on your Jira instance, not Flower.'
+- '503 Error: A 503 error is usually caused by Jira itself being down temporarily.'
+- '400 - A value with ID ‘xxxxx’ does not exist for the field ‘project’: This error
+  is most commonly caused by selecting a project that you don’t have access to.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://your-jira-instance.atlassian.net
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+source_metadata: null

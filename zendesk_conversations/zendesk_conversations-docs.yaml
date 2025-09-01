@@ -1,0 +1,145 @@
+resources:
+- name: apps
+  endpoint:
+    path: /v2/apps
+    method: POST
+    data_selector: app
+- name: revoke_access
+  endpoint:
+    path: /oauth/authorization
+    method: DELETE
+    data_selector: app
+- name: create_app_key
+  endpoint:
+    path: /v2/apps/{appId}/keys
+    method: POST
+    data_selector: key
+    params: {}
+- name: revoke_access
+  endpoint:
+    path: /oauth/authorization
+    method: DELETE
+    data_selector: keys
+    params: {}
+- name: upload_attachment
+  endpoint:
+    path: /v2/apps/{appId}/attachments
+    method: POST
+    data_selector: attachment
+    params:
+      access: public
+- name: create_conversation
+  endpoint:
+    path: /v2/apps/{appId}/conversations
+    method: POST
+    data_selector: conversation
+    params: {}
+- name: revoke_access
+  endpoint:
+    path: /delete/oauth/authorization
+    method: DELETE
+- name: create_integration_key
+  endpoint:
+    path: /post/v2/apps/{appId}/integrations/{integrationId}/keys
+    method: POST
+- name: post_activity
+  endpoint:
+    path: /v2/apps/{appId}/conversations/{conversationId}/activity
+    method: POST
+    data_selector: messages
+- name: join_conversation
+  endpoint:
+    path: /v2/apps/{appId}/conversations/{conversationId}/join
+    method: POST
+    data_selector: participant
+- name: post_message
+  endpoint:
+    path: /v2/apps/{appId}/conversations/{conversationId}/messages
+    method: POST
+    data_selector: messages
+- name: revoke_access
+  endpoint:
+    path: /oauth/authorization
+    method: DELETE
+    data_selector: ''
+- name: revoke_access
+  endpoint:
+    path: /delete/oauth/authorization
+    method: DELETE
+- name: accept_control
+  endpoint:
+    path: /post/v2/apps/{appId}/conversations/{conversationId}/acceptControl
+    method: POST
+- name: create_integration
+  endpoint:
+    path: /post/v2/apps/{appId}/integrations
+    method: POST
+- name: revoke_access
+  endpoint:
+    path: /oauth/authorization
+    method: DELETE
+- name: create_client
+  endpoint:
+    path: /v2/apps/{appId}/users/{userIdOrExternalId}/clients
+    method: POST
+- name: list_devices
+  endpoint:
+    path: /v2/apps/{appId}/users/{userIdOrExternalId}/devices
+    method: GET
+- name: get_token_info
+  endpoint:
+    path: /v2/tokenInfo
+    method: GET
+- name: switchboard
+  endpoint:
+    path: /switchboards
+    method: POST
+    data_selector: switchboard
+- name: revoke_access
+  endpoint:
+    path: /oauth/authorization
+    method: DELETE
+    data_selector: switchboard
+- name: create_user
+  endpoint:
+    path: /users
+    method: POST
+    data_selector: user
+notes:
+- Conversations are limited to 30,000 messages. Once you reach this maximum, a 423
+  Locked HTTP status code is returned when trying to post a new message.
+- Rate limiting applies; implement retry logic for 429 responses.
+- Sunshine Conversations limits the size and type of file you can upload to the platform.
+- Supports multiple activity types such as typing and conversation read events.
+- This endpoint is used to revoke your integration's access to the user's app.
+- Requires appId in the path for endpoints
+errors:
+- '429 Too Many Requests: Implement retry logic using exponential backoff and jitter.'
+- '423 Locked: Must delete messages to make room for new ones.'
+- 'unauthorized: Authorization is required'
+- '429: Too Many Requests'
+- '404: Not found'
+- '400: Bad request'
+- '403: Forbidden'
+- '423 Message limit reached: To learn more about the conversation message limit,
+  consult the section in the introduction linked.'
+- '404 Not found: Check if the appId and conversationId are correct.'
+- 404 Not found
+- 400 Bad request
+- 409 Conflict
+auth_info:
+  mentioned_objects:
+  - API key
+  - JWT
+  - basicAuth
+  - bearerAuth
+  - integration
+  - app
+  - account
+client:
+  base_url: https://api.smooch.io
+  auth:
+    type: bearerAuth
+    location: header
+    header_name: Authorization
+source_metadata: null

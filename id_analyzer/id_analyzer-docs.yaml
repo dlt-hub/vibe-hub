@@ -1,0 +1,195 @@
+resources:
+- name: upload_image
+  endpoint:
+    path: /
+    method: POST
+    data_selector: result
+- name: biometric_verification
+  endpoint:
+    path: /biometric_verification
+    method: POST
+    data_selector: result
+    params: {}
+- name: upload_document_image
+  endpoint:
+    path: /upload
+    method: POST
+    data_selector: response
+    params: {}
+- name: biometric_verification
+  endpoint:
+    path: /biometric-verification
+    method: POST
+    data_selector: response
+    params: {}
+- name: DocuPass
+  endpoint:
+    path: /createSession
+    method: POST
+    data_selector: sessionData
+- name: create_verification_session
+  endpoint:
+    path: /docupass/create
+    method: POST
+    data_selector: response
+    params: {}
+- name: create_docupass_session
+  endpoint:
+    path: /create
+    method: POST
+    data_selector: result
+    params: {}
+- name: validate_callback
+  endpoint:
+    path: /validate
+    method: POST
+    data_selector: success
+    params: {}
+- name: signature_session
+  endpoint:
+    path: /docupass/sign
+    method: POST
+    data_selector: response
+    params:
+      apikey: String
+      companyname: Your company or product name
+      callbackurl: Webhook/Callback URL to receive verification result
+- name: vault_entry
+  endpoint:
+    path: /vault/entry
+    method: GET
+    data_selector: result
+- name: vault_list
+  endpoint:
+    path: /vault/list
+    method: GET
+    data_selector: result
+- name: vault_search_face
+  endpoint:
+    path: /vault/searchFace
+    method: POST
+    data_selector: result
+- name: get_entry_content
+  endpoint:
+    path: /vault/get
+    method: POST
+    data_selector: data
+    params: {}
+- name: list_entries
+  endpoint:
+    path: /vault/list
+    method: POST
+    data_selector: items
+    params:
+      limit: 10
+- name: update_entry
+  endpoint:
+    path: /vault/update
+    method: POST
+    data_selector: null
+    params: {}
+- name: delete_entry
+  endpoint:
+    path: /vault/delete
+    method: POST
+    data_selector: null
+    params: {}
+- name: add_image
+  endpoint:
+    path: /vault/addimage
+    method: POST
+    data_selector: null
+    params: {}
+- name: delete_image
+  endpoint:
+    path: /vault/deleteimage
+    method: POST
+    data_selector: success
+    params:
+      apikey: Your private API key
+      id: Vault entry identifier
+      imageid: id of the image to delete
+- name: face_search
+  endpoint:
+    path: /vault/searchface
+    method: POST
+    data_selector: items
+    params:
+      apikey: Your private API key
+      image: Base64-encoded image data
+      imageurl: Remote image URL
+      maxentry: Optional number of matching entries
+      threshold: Optional minimum face similarity score
+- name: face_search_training
+  endpoint:
+    path: /vault/train
+    method: POST
+    data_selector: success
+    params:
+      apikey: Your private API key
+- name: training_status
+  endpoint:
+    path: /vault/trainstatus
+    method: GET
+    data_selector: status
+    params:
+      apikey: Your private API key
+- name: search_by_name
+  endpoint:
+    path: /searchByName
+    method: POST
+    data_selector: result
+- name: search_by_id_number
+  endpoint:
+    path: /searchByIDNumber
+    method: POST
+    data_selector: result
+- name: search_aml_database
+  endpoint:
+    path: /aml
+    method: POST
+    data_selector: items
+    params: {}
+- name: Core API
+  endpoint:
+    path: /
+    method: POST
+    data_selector: output
+notes:
+- 'Core API supports 3 types of POST requests: multipart/form-data, x-www-form-urlencoded
+  and application/json.'
+- ID Analyzer supports JPG, PNG, BMP, GIF, PDF files.
+- Core API by default only extract document and document holder information, you need
+  to set additional options for Core API to perform extra validations and features.
+- Requires API Key for authentication
+- Your private API key is available under your web portal.
+- Callback returns document and face images in hosted URL by default.
+- You must either enable `vault_save` or specify a `callbackurl` to save the generated
+  document.
+- API Key is required for all requests.
+- Set AML database to only search the PEP category
+- API may produce poor or inaccurate result due to poorly taken photos or bad camera
+  focus.
+- Javascript is currently not supported within the DocuPass HTML template system.
+- For Iframe, Redirection and Standard Mobile modules, it is not possible to change
+  the photo or face capture interface.
+errors:
+- 'Error #: Code and Message'
+- '9: Document not recognized'
+- '1: Invalid API Key'
+- '8: Out of API quota'
+- '401 Unauthorized: Check API Key'
+- 'Invalid value for `companyname`: code 1002'
+- '1003: Invalid reference or hash'
+- '1002: Invalid contract template ID'
+- '2003: Nothing to update'
+- '2023: Vault not trained.'
+- '5001: Vault is under training.'
+- 'timeout: Connection time out'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.idanalyzer.com
+  auth:
+    type: apikey
+source_metadata: null

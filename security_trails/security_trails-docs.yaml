@@ -1,0 +1,93 @@
+resources:
+- name: ping
+  endpoint:
+    path: /ping
+    method: GET
+    data_selector: success
+    params: {}
+- name: hosts
+  endpoint:
+    path: /v1/query/scroll
+    method: POST
+    data_selector: records
+- name: ips
+  endpoint:
+    path: /v1/query/scroll
+    method: POST
+    data_selector: records
+- name: dns_data
+  endpoint:
+    path: /v1/query/scroll
+    method: POST
+    data_selector: results
+    params: {}
+- name: search_list
+  endpoint:
+    path: /v1/search/list
+    method: POST
+    data_selector: query
+- name: stats
+  endpoint:
+    path: /v1/search/list/stats
+    method: POST
+    data_selector: output
+    params: {}
+- name: domains
+  endpoint:
+    path: /v1/search/list
+    method: POST
+    data_selector: output
+    params: {}
+- name: history
+  endpoint:
+    path: /v1/history/{domain}/dns/a
+    method: GET
+    data_selector: output
+    params: {}
+- name: scroll
+  endpoint:
+    path: /v1/scroll/{scroll_id}
+    method: GET
+    data_selector: output
+    params: {}
+- name: recent_issues
+  endpoint:
+    path: /asi/rules/{project_id}/recent/issues
+    method: GET
+- name: history_activity
+  endpoint:
+    path: /asi/rules/history/{project_id}/activity
+    method: GET
+notes:
+- The API is read-only and there is no way of saving information.
+- Support team is available Monday to Friday from 1 am to 3 pm (PST/PDT).
+- For enterprise customers we offer SLAs.
+- Once the monthly quota is reached you will receive HTTP/1.1 429 errors.
+- We recommend configuring auto-billing to start before you hit your monthly quota.
+- If your account is throttled, its rate limit will be reset after a one-second interval.
+- Uses API key for authentication
+- Each scrolling query will extract 100 more records
+errors:
+- '401 Unauthorized: Recheck your API key'
+- '429 Too Many Requests: Throttle API calls'
+- 'HTTP/1.1 429: Monthly quota reached'
+- '400 – Bad request: The request parameter contains invalid characters (e.g. domains)'
+- '401 – Unauthorized: You did not provide a valid API key; see [Authentication](/docs/authentication).'
+- '403 – Forbidden: The requested information can not be accessed.'
+- '429 – Too many requests: You reached your quota or rate limit; see [Quotas & Rate
+  Limits](/docs/quotas-rate-limits).'
+- '500 – Internal Server Error: An internal error occurred. In case the error persists,
+  please contact our [support](/docs/contact-support).'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.securitytrails.com/v1/
+  auth:
+    type: apikey
+    location: header
+    header_name: APIKEY
+  headers:
+    Content-Type: application/json
+source_metadata: null

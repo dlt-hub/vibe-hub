@@ -1,0 +1,79 @@
+resources:
+- name: payment_intents
+  endpoint:
+    path: /v1/payment_intents
+    method: POST
+    data_selector: null
+    params:
+      amount: 1000
+      currency: usd
+      automatic_payment_methods[enabled]: true
+      payment_method_configuration: pmc_123
+- name: checkout_sessions
+  endpoint:
+    path: /v1/checkout/sessions
+    method: POST
+    data_selector: null
+    params:
+      mode: payment
+      currency: usd
+      payment_method_configuration: pmc_234
+- name: secrets
+  endpoint:
+    path: /api/apps/secret_store
+    method: POST
+    data_selector: secret
+    params: {}
+- name: reviews
+  endpoint:
+    path: /v1/radar/reviews
+    method: GET
+    data_selector: data
+- name: disputes
+  endpoint:
+    path: /issuing/purchases/disputes
+    method: POST
+    data_selector: data
+- name: disputes
+  endpoint:
+    path: /v1/disputes
+    method: POST
+    data_selector: data
+    params: {}
+- name: registrations
+  endpoint:
+    path: /api/tax/registrations
+    method: POST
+    data_selector: data
+    params: {}
+notes:
+- Um Ereignisse an Amazon EventBridge zu senden, aktivieren Sie Workbench in Ihren
+  Entwickler-Einstellungen im Dashboard.
+- Stripe sends events to Amazon EventBridge when the partner event source in AWS is
+  linked.
+- We deprecated the Sources API and plan to remove support for local payment methods.
+- If you currently handle any local payment methods using the Sources API, you must
+  migrate them to the Payment Methods API.
+- Stripe does not permit you to store sensitive personal data using the Secret Store
+  API.
+- Die Prüfregeln gelten nur für Kartenzahlungen.
+- Die Übermittlung der angefochtenen Zahlung muss Unterlagen über den Versuch des
+  Karteninhabers/der Karteninhaberin zur Beilegung der Anfechtung enthalten.
+- Eine Zahlungsanfechtung kann nur einmal übermittelt werden.
+- Stripe can only withdraw a dispute within one day after submission.
+- Stripe recommends a tax consultation to determine tax obligations.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400 Bad Request: Check the request parameters'
+- '401 Unauthorized: Recheck API key or token'
+- '404 Not Found: Verify the endpoint or resource'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.stripe.com
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+source_metadata: null

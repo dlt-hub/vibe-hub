@@ -1,0 +1,120 @@
+resources:
+- name: getAssets
+  endpoint:
+    path: /jsonrpc
+    method: POST
+    data_selector: result
+    params:
+      method: v1/getAssets
+      params: []
+      id: null
+- name: getCurrentExchangeRates
+  endpoint:
+    path: /jsonrpc
+    method: POST
+    data_selector: result
+    params:
+      method: v1/getCurrentExchangeRates
+      params:
+      - asset_id_base: BTC
+      - asset_id_quote: USD
+      id: null
+- name: getHistoricalExchangeRates
+  endpoint:
+    path: /jsonrpc
+    method: POST
+    data_selector: result
+    params:
+      method: v1/getHistoricalExchangeRates
+      params:
+      - asset_id_base: BTC
+      - asset_id_quote: USD
+      - period_id: 1SEC
+      - time_start: '2025-01-24T00:00:00'
+      - time_end: '2025-01-24T01:00:00'
+      id: null
+- name: exchanges
+  endpoint:
+    path: /v1/exchanges
+    method: GET
+    data_selector: result
+    params: {}
+- name: exchange_rate_BTC
+  endpoint:
+    path: /v1/exchangerate/BTC
+    method: GET
+    data_selector: result
+    params: {}
+- name: symbols
+  endpoint:
+    path: /v1/symbols
+    method: GET
+    data_selector: result
+    params: {}
+- name: exchanges
+  endpoint:
+    path: /v1/exchanges
+    method: GET
+    data_selector: exchanges
+- name: metricsV1
+  endpoint:
+    path: /v1/metrics
+    method: GET
+    data_selector: metrics
+- name: metricsV2
+  endpoint:
+    path: /v2/metrics
+    method: GET
+    data_selector: metrics
+notes:
+- The use of encryption is optional, and the decision to use it is on you.
+- Assume that we are always providing certificates signed by the Trusted Certification
+  Authority.
+- Uses API key for authentication.
+- The API inherently supports limit orders.
+- To access flat files, you need to add usage credits to your account via the Customer
+  Portal (Billing → Add Usage Credits).
+- Never expose your API key in a client-side application or a public code repository.
+  Always keep it securely on your server.
+- Always communicate with the CoinAPI NaaS API over HTTPS (SSL/TLS) to encrypt data
+  transmitted between your application and CoinAPI's servers.
+- If using Authorization header, do not use with JWT token.
+- JWT tokens must include NBF and EXP claims.
+- If you are using the Authorization header to pass the API key, please note that
+  it cannot be used together with a JWT token.
+- API limits are a crucial aspect of any API product, designed to ensure fair usage
+  and maintain quality of service.
+- The request limit defines the maximum requests that could be executed in a 24-hour
+  period.
+- Communication with our FIX gateway is secured by TLS protocol if you are using the
+  encrypted port.
+- If latency increases, it is necessary to split data acquisition across multiple
+  connections to utilize more threads effectively.
+- The Query string method may be more practical for development activities.
+- Requires an API key for access.
+errors:
+- '400: Bad Request -- There is something wrong with your request'
+- '401: Unauthorized -- Your API key is wrong'
+- '403: Forbidden -- Your API key doesnt''t have enough privileges to access this
+  resource'
+- '429: Too many requests -- You have exceeded your API key rate limits'
+- '550: No data -- You requested specific single item that we don''t have at this
+  moment.'
+- '401: Invalid API key'
+- '403: Your API key lacks the necessary permissions to access the requested resource.'
+- '429: Your request has exceeded the rate limits associated with your API key.'
+- '400: Bad request (failed to parse json rpc)'
+- '404: Resource not found'
+- 'REQUEST_LIMIT_EXCEEDED: Exceeding your request limits.'
+- 'CONCURRENCY_LIMIT_EXCEEDED: Too many concurrent API calls.'
+- '403 Forbidden: Invalid API key provided.'
+- '404 Not Found: The requested resource does not exist.'
+auth_info:
+  mentioned_objects:
+  - JWT
+  - API Key
+client:
+  base_url: https://www.coinapi.io
+  auth:
+    type: apikey
+source_metadata: null

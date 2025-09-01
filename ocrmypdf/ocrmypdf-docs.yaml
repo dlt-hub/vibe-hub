@@ -1,0 +1,227 @@
+resources:
+- name: PageNumberFilter
+  endpoint:
+    path: /ocrmypdf/api/PageNumberFilter
+    method: GET
+    data_selector: record
+- name: Verbosity
+  endpoint:
+    path: /ocrmypdf/api/Verbosity
+    method: GET
+    data_selector: value
+- name: configure_logging
+  endpoint:
+    path: /ocrmypdf/api/configure_logging
+    method: POST
+    data_selector: result
+- name: create_options
+  endpoint:
+    path: /ocrmypdf/api/create_options
+    method: POST
+    data_selector: options
+- name: ocr
+  endpoint:
+    path: /ocrmypdf/api/ocr
+    method: POST
+    data_selector: result
+- name: tesseract_language_packs
+  endpoint:
+    path: /installing_additional_language_packs
+    method: GET
+    data_selector: language_pack_info
+    params: {}
+- name: Chinese Simplified language pack
+  endpoint:
+    path: /install/tesseract-ocr-chi-sim
+    method: GET
+    data_selector: records
+- name: German language pack
+  endpoint:
+    path: /install/tesseract-data-deu
+    method: GET
+    data_selector: records
+- name: JBIG2_encoder
+  endpoint:
+    path: /installing/jbig2_encoder
+    method: GET
+    data_selector: content
+    params: {}
+- name: PDF optimization
+  endpoint:
+    path: /pdf/optimization
+    method: GET
+    data_selector: optimizations
+- name: docker_image
+  endpoint:
+    path: /docker
+    method: GET
+    data_selector: images
+    params: {}
+- name: unpaper
+  endpoint:
+    path: /unpaper
+    method: POST
+    data_selector: unpaper_options
+- name: ocr_options
+  endpoint:
+    path: /ocr_options
+    method: POST
+    data_selector: ocr_options
+- name: batch_processing
+  endpoint:
+    path: /batch
+    method: POST
+    data_selector: results
+    params: {}
+- name: batch_processing
+  endpoint:
+    path: /batch/processing
+    method: POST
+    data_selector: results
+- name: optimize_pdf
+  endpoint:
+    path: /pluginspec/optimize_pdf
+    method: POST
+    data_selector: output_file
+    params: {}
+- name: is_optimization_enabled
+  endpoint:
+    path: /pluginspec/is_optimization_enabled
+    method: GET
+    data_selector: enabled
+    params: {}
+notes:
+- We now require Pillow 10.0.1, due a serious security vulnerability in all earlier
+  versions of that dependency.
+- The vulnerability concerns WebP images and could be triggered in OCRmyPDF when creating
+  a PDF from a malicious WebP image.
+- An apparent regression in Ghostscript 9.23 will cause some ocrmypdf output files
+  to become invalid in rare cases; the workaround for the moment is to set --force-ocr.
+- PDFs containing 'Form XObjects' are now supported.
+- The Tesseract 4 Docker image no longer includes all languages.
+- Some dependencies may work with lower versions than tested, so try overriding dependencies
+  if they are “in the way” to see if they work.
+- --pdf-renderer tesseract will output files with an incorrect page size in Tesseract
+  3.03, due to a bug in Tesseract.
+- PDF files containing “inline images” are not supported and won’t be for the 3.0
+  release.
+- Administrator privileges will be required for some of these steps.
+- As of early 2021, users have reported problems with the Microsoft Store version
+  of Python and OCRmyPDF.
+- 32-bit Windows is not supported.
+- OCRmyPDF for Debian and Ubuntu currently omit the JBIG2 encoder.
+- OCRmyPDF works fine without it but will produce larger output files.
+- OCRmyPDF for Fedora currently omits the JBIG2 encoder due to patent issues.
+- English is assumed by default unless other language(s) are specified.
+- English is installed with Tesseract by default, but not always.
+- Different language packs are used in certain situations.
+- The Tesseract installer provided by Chocolatey currently includes only English language.
+- If you have fine-tuned or trained Tesseract and generated custom trained data, you
+  can copy your customlang.traineddata file into your Tesseract “tessdata” folder.
+- You can pass the -l LANG argument to OCRmyPDF to give a hint as to what languages
+  it should search for.
+- JBIG2 encoding is recommended for OCRmyPDF and is used to losslessly create smaller
+  PDFs.
+- 'JBIG encoding is automatically provided by these OCRmyPDF packages: Docker image,
+  Snap package, ArchLinux AUR package, Alpine Linux package, Homebrew on macOS.'
+- Optimization occurs after OCR, and only if OCR succeeded.
+- Despite optimizations, OCRmyPDF might still increase the overall file size.
+- The Docker image is subject to change at any time.
+- Always pin a specific version of the OCRmyPDF Docker image.
+- Some unpaper features may reposition text within the image.
+- Some unpaper features cause multiple input or output files to be consumed or produced.
+- Some `unpaper` features will reposition text within the image.
+- '`--clean-final` is recommended to avoid this issue.'
+- Some `unpaper` features cause multiple input or output files to be consumed or produced.
+  OCRmyPDF requires `unpaper` to consume one file and produce one file; errors will
+  result if this assumption is not met.
+- '`unpaper` uses uncompressed PBM/PGM/PPM files for its intermediate files. For large
+  images or documents, it can take a lot of temporary disk space.'
+- Some `unpaper` features cause multiple input or output files to be consumed or produced.
+- OCRmyPDF writes all messages to stderr. stdout is reserved for piping output files.
+  stdin is reserved for piping input files.
+- OCRmyPDF generates many temporary files during processing.
+- If the --keep-temporary-files (-k) argument is issued on the command line, OCRmyPDF
+  will keep the temporary folder and print the location, whether it succeeded or failed.
+- OCRmyPDF automatically repairs PDFs before parsing and gathering information from
+  them.
+- This service relies on polling to check for changes to the filesystem.
+- OCRmyPDF is designed to be used as a command line tool, but it can be used in a
+  web service.
+- It is only demonstration quality and is not intended for production use.
+- OCRmyPDF is not designed for use as a public web service where a malicious user
+  could upload a chosen PDF.
+- OCRmyPDF should only be used on PDFs you trust. It is not designed to protect you
+  against malware.
+- This software has no warranties of any kind.
+- OCRmyPDF originated as a command line program and continues to have this legacy.
+- Programs that call `ocrmypdf.ocr()` should also install a SIGBUS signal handler
+  (except on Windows).
+- Plugins installed with as setuptools entrypoints are not checked currently
+- OCRmyPDF does not automatically import plugins
+errors:
+- ocrmypdf.MissingDependencyError
+- ocrmypdf.UnsupportedImageFormatError
+- ocrmypdf.DpiError
+- ocrmypdf.OutputFileAccessError
+- ocrmypdf.PriorOcrFoundError
+- ocrmypdf.InputFileError
+- ocrmypdf.SubprocessOutputError
+- ocrmypdf.EncryptedPdfError
+- ocrmypdf.TesseractConfigError
+- 'BadArgsError: Invalid arguments on the command line or API.'
+- 'ColorConversionNeededError: PDF needs color conversion.'
+- 'DigitalSignatureError: PDF has a digital signature.'
+- 'DpiError: Missing information about input image DPI.'
+- 'EncryptedPdfError: Input PDF is encrypted.'
+- 'InputFileError: Something is wrong with the input file.'
+- 'MissingDependencyError: A third-party dependency is missing.'
+- 'OutputFileAccessError: Cannot access the intended output file path.'
+- 'PriorOcrFoundError: This file already has OCR.'
+- 'SubprocessOutputError: A subprocess returned an unexpected error.'
+- 'TaggedPDFError: PDF is tagged.'
+- 'TesseractConfigError: Tesseract config can’t be parsed.'
+- 'UnsupportedImageFormatError: The image format is not supported.'
+- No specific error codes mentioned.
+- 'Increase file size: OCRmyPDF might still increase the overall file size due to
+  embedding information about recognized text.'
+- Some combinations of control parameters will break Tesseract or break assumptions
+  that OCRmyPDF makes about Tesseract’s output.
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '0: ExitCode.ok - Everything worked as expected.'
+- '1: ExitCode.bad_args - Invalid arguments, exited with an error.'
+- '2: ExitCode.input_file - The input file does not seem to be a valid PDF.'
+- '3: ExitCode.missing_dependency - An external program required by OCRmyPDF is missing.'
+- '4: ExitCode.invalid_output_pdf - An output file was created, but it does not seem
+  to be a valid PDF. The file will be available.'
+- '5: ExitCode.file_access_error - The user running OCRmyPDF does not have sufficient
+  permissions to read the input file and write the output file.'
+- '6: ExitCode.already_done_ocr - The file already appears to contain text so it may
+  not need OCR. See output message.'
+- '7: ExitCode.child_process_error - An error occurred in an external program (child
+  process) and OCRmyPDF cannot continue.'
+- '8: ExitCode.encrypted_pdf - The input PDF is encrypted. OCRmyPDF does not read
+  encrypted PDFs. Use another program such as qpdf to remove encryption.'
+- '9: ExitCode.invalid_config - A custom configuration file was forwarded to Tesseract
+  using --tesseract-config, and Tesseract rejected this file.'
+- '10: ExitCode.pdfa_conversion_failed - A valid PDF was created, PDF/A conversion
+  failed. The file will be available.'
+- '15: ExitCode.other_error - Some other error occurred.'
+- '130: ExitCode.ctrl_c - The program was interrupted by pressing Ctrl+C.'
+- 'EncryptedPdfError: Skipped document because it is encrypted'
+- 'PriorOcrFoundError: Skipped document because it already contained text'
+- 'DigitalSignatureError: Skipped document because it has a digital signature'
+- 'TaggedPDFError: Skipped document because it does not need ocr as it is tagged'
+- 'TaggedPDFError: Skipped document because it does not need OCR as it is tagged'
+- PDF malware or PDFs that cause denial of service
+- 'ERROR -    1: page already has text! – aborting (use --force-ocr to force OCR)'
+- Input file ‘filename’ is not a valid PDF
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://jbarlow83.github.io/ocrmypdf
+  headers:
+    Accept: application/json
+source_metadata: null

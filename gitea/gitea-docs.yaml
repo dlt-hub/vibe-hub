@@ -1,0 +1,5465 @@
+resources:
+- name: repository
+  endpoint:
+    path: /api/v1/repos
+    method: GET
+    data_selector: repositories
+- name: lfs
+  endpoint:
+    path: /lfs
+    method: GET
+    data_selector: records
+- name: service
+  endpoint:
+    path: /service
+    method: GET
+    data_selector: data
+- name: issues
+  endpoint:
+    path: /api/v1/issues
+    method: GET
+    data_selector: data
+    params:
+      incremental: updated_at
+- name: repositories
+  endpoint:
+    path: /api/v1/repos
+    method: GET
+    data_selector: data
+    params: {}
+- name: attachment
+  endpoint:
+    params:
+      MAX_SIZE: 2048
+      MAX_FILES: 5
+      STORAGE_TYPE: local
+- name: cron
+  endpoint:
+    params:
+      ENABLED: true
+      RUN_AT_START: false
+      SCHEDULE: '@midnight'
+- endpoint:
+    params:
+      incremental: updated_at
+- name: runner_registration
+  endpoint:
+    path: /admin/actions/runners
+    method: GET
+- name: user_actor
+  endpoint:
+    path: /activitypub
+    method: GET
+- name: notification_threads
+  endpoint:
+    path: /api/v1/notifications
+    method: GET
+    data_selector: notifications
+    params: {}
+- name: organizations
+  endpoint:
+    path: /api/v1/orgs
+    method: GET
+    data_selector: organizations
+    params: {}
+- name: list_user_badges
+  endpoint:
+    path: /api/v1/users/{username}/badges
+    method: GET
+- name: list_cron_tasks
+  endpoint:
+    path: /api/v1/admin/cron
+    method: GET
+    params:
+      page: '1'
+      limit: '30'
+- name: list_all_emails
+  endpoint:
+    path: /api/v1/users/emails
+    method: GET
+    params:
+      page: '1'
+      limit: '30'
+- name: search_all_emails
+  endpoint:
+    path: /api/v1/users/emails/search
+    method: GET
+    params:
+      q: ''
+      page: '1'
+      limit: '30'
+- name: list_system_webhooks
+  endpoint:
+    path: /api/v1/hooks
+    method: GET
+    params:
+      page: '1'
+      limit: '30'
+- name: create_hook
+  endpoint:
+    path: /api/v1/hooks
+    method: POST
+- name: get_hook
+  endpoint:
+    path: /api/v1/hooks/{id}
+    method: GET
+- name: delete_hook
+  endpoint:
+    path: /api/v1/hooks/{id}
+    method: DELETE
+- name: update_hook
+  endpoint:
+    path: /api/v1/hooks/{id}
+    method: PUT
+- name: list_all_organizations
+  endpoint:
+    path: /api/v1/orgs
+    method: GET
+    params:
+      page: '1'
+      limit: '30'
+- name: get_global_actions_runner_registration_token
+  endpoint:
+    path: /api/v1/actions/runners/registration-token
+    method: GET
+- name: list_unadopted_repositories
+  endpoint:
+    path: /api/v1/repos/unadopted
+    method: GET
+    params:
+      page: '1'
+      limit: '30'
+- name: adopt_unadopted_files
+  endpoint:
+    path: /api/v1/repos/adopt/{owner}/{repo}
+    method: POST
+- name: delete_unadopted_files
+  endpoint:
+    path: /api/v1/repos/delete/{owner}/{repo}
+    method: DELETE
+- name: search_users
+  endpoint:
+    path: /api/v1/users/search
+    method: GET
+    params:
+      source_id: ''
+      login_name: ''
+      page: '1'
+      limit: '30'
+- name: create_user
+  endpoint:
+    path: /api/v1/users
+    method: POST
+- name: delete_user
+  endpoint:
+    path: /api/v1/users/{username}
+    method: DELETE
+    params:
+      purge: 'false'
+- name: edit_user
+  endpoint:
+    path: /api/v1/users/{username}
+    method: PUT
+- name: Add a badge to a user
+  endpoint:
+    path: /api/v1/users/{username}/badges
+    method: POST
+    data_selector: badge_slugs
+- name: Remove a badge from a user
+  endpoint:
+    path: /api/v1/users/{username}/badges
+    method: DELETE
+    data_selector: badge_slugs
+- name: Add a public key on behalf of a user
+  endpoint:
+    path: /api/v1/users/{username}/keys
+    method: POST
+    data_selector: key
+- name: Delete a user's public key
+  endpoint:
+    path: /api/v1/users/{username}/keys/{id}
+    method: DELETE
+    data_selector: ''
+- name: Create an organization
+  endpoint:
+    path: /api/v1/orgs
+    method: POST
+    data_selector: ''
+- name: Rename a user
+  endpoint:
+    path: /api/v1/users/{username}/rename
+    method: POST
+    data_selector: new_username
+- name: Create a repository on behalf of a user
+  endpoint:
+    path: /api/v1/users/{username}/repos
+    method: POST
+    data_selector: name
+- name: Returns a list of all gitignore templates
+  endpoint:
+    path: /api/v1/gitignore/templates
+    method: GET
+    data_selector: ''
+- name: Returns information about a gitignore template
+  endpoint:
+    path: /api/v1/gitignore/templates/{name}
+    method: GET
+    data_selector: ''
+- name: Returns a list of all label templates
+  endpoint:
+    path: /api/v1/labels/templates
+    method: GET
+    data_selector: ''
+- name: Returns all labels in a template
+  endpoint:
+    path: /api/v1/labels/templates/{name}
+    method: GET
+    data_selector: ''
+- name: Returns a list of all license templates
+  endpoint:
+    path: /api/v1/licenses/templates
+    method: GET
+    data_selector: ''
+- name: Returns information about a license template
+  endpoint:
+    path: /api/v1/licenses/templates/{name}
+    method: GET
+    data_selector: ''
+- name: Render a markdown document as HTML
+  endpoint:
+    path: /api/v1/markdown
+    method: POST
+    data_selector: ''
+- name: Render raw markdown as HTML
+  endpoint:
+    path: /api/v1/markdown/raw
+    method: POST
+    data_selector: ''
+- name: Render a markup document as HTML
+  endpoint:
+    path: /api/v1/markup
+    method: POST
+    data_selector: ''
+- name: Returns the nodeinfo of the Gitea application
+  endpoint:
+    path: /api/v1/nodeinfo
+    method: GET
+    data_selector: ''
+- name: Get default signing-key.gpg
+  endpoint:
+    path: /api/v1/gpg
+    method: GET
+    data_selector: ''
+- name: Returns the version of the Gitea application
+  endpoint:
+    path: /api/v1/version
+    method: GET
+    data_selector: ''
+- name: list_organization_members
+  endpoint:
+    path: /api/v1/orgs/{org}/members
+    method: GET
+    params:
+      page: 1
+      limit: 30
+- name: list_organization_repos
+  endpoint:
+    path: /api/v1/orgs/{org}/repos
+    method: GET
+    params:
+      page: 1
+      limit: 30
+- name: create_repository
+  endpoint:
+    path: /api/v1/orgs/{org}/repos
+    method: POST
+- name: list_teams
+  endpoint:
+    path: /api/v1/orgs/{org}/teams
+    method: GET
+    params:
+      page: 1
+      limit: 30
+- name: create_team
+  endpoint:
+    path: /api/v1/orgs/{org}/teams
+    method: POST
+- name: org_level_variables_list
+  endpoint:
+    path: /api/v1/orgs/{org}/variables
+    method: GET
+    params:
+      page: '1'
+      limit: '20'
+- name: org_level_variable
+  endpoint:
+    path: /api/v1/orgs/{org}/variables/{variablename}
+    method: GET
+- name: update_org_level_variable
+  endpoint:
+    path: /api/v1/orgs/{org}/variables/{variablename}
+    method: PUT
+- name: create_org_level_variable
+  endpoint:
+    path: /api/v1/orgs/{org}/variables
+    method: POST
+- name: delete_org_level_variable
+  endpoint:
+    path: /api/v1/orgs/{org}/variables/{variablename}
+    method: DELETE
+- name: list_org_activity_feeds
+  endpoint:
+    path: /api/v1/orgs/{org}/activities
+    method: GET
+    params:
+      date: ''
+      page: '1'
+      limit: '20'
+- name: list_blocked_users
+  endpoint:
+    path: /api/v1/orgs/{org}/blocked_users
+    method: GET
+    params:
+      page: '1'
+      limit: '20'
+- name: check_user_blocked
+  endpoint:
+    path: /api/v1/orgs/{org}/blocked_users/{username}
+    method: GET
+- name: block_user
+  endpoint:
+    path: /api/v1/orgs/block_user/{username}
+    method: POST
+- name: unblock_user
+  endpoint:
+    path: /api/v1/orgs/unblock_user/{username}
+    method: POST
+- name: list_webhooks
+  endpoint:
+    path: /api/v1/orgs/{org}/hooks
+    method: GET
+    params:
+      page: '1'
+      limit: '20'
+- name: create_webhook
+  endpoint:
+    path: /api/v1/orgs/{org}/hooks
+    method: POST
+- name: get_webhook
+  endpoint:
+    path: /api/v1/orgs/{org}/hooks/{id}
+    method: GET
+- name: delete_webhook
+  endpoint:
+    path: /api/v1/orgs/{org}/hooks/{id}
+    method: DELETE
+- name: update_webhook
+  endpoint:
+    path: /api/v1/orgs/{org}/hooks/{id}
+    method: PUT
+- name: list_labels
+  endpoint:
+    path: /api/v1/orgs/{org}/labels
+    method: GET
+    params:
+      page: '1'
+      limit: '20'
+- name: create_label
+  endpoint:
+    path: /api/v1/orgs/{org}/labels
+    method: POST
+- name: get_label
+  endpoint:
+    path: /api/v1/orgs/{org}/labels/{id}
+    method: GET
+- name: list_a_team_repos
+  endpoint:
+    path: /api/v1/teams/{id}/repos
+    method: GET
+- name: list_user_organizations
+  endpoint:
+    path: /api/v1/users/{username}/orgs
+    method: GET
+- name: get_user_permissions_in_organization
+  endpoint:
+    path: /api/v1/orgs/{org}/members/{username}
+    method: GET
+- name: search_issues
+  endpoint:
+    path: /api/v1/issues
+    method: GET
+    params:
+      state: open
+      page: 1
+- name: create_issue
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/issues
+    method: POST
+    data_selector: id
+- name: tracked_time
+  endpoint:
+    path: delete/users/{username}/tokens/{token}
+    method: DELETE
+- name: issue_label
+  endpoint:
+    path: delete/users/{username}/tokens/{token}
+    method: DELETE
+- name: issues
+  endpoint:
+    path: /api/v1/issues
+    method: GET
+- name: issue_labels
+  endpoint:
+    path: /api/v1/issues/{owner}/{repo}/{index}/labels
+    method: GET
+- name: add_label
+  endpoint:
+    path: /api/v1/issues/{owner}/{repo}/{index}/labels
+    method: POST
+- name: replace_labels
+  endpoint:
+    path: /api/v1/issues/{owner}/{repo}/{index}/labels
+    method: PUT
+- name: comments
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/comments
+    method: GET
+    data_selector: comments
+    params:
+      since: ''
+      before: ''
+      page: ''
+      limit: ''
+- name: comment
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/comments/{id}
+    method: GET
+    data_selector: comment
+    params: {}
+- name: delete_comment
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/comments/{id}
+    method: DELETE
+    data_selector: delete_response
+    params: {}
+- name: edit_comment
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/comments/{id}
+    method: PATCH
+    data_selector: comment
+    params:
+      body: ''
+- name: attachments
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/{index}/attachments
+    method: GET
+    data_selector: attachments
+    params: {}
+- name: create_attachment
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/{index}/attachments
+    method: POST
+    data_selector: attachment_response
+    params:
+      name: ''
+- name: labels
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/labels
+    method: GET
+    data_selector: labels
+    params: {}
+- name: milestones
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/milestones
+    method: GET
+    data_selector: milestones
+    params: {}
+- name: repositories
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}
+    method: GET
+    data_selector: repository
+    params: {}
+- name: branch_protections
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/branch_protections
+    method: GET
+    data_selector: records
+- name: collaborators
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/collaborators
+    method: GET
+    data_selector: records
+- name: repository_permissions
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/collaborators/{collaborator}/permission
+    method: GET
+    data_selector: records
+- name: update_avatar
+  endpoint:
+    path: /repos/{owner}/{repo}/avatar
+    method: POST
+    data_selector: ''
+    params: {}
+- name: delete_avatar
+  endpoint:
+    path: /repos/{owner}/{repo}/avatar
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: get_repository_actions_runner_registration_token
+  endpoint:
+    path: /repos/{owner}/{repo}/actions/runners/registration-token
+    method: GET
+    data_selector: ''
+    params: {}
+- name: list_repository_actions_secrets
+  endpoint:
+    path: /repos/{owner}/{repo}/actions/secrets
+    method: GET
+    data_selector: ''
+    params: {}
+- name: create_or_update_secret_value
+  endpoint:
+    path: /repos/{owner}/{repo}/actions/secrets/{secretname}
+    method: PUT
+    data_selector: ''
+    params: {}
+- name: delete_secret
+  endpoint:
+    path: /repos/{owner}/{repo}/actions/secrets/{secretname}
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: list_repository_action_tasks
+  endpoint:
+    path: /repos/{owner}/{repo}/actions/runs
+    method: GET
+    data_selector: ''
+    params: {}
+- name: get_repo_level_variables_list
+  endpoint:
+    path: /repos/{owner}/{repo}/variables
+    method: GET
+    data_selector: ''
+    params: {}
+- name: get_repo_level_variable
+  endpoint:
+    path: /repos/{owner}/{repo}/variables/{variablename}
+    method: GET
+    data_selector: ''
+    params: {}
+- name: update_repo_level_variable
+  endpoint:
+    path: /repos/{owner}/{repo}/variables/{variablename}
+    method: PATCH
+    data_selector: ''
+    params: {}
+- name: create_repo_level_variable
+  endpoint:
+    path: /repos/{owner}/{repo}/variables/{variablename}
+    method: POST
+    data_selector: ''
+    params: {}
+- name: delete_repo_level_variable
+  endpoint:
+    path: /repos/{owner}/{repo}/variables/{variablename}
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: list_repository_activity_feeds
+  endpoint:
+    path: /repos/{owner}/{repo}/feeds
+    method: GET
+    data_selector: ''
+    params: {}
+- name: get_repository_archive
+  endpoint:
+    path: /repos/{owner}/{repo}/archive/{archive}
+    method: GET
+    data_selector: ''
+    params: {}
+- name: return_all_users_with_write_access
+  endpoint:
+    path: /repos/{owner}/{repo}/collaborators
+    method: GET
+    data_selector: ''
+    params: {}
+- name: commits
+  endpoint:
+    path: /repos/{owner}/{repo}/commits
+    method: GET
+    data_selector: records
+    params: {}
+- name: commit_statuses
+  endpoint:
+    path: /repos/{owner}/{repo}/commits/{ref}/statuses
+    method: GET
+    data_selector: records
+    params: {}
+- name: commit_combined_status
+  endpoint:
+    path: /repos/{owner}/{repo}/commits/{ref}/status
+    method: GET
+    data_selector: records
+    params: {}
+- name: pull_request
+  endpoint:
+    path: /repos/{owner}/{repo}/commits/{sha}/pulls
+    method: GET
+    data_selector: records
+    params: {}
+- name: commit_comparison
+  endpoint:
+    path: /repos/{owner}/{repo}/compare/{basehead}
+    method: GET
+    data_selector: records
+    params: {}
+- name: repo_metadata
+  endpoint:
+    path: /repos/{owner}/{repo}
+    method: GET
+    data_selector: records
+    params: {}
+- name: file_operations
+  endpoint:
+    path: /repos/{owner}/{repo}/contents/{filepath}
+    method: GET
+    data_selector: records
+    params: {}
+- name: create_file
+  endpoint:
+    path: /repos/{owner}/{repo}/contents/{filepath}
+    method: PUT
+    data_selector: records
+    params: {}
+- name: update_file
+  endpoint:
+    path: /repos/{owner}/{repo}/contents/{filepath}
+    method: PUT
+    data_selector: records
+    params: {}
+- name: delete_file
+  endpoint:
+    path: /repos/{owner}/{repo}/contents/{filepath}
+    method: DELETE
+    data_selector: records
+    params: {}
+- name: apply_diff_patch
+  endpoint:
+    path: /repos/{owner}/{repo}/patch
+    method: POST
+    data_selector: records
+    params: {}
+- name: pull_requests
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/pulls
+    method: GET
+    params:
+      state: open
+      page: 1
+- name: get_editorconfig_definitions
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/contents/{filepath}
+    method: GET
+- name: list_repository_forks
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/forks
+    method: GET
+    params:
+      page: '1'
+      limit: '10'
+- name: fork_repository
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/forks
+    method: POST
+- name: get_blob
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/git/blobs/{sha}
+    method: GET
+- name: get_commit
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/commits/{sha}
+    method: GET
+    params:
+      stat: 'true'
+      verification: 'true'
+      files: 'true'
+- name: get_commit_diff_or_patch
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/commits/{sha}/{diffType}
+    method: GET
+- name: get_commit_note
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/commits/{sha}/note
+    method: GET
+    params:
+      verification: 'true'
+      files: 'true'
+- name: get_refs
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/git/refs/{ref}
+    method: GET
+- name: get_tag
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/git/tags/{sha}
+    method: GET
+- name: get_tree
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/git/trees/{sha}
+    method: GET
+    params:
+      recursive: 'true'
+      page: '1'
+      per_page: '10'
+- name: list_hooks
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/hooks
+    method: GET
+    params:
+      page: '1'
+      limit: '10'
+- name: create_hook
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/hooks
+    method: POST
+- name: get_git_hooks
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/git/hooks
+    method: GET
+- name: get_hook
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/hooks/{id}
+    method: GET
+- name: delete_hook
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/hooks/{id}
+    method: DELETE
+- name: edit_hook
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/hooks/{id}
+    method: PATCH
+- name: pull_request_review
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}/reviews/{id}
+    method: POST
+    data_selector: APIEmpty
+    params: {}
+- name: push_mirror
+  endpoint:
+    path: /repos/{owner}/{repo}/mirrors
+    method: GET
+    data_selector: APIEmpty
+    params: {}
+- name: release
+  endpoint:
+    path: /repos/{owner}/{repo}/releases
+    method: GET
+    data_selector: APIEmpty
+    params: {}
+- name: list_release_attachments
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/releases/{id}/attachments
+    method: GET
+- name: create_release_attachment
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/releases/{id}/attachments
+    method: POST
+- name: get_release_attachment
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/releases/{id}/attachments/{attachment_id}
+    method: GET
+- name: delete_release_attachment
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/releases/{id}/attachments/{attachment_id}
+    method: DELETE
+- name: edit_release_attachment
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/releases/{id}/attachments/{attachment_id}
+    method: PATCH
+- name: list_tag_protections
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/tag_protections
+    method: GET
+- name: create_tag_protection
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/tag_protections
+    method: POST
+- name: get_tag_protection
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/tag_protections/{id}
+    method: GET
+- name: create_pull_request
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls
+    method: POST
+    data_selector: id
+- name: list_repo_pinned_pull_requests
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/pinned
+    method: GET
+    data_selector: id
+- name: get_pull_request_by_base_and_head
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls
+    method: GET
+    data_selector: id
+- name: get_pull_request
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}
+    method: GET
+    data_selector: id
+- name: update_pull_request
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}
+    method: PATCH
+    data_selector: id
+- name: get_pull_request_diff_or_patch
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}/diff
+    method: GET
+    data_selector: id
+- name: get_commits_for_pull_request
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}/commits
+    method: GET
+    data_selector: id
+- name: get_changed_files_for_pull_request
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}/files
+    method: GET
+    data_selector: id
+- name: check_if_pull_request_merged
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}/merge
+    method: GET
+    data_selector: id
+- name: merge_pull_request
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}/merge
+    method: PUT
+    data_selector: id
+- name: cancel_scheduled_auto_merge
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}/merge
+    method: DELETE
+    data_selector: id
+- name: create_review_requests
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}/requested_reviewers
+    method: POST
+    data_selector: id
+- name: cancel_review_requests
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}/requested_reviewers
+    method: DELETE
+    data_selector: id
+- name: list_all_reviews_for_pull_request
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}/reviews
+    method: GET
+    data_selector: id
+- name: create_review
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}/reviews
+    method: POST
+    data_selector: id
+- name: get_specific_review
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}/reviews/{id}
+    method: GET
+    data_selector: id
+- name: get_user_variables
+  endpoint:
+    path: /api/v1/users/{username}/variables
+    method: GET
+    params:
+      page: integer
+      limit: integer
+- name: get_authenticated_user
+  endpoint:
+    path: /api/v1/user
+    method: GET
+- name: create_or_update_secret
+  endpoint:
+    path: /api/v1/users/{username}/secrets/{secretname}
+    method: POST
+- name: delete_secret
+  endpoint:
+    path: /api/v1/users/{username}/secrets/{secretname}
+    method: DELETE
+- name: delete_tag_protection
+  endpoint:
+    path: /delete/users/{username}/tokens/{token}
+    method: DELETE
+- name: edit_tag_protection
+  endpoint:
+    path: /edit/users/{username}/tokens/{token}
+    method: PATCH
+- name: list_repository_tags
+  endpoint:
+    path: /repos/{owner}/{repo}/tags
+    method: GET
+    params:
+      limit: 50
+- name: create_git_tag
+  endpoint:
+    path: /repos/{owner}/{repo}/git/tags
+    method: POST
+- name: get_tag
+  endpoint:
+    path: /repos/{owner}/{repo}/git/tags/{tag}
+    method: GET
+- name: delete_tag
+  endpoint:
+    path: /repos/{owner}/{repo}/git/tags/{tag}
+    method: DELETE
+- name: list_repository_teams
+  endpoint:
+    path: /repos/{owner}/{repo}/teams
+    method: GET
+- name: check_team_assigned
+  endpoint:
+    path: /repos/{owner}/{repo}/teams/{team}
+    method: GET
+- name: add_team_to_repo
+  endpoint:
+    path: /repos/{owner}/{repo}/teams/{team}
+    method: PUT
+- name: delete_team_from_repo
+  endpoint:
+    path: /repos/{owner}/{repo}/teams/{team}
+    method: DELETE
+- name: list_tracked_times
+  endpoint:
+    path: /repos/{owner}/{repo}/times
+    method: GET
+- name: get_topics
+  endpoint:
+    path: /repos/{owner}/{repo}/topics
+    method: GET
+- name: replace_topics
+  endpoint:
+    path: /repos/{owner}/{repo}/topics
+    method: PUT
+- name: add_topic
+  endpoint:
+    path: /repos/{owner}/{repo}/topics/{topic}
+    method: POST
+- name: delete_topic
+  endpoint:
+    path: /repos/{owner}/{repo}/topics/{topic}
+    method: DELETE
+- name: transfer_repo_ownership
+  endpoint:
+    path: /repos/{owner}/{repo}/transfer
+    method: POST
+- name: accept_repo_transfer
+  endpoint:
+    path: /repos/{owner}/{repo}/accept_transfer
+    method: POST
+- name: reject_repo_transfer
+  endpoint:
+    path: /repos/{owner}/{repo}/reject_transfer
+    method: POST
+- name: GPG keys
+  endpoint:
+    path: /api/v1/users/{username}/gpg_keys
+    method: GET
+- name: webhooks
+  endpoint:
+    path: /api/v1/users/{username}/hooks
+    method: GET
+- name: public keys
+  endpoint:
+    path: /api/v1/users/{username}/public_keys
+    method: GET
+- name: repositories
+  endpoint:
+    path: /api/v1/user/repos
+    method: GET
+- name: user settings
+  endpoint:
+    path: /api/v1/user/settings
+    method: GET
+- name: delete_user_token
+  endpoint:
+    path: delete/users/{username}/tokens/{token}
+    method: DELETE
+- name: list_oauth2_applications
+  endpoint:
+    path: list/oauth2/applications
+    method: GET
+    params:
+      page: '1'
+      limit: '10'
+- name: update_avatar
+  endpoint:
+    path: update/avatar
+    method: POST
+- name: list_blocked_users
+  endpoint:
+    path: list/blocked/users
+    method: GET
+    params:
+      page: '1'
+      limit: '10'
+- name: list_email_addresses
+  endpoint:
+    path: list/email/addresses
+    method: GET
+- name: add_email_addresses
+  endpoint:
+    path: add/email/addresses
+    method: POST
+- name: delete_email_addresses
+  endpoint:
+    path: delete/email/addresses
+    method: DELETE
+- name: list_followers
+  endpoint:
+    path: list/followers
+    method: GET
+    params:
+      page: '1'
+      limit: '10'
+- name: list_following
+  endpoint:
+    path: list/following
+    method: GET
+    params:
+      page: '1'
+      limit: '10'
+- name: watched_repositories
+  endpoint:
+    path: /api/v1/user/watched
+    method: GET
+    data_selector: repositories
+    params:
+      page: '1'
+      limit: '30'
+- name: starred_repositories
+  endpoint:
+    path: /api/v1/user/starred
+    method: GET
+    data_selector: repositories
+    params:
+      page: '1'
+      limit: '30'
+- name: user_activity_feeds
+  endpoint:
+    path: /api/v1/users/{username}/activity
+    method: GET
+    data_selector: activity
+    params:
+      page: '1'
+      limit: '30'
+- name: access_tokens
+  endpoint:
+    path: /users/{username}/tokens
+    method: GET
+    data_selector: tokens
+- name: delete_access_token
+  endpoint:
+    path: /users/{username}/tokens/{token}
+    method: DELETE
+    data_selector: response
+- name: create_access_token
+  endpoint:
+    path: /users/{username}/tokens
+    method: POST
+    data_selector: response
+- name: activitypub
+  endpoint:
+    path: /api/v1/activitypub
+    method: GET
+- name: users_tokens
+  endpoint:
+    path: /api/v1/users/{username}/tokens/{token}
+    method: DELETE
+- name: org_level_variables_list
+  endpoint:
+    path: /api/v1/orgs/{org}/variables
+    method: GET
+    data_selector: variables
+- name: create_org_level_variable
+  endpoint:
+    path: /api/v1/orgs/{org}/variables
+    method: POST
+    data_selector: variable
+- name: update_org_level_variable
+  endpoint:
+    path: /api/v1/orgs/{org}/variables/{variablename}
+    method: PUT
+    data_selector: variable
+- name: delete_org_level_variable
+  endpoint:
+    path: /api/v1/orgs/{org}/variables/{variablename}
+    method: DELETE
+    data_selector: variable
+- name: list_activity_feeds
+  endpoint:
+    path: /api/v1/orgs/{org}/activities
+    method: GET
+    data_selector: activities
+- name: list_cron_tasks
+  endpoint:
+    path: /admin/cron
+    method: GET
+    data_selector: tasks
+    params:
+      page: 1
+      limit: 30
+- name: list_all_emails
+  endpoint:
+    path: /admin/emails
+    method: GET
+    data_selector: emails
+    params:
+      page: 1
+      limit: 30
+- name: search_all_emails
+  endpoint:
+    path: /admin/emails/search
+    method: GET
+    data_selector: emails
+    params:
+      q: ''
+      page: 1
+      limit: 30
+- name: list_system_webhooks
+  endpoint:
+    path: /admin/hooks
+    method: GET
+    data_selector: webhooks
+    params:
+      page: 1
+      limit: 30
+- name: list_all_organizations
+  endpoint:
+    path: /admin/orgs
+    method: GET
+    data_selector: organizations
+    params:
+      page: 1
+      limit: 30
+- name: list_unadopted_repositories
+  endpoint:
+    path: /admin/repositories/unadopted
+    method: GET
+    data_selector: repositories
+    params:
+      page: 1
+      limit: 30
+- name: list_organization_members
+  endpoint:
+    path: /api/v1/orgs/{org}/members
+    method: GET
+    data_selector: members
+    params:
+      page: '1'
+      limit: '30'
+- name: list_organization_repos
+  endpoint:
+    path: /api/v1/orgs/{org}/repos
+    method: GET
+    data_selector: repos
+    params:
+      page: '1'
+      limit: '30'
+- name: create_repository
+  endpoint:
+    path: /api/v1/orgs/{org}/repos
+    method: POST
+    data_selector: repository
+- name: list_teams
+  endpoint:
+    path: /api/v1/orgs/{org}/teams
+    method: GET
+    data_selector: teams
+    params:
+      page: '1'
+      limit: '30'
+- name: list_users_notification_threads
+  endpoint:
+    path: /api/v1/users/{username}/notifications
+    method: GET
+    params: {}
+- name: mark_notification_threads
+  endpoint:
+    path: /api/v1/users/{username}/notifications
+    method: PATCH
+    params: {}
+- name: check_unread_notifications
+  endpoint:
+    path: /api/v1/users/{username}/notifications/unread
+    method: GET
+    params: {}
+- name: get_notification_thread_by_id
+  endpoint:
+    path: /api/v1/users/{username}/notifications/{id}
+    method: GET
+    params: {}
+- name: mark_notification_thread_as_read_by_id
+  endpoint:
+    path: /api/v1/users/{username}/notifications/{id}
+    method: PATCH
+    params: {}
+- name: list_users_notification_threads_on_repo
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/notifications
+    method: GET
+    params: {}
+- name: mark_notification_threads_on_repo
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/notifications
+    method: PATCH
+    params: {}
+- name: get_list_of_organizations
+  endpoint:
+    path: /api/v1/orgs
+    method: GET
+    params: {}
+- name: create_organization
+  endpoint:
+    path: /api/v1/orgs
+    method: POST
+    params: {}
+- name: get_an_organization
+  endpoint:
+    path: /api/v1/orgs/{org}
+    method: GET
+    params: {}
+- name: edit_an_organization
+  endpoint:
+    path: /api/v1/orgs/{org}
+    method: PATCH
+    params: {}
+- name: delete_an_organization
+  endpoint:
+    path: /api/v1/orgs/{org}
+    method: DELETE
+    params: {}
+- name: get_organization_actions_runner_registration_token
+  endpoint:
+    path: /api/v1/orgs/{org}/actions/runners/registration-token
+    method: GET
+    params: {}
+- name: list_organization_actions_secrets
+  endpoint:
+    path: /api/v1/orgs/{org}/actions/secrets
+    method: GET
+    params: {}
+- name: create_or_update_secret_value_in_organization
+  endpoint:
+    path: /api/v1/orgs/{org}/actions/secrets/{secretname}
+    method: PUT
+    params: {}
+- name: delete_secret_in_organization
+  endpoint:
+    path: /api/v1/orgs/{org}/actions/secrets/{secretname}
+    method: DELETE
+    params: {}
+- name: issues
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/issues/{index}
+    method: POST
+    data_selector: id
+    params: {}
+- name: comments
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/issues/{index}/comments
+    method: POST
+    data_selector: id
+    params: {}
+- name: labels
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/issues/{index}/labels
+    method: POST
+    data_selector: id
+    params: {}
+- name: comments
+  endpoint:
+    path: /repos/{owner}/{repo}/comments
+    method: GET
+    data_selector: comments
+    params:
+      since: string
+      before: string
+      page: integer
+      limit: integer
+- name: comment
+  endpoint:
+    path: /repos/{owner}/{repo}/comments/{id}
+    method: GET
+    data_selector: comment
+    params: {}
+- name: attachments
+  endpoint:
+    path: /repos/{owner}/{repo}/comments/{id}/attachments
+    method: GET
+    data_selector: attachments
+    params: {}
+- name: issues
+  endpoint:
+    path: /repos/{owner}/{repo}/issues
+    method: GET
+    data_selector: issues
+    params: {}
+- name: issue
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/{index}
+    method: GET
+    data_selector: issue
+    params: {}
+- name: tracked_time
+  endpoint:
+    path: delete/users/{username}/tokens/{token}
+    method: DELETE
+    params:
+      owner: string
+      repo: string
+      index: integer
+      id: integer
+- name: issue
+  endpoint:
+    path: delete/users/{username}/tokens/{token}
+    method: DELETE
+    params:
+      owner: string
+      repo: string
+      index: integer
+- name: list_a_team_member
+  endpoint:
+    path: /api/v1/teams/{id}/members/{username}
+    method: GET
+- name: add_a_team_member
+  endpoint:
+    path: /api/v1/teams/{id}/members/{username}
+    method: POST
+- name: remove_a_team_member
+  endpoint:
+    path: /api/v1/teams/{id}/members/{username}
+    method: DELETE
+- name: list_a_teams_repos
+  endpoint:
+    path: /api/v1/teams/{id}/repos
+    method: GET
+- name: list_a_particular_repo_of_team
+  endpoint:
+    path: /api/v1/teams/{id}/repos/{org}/{repo}
+    method: GET
+- name: add_a_repository_to_a_team
+  endpoint:
+    path: /api/v1/teams/{id}/repos/{org}/{repo}
+    method: PUT
+- name: remove_a_repository_from_a_team
+  endpoint:
+    path: /api/v1/teams/{id}/repos/{org}/{repo}
+    method: DELETE
+- name: list_the_current_users_organizations
+  endpoint:
+    path: /api/v1/user/orgs
+    method: GET
+- name: list_a_users_organizations
+  endpoint:
+    path: /api/v1/users/{username}/orgs
+    method: GET
+- name: get_user_permissions_in_organization
+  endpoint:
+    path: /api/v1/orgs/{org}/members/{username}
+    method: GET
+- name: gets_all_packages_of_an_owner
+  endpoint:
+    path: /api/v1/packages/{owner}
+    method: GET
+- name: gets_a_package
+  endpoint:
+    path: /api/v1/packages/{owner}/{type}/{name}/{version}
+    method: GET
+- name: delete_a_package
+  endpoint:
+    path: /api/v1/packages/{owner}/{type}/{name}/{version}
+    method: DELETE
+- name: gets_all_files_of_a_package
+  endpoint:
+    path: /api/v1/packages/{owner}/{type}/{name}/{version}/files
+    method: GET
+- name: search_for_issues_across_repositories
+  endpoint:
+    path: /api/v1/issues
+    method: GET
+- name: list_a_repositories_issues
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/issues
+    method: GET
+- name: create_an_issue
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/issues
+    method: POST
+- name: branch_protection
+  endpoint:
+    path: /repos/{owner}/{repo}/branch_protections
+    method: POST
+    data_selector: data
+- name: repository_branches
+  endpoint:
+    path: /repos/{owner}/{repo}/branches
+    method: GET
+    data_selector: data
+- name: collaborators
+  endpoint:
+    path: /repos/{owner}/{repo}/collaborators
+    method: GET
+    data_selector: data
+- name: commits
+  endpoint:
+    path: /repos/{owner}/{repo}/commits
+    method: GET
+    data_selector: data
+- name: list_branch_protections
+  endpoint:
+    path: /repos/{owner}/{repo}/branch_protections
+    method: GET
+    data_selector: branch_protections
+- name: get_repo_level_variables
+  endpoint:
+    path: /repos/{owner}/{repo}/variables
+    method: GET
+    data_selector: variables
+- name: delete_repo_level_variable
+  endpoint:
+    path: /repos/{owner}/{repo}/variables/{variablename}
+    method: DELETE
+- name: create_repo_level_variable
+  endpoint:
+    path: /repos/{owner}/{repo}/variables
+    method: POST
+- name: update_repo_level_variable
+  endpoint:
+    path: /repos/{owner}/{repo}/variables/{variablename}
+    method: PUT
+- name: get_repo_level_variable
+  endpoint:
+    path: /repos/{owner}/{repo}/variables/{variablename}
+    method: GET
+- name: list_repo_activity_feeds
+  endpoint:
+    path: /repos/{owner}/{repo}/activity
+    method: GET
+- name: get_repo_archive
+  endpoint:
+    path: /repos/{owner}/{repo}/archive/{archive}
+    method: GET
+- name: return_users_with_write_access
+  endpoint:
+    path: /repos/{owner}/{repo}/collaborators
+    method: GET
+- name: update_avatar
+  endpoint:
+    path: /repos/{owner}/{repo}/avatar
+    method: PATCH
+- name: delete_avatar
+  endpoint:
+    path: /repos/{owner}/{repo}/avatar
+    method: DELETE
+- name: repository_labels
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/labels
+    method: GET
+    data_selector: labels
+- name: create_label
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/labels
+    method: POST
+    data_selector: label
+- name: get_single_label
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/labels/{id}
+    method: GET
+    data_selector: label
+- name: delete_label
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/labels/{id}
+    method: DELETE
+    data_selector: null
+- name: update_label
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/labels/{id}
+    method: PATCH
+    data_selector: label
+- name: opened_milestones
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/milestones
+    method: GET
+    data_selector: milestones
+- name: create_milestone
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/milestones
+    method: POST
+    data_selector: milestone
+- name: get_milestone
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/milestones/{id}
+    method: GET
+    data_selector: milestone
+- name: delete_milestone
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/milestones/{id}
+    method: DELETE
+    data_selector: null
+- name: update_milestone
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/milestones/{id}
+    method: PATCH
+    data_selector: milestone
+- name: search_repositories
+  endpoint:
+    path: /api/v1/repos/search
+    method: GET
+    data_selector: repositories
+- name: get_repository
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}
+    method: GET
+    data_selector: repository
+- name: delete_repository
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}
+    method: DELETE
+    data_selector: null
+- name: blob
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/git/blobs/{sha}
+    method: GET
+- name: forks
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/forks
+    method: GET
+- name: create_file
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/contents/{filepath}
+    method: POST
+- name: update_file
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/contents/{filepath}
+    method: PUT
+- name: delete_file
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/contents/{filepath}
+    method: DELETE
+- name: repo_keys
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/keys
+    method: GET
+- name: repo_pulls
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/pulls
+    method: GET
+- name: repo_issues
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/issues
+    method: GET
+- name: pull_request_commits
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/pulls/{index}/commits
+    method: GET
+    data_selector: commits
+    params: {}
+- name: changed_files
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/pulls/{index}/files
+    method: GET
+    data_selector: files
+    params: {}
+- name: merge_pull_request
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/pulls/{index}/merge
+    method: POST
+    data_selector: merge
+    params: {}
+- name: list_reviews
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/pulls/{index}/reviews
+    method: GET
+    data_selector: reviews
+    params: {}
+- name: create_review
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/pulls/{index}/reviews
+    method: POST
+    data_selector: review
+    params: {}
+- name: delete_user_token
+  endpoint:
+    path: /delete/users/{username}/tokens/{token}
+    method: DELETE
+- name: get_push_mirror
+  endpoint:
+    path: /get/push/mirror/{owner}/{repo}/{name}
+    method: GET
+- name: list_repos_releases
+  endpoint:
+    path: /repos/{owner}/{repo}/releases
+    method: GET
+- name: create_release
+  endpoint:
+    path: /repos/{owner}/{repo}/releases
+    method: POST
+- name: get_release_by_tag
+  endpoint:
+    path: /repos/{owner}/{repo}/releases/tags/{tag}
+    method: GET
+- name: delete_release_by_tag
+  endpoint:
+    path: /repos/{owner}/{repo}/releases/tags/{tag}
+    method: DELETE
+- name: get_release
+  endpoint:
+    path: /repos/{owner}/{repo}/releases/{id}
+    method: GET
+- name: delete_release
+  endpoint:
+    path: /repos/{owner}/{repo}/releases/{id}
+    method: DELETE
+- name: update_release
+  endpoint:
+    path: /repos/{owner}/{repo}/releases/{id}
+    method: PATCH
+- name: repo_stargazers
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/stargazers
+    method: GET
+    params:
+      page: 1
+      limit: 50
+- name: repo_watchers
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/watchers
+    method: GET
+    params:
+      page: 1
+      limit: 50
+- name: repo_tags
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/tags
+    method: GET
+    params:
+      page: 1
+      limit: 50
+- name: repo_commits_statuses
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/commits/{sha}/statuses
+    method: GET
+    params:
+      sort: recentupdate
+      page: 1
+      limit: 50
+- name: repo_tracked_times
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/tracked_times
+    method: GET
+    params:
+      user: ''
+      since: ''
+      before: ''
+      page: 1
+      limit: 50
+- name: create_repository
+  endpoint:
+    path: /api/v1/repos
+    method: POST
+    data_selector: repository
+    params: {}
+- name: get_repository_by_id
+  endpoint:
+    path: /api/v1/repos/{id}
+    method: GET
+    data_selector: repository
+    params: {}
+- name: search_topics
+  endpoint:
+    path: /api/v1/topics
+    method: GET
+    data_selector: topics
+    params: {}
+- name: get_commit
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/commits/{sha}
+    method: GET
+    data_selector: commit
+    params: {}
+- name: get_commit_diff
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/commits/{sha}/diff
+    method: GET
+    data_selector: diff
+    params: {}
+- name: get_commit_note
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/commits/{sha}/note
+    method: GET
+    data_selector: note
+    params: {}
+- name: get_repository_refs
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/git/refs/{ref}
+    method: GET
+    data_selector: refs
+    params: {}
+- name: get_tag_object
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/git/tags/{sha}
+    method: GET
+    data_selector: tag
+    params: {}
+- name: get_repository_tree
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/git/trees/{sha}
+    method: GET
+    data_selector: tree
+    params: {}
+- name: list_hooks
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/hooks
+    method: GET
+    data_selector: hooks
+    params: {}
+- name: create_hook
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/hooks
+    method: POST
+    data_selector: hook
+    params: {}
+- name: get_git_hook
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/hooks/{id}
+    method: GET
+    data_selector: hook
+    params: {}
+- name: delete_git_hook
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/hooks/{id}
+    method: DELETE
+    data_selector: hook
+    params: {}
+- name: edit_git_hook
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/hooks/{id}
+    method: PATCH
+    data_selector: hook
+    params: {}
+- name: test_push_webhook
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/hooks/{id}/test
+    method: POST
+    data_selector: test
+    params: {}
+- name: get_issue_config
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/issues/config
+    method: GET
+    data_selector: issue_config
+    params: {}
+- name: get_instance_global_settings
+  endpoint:
+    path: /api/v1/settings
+    method: GET
+- name: get_authenticated_user
+  endpoint:
+    path: /api/v1/user
+    method: GET
+- name: list_users_blocked_by_authenticated_user
+  endpoint:
+    path: /api/v1/user/blocks
+    method: GET
+    params:
+      page: '1'
+      limit: '30'
+- name: public_keys
+  endpoint:
+    path: /api/v1/users/{username}/tokens/{token}
+    method: GET
+- name: followers
+  endpoint:
+    path: /api/v1/users/{username}/followers
+    method: GET
+    params:
+      page: integer
+      limit: integer
+- name: following
+  endpoint:
+    path: /api/v1/users/{username}/following
+    method: GET
+    params:
+      page: integer
+      limit: integer
+- name: gpg_keys
+  endpoint:
+    path: /api/v1/users/{username}/gpg_keys
+    method: GET
+    params:
+      page: integer
+      limit: integer
+- name: webhooks
+  endpoint:
+    path: /api/v1/users/{username}/hooks
+    method: GET
+    params:
+      page: integer
+      limit: integer
+- name: create_public_key
+  endpoint:
+    path: /api/v1/users/{username}/keys
+    method: POST
+    data_selector: key
+    params: {}
+- name: get_public_key
+  endpoint:
+    path: /api/v1/users/{username}/keys/{id}
+    method: GET
+    data_selector: key
+    params: {}
+- name: delete_public_key
+  endpoint:
+    path: /api/v1/users/{username}/keys/{id}
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: list_repos_owned
+  endpoint:
+    path: /api/v1/user/repos
+    method: GET
+    data_selector: repositories
+    params:
+      page: '1'
+      limit: '30'
+- name: access_token
+  endpoint:
+    path: /users/{username}/tokens/{token}
+    method: DELETE
+    data_selector: APIEmpty
+    params: {}
+- name: gpg_keys
+  endpoint:
+    path: /users/{username}/gpg_keys
+    method: GET
+    data_selector: APIEmpty
+    params: {}
+- name: public_keys
+  endpoint:
+    path: /users/{username}/keys
+    method: GET
+    data_selector: APIEmpty
+    params: {}
+- name: repositories
+  endpoint:
+    path: /users/{username}/repos
+    method: GET
+    data_selector: APIEmpty
+    params: {}
+- name: starred_repos
+  endpoint:
+    path: /users/{username}/starred
+    method: GET
+    data_selector: APIEmpty
+    params: {}
+- name: watched_repos
+  endpoint:
+    path: /users/{username}/watching
+    method: GET
+    data_selector: APIEmpty
+    params: {}
+- name: follow_status
+  endpoint:
+    path: /users/{username}/following/{target}
+    method: GET
+    data_selector: APIEmpty
+    params: {}
+- name: user_heatmap
+  endpoint:
+    path: /users/{username}/heatmap
+    method: GET
+    data_selector: APIEmpty
+    params: {}
+- name: activitypub
+  endpoint:
+    path: /activitypub
+    method: GET
+    data_selector: actor
+    params: {}
+- name: admin_cron_tasks
+  endpoint:
+    path: /admin/cron
+    method: GET
+    data_selector: tasks
+    params:
+      page: '1'
+      limit: '10'
+- name: notification_threads
+  endpoint:
+    path: /notifications
+    method: GET
+    data_selector: notifications
+    params: {}
+- name: get_notification_thread_by_id
+  endpoint:
+    path: /notifications/{id}
+    method: GET
+    data_selector: notification
+    params: {}
+- name: list_users_notification_threads_on_repo
+  endpoint:
+    path: /repos/{owner}/{repo}/notifications
+    method: GET
+    data_selector: notifications
+    params: {}
+- name: list_all_emails
+  endpoint:
+    path: /api/v1/emails
+    method: GET
+    data_selector: emails
+    params:
+      page: '1'
+      limit: '10'
+- name: list_system_webhooks
+  endpoint:
+    path: /api/v1/system/hooks
+    method: GET
+    data_selector: webhooks
+    params:
+      page: '1'
+      limit: '10'
+- name: list_all_organizations
+  endpoint:
+    path: /api/v1/orgs
+    method: GET
+    data_selector: organizations
+    params:
+      page: '1'
+      limit: '10'
+- name: search_users
+  endpoint:
+    path: /api/v1/users/search
+    method: GET
+    data_selector: users
+    params:
+      source_id: '1'
+      login_name: string
+      page: '1'
+      limit: '10'
+- name: list_organizations
+  endpoint:
+    path: /orgs
+    method: GET
+    data_selector: organizations
+    params: {}
+- name: create_repository
+  endpoint:
+    path: /orgs/{org}/repos
+    method: POST
+    data_selector: repository
+    params: {}
+- name: get_organization
+  endpoint:
+    path: /orgs/{org}
+    method: GET
+    data_selector: organization
+    params: {}
+- name: delete_organization
+  endpoint:
+    path: /orgs/{org}
+    method: DELETE
+    data_selector: organization
+    params: {}
+- name: comments
+  endpoint:
+    path: /repos/{owner}/{repo}/comments
+    method: GET
+    data_selector: comments
+    params: {}
+- name: issues
+  endpoint:
+    path: /repos/{owner}/{repo}/issues
+    method: GET
+    data_selector: issues
+    params: {}
+- name: list_team_members
+  endpoint:
+    path: /teams/{id}/members
+    method: GET
+    data_selector: members
+    params: {}
+- name: list_team_repos
+  endpoint:
+    path: /teams/{id}/repos
+    method: GET
+    data_selector: repos
+    params: {}
+- name: list_user_organizations
+  endpoint:
+    path: /user/orgs
+    method: GET
+    data_selector: organizations
+    params: {}
+- name: list_repository_issues
+  endpoint:
+    path: /repos/{owner}/{repo}/issues
+    method: GET
+    data_selector: issues
+    params: {}
+- name: remove_label_from_issue
+  endpoint:
+    path: /delete/users/{username}/tokens/{token}
+    method: DELETE
+    data_selector: APIEmpty
+    params: {}
+- name: list_issues_blocked_by_issue
+  endpoint:
+    path: /delete/users/{username}/tokens/{token}
+    method: GET
+    data_selector: APIEmpty
+    params: {}
+- name: add_comment_to_issue
+  endpoint:
+    path: /delete/users/{username}/tokens/{token}
+    method: POST
+    data_selector: APIEmpty
+    params: {}
+- name: get_issue_labels
+  endpoint:
+    path: /delete/users/{username}/tokens/{token}
+    method: GET
+    data_selector: APIEmpty
+    params: {}
+- name: labels
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/labels
+    method: GET
+    data_selector: labels
+- name: create_label
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/labels
+    method: POST
+    data_selector: label
+- name: get_label
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/labels/{id}
+    method: GET
+    data_selector: label
+- name: list_team_activity_feeds
+  endpoint:
+    path: /teams/{id}/activity
+    method: GET
+    data_selector: activities
+    params: {}
+- name: create_label
+  endpoint:
+    path: /orgs/{org}/labels
+    method: POST
+    data_selector: label
+    params: {}
+- name: get_single_label
+  endpoint:
+    path: /repos/{owner}/{repo}/labels/{id}
+    method: GET
+    data_selector: label
+    params: {}
+- name: delete_label
+  endpoint:
+    path: /repos/{owner}/{repo}/labels/{id}
+    method: DELETE
+    data_selector: label
+    params: {}
+- name: update_label
+  endpoint:
+    path: /repos/{owner}/{repo}/labels/{id}
+    method: PATCH
+    data_selector: label
+    params: {}
+- name: list_org_members
+  endpoint:
+    path: /orgs/{org}/members
+    method: GET
+    data_selector: members
+    params: {}
+- name: check_user_membership
+  endpoint:
+    path: /orgs/{org}/members/{username}
+    method: GET
+    data_selector: membership
+    params: {}
+- name: remove_member
+  endpoint:
+    path: /orgs/{org}/members/{username}
+    method: DELETE
+    data_selector: remove_member
+    params: {}
+- name: list_public_members
+  endpoint:
+    path: /orgs/{org}/public_members
+    method: GET
+    data_selector: public_members
+    params: {}
+- name: list_org_repos
+  endpoint:
+    path: /orgs/{org}/repos
+    method: GET
+    data_selector: repos
+    params: {}
+- name: create_repository
+  endpoint:
+    path: /orgs/{org}/repos
+    method: POST
+    data_selector: repository
+    params: {}
+- name: list_org_teams
+  endpoint:
+    path: /orgs/{org}/teams
+    method: GET
+    data_selector: teams
+    params: {}
+- name: create_team
+  endpoint:
+    path: /orgs/{org}/teams
+    method: POST
+    data_selector: team
+    params: {}
+- name: get_team
+  endpoint:
+    path: /teams/{id}
+    method: GET
+    data_selector: team
+    params: {}
+- name: delete_team
+  endpoint:
+    path: /teams/{id}
+    method: DELETE
+    data_selector: delete_team
+    params: {}
+- name: edit_team
+  endpoint:
+    path: /teams/{id}
+    method: PATCH
+    data_selector: team
+    params: {}
+- name: delete_secret
+  endpoint:
+    path: /delete/users/{username}/tokens/{token}
+    method: DELETE
+    params: {}
+- name: create_or_update_secret
+  endpoint:
+    path: /create_or_update_secret
+    method: POST
+    params: {}
+- name: repository_permissions
+  endpoint:
+    path: /repos/{owner}/{repo}/collaborators/{collaborator}/permission
+    method: GET
+    data_selector: permissions
+    params: {}
+- name: branches
+  endpoint:
+    path: /repos/{owner}/{repo}/branches
+    method: GET
+    data_selector: branches
+    params:
+      page: 1
+      limit: 100
+- name: collaborators
+  endpoint:
+    path: /repos/{owner}/{repo}/collaborators
+    method: GET
+    data_selector: collaborators
+    params:
+      page: 1
+      limit: 100
+- name: commit
+  endpoint:
+    path: /repos/{owner}/{repo}/commits/{sha}
+    method: GET
+    data_selector: commit
+    params: {}
+- name: hook
+  endpoint:
+    path: /repos/{owner}/{repo}/hooks
+    method: GET
+    data_selector: hooks
+    params: {}
+- name: fork_repository
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/forks
+    method: POST
+    data_selector: id
+    params: {}
+- name: list_commits
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/commits
+    method: GET
+    data_selector: commits
+    params: {}
+- name: get_commit_statuses
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/commits/{ref}/statuses
+    method: GET
+    data_selector: statuses
+    params: {}
+- name: get_editorconfig
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/contents/.editorconfig
+    method: GET
+    data_selector: content
+    params: {}
+- name: commits_for_pull_request
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}/commits
+    method: GET
+    data_selector: commits
+    params:
+      page: 1
+      limit: 30
+      verification: true
+      files: true
+- name: get_pull_request
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}
+    method: GET
+    data_selector: pull_request
+- name: list_repo_pinned_pull_requests
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/pinned
+    method: GET
+    data_selector: pinned_pull_requests
+- name: pull_request
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}
+    method: GET
+    data_selector: pull_requests
+    params: {}
+- name: push_mirror
+  endpoint:
+    path: /repos/{owner}/{repo}/push_mirrors
+    method: GET
+    data_selector: push_mirrors
+    params: {}
+- name: oauth2_applications
+  endpoint:
+    path: /users/{username}/tokens/{token}
+    method: GET
+    data_selector: applications
+    params: {}
+- name: commit_statuses
+  endpoint:
+    path: /repos/{owner}/{repo}/commits/{sha}/statuses
+    method: GET
+    data_selector: statuses
+    params: {}
+- name: repo_releases
+  endpoint:
+    path: /repos/{owner}/{repo}/releases
+    method: GET
+    data_selector: releases
+    params: {}
+- name: release_by_tag
+  endpoint:
+    path: /repos/{owner}/{repo}/releases/tags/{tag}
+    method: GET
+    data_selector: release
+    params: {}
+- name: release
+  endpoint:
+    path: /repos/{owner}/{repo}/releases/{id}
+    method: GET
+    data_selector: release
+    params: {}
+- name: repo_watchers
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/watchers
+    method: GET
+    data_selector: '[]'
+- name: repo_tags
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/tags
+    method: GET
+    data_selector: '[]'
+- name: repo_topics
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/topics
+    method: GET
+    data_selector: '[]'
+- name: repo_teams
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/teams
+    method: GET
+    data_selector: '[]'
+- name: tracked_times
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/tracked_times
+    method: GET
+    data_selector: '[]'
+- name: create_oauth2_application
+  endpoint:
+    path: /oauth2/applications
+    method: POST
+    data_selector: application/json
+- name: get_oauth2_application
+  endpoint:
+    path: /oauth2/applications/{id}
+    method: GET
+    data_selector: application/json
+- name: delete_oauth2_application
+  endpoint:
+    path: /oauth2/applications/{id}
+    method: DELETE
+    data_selector: application/json
+- name: update_oauth2_application
+  endpoint:
+    path: /oauth2/applications/{id}
+    method: PATCH
+    data_selector: application/json
+- name: list_user_emails
+  endpoint:
+    path: /user/emails
+    method: GET
+    data_selector: application/json
+- name: add_emails
+  endpoint:
+    path: /user/emails
+    method: POST
+    data_selector: application/json
+- name: delete_emails
+  endpoint:
+    path: /user/emails
+    method: DELETE
+    data_selector: application/json
+- name: delete_a_hook
+  endpoint:
+    path: /delete/users/{username}/tokens/{token}
+    method: DELETE
+- name: update_a_hook
+  endpoint:
+    path: /update/users/{username}/tokens/{token}
+    method: PUT
+- name: list_authenticated_user_public_keys
+  endpoint:
+    path: /user/keys
+    method: GET
+- name: create_a_public_key
+  endpoint:
+    path: /user/keys
+    method: POST
+- name: get_a_public_key
+  endpoint:
+    path: /user/keys/{id}
+    method: GET
+- name: delete_a_public_key
+  endpoint:
+    path: /user/keys/{id}
+    method: DELETE
+- name: list_user_repos
+  endpoint:
+    path: /user/repos
+    method: GET
+- name: create_a_repository
+  endpoint:
+    path: /user/repos
+    method: POST
+- name: get_user_settings
+  endpoint:
+    path: /user/settings
+    method: GET
+- name: update_user_settings
+  endpoint:
+    path: /user/settings
+    method: PATCH
+- name: list_starred_repos
+  endpoint:
+    path: /user/starred
+    method: GET
+- name: star_repo
+  endpoint:
+    path: /repos/{owner}/{repo}/star
+    method: PUT
+- name: unstar_repo
+  endpoint:
+    path: /repos/{owner}/{repo}/star
+    method: DELETE
+- name: get_list_of_stopwatches
+  endpoint:
+    path: /stopwatches
+    method: GET
+- name: list_watched_repos
+  endpoint:
+    path: /user/subscriptions
+    method: GET
+- name: list_user_teams
+  endpoint:
+    path: /user/teams
+    method: GET
+- name: list_tracked_times
+  endpoint:
+    path: /user/times
+    method: GET
+- name: search_for_users
+  endpoint:
+    path: /users/search
+    method: GET
+- name: get_user
+  endpoint:
+    path: /users/{username}
+    method: GET
+- name: list_user_activity_feeds
+  endpoint:
+    path: /users/{username}/events
+    method: GET
+- name: delete_access_token
+  endpoint:
+    path: /users/{username}/tokens/{token}
+    method: DELETE
+    data_selector: APIEmpty
+    params: {}
+- name: list_followers
+  endpoint:
+    path: /users/{username}/followers
+    method: GET
+    data_selector: APIEmpty
+    params:
+      page: '1'
+      limit: integer
+- name: list_following
+  endpoint:
+    path: /users/{username}/following
+    method: GET
+    data_selector: APIEmpty
+    params:
+      page: '1'
+      limit: integer
+- name: check_following
+  endpoint:
+    path: /users/{username}/following/{target}
+    method: GET
+    data_selector: APIEmpty
+    params: {}
+- name: list_gpg_keys
+  endpoint:
+    path: /users/{username}/gpg_keys
+    method: GET
+    data_selector: APIEmpty
+    params:
+      page: '1'
+      limit: integer
+- name: get_heatmap
+  endpoint:
+    path: /users/{username}/heatmap
+    method: GET
+    data_selector: APIEmpty
+    params: {}
+- name: list_public_keys
+  endpoint:
+    path: /users/{username}/keys
+    method: GET
+    data_selector: APIEmpty
+    params:
+      fingerprint: string
+      page: '1'
+      limit: integer
+- name: list_repos_owned
+  endpoint:
+    path: /users/{username}/repos
+    method: GET
+    data_selector: APIEmpty
+    params:
+      page: '1'
+      limit: integer
+- name: list_starred_repos
+  endpoint:
+    path: /users/{username}/starred
+    method: GET
+    data_selector: APIEmpty
+    params:
+      page: '1'
+      limit: integer
+- name: list_watched_repos
+  endpoint:
+    path: /users/{username}/watched
+    method: GET
+    data_selector: APIEmpty
+    params:
+      page: '1'
+      limit: integer
+- name: list_access_tokens
+  endpoint:
+    path: /user/tokens
+    method: GET
+    data_selector: APIEmpty
+    params:
+      page: '1'
+      limit: integer
+- name: create_access_token
+  endpoint:
+    path: /users/{username}/tokens
+    method: POST
+    data_selector: APIEmpty
+    params: {}
+- name: notification_threads
+  endpoint:
+    path: /notifications
+    method: GET
+    data_selector: notifications
+    params: {}
+- name: create_repository
+  endpoint:
+    path: /orgs/{org}/repos
+    method: POST
+    data_selector: repository
+    params: {}
+- name: create_repository
+  endpoint:
+    path: /users/{username}/repos
+    method: POST
+    data_selector: repository
+    params: {}
+- name: search_users
+  endpoint:
+    path: /users/search
+    method: GET
+    data_selector: users
+    params: {}
+- name: list_cron_tasks
+  endpoint:
+    path: /admin/cron
+    method: GET
+    data_selector: tasks
+    params:
+      page: '1'
+      limit: '100'
+- name: run_cron_task
+  endpoint:
+    path: /admin/cron/{task}
+    method: POST
+    data_selector: result
+    params: {}
+- name: list_all_emails
+  endpoint:
+    path: /admin/emails
+    method: GET
+    data_selector: emails
+    params:
+      page: '1'
+      limit: '100'
+- name: organizations
+  endpoint:
+    path: /api/v1/orgs
+    method: GET
+    data_selector: organizations
+    params: {}
+- name: members
+  endpoint:
+    path: /api/v1/orgs/{org}/members
+    method: GET
+    data_selector: members
+    params:
+      page: '1'
+      limit: '30'
+- name: public_members
+  endpoint:
+    path: /api/v1/orgs/{org}/public_members
+    method: GET
+    data_selector: public_members
+    params:
+      page: '1'
+      limit: '30'
+- name: labels
+  endpoint:
+    path: /api/v1/orgs/{org}/labels
+    method: GET
+    data_selector: labels
+    params:
+      page: '1'
+      limit: '30'
+- name: issues
+  endpoint:
+    path: /issues
+    method: GET
+    data_selector: records
+- name: comments
+  endpoint:
+    path: /comments
+    method: GET
+    data_selector: records
+- name: user_permissions
+  endpoint:
+    path: /users/{username}/orgs/{org}/permissions
+    method: GET
+    data_selector: permissions
+    params: {}
+- name: list_organizations
+  endpoint:
+    path: /user/orgs
+    method: GET
+    data_selector: organizations
+    params: {}
+- name: list_user_organizations
+  endpoint:
+    path: /users/{username}/orgs
+    method: GET
+    data_selector: organizations
+    params: {}
+- name: list_team_activity_feeds
+  endpoint:
+    path: /teams/{id}/activity
+    method: GET
+    data_selector: activity
+    params: {}
+- name: list_team_members
+  endpoint:
+    path: /teams/{id}/members
+    method: GET
+    data_selector: members
+    params: {}
+- name: list_team_repos
+  endpoint:
+    path: /teams/{id}/repos
+    method: GET
+    data_selector: repos
+    params: {}
+- name: issue_dependencies
+  endpoint:
+    path: /issues/{owner}/{repo}/{index}/dependencies
+    method: GET
+    data_selector: data
+    params: {}
+- name: issue_labels
+  endpoint:
+    path: /issues/{owner}/{repo}/{index}/labels
+    method: GET
+    data_selector: data
+    params: {}
+- name: reactions
+  endpoint:
+    path: /issues/{owner}/{repo}/{index}/reactions
+    method: GET
+    data_selector: data
+    params: {}
+- name: subscribers
+  endpoint:
+    path: /issues/{owner}/{repo}/{index}/subscribers
+    method: GET
+    data_selector: data
+    params: {}
+- name: comments_events
+  endpoint:
+    path: /issues/{owner}/{repo}/{index}/comments
+    method: GET
+    data_selector: data
+    params: {}
+- name: tracked_times
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/issues/{index}/times
+    method: GET
+    data_selector: times
+    params: {}
+- name: labels
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/labels
+    method: GET
+    data_selector: labels
+    params: {}
+- name: milestones
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/milestones
+    method: GET
+    data_selector: milestones
+    params: {}
+- name: repositories
+  endpoint:
+    path: /api/v1/repos
+    method: GET
+    data_selector: repositories
+    params: {}
+- name: repository_collaborators
+  endpoint:
+    path: /users/{username}/tokens/{token}
+    method: DELETE
+    data_selector: APIEmpty
+- name: repository_branches
+  endpoint:
+    path: /repos/{owner}/{repo}/branches
+    method: GET
+    data_selector: APIEmpty
+- name: repository_activity_feeds
+  endpoint:
+    path: /repos/{owner}/{repo}/activities
+    method: GET
+    data_selector: APIEmpty
+- name: check_collaborator
+  endpoint:
+    path: /repos/{owner}/{repo}/collaborators/{collaborator}
+    method: GET
+- name: add_collaborator
+  endpoint:
+    path: /repos/{owner}/{repo}/collaborators/{collaborator}
+    method: PUT
+- name: delete_collaborator
+  endpoint:
+    path: /repos/{owner}/{repo}/collaborators/{collaborator}
+    method: DELETE
+- name: get_repository_permissions
+  endpoint:
+    path: /repos/{owner}/{repo}/collaborators/{collaborator}/permission
+    method: GET
+- name: get_commits
+  endpoint:
+    path: /repos/{owner}/{repo}/commits
+    method: GET
+- name: get_commit_status
+  endpoint:
+    path: /repos/{owner}/{repo}/commits/{ref}/status
+    method: GET
+- name: get_commit_statuses
+  endpoint:
+    path: /repos/{owner}/{repo}/commits/{ref}/statuses
+    method: GET
+- name: get_root_metadata
+  endpoint:
+    path: /repos/{owner}/{repo}/contents
+    method: GET
+- name: modify_files
+  endpoint:
+    path: /repos/{owner}/{repo}/contents/{filepath}
+    method: PUT
+- name: update_file
+  endpoint:
+    path: /repos/{owner}/{repo}/contents/{filepath}
+    method: PUT
+- name: create_file
+  endpoint:
+    path: /repos/{owner}/{repo}/contents/{filepath}
+    method: PUT
+- name: delete_file
+  endpoint:
+    path: /repos/{owner}/{repo}/contents/{filepath}
+    method: DELETE
+- name: apply_diff_patch
+  endpoint:
+    path: /repos/{owner}/{repo}/git/patch
+    method: POST
+- name: add_reaction_to_comment
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/comments/{id}/reactions
+    method: POST
+    data_selector: response
+    params: {}
+- name: remove_reaction_from_comment
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/comments/{id}/reactions
+    method: DELETE
+    data_selector: response
+    params: {}
+- name: get_issue
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/{index}
+    method: GET
+    data_selector: response
+    params: {}
+- name: delete_issue
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/{index}
+    method: DELETE
+    data_selector: response
+    params: {}
+- name: edit_issue
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/{index}
+    method: PATCH
+    data_selector: response
+    params: {}
+- name: list_issue_attachments
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/{index}/attachments
+    method: GET
+    data_selector: response
+    params: {}
+- name: create_issue_attachment
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/{index}/attachments
+    method: POST
+    data_selector: response
+    params: {}
+- name: get_issue_attachment
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/{index}/attachments/{attachment_id}
+    method: GET
+    data_selector: response
+    params: {}
+- name: delete_issue_attachment
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/{index}/attachments/{attachment_id}
+    method: DELETE
+    data_selector: response
+    params: {}
+- name: edit_issue_attachment
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/{index}/attachments/{attachment_id}
+    method: PATCH
+    data_selector: response
+    params: {}
+- name: list_issues_blocked_by_this_issue
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/{index}/blocked
+    method: GET
+    data_selector: response
+    params: {}
+- name: block_issue
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/{index}/block
+    method: POST
+    data_selector: response
+    params: {}
+- name: unblock_issue
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/{index}/unblock
+    method: POST
+    data_selector: response
+    params: {}
+- name: list_comments_on_issue
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/{index}/comments
+    method: GET
+    data_selector: response
+    params: {}
+- name: add_comment_to_issue
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/{index}/comments
+    method: POST
+    data_selector: response
+    params: {}
+- name: delete_comment
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/comments/{id}
+    method: DELETE
+    data_selector: response
+    params: {}
+- name: edit_comment
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/comments/{id}
+    method: PATCH
+    data_selector: response
+    params: {}
+- name: set_issue_deadline
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/{index}/deadline
+    method: PATCH
+    data_selector: response
+    params: {}
+- name: push_mirror
+  endpoint:
+    path: /api/v1/users/{username}/tokens/{token}
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: pull_request
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/pulls/{index}/reviews
+    method: POST
+    data_selector: ''
+    params: {}
+- name: editor_config
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/contents/{filepath}
+    method: GET
+    data_selector: data
+    params: {}
+- name: repository_forks
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/forks
+    method: GET
+    data_selector: data
+    params: {}
+- name: commit
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/commits/{sha}
+    method: GET
+    data_selector: data
+    params: {}
+- name: commit_diff_patch
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/commits/{sha}/diff
+    method: GET
+    data_selector: data
+    params: {}
+- name: repository_tree
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/git/trees/{sha}
+    method: GET
+    data_selector: data
+    params: {}
+- name: hooks
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/hooks
+    method: GET
+    data_selector: data
+    params: {}
+- name: create_hook
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/hooks
+    method: POST
+    data_selector: data
+    params: {}
+- name: edit_hook
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/hooks/{id}
+    method: PATCH
+    data_selector: data
+    params: {}
+- name: get_hook
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/hooks/{id}
+    method: GET
+    data_selector: data
+    params: {}
+- name: delete_hook
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/hooks/{id}
+    method: DELETE
+    data_selector: data
+    params: {}
+- name: commit_status
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/statuses/{sha}
+    method: POST
+    data_selector: id
+- name: repo_releases
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/releases
+    method: GET
+    data_selector: id
+- name: repo_stargazers
+  endpoint:
+    path: /api/v1/repos/{owner}/{repo}/stargazers
+    method: GET
+    data_selector: id
+- name: add_email_addresses
+  endpoint:
+    path: /users/{username}/emails
+    method: POST
+    data_selector: emails
+    params: {}
+- name: list_authenticated_user_emails
+  endpoint:
+    path: /user/emails
+    method: GET
+    data_selector: emails
+    params: {}
+- name: push_webhook
+  endpoint:
+    path: /hooks/test
+    method: POST
+    data_selector: 'null'
+    params: {}
+- name: issue_config
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/config
+    method: GET
+    data_selector: 'null'
+    params: {}
+- name: validation_info
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/validation
+    method: GET
+    data_selector: 'null'
+    params: {}
+- name: issue_templates
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/templates
+    method: GET
+    data_selector: 'null'
+    params: {}
+- name: pinned_issues
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/pinned
+    method: GET
+    data_selector: 'null'
+    params: {}
+- name: repository_keys
+  endpoint:
+    path: /repos/{owner}/{repo}/keys
+    method: GET
+    data_selector: 'null'
+    params: {}
+- name: add_key
+  endpoint:
+    path: /repos/{owner}/{repo}/keys
+    method: POST
+    data_selector: 'null'
+    params: {}
+- name: get_key_by_id
+  endpoint:
+    path: /repos/{owner}/{repo}/keys/{id}
+    method: GET
+    data_selector: 'null'
+    params: {}
+- name: delete_key
+  endpoint:
+    path: /repos/{owner}/{repo}/keys/{id}
+    method: DELETE
+    data_selector: 'null'
+    params: {}
+- name: languages
+  endpoint:
+    path: /repos/{owner}/{repo}/languages
+    method: GET
+    data_selector: 'null'
+    params: {}
+- name: get_file
+  endpoint:
+    path: /repos/{owner}/{repo}/contents/{filepath}
+    method: GET
+    data_selector: 'null'
+    params: {}
+- name: sync_repository
+  endpoint:
+    path: /repos/{owner}/{repo}/sync
+    method: POST
+    data_selector: 'null'
+    params: {}
+- name: issue_pins
+  endpoint:
+    path: /repos/{owner}/{repo}/issues/pins
+    method: GET
+    data_selector: 'null'
+    params: {}
+- name: pull_requests
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls
+    method: GET
+    data_selector: 'null'
+    params: {}
+- name: create_pull_request
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls
+    method: POST
+    data_selector: 'null'
+    params: {}
+- name: pinned_pull_requests
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/pinned
+    method: GET
+    data_selector: 'null'
+    params: {}
+- name: get_pull_request
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}
+    method: GET
+    data_selector: 'null'
+    params: {}
+- name: update_pull_request
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}
+    method: PATCH
+    data_selector: 'null'
+    params: {}
+- name: pull_request_diff
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}/diff
+    method: GET
+    data_selector: 'null'
+    params: {}
+- name: get_commits
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls/{index}/commits
+    method: GET
+    data_selector: 'null'
+    params: {}
+- name: create_repository
+  endpoint:
+    path: /repos
+    method: POST
+    data_selector: repository
+    params: {}
+- name: list_followers
+  endpoint:
+    path: /user/followers
+    method: GET
+    data_selector: followers
+    params:
+      page: '1'
+      limit: '10'
+- name: list_following
+  endpoint:
+    path: /user/following
+    method: GET
+    data_selector: following
+    params:
+      page: '1'
+      limit: '10'
+- name: list_gpg_keys
+  endpoint:
+    path: /user/gpg_keys
+    method: GET
+    data_selector: gpg_keys
+    params:
+      page: '1'
+      limit: '10'
+- name: list_public_keys
+  endpoint:
+    path: /user/keys
+    method: GET
+    data_selector: public_keys
+    params:
+      page: '1'
+      limit: '10'
+- name: list_repositories_watched_by_user
+  endpoint:
+    path: /users/{username}/watched
+    method: GET
+    data_selector: repositories
+    params:
+      page: '1'
+      limit: '10'
+- name: get_user
+  endpoint:
+    path: /users/{username}
+    method: GET
+    data_selector: user
+    params: {}
+- name: list_repo_watchers
+  endpoint:
+    path: /repos/{owner}/{repo}/watchers
+    method: GET
+    data_selector: ''
+- name: check_user_watching_repo
+  endpoint:
+    path: /repos/{owner}/{repo}/subscription
+    method: GET
+    data_selector: ''
+- name: watch_repo
+  endpoint:
+    path: /repos/{owner}/{repo}/subscription
+    method: PUT
+    data_selector: ''
+- name: unwatch_repo
+  endpoint:
+    path: /repos/{owner}/{repo}/subscription
+    method: DELETE
+    data_selector: ''
+- name: list_repo_tags
+  endpoint:
+    path: /repos/{owner}/{repo}/tags
+    method: GET
+    data_selector: ''
+- name: create_git_tag
+  endpoint:
+    path: /repos/{owner}/{repo}/git/tags
+    method: POST
+    data_selector: ''
+- name: get_tag_by_name
+  endpoint:
+    path: /repos/{owner}/{repo}/git/tags/{tag}
+    method: GET
+    data_selector: ''
+- name: delete_repo_tag
+  endpoint:
+    path: /repos/{owner}/{repo}/git/refs/tags/{tag}
+    method: DELETE
+    data_selector: ''
+- name: list_repo_teams
+  endpoint:
+    path: /repos/{owner}/{repo}/teams
+    method: GET
+    data_selector: ''
+- name: check_team_assigned
+  endpoint:
+    path: /repos/{owner}/{repo}/teams/{team}
+    method: GET
+    data_selector: ''
+- name: add_team_to_repo
+  endpoint:
+    path: /repos/{owner}/{repo}/teams/{team}
+    method: PUT
+    data_selector: ''
+- name: delete_team_from_repo
+  endpoint:
+    path: /repos/{owner}/{repo}/teams/{team}
+    method: DELETE
+    data_selector: ''
+- name: list_tracked_times
+  endpoint:
+    path: /repos/{owner}/{repo}/tracked_times
+    method: GET
+    data_selector: ''
+- name: get_user_tracked_times
+  endpoint:
+    path: /repos/{owner}/{repo}/tracked_times/{user}
+    method: GET
+    data_selector: ''
+- name: get_repo_topics
+  endpoint:
+    path: /repos/{owner}/{repo}/topics
+    method: GET
+    data_selector: ''
+- name: replace_repo_topics
+  endpoint:
+    path: /repos/{owner}/{repo}/topics
+    method: PUT
+    data_selector: ''
+- name: add_topic_to_repo
+  endpoint:
+    path: /repos/{owner}/{repo}/topics/{topic}
+    method: PUT
+    data_selector: ''
+- name: delete_topic_from_repo
+  endpoint:
+    path: /repos/{owner}/{repo}/topics/{topic}
+    method: DELETE
+    data_selector: ''
+- name: transfer_repo_ownership
+  endpoint:
+    path: /repos/{owner}/{repo}/transfer
+    method: POST
+    data_selector: ''
+- name: accept_repo_transfer
+  endpoint:
+    path: /repos/{owner}/{repo}/transfer/accept
+    method: POST
+    data_selector: ''
+- name: reject_repo_transfer
+  endpoint:
+    path: /repos/{owner}/{repo}/transfer/reject
+    method: POST
+    data_selector: ''
+- name: create_wiki_page
+  endpoint:
+    path: /repos/{owner}/{repo}/wiki
+    method: POST
+    data_selector: ''
+- name: access_token
+  endpoint:
+    path: /users/{username}/tokens
+    method: GET
+    data_selector: tokens
+    params: {}
+- name: delete_access_token
+  endpoint:
+    path: /users/{username}/tokens/{token}
+    method: DELETE
+    data_selector: response
+    params: {}
+- name: create_access_token
+  endpoint:
+    path: /users/{username}/tokens
+    method: POST
+    data_selector: token
+    params: {}
+- name: register
+  endpoint:
+    path: /-/admin/actions/runners
+    method: GET
+    data_selector: runner
+    params: {}
+- name: register_gitea_service
+  endpoint:
+    path: /installation/windows-service
+    method: GET
+    data_selector: content
+    params: {}
+- name: unregister_gitea_service
+  endpoint:
+    path: /installation/windows-service/unregister
+    method: GET
+    data_selector: content
+    params: {}
+- name: server
+  endpoint:
+    path: /gitea:1.24.5-rootless
+    method: GET
+    data_selector: services
+    params: {}
+- name: db
+  endpoint:
+    path: /mysql:8
+    method: GET
+    data_selector: services
+    params: {}
+- name: db
+  endpoint:
+    path: /postgres:14
+    method: GET
+    data_selector: services
+    params: {}
+- name: gitea
+  endpoint:
+    path: /api/1.24/
+    method: GET
+- name: server
+  endpoint:
+    path: /services/data/v1.24.5
+    method: GET
+- name: db
+  endpoint:
+    path: /services/data/v1.24.5
+    method: GET
+- name: health_check
+  endpoint:
+    path: /api/healthz
+    method: GET
+    data_selector: status
+- name: SIGNING
+  endpoint:
+    path: /repository/signing
+    method: GET
+- name: LOCAL
+  endpoint:
+    path: /repository/local
+    method: GET
+- name: MIME_TYPE_MAPPING
+  endpoint:
+    path: /repository/mimetype_mapping
+    method: GET
+- name: CORS
+  endpoint:
+    path: /cors
+    method: GET
+- name: UI
+  endpoint:
+    path: /ui
+    method: GET
+- name: MARKDOWN
+  endpoint:
+    path: /markdown
+    method: GET
+- name: repository
+  endpoint:
+    path: /repos
+    method: GET
+    data_selector: data
+    params: {}
+- name: issues
+  endpoint:
+    path: /repos/{owner}/{repo}/issues
+    method: GET
+    data_selector: data
+    params: {}
+- name: pull_requests
+  endpoint:
+    path: /repos/{owner}/{repo}/pulls
+    method: GET
+    data_selector: data
+    params: {}
+- name: database
+  endpoint:
+    path: /
+    method: GET
+    data_selector: records
+    params: {}
+- name: attachments
+  endpoint:
+    path: /attachments
+    method: POST
+    data_selector: attachments
+    params: {}
+- name: webhook
+  endpoint:
+    path: /webhook
+    method: POST
+    data_selector: data
+    params:
+      queue_length: 1000
+      deliver_timeout: 5
+- name: mailer
+  endpoint:
+    path: /mailer
+    method: POST
+    data_selector: data
+    params:
+      enabled: false
+- name: repositories
+  endpoint:
+    path: /api/v1/repos
+    method: GET
+    data_selector: data
+    params: {}
+- name: repository
+  endpoint:
+    path: /api/v1/repos
+    method: GET
+    data_selector: repositories
+- name: app_data
+  endpoint:
+    path: /data
+    method: GET
+    data_selector: records
+    params: {}
+- name: webhook
+  endpoint:
+    path: /webhook
+    method: POST
+    data_selector: events
+- name: attachment
+  endpoint:
+    path: /attachments
+    method: POST
+    data_selector: attachments
+    params:
+      enabled: 'true'
+      allowed_types: .avif,.cpuprofile,.csv,.dmp,.docx,.fodg,.fodp,.fods,.fodt,.gif,.gz,.jpeg,.jpg,.json,.jsonc,.log,.md,.mov,.mp4,.odf,.odg,.odp,.ods,.odt,.patch,.pdf,.png,.pptx,.svg,.tgz,.txt,.webm,.webp,.xls,.xlsx,.zip
+      max_size: '2048'
+      max_files: '5'
+      storage_type: local
+      path: attachments
+- name: user
+  endpoint:
+    path: /admin/user
+    method: GET
+    data_selector: users
+- name: auth
+  endpoint:
+    path: /admin/auth
+    method: GET
+    data_selector: auth_sources
+- name: ldap
+  endpoint:
+    path: /admin/auth/ldap
+    method: POST
+    data_selector: ldap_sources
+- name: doctor_check
+  endpoint:
+    path: /doctor/check
+    method: GET
+    data_selector: ''
+    params: {}
+- name: doctor_recreate_table
+  endpoint:
+    path: /doctor/recreate-table
+    method: POST
+    data_selector: ''
+    params: {}
+- name: doctor_convert
+  endpoint:
+    path: /doctor/convert
+    method: POST
+    data_selector: ''
+    params: {}
+- name: dump_repo
+  endpoint:
+    path: /dump-repo
+    method: POST
+    data_selector: ''
+    params: {}
+- name: restore_repo
+  endpoint:
+    path: /restore-repo
+    method: POST
+    data_selector: ''
+    params: {}
+- name: generate_runner_token
+  endpoint:
+    path: /actions/generate-runner-token
+    method: POST
+    data_selector: ''
+    params: {}
+- name: LDAP
+  endpoint:
+    path: /zh-tw/administration/authentication
+    method: GET
+    data_selector: records
+- name: backup
+  endpoint:
+    path: /administration/backup-and-restore
+    method: GET
+    data_selector: ''
+- name: mailer
+  endpoint:
+    path: /administration/email-setup
+    method: GET
+    data_selector: mailer_config
+    params: {}
+- name: server
+  endpoint:
+    path: /admin/https
+    method: GET
+    data_selector: server
+    params: {}
+- name: fail2ban
+  endpoint:
+    path: /administration/fail2ban-setup
+    method: GET
+    data_selector: rules
+    params: {}
+- name: gitea
+  endpoint:
+    path: /gitea
+    method: GET
+- name: proxy
+  endpoint:
+    path: /
+    method: GET
+    data_selector: requests
+    params: {}
+- name: log
+  endpoint:
+    path: /zh-tw/administration/logging-config
+    method: GET
+    data_selector: logs
+    params: {}
+- name: mail_templates
+  endpoint:
+    path: /zh-tw/administration/mail-templates
+    method: GET
+    data_selector: templates
+    params: {}
+- name: repo_indexer
+  endpoint:
+    path: /administration/repo-indexer
+    method: GET
+    data_selector: indexer
+    params:
+      REPO_INDEXER_ENABLED: 'true'
+      REPO_INDEXER_PATH: indexers/repos.bleve
+      MAX_FILE_SIZE: 1048576
+      REPO_INDEXER_INCLUDE: ''
+      REPO_INDEXER_EXCLUDE: resources/bin/**
+- name: signing_key
+  endpoint:
+    path: /api/v1/signing-key.gpg
+    method: GET
+    data_selector: key
+    params: {}
+- name: repository_signing_key
+  endpoint:
+    path: /api/v1/repos/:username/:reponame/signing-key.gpg
+    method: GET
+    data_selector: key
+    params: {}
+- name: asciidoc
+  endpoint:
+    path: /markup/asciidoc
+    method: POST
+    data_selector: rendered_content
+- name: jupyter
+  endpoint:
+    path: /markup/jupyter
+    method: POST
+    data_selector: rendered_content
+- name: restructuredtext
+  endpoint:
+    path: /markup/restructuredtext
+    method: POST
+    data_selector: rendered_content
+- name: html
+  endpoint:
+    path: /markup/html
+    method: POST
+    data_selector: rendered_content
+- name: docx
+  endpoint:
+    path: /markup/docx
+    method: POST
+    data_selector: rendered_content
+- name: custom_configuration
+  endpoint:
+    path: /zh-tw/administration/customizing-gitea
+    method: GET
+- name: openid_configuration
+  endpoint:
+    path: /.well-known/openid-configuration
+    method: GET
+    data_selector: ''
+    params: {}
+- name: authorization_endpoint
+  endpoint:
+    path: /login/oauth/authorize
+    method: GET
+    data_selector: ''
+    params: {}
+- name: access_token_endpoint
+  endpoint:
+    path: /login/oauth/access_token
+    method: POST
+    data_selector: ''
+    params: {}
+- name: userinfo
+  endpoint:
+    path: /login/oauth/userinfo
+    method: GET
+    data_selector: ''
+    params: {}
+- name: json_web_key_set
+  endpoint:
+    path: /login/oauth/keys
+    method: GET
+    data_selector: ''
+    params: {}
+- name: user
+  endpoint:
+    path: /admin/user
+    method: GET
+    data_selector: users
+    params: {}
+- name: auth
+  endpoint:
+    path: /admin/auth
+    method: GET
+    data_selector: auth_sources
+    params: {}
+- name: dump-repo
+  endpoint:
+    path: /dump-repo
+    method: GET
+    data_selector: options
+    params: {}
+- name: restore-repo
+  endpoint:
+    path: /restore-repo
+    method: GET
+    data_selector: options
+    params: {}
+- name: generate-runner-token
+  endpoint:
+    path: /actions/generate-runner-token
+    method: GET
+    data_selector: options
+    params: {}
+- name: user
+  endpoint:
+    path: /admin/user
+    method: GET
+    data_selector: users
+    params: {}
+- name: auth
+  endpoint:
+    path: /admin/auth
+    method: GET
+    data_selector: auth_sources
+    params: {}
+- name: migrate
+  endpoint:
+    path: /migrate
+    method: POST
+    data_selector: data
+    params: {}
+- name: doctor_check
+  endpoint:
+    path: /doctor/check
+    method: GET
+    data_selector: checks
+    params: {}
+- name: dump_repo
+  endpoint:
+    path: /dump-repo
+    method: POST
+    data_selector: repository_data
+    params: {}
+- name: restore_repo
+  endpoint:
+    path: /restore-repo
+    method: POST
+    data_selector: restore_data
+    params: {}
+- name: generate_runner_token
+  endpoint:
+    path: /actions/generate-runner-token
+    method: POST
+    data_selector: token
+    params: {}
+- name: backup
+  endpoint:
+    path: /admin/backup
+    method: POST
+    data_selector: backup_result
+    params: {}
+- name: restore
+  endpoint:
+    path: /admin/restore
+    method: POST
+    data_selector: restore_result
+    params: {}
+- name: email_settings
+  endpoint:
+    path: /administration/email-setup
+    method: GET
+    data_selector: settings
+    params: {}
+- name: server
+  endpoint:
+    path: /admin/https
+    method: GET
+    data_selector: server
+- name: gitea_fail2ban
+  endpoint:
+    path: /administration/fail2ban-setup
+    method: GET
+    data_selector: rules
+    params: {}
+- name: reverse_proxy
+  endpoint:
+    path: /reverse-proxy
+    method: GET
+    data_selector: records
+- name: embedded_resources
+  endpoint:
+    path: /embedded
+    method: GET
+    data_selector: resources
+    params: {}
+- name: log
+  endpoint:
+    path: /zh-cn/administration/logging-config
+    method: GET
+    data_selector: log
+- name: 邮件模板
+  endpoint:
+    path: /zh-cn/administration/mail-templates
+    method: GET
+    data_selector: templates
+- name: repo_indexer
+  endpoint:
+    path: /administration/repo-indexer
+    method: GET
+    data_selector: indexer
+    params: {}
+- name: signing_key
+  endpoint:
+    path: /api/v1/signing-key.gpg
+    method: GET
+    data_selector: ''
+    params: {}
+- name: repository_signing_key
+  endpoint:
+    path: /api/v1/repos/:username/:reponame/signing-key.gpg
+    method: GET
+    data_selector: ''
+    params: {}
+- name: markup.asciidoc
+  endpoint:
+    path: /administration/external-renderers
+    method: GET
+    data_selector: records
+- name: markup.jupyter
+  endpoint:
+    path: /administration/external-renderers
+    method: GET
+    data_selector: records
+- name: markup.restructuredtext
+  endpoint:
+    path: /administration/external-renderers
+    method: GET
+    data_selector: records
+- name: markup.html
+  endpoint:
+    path: /administration/external-renderers
+    method: GET
+    data_selector: records
+- name: markup.docx
+  endpoint:
+    path: /administration/external-renderers
+    method: GET
+    data_selector: records
+- name: authorization_endpoint
+  endpoint:
+    path: /login/oauth/authorize
+    method: GET
+- name: userinfo_endpoint
+  endpoint:
+    path: /login/oauth/userinfo
+    method: GET
+- name: openid_configuration
+  endpoint:
+    path: /.well-known/openid-configuration
+    method: GET
+- name: authorization
+  endpoint:
+    path: /login/oauth/authorize
+    method: GET
+- name: access_token
+  endpoint:
+    path: /login/oauth/access_token
+    method: POST
+- name: token_introspection
+  endpoint:
+    path: /login/oauth/introspect
+    method: POST
+- name: userinfo
+  endpoint:
+    path: /login/oauth/userinfo
+    method: GET
+- name: json_web_key_set
+  endpoint:
+    path: /login/oauth/keys
+    method: GET
+- name: issue_indexer
+  endpoint:
+    path: /indexer
+    method: GET
+    data_selector: ISSUE_INDEXER_TYPE
+    params: {}
+- name: repo_indexer
+  endpoint:
+    path: /repo_indexer
+    method: GET
+    data_selector: REPO_INDEXER_TYPE
+    params: {}
+- name: issue_indexer
+  endpoint:
+    path: /indexer
+    method: GET
+    data_selector: ISSUE_INDEXER_TYPE
+    params:
+      ISSUE_INDEXER_CONN_STR: http://elastic:changeme@localhost:9200
+- name: repo_indexer
+  endpoint:
+    path: /repo_indexer
+    method: GET
+    data_selector: REPO_INDEXER_TYPE
+    params:
+      REPO_INDEXER_CONN_STR: http://elastic:changeme@localhost:9200
+- name: Downloader
+  endpoint:
+    path: /modules/migration/downloader
+    method: GET
+    data_selector: ''
+    params: {}
+- name: Uploader
+  endpoint:
+    path: /modules/migration/uploader
+    method: GET
+    data_selector: ''
+    params: {}
+- name: new_file
+  endpoint:
+    path: /{{org}}/{{repo}}/_new/{{filepath}}
+    method: GET
+    data_selector: records
+    params:
+      filename: '{{filename}}'
+      value: '{{content}}'
+- name: repository
+  endpoint:
+    path: /repos/{owner}/{repo}
+    method: GET
+    data_selector: repository
+    params: {}
+- name: database
+  endpoint:
+    path: /
+    method: GET
+    data_selector: records
+    params: {}
+- name: service
+  endpoint:
+    path: /service
+    method: GET
+- name: cron_tasks
+  endpoint:
+    path: /cron/tasks
+    method: GET
+    data_selector: tasks
+- name: repository
+  endpoint:
+    path: /repositories
+    method: GET
+    data_selector: data
+    params: {}
+- name: issues
+  endpoint:
+    path: /issues
+    method: GET
+    data_selector: data
+    params: {}
+- name: webhook
+  endpoint:
+    path: /webhook
+    method: POST
+- name: metrics
+  endpoint:
+    path: /metrics
+    method: GET
+    data_selector: metrics
+    params: {}
+- name: database
+  endpoint:
+    path: /database
+    method: GET
+    data_selector: records
+- name: indexer
+  endpoint:
+    path: /indexer
+    method: GET
+    data_selector: records
+- name: queue
+  endpoint:
+    path: /queue
+    method: GET
+    data_selector: records
+- name: admin
+  endpoint:
+    path: /admin
+    method: GET
+    data_selector: records
+- name: security
+  endpoint:
+    path: /security
+    method: GET
+    data_selector: records
+- name: camo
+  endpoint:
+    path: /camo
+    method: GET
+    data_selector: records
+- name: openid
+  endpoint:
+    path: /openid
+    method: GET
+    data_selector: records
+- name: oauth2_client
+  endpoint:
+    path: /oauth2_client
+    method: GET
+    data_selector: records
+- name: repository
+  endpoint:
+    path: /api/v1/repositories
+    method: GET
+    data_selector: repositories
+- name: gitea
+  endpoint:
+    path: /gitea
+    method: GET
+    data_selector: records
+    params: {}
+- name: service.explore
+  endpoint:
+    path: /service/explore
+    method: GET
+    data_selector: records
+- name: webhook
+  endpoint:
+    path: /webhook
+    method: POST
+    data_selector: records
+- name: mailer
+  endpoint:
+    path: /mailer
+    method: POST
+    data_selector: records
+- name: federation
+  endpoint:
+    path: /federation
+    method: GET
+    data_selector: data
+    params: {}
+- name: packages
+  endpoint:
+    path: /packages
+    method: GET
+    data_selector: data
+    params: {}
+- name: mirror
+  endpoint:
+    path: /mirror
+    method: GET
+    data_selector: data
+    params: {}
+- name: lfs
+  endpoint:
+    path: /lfs
+    method: GET
+    data_selector: data
+    params: {}
+- name: storage
+  endpoint:
+    path: /storage
+    method: GET
+    data_selector: data
+    params: {}
+- name: actions
+  endpoint:
+    path: /actions
+    method: GET
+    data_selector: data
+    params: {}
+- name: cron_garbage_collect_repositories
+  endpoint:
+    path: /cron/git_gc_repos
+    method: GET
+    data_selector: records
+    params:
+      ENABLED: 'false'
+      SCHEDULE: '@every 72h'
+      TIMEOUT: 60s
+- name: cron_update_ssh_keys
+  endpoint:
+    path: /cron/resync_all_sshkeys
+    method: GET
+    data_selector: records
+    params:
+      ENABLED: 'false'
+      SCHEDULE: '@every 72h'
+- name: cron_resync_hooks
+  endpoint:
+    path: /cron/resync_all_hooks
+    method: GET
+    data_selector: records
+    params:
+      ENABLED: 'false'
+      SCHEDULE: '@every 72h'
+- name: cron_reinit_missing_repos
+  endpoint:
+    path: /cron/reinit_missing_repos
+    method: GET
+    data_selector: records
+    params:
+      ENABLED: 'false'
+      SCHEDULE: '@every 72h'
+- name: cron_delete_missing_repos
+  endpoint:
+    path: /cron/delete_missing_repos
+    method: GET
+    data_selector: records
+    params:
+      ENABLED: 'false'
+      SCHEDULE: '@every 72h'
+- name: cron_delete_generated_avatars
+  endpoint:
+    path: /cron/delete_generated_repository_avatars
+    method: GET
+    data_selector: records
+    params:
+      ENABLED: 'false'
+      SCHEDULE: '@every 72h'
+- name: cron_delete_old_actions
+  endpoint:
+    path: /cron/delete_old_actions
+    method: GET
+    data_selector: records
+    params:
+      ENABLED: 'false'
+      SCHEDULE: '@every 168h'
+      OLDER_THAN: 8760h
+- name: cron_update_checker
+  endpoint:
+    path: /cron/update_checker
+    method: GET
+    data_selector: records
+    params:
+      ENABLED: 'true'
+      SCHEDULE: '@every 168h'
+      HTTP_ENDPOINT: https://dl.gitea.com/gitea/version.json
+- name: cron_delete_old_system_notices
+  endpoint:
+    path: /cron/delete_old_system_notices
+    method: GET
+    data_selector: records
+    params:
+      ENABLED: 'false'
+      SCHEDULE: '@every 168h'
+      OLDER_THAN: 8760h
+- name: cron_gc_lfs
+  endpoint:
+    path: /cron/gc_lfs
+    method: GET
+    data_selector: records
+    params:
+      ENABLED: 'false'
+      SCHEDULE: '@every 24h'
+      OLDER_THAN: 168h
+      LAST_UPDATED_MORE_THAN_AGO: 72h
+      NUMBER_TO_CHECK_PER_REPO: '100'
+      PROPORTION_TO_CHECK_PER_REPO: '0.6'
+- name: issues
+  endpoint:
+    path: /api/v1/issues
+    method: GET
+    data_selector: data
+    params: {}
+- name: repos
+  endpoint:
+    path: /api/v1/repos
+    method: GET
+    data_selector: data
+    params: {}
+- name: app_data
+  endpoint:
+    path: /data
+    method: GET
+    data_selector: records
+- name: repositories
+  endpoint:
+    path: /repos
+    method: GET
+    data_selector: repositories
+- name: issues
+  endpoint:
+    path: /issues
+    method: GET
+    data_selector: issues
+- name: database
+  endpoint:
+    path: /
+    method: GET
+    data_selector: database_records
+    params: {}
+- name: issue_and_pull_request_attachments
+  endpoint:
+    path: /attachments
+    method: POST
+    data_selector: attachments
+    params: {}
+- name: service
+  endpoint:
+    path: /service
+    method: GET
+    data_selector: data
+- name: attachments
+  endpoint:
+    path: attachments/
+    method: GET
+- name: lfs
+  endpoint:
+    path: lfs/
+    method: GET
+- name: avatars
+  endpoint:
+    path: avatars/
+    method: GET
+- name: repo-avatars
+  endpoint:
+    path: repo-avatars/
+    method: GET
+- name: repo-archive
+  endpoint:
+    path: repo-archive/
+    method: GET
+- name: packages
+  endpoint:
+    path: packages/
+    method: GET
+- name: actions_log
+  endpoint:
+    path: actions_log/
+    method: GET
+- name: actions_artifacts
+  endpoint:
+    path: actions_artifacts/
+    method: GET
+- name: repository
+  endpoint:
+    path: /repos
+    method: GET
+    data_selector: repositories
+- name: data
+  endpoint:
+    path: /data
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: database
+  endpoint:
+    path: /database
+    method: GET
+    data_selector: records
+- name: service
+  endpoint:
+    path: /service
+    method: GET
+    data_selector: records
+- name: cron.archive_cleanup
+  endpoint:
+    params:
+      ENABLED: true
+      RUN_AT_START: true
+      SCHEDULE: '@midnight'
+      OLDER_THAN: 24h
+- name: cron.update_mirrors
+  endpoint:
+    params:
+      SCHEDULE: '@every 10m'
+      PULL_LIMIT: 50
+      PUSH_LIMIT: 50
+- name: cron.repo_health_check
+  endpoint:
+    params:
+      SCHEDULE: '@midnight'
+      TIMEOUT: 60s
+- name: cron.check_repo_stats
+  endpoint:
+    params:
+      RUN_AT_START: true
+      SCHEDULE: '@midnight'
+- name: cron.cleanup_hook_task_table
+  endpoint:
+    params:
+      ENABLED: true
+      RUN_AT_START: false
+      SCHEDULE: '@midnight'
+      CLEANUP_TYPE: OlderThan
+      OLDER_THAN: 168h
+      NUMBER_TO_KEEP: 10
+- name: cron.cleanup_packages
+  endpoint:
+    params:
+      ENABLED: true
+      RUN_AT_START: true
+      NOTICE_ON_SUCCESS: false
+      SCHEDULE: '@midnight'
+      OLDER_THAN: 24h
+- name: cron.update_migration_poster_id
+  endpoint:
+    params:
+      SCHEDULE: '@midnight'
+- name: cron.sync_external_users
+  endpoint:
+    params:
+      SCHEDULE: '@midnight'
+      UPDATE_EXISTING: true
+- name: admin_user
+  endpoint:
+    path: /admin/user
+    method: GET
+    data_selector: users
+- name: admin_auth
+  endpoint:
+    path: /admin/auth
+    method: GET
+    data_selector: auth_sources
+- name: web
+  endpoint:
+    path: /web
+    method: GET
+    data_selector: response
+    params: {}
+- name: user
+  endpoint:
+    path: /admin/user
+    method: GET
+    data_selector: users
+- name: auth
+  endpoint:
+    path: /admin/auth
+    method: GET
+    data_selector: auth_sources
+- name: dump_repo
+  endpoint:
+    path: /dump-repo
+    method: POST
+    data_selector: options
+    params: {}
+- name: restore_repo
+  endpoint:
+    path: /restore-repo
+    method: POST
+    data_selector: options
+    params: {}
+- name: generate_runner_token
+  endpoint:
+    path: /actions/generate-runner-token
+    method: POST
+    data_selector: options
+    params: {}
+- name: mailer
+  endpoint:
+    path: /administration/email-setup
+    method: GET
+    data_selector: mailer_config
+    params: {}
+- name: LFS
+  endpoint:
+    path: /administration/git-lfs-setup
+    method: GET
+    data_selector: LFS setup options
+- name: fail2ban
+  endpoint:
+    path: /administration/fail2ban-setup
+    method: GET
+- name: reverse_proxy
+  endpoint:
+    path: /
+    method: GET
+    data_selector: ''
+    params: {}
+- name: embedded_resources
+  endpoint:
+    path: /embedded
+    method: GET
+    data_selector: resources
+    params: {}
+- name: log
+  endpoint:
+    path: /1.23/administration/logging-config
+    method: GET
+    data_selector: logs
+    params: {}
+- name: mail_templates
+  endpoint:
+    path: /administration/mail-templates
+    method: GET
+    data_selector: templates
+- name: repo_indexer
+  endpoint:
+    path: /admin/indexer
+    method: POST
+    data_selector: indexer
+    params:
+      REPO_INDEXER_ENABLED: 'true'
+      REPO_INDEXER_PATH: indexers/repos.bleve
+      MAX_FILE_SIZE: 1048576
+      REPO_INDEXER_EXCLUDE: resources/bin/**
+- name: signing_key
+  endpoint:
+    path: /api/v1/signing-key.gpg
+    method: GET
+    data_selector: ''
+    params: {}
+- name: repository_signing_key
+  endpoint:
+    path: /api/v1/repos/:username/:reponame/signing-key.gpg
+    method: GET
+    data_selector: ''
+    params: {}
+- name: markup_asciidoc
+  endpoint:
+    path: /markup/asciidoc
+    method: POST
+    data_selector: markup
+    params: {}
+- name: markup_jupyter
+  endpoint:
+    path: /markup/jupyter
+    method: POST
+    data_selector: markup
+    params: {}
+- name: markup_restructuredtext
+  endpoint:
+    path: /markup/restructuredtext
+    method: POST
+    data_selector: markup
+    params: {}
+- name: robots_txt
+  endpoint:
+    path: /public/robots.txt
+    method: GET
+    data_selector: content
+    params: {}
+- name: openid_configuration
+  endpoint:
+    path: /.well-known/openid-configuration
+    method: GET
+- name: authorization_endpoint
+  endpoint:
+    path: /login/oauth/authorize
+    method: GET
+- name: access_token_endpoint
+  endpoint:
+    path: /login/oauth/access_token
+    method: POST
+- name: token_introspection_endpoint
+  endpoint:
+    path: /login/oauth/introspect
+    method: GET
+- name: userinfo
+  endpoint:
+    path: /login/oauth/userinfo
+    method: GET
+- name: json_web_key_set
+  endpoint:
+    path: /login/oauth/keys
+    method: GET
+- name: user
+  endpoint:
+    path: /admin/user
+    method: GET
+- name: auth
+  endpoint:
+    path: /admin/auth
+    method: GET
+- name: dump-repo
+  endpoint:
+    path: /dump-repo
+    method: GET
+    data_selector: data
+    params: {}
+- name: restore-repo
+  endpoint:
+    path: /restore-repo
+    method: GET
+    data_selector: data
+    params: {}
+- name: generate-runner-token
+  endpoint:
+    path: /actions/generate-runner-token
+    method: GET
+    data_selector: data
+    params: {}
+- name: backup
+  endpoint:
+    path: /administration/backup-and-restore
+    method: GET
+    data_selector: backup
+    params: {}
+- name: restore
+  endpoint:
+    path: /administration/backup-and-restore
+    method: GET
+    data_selector: restore
+    params: {}
+- name: fail2ban
+  endpoint:
+    path: /administration/fail2ban-setup
+    method: GET
+- name: reverse_proxy
+  endpoint:
+    path: /
+    method: GET
+- name: extract_resources
+  endpoint:
+    path: /embedded/extract
+    method: GET
+    data_selector: resources
+    params: {}
+- name: list_resources
+  endpoint:
+    path: /embedded/list
+    method: GET
+    data_selector: resources
+    params: {}
+- name: log
+  endpoint:
+    path: /administration/logging-config
+    method: GET
+    data_selector: logs
+- name: mail_templates
+  endpoint:
+    path: /api/1.24/mail/templates
+    method: GET
+    data_selector: templates
+- name: signing_key_gpg
+  endpoint:
+    path: /api/v1/signing-key.gpg
+    method: GET
+    data_selector: key
+- name: repository_signing_key
+  endpoint:
+    path: /api/v1/repos/:username/:reponame/signing-key.gpg
+    method: GET
+    data_selector: key
+- name: signing_key_pub
+  endpoint:
+    path: /api/v1/signing-key.pub
+    method: GET
+    data_selector: key
+- name: asciidoc
+  endpoint:
+    path: /markup/asciidoc
+    method: POST
+    data_selector: rendered_output
+- name: jupyter
+  endpoint:
+    path: /markup/jupyter
+    method: POST
+    data_selector: rendered_output
+- name: restructuredtext
+  endpoint:
+    path: /markup/restructuredtext
+    method: POST
+    data_selector: rendered_output
+- name: robots_txt
+  endpoint:
+    path: /public/robots.txt
+    method: GET
+    data_selector: content
+    params: {}
+- name: footer_template
+  endpoint:
+    path: $GITEA_CUSTOM/templates/custom/footer.tmpl
+    method: POST
+    data_selector: script
+    params: {}
+- name: public_assets
+  endpoint:
+    path: $GITEA_CUSTOM/public/assets/o3dv
+    method: GET
+    data_selector: files
+    params: {}
+- name: mail_templates
+  endpoint:
+    path: $GITEA_CUSTOM/templates/mail
+    method: GET
+    data_selector: templates
+    params: {}
+- name: analytics_code
+  endpoint:
+    path: $GITEA_CUSTOM/templates/custom/header.tmpl
+    method: POST
+    data_selector: script
+    params: {}
+- name: git_config
+  endpoint:
+    path: $GITEA_CUSTOM/options/gitignore
+    method: POST
+    data_selector: gitignore_rules
+    params: {}
+- name: license_file
+  endpoint:
+    path: $GITEA_CUSTOM/options/license
+    method: POST
+    data_selector: license_text
+    params: {}
+- name: locale_files
+  endpoint:
+    path: $GITEA_CUSTOM/options/locale
+    method: GET
+    data_selector: locales
+    params: {}
+- name: readme_template
+  endpoint:
+    path: $GITEA_CUSTOM/options/readme
+    method: POST
+    data_selector: markdown
+    params: {}
+- name: OpenID Connect Discovery
+  endpoint:
+    path: /.well-known/openid-configuration
+    method: GET
+- name: Authorization Endpoint
+  endpoint:
+    path: /login/oauth/authorize
+    method: GET
+- name: Access Token Endpoint
+  endpoint:
+    path: /login/oauth/access_token
+    method: POST
+- name: Token Introspection Endpoint
+  endpoint:
+    path: /login/oauth/introspect
+    method: POST
+- name: OpenID Connect UserInfo
+  endpoint:
+    path: /login/oauth/userinfo
+    method: GET
+- name: JSON Web Key Set
+  endpoint:
+    path: /login/oauth/keys
+    method: GET
+- name: openid_configuration
+  endpoint:
+    path: /.well-known/openid-configuration
+    method: GET
+- name: authorization_endpoint
+  endpoint:
+    path: /login/oauth/authorize
+    method: GET
+- name: access_token_endpoint
+  endpoint:
+    path: /login/oauth/access_token
+    method: POST
+- name: userinfo_endpoint
+  endpoint:
+    path: /login/oauth/userinfo
+    method: GET
+- name: keys_endpoint
+  endpoint:
+    path: /login/oauth/keys
+    method: GET
+- name: openid_configuration
+  endpoint:
+    path: /.well-known/openid-configuration
+    method: GET
+    data_selector: ''
+- name: authorization_endpoint
+  endpoint:
+    path: /login/oauth/authorize
+    method: GET
+    data_selector: ''
+- name: access_token_endpoint
+  endpoint:
+    path: /login/oauth/access_token
+    method: POST
+    data_selector: ''
+- name: userinfo
+  endpoint:
+    path: /login/oauth/userinfo
+    method: GET
+    data_selector: ''
+- name: jwks
+  endpoint:
+    path: /login/oauth/keys
+    method: GET
+    data_selector: ''
+- name: openid_configuration
+  endpoint:
+    path: /.well-known/openid-configuration
+    method: GET
+- name: authorization_endpoint
+  endpoint:
+    path: /login/oauth/authorize
+    method: GET
+- name: access_token_endpoint
+  endpoint:
+    path: /login/oauth/access_token
+    method: POST
+- name: userinfo_endpoint
+  endpoint:
+    path: /login/oauth/userinfo
+    method: GET
+- name: json_web_key_set
+  endpoint:
+    path: /login/oauth/keys
+    method: GET
+- name: openid_configuration
+  endpoint:
+    path: /.well-known/openid-configuration
+    method: GET
+- name: authorization_endpoint
+  endpoint:
+    path: /login/oauth/authorize
+    method: GET
+- name: access_token_endpoint
+  endpoint:
+    path: /login/oauth/access_token
+    method: POST
+- name: userinfo
+  endpoint:
+    path: /login/oauth/userinfo
+    method: GET
+- name: jwks
+  endpoint:
+    path: /login/oauth/keys
+    method: GET
+- name: issue_indexer
+  endpoint:
+    path: /indexer
+    method: GET
+    data_selector: records
+- name: repo_indexer
+  endpoint:
+    path: /repo_indexer
+    method: GET
+    data_selector: records
+- name: issue_indexer
+  endpoint:
+    path: /indexer
+    method: GET
+    data_selector: records
+    params:
+      ISSUE_INDEXER_TYPE: elasticsearch
+      ISSUE_INDEXER_CONN_STR: http://elastic:changeme@localhost:9200
+- name: repo_indexer
+  endpoint:
+    path: /indexer/repo
+    method: GET
+    data_selector: records
+    params:
+      REPO_INDEXER_ENABLED: 'true'
+      REPO_INDEXER_TYPE: elasticsearch
+      REPO_INDEXER_CONN_STR: http://elastic:changeme@localhost:9200
+- name: users_tokens
+  endpoint:
+    path: /api/v1/users/:name/tokens
+    method: POST
+    data_selector: id
+    params: {}
+- name: new_file
+  endpoint:
+    path: /{{org}}/{{repo}}/_new/{{filepath}}
+    method: GET
+    data_selector: records
+    params:
+      filename: '{{filename}}'
+      value: '{{content}}'
+- name: user
+  endpoint:
+    path: /admin/users
+    method: GET
+    data_selector: users
+- name: auth
+  endpoint:
+    path: /admin/auth
+    method: GET
+    data_selector: auth_sources
+- name: migrate
+  endpoint:
+    path: /migrate
+    method: POST
+    data_selector: data
+    params: {}
+- name: doctor_check
+  endpoint:
+    path: /doctor/check
+    method: GET
+    data_selector: checks
+    params: {}
+- name: dump_repo
+  endpoint:
+    path: /dump-repo
+    method: POST
+    data_selector: repository
+    params: {}
+- name: restore_repo
+  endpoint:
+    path: /restore-repo
+    method: POST
+    data_selector: restored
+    params: {}
+- name: generate_runner_token
+  endpoint:
+    path: /actions/generate-runner-token
+    method: POST
+    data_selector: token
+    params: {}
+- name: user
+  endpoint:
+    path: /admin/users
+    method: GET
+    data_selector: users
+- name: auth
+  endpoint:
+    path: /admin/auth
+    method: GET
+    data_selector: auths
+- name: ldap
+  endpoint:
+    path: /admin/auth/ldap
+    method: POST
+    data_selector: ldaps
+- name: backup
+  endpoint:
+    path: /api/1.24/backup
+    method: POST
+    data_selector: backup_data
+- name: restore
+  endpoint:
+    path: /api/1.24/restore
+    method: POST
+    data_selector: restore_data
+- name: backup
+  endpoint:
+    path: /admin/backup
+    method: POST
+    data_selector: backupResult
+    params: {}
+- name: restore
+  endpoint:
+    path: /admin/restore
+    method: POST
+    data_selector: restoreResult
+    params: {}
+- name: backup
+  endpoint:
+    path: /api/backup
+    method: POST
+    data_selector: backup_info
+    params: {}
+- name: restore
+  endpoint:
+    path: /api/restore
+    method: POST
+    data_selector: restore_info
+    params: {}
+- name: mailer
+  endpoint:
+    path: /api/v1/admin/gitea/configuration
+    method: POST
+    data_selector: mailer
+    params: {}
+- name: server
+  endpoint:
+    path: /admin/server
+    method: GET
+    data_selector: config
+    params: {}
+- name: gitea
+  endpoint:
+    path: /var/lib/gitea/log/gitea.log
+    method: GET
+- name: gitea
+  endpoint:
+    path: /git
+    method: GET
+- name: embedded_resources
+  endpoint:
+    path: /embedded
+    method: GET
+    data_selector: files
+    params: {}
+- name: logs
+  endpoint:
+    path: /logs
+    method: GET
+    data_selector: logs
+    params: {}
+- name: mail_templates
+  endpoint:
+    path: /administration/mail-templates
+    method: GET
+    data_selector: templates
+    params: {}
+- name: repository_indexer
+  endpoint:
+    path: /api/v1/indexer
+    method: POST
+    data_selector: data
+    params:
+      REPO_INDEXER_ENABLED: 'true'
+      REPO_INDEXER_PATH: indexers/repos.bleve
+      MAX_FILE_SIZE: 1048576
+      REPO_INDEXER_EXCLUDE: resources/bin/**
+- name: signing_key
+  endpoint:
+    path: /signing-key.gpg
+    method: GET
+- name: repository_signing_key
+  endpoint:
+    path: /repos/:username/:reponame/signing-key.gpg
+    method: GET
+- name: asciidoc
+  endpoint:
+    path: /markup/asciidoc
+    method: POST
+    data_selector: result
+    params: {}
+- name: jupyter
+  endpoint:
+    path: /markup/jupyter
+    method: POST
+    data_selector: result
+    params: {}
+- name: restructuredtext
+  endpoint:
+    path: /markup/restructuredtext
+    method: POST
+    data_selector: result
+    params: {}
+- name: html
+  endpoint:
+    path: /markup/html
+    method: POST
+    data_selector: result
+    params: {}
+- name: docx
+  endpoint:
+    path: /markup/docx
+    method: POST
+    data_selector: result
+    params: {}
+- name: robots_txt
+  endpoint:
+    path: /public/robots.txt
+    method: GET
+    data_selector: content
+    params: {}
+- name: backup
+  endpoint:
+    path: /administration/backup-and-restore
+    method: GET
+    data_selector: backup
+    params: {}
+- name: backup
+  endpoint:
+    path: /api/1.24/backup
+    method: POST
+    data_selector: backup_data
+    params: {}
+- name: restore
+  endpoint:
+    path: /api/1.24/restore
+    method: POST
+    data_selector: restore_data
+    params: {}
+- name: backup_command
+  endpoint:
+    path: /administration/backup-and-restore
+    method: GET
+    data_selector: dump
+    params: {}
+- name: restore_command
+  endpoint:
+    path: /administration/backup-and-restore
+    method: GET
+    data_selector: restore
+    params: {}
+- name: mailer
+  endpoint:
+    path: /administration/email-setup
+    method: GET
+    data_selector: mailer
+- name: server
+  endpoint:
+    path: /admin/https-setup
+    method: GET
+    data_selector: config
+    params: {}
+- name: fail2ban
+  endpoint:
+    path: /administration/fail2ban-setup
+    method: GET
+    data_selector: content
+    params: {}
+- name: reverse_proxy
+  endpoint:
+    path: /
+    method: GET
+- name: log
+  endpoint:
+    path: /administration/logging-config
+    method: GET
+    data_selector: configuration
+- name: mail_templates
+  endpoint:
+    path: /administration/mail-templates
+    method: GET
+    data_selector: templates
+    params: {}
+- name: repository_indexer
+  endpoint:
+    path: /administration/repo-indexer
+    method: GET
+    data_selector: indexer_settings
+    params: {}
+- name: signing_key
+  endpoint:
+    path: /signing-key.gpg
+    method: GET
+    data_selector: key
+- name: repository_signing_key
+  endpoint:
+    path: /repos/:username/:reponame/signing-key.gpg
+    method: GET
+    data_selector: key
+- name: asciidoc
+  endpoint:
+    path: /administration/external-renderers
+    method: GET
+    data_selector: markup.asciidoc
+    params: {}
+- name: jupyter
+  endpoint:
+    path: /administration/external-renderers
+    method: GET
+    data_selector: markup.jupyter
+    params: {}
+- name: restructuredtext
+  endpoint:
+    path: /administration/external-renderers
+    method: GET
+    data_selector: markup.restructuredtext
+    params: {}
+- name: html
+  endpoint:
+    path: /administration/external-renderers
+    method: GET
+    data_selector: markup.html
+    params: {}
+- name: docx
+  endpoint:
+    path: /administration/external-renderers
+    method: GET
+    data_selector: markup.docx
+    params: {}
+notes:
+- A full restart is required for Gitea configuration changes to take effect.
+- Gitea requires certain configurations for optimal performance.
+- Make sure to configure the HTTP and SSH ports correctly.
+- Basic authentication is required for all API calls.
+- Uses OAuth2 with refresh token — requires setup of connected app in gitea
+- Some endpoints may have rate limits
+- Enable to run all cron tasks periodically with default settings.
+- Using 'self' for DEFAULT_ACTIONS_URL is not recommended for most cases, as it could
+  make names globally ambiguous.
+- You should use your gitea instance ROOT_URL as the instance argument and you should
+  not use localhost or 127.0.0.1 as instance IP.
+- Gitea Enterprise is developed based on the open-source Gitea project.
+- You can apply for a free trial. The trial period is 30 days.
+- Authorization requires Basic Auth
+- Some endpoints require specific user permissions.
+- Supports pagination with page and limit parameters.
+- Requires setup of user authentication for API access.
+- You should not use localhost or 127.0.0.1 as instance IP.
+- To show all SQL logs, you can also set LOG_SQL=true in the [database] section
+- Gitea 是一个轻量级的 DevOps 平台软件
+- Gitea 的设计目标之一就是轻量级和快速响应
+- 轻松地部署在各种服务器上，不需要复杂的配置和依赖
+- Gitea 注重安全性，提供了用户权限管理、访问控制列表等功能
+- Gitea 是一个轻量级的 DevOps 平台软件。
+- Gitea 注重安全性，提供了用户权限管理、访问控制列表等功能。
+- Gitea is a self-hosted Git service.
+- It supports SSH and HTTP/HTTPS protocols.
+- Converting one database type to another is not a well-tested process and you may
+  experience issues.
+- It is better to choose the final database type at the type of the first installation.
+- SQLite does not scale; if you expect your instance to grow at a later time, you
+  should choose another database type.
+- We don't recommend to use the SIGKILL signal (`-9`); you may be forcefully stopping
+  some of Gitea's internal tasks, and it will not gracefully stop (tasks in queues,
+  indexers, etc.)
+- Gitea requires Git version >= 2.0.
+- Go version 1.24 or higher is required.
+- Minimum supported Node.js version is 22.
+- Tested on Ubuntu 16.04, but those should work on any Linux distributions (with little
+  modification).
+- Uses OAuth2 with refresh token — requires setup of connected app in Gitea
+- Make sure you have volumed data to somewhere outside Docker container
+- SSH container passthrough using `authorized_keys` will work only if
+- '* `opensshd` is used in the container'
+- '* if `AuthorizedKeysCommand` is *not used* in combination with `SSH_CREATE_AUTHORIZED_KEYS_FILE=false`
+  to disable authorized files key generation'
+- '* `LOCAL_ROOT_URL` is not changed (depending on the changes)'
+- If you try to run `gitea` on the host, you will attempt to ssh to the container
+  and thence run the `gitea` command there.
+- Never add the `Gitea Host Key` as a SSH key to a user on the Gitea interface.
+- SSH container passthrough using authorized_keys will work only if opensshd is used
+  in the container
+- if AuthorizedKeysCommand is not used in combination with SSH_CREATE_AUTHORIZED_KEYS_FILE=false
+  to disable authorized files key generation
+- LOCAL_ROOT_URL is not changed (depending on the changes)
+- If you try to login as the git user on the host in future you will ssh directly
+  to the docker.
+- Never add the Gitea Host Key as a SSH key to a user on the Gitea interface.
+- If using a non-3000 port on http, change app.ini to match LOCAL_ROOT_URL = http://localhost:3000/
+- Gitea provides a Helm Chart to allow for installation on kubernetes
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- 所有默认值可以通过 app.example.ini 查看到。
+- 修改完配置文件后，需要重启 Gitea 服务才能生效。
+- Attachments are stored locally or in Minio if configured.
+- Webhook configuration requires careful setting of QUEUE_LENGTH.
+- Default intervals for checks are 8h for mirror and 10m minimum interval.
+- Multiple domains can be specified in allowed and blocked domains.
+- 修改完配置文件后，需要重启 Gitea 服务才能生效
+- Uses HTTP protocol on port 3000.
+- Default app data path is 'data'.
+- Requires setup of Mailer for email notifications.
+- 每次 http/https 请求重试的退避时间（秒）为 3
+- 使用压缩可以节省存储空间和网络带宽
+- 启用头像联盟支持（参见 http://www.libravatar.org）
+- 如果上传的文件不大于此字节大小，则图像将原样使用，无需调整大小/转换
+- 使用 OAuth2 需要在 API 中设置连接应用程序
+- Gitea supports various configurations to control behavior through environment variables.
+- Gitea 不应以 root 用户身份运行。要绑定到低于 1024 的端口，您可以在 Linux 上使用 setcap 命令：`sudo setcap 'cap_net_bind_service=+ep'
+  /path/to/gitea`。每次更新 Gitea 都需要重新执行此操作。
+- opensshd 要求 Gitea 程序由 root 拥有，并且不可由组或其他人写入。
+- 程序必须使用绝对路径指定。
+- Gitea 必须在运行此命令时处于运行状态才能成功。
+- 反向代理负责处理 CSRF 保护
+- Gitea uses Go language configuration parameters.
+- 为了确保 Gitea 实例的一致性，在备份期间必须关闭它。
+- 恢复需要人工进行。主要是把文件和数据库进行恢复。
+- 当前还没有恢复命令，恢复需要人工进行。主要是把文件和数据库进行恢复。
+- 中间备份文件将会在临时目录进行创建，如果您要重新指定临时目录，可以用 --tempdir 参数，或者用 TMPDIR 环境变量。
+- Gitea 容器中的默认用户是 git（1000:1000）。
+- Only supports authentication when using TLS or HOST=localhost.
+- LFS 服务器支持需要服务器上安装 Git v2.1.2 以上版本
+- Ensure you have a valid SSL/TLS certificate before enabling HTTPS.
+- For ACME, external traffic must be served on port 80 or 443.
+- Gitea will log failed login attempts in log/gitea.log
+- If your Gitea instance runs in Docker, add chain='FORWARD' to jail configuration
+- 确保反向代理不会解码 URI
+- 确保 Host 和 X-Forwarded-Proto 头被正确的传递给 Gitea
+- Ensure to extract only the files that need customization.
+- Default log output is fully functional, no need to redefine.
+- Access logger logs in NCSA Common Log format.
+- 自定义模板在 Gitea 启动时加载。对它们的更改在 Gitea 重新启动之前不会被识别。
+- 唯一必需的模板是操作类型为 `issue` 操作名称为 `default` 的模板，除非用户在 `custom` 目录中覆盖了它。
+- 索引内容可能会消耗大量系统资源，特别是在首次创建索引或全局更新索引时（例如升级 Gitea 之后）。
+- 此功能要求 Git >= 1.7.9，但要实现全部功能，需要 Git >= 2.0.0。
+- 自 1.17 起，Gitea 在自己的主目录中运行 git，并使用自己的配置文件
+- If your external markup language relies on extra classes and attributes on generated
+  HTML elements, you may need to enable custom sanitization policies.
+- 默认情况下，您的 Gitea 安装将被搜索引擎索引。
+- 如果您不希望您的仓库对搜索引擎可见，请进一步阅读。
+- 必须完全重启 Gitea 以使配置生效
+- Requires setup of connected app in Gitea.
+- 'Gitea should not be run as root. To bind to a port below 1024, you can use setcap
+  on Linux: `sudo setcap ''cap_net_bind_service=+ep'' /path/to/gitea`. This will need
+  to be redone every time you update Gitea.'
+- Some commands require specific flags to be provided.
+- 默认情况下不启用反向代理认证，可以通过修改配置启用
+- 需要在执行 Gitea 启动命令前设置环境变量来确保配置生效
+- 在使用 Docker 时，使用 dump 命令有一些注意事项。
+- To ensure consistency, Gitea instance must be stopped during backup.
+- 当前还没有恢复命令，恢复需要人工进行。
+- Only supports authentication when using TLS or local host for SMTP server communication.
+- Requires setup of an application password and 2FA for Gmail.
+- For self-signed certificates, run `gitea cert --host [HOST]` to generate.
+- Log output mode must be changed from console to file for fail2ban to work
+- 您必须在 Gitea 的配置文件中正确的添加类似 `[server] ROOT_URL = http://example.com/gitea/` 的配置项。
+- 路径和 URL 后面都不要写路径符号 '/'
+- 确保只提取需要自定义的文件
+- 位于 custom 目录中的文件不会受到 Gitea 的升级过程的影响
+- 默认情况下，已经有一个完全功能的日志输出，因此不需要重新定义。
+- 访问日志记录器将以 INFO 级别记录，将此日志记录器的 LEVEL 设置为 WARN 或更高级别将导致不记录访问日志。
+- 唯一必需的模板是操作类型为 issue 操作名称为 default 的模板，除非用户在 custom 目录中覆盖了它。
+- 索引内容可能会消耗大量系统资源，特别是在首次创建索引或全局更新索引时（例如升级 Gitea 之后）
+- Gitea requires Git >= 1.7.9 but for full functionality Git >= 2.0.0 is needed.
+- Gitea uses the server's git command to generate all commits, thus will use the server's
+  gpg for signing if configured.
+- Gitea 通过外部二进制文件支持自定义文件渲染（例如 Jupyter notebooks、asciidoc 等）
+- 在进行配置更改后，请重新启动 Gitea 以使更改生效
+- Gitea supports OAuth2 as an authorization provider.
+- Admin must rely on scopes sent by the third party and user approval for restrictive
+  access.
+- Go 版本 1.24 或更高版本是必须的
+- 建议在进行前端开发时省略 bindata 标签，以便实时反映更改
+- 使用 `Make` 来自动化任务和改进开发
+- 建议在进行前端开发时省略 `bindata` 标签，以便实时反映更改
+- 最低支持的 Node.js 版本是 22并且推荐使用最新的 LTS 版本
+- gofmt的结果取决于go的版本。您应该运行与持续集成相同的go版本。
+- Run docker for local ElasticSearch instance with specified parameters.
+- Gitea requires prefix 'token' in Authorization header for apiKey tokens.
+- Sign initial commit.
+- Sign commits to wiki.
+- Sign CRUD actions.
+- Sign merges.
+- Default path for application data is /data/gitea on docker.
+- Gitea will create an authorized_keys file by default when it is not using the internal
+  ssh server.
+- Gitea expects to use a case-sensitive collation for database.
+- Enable this to ask for mail confirmation of registration.
+- Enable this to manually confirm new registrations.
+- Disable registration, after which only admin can create accounts for users.
+- Enable this to force externally created accounts (via GitHub, OpenID Connect, etc)
+  to create a password.
+- Enable this to force users to log in to view any page or to use API.
+- Enable this to send e-mail to watchers of a repository when something happens, like
+  creating issues.
+- Default actions URL is set to github.
+- Using self for DEFAULT_ACTIONS_URL is not recommended for most cases.
+- Path for temporary local repository copies. Defaults to tmp/local-repo (content
+  gets deleted on Gitea restart)
+- Must disable ui.notification.EVENT_SOURCE_UPDATE_TIME by setting it to -1.
+- Default platform to get action plugins is github.
+- Leave CHARSET_COLLATION and SCHEMA empty to use default.
+- Enable mail service for notifications.
+- Webhooks can only call allowed hosts for security.
+- Changing the settings below can break federation.
+- Default storage configuration is recommended.
+- Render soft line breaks as hard line breaks in comments.
+- Render soft line breaks as hard line breaks in documents.
+- Default root path for storing data is /data/gitea on docker
+- Enable exposure of SSH clone URL to anonymous visitors, default is false
+- Enable this to ask for mail confirmation of registration. Requires Mailer to be
+  enabled.
+- Enable this to manually confirm new registrations. Requires REGISTER_EMAIL_CONFIRM
+  to be disabled.
+- Some objects may return nulls in deeply nested fields
+- Enable gzip compression for runtime-generated content is disabled.
+- Automatic certificate management via ACME is disabled.
+- Configuration changes require a full restart for them to take effect.
+- Database user password can be quoted if using special characters.
+- The database must exist beforehand for PostgreSQL.
+- Maximum size for attachments is 4MB
+- Allowed file types include .csv, .docx, .pdf, .png, etc.
+- Enable mail service to send e-mails
+- SMTP settings may need adjustment based on provider
+- Default storage configuration for attachments, lfs, avatars, repo-avatars, repo-archive,
+  packages, actions_log, actions_artifact.
+- Default root path for storing data is data.
+- HTTP listen address is 0.0.0.0 and port is 3000.
+- Use your password or "your password" for quoting if you use special characters.
+- Some objects may return nulls in deeply nested fields.
+- Enable this to allow reverse proxy authentication.
+- Enable this to allow auto-registration for reverse authentication.
+- Enable this to allow to auto-registration with a provided email rather than a generated
+  email.
+- Enable this to allow to auto-registration with a provided full name for the user.
+- Enable this to use captcha validation for registration.
+- Enable this to require captcha validation for login.
+- Enable this to force captcha validation even for External Accounts (i.e. GitHub,
+  OpenID Connect, etc).
+- Enable this to allow dependencies on issues from any repository where the user is
+  granted access.
+- Enable this to display the heatmap on users profiles.
+- Enable Timetracking feature.
+- Enable this to have dependencies enabled by default.
+- Enable this to let all organisation users watch new repos when they are created.
+- Enable this to make users watch a repository after their first commit to it.
+- Set default visibility mode for users, either "public", "limited" or "private".
+- Set which visibility modes a user can have.
+- Set default visibility mode for organisations, either "public", "limited" or "private".
+- Set to true to force registration only via Gitea.
+- Set to true to force registration only using third-party services.
+- Gitea should not be run as root. To bind to a port below 1024, you can use setcap
+  on Linux.
+- 'Gitea should not be run as root. To bind to a port below 1024, you can use setcap
+  on Linux: sudo setcap ''cap_net_bind_service=+ep'' /path/to/gitea. This will need
+  to be redone every time you update Gitea.'
+- Uses OAuth2 for authentication.
+- PAM support is added via build-time flags and the official binaries provided do
+  not have this enabled.
+- Initialize them before Gitea command to be effective
+- To ensure the consistency of the Gitea instance, it must be shutdown during backup.
+- Repository Git Hooks should be regenerated if installation method is changed (eg.
+  binary -> Docker), or if Gitea is installed to a different directory than the previous
+  installation.
+- Gitea currently has a `dump` command that will save the installation to a ZIP file.
+- Gitea must be shutdown during backup to ensure consistency.
+- There is currently no support for a recovery command; it's a manual process.
+- Authentication is only supported when the SMTP server communication is encrypted
+  with TLS.
+- TLS encryption can be through STARTTLS via port 587 or SMTPS connection via port
+  465.
+- LFS server support needs at least Git v2.1.2 installed on the server
+- The option is currently set to default false due to an open bug in the `git-lfs`
+  client that causes SSH transfers to hang
+- Before you enable HTTPS, make sure that you have valid SSL/TLS certificates.
+- You must consent to the ACME provider's terms of service.
+- Make sure to test this before relying on it so you don't lock yourself out.
+- Assumes handling HTTPS on the traefik side and using HTTP between Gitea and traefik
+- Make sure the reverse-proxy does not decode the URI. The request `https://git.example.com/a%2Fb`
+  should be passed as `http://gitea:3000/a%2Fb`.
+- Make sure to only extract those files that require customization. Files that are
+  present in the custom directory are not upgraded by Gitea's upgrade process.
+- The logging configuration of Gitea mainly consists of 3 types of components.
+- Custom templates are loaded when Gitea starts.
+- Changes made to templates are not recognized until Gitea is restarted.
+- Indexing the contents can consume a lot of system resources, especially when the
+  index is created for the first time or globally updated.
+- Gitea generates all its commits using the server git command.
+- Only install a signing secret subkey without the master signing and certifying secret
+  key.
+- This supports rendering of whole files.
+- If you want to render code blocks in markdown you would need to do something with
+  javascript.
+- By default your Gitea installation will be indexed by search engines.
+- To block search engines, create a file with path 'public/robots.txt' in the 'custom'
+  folder.
+- Locales may change between versions, so keeping track of your customized locales
+  is highly encouraged.
+- Gitea must perform a full restart to see configuration changes.
+- Requires setup of OAuth2 client in Gitea
+- Enable reverse proxy authentication by setting ENABLE_REVERSE_PROXY_AUTHENTICATION
+  to true
+- Gitea currently has a dump command that will save the installation to a ZIP file.
+- Be sure to set ENABLE_NOTIFY_MAIL=true to allow Gitea to send email notifications.
+- Make sure that you have valid SSL/TLS certificates.
+- If your certificate is signed by a third party certificate authority, then cert.pem
+  should contain the certificate chain.
+- If you run Gitea behind a reverse proxy with Nginx, you need to add this to your
+  Nginx configuration so that IPs don't show up as 127.0.0.1.
+- MUST set something like [server] ROOT_URL = http://example.com/gitea/ correctly
+  in your configuration.
+- Make sure the reverse-proxy does not decode the URI.
+- Make sure `Host` and `X-Forwarded-Proto` headers are correctly passed to Gitea.
+- The embedded data extraction tool is included in Gitea versions 1.12 and above.
+- Make sure to only extract those files that require customization.
+- 'The logging configuration of Gitea mainly consists of 3 types of components: general
+  configuration, log writers, and sub-logger configurations.'
+- Custom templates are loaded when Gitea starts. Changes made to them are not recognized
+  until Gitea is restarted again.
+- The only mandatory template is action type `issue`, action name `default`, which
+  is already embedded in Gitea unless it's overridden by the user in the `custom`
+  directory.
+- Keys are not checked to determine if they have expired or revoked.
+- A commit will be marked with a grey unlocked icon if no key can be found to verify
+  it.
+- Gitea supports custom file renderings through external binaries.
+- You must define ELEMENT and ALLOW_ATTR in each section.
+- Please ensure you have registered your OAuth application as a public client.
+- By default, if the third party sets the scopes to openid, email, profile, and groups,
+  and the user approves, the application gains full access to all of the user's public
+  and private resources.
+- Gitea supports acting as an OAuth2 provider to allow third party applications to
+  access its resources with the user's consent.
+- To use the Authorization Code Grant as a third party application it is required
+  to register a new application via the 'Settings' section of the settings.
+- To use the Authorization Code Grant, register a new application via the 'Settings'
+  section.
+- Gitea makes heavy use of Make to automate tasks and improve development.
+- If you are attempting to build using make with Windows Command Prompt, you may run
+  into issues.
+- If you are attempting to build using make with Windows Command Prompt, you may run
+  into issues. The above prompts (Git bash, or MinGW) are recommended.
+- Uses basic authentication with username 'elastic' and password 'changeme'
+- Ensure local ElasticSearch is running on port 9200
+- Uses OAuth2 with token in Authorization header
+- Requires BasicAuth for creating tokens
+- Reverse Proxy Auth doesn't support the API. You still need an access token or basic
+  auth to make API requests.
+- Requires setup of OAuth2 application for authentication
+- Uses OAuth2 with refresh token
+- Requires setup of connected app in Gitea
+- 'Initialize them before Gitea command to be effective, for example: GITEA_CUSTOM=/home/gitea/custom
+  ./gitea web'
+- Gitea must be shut down during backup.
+- There is currently no support for a recovery command. It is a manual process.
+- Gitea must be shut down during backup to ensure consistency.
+- Uses SMTP for mailer functionality
+- Authentication is only supported when the SMTP server communication is encrypted
+  with TLS or HOST=localhost
+- This bans someone for 15 minutes (from all ports) when they fail authentication
+  10 times in an hour.
+- In case you already have a site, and you want Gitea to share the domain name, you
+  can setup Traefik to serve Gitea under a sub-path.
+- This config assumes that you are handling HTTPS on the traefik side and using HTTP
+  between Gitea and traefik.
+- Set `[server] ROOT_URL = https://git.example.com/` in your `app.ini` file.
+- Make sure `Host` and `X-Fowarded-Proto` headers are correctly passed to Gitea.
+- There is a fully functional log output by default, so it is not necessary to define
+  one.
+- Templates are located under the custom directory.
+- Gitea will verify GPG commit signatures in the provided tree by checking if the
+  commits are signed by a key within the Gitea database.
+- If you installed Gitea in a subdirectory, you will need to create or edit the robots.txt
+  in the top level directory.
+- Gitea uses WorkPath/custom folder by default. Use GITEA_CUSTOM to change custom
+  directory.
+- Gitea must be shutdown during backup for consistency.
+- There is currently no support for a recovery command; it is a manual process.
+- There is currently no support for a recovery command.
+- Authentication is only supported when the SMTP server communication is encrypted
+  with TLS or HOST=localhost.
+- The option is currently set to default false due to an open bug in the git-lfs client
+  that causes SSH transfers to hang
+- This bans someone for 15 minutes when they fail authentication 10 times in an hour.
+- no trailing slash after either /git or port
+- Make sure Host and X-Fowarded-Proto headers are correctly passed to Gitea.
+- Only extract those files that require customization. Files that are present in the
+  custom directory are not upgraded by Gitea's upgrade process.
+- 'The logging configuration of Gitea mainly consists of 3 types of components: the
+  [log] section for general configuration, [log.<mode-name>] sections for the configuration
+  of different log writers to output logs, and sub-logger configurations.'
+- The signer of a commit does not have to be an author or committer of a commit.
+- Once your configuration changes have been made, restart Gitea to have changes take
+  effect.
+- 'To make Gitea serve a custom robots.txt (default: empty 404) for top level installations,
+  create a file with path public/robots.txt in the custom folder or CustomPath.'
+- certNonceSeed should be set to a random string and be kept secret.
+errors:
+- '400 Bad Request: Invalid request format or parameters.'
+- '404 Not Found: Resource not found.'
+- '500 Internal Server Error: Unexpected server error.'
+- '401 Unauthorized: Check your API key or credentials.'
+- '404 Not Found: The requested resource does not exist.'
+- 'LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 403 APIForbiddenError is a forbidden error response
+- 404 APINotFound is a not found empty response
+- 422 APIError is error format response
+- 'APIForbiddenError: Forbidden access'
+- 'APINotFound: Resource not found'
+- 'APIError: General error format'
+- '403: APIForbiddenError'
+- '404: APINotFound'
+- '422: APIError'
+- APIEmpty
+- APIForbiddenError
+- APINotFound
+- APIError
+- APIForbiddenError is a forbidden error response
+- APINotFound is a not found empty response
+- APIError is error format response
+- 'APIForbiddenError: Forbidden error response'
+- 'APINotFound: Not found empty response'
+- 'APIError: Error format response'
+- 'APIEmpty: No content'
+- 'APIForbiddenError: Access forbidden'
+- 'APIError: General error'
+- 'APIEmpty: No content returned'
+- 'APIForbiddenError: Access denied'
+- 'APIError: General error occurred'
+- APIEmpty is an empty response
+- 'APIForbiddenError: A forbidden error response'
+- 'APINotFound: A not found empty response'
+- 'APIForbiddenError: Check permissions'
+- 'APINotFound: Verify resource existence'
+- 'APIError: Check request format and parameters'
+- 'APIError: General API error'
+- 403 APIForbiddenError
+- 404 APINotFound
+- 422 APIError
+- 'APIForbiddenError: Check permissions or authentication'
+- 'APINotFound: Verify the resource exists'
+- 'APIError: General error response'
+- '204: APIEmpty is an empty response'
+- '403: APIForbiddenError is a forbidden error response'
+- '404: APINotFound is a not found empty response'
+- '422: APIError is error format response'
+- 'APINotFound: Ensure the repository exists'
+- 'APIError: Review submitted data for errors'
+- 'APINotFound: Not found error response'
+- 'APIEmpty: The response is empty'
+- '204: APIEmpty'
+- 'APIForbiddenError: Access is forbidden'
+- 'APIForbiddenError: Check permissions or token validity'
+- 'APINotFound: Verify the endpoint or resource ID'
+- 'APIError: General error format response'
+- 'APIForbiddenError: You do not have access'
+- 'APIError: An error occurred'
+- 'APIForbiddenError: Recheck permissions'
+- 'APINotFound: Check resource existence'
+- 'APIForbiddenError: Access forbidden - check permissions'
+- 'APINotFound: Resource not found - check endpoint and parameters'
+- 'APIError: General error in processing the request'
+- 'APIForbiddenError: Check your permissions'
+- 'APINotFound: Verify the repository exists'
+- 'APIError: Check the request format'
+- 'APIForbiddenError: forbidden error response'
+- 'APINotFound: not found empty response'
+- 'APIError: error format response'
+- 204 APIEmpty is an empty response
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '404 Not Found: 请求的资源不存在'
+- '401 Unauthorized: 访问未授权'
+- '403 Forbidden: 访问被拒绝'
+- '400 Bad Request: Check the request parameters and body.'
+- '404 Not Found: The requested resource could not be found.'
+- '400 Bad Request: Check input parameters.'
+- '500 Internal Server Error: Server error occurred.'
+- '400 Bad Request: Check request parameters.'
+- '404 Not Found: Verify the endpoint path.'
+- 最大尝试次数为 3
+- 在尝试恢复时可能会出现问题
+- 如果这些路径没有更新，仓库的 push 操作将失败。
+- '401 Unauthorized: Recheck SMTP credentials'
+- 可能会导致在尝试恢复时出现问题。
+- 'Invalid credentials: Check your username and password.'
+- 'Connection failed: Verify SMTP server address and port.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration.'
+- '400 Bad Request: Check request syntax and parameters.'
+- '401 Unauthorized: Invalid authentication credentials.'
+- '500 Internal Server Error: An unexpected error occurred.'
+- 'INVALID_CREDENTIALS: Check your username and password'
+- 'SERVICE_UNAVAILABLE: The service is temporarily unavailable'
+- Failed authentication attempt
+- invalid credentials
+- Check to see if fail2ban has accepted your configuration using service fail2ban
+  status.
+- '401 Unauthorized: Check your authentication credentials'
+- '404 Not Found: The requested resource could not be found'
+- 'ERROR: Backup failed'
+- 'ERROR: Restore failed'
+- Repository Git Hooks should be regenerated if installation method is changed.
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - git
+  - gpg
+  - OAuth2
+  - Downloader
+  - DownloaderFactory
+  - GiteaLocalUploader
+client:
+  base_url: https://gitea.com/api/v1
+  auth:
+    type: BasicAuth
+    location: header
+    header_name: Authorization
+source_metadata: null
