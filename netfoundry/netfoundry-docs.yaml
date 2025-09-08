@@ -1,0 +1,150 @@
+resources:
+- name: k8s pod endpoint
+  endpoint:
+    path: /services/k8s/pod/endpoint
+    method: GET
+- name: hello web server
+  endpoint:
+    path: /services/hello
+    method: GET
+- name: network-groups
+  endpoint:
+    path: /rest/v1/network-groups/
+    method: GET
+    data_selector: ._embedded.organizations[]
+    params: {}
+- name: networkConfigMetadata
+  endpoint:
+    path: /rest/v1/networkConfigMetadata/
+    method: GET
+    data_selector: ._embedded.networkConfigMetadatas[]
+    params: {}
+- name: networks
+  endpoint:
+    path: /core/v2/networks
+    method: POST
+    data_selector: id
+    params: {}
+- name: edge-routers
+  endpoint:
+    path: /core/v2/edge-routers
+    method: POST
+    data_selector: id
+    params: {}
+- name: edge-router-policies
+  endpoint:
+    path: /core/v2/edge-router-policies
+    method: POST
+    data_selector: id
+    params: {}
+- name: services
+  endpoint:
+    path: /core/v2/services
+    method: POST
+    data_selector: id
+    params: {}
+- name: app-wans
+  endpoint:
+    path: /core/v2/app-wans
+    method: POST
+    data_selector: id
+    params: {}
+- name: endpoints
+  endpoint:
+    path: /core/v2/endpoints
+    method: POST
+    data_selector: id
+    params: {}
+- name: network
+  endpoint:
+    path: /rest/v1/resource-network-create
+    method: POST
+- name: gateway
+  endpoint:
+    path: /rest/v1/resource-gateway-create
+    method: POST
+- name: service
+  endpoint:
+    path: /rest/v1/resource-ip-host-service-create
+    method: POST
+- name: appwan
+  endpoint:
+    path: /rest/v1/resource-appwan-create
+    method: POST
+- name: delete_network
+  endpoint:
+    path: /rest/v1/resource-network-delete
+    method: DELETE
+- name: network
+  endpoint:
+    path: /api/v1/networks
+    method: GET
+- name: edge-router
+  endpoint:
+    path: /api/v1/edge-routers
+    method: GET
+- name: network
+  endpoint:
+    path: /rest/v1/network
+    method: POST
+- name: gateway
+  endpoint:
+    path: /rest/v1/gateway
+    method: POST
+- name: service
+  endpoint:
+    path: /rest/v1/service
+    method: POST
+- name: appwan
+  endpoint:
+    path: /rest/v1/appwan
+    method: POST
+notes:
+- All authenticated operations require an HTTP header like
+- 'Requests that include a JSON body must also include a header Content-Type: application/json'
+- Responses with a JSON body will have this header too.
+- 'Accounts come in two flavors: User and ApiAccount. Either may be authorized for
+  any resource action.'
+- Install a tunneler on your device to access demo services.
+- You may supply an API account as a JSON file path to `nfctl --credentials NETFOUNDRY_API_ACCOUNT`
+  in order to login.
+- The CLI is bundled with [the NetFoundry Python3 module](/guides/python/).
+- Uses API key for authentication
+- You must supply an API account as a JSON file path to nfctl --credentials NETFOUNDRY_API_ACCOUNT
+  in order to login.
+- Ziti is a flexible approach to secure, controlled access to Kubernetes cluster services.
+- Use 'Bearer' token for authorization.
+- The session token has all of the powers of your own AWS IAM user credential for
+  the next 15 minutes.
+- Temporary credentials are valid for 15 minutes.
+- The CLI is bundled with the NetFoundry Python3 module
+- You may run `nfctl` with Docker instead of installing on your device.
+- You may learn how to obtain an API account credentials file in the authentication
+  guide.
+- The CLI is bundled with the NetFoundry Python3 module.
+- Use nfctl --credentials NETFOUNDRY_API_ACCOUNT to login with API account credentials.
+- You must supply an API account as a JSON file path to `nfctl --credentials NETFOUNDRY_API_ACCOUNT`
+  in order to login.
+- You may also learn how to obtain an API account credentials file in the authentication
+  guide.
+- Uses temporary AWS session tokens with a maximum duration of 15 minutes.
+- Using a Bastion Host is complicated and static setup.
+- Using Netfoundry APIs and networks enables simple, agile automation and adding new
+  services/access is trivial.
+errors:
+- 'NO_EDGE_ROUTERS_AVAILABLE: No edge routers are assigned and online to handle the
+  requested connection'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - User
+  - ApiAccount
+  - IAM role
+  - session token
+client:
+  base_url: https://gateway.production.netfoundry.io
+  headers:
+    Content-Type: application/json
+source_metadata: null

@@ -1,0 +1,2441 @@
+resources:
+- name: Lakehouse
+  endpoint:
+    path: /lakehouses
+    method: GET
+    data_selector: lakehouses
+    params: {}
+- name: Lake Dataset
+  endpoint:
+    path: /lake-datasets
+    method: GET
+    data_selector: datasets
+    params: {}
+- name: datagen_source
+  endpoint:
+    path: /api/v1/datasources/datagen
+    method: POST
+    data_selector: data
+    params:
+      input_id: businessevent
+      description: Log events for a sample business scenario
+      data_generator_file: businessevent.log
+- name: devnull_destination
+  endpoint:
+    path: /api/v1/destinations/devnull
+    method: POST
+    data_selector: data
+    params:
+      destination_id: DevNull
+- name: transform_data_pipeline
+  endpoint:
+    path: /api/v1/pipelines/transform-data
+    method: POST
+    data_selector: data
+    params:
+      id: transform-data
+- name: Splunk HEC
+  endpoint:
+    path: /services/collector
+    method: POST
+- name: splunk_hec
+  endpoint:
+    path: /services/collector
+    method: POST
+- name: event
+  endpoint:
+    path: /services/collector/event
+    method: POST
+    data_selector: event
+- name: collector
+  endpoint:
+    path: /services/collector
+    method: POST
+    data_selector: event
+- name: raw
+  endpoint:
+    path: /services/collector/raw
+    method: POST
+    data_selector: event
+- name: health
+  endpoint:
+    path: /services/collector/health
+    method: GET
+    data_selector: health
+- name: event
+  endpoint:
+    path: /services/collector
+    method: POST
+    data_selector: event
+- name: MinIO_testing
+  endpoint:
+    path: /api/v1/system/outputs/MinIO_testing
+    method: PATCH
+    data_selector: items
+    params: {}
+- name: copy_packs
+  endpoint:
+    path: /api/v1/packs/__clone__
+    method: POST
+    data_selector: installed
+    params: {}
+- name: export_pack
+  endpoint:
+    path: /api/v1/m/originalHerd/packs/${packName}/export
+    method: GET
+    data_selector: source
+    params:
+      mode: ${exportMode}
+- name: upload_pack
+  endpoint:
+    path: /api/v1/m/newHerd/packs
+    method: PUT
+    data_selector: source
+    params:
+      filename: goatherd.crbl
+- name: install_pack
+  endpoint:
+    path: /api/v1/m/newHerd/packs
+    method: POST
+    data_selector: items
+    params: {}
+- name: lookups
+  endpoint:
+    path: /system/lookups
+    method: GET
+    data_selector: items
+- name: upload_lookup
+  endpoint:
+    path: /system/lookups
+    method: PUT
+    data_selector: ''
+    params:
+      filename: lookupExample.csv
+- name: create_lookup
+  endpoint:
+    path: /system/lookups
+    method: POST
+    data_selector: ''
+    params: {}
+- name: replace_lookup
+  endpoint:
+    path: /system/lookups/{id}
+    method: PATCH
+    data_selector: ''
+    params: {}
+- name: deploy_lookup
+  endpoint:
+    path: /master/groups/{groupName}/deploy
+    method: PATCH
+    data_selector: ''
+    params: {}
+- name: lookup_file
+  endpoint:
+    path: /api/v1/m/default/system/lookups/host_destinations.csv/content
+    method: GET
+    data_selector: content
+- name: upload_lookup_file
+  endpoint:
+    path: /api/v1/m/default/system/lookups
+    method: PUT
+    data_selector: response
+    params:
+      filename: host_destinations.csv
+- name: replace_lookup_file
+  endpoint:
+    path: /api/v1/m/default/system/lookups/host_destination.csv
+    method: PATCH
+    data_selector: response
+- name: get_modified_lookup_info
+  endpoint:
+    path: /api/v1/master/groups/fields=git.log%2Cgit.commit%2Cgit.localChanges%2Clookups
+    method: GET
+    data_selector: items
+- name: deploy_modified_lookup_file
+  endpoint:
+    path: /api/v1/master/groups/default/deploy
+    method: PATCH
+    data_selector: items
+- name: search_jobs
+  endpoint:
+    path: /api/v1/m/default_search/search/jobs
+    method: POST
+    data_selector: items
+    params: {}
+- name: search_job_status
+  endpoint:
+    path: /api/v1/m/default_search/search/jobs/${id}/status
+    method: GET
+    data_selector: items
+    params: {}
+- name: search_job_results
+  endpoint:
+    path: /api/v1/m/default_search/search/jobs/${id}/results
+    method: GET
+    data_selector: items
+    params: {}
+- name: commit
+  endpoint:
+    path: /version/commit
+    method: POST
+    data_selector: items
+    params: {}
+- name: deploy
+  endpoint:
+    path: /master/groups/${groupName}/deploy
+    method: PATCH
+    data_selector: items
+    params: {}
+- name: large_diff
+  endpoint:
+    path: /version/diff
+    method: GET
+    data_selector: diff
+    params:
+      diffLineLimit: '0'
+- name: health
+  endpoint:
+    path: /api/v1/health
+    method: GET
+    data_selector: status
+- name: MinIO_testing
+  endpoint:
+    path: /system/outputs/MinIO_testing
+    method: PATCH
+    data_selector: items
+    params: {}
+- name: copy_packs
+  endpoint:
+    path: /api/v1/packs/__clone__
+    method: POST
+    data_selector: installed
+    params: {}
+- name: export_pack
+  endpoint:
+    path: /api/v1/m/originalHerd/packs/${packName}/export
+    method: GET
+    data_selector: source
+    params:
+      mode: ${exportMode}
+- name: upload_pack
+  endpoint:
+    path: /api/v1/m/newHerd/packs
+    method: PUT
+    data_selector: source
+    params:
+      filename: goatherd.crbl
+- name: install_pack
+  endpoint:
+    path: /api/v1/m/newHerd/packs
+    method: POST
+    data_selector: items
+    params: {}
+- name: get_existing_lookups
+  endpoint:
+    path: /system/lookups
+    method: GET
+    data_selector: items
+- name: create_lookup
+  endpoint:
+    path: /system/lookups
+    method: POST
+    data_selector: items
+- name: replace_lookup
+  endpoint:
+    path: /system/lookups/{id}
+    method: PATCH
+    data_selector: items
+- name: deploy_modified_lookup_files
+  endpoint:
+    path: /master/groups/{groupName}/deploy
+    method: PATCH
+- name: lookups
+  endpoint:
+    path: /api/v1/m/default/system/lookups
+    method: GET
+    data_selector: items
+- name: lookup_file_info
+  endpoint:
+    path: /api/v1/master/groups/fields=git.log%2Cgit.commit%2Cgit.localChanges%2Clookups
+    method: GET
+    data_selector: items
+- name: deploy_lookup
+  endpoint:
+    path: /api/v1/master/groups/default/deploy
+    method: PATCH
+    data_selector: items
+- name: search_jobs
+  endpoint:
+    path: /api/v1/m/default_search/search/jobs
+    method: POST
+    data_selector: items
+    params: {}
+- name: search_job_status
+  endpoint:
+    path: /api/v1/m/default_search/search/jobs/${id}/status
+    method: GET
+    data_selector: items
+    params: {}
+- name: search_job_results
+  endpoint:
+    path: /api/v1/m/default_search/search/jobs/${id}/results
+    method: GET
+    data_selector: items
+    params: {}
+- name: commit_deploy
+  endpoint:
+    path: /version/commit
+    method: POST
+    data_selector: items
+    params: {}
+- name: deploy_changes
+  endpoint:
+    path: /master/groups/${groupName}/deploy
+    method: PATCH
+    data_selector: items
+    params: {}
+- name: large_diff
+  endpoint:
+    path: /version/diff
+    method: GET
+    data_selector: diff
+    params:
+      diffLineLimit: '0'
+- name: large_diff_limited
+  endpoint:
+    path: /version/diff
+    method: GET
+    data_selector: diff
+    params:
+      diffLineLimit: '5000'
+- name: health
+  endpoint:
+    path: /health
+    method: GET
+    data_selector: status
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: connections
+  endpoint:
+    path: /workspace/connections
+    method: GET
+    data_selector: connections
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: default_worker_group
+  endpoint:
+    path: /default
+    method: GET
+- name: default
+  endpoint:
+    path: /routes/default
+    method: GET
+    data_selector: all active Sources
+    params: {}
+- name: weblog
+  endpoint:
+    path: /services/data/vXX.X/sobjects/weblog
+    method: POST
+    data_selector: records
+    params:
+      events_per_second: 10
+- name: 'Cribl Internal: Metrics'
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CriblInternalMetrics
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: deploy_planning
+  endpoint:
+    path: /stream/deploy-planning
+    method: GET
+- name: requirements
+  endpoint:
+    path: /stream/requirements
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: criblstream
+  endpoint:
+    path: /en-US/app/cribl
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: install_worker_script
+  endpoint:
+    path: /init/install-worker.sh
+    method: GET
+    data_selector: ''
+    params: {}
+- name: install_worker
+  endpoint:
+    path: /init/install-worker.sh
+    method: GET
+    data_selector: null
+    params: {}
+- name: install_worker
+  endpoint:
+    path: /init/install-worker.sh
+    method: GET
+    data_selector: script
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: leader
+  endpoint:
+    path: /health
+    method: GET
+    data_selector: status
+    params: {}
+- name: job-config
+  endpoint:
+    path: /opt/cribl/config-volume/groups/group1/local/cribl/jobs.yml
+    method: COPY
+    data_selector: ''
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: leader
+  endpoint:
+    path: /services/leader
+    method: GET
+- name: worker
+  endpoint:
+    path: /services/worker
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: GitHub
+  endpoint:
+    path: /repos
+    method: GET
+- name: GitLab
+  endpoint:
+    path: /projects
+    method: GET
+- name: GitHub Repo
+  endpoint:
+    path: /<your_GitHub_username>/cribl.git
+    method: SSH
+    data_selector: repository
+    params: {}
+- name: version_sync
+  endpoint:
+    path: /version/sync
+    method: POST
+    data_selector: null
+    params:
+      ref: prod
+      deploy: 'true'
+- name: auth_login
+  endpoint:
+    path: /auth/login
+    method: POST
+    data_selector: null
+    params: {}
+- name: Email Notification Target
+  endpoint:
+    path: /stream/email-notifications/#config-email-notifications
+    method: GET
+- name: notification_target
+  endpoint:
+    path: /notifications/targets
+    method: GET
+- name: Notification Targets
+  endpoint:
+    path: /notifications/targets
+    method: GET
+    data_selector: targets
+- name: Add Notification Target
+  endpoint:
+    path: /notifications/targets/add
+    method: POST
+    data_selector: target
+    params: {}
+- name: Manage Notification Targets
+  endpoint:
+    path: /notifications/targets/manage
+    method: PUT
+    data_selector: manage
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: webhook
+  endpoint:
+    path: /stream/webhook-notification-targets
+    method: POST
+- name: notification_target
+  endpoint:
+    path: /pagerduty/notification-targets
+    method: POST
+    data_selector: notification_targets
+    params: {}
+- name: Slack Notification Targets
+  endpoint:
+    path: /slack/notification/targets
+    method: POST
+- name: AWS SNS
+  endpoint:
+    path: /services/sns
+    method: POST
+- name: email_notifications
+  endpoint:
+    path: /stream/notifications/targets/email
+    method: POST
+- name: smtp_configuration
+  endpoint:
+    path: /configuration/smtp
+    method: POST
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: SAML configuration
+  endpoint:
+    path: /login/callback?connection=<organizationId>
+    method: GET
+    data_selector: SAML assertions
+- name: OIDC
+  endpoint:
+    path: /api/v1/auth/authorization-code/callback
+    method: GET
+- name: SAML
+  endpoint:
+    path: /api/v1/auth/saml
+    method: GET
+- name: SAML Application
+  endpoint:
+    path: /settings/global/authentication
+    method: POST
+    data_selector: saml_application
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: aggregations
+  endpoint:
+    path: /stream/aggregations-function/
+    method: GET
+- name: aggregate_metrics
+  endpoint:
+    path: /stream/aggregate-metrics-function/
+    method: GET
+- name: auto_timestamp
+  endpoint:
+    path: /stream/auto-timestamp-function/
+    method: GET
+- name: Syslog
+  endpoint:
+    path: /sources/syslog
+    method: POST
+    data_selector: data
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: api
+  endpoint:
+    path: /path/to/myKey.pem
+    method: POST
+- name: Encryption Keys
+  endpoint:
+    path: /stream/securing-encryption-keys
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: Monitoring
+  endpoint:
+    path: /monitoring
+    method: GET
+    data_selector: data
+    params: {}
+- name: CriblLogs
+  endpoint:
+    path: /cribl_logs
+    method: GET
+    data_selector: logs
+- name: CriblMetrics
+  endpoint:
+    path: /cribl_metrics
+    method: GET
+    data_selector: metrics
+- name: total_throughput_metrics
+  endpoint:
+    path: /internal/metrics/total
+    method: GET
+    data_selector: total_metrics
+- name: system_health_metrics
+  endpoint:
+    path: /internal/metrics/health
+    method: GET
+    data_selector: health_metrics
+- name: worker_node_resource_metrics
+  endpoint:
+    path: /internal/metrics/worker
+    method: GET
+    data_selector: worker_metrics
+- name: persistent_queue_metrics
+  endpoint:
+    path: /internal/metrics/persistent_queue
+    method: GET
+    data_selector: queue_metrics
+- name: integration_metrics
+  endpoint:
+    path: /internal/metrics/integration
+    method: GET
+    data_selector: integration_metrics
+- name: system_metrics
+  endpoint:
+    path: /system/metrics
+    method: GET
+    data_selector: metrics
+    params: {}
+- name: system_info
+  endpoint:
+    path: /system/info
+    method: GET
+    data_selector: info
+    params: {}
+- name: event
+  endpoint:
+    path: /event
+    method: POST
+    data_selector: events
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: Pipelines
+  endpoint:
+    path: /stream/pipelines
+    method: GET
+    data_selector: pipelines
+    params: {}
+- name: sample_pack
+  endpoint:
+    path: /stream/packs/#sample-pack
+    method: GET
+    data_selector: Packs
+    params: {}
+- name: import_pack
+  endpoint:
+    path: /stream/packs/#get-packs
+    method: GET
+    data_selector: Packs
+    params: {}
+- name: best_practices
+  endpoint:
+    path: /stream/packs/#best-practices-for-designing-packs-with-inputs-and-outputs
+    method: GET
+    data_selector: Best Practices
+    params: {}
+- name: datagen_source
+  endpoint:
+    path: /sources/datagens
+    method: POST
+    data_selector: datagen
+    params:
+      events_per_second: 4
+- name: lookup_file
+  endpoint:
+    path: /stream/lookups-configure/#upload-lookups
+    method: POST
+    data_selector: files
+    params: {}
+- name: pack_lookup_file
+  endpoint:
+    path: /stream/lookups-configure/#upload-a-lookup-file-to-a-pack
+    method: POST
+    data_selector: files
+    params: {}
+- name: MaxMind Database
+  endpoint:
+    path: /geoip/geoip2/geolite2/
+    method: GET
+    data_selector: database
+    params: {}
+- name: IPinfo Database
+  endpoint:
+    path: /ipinfo/products/ip-geolocation-database
+    method: GET
+    data_selector: database
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: region_index_sourcetype
+  endpoint:
+    path: region_index_sourcetype.csv
+    method: GET
+    data_selector: records
+- name: firewall_logs
+  endpoint:
+    path: /services/data/v4.10/search
+    method: GET
+    data_selector: results
+    params:
+      incremental: timestamp
+- name: access_combined_logs
+  endpoint:
+    path: /access_combined
+    method: GET
+    data_selector: logs
+    params: {}
+- name: aws_s3_access_logs
+  endpoint:
+    path: /aws:s3:accesslogs
+    method: GET
+    data_selector: logs
+    params: {}
+- name: aws_elb_access_logs
+  endpoint:
+    path: /aws:elb:accesslogs
+    method: GET
+    data_selector: logs
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: VPC Flow Logs
+  endpoint:
+    path: /services/data/v4.10/sobjects/VPCFlowLogs
+    method: GET
+    data_selector: records
+    params: {}
+- name: Cisco ASA Logs
+  endpoint:
+    path: /services/data/v4.10/sobjects/CiscoASALogs
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: encryption_keys
+  endpoint:
+    path: /encryption/keys
+    method: GET
+    data_selector: keys
+- name: key_classes
+  endpoint:
+    path: /encryption/key_classes
+    method: GET
+    data_selector: keyClasses
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: windows_event
+  endpoint:
+    path: /events
+    method: POST
+    data_selector: Event
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: cef_header
+  endpoint:
+    path: /cef/header
+    method: GET
+    data_selector: cef_fields
+    params: {}
+- name: cef_extension
+  endpoint:
+    path: /cef/extension
+    method: GET
+    data_selector: cef_fields
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: DNS Lookup
+  endpoint:
+    path: /lookup
+    method: GET
+- name: Reverse DNS Lookup
+  endpoint:
+    path: /reverse-lookup
+    method: GET
+- name: dynamic_sampling
+  endpoint:
+    path: /dynamic_sampling
+    method: POST
+    data_selector: events
+    params: {}
+- name: GeoIP
+  endpoint:
+    params:
+      Event’s IP field: ip
+      Result field: __geoip
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: logs
+  endpoint:
+    path: /otlp/logs
+    method: POST
+    data_selector: scope_logs
+    params: {}
+- name: otlp_trace
+  endpoint:
+    path: /otlp/traces
+    method: POST
+    data_selector: spans
+    params: {}
+- name: parser_function
+  endpoint:
+    path: /parser-function
+    method: GET
+    data_selector: records
+- name: metrics
+  endpoint:
+    path: /stream/publish-metrics-function
+    method: GET
+- name: Regex Extract Function
+  endpoint:
+    path: /usage
+    method: GET
+    data_selector: fields
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: CSV
+  endpoint:
+    path: /stream/serialize-function/#usage
+    method: GET
+- name: JSON
+  endpoint:
+    path: /stream/serialize-function/#scenario-b-csv-to-json
+    method: GET
+- name: suppress_function
+  endpoint:
+    path: /suppress
+    method: POST
+    data_selector: results
+    params: {}
+- name: unroll_function
+  endpoint:
+    path: /stream/unroll-function
+    method: GET
+    data_selector: records
+    params: {}
+- name: xml_event
+  endpoint:
+    path: /xml/unroll
+    method: POST
+    data_selector: events
+- name: lookup_fields
+  endpoint:
+    path: /lookup-fields
+    method: GET
+    data_selector: fields
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: Azure Blob
+  endpoint:
+    path: /stream/collectors-azure-blob
+    method: GET
+- name: Cribl Lake
+  endpoint:
+    path: /stream/collectors-cribl-lake
+    method: GET
+- name: Database
+  endpoint:
+    path: /stream/collectors-database
+    method: GET
+- name: File System/NFS
+  endpoint:
+    path: /stream/collectors-filesystem
+    method: GET
+- name: Google Cloud Storage
+  endpoint:
+    path: /stream/collectors-google-cloud-storage
+    method: GET
+- name: Health Check
+  endpoint:
+    path: /stream/collectors-health-check
+    method: GET
+- name: REST/API Endpoint
+  endpoint:
+    path: /stream/collectors-rest
+    method: GET
+- name: S3
+  endpoint:
+    path: /stream/collectors-s3
+    method: GET
+- name: Script
+  endpoint:
+    path: /stream/collectors-script
+    method: GET
+- name: Splunk Search
+  endpoint:
+    path: /stream/collectors-splunk-search
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: Azure Blob Storage
+  endpoint:
+    path: /<your-blob-storage-endpoint>
+    method: GET
+- name: buckets
+  endpoint:
+    path: /storage/v1/b
+    method: GET
+    data_selector: items
+    params: {}
+- name: objects
+  endpoint:
+    path: /storage/v1/b/{bucket}/o
+    method: GET
+    data_selector: items
+    params: {}
+- name: Google Cloud Storage
+  endpoint:
+    path: /services/data/vXX.X/sobjects/GoogleCloudStorage
+    method: GET
+- name: health_check
+  endpoint:
+    path: /collectors-health-check/
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: s3_bucket
+  endpoint:
+    path: /services/data/vXX.X/sobjects/S3Bucket
+    method: GET
+    data_selector: records
+- name: aggregations
+  endpoint:
+    path: /stream/aggregations
+    method: GET
+    data_selector: records
+    params: {}
+- name: auto_timestamp
+  endpoint:
+    path: /stream/auto-timestamp
+    method: GET
+    data_selector: records
+    params: {}
+- name: search_job
+  endpoint:
+    path: /services/search/v2/jobs/export
+    method: GET
+    data_selector: results
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: S3 Destination
+  endpoint:
+    path: /stream/destinations-s3
+    method: POST
+    data_selector: records
+    params: {}
+- name: Replay Collector
+  endpoint:
+    path: /stream/collectors-s3
+    method: POST
+    data_selector: records
+    params: {}
+- name: logs
+  endpoint:
+    path: /api/v1/system/logs
+    method: GET
+    data_selector: items
+    params: {}
+- name: log_file
+  endpoint:
+    path: /api/v1/system/logs/{id}
+    method: GET
+    data_selector: events
+    params: {}
+- name: collect
+  endpoint:
+    path: /find
+    method: GET
+    data_selector: items
+    params:
+      type: link
+      units: imperial
+      q: ${id}
+- name: weather
+  endpoint:
+    path: /data/2.5/weather
+    method: GET
+    data_selector: items
+    params:
+      lat: ${lat}
+      lon: ${lon}
+      appid: 438d61a1db9e713240b30140e9ddfea2
+- name: access_tokens
+  endpoint:
+    path: /access/tokens
+    method: POST
+    data_selector: token
+    params: {}
+- name: vulnerabilities_hosts_search
+  endpoint:
+    path: /Vulnerabilities/Hosts/search
+    method: POST
+    data_selector: data
+    params: {}
+- name: users
+  endpoint:
+    path: /v1.0/users
+    method: GET
+    data_selector: value
+    params: {}
+- name: groups
+  endpoint:
+    path: /v1.0/groups
+    method: GET
+    data_selector: value
+    params: {}
+- name: audit_logs
+  endpoint:
+    path: /v1.0/auditLogs/directoryAudits
+    method: GET
+    data_selector: value
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: incident
+  endpoint:
+    path: /api/now/table/incident
+    method: GET
+    data_selector: result
+    params:
+      incremental: sys_updated_on
+- name: change_request
+  endpoint:
+    path: /api/now/table/change_request
+    method: GET
+    data_selector: result
+    params: {}
+- name: cmdb_instance
+  endpoint:
+    path: /api/now/cmdb/instance/{classname}
+    method: GET
+    data_selector: result
+    params: {}
+- name: cmdb_instance_details
+  endpoint:
+    path: /api/now/cmdb/instance/{classname}/{sys_id}
+    method: GET
+    data_selector: result
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: Quote Generator
+  endpoint:
+    path: /quote_generator
+    method: POST
+    data_selector: results
+    params: {}
+- name: collector_settings
+  endpoint:
+    path: /quote_generator/collector_settings
+    method: POST
+    data_selector: results
+    params: {}
+- name: data
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Data
+    method: POST
+    data_selector: records
+- name: Kinesis Stream
+  endpoint:
+    path: /services/data/vXX.X/sobjects/KinesisStream
+    method: GET
+    data_selector: records
+- name: sqs_messages
+  endpoint:
+    path: /sqs
+    method: GET
+    data_selector: messages
+    params:
+      maxMessages: '1'
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: SQS
+  endpoint:
+    path: /
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: metrics
+  endpoint:
+    path: /api/v1/metrics
+    method: GET
+    data_selector: data
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: kafka_topics
+  endpoint:
+    path: /ingest/topics
+    method: GET
+- name: Office 365 Activity
+  endpoint:
+    path: /stream/sources-office-365-activity
+    method: GET
+- name: Office 365 Message Trace
+  endpoint:
+    path: /stream/sources-office365-msg-trace
+    method: GET
+- name: Office 365 Services
+  endpoint:
+    path: /stream/sources-office-365-services
+    method: GET
+- name: ActivityFeed
+  endpoint:
+    path: /activity/feed
+    method: GET
+- name: subscriptions
+  endpoint:
+    path: /api/v1.0/<tenantId>/activity/feed/subscriptions/start
+    method: POST
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: message_trace
+  endpoint:
+    path: /ecp/reportingwebservice/reporting.svc/MessageTrace
+    method: GET
+- name: users
+  endpoint:
+    path: /v1.0/users
+    method: GET
+    data_selector: value
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: Grafana Agent remote write
+  endpoint:
+    path: /api/prom/push
+    method: POST
+- name: Loki logs
+  endpoint:
+    path: /loki/api/v1/push
+    method: POST
+notes:
+- Bearer tokens expire 24 hours after creation.
+- In customer-managed deployments, Bearer tokens expire according to the Auth-token
+  TTL setting.
+- Version 4.10 adds new capabilities and usability improvements to the Cribl product
+  suite and Cribl.Cloud.
+- The S3 Collector now supports collecting data from Splunk Dynamic Data Self Storage
+  (DDSS) datasets.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Get a high-level overview of Cribl Lake
+- Organize different types of data stored in Cribl Lake
+- Bearer tokens expire 24 hours (86400 seconds) after they are created.
+- Lakehouses are available only in Cribl.Cloud Organizations on certain plans.
+- Each Lakehouse covers a rolling window of up to 30 days, calculated from the time
+  of ingest into the Lakehouse.
+- To check for current known issues, along with their recommended resolutions or workarounds,
+  check the Known Issues page for the product you’re using.
+- Some objects like Contact may return nulls in deeply nested fields
+- Cribl now supports Personal Identity Verification (PIV) authentication using smart
+  cards like the Common Access Card for on-prem deployments.
+- This maintenance release of Cribl Stream includes bug fixes and experience improvements.
+- In customer-managed deployments, Bearer tokens expire according to the value you
+  provide for the Auth-token TTL setting.
+- Bearer tokens expire 24 hours after creation on Cribl.Cloud.
+- Bearer tokens expire 24 hours after they are created.
+- Workspaces require Cribl.Cloud with certain plan tiers. For details, see Pricing.
+- The minimum supported TLS version in Cribl Stream is TLS 1.2 by default.
+- These docs are for Cribl Stream 4.12 and are no longer actively maintained.
+- 'This Source supports gzip-compressed inbound data when the Content-Encoding: gzip
+  connection header is set.'
+- Capture request headers is toggled on to add request headers to events, in the __headers
+  field.
+- Cribl Stream ships with a Splunk HEC Source preconfigured to listen on Port 8088.
+- Enable Splunk HEC acknowledgements is toggled off by default.
+- HEC acks response is meaningful only to spare a sender from keeping TCP connections
+  open needlessly.
+- The PATCH /system/outputs/{id} endpoint requires a complete representation of the
+  resource.
+- For customer-managed deployments, configure Transport Layer Security (TLS) to use
+  https.
+- In Cribl.Cloud and distributed deployments, you must commit and deploy changes.
+- In Distributed environments, update the lookup file only on the Leader Node.
+- You must commit and deploy the changes you make.
+- Use NDJSON for the response to retrieve search results.
+- You must configure Transport Layer Security (TLS) to use https in the URL for your
+  requests.
+- For large diffs that have more than 1000 lines, the response includes 'Diff too
+  big to be displayed'.
+- The PATCH /system/outputs/{id} endpoint requires a complete representation of the
+  resource that you want to update in the request body.
+- Requires setup of connected app in Cribl for API Bearer token
+- Exported Pack downloads as a .crbl file
+- Requires an API Bearer token for authorization.
+- Ensure to confirm the existence of a lookup before attempting modifications.
+- Requires setup of connected app for token authentication.
+- Replace ${token} with a valid API Bearer token.
+- You must configure Transport Layer Security (TLS) to use https.
+- Set the `diffLineLimit` query parameter to retrieve large diffs.
+- Multiple Workspaces require a Cribl.Cloud Enterprise plan.
+- You can create up to 5 Workspaces per Organization.
+- Requires setup of connected app in Cribl Stream
+- This maintenance release of Cribl Stream includes bug fixes and important updates.
+- Some objects may return nulls in deeply nested fields
+- The Metrics Inspector view in Data Preview introduces a new metrics-first view that
+  enables you to analyze and optimize metrics-heavy data structures with detailed
+  summaries and drill-down insights.
+- These docs are for Cribl Stream 4.1 and are no longer actively maintained.
+- Using REST/API Collectors
+- QuickConnect provides access to most of Cribl Stream’s configuration options, with
+  a few restrictions.
+- You can switch to the Routes configuration at any time from the Worker Groups submenu.
+- Notifications on Sources can now trigger on a persistent queue usage condition to
+  alert you when disk usage for a queue exceeds a specified threshold.
+- 'Preview feature: The Kubernetes Explorer in Cribl Edge provides a visual interface
+  to explore your Kubernetes clusters and help with configuring log ingestion and
+  breakers.'
+- Support for Windows 10 and Windows 11 on laptops or desktops with power management
+  enabled is no longer a preview feature and is now generally available.
+- The S3 Collector now supports collecting data from Splunk Dynamic Data Self Storage
+  (DDSS) datasets. A new Partitioning scheme dropdown in the S3 Collector settings
+  provides the DDSS option.
+- A new Zscaler Cloud NSS Source allows you to receive log data from Zscaler Nanolog
+  Streaming Service (NSS) to optimize data for long-term retention, threat analysis,
+  and SIEM integration.
+- The NetFlow Source has been renamed to NetFlow & IPFIX, and now includes added support
+  for IPFIX (also known as NetFlow v10) and support for template records and options
+  templates.
+- This release significantly reduces the Cribl Edge installation package size. The
+  cribl/ directory on disk is now under 200 MB, down from over 400 MB, streamlining
+  installations and improving the overall user experience.
+- Cribl.Cloud is SOC 2 Type II compliant and GDPR-compliant.
+- Requires setup of connected app in Cribl.Cloud
+- On-prem Leader must run Cribl Stream 4.8.2 or newer
+- Full access to Connected Environments requires you to upgrade Cribl Stream to 4.8.2
+  or newer.
+- The Connected Environments feature is available only on Enterprise Cribl.Cloud plans.
+- The heartbeat interval is configurable, meaning administrators can adjust it to
+  optimize performance based on their needs.
+- Each Route connects exactly one Pipeline with exactly one Destination.
+- The Filter expression is set to true for the default Route.
+- Cribl’s Docker containers come with Cribl Stream preinstalled.
+- Once your three instances are running, proceed to Configure Leader Instance.
+- To govern resource allocation in an on-prem Single-instance deployment, navigate
+  to Settings > System > Service Processes > Processes.
+- In on-prem deployments, you can adjust the Worker Process settings.
+- Allocating 1 physical core for each 400GB/day of IN+OUT throughput.
+- Baseline memory usage may increase on hosts that are not memory-constrained.
+- If you want to use proxy for communication between Leader and Worker Nodes, use
+  SOCKS proxy instead of HTTP/S.
+- Users can register only one active Organization on the free tier.
+- You are responsible for data encryption and other security measures on Worker Node
+  instances that you manage.
+- If you select Provision Infrastructure, the infrastructure will be provisioned about
+  30 minutes later.
+- When you deprovision a Worker Group, Stream retains the configuration so you can
+  reprovision it if needed.
+- An alternative to self-hosting Cribl Stream is using Cribl.Cloud.
+- Ensure your total host memory allocation covers the memory usage of all Worker Processes
+  and OS requirements.
+- Since version 4.13, due to an upgrade of the Node.js version used by Cribl Stream,
+  baseline memory usage may increase on hosts that are not memory-constrained, because
+  the new Node.js version is more conservative with memory release.
+- In the case of an API port conflict, the process will retry binding for 10 minutes
+  before exiting.
+- Upgrading Cribl Stream will remove the CAP_NET_BIND_SERVICE capability from the
+  cribl executable, so you’ll need to re‑run the appropriate setcap command after
+  each upgrade.
+- To use the Cribl API to create a new Worker Group, see the API Reference.
+- Requires setup of connected app in api
+- By default, Cribl Stream will retain information about disconnected Workers between
+  restarts in a Cribl.Cloud deployment, but not in an on-prem deployment.
+- Toggling Persist Nodes will restart the Leader Node.
+- When you enable Node tracking, increase the available disk space on the Leader relative
+  to the number of Nodes you are tracking and additional metadata. Deployments of
+  250,000 Nodes may require additional 5 GB of space.
+- Only one Mapping Ruleset can be active at any one time.
+- You can’t create custom Mapping Rulesets for Cribl Stream Workers in Cribl.Cloud.
+- Optionally, reduce Leader load by storing bundles in an Amazon S3 bucket.
+- The best practice is to configure an IAM role with read access to your S3 bucket.
+- Some configuration changes will require restarts, while many others require only
+  reloads.
+- You can protect the sockets by either blocking the cleaner or moving the Cribl socket
+  files.
+- You cannot use Cribl App for Splunk in a Cribl Stream distributed deployment as
+  a Leader, or as a managed Worker.
+- You cannot install the app on Splunk Cloud or on a Splunk Heavy Forwarder.
+- The script will install Cribl Stream into /opt/cribl.
+- 'If you encounter errors of this form: ssl certificate problem: self signed certificate
+  in certificate chain, add the -k flag to disable certificate validation.'
+- The script will install Cribl Stream into /opt/cribl
+- The script will create a user named cribl to install, own, and run Cribl Stream/Edge
+- Each Worker must normally have access to the internet in order to download the Cribl
+  Stream installation binary from cribl.io.
+- Cribl Stream supports configuring standby Leaders for failover.
+- Ensure that all Leaders have matching auth tokens.
+- NFSv4 is required for the NFS client.
+- Uses OAuth2 with refresh token
+- This chart is a work in progress, provided as-is. Cribl expects to further develop
+  and refine it.
+- Cribl recommends deploying the Leader on stable, highly available infrastructure,
+  because of its role in coordinating all Worker instances.
+- Cribl’s current architecture supports only TCP ports in Worker Groups’/Fleets’ service
+  > ports configuration.
+- The upgrade process from versions older than 2.4.0 creates an initContainer, which
+  will run prior to any instance of the Cribl Stream pod.
+- The upgrade process leaves the old PersistentVolume's and PersistentVolumeClaim's
+  around.
+- The chart currently supports only TCP ports in service > ports for Worker Groups/Fleets.
+- 'Avoid Automatic Scale-In: Disable automatic scale-in or limit it to manual intervention.
+  This prevents unexpected pod terminations, which can lead to data loss.'
+- 'StatefulSet Deployment: Use the StatefulSet deployment mode of the Worker Group
+  chart. StatefulSet ensures that pods are assigned to specific volumes, maintaining
+  data consistency.'
+- Cribl recommends deploying the Leader on stable, highly available infrastructure.
+- The Workspace can take up to several minutes to spin up.
+- It is not possible to delete the `main` Workspace.
+- Only Members with the Organization Owner Permission can delete Workspaces.
+- Enabling Projects requires an Enterprise plan or on-prem license.
+- A Subscription must specify a Pre‑processing Pipeline, even if this is the default
+  `passthru`, which performs no processing.
+- In Cribl Stream 4.2 and newer, Projects and Subscriptions rely entirely on the fine-grained
+  Members/Permissions access control.
+- You can download invoices with a Final status. Draft invoices can’t be downloaded.
+- This page applies only to on-prem deployments.
+- Free licenses are already onboard the download package, need not be added or managed
+  here, and do not expire.
+- Git is a hard requirement for certain Cribl Stream features.
+- No authentication required for accessing the API.
+- GitHub (specifically) does not support Basic authentication.
+- Do not remove any lines either. The only modifications that will survive updates
+  are commented lines.
+- Cribl.Cloud does not support GitOps.
+- GitOps requires a Distributed Cribl Stream deployment with a certain license tier.
+- Notifications require certain plan or license tiers. Without an appropriate license,
+  the configuration options described here will be hidden or disabled in Cribl Stream.
+- Email Notifications are sent on a no-reply basis.
+- Notifications require certain plan/license tiers. Without an appropriate license,
+  target configuration options will be hidden or disabled in Cribl Stream’s UI.
+- Supports NDJSON, JSON Array, and Custom formats for Notification events.
+- Defaults to application/x-ndjson content type.
+- This option sends Cribl Stream Notifications to PagerDuty, a real-time incident
+  response platform.
+- Phone number allowlist can use a wildcard list of allowed phone numbers.
+- Use port 587 for SMTP Secure (SMTPS).
+- Use port 465 when SSL/TLS is enabled.
+- Use port 2525 as a backup when other ports are blocked.
+- 'Version 4.10 adds new capabilities and usability improvements to the Cribl product
+  suite and Cribl.Cloud, including: Notifications on Sources can now trigger on a
+  persistent queue usage condition to alert you when disk usage for a queue exceeds
+  a specified threshold.'
+- Version 4.9 adds new capabilities and usability improvements to the Cribl product
+  suite and Cribl.Cloud.
+- Scripts are available only in on-prem deployments, not in Cribl.Cloud.
+- Using scripts is disabled by default on all new deployments.
+- Requires manual upgrades for Worker Groups and distributed instances in customer-managed
+  deployments.
+- Cribl.Cloud relies only on Members/Permissions.
+- Stream Projects and Subscriptions rely only on Members/Permissions.
+- User authentication methods include local, Splunk, LDAP, SSO/OpenID Connect, and
+  SSO/SAML depending on license type.
+- For on-prem deployments, changes to local users are persisted in a file located
+  at $CRIBL_HOME/local/cribl/auth/users.json.
+- Version 4.10 adds new capabilities and usability improvements to the Cribl product
+  suite and Cribl.Cloud, including notifications on Sources, a Preview feature for
+  Kubernetes Explorer, and support for Windows 10 and 11.
+- On on-prem Single-instance deployments, or Distributed deployments with other licenses,
+  all users will have full Admin-level privileges.
+- Local Users are only available in on-prem deployments.
+- If you get locked out of your account, you need to reset your password manually.
+- Role-based access control is available only on distributed deployments with an Enterprise
+  license tier.
+- Existing Local Users display in Settings > Global > Members and Teams with the No
+  Access Permission even if they’ve been assigned a higher Role.
+- One IdP can connect one email domain to only one Cribl Organization.
+- If you need to place users with one email domain into separate groups, you can take
+  advantage of Workspaces to get isolated instances in your Organization.
+- Cribl offers an SP-initiated flow, but does not support an IdP-initiated SSO flow.
+- It is not possible to use Teams to grant Organization-level Permissions.
+- Users added to a Team through Mapping IDs will not be listed in the Team Members
+  table.
+- Cribl offers an SP-initiated (Cribl-initiated) flow, but does not support an IdP-initiated
+  SSO flow.
+- Limitations
+- Troubleshooting
+- Cribl offers a service provider-initiated workflow, but does not support an IdP-initiated
+  SSO flow.
+- Make sure that the SAML application includes at least one user so that you can test
+  the configuration.
+- Fallback access configuration for SSO
+- OIDC and SAML SSO supported with Ping Identity
+- After you confirm that your SSO integration is working, you can remove the fallback
+  user.
+- Cribl.Cloud does not support front-channel authentication via OIDC.
+- SSO issues typically result from incorrect or missing configuration.
+- Make sure that the `email` attribute statement is correctly set to `user.email`.
+- Enable local authentication to ensure that users aren’t locked out.
+- Use of SSO with Okta
+- Fallback access on-prem
+- Local authentication provides fallback access so that users can log in with a username
+  and password.
+- Enabling local authentication provides fallback access so that users can log in
+  with a username and password.
+- Enable local authentication to ensure users aren’t locked out if there are issues
+  with SSO.
+- Enable local authentication to ensure that users aren’t locked out if you have issues
+  with SSO.
+- Issues with enabling SSO typically result from incorrect or missing configuration
+- Check the following table for errors you may encounter when using OIDC-based SSO
+  in an on-prem deployment
+- Check the following table for errors you may encounter when using SAML-based SSO
+  in an on-prem deployment
+- Uses OAuth2
+- TLS encryption is pre-enabled for some, but not all Sources.
+- Cribl is SOC 2 and ISO 27001 compliant
+- Secure your On-Prem/Hybrid Deployment
+- Create a unique, secure value for the authentication token.
+- 'Use caution: the sensitiveFields configuration property affects UI workflows.'
+- After you’ve enabled TLS on the Leader, generating bootstrap scripts to add or update
+  Worker Nodes will automatically prepend https:// to the Leader’s URL.
+- In versions older than 4.5.0, the default token was `criblmaster`.
+- High Availability (Failover) Mode requires identical auth tokens on all Leaders.
+- Changing the auth token once you have Worker Nodes deployed will break communication
+  between the Nodes and the Leader.
+- Create a unique token value with strong security. We recommend creating a string
+  that contains at least 14 characters and includes uppercase letters, lowercase letters,
+  and numbers.
+- In version 4.6.1, only specific characters are allowed in the auth token for your
+  Cribl Stream Leader.
+- Uses OAuth2 with refresh token — requires setup of connected app in Cribl
+- Uses TLS 1.2 as the minimum supported version.
+- Uses TLS for secure data transmission.
+- mTLS requires client authentication.
+- The Cribl.Cloud Leader connections on port `4200/tcp` do not currently support mutual
+  TLS (mTLS).
+- When configuring mTLS authentication on Worker Nodes, make sure you place your certificates
+  into a separate directory outside of `$CRIBL_HOME`.
+- Cribl encrypts TLS certificate private keys in configuration files when you add
+  or modify them.
+- SAML configurations require additional permissions that reduce the restrictiveness
+  of the CSP compared to the basic configuration.
+- Cribl recommends running the printenv shell command to check for any existing proxies
+  in your environment.
+- To set up Leader/Worker communication, use the CRIBL_DIST_WORKER_PROXY environment
+  variable.
+- SOCKS proxy is exclusively for Worker Nodes to communicate with a Leader Node.
+- Leader Node doesn’t use the proxy for its outbound communications.
+- Cluster communications use raw TCP connectivity on port 4200, which HTTP proxies
+  cannot handle.
+- Config bundle downloads cannot be sent via a SOCKS proxy, but instead use an HTTP
+  proxy.
+- Cribl Stream performs decryption only when the data is being sent to Splunk.
+- Requires an Enterprise license for External KMS Providers
+- In Distributed deployments, each environment requires its own distinct secret
+- Do not start Cribl Stream without FIPS mode enabled, or else you will be unable
+  to run it in FIPS mode later.
+- You must enable FIPS mode as described in this section, after installing but before
+  starting Cribl Stream.
+- Must enable FIPS mode before starting Cribl Stream.
+- Ensure RBAC is configured in Cribl Stream.
+- 'If you already have a nodejs.cnf file, replace Step 2 with the following workaround:
+  Create a file with the specified content, replacing <placeholder> with the value
+  of OPENSSLDIR.'
+- When running Cribl Stream on a system with SELinux, it’s crucial to download the
+  tgz file directly to the /opt/ directory.
+- Ensure that the .tgz file is uncompressed within the /opt/ directory.
+- Moving files on a system with SELinux might lead to complications.
+- firewalld should enforce a deny-all rule and should selectively open ports.
+- In a Cribl Stream environment, the Leader Node requires ports 4200 and 9000 over
+  TCP to be open.
+- Worker Nodes should have port 9000 over TCP open if Worker UI access is enabled,
+  along with any necessary Source ports.
+- Cribl Stream operates seamlessly in secure environments, but additional configuration
+  steps are needed for systems using fapolicy.
+- SELinux is a mandatory access control system for Linux that provides a granular
+  level of security.
+- SELinux has two modes, enforcing and permissive.
+- When running in enforcing mode, it strictly enforces the SELinux policy.
+- Charts for Sources and Destinations only display statistics for the last 10 minutes.
+  You cannot configure this duration.
+- Except for configuration change markers, Monitoring data does not persist across
+  Cribl Stream restarts. Keep this in mind before you restart the server.
+- Cribl Stream generates internal metrics every 2 seconds.
+- Disabled Sources no longer generate Cribl internal metrics as of Cribl Stream 4.2.
+- New destination PQ modes, Always on and Backpressure.
+- REST Collector now supports paginated results in Discover.
+- Cribl Stream adds internal fields before Pipeline data processing.
+- System fields start with the string 'cribl_'.
+- Troubleshoot event processing in Cribl Stream from right to left.
+- All Pipelines have the same basic internal structure.
+- Routes are designed to filter, clone, and cascade incoming data across a related
+  set of Pipelines and Destinations.
+- Each Route must have a unique name.
+- Always use a catch-all Route.
+- The Import Data options work with content that needs to be broken into events, meaning
+  it needs Event Breakers.
+- The Capture New option works with events only.
+- 'Persistent Queues: New destination PQ modes, Always on and Backpressure.'
+- 'REST Collector: Now supports paginated results in Discover.'
+- Version 4.10 adds new capabilities and usability improvements to the Cribl product
+  suite and Cribl.Cloud, including notifications on Sources, a preview feature for
+  Kubernetes Explorer, and more.
+- Consider using Cribl Copilot to help you write commit messages. It analyzes the
+  diff and recommends a message that describes the update.
+- Packs can contain complete, end-to-end data flow configurations
+- Cribl imposes a limit of 200 maximum Pipelines per Pack
+- Common Errors and Warnings
+- Packs can’t contain Collectors and Collector-based Sources, as well as System Metrics,
+  Windows Metrics, System State, Windows Event Logs, K8s Metrics, K8s Logs, K8s Events,
+  and Cribl Internal Sources in Cribl Edge.
+- Cribl recommends checking your Pack against the checklist before trying to submit
+  the Pack.
+- The review process typically takes a week or more.
+- Cribl Stream supports Open Telemetry (OTLP), Prometheus, and StatsD metric formats.
+- Verify, verify, verify, data integrity before turning on the Source.
+- Cribl Stream supports and recommends using lookup files in .csv format for compatibility,
+  performance, and ease of management.
+- Cribl Stream supports a maximum of four indexes per file.
+- Supports geographic enrichment using MaxMind and IPinfo databases.
+- Requires setup of database downloads and updates.
+- Uses a Lookup as a filter for masks.
+- Each row in the lookup table must have only one row for each index/sourcetype combination.
+- This pipeline demonstrates four different ways to leverage regular expressions in
+  a Cribl Stream Pipeline including field extraction, lookup, replace, and field value
+  manipulation.
+- Use the Splunk GUI or CLI to export logs.
+- Adjust the number of samples using the | head <number_of_samples_desired> command.
+- Access logs are emitted by web servers, proxies, and load balancers and can be highly
+  voluminous.
+- Sample events to keep aggregate analysis statistically significant.
+- Sampling with Cribl Stream can help ingest enough sample events for operational
+  analysis.
+- You can use JavaScript syntax in any field that allows JavaScript expressions.
+- Wildcard lists are order-sensitive, evaluated from left to right.
+- When using the local key management system, encryption keys are stored in $CRIBL_HOME/local/cribl/auth/keys.json.
+- Cribl monitors the keys.json file for changes every 60 seconds.
+- This process reduces Microsoft Windows XML events, retains full fidelity of the
+  data, and dramatically reduces license and storage costs.
+- Cribl Stream is built on a shared-nothing architecture.
+- Functions use __e extensively.
+- This function allows users to configure metrics aggregation based on predefined
+  time windows.
+- The default metric type is Automatic, which allows the aggregation function to determine
+  the appropriate output type.
+- The Aggregate Metrics Function handles metrics data only.
+- Default is toggled off.
+- Defaults to empty.
+- Defaults to Local.
+- Defaults to CEF:0 for cef_version.
+- Defaults to Cribl for device_vendor.
+- Defaults to Cribl for device_product.
+- Defaults to C.version for device_version.
+- Defaults to 420 for device_event_class_id.
+- Defaults to Cribl Event for name.
+- Defaults to 6 for severity.
+- Cribl recommends that you keep chained configurations simple and understandable
+  by all your users.
+- Inserting a Chain Function can impose a slight performance hit, compared to including
+  all processing in the original Pipeline or Pack.
+- Version 4.10 adds new capabilities and usability improvements to the Cribl product
+  suite and Cribl.Cloud, including notifications on Sources that can trigger on a
+  persistent queue usage condition.
+- This function can improve performance by caching DNS lookups.
+- This Function does not perform any conversions from one metric type to another.
+- Cribl Stream does not support aggregation of histogram, summary, or distribution
+  metric types.
+- When using this Function, keep these considerations in mind.
+- 'Sample Mode: Square Root'
+- 'Sample Period (sec): 20'
+- 'Minimum Events: 3'
+- 'Max. Sampling Rate: 3'
+- The Value Expression supports simple, single-value assignments and transformations.
+- Consider the following when working with Eval Functions.
+- The Event Breaker Function operates only on data in _raw.
+- The largest event that this Function can break is about about 128 MB (134217728
+  bytes). Events exceeding this maximum size will be split into separate events, but
+  left unbroken.
+- 'In Cribl Stream 3.4.2 and above, where an Event Breaker Function has set an event’s
+  _time to the current time – rather than extracting the value from the event itself
+  – it will mark this by adding the internal field __timestampExtracted: false to
+  the event.'
+- For efficiency, we recommend avoiding the JSON Unroll Function for certain types
+  of data, such as CloudTrail, Office 365, or Kubernetes CloudWatch logs.
+- Event Breakers like JSON Array do not retain parent fields from the original JSON
+  object.
+- CSV files are text-based and untyped. This means all data within the file is treated
+  as strings, regardless of its intended type (like, numbers or dates).
+- Defaults for Filter is true, Final is toggled off.
+- Defaults for Masking rules is empty.
+- Defaults for Apply to fields is _raw.
+- Depth defaults to 5.
+- Controls how deep the function searches nested events. Higher values may slow performance.
+  Defaults to 5. Maximum is 10.
+- Uses Cribl Stream OTel Source to ingest logs
+- Function should be placed last in the Pipeline
+- This Function will delete the internal attribute `__criblMetrics`, making events
+  only suitable for destinations that use the OTLP format.
+- Ensure that the internal attribute `__criblMetrics` does not contain `null` or blank
+  values in any of the child object arrays.
+- This Function should process events and/or traces after other Functions have formatted
+  them.
+- Batching means grouping extracted spans that arrive within a specified time window.
+- Filter expression defaults to true, meaning evaluate all events.
+- Operation mode Extract will create new fields.
+- Parser/Formatter type options include CSV, JSON Object, and Grok.
+- Filter expression defaults to true, meaning it evaluates all events.
+- Final toggle defaults to off.
+- Overwrite toggle defaults to off.
+- This Function cannot operate on internal fields whose names begin with double underscores
+  (`__`).
+- With high-cardinality data, beware of setting long time windows. Doing can cause
+  high memory consumption and/or lost data, because memory is flushed upon restarts
+  and redeployments.
+- The SNMP Trap Source the events came from must have Include varbind types enabled
+  for this function to work.
+- For v2c events, sysUpTime and snmpTrapOID appear both at the top level and within
+  varbinds.
+- Defaults to evaluating all events if no filter is provided.
+- Suppression will apply to events without specified fields.
+- In Cribl.Cloud, the Tee Function is only available on customer-managed hybrid Worker
+  Nodes.
+- Defaults to filtering all events.
+- Source field expression defaults to _raw.
+- This Function must follow any Publish Metrics or Aggregations Functions within the
+  same Pipeline.
+- This Function was deprecated as of v.2.4, and has been removed from Cribl Stream
+  as of v.4.0.
+- This Function is deprecated as of Cribl Stream 4.7, and will be removed in the next
+  major version.
+- Cribl Stream supports data collection and replay from Azure’s hot and cool access
+  tiers, but not from the archive tier.
+- Cribl Lake Collector is available only in Cribl.Cloud.
+- Hybrid Worker Groups must be running version 4.8 or higher.
+- Configure a File System Collector
+- Cribl Stream automatically detects gzip compression where a file name ends in .gz.
+- Requires a Google Cloud project and service account with appropriate permissions.
+- Data may be subject to API quotas and limits.
+- 'Your Google Cloud service account requires, at a minimum, the following specific
+  permissions to collect data: storage.buckets.get, storage.objects.get, storage.objects.list.'
+- Each request that this Collector sends constitutes one health check.
+- 'Some APIs return data as an array, such as `{ "logFiles": ["file-name-1.log", "file-name-2.log",
+  "file-name-3.log.2", "audit.log"] }`. In this case, Cribl Stream treats each item
+  in the array as a collection task.'
+- Temporary Access via SSO Provider
+- Cribl Stream does not support data preview, collection, or replay from S3 Glacier
+  or S3 Deep Glacier storage classes.
+- Scripts must finish on their own. The Collector will not stop a script once its
+  task has started.
+- Uses OAuth2 for authentication
+- Events returned from Splunk search can also be returned in the more compact CSV
+  format.
+- Manage State in Database Collector
+- Manage State in REST Collector
+- Collector state is stored on disk, not in Git.
+- Nodes running 4.5.0 and newer will not poll the Leader for jobs/tasks, and Nodes
+  will not use the settings below (even if they’re set).
+- Skipped jobs indicate that a Group’s Concurrent job limit has been reached or exceeded.
+- Cribl Stream supports replaying data that has been exported as Parquet.
+- Max open files option should be set appropriately.
+- Requires setup of proper user credentials for login.
+- Ensure the server is running and accessible.
+- The Lacework API authentication mechanism requires HTTP header parameters.
+- The Discover job is required to obtain an access token before the Collect job.
+- Uses OAuth2 with refresh token — requires Azure AD application registration
+- Uses OAuth2 with client credentials
+- The API structures data as a single JSON object with events nested under the value
+  field
+- Uses OAuth2 with refresh token — requires setup of connected app in ServiceNow
+- Some fields may return null values
+- Uses REST API to interact with ServiceNow CMDB.
+- Requires setup of ServiceNow instance and Redis for data storage.
+- 'Collector ID: Hello_World'
+- 'Discover Script: echo "hello world"'
+- 'Collect Script: echo "{ message: \"$CRIBL_COLLECT_ARG\" }"'
+- The Collector method separately invokes each item returned. The Collector argument
+  is the content from each row in the table.
+- Dropping request because token invalid
+- 'Supports gzip-compressed inbound data when the Content‑Encoding: gzip connection
+  header is set.'
+- The Amazon Kinesis Data Streams Source relies on the Leader Node for proper operation.
+- If the Leader Node becomes unavailable, the Source’s performance becomes degraded.
+- Best Practices
+- Cribl Stream running on Linux can use this Source to read Parquet files.
+- Checkpointing is turned off by default.
+- Retries setting is ignored if Skip file on error is enabled.
+- Only advanced AWS administrators should change the default input transformer.
+- Ensure proper AWS permissions are set for accessing the SQS queues
+- Uses AWS SDK for JavaScript for authentication
+- Cribl Stream defaults to Standard queue type
+- Cribl Stream supports data ingestion from Azure’s hot and cool access tiers, but
+  not from the archive tier.
+- This Source supports block blobs, but not append blobs.
+- Cribl Stream must receive events directly from senders.
+- Each Group ID should be subscribed to only one Kafka Topic.
+- Requires Google Cloud roles and permissions for Pub/Sub
+- When Monitor subscription for new messages is enabled, Topic ID is ignored.
+- Backlog limit defaults to 1000 events.
+- Number of concurrent streams defaults to 5.
+- Request timeout defaults to 60000 ms.
+- Requires proper OAuth2 setup for authentication
+- Cribl Stream must receive events directly from senders. You might need to adjust
+  your firewall rules to allow this traffic.
+- In Cribl Stream 4.8.2 and newer, partition assignment is randomized.
+- Changes to any member of a consumer group affect all other members of that consumer
+  group.
+- Cribl Stream supports receiving Kafka topics from the Confluent Cloud managed Kafka
+  platform.
+- Cribl recommends subscribing each Confluent Cloud Source to only one topic.
+- Leave the TLS Settings > Server name (SNI) field blank.
+- Cribl Stream uses a set of internal fields to assist in handling of data.
+- Events that the Kafka Source emits always contain a _time field.
+- IAM is the only type of authentication that Cribl Stream supports.
+- TLS is automatically enabled for IAM auth.
+- You need to have a registered application with the Microsoft identity platform to
+  provide Cribl Stream access to make requests to the Microsoft Graph API.
+- The permission Type for both must be Application – Delegated is not sufficient.
+- Requires a registered application with Microsoft identity platform.
+- Polling intervals must divide evenly into 60 minutes.
+- Defaults to 300 seconds for request timeout.
+- Job timeout defaults to 0 for unlimited time.
+- Time to live defaults to 4 hours.
+- You’ll need to execute the second command for each Content Type whose logs you wish
+  to collect.
+- 'Job Fails After One Hour with statusCode: 401'
+- TLS is enabled via the HTTPS protocol on this Source’s underlying REST API.
+- Collection job fails after one hour due to token expiration.
+- Limit the time range of the collection job to ensure it completes within the one-hour
+  timeframe.
+- Requires Microsoft permissions to access data.
+- Requires a registered application with Microsoft identity platform
+- Application permissions must be Application type
+- Uses OAuth2 for authentication.
+- Requires authentication setup for Prometheus.
+- This Source does not support Prometheus metadata.
+- Uses OAuth2 authentication
+- This Source assumes that incoming data is snappy-compressed.
+- The specified token is invalid. Note that the above message is logged only at the
+  debug level.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400 Bad Request: The server could not understand the request due to malformed syntax
+  or missing parameters.'
+- '401 Unauthorized: Authentication failed because credentials are missing or invalid.'
+- '403 Forbidden: The server understood the request but did not authorize it because
+  permissions are insufficient to access the requested resource.'
+- '404 Not Found: The requested resource was not found. The endpoint may not exist
+  or the resource may be unavailable.'
+- '405 Method Not Allowed: The request method is not supported for the resource (for
+  example, a POST request for a resource that only supports GET).'
+- '415 Unsupported Media Type: The server did not accept the request because the payload
+  is in an unsupported data format. Often indicates that the Content-Type header is
+  incorrect.'
+- '429 Too Many Requests: The number of requests exceeds the loginRateLimit or ssoRateLimit
+  setting.'
+- '500 Internal Server Error: The server encountered an unexpected condition that
+  prevented it from fulfilling the request.'
+- '502 Bad Gateway: While acting as a gateway or proxy, the server received an invalid
+  response from the upstream server.'
+- '503 Service Unavailable: The server could not handle the request due to temporary
+  overload or maintenance.'
+- '404 Not Found: The requested resource was not found.'
+- '405 Method Not Allowed: The request method is not supported for the resource.'
+- '415 Unsupported Media Type: The server did not accept the request because the payload
+  is in an unsupported data format.'
+- If you need more Workspaces in your Organization (up to 50), contact Cribl Support
+  to discuss extension options.
+- Malformed HEC event
+- Invalid token
+- Invalid index
+- Server is busy
+- '403 Forbidden: Unmatched requests are rejected.'
+- '400: ACK is disabled when acknowledgements are toggled off.'
+- 'Malformed HEC event: The event is missing both event and fields fields.'
+- 'Invalid token: Auth token(s) are defined, but the token specified in the HEC request
+  doesn’t match any defined tokens, therefore it’s invalid.'
+- 'Invalid index: The Splunk HEC Source’s Allowed Indexes field is configured with
+  specific indexes, but the client’s HTTP request didn’t specify any of them.'
+- '{"text":"Server is busy","code":9,"invalid-event-number":0}: Server is busy is
+  the equivalent of a 503 HTTP response code.'
+- 'Could not find parser for URL path: These errors can occur if there is a trailing
+  slash in the URL path.'
+- 'Dropping request because token invalid: The specified token is invalid.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '409 Conflict: Lookup already exists'
+- '404 Not Found: Lookup does not exist'
+- '400 Bad Request: Invalid request body'
+- '401 Unauthorized: Recheck API Bearer token'
+- '401 Unauthorized: Ensure you have a valid Bearer token.'
+- 'Diff too big to be displayed: Limit the number of lines with diffLineLimit query
+  parameter.'
+- '200 OK: The server is running.'
+- '420 Shutting Down: The server is in the process of shutting down or is in standby.'
+- 'Unauthorized: Recheck API Bearer token'
+- '404 Not Found: Check if the Worker Group or Pack ID exists'
+- '400 Bad Request: Ensure required parameters are included'
+- '404 Not Found: The specified lookup does not exist.'
+- '400 Bad Request: Invalid parameters or payload.'
+- 'Diff too big to be displayed: Throttle API calls or reduce frequency.'
+- '401 Unauthorized: Recheck authentication token'
+- 'Connection timeout: Ensure correct port number and workspace hostname'
+- 'Out of memory: Indicates either a memory leak or the memory setting is too low
+  for the workload being performed by the Process.'
+- When you deprovision a Worker Group, Stream retains the configuration so you can
+  reprovision it if needed.
+- Throttle API calls or reduce frequency
+- Break down filters or add selectivity
+- 'ssl certificate problem: self signed certificate in certificate chain'
+- '200 – OK: All is well. You should have received the script as a response, even
+  with an invalid token.'
+- '403 – Forbidden: The node is not configured as a Leader.'
+- '503 Service Unavailable: Indicates health checks may be too frequent.'
+- Do not allow a single node group to spans AZs. This can lead to trouble in mounting
+  volumes, because EBS volumes are AZ-specific.
+- '429: Too Many Requests'
+- '503: Service Unavailable'
+- 'Configuration error: If the test encounters a configuration error, Crib.Cloud will
+  display an error message.'
+- 'Configuration error: If the test encounters a configuration error, Cribl.Cloud
+  will display an error message.'
+- 400 Bad Request. The ‘redirect_uri’ parameter must be a Login redirect URI in the
+  client app settings
+- 400 Bad Request. Your request resulted in an error.
+- 'invalid_request: IdP-Initiated login is not enabled for connection'
+- You are not assigned Permissions for any Groups.
+- 404 Not found
+- 'invalid_request: The connection {Organization ID} was not found.'
+- 400 Bad Request. Your request resulted in an error. The ‘redirect_uri’ parameter
+  must be a Login redirect URI in the client app settings
+- 404 Page Not Found
+- Unauthorized
+- You do not have sufficient permissions to access this resource.
+- 'AADSTS50011: The reply URL ‘{URL}’ specified in the request does not match the
+  reply URLs configured for the application…'
+- 'AADSTS700016: Application with identifier ‘{app-id}’ was not found in the directory
+  ‘Default Directory’'
+- 'AADSTS900023: Specified tenant identifier ‘{id}’ is neither a valid DNS name, nor
+  a valid external domain.'
+- For permissions on Groups, contact your Stream Admin.
+- This login.microsoftonline.com page can’t be found
+- A known bug prevents immediate use of KMS features within Worker Groups after initial
+  license installation in Distributed mode
+- Disabling FIPS due to Role-based Access Control (RBAC) being disabled.
+- 'Access Denied Errors: If you encounter errors related to file access or execution
+  permissions, ensure SELinux and fapolicy are configured correctly.'
+- 'Network Connectivity Issues: Verify that firewall rules allow necessary network
+  traffic for Cribl Stream to communicate with other components.'
+- 'Configuration Errors: Double-check your configuration settings for SELinux, fapolicyd,
+  and firewall rules to ensure they align with your security requirements.'
+- Job for cribl.service failed because the control process exited with error code.
+- Permission denied
+- 'Failed at step EXEC spawning /opt/cribl/bin/cribl: Permission denied'
+- Metrics are reset at the end of each reporting period.
+- Dropping malformed HEC event
+- Pack will be rejected if it fails to satisfy the checklist’s requirements.
+- '401 Unauthorized: Recheck API token or permissions.'
+- 'Invalid OTLP version: Ensure the correct OTLP version is specified.'
+- 'Invalid Key Expression: Check the syntax of the key expression.'
+- 'Suppression Period Timeout: Review the configured suppression period.'
+- This request is not authorized to perform this operation using this permission.
+- '403 Forbidden: Check your permissions or API key.'
+- '404 Not Found: Verify the bucket or object name.'
+- '429 Too Many Requests: Rate limit exceeded, try again later.'
+- 'statusCode: 429…Too many requests'
+- 'TypeError [ERR_INVALID_URL]: Invalid URL: https%3A%2F%2Ftype.fit%2Fapi%2Fquotes'
+- 'Forbidden: Check your permissions for accessing the S3 bucket.'
+- Disabling the Script Collector is not easily reversible.
+- '403 Forbidden: Check permissions for the requested resource'
+- '404 Not Found: Ensure the resource exists'
+- Dropping request because token invalid
+- '401 Unauthorized: Recheck AWS credentials or permissions'
+- 'Inaccessible host: ''sqs.us-east-1.amazonaws.com''. This service may not be available
+  in the ''us-east-1'' region.'
+- Missing credentials in config or connect ETIMEDOUT 169.254.169.254:80
+- Bucket does not exist - self signed certificate
+- 'AccessDenied: Check your IAM policies'
+- 'QueueDoesNotExist: Verify the queue URL'
+- 'InvalidParameterValue: Ensure all parameters are valid'
+- 'KafkaJSProtocolError: Not authorized to access topics: [Topic authorization failed]'
+- '403 Forbidden: Check your permissions for the requested resource'
+- '404 Not Found: Verify the endpoint URL'
+- '500 Internal Server Error: Retry your request'
+- '429 Too Many Requests: Throttle API calls or adjust subscription settings.'
+- '503 Service Unavailable: Retry the request based on the configured backoff strategy.'
+- '401 Unauthorized: indicates the App Registration (Service Principal) is not correctly
+  authorized to access the Office 365 Message Trace service.'
+- '401 Unauthorized: This error could indicate an authentication failure, like an
+  expired access token.'
+- '401 Unauthorized: Check token validity or scopes'
+- '429 Too Many Requests: Throttle requests to avoid rate limiting'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - Auth token
+  - Basic
+  - Username
+  - Password
+  - SAML application
+  - IdP
+  - OIDC application
+  - OAuth2
+  - Service Account
+  - token
+  - Application ID
+  - Directory ID
+  - Client secret
+  - AccessToken
+client:
+  base_url: https://docs.cribl.io
+  auth:
+    type: oauth2
+    flow: refresh_token
+source_metadata: null
