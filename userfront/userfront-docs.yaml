@@ -1,0 +1,250 @@
+resources:
+- name: users
+  endpoint:
+    path: /users
+    method: POST
+    data_selector: response
+    params: {}
+- name: read_user
+  endpoint:
+    path: /users/{userId}
+    method: GET
+    data_selector: response
+    params: {}
+- name: update_user
+  endpoint:
+    path: /users/{userId}
+    method: PUT
+    data_selector: response
+    params: {}
+- name: delete_user
+  endpoint:
+    path: /users/{userId}
+    method: DELETE
+    data_selector: response
+    params: {}
+- name: search_users
+  endpoint:
+    path: /users/find
+    method: POST
+    data_selector: response
+    params: {}
+- name: user_import
+  endpoint:
+    path: /user-import
+    method: POST
+    data_selector: users
+- name: jwt_public_keys
+  endpoint:
+    path: /tenants/{tenantId}/keys/jwt
+    method: GET
+- name: json_web_key_set
+  endpoint:
+    path: /tenants/{tenantId}/jwks
+    method: GET
+- name: generate_link_credentials
+  endpoint:
+    path: /auth/link/generate
+    method: POST
+- name: invite_user
+  endpoint:
+    path: /users/invite
+    method: POST
+- name: create_or_update_user
+  endpoint:
+    path: /users/createOrUpdate
+    method: POST
+- name: mark_user_active
+  endpoint:
+    path: /users/{userId}/active
+    method: POST
+- name: read_user_sessions
+  endpoint:
+    path: /users/{userId}/sessions
+    method: GET
+- name: end_user_sessions
+  endpoint:
+    path: /auth/logout
+    method: POST
+- name: create_tenant
+  endpoint:
+    path: /tenants
+    method: POST
+- name: read_tenant
+  endpoint:
+    path: /tenants/{tenantId}
+    method: GET
+- name: update_tenant
+  endpoint:
+    path: /tenants/{tenantId}
+    method: PUT
+- name: delete_tenant
+  endpoint:
+    path: /tenants/{tenantId}
+    method: DELETE
+- name: list_roles
+  endpoint:
+    path: /roles
+    method: GET
+- name: invite_user_to_role
+  endpoint:
+    path: /roles/invite
+    method: POST
+- name: totp_authenticator
+  endpoint:
+    path: /auth/totp
+    method: get
+- name: verify_email
+  endpoint:
+    path: /auth/verify/email
+    method: post
+- name: verify_phone
+  endpoint:
+    path: /auth/verify/phone
+    method: post
+- name: create_user
+  endpoint:
+    path: /auth/create
+    method: POST
+    data_selector: user
+    params: {}
+- name: send_login_link
+  endpoint:
+    path: /auth/link
+    method: POST
+    data_selector: user
+    params: {}
+- name: login_with_sso
+  endpoint:
+    path: /auth/{provider}/login
+    method: GET
+    data_selector: redirect
+    params: {}
+- name: login_with_password
+  endpoint:
+    path: /auth/password
+    method: post
+- name: send_login_link_email
+  endpoint:
+    path: /auth/link
+    method: post
+- name: send_verification_code
+  endpoint:
+    path: /auth/code
+    method: post
+- name: log_in_with_verification_code
+  endpoint:
+    path: /auth/code
+    method: put
+- name: log_in_with_totp_authenticator
+  endpoint:
+    path: /auth/totp
+    method: post
+- name: log_in_with_backup_code
+  endpoint:
+    path: /auth/totp
+    method: post
+- name: log_in_with_sso
+  endpoint:
+    path: /auth/{provider}/login
+    method: get
+- name: send_password_reset_email
+  endpoint:
+    path: /auth/reset/link
+    method: post
+- name: reset_password_with_link_credentials
+  endpoint:
+    path: /auth/reset
+    method: put
+- name: read_user_data
+  endpoint:
+    path: /self
+    method: get
+- name: read_current_session
+  endpoint:
+    path: /session
+    method: get
+- name: read_user_sessions
+  endpoint:
+    path: /self/sessions
+    method: get
+- name: update_user_password
+  endpoint:
+    path: /auth/password
+    method: put
+- name: logout_current_session
+  endpoint:
+    path: /auth/logout
+    method: GET
+    data_selector: ''
+    params: {}
+- name: logout_all_sessions
+  endpoint:
+    path: /auth/logout/all
+    method: GET
+    data_selector: ''
+    params: {}
+- name: generate_saml_token
+  endpoint:
+    path: /auth/saml/idp/token
+    method: GET
+    data_selector: ''
+    params: {}
+- name: login_with_saml
+  endpoint:
+    path: /auth/saml/idp/login
+    method: GET
+    data_selector: ''
+    params:
+      tenant_id: ''
+      token: ''
+      uuid: ''
+- name: logout_with_saml
+  endpoint:
+    path: /auth/saml/idp/logout
+    method: GET
+    data_selector: ''
+    params:
+      tenant_id: ''
+      token: ''
+      uuid: ''
+- name: refresh_jwt_access_token
+  endpoint:
+    path: /auth/refresh
+    method: GET
+    data_selector: ''
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- All endpoints that send emails or SMS messages to users are rate limited to mitigate
+  spam, malicious activity, and accidental misuse.
+- Requests that exceed rate limits will receive a `429 Rate Limited` response.
+errors:
+- '400: Bad Request'
+- '401: Unauthorized'
+- '403: Forbidden'
+- '404: Not Found'
+- '429: Too Many Requests'
+- '500: Server Error'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '429 Rate Limited: Requests that exceed rate limits will receive a 429 Rate Limited
+  response.'
+- '429 Rate Limited: Exceeding rate limits'
+- '400 Bad Request: The request was unacceptable, often due to missing a required
+  parameter.'
+- '401 Unauthorized: No valid API key provided.'
+- '429 Too Many Requests: Too many requests hit the API too quickly.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - JWT access token
+  - refresh token
+client:
+  base_url: https://api.userfront.com
+  auth:
+    type: oauth2
+source_metadata: null

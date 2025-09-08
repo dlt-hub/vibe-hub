@@ -1,0 +1,187 @@
+resources:
+- name: sidewalk_gateways
+  endpoint:
+    path: /sidewalk/gateways
+    method: GET
+    data_selector: gateways
+    params: {}
+- name: sidewalk_endpoints
+  endpoint:
+    path: /sidewalk/endpoints
+    method: GET
+    data_selector: endpoints
+    params: {}
+- name: sidewalk_network_server
+  endpoint:
+    path: /sidewalk/network_server
+    method: GET
+    data_selector: network_server
+    params: {}
+- name: application_servers
+  endpoint:
+    path: /sidewalk/application_servers
+    method: GET
+    data_selector: application_servers
+    params: {}
+- name: Sidewalk Gateways
+  endpoint:
+    path: /introduction/sidewalk-gateways.html
+    method: GET
+    data_selector: gateways
+    params: {}
+- name: Nordic Development Kit
+  endpoint:
+    path: /products/development-hardware/nrf52840-dk
+    method: GET
+- name: Semtech Evaluation Board
+  endpoint:
+    path: /products/wireless-rf/lora-connect/sx1262mb2cas
+    method: GET
+- name: Silabs Pro Kit
+  endpoint:
+    path: /development-tools/wireless/proprietary/amazon-sidewalk-pro-kit
+    method: GET
+- name: Texas Instruments LaunchPad
+  endpoint:
+    path: /tool/LP-CC1352P7
+    method: GET
+- name: Sidewalk Gateway
+  endpoint:
+    path: /sidewalk/gateway
+    method: POST
+    data_selector: gatewayDetails
+    params: {}
+- name: deregister_endpoint
+  endpoint:
+    path: /wireless-devices/WIRELESS_DEVICE_ID/deregister
+    method: PATCH
+    data_selector: status
+    params:
+      WirelessDeviceType: Sidewalk
+- name: control_logs
+  endpoint:
+    path: /manufacturing/control_logs
+    method: POST
+    data_selector: controlLogs
+    params: {}
+- name: sidewalk_signing_tool
+  endpoint:
+    path: /sidewalk-signing-tool
+    method: POST
+    data_selector: certificates
+    params: {}
+- name: control_logs
+  endpoint:
+    path: /upload/control_logs
+    method: POST
+    data_selector: controlLogs
+    params: {}
+- name: upload_control_log
+  endpoint:
+    path: /To_Amazon
+    method: PUT
+    data_selector: control_log_filename
+- name: feedback_control_log
+  endpoint:
+    path: /From_Amazon
+    method: GET
+    data_selector: feedback_file_name
+- name: control_logs
+  endpoint:
+    path: /control-logs
+    method: POST
+    data_selector: controlLogs
+    params: {}
+- name: control_log
+  endpoint:
+    path: /To_Amazon
+    method: PUT
+    data_selector: ''
+    params: {}
+- name: feedback
+  endpoint:
+    path: /From_Amazon
+    method: GET
+    data_selector: ''
+    params: {}
+- name: Android SDK
+  endpoint:
+    path: /mobile-sdk/developer-guide/getting-started-sidewalk-mobile-android-sdk/
+    method: GET
+- name: iOS SDK
+  endpoint:
+    path: /mobile-sdk/developer-guide/getting-started-sidewalk-mobile-ios-sdk/
+    method: GET
+- name: qualification_waiver
+  endpoint:
+    path: /qualification/waiver
+    method: GET
+    data_selector: waiver_details
+notes:
+- Amazon caps the amount of bandwidth shared to reduce the chances of any degradation
+  in a customer’s home network performance.
+- The Amazon Sidewalk network was designed for the community benefit and targeting
+  low power applications.
+- The Sidewalk Network is available only in the United States of America.
+- If multiple Echo devices are registered under a single Amazon account, only one
+  of the gateways will operate as a FSK gateway.
+- Follow the chipset vendor documentation to install the software development tools
+  required for programming the device.
+- Amazon Sidewalk is available only in the United States of America. Use of Sidewalk
+  gateway functionality outside of the U.S. is limited to ONLY Amazon Sidewalk end
+  device development and testing.
+- Developers are solely responsible for ensuring compliance with local regulations.
+- Developers are solely responsible for ensuring compliance with local regulations
+  regarding VPN use.
+- Uses AWS IoT Core for Amazon Sidewalk for device provisioning and registration.
+- A Bluetooth wireless interface is needed on the Ubuntu machine for manual registration.
+- To flash the binary image, use the address `0xFF000` for loading the binary image
+  on the Nordic Semiconductor HDK.
+- 'For Texas Instruments P1 board: `0x56000`, P7 board: `0xAE000`.'
+- The mass production flow can accommodate your operation if you have a large number
+  of Sidewalk devices to onboard.
+- The DAK is tied to the Sidewalk device profile created with AWS IoT Core for Amazon
+  Sidewalk.
+- HSM is used during the provisioning process at the CM to orchestrate signing of
+  the device certificates without exposing the DAK private key.
+- Prototype devices can be created up to 1,000.
+- Production devices can be manufactured in large quantities without any device limit.
+- You need to create a Sidewalk device profile and obtain factory support so that
+  it’s qualified for production use.
+- The CM then sets up the required tools on the host machines, and runs the Sidewalk
+  signing tool to obtain the certificates and generate the control logs.
+- Steps in this section need to be performed by the CM who will manufacture your Sidewalk
+  devices for mass production, using the Sidewalk device CLI and the Sidewalk signing
+  tool.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- After you run the signing tool using the commands listed below, if the tool runs
+  successfully, the Sidewalk certificate chains will be returned as output.
+- The Application server public key can be obtained from AWS IoT console in the Device
+  Profile page. Also, it needs to be encoded into base64 format.
+- Control logs must be uploaded to Amazon Sidewalk that includes information about
+  the provisioned device.
+- Control logs are generated in a specific format that complies with version 4-0-1.
+- Feedback must be downloaded and deleted within 30 minutes.
+- Introduces compatibility with Amazon Sidewalk MCU SDK 1.18 while maintaining support
+  for previous versions.
+- Qualification fees will be waived for the first year.
+- You will implement all reasonable security measures to ensure that no third party
+  may gain unauthorized access from your AS Device to Amazon Sidewalk, any Amazon
+  Sidewalk Content, or any data intended for or delivered by Amazon Sidewalk.
+- You will not use Amazon Sidewalk, the Services, or AS Devices for the purpose of
+  monitoring, and will not monitor, the availability, performance, or functionality
+  of any of our products or services.
+errors:
+- '400 Bad Request: Check the control log file format and required fields.'
+- 'Upload failed: Contact Amazon Sidewalk support for assistance.'
+- 'SidewalkError.DeviceError: Device error when starting coverage test in an environment
+  lacking Amazon Sidewalk coverage.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: sftp://{upload_endpoint without :22}
+  auth:
+    type: key
+    location: header
+source_metadata: null

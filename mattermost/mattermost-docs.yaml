@@ -1,0 +1,78 @@
+resources:
+- name: webhooks
+  endpoint:
+    path: /integrate/webhooks/
+    method: GET
+- name: slash_commands
+  endpoint:
+    path: /integrate/slash-commands/
+    method: GET
+- name: plugins
+  endpoint:
+    path: /integrate/plugins/
+    method: GET
+- name: api_reference
+  endpoint:
+    path: /api-documentation/
+    method: GET
+- name: incoming_webhooks
+  endpoint:
+    path: /integrate/webhooks/incoming/
+    method: POST
+    data_selector: payload
+- name: outgoing_webhooks
+  endpoint:
+    path: /integrate/webhooks/outgoing/
+    method: POST
+    data_selector: payload
+- name: slash_commands
+  endpoint:
+    path: /api/v1/slash-commands
+    method: POST
+    data_selector: response
+    params: {}
+- name: plugins
+  endpoint:
+    path: /plugins
+    method: GET
+    data_selector: plugins
+- name: webhooks
+  endpoint:
+    path: /webhooks
+    method: GET
+    data_selector: webhooks
+- name: Zapier
+  endpoint:
+    path: /oauth2/authorize
+    method: GET
+    data_selector: application
+    params: {}
+notes:
+- Outgoing webhooks are supported in public channels only.
+- Posts size is limited to 16383 characters for servers running Mattermost Server
+  v5.0 or later.
+- Best practice suggests using POST requests for slash commands.
+- Mattermost supports plugins that offer powerful features for extending and deeply
+  integrating with both the Server and Web/Desktop Apps.
+- Slack compatible means that Mattermost accepts integrations that have a payload
+  in the same format as Slack.
+- Contributions must go through a review process before being added to the Marketplace.
+- Zapier is authorized using OAuth2.0.
+- System Admin must register the Zapier app on their Mattermost server.
+errors:
+- 'returned an empty response: Ensure valid JSON and provide a response_type.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '"Token named access_token was not found in oauth response!"'
+- '[Server URL] returned (404)'
+- '[Server URL] returned (500) Internal Server Error'
+- '"Error Invalid client id"'
+- '"Mattermost needs your help: We couldn''t find the requested app"'
+auth_info:
+  mentioned_objects:
+  - OAuth 2.0 applications
+client:
+  base_url: https://api.mattermost.com
+  auth:
+    type: oauth2
+source_metadata: null

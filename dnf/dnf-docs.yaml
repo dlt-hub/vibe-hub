@@ -1,0 +1,274 @@
+resources:
+- name: features
+  endpoint:
+    path: /api/features
+    method: GET
+    data_selector: features
+    params: {}
+- name: available_packages
+  endpoint:
+    path: /api/packages
+    method: GET
+    data_selector: packages
+    params: {}
+- name: available_packages
+  endpoint:
+    path: /available
+    method: GET
+    data_selector: packages
+    params: {}
+- name: installed_packages
+  endpoint:
+    path: /installed
+    method: GET
+    data_selector: packages
+    params: {}
+- name: check-update
+  endpoint:
+    path: /check-update
+    method: GET
+- name: clean
+  endpoint:
+    path: /clean
+    method: GET
+- name: deplist
+  endpoint:
+    path: /deplist
+    method: GET
+- name: distro-sync
+  endpoint:
+    path: /distro-sync
+    method: GET
+- name: downgrade
+  endpoint:
+    path: /downgrade
+    method: GET
+- name: group
+  endpoint:
+    path: /group
+    method: GET
+- name: help
+  endpoint:
+    path: /help
+    method: GET
+- name: history
+  endpoint:
+    path: /history
+    method: GET
+- name: info
+  endpoint:
+    path: /info
+    method: GET
+- name: install
+  endpoint:
+    path: /install
+    method: GET
+- name: list
+  endpoint:
+    path: /list
+    method: GET
+- name: makecache
+  endpoint:
+    path: /makecache
+    method: GET
+- name: mark
+  endpoint:
+    path: /mark
+    method: GET
+- name: module
+  endpoint:
+    path: /dnf/module
+    method: GET
+    data_selector: module
+    params: {}
+- name: provides
+  endpoint:
+    path: /dnf/provides
+    method: GET
+    data_selector: provides
+    params: {}
+- name: reinstall
+  endpoint:
+    path: /dnf/reinstall
+    method: GET
+    data_selector: reinstall
+    params: {}
+- name: remove
+  endpoint:
+    path: /dnf/remove
+    method: GET
+    data_selector: remove
+    params: {}
+- name: repoinfo
+  endpoint:
+    path: /dnf/repoinfo
+    method: GET
+    data_selector: repoinfo
+    params: {}
+- name: repolist
+  endpoint:
+    path: /dnf/repolist
+    method: GET
+    data_selector: repolist
+    params: {}
+- name: repoquery
+  endpoint:
+    path: /repoquery
+    method: GET
+    data_selector: packages
+    params: {}
+- name: repository-packages
+  endpoint:
+    path: /repository-packages
+    method: GET
+    data_selector: packages
+    params: {}
+- name: search
+  endpoint:
+    path: /search
+    method: GET
+    data_selector: packages
+    params: {}
+- name: shell
+  endpoint:
+    path: /shell
+    method: GET
+    data_selector: commands
+    params: {}
+- name: swap
+  endpoint:
+    path: /swap
+    method: GET
+    data_selector: operations
+    params: {}
+- name: updateinfo
+  endpoint:
+    path: /updateinfo
+    method: GET
+    data_selector: advisories
+    params: {}
+- name: upgrade
+  endpoint:
+    path: /upgrade
+    method: GET
+    data_selector: packages
+    params: {}
+- name: upgrade-minimal
+  endpoint:
+    path: /upgrade-minimal
+    method: GET
+    data_selector: packages
+    params: {}
+- name: read_all_repos
+  endpoint:
+    path: /read_all_repos
+    method: GET
+- name: read_comps
+  endpoint:
+    path: /read_comps
+    method: GET
+    params:
+      arch_filter: false
+- name: sack
+  endpoint:
+    path: /dnf/sack
+    method: GET
+    data_selector: packages
+    params: {}
+- name: Comps
+  endpoint:
+    path: /comps
+    method: GET
+    data_selector: comps
+    params: {}
+- name: Package
+  endpoint:
+    path: /package
+    method: GET
+    data_selector: packages
+    params: {}
+- name: Category
+  endpoint:
+    path: /category
+    method: GET
+    data_selector: categories
+    params: {}
+- name: Environment
+  endpoint:
+    path: /environment
+    method: GET
+    data_selector: environments
+    params: {}
+- name: Group
+  endpoint:
+    path: /group
+    method: GET
+    data_selector: groups
+    params: {}
+notes:
+- The list of use cases is being added incrementally.
+- Consult every usage of DNF with the reference documentation.
+- DNF commands allow package filtering and modular filtering.
+- Installing rawhide packages onto a stable Fedora release system is generally discouraged
+  as it leads to less tested combinations of installed packages.
+- Modularity is deprecated, and functionality will be removed in a future release
+  of DNF5.
+- Packages installed/removed via DNF API are logged into dnf.log
+- 'List of all incompatible changes can be found at: dnf-1_vs_dnf-2.html'
+- 'For detailed description see: DNF API'
+- Uses basic HTTP authentication.
+- The biggest improvement in 0.5.0 is complete support for groups and environments,
+  including internal database of installed groups independent of the actual packages.
+- To force refreshing of metadata before an operation, the refresh option has been
+  added.
+- Internally, the CLI went through several changes to allow for better API accessibility.
+- skip_if_unavailable is enabled by default now
+- Clients should see the message about DNF lock being taken less often
+- This version should not present any differences for the user
+- The `--skip-broken` option is an alias for `--setopt=strict=0`.
+- 'Update and Upgrade Commands are the Same: Invoking `dnf update` or `dnf upgrade`
+  has the same effect in DNF.'
+- '`clean_requirements_on_remove` on by default: DNF is often going to remove more
+  packages.'
+- 'No `resolvedep` command: Users can use `dnf provides` to find out what package
+  provides a particular file.'
+- 'No `deplist` command: Use `dnf repoquery --deplist` as an alternative.'
+- Excludes and repo excludes apply to all operations, unlike YUM.
+- The `include` option has been removed.
+- '`dnf provides /bin/<file>` is not fully supported.'
+- '`skip_if_unavailable` could be enabled by default.'
+- '`overwrite_groups` dropped, comps functions acting as if always disabled.'
+- '`mirrorlist_expire` dropped: DNF uses `metadata_expire` for both metadata and mirrorlist
+  file.'
+- metalink not recognized in the `mirrorlist` repo option.
+- '`alwaysprompt` dropped: Unsupported to simplify the configuration.'
+- '`upgrade_requirements_on_install` dropped.'
+- '`dnf history rollback` check dropped.'
+- Packages replacement without `yum swap` can be done using `dnf shell` or `--allowerasing`.
+- Dependency processing details are not shown in the CLI.
+- '`dnf provides` complies with the YUM documentation of the command.'
+- Bandwidth limiting supported.
+- '`installonlypkgs` config option: DNF appends list values to defaults.'
+- The usage of Delta RPM files controlled by `deltarpm` option.
+- 'Handling .srpm files and non-existent packages: DNF will terminate early with an
+  error.'
+- 'Promoting package to install to a package that obsoletes it: DNF will not automatically
+  replace requests.'
+- 'Behavior of `--installroot` option: DNF handles the path differently from YUM.'
+- 'Different prompt after transaction table: DNF asks whether to continue with transaction.'
+- List command shows all repo alternatives.
+- '`yum-langpacks` subcommands have been removed.'
+- DNF does not have a direct replacement of yum-updateonboot and yum-cron commands.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- ERROR with transaction check vs depsolve
+- 'Error HTTP/FTP status code: 404'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: /etc/dnf/automatic.conf
+  headers: {}
+  paginator: {}
+source_metadata: null

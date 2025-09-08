@@ -1,0 +1,199 @@
+resources:
+- name: measurement_data
+  endpoint:
+    path: /api/measurement-data
+    method: GET
+    data_selector: data
+    params: {}
+- name: charging_moasure
+  endpoint:
+    path: /moasure/charging-moasure
+    method: GET
+    data_selector: records
+- name: battery_life
+  endpoint:
+    path: /moasure/battery-life
+    method: GET
+    data_selector: records
+- name: check_battery_level
+  endpoint:
+    path: /moasure/check-battery-level
+    method: GET
+    data_selector: records
+- name: measurements
+  endpoint:
+    path: /measurements
+    method: POST
+    data_selector: measurementData
+- name: measurement
+  endpoint:
+    path: /api/measurements
+    method: POST
+    data_selector: data
+    params: {}
+- name: measurement
+  endpoint:
+    path: /import/measurement
+    method: POST
+    data_selector: measurementData
+    params: {}
+- name: export_measurement
+  endpoint:
+    path: /export/measurement
+    method: GET
+    data_selector: measurements
+    params: {}
+- name: export_measurement
+  endpoint:
+    path: /export/measurement
+    method: POST
+    data_selector: exportData
+- name: export_multiple_files
+  endpoint:
+    path: /export/multiple
+    method: POST
+    data_selector: exportData
+- name: export_to_pdf
+  endpoint:
+    path: /export/pdf
+    method: POST
+    data_selector: exportData
+- name: export_to_cad
+  endpoint:
+    path: /export/cad
+    method: POST
+    data_selector: exportData
+- name: export_to_image
+  endpoint:
+    path: /export/image
+    method: POST
+    data_selector: exportData
+- name: export_to_csv
+  endpoint:
+    path: /export/csv
+    method: POST
+    data_selector: exportData
+- name: inspect_points
+  endpoint:
+    path: /inspect/points
+    method: GET
+- name: inspect_edges
+  endpoint:
+    path: /inspect/edges
+    method: GET
+- name: edit_tools
+  endpoint:
+    path: /api/v1/edit_tools
+    method: GET
+    data_selector: records
+- name: measurement
+  endpoint:
+    path: /api/v1/measurements
+    method: GET
+    data_selector: data
+    params: {}
+- name: measurement
+  endpoint:
+    path: /en/api/rest-api
+    method: GET
+    data_selector: measurements
+- name: layout_mode
+  endpoint:
+    path: /layout/mode
+    method: GET
+    data_selector: layoutData
+    params: {}
+- name: driveway_measurements
+  endpoint:
+    path: /measure-driveways
+    method: GET
+- name: elevation_measurement
+  endpoint:
+    path: /api/elevation
+    method: GET
+    data_selector: data
+    params: {}
+- name: measure_staircases
+  endpoint:
+    path: /en/use-cases/measure-staircases
+    method: GET
+    data_selector: steps
+    params: {}
+- name: golf_course_measurement
+  endpoint:
+    path: /measure/golf-course
+    method: POST
+    data_selector: data
+- name: measure_buildings
+  endpoint:
+    path: /measure/buildings
+    method: GET
+    data_selector: results
+    params: {}
+- name: Moasure CSV Import
+  endpoint:
+    path: /import/moasure/csv
+    method: POST
+    data_selector: data
+    params: {}
+- name: measurement_diagram
+  endpoint:
+    path: /export/measurement_diagram
+    method: POST
+    data_selector: diagrams
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Moasure works by connecting to the Moasure companion app, and using Bluetooth to
+  transmit measurement data.
+- Moasure 2 and Moasure 2 Pro use USB Type-C cable
+- Moasure ONE uses a Micro USB cable
+- By default, Moasure automatically switches itself off after 30 seconds of inactivity.
+- This setting is only available with a Moasure 2 PRO.
+- 'To achieve maximum accuracy in motion-based measurements, follow these three key
+  techniques: Pace, Placement, Rotation.'
+- To maximise measurement accuracy, pause every 6 to 8 seconds during a measurement.
+- New measurements or any edits made to existing ones are not saved automatically.
+- Configuration options are available in app version 1.8 and upwards.
+- Scale is not supported for 3D exports.
+- Uses OAuth2 with refresh token — requires setup of connected app in Moasure
+- Some objects like Contact may return nulls in deeply nested fields
+- Some measurements may return nulls in deeply nested fields
+- Uses Straight Line for capturing lengths and shapes
+- Ignored paths cannot be labelled
+- Coordinates of points measured using Points Path or Ignore Path that are not labeled,
+  will not show on the PDF Export.
+- Step-by-step tutorial for accurately measuring a residential house and backyard
+  using Moasure.
+- Uses Optimise Route feature to arrange coordinates in logical order.
+- Layout is only available with Moasure 2 PRO devices.
+- CAD Import is available from Moasure app version 3.2 and above.
+- Optional ‘Optimise Route’ feature arranges x, y coordinates in the most logical
+  order and shortest distance.
+- Simplify Driveway Measurements
+- This guide will walk you through the steps to accurately measure and calculate the
+  square footage of a driveway.
+- To access the API, please contact support@moasure.com.
+- Export measurement diagrams straight from the Moasure app into SketchUp design software.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+client:
+  base_url: https://api.moasure.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.moasure.com/oauth2/token
+    client_id: '{{ dlt.secrets[''moasure_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''moasure_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''moasure_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

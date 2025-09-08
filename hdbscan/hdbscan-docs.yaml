@@ -1,0 +1,118 @@
+resources:
+- name: BranchDetector
+  endpoint:
+    path: /hdbscan/branches
+    method: GET
+    data_selector: branches
+- name: clusterer
+  endpoint:
+    path: /hdbscan/cluster
+    method: POST
+    data_selector: labels_
+- name: condensed_tree
+  endpoint:
+    path: condensed_tree_
+    method: GET
+    data_selector: CondensedTree
+    params: {}
+- name: single_linkage_tree
+  endpoint:
+    path: single_linkage_tree_
+    method: GET
+    data_selector: SingleLinkageTree
+    params: {}
+- name: clustering
+  endpoint:
+    path: /clustering
+    method: POST
+    data_selector: clusters
+    params:
+      min_cluster_size: 4
+      metric: haversine
+      cluster_selection_method: eom
+- name: dbscan_clustering
+  endpoint:
+    path: /api/dbscan_clustering
+    method: POST
+    data_selector: results
+    params:
+      cut_distance: eps
+      min_cluster_size: 5
+- name: branch_detector
+  endpoint:
+    path: /branch_detector
+    method: POST
+    data_selector: results
+    params: {}
+- name: agglomerative_clustering
+  endpoint:
+    path: /agglomerative_clustering
+    method: POST
+    data_selector: results
+- name: dbscan
+  endpoint:
+    path: /dbscan
+    method: POST
+    data_selector: results
+- name: hdbscan
+  endpoint:
+    path: /hdbscan
+    method: POST
+    data_selector: results
+- name: clustering
+  endpoint:
+    path: /clustering
+    method: POST
+    data_selector: results
+- name: clustering_algorithms
+  endpoint:
+    path: /benchmarking
+    method: GET
+    data_selector: results
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Uses HDBSCAN for clustering with branch detection
+- HDBSCAN is noise aware — samples not assigned to any cluster get the label -1.
+- HDBSCAN supports a wide variety of metrics like 'euclidean', 'manhattan', and 'precomputed'.
+- HDBSCAN builds a hierarchy of potential clusters during processing.
+- adjusting min_samples will result in recomputing the hard computation of the single
+  linkage tree.
+- adjusting alpha will result in recomputing the hard computation of the single linkage
+  tree.
+- HDBSCAN is a transductive method – new data points can alter the underlying clustering.
+- HDBSCAN* is used to detect branches in clusters, revealing meaningful subpopulations.
+- Agglomerative clustering can handle underlying manifold structures.
+- DBSCAN leaves sparse points as noise and focuses on dense clusters.
+- HDBSCAN allows for varying density clusters without needing epsilon.
+- HDBSCAN is effective for exploratory data analysis with its ability to find clusters
+  in varying densities.
+- The performance and scaling can depend as much on the implementation as the underlying
+  algorithm.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+errors:
+- 'INVALID_DATA: Ensure the input data meets the required format.'
+- 'TIMEOUT: Increase max time or reduce dataset size'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://hdbscan.api.com
+source_metadata: null

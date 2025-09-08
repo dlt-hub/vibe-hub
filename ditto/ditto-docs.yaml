@@ -1,0 +1,150 @@
+resources:
+- name: cars
+  endpoint:
+    path: /store/execute
+    method: POST
+    data_selector: results
+    params: {}
+- name: smallPeerInfo
+  endpoint:
+    path: /smallPeerInfo
+    method: GET
+    data_selector: data
+    params: {}
+- name: upload_attachment
+  endpoint:
+    path: /api/v4/attachments/upload
+    method: POST
+    data_selector: id
+- name: download_attachment
+  endpoint:
+    path: /api/v4/attachments/{attachment_id}
+    method: GET
+    data_selector: ''
+- name: cdc_events
+  endpoint:
+    path: /cdc/events
+    method: GET
+    data_selector: events
+    params: {}
+- name: people
+  endpoint:
+    path: /people
+    method: GET
+    data_selector: records
+    params: {}
+- name: orders
+  endpoint:
+    path: /orders
+    method: GET
+    data_selector: records
+    params: {}
+- name: transaction_log
+  endpoint:
+    path: /transaction-log
+    method: GET
+    data_selector: logs
+    params: {}
+- name: execute
+  endpoint:
+    path: /store/v5/execute
+    method: POST
+- name: cars
+  endpoint:
+    path: /INSERT INTO cars
+    method: POST
+    data_selector: DOCUMENTS
+    params: {}
+- name: evict_statement
+  endpoint:
+    path: /dql/evict
+    method: DELETE
+    data_selector: documents
+notes:
+- Uses an offline-first architecture with peer-to-peer mesh networking.
+- Ditto stores data records as documents which are gathered together in collections.
+- Every document must be associated with a collection.
+- Uses OAuth2 with refresh token — requires setup of connected app in Ditto
+- Playground mode deliberately offers limited security for easy development and is
+  not recommended for production.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Ditto handles monitoring, upgrades, health checks, and incident response.
+- Your team has access to usage metrics and support through the portal.
+- Ditto recommends dedicated VPCs for isolation and easier management.
+- This token is used to authenticate your SDK to Ditto Server It allows you to explore
+  Ditto platform features and functionality without the hassle of setting up your
+  own authentication mechanism.
+- DQL queries need to use single quotes to include field names and values.
+- With strict mode enabled, all fields are treated as a register by default.
+- Ditto employees can only access your app data with an approved access grant.
+- The Device Dashboard is powered by the Small Peer Info (`smallPeerInfo`) Ditto system
+  collection and available for Ditto SDK version 4.4.0 and later.
+- There are no size limits for attachments in Ditto, but the HTTP API enforces a 1MB
+  limit for uploading attachments.
+- CDC is a premium feature which must first be enabled by request to the Ditto team.
+- Minimum supported version for the connector is currently MongoDB 7.0.13 and MongoDB
+  8.0.0.
+- All collections to be synchronized must have changeStreamPreAndPostImages set to
+  true.
+- Non-SRV-based connection strings cannot be used with the MongoDB connector.
+- ID Mapping is a critical part of configuring the connector, please makes sure you
+  read the ID Mapping section carefully and configure as necessary for your use case.
+- Ditto uses Small Peers predominantly for data replication across web, mobile, desktop,
+  and Linux-embedded systems.
+- The subscription servers act as soft-state satellite API nodes for receiving and
+  distributing Small Peer data.
+- Safety in Ditto Server (bad things never happen) has been discussed at length above,
+  in UST, and Transitions, and how Causally Consistent reads occur.
+- It is essential to understand this is a disaster scenario, and not business as usual,
+  but disasters happen, and they should be planned for.
+- Use v5 endpoint when strict_mode=false sets metadata to MAP type
+- This is often caused by mismatched strict mode settings between peers without explicit
+  MAP definitions.
+- Deletes in Ditto require all devices to connect and share updates within the configured
+  TTL (time-to-live) window. Default 7 days (TOMBSTONE_TTL_HOURS) for Edge SDK, 30
+  days for Ditto Cloud.
+- If a device goes offline and returns after all other devices have already evicted
+  the deleted document, that device will not be aware of the deletion.
+- Use IF NOT EXISTS for simplicity
+- Create indexes on frequently queried fields
+- Monitor index usage using the system:indexes collection
+- Consider index creation cost for large collections
+- Clean up unused indexes to save storage space and improve write performance
+- Uses OAuth2 with refresh token — requires setup of connected app in ditto
+- Some objects may return nulls in deeply nested fields
+- 'Older data could be very important, or it could not be. It’s your choice to decide
+  what to do with these old documents: you could accept (as-is), reject (ignore),
+  or migrate them to the new schema.'
+- Backward compatibility means that eventually you will have the “couch device problem”
+  (i.e., a device that fell behind a couch).
+- Documents that exceed 5 MB do not sync with other connected peers.
+- If a document exceeds 250 KB in size, stdout warning prints to the console.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'DQL parser error: Unexpected token { at line 2 column 8 near ''VALUES {''; expected
+  ('
+- 'Access grant not approved: Approve access grant to allow Ditto support team to
+  access app data.'
+- '401 Unauthorized: Recheck MongoDB user permissions and database access.'
+- Connection string provided is invalid.
+- Failed to connect to MongoDB
+- Failed to list database names
+- Failed to list collections
+- Database <name> not found
+- Collection <name> not found
+- Collection <name> must be configured with changeStreamPreAndPostImages enabled
+- Collection <name> cannot be a capped collection
+- Collection <name> cannot be created
+- Something went wrong
+- 'Database error: an index with the given name already exists on the given collection'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.ditto.live
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+source_metadata: null

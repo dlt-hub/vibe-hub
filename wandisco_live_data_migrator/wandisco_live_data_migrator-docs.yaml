@@ -1,0 +1,748 @@
+resources:
+- name: Hive
+  endpoint:
+    path: /hive
+    method: GET
+    data_selector: metastore
+    params: {}
+- name: running_migrations
+  endpoint:
+    path: /configuration
+    method: set
+    data_selector: migrations
+    params:
+      key: migration.max.running.migrations
+      value: '15'
+- name: current_running_migrations
+  endpoint:
+    path: /configuration
+    method: get
+    data_selector: migrations
+    params:
+      key: migration.max.running.migrations
+- name: UI Activity Log
+  endpoint:
+    path: /var/log/wandisco/audit/ui
+    method: GET
+    data_selector: records
+    params: {}
+- name: Data Migrator Activity Log
+  endpoint:
+    path: /var/log/wandisco/audit/livedata-migrator
+    method: GET
+    data_selector: records
+    params: {}
+- name: Hive Migrator Activity Log
+  endpoint:
+    path: /var/log/wandisco/audit/hivemigrator
+    method: GET
+    data_selector: records
+    params: {}
+- name: adls2_oauth
+  endpoint:
+    path: /filesystem/add/adls2/oauth
+    method: POST
+    params:
+      container_name: lm2target
+      file_system_id: mytarget
+      oauth2_client_endpoint: https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token
+      oauth2_client_id: '{{ dlt.secrets[''oauth2_client_id''] }}'
+      oauth2_client_secret: '{{ dlt.secrets[''oauth2_client_secret''] }}'
+      storage_account_name: myadls2
+- name: adls2_sharedKey
+  endpoint:
+    path: /filesystem/add/adls2/sharedKey
+    method: POST
+    params:
+      file_system_id: mytarget
+      storage_account_name: myadls2
+      shared_key: '{{ dlt.secrets[''shared_key''] }}'
+      container_name: lm2target
+- name: gcs
+  endpoint:
+    path: /filesystem/add/gcs
+    method: POST
+    params:
+      bucket_name: mygcsgbucket
+      file_system_id: GCS1
+      service_account_json_key_file_server_location: /var/tmp/key-999999.json
+- name: gpfs
+  endpoint:
+    path: /filesystem/add/gpfs
+    method: POST
+    params:
+      default_fs: hdfs://SourceCluster:8020
+      file_system_id: GPFS-Source
+      mount_point: /gpfs/fs1/cluster-data
+- name: hdfs
+  endpoint:
+    path: /filesystem/add/hdfs
+    method: POST
+    data_selector: filesystem
+    params: {}
+- name: local
+  endpoint:
+    path: /filesystem/add/local
+    method: POST
+    data_selector: filesystem
+    params: {}
+- name: hive_agent_add_azure
+  endpoint:
+    path: /hive/agent/add/azure
+    method: POST
+- name: hive_agent_add_filesystem
+  endpoint:
+    path: /hive/agent/add/filesystem
+    method: POST
+- name: glue
+  endpoint:
+    path: /hive/agent/add/glue
+    method: POST
+    data_selector: response
+    params:
+      glue-endpoint: glue.eu-west-1.amazonaws.com
+      aws-region: eu-west-1
+      file-system-id: mys3bucket
+- name: hive
+  endpoint:
+    path: /hive/agent/add/hive
+    method: POST
+    data_selector: response
+    params:
+      name: sourceAgent
+      file-system-id: myhdfs
+- name: iceberg hive
+  endpoint:
+    path: /hive/agent/add/iceberg/hive
+    method: POST
+    data_selector: response
+    params:
+      catalog-name: IcebergCatalog
+      catalog-type: HIVE
+      file-system-id: myfilesystem
+      metastore-uri: thrift://<host>:<port>
+      username: hive_user
+      warehouse-dir: /path/to/warehouse
+- name: iceberg_rest
+  endpoint:
+    path: /hive/agent/add/iceberg/rest
+    method: POST
+- name: databricks_legacy
+  endpoint:
+    path: /hive/agent/add/databricks/legacy
+    method: POST
+- name: databricks_unity
+  endpoint:
+    path: /hive/agent/add/databricks/unity
+    method: POST
+- name: hive_agent_add_dataproc
+  endpoint:
+    path: /hive/agent/add/dataproc
+    method: POST
+- name: hive_agent_add_snowflake_basic
+  endpoint:
+    path: /hive/agent/add/snowflake/basic
+    method: POST
+- name: hive_agent_add_snowflake_privatekey
+  endpoint:
+    path: /hive/agent/add/snowflake/privatekey
+    method: POST
+- name: hive_agent_check
+  endpoint:
+    path: /hive/agent/check
+    method: GET
+- name: hive_agent_configure_azure
+  endpoint:
+    path: /hive/agent/configure/azure
+    method: POST
+- name: hive_agent_configure_filesystem
+  endpoint:
+    path: /hive/agent/configure/filesystem
+    method: POST
+- name: hive_agent_configure_glue
+  endpoint:
+    path: /hive/agent/configure/glue
+    method: POST
+- name: hive_agent_configure_hive
+  endpoint:
+    path: /hive/agent/configure/hive
+    method: POST
+- name: hive_agent_configure_databricks_legacy
+  endpoint:
+    path: /hive/agent/configure/databricks/legacy
+    method: POST
+- name: hive_agent_configure_databricks_unity
+  endpoint:
+    path: /hive/agent/configure/databricks/unity
+    method: POST
+- name: hive_agent_configure_dataproc
+  endpoint:
+    path: /hive/agent/configure/dataproc
+    method: POST
+- name: hive_agent_configure_iceberg_hive
+  endpoint:
+    path: /hive/agent/configure/iceberg/hive
+    method: POST
+- name: hive_agent_configure_iceberg_rest
+  endpoint:
+    path: /hive/agent/configure/iceberg/rest
+    method: POST
+- name: hive_agent_configure_snowflake_basic
+  endpoint:
+    path: /hive/agent/configure/snowflake/basic
+    method: POST
+- name: hive_agent_configure_snowflake_privatekey
+  endpoint:
+    path: /hive/agent/configure/snowflake/privatekey
+    method: POST
+- name: hive_agent_delete
+  endpoint:
+    path: /hive/agent/delete
+    method: DELETE
+- name: exclusion
+  endpoint:
+    path: /exclusion
+    method: POST
+- name: migration
+  endpoint:
+    path: /migration
+    method: POST
+- name: migration path status
+  endpoint:
+    path: /migration/path/status
+    method: GET
+    data_selector: actions
+    params: {}
+- name: migration pending-region add
+  endpoint:
+    path: /migration/pending-region/add
+    method: POST
+    data_selector: region
+    params: {}
+- name: migration recurrence history
+  endpoint:
+    path: /migration/recurrence/history
+    method: GET
+    data_selector: history
+    params: {}
+- name: migration recurring start
+  endpoint:
+    path: /migration/recurring/start
+    method: POST
+    data_selector: recurrence
+    params: {}
+- name: migration reset
+  endpoint:
+    path: /migration/reset
+    method: POST
+    data_selector: reset
+    params: {}
+- name: migration resume
+  endpoint:
+    path: /migration/resume
+    method: POST
+    data_selector: resume
+    params: {}
+- name: migration run
+  endpoint:
+    path: /migration/run
+    method: POST
+    data_selector: run
+    params: {}
+- name: migration show
+  endpoint:
+    path: /migration/show
+    method: GET
+    data_selector: migrationDetails
+    params: {}
+- name: migration stats
+  endpoint:
+    path: /migration/stats
+    method: GET
+    data_selector: stats
+    params: {}
+- name: migration stop
+  endpoint:
+    path: /migration/stop
+    method: POST
+    data_selector: stop
+    params: {}
+- name: migration update configuration
+  endpoint:
+    path: /migration/update/configuration
+    method: POST
+    data_selector: configuration
+    params: {}
+- name: migration verification delete
+  endpoint:
+    path: /migration/verification/delete
+    method: DELETE
+    data_selector: verification
+    params: {}
+- name: migration verification list
+  endpoint:
+    path: /migration/verification/list
+    method: GET
+    data_selector: verifications
+    params: {}
+- name: migration verification report
+  endpoint:
+    path: /migration/verification/report
+    method: GET
+    data_selector: report
+    params: {}
+- name: migration verification show
+  endpoint:
+    path: /migration/verification/show
+    method: GET
+    data_selector: verificationStatus
+    params: {}
+- name: migration verification start
+  endpoint:
+    path: /migration/verification/start
+    method: POST
+    data_selector: verification
+    params: {}
+- name: migration verification stop
+  endpoint:
+    path: /migration/verification/stop
+    method: POST
+    data_selector: stopVerification
+    params: {}
+- name: status
+  endpoint:
+    path: /status
+    method: GET
+    data_selector: migrations
+    params: {}
+- name: hive_migration_add
+  endpoint:
+    path: /hive/migration/add
+    method: POST
+    data_selector: migration
+    params:
+      source: sourceAgent
+      target: remoteAgent
+      rule-names: test_dbs,user_dbs
+      name: hive_migration
+      auto-start: true
+- name: hive_migration_delete
+  endpoint:
+    path: /hive/migration/delete
+    method: DELETE
+    data_selector: migration
+    params:
+      name: hive_migration
+      force-stop: true
+- name: notification_email_smtp_set
+  endpoint:
+    path: /notification/email/smtp/set
+    method: POST
+    data_selector: string
+    params:
+      host: my.internal.host
+      port: 587
+      security: TLS
+      email: livedatamigrator@wandisco.com
+      login: myusername
+      password: mypassword
+- name: notification_email_types_add
+  endpoint:
+    path: /notification/email/types/add
+    method: POST
+    data_selector: string
+    params:
+      types: MISSING_EVENTS,EVENTS_BEHIND,MIGRATION_AUTO_STOPPED
+- name: notification_email_types_remove
+  endpoint:
+    path: /notification/email/types/remove
+    method: POST
+    data_selector: string
+    params:
+      types: MISSING_EVENTS,EVENTS_BEHIND,MIGRATION_AUTO_STOPPED
+- name: Email Notification Types
+  endpoint:
+    path: /live-data-migrator/docs/email-notification-types
+    method: GET
+    data_selector: notification types
+    params: {}
+- name: create_migration_gate
+  endpoint:
+    path: /gates/gate
+    method: PUT
+- name: close_migration_gate
+  endpoint:
+    path: /gates/gate/close
+    method: PUT
+- name: check_migration_gate_status
+  endpoint:
+    path: /gates/gate
+    method: GET
+- name: check_closed_migration_gates
+  endpoint:
+    path: /gates/gate/check
+    method: GET
+- name: delete_migration_gate
+  endpoint:
+    path: /gates/gate
+    method: DELETE
+- name: delete_all_migration_gates
+  endpoint:
+    path: /gates/gate/deleteAll
+    method: DELETE
+- name: agent
+  endpoint:
+    path: /etc/wandisco/hivemigrator-remote-server/agent.yaml
+    method: UPDATE
+    data_selector: agent properties
+    params:
+      port: 5052
+      host: exampleuser02-vm2.example-domain.com
+      sslEnabled: true
+      certificateStorageType: KEYSTORE
+      keyStoreConfig:
+        path: server.jks
+        password: <keystore_password>
+        certificateAlias: server
+        trustedCertificateAlias: client
+        type: JKS
+      fileSystemId: targetHDFS
+      defaultFsOverride: hdfs://nameservice02
+      preferredOperationMode: LISTENING
+- name: Data Migrator
+  endpoint:
+    path: /etc/wandisco/livedata-migrator/logback-spring.xml
+    method: GET
+- name: Hive Migrator
+  endpoint:
+    path: /etc/wandisco/hivemigrator/log4j2.yaml
+    method: GET
+- name: UI
+  endpoint:
+    path: /etc/wandisco/ui/logback-spring.xml
+    method: GET
+- name: UI
+  endpoint:
+    path: /etc/wandisco/ui/application-prod.properties
+    method: GET
+- name: data_transfer_agent_properties
+  endpoint:
+    path: /data/transfer/agent/properties
+    method: GET
+    data_selector: properties
+- name: security_properties
+  endpoint:
+    path: /security/properties
+    method: GET
+    data_selector: properties
+- name: data_migrator_properties
+  endpoint:
+    path: /data/migrator/properties
+    method: GET
+    data_selector: properties
+- name: edits_retained
+  endpoint:
+    path: /services/data/vXX.X/sobjects/edits_retained
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: max_events_per_rpc
+  endpoint:
+    path: /services/data/vXX.X/sobjects/max_events_per_rpc
+    method: GET
+    data_selector: records
+    params: {}
+- name: max_extra_edits_segments_retained
+  endpoint:
+    path: /services/data/vXX.X/sobjects/max_extra_edits_segments_retained
+    method: GET
+    data_selector: records
+    params: {}
+- name: checkpoint_txns
+  endpoint:
+    path: /services/data/vXX.X/sobjects/checkpoint_txns
+    method: GET
+    data_selector: records
+    params: {}
+- name: backup
+  endpoint:
+    path: /backup
+    method: GET
+    data_selector: backup_data
+    params: {}
+- name: restore
+  endpoint:
+    path: /restore
+    method: POST
+    data_selector: restore_data
+    params: {}
+- name: backup
+  endpoint:
+    path: /backups
+    method: POST
+    data_selector: ''
+    params: {}
+- name: backup_schedule
+  endpoint:
+    path: /backups/config/schedule/
+    method: PUT
+    data_selector: ''
+    params: {}
+- name: metadata_backup
+  endpoint:
+    path: /backups
+    method: POST
+    data_selector: ''
+    params: {}
+- name: metadata_backup_schedule
+  endpoint:
+    path: /backups/schedule
+    method: PUT
+    data_selector: ''
+    params: {}
+- name: ldap_user_access
+  endpoint:
+    path: /configure/ldap/user/access
+    method: GET
+    data_selector: users
+    params: {}
+- name: LDAP Configuration
+  endpoint:
+    path: /ldap/configuration
+    method: POST
+    data_selector: settings
+    params:
+      application.ldap.enabled: 'false'
+      application.ldap.baseUrl: ldap://localhost
+      application.ldap.port: 389
+      application.ldap.baseDn: dc=springframework,dc=org
+      application.ldap.managerDn: CN=manager,OU=city,DC=example,DC=com
+      application.ldap.managerPassword: LvglJEyAySUQBuyUcEeRcYhzrJX6NMl0
+      application.ldap.bindAuth: y
+      application.ldap.passwordAttribute: userPassword
+      application.ldap.userDnPatterns: '{0},ou=people'
+      application.ldap.userSearchBase: ou=people
+      application.ldap.userSearchFilter: (uid={0})
+      application.ldap.groupSearchBase: ''
+      application.ldap.groupSearchFilter: uniqueMember={0}
+- name: S3a
+  endpoint:
+    params:
+      fs.s3a.proxy.host: <proxy-hostname>
+      fs.s3a.proxy.port: <proxy-port>
+      fs.s3a.proxy.username: <proxy-user>
+      fs.s3a.proxy.password: <proxy-pass>
+- name: livedata-migrator
+  endpoint:
+    path: /livedata-migrator
+    method: GET
+- name: livedata-migrator-data-agent
+  endpoint:
+    path: /livedata-migrator-data-agent
+    method: GET
+- name: livedata-ui
+  endpoint:
+    path: /livedata-ui
+    method: GET
+- name: hivemigrator
+  endpoint:
+    path: /hivemigrator
+    method: GET
+- name: hivemigrator-remote-server
+  endpoint:
+    path: /hivemigrator-remote-server
+    method: GET
+- name: smtp_server_configuration
+  endpoint:
+    path: /configure/smtp
+    method: POST
+    data_selector: smtp_config
+    params: {}
+- name: metadata_rule
+  endpoint:
+    path: /define-metadata-rules
+    method: GET
+- name: metadata_migrations
+  endpoint:
+    path: /manage-metadata-migrations
+    method: GET
+    data_selector: migrations
+    params: {}
+- name: verification
+  endpoint:
+    path: /live-data-migrator/docs/metadata-verifications
+    method: GET
+    data_selector: verification
+    params: {}
+- name: hive_agent
+  endpoint:
+    path: /live-data-migrator/docs/command-reference#hive-agent-add-hive
+    method: POST
+    data_selector: agent
+    params: {}
+- name: azure_hive_agent
+  endpoint:
+    path: /live-data-migrator/docs/command-reference#hive-agent-add-azure
+    method: POST
+    data_selector: agent
+    params: {}
+- name: glue_hive_agent
+  endpoint:
+    path: /live-data-migrator/docs/command-reference#hive-agent-add-glue
+    method: POST
+    data_selector: agent
+    params: {}
+- name: filesystem_agent
+  endpoint:
+    path: hive agent add filesystem
+    method: POST
+    data_selector: agent
+    params:
+      file-system-id: myfilesystem
+      root-folder: /var/lib/mysql
+      name: fsAgent
+notes:
+- API documentation can only be viewed from the Data Migrator host machine by default.
+- If you need to access the documentation from another system over your network, follow
+  the steps to change configuration.
+- Set up your source bucket to use Simple Queue Service (SQS) to handle event notifications.
+- We don't support versioning, metadata migrations, or object locks.
+- Listening mode is supported for HDP 3.1.5 and CDP 7.1.x.
+- Users for any Hadoop version other than HDP 3.1.5 or CDP 7.1.x must select Scanning
+  mode.
+- Java 1.8 64-bit (Java 8, Latest LTS version) or Java 11 is required.
+- Port 8081 accessible on your Linux host (to access the UI through a web browser).
+- Ensure suitable ulimit settings for your deployment.
+- The port numbers 9866 and 1004 are default values and you should check the values
+  in dfs.datanode.address and dfs.datanode.https.address properties for your cluster.
+- If extracting and decompressing in the default temporary directory fails, use the
+  --target option
+- After installation, you can delete your temporary directory and its contents
+- Once installed, Data Migrator automatically begins a free 14-day trial, during which
+  time you can migrate up to 5TB of data.
+- At the end of the free trial, Data Migrator automatically upgrades to a usage-based
+  license.
+- The Big Replicate version of Data Migrator uses livedata-ui-partner as the UI component.
+- If Hive Migrator is being used, compaction of the H2 database must be done prior
+  to performing upgrades.
+- Only perform a manual database upgrade if instructed to do so by support.
+- 'Ensure you have purchased and received a license and installer via the Cirata Data
+  Migrator: Effortless data integration listing before deploying the VM image via
+  the Data Migrator VM.'
+- Ensure you have read the Prerequisites as you may experience problems if you miss
+  any of these requirements.
+- Logs for each component of Data Migrator are stored in the /var/log/wandisco/ directory.
+- When Data Migrator encounters an unexpected run-time exception, it will emit a log
+  message with the notification 'LiveMigratorPanicNotification'.
+- This notification displays when the number of pending regions exceeds the 'high
+  watermark' percentage of maximum pending regions.
+- If Data Migrator cannot communicate with the Kafka service, the migration will stall
+  until communication with the service resumes.
+- Hive metadata migrations are set to fail if connections to either the target or
+  source agent are lost for more than 20 minutes.
+- If Kerberos is disabled, and Hadoop configuration is on the host, Data Migrator
+  detects the source filesystem automatically on startup.
+- Insufficient container permissions with an Azure Data Lake Storage (ADLS) Gen2 target
+  filesystem when using OAuth2 authentication
+- There's currently a known issue where regex-based exclusions added after the initial
+  scan don't appear in the metrics.
+- To ensure events are queued for an extended period, and to avoid out-of-memory (OOM)
+  situations, plan sufficient memory usage for the number of events you have for your
+  migrations.
+- Use the Filter by Source and Filter by Target dropdowns to refine the list of available
+  migrations.
+- You must have the **admin role** assigned to update the running migration limit.
+- Default logging configuration for Data Migrator activity records can be found in
+  '/var/log/wandisco/audit/livedata-migrator'
+- Data Migrator audit events presented by the UI are stored in the internal database
+  for 365 days by default.
+- Ensure the external location you specify has been created in Databricks.
+- A Hive migration must be stopped before it can be deleted.
+- Path mappings can't be applied to existing migrations. Delete and recreate a migration
+  if you want a path mapping to apply.
+- Deleting a path mapping will not affect any existing migrations that have the path
+  mapping applied. Delete and recreate a migration if you no longer want a previous
+  path mapping to apply.
+- SMTP server configuration requires valid parameters for successful connection.
+- Update the certificateStorageType value from FILE to KEYSTORE.
+- Data Migrator doesn’t automatically store your TLS/SSL keystore password after adding
+  a remote agent. Add your keystore password manually to /etc/wandisco/hivemigrator-remote-server/agent.yaml
+  by updating the password property in the keyStoreConfig section.
+- If you're using basic authentication, you must provide the path of an environment
+  file containing your basic authentication passwords in the format LIVEDATA_MIGRATOR_PASSWORD=<example_password>
+  and HIVEMIGRATOR_PASSWORD=<example_password>.
+- Run the talkback script with root permissions for the best results.
+- If you set environment variables and then use command flags when running the script,
+  the command flag values override the environment variables.
+- When adding new properties or changing existing values, restart the Data Migrator
+  service.
+- Automatically rotated secrets are not supported.
+- Different secrets stores for different Data Migrator components are not supported.
+- The use of binary secret data is not supported.
+- HashiCorp Vault using Unix domain socket listener mode is not supported.
+- Automatically rotated secrets are not supported
+- The data transfer agent runs on port 1433
+- Security properties are generated upon installation
+- Data Migrator reads events from a HDFS cluster's NameNode to track changes to data
+  on the filesystem.
+- The UI will warn when the source file system isn't configured to handle enough events.
+- You can't restore backups with source filesystems containing properties that are
+  dependent on another filesystem.
+- LDAP and Active Directory are supported.
+- Changes to a user's privileges will apply when they next sign in.
+- Ensure you complete the prerequisites including basic authentication for Data Migrator
+  and Hive Migrator before attempting to apply API access control.
+- After applying access control to the API, if you make changes to LDAP Authentication,
+  Access Control, or Migration Management, you must apply these new changes to the
+  API with Apply and Restart now or Apply and Restart later in API Access Control.
+- Migration Management support was added to Hive Migrator in Data Migrator 3.0.
+- If you upgraded from Data Migrator 2.6 to 3.0 or later and also have Migration Management
+  enabled on API Access Control, your Migration Management configuration is not automatically
+  applied to Hive Migrator.
+- Supplying proxy properties is supported with S3a filesystems only.
+- Don't run Data Migrator without Kerberos in production environments. We recommend
+  running without Kerberos for internal testing only.
+- Email notifications are disabled for trial licenses.
+- Ensure migrations exist for the data (databases and tables) you want to migrate,
+  this is not optional for transactional tables which will not be populated on the
+  target unless the migration for the data exists first.
+- Metrics shown on the metadata migration content summary page don’t show correct
+  results following certain metadata migration failures.
+- Hivemigrator automatically applies default exclusions for any metadata rule.
+- These default exclusions are not configurable and cannot be removed.
+- You can select Pause to suspend transferring metadata.
+- Once a metadata migration has started, you can select Stop to suspend transferring
+  metadata.
+- After stopping a metadata migration, select Reset to set it to its original state
+  before it was started.
+- In Data Migrator 3.2.1+, only one verification can be run at a time
+- It is not recommended to run a verification when a migration is in progress as it
+  will likely provide inaccurate or misleading results as the target is actively changing.
+- Migrations that include Hive constraints are not supported.
+- Hive filesystem target agents are currently only available using the CLI.
+errors:
+- 'Out of memory: Ensure sufficient memory allocation for the Java Runtime Environment.'
+- 'Failed to connect to Data Migrator: Ensure access and secret keys are correct.'
+- '2020-11-12 16:26:37.441 ERROR - [engine-pool-1 ] c.w.l.e.LM2UncaughtExceptionHandler
+  : Uncaught exception in thread Thread[engine-pool-1,5,main], exception: java.lang.IllegalArgumentException:
+  Wrong FS: hdfs://.livemigrator_55f9bf54-77fc-4bc1-95e9-0a378d938609, expected: hdfs://nmcnu01-vm0.bdfrem.wandisco.com'
+- Can't access source events stream from the Kafka service.
+- Hive Migrator connection to the source or target timed-out
+- Message stream modified (41)
+- 'Error Code: AccessDenied. Error Message: Access to the resource https://sqs.eu-west-1.amazonaws.com/
+  is denied.'
+- 'Total number of currently requeuing actions: is the total number of actions being
+  retried.'
+- 'Invalid credentials: Check your LDAP server configuration.'
+- 'Connection failed: Ensure the LDAP server is reachable.'
+- '403: Access Denied. User does not have sufficient authority.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: http://localhost:18080
+  auth:
+    type: Bearer
+    location: header
+    header_name: Authorization
+source_metadata: null

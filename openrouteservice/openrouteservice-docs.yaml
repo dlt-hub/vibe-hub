@@ -1,0 +1,166 @@
+resources:
+- name: directions
+  endpoint:
+    path: /v2/directions
+    method: GET
+- name: isochrones
+  endpoint:
+    path: /v2/isochrones
+    method: GET
+- name: matrix
+  endpoint:
+    path: /v2/matrix
+    method: GET
+- name: snapping
+  endpoint:
+    path: /v2/snap
+    method: GET
+- name: country_list
+  endpoint:
+    path: /openrouteservice/technical-details/country-list
+    method: GET
+    data_selector: ''
+- name: input_files
+  endpoint:
+    path: /data/input-files
+    method: GET
+    data_selector: records
+- name: output_files
+  endpoint:
+    path: /data/output-files
+    method: GET
+    data_selector: records
+- name: health
+  endpoint:
+    path: /ors/v2/health
+    method: GET
+    data_selector: status
+- name: ors-config.yml
+  endpoint:
+    path: /home/ors/config/ors-config.yml
+    method: GET
+- name: docker-compose.yml
+  endpoint:
+    path: /home/ors/docker-compose.yml
+    method: GET
+- name: profile_default
+  endpoint:
+    path: /home/ors/files/andorra-latest.osm.pbf
+    method: GET
+    data_selector: profiles
+    params: {}
+- name: driving-car
+  endpoint:
+    path: /home/ors/files/example-heidelberg.test.pbf
+    method: GET
+    data_selector: profiles
+    params: {}
+- name: wheelchair
+  endpoint:
+    path: /home/ors/files/example-heidelberg.test.pbf
+    method: GET
+    data_selector: profiles
+    params: {}
+- name: directions
+  endpoint:
+    path: /api/v1/directions
+    method: GET
+    data_selector: routes
+    params: {}
+- name: isochrones
+  endpoint:
+    path: /api/v1/isochrones
+    method: GET
+    data_selector: features
+    params: {}
+- name: directions
+  endpoint:
+    path: /directions
+    method: GET
+    data_selector: routes
+    params: {}
+- name: isochrones
+  endpoint:
+    path: /isochrones
+    method: GET
+    data_selector: features
+    params: {}
+- name: matrix
+  endpoint:
+    path: /matrix
+    method: GET
+    data_selector: routes
+    params: {}
+- name: geocoder
+  endpoint:
+    path: /geocode
+    method: GET
+    data_selector: features
+    params: {}
+- name: elevation
+  endpoint:
+    path: /elevation
+    method: GET
+    data_selector: elevations
+    params: {}
+- name: poi
+  endpoint:
+    path: /pois
+    method: GET
+    data_selector: features
+    params: {}
+notes:
+- API key is required for accessing the API.
+- We recommend to use the docker option for simplicity, or plain JAR if you do not
+  want to install Docker.
+- The size of the data being loaded (OSM data) affects memory requirements.
+- Each profile can have extra info calculated, each of these requires RAM for storage.
+- The most important input file is the config file.
+- Openrouteservice makes use of public open-source data.
+- The docker documentation is only valid for openrouteservice since v8.0.0!
+- Uses Docker to run openrouteservice.
+- The docker documentation is only valid for openrouteservice since v8.0.0.
+- The container has to be newly created for the changes in docker-compose.yml to take
+  effect.
+- 'Uses an env_file: ors-config.env'
+- 'Configuration file loaded: /home/ors/config/ors-config.yml'
+- 'Java version required: 21.0.2 or higher'
+- 'Configuration file path: /home/ors/config/ors-config.yml'
+- 'OSM file used: /home/ors/files/example-heidelberg.test.pbf'
+- 'Total memory: 1024 MB, Max memory: 2 GB'
+- The recommended way to configure an openrouteservice instance is to use a YAML configuration
+  file.
+- You need to add these to the setenv.sh file in your tomcat bin folder.
+- Uses default configuration ors-config.yml in the project root directory
+- To use a different config file than ors-config.yml, set the environment variable
+  ORS_CONFIG_LOCATION=<config> in your run config
+errors:
+- '400 Bad Request: Check your request parameters.'
+- '401 Unauthorized: Check your API key.'
+- '429 Too Many Requests: Rate limit exceeded.'
+- '200: Standard response for successfully processed requests.'
+- '400: The request is incorrect and therefore can not be processed.'
+- '404: The end point is not available, or a given request completed successfully
+  but found no results.'
+- '405: The specified HTTP method is not supported. For more details, refer to the
+  Endpoint documentation.'
+- '413: The request is larger than the server is able to process, the data provided
+  in the request exceeds the capacity limit.'
+- '500: An unexpected error was encountered and more detailed internal error code
+  is provided.'
+- '501: Indicates that the server does not support the functionality needed to fulfill
+  the request.'
+- '503: The server is currently unavailable due to overload or maintenance.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- Potential errors with your setup
+- '403 - Forbidden: If you run into the daily limit'
+- '429 - Too many requests: If you run into the minutely limit'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://openrouteservice.org
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+source_metadata: null

@@ -1,0 +1,239 @@
+resources:
+- name: analysis
+  endpoint:
+    path: /analysis/queries
+    method: POST
+- name: audit_logs
+  endpoint:
+    path: /audit_logs/api
+    method: GET
+- name: auth
+  endpoint:
+    path: /auth
+    method: POST
+- name: batch_groups
+  endpoint:
+    path: /batch_groups
+    method: GET
+- name: sigfox_devices
+  endpoint:
+    path: /sigfox_devices
+    method: GET
+    data_selector: listSigfoxDevices
+- name: sims
+  endpoint:
+    path: /sims
+    method: GET
+    data_selector: listSims
+- name: sim_profile_orders
+  endpoint:
+    path: /sim_profile_orders
+    method: GET
+    data_selector: listProfileOrders
+- name: sora_cam_devices
+  endpoint:
+    path: /sora_cam/devices
+    method: GET
+    data_selector: listSoraCamDevices
+- name: soralets
+  endpoint:
+    path: /soralets
+    method: GET
+    data_selector: listSoralets
+- name: stats
+  endpoint:
+    path: /stats
+    method: GET
+    data_selector: getAirStatsOfGroup
+- name: bills
+  endpoint:
+    path: /bills
+    method: GET
+    data_selector: billing history
+- name: cell_locations
+  endpoint:
+    path: /cell_locations
+    method: GET
+    data_selector: location information
+- name: credentials
+  endpoint:
+    path: /credentials
+    method: GET
+    data_selector: credential sets
+- name: devices
+  endpoint:
+    path: /devices
+    method: GET
+    data_selector: list of Devices
+- name: operators
+  endpoint:
+    path: /operators
+    method: GET
+    data_selector: operator information
+- name: subscribers
+  endpoint:
+    path: /subscribers
+    method: GET
+- name: system_notifications
+  endpoint:
+    path: /operators/{operator_id}/system_notifications
+    method: GET
+- name: users
+  endpoint:
+    path: /operators/{operator_id}/users
+    method: GET
+- name: virtual_private_gateways
+  endpoint:
+    path: /virtual_private_gateways
+    method: GET
+- name: device
+  endpoint:
+    path: /api/v1/devices
+    method: GET
+    data_selector: records
+    params: {}
+- name: sim
+  endpoint:
+    path: /api/v1/sims
+    method: GET
+    data_selector: records
+    params: {}
+- name: device
+  endpoint:
+    path: /v1/devices
+    method: GET
+    data_selector: devices
+    params: {}
+- name: sim
+  endpoint:
+    path: /v1/sims
+    method: GET
+    data_selector: sims
+    params: {}
+- name: listKeys
+  endpoint:
+    path: /keys
+    method: GET
+- name: createKey
+  endpoint:
+    path: /keys
+    method: POST
+- name: verifyKey
+  endpoint:
+    path: /keys/{key_id}/verify
+    method: POST
+- name: generateAmazonCognitoSessionCredentials
+  endpoint:
+    path: /provisioning/aws/cognito/credentials
+    method: POST
+- name: generateAmazonCognitoOpenIdToken
+  endpoint:
+    path: /provisioning/aws/cognito/open_id_tokens
+    method: POST
+- name: bootstrapAwsIotThing
+  endpoint:
+    path: /provisioning/aws/iot/bootstrap
+    method: POST
+- name: getAwsIotThingCACertificate
+  endpoint:
+    path: /provisioning/aws/iot/ca_certificate
+    method: POST
+- name: getAwsIotThingCertificate
+  endpoint:
+    path: /provisioning/aws/iot/certificates/{cert_id}
+    method: POST
+- name: registerAzureIotDevice
+  endpoint:
+    path: /provisioning/azure/iot/register
+    method: POST
+- name: getAzureIotDeviceRegistrationStatus
+  endpoint:
+    path: /provisioning/azure/iot/registrations/{operation_id}
+    method: POST
+- name: getSubscriberMetadata
+  endpoint:
+    path: /provisioning/soracom/air/subscriber_metadata
+    method: POST
+- name: getUserdata
+  endpoint:
+    path: /provisioning/soracom/air/userdata
+    method: POST
+- name: bootstrapArc
+  endpoint:
+    path: /provisioning/soracom/arc/bootstrap
+    method: POST
+- name: bootstrapInventoryDevice
+  endpoint:
+    path: /provisioning/soracom/inventory/bootstrap
+    method: POST
+- name: coupon
+  endpoint:
+    path: /sandbox/coupons/create
+    method: POST
+- name: operator
+  endpoint:
+    path: /sandbox/init
+    method: POST
+- name: delete_operator
+  endpoint:
+    path: /sandbox/operators/{operator_id}
+    method: DELETE
+- name: get_signup_token
+  endpoint:
+    path: /sandbox/operators/token/{email}
+    method: POST
+- name: order
+  endpoint:
+    path: /sandbox/orders/ship
+    method: POST
+- name: air_stats
+  endpoint:
+    path: /sandbox/stats/air/subscribers/{imsi}
+    method: POST
+- name: beam_stats
+  endpoint:
+    path: /sandbox/stats/beam/subscribers/{imsi}
+    method: POST
+- name: subscriber
+  endpoint:
+    path: /sandbox/subscribers/create
+    method: POST
+notes:
+- Ensure to set up API client in Soracom Console for proper access.
+- Uses OAuth2 with refresh token — requires setup of OAuth application in Soracom
+- Some endpoints may have rate limits
+- Sim devices are managed from the Soracom User Console.
+- Data roaming must be enabled for Soracom SIM cards to connect.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration.'
+- '429 Too Many Requests: Throttle API calls'
+- '401 Unauthorized: Check client credentials or token'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - OAuth2
+  - User
+  - Token
+  - NamedCredential
+client:
+  base_url: https://api.soracom.io
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.soracom.io/oauth2/token
+    client_id: '{{ dlt.secrets[''soracom_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''soracom_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''soracom_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: nextCursor
+    cursor_param: next
+    page_size_param: limit
+    default_page_size: 100
+source_metadata: null

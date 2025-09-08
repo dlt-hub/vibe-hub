@@ -1,0 +1,275 @@
+resources:
+- name: latest_commit
+  endpoint:
+    path: /diced/zipline/commits
+    method: GET
+    data_selector: commits
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: zipline_s3
+  endpoint:
+    path: /path/to/your/local/files
+    method: GET
+    data_selector: records
+- name: user
+  endpoint:
+    path: /user
+    method: GET
+    data_selector: user
+    params: {}
+- name: file
+  endpoint:
+    path: /file
+    method: GET
+    data_selector: file
+    params: {}
+- name: url
+  endpoint:
+    path: /url
+    method: GET
+    data_selector: url
+    params: {}
+- name: chunks
+  endpoint:
+    path: /api/chunks
+    method: GET
+    data_selector: records
+- name: discord_notifications
+  endpoint:
+    path: /api/discord/notifications
+    method: POST
+    data_selector: webhook
+    params: {}
+- name: uploader
+  endpoint:
+    path: /api/upload
+    method: POST
+    data_selector: files
+    params: {}
+- name: URLs_ROUTE
+  endpoint:
+    path: /go
+    method: GET
+    data_selector: ''
+    params: {}
+- name: URLs_LENGTH
+  endpoint:
+    path: /4
+    method: GET
+    data_selector: ''
+    params: {}
+- name: user
+  endpoint:
+    path: /api/user
+    method: GET
+    data_selector: user
+- name: edit_user
+  endpoint:
+    path: /api/user
+    method: PATCH
+    data_selector: user
+- name: exif
+  endpoint:
+    path: /api/exif
+    method: GET
+    data_selector: records
+    params:
+      id: number
+- name: shorten_url
+  endpoint:
+    path: /api/shorten
+    method: POST
+    data_selector: url
+- name: stats
+  endpoint:
+    path: /api/stats
+    method: POST
+- name: upload
+  endpoint:
+    path: /api/upload
+    method: POST
+- name: users
+  endpoint:
+    path: /api/users
+    method: GET
+    data_selector: users
+- name: version
+  endpoint:
+    path: /api/version
+    method: GET
+    data_selector: ''
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: shortened_urls
+  endpoint:
+    path: /api/v1/shortened_urls
+    method: GET
+    data_selector: data
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: stats
+  endpoint:
+    path: /stats
+    method: GET
+    data_selector: records
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: local_files
+  endpoint:
+    path: /path/to/your/local/files
+    method: GET
+    data_selector: records
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Without the CORE_SECRET environment variable, Zipline will not start.
+- Some objects like Contact may return nulls in deeply nested fields
+- If you change the port, you will need to update the ports section in the docker-compose.yml
+  file.
+- To enable OAuth, you must set the FEATURES_OAUTH_REGISTRATION environment variable
+  to true.
+- Overriding the domain may be useful if you would like your files to have a different
+  'appearance'
+- A new stable release comes whenever there is a new major, minor or patch version
+  (`<major>.<minor>.<patch>`).
+- By default the Zipline docker-compose.yml file will use the latest stable release.
+- Some config values support human readable byte sizes.
+- DEBUG mode can be **VERY** verbose, it is recomened to take a **good** look at the
+  logs before sending them anywhere.
+- It is not recommended to enable `DEBUG` mode in production, as it could cause performance
+  issues.
+- This guide may be useful if you are migrating from another host to Zipline.
+- LOGGER_FILTERS environment variable is used to filter logs.
+- Some variables may not work in some cases
+- By default thumbnail generation is turned off to prevent unnecessary CPU usage.
+- Chunking may be useful when uploading large files while using Cloudflare's Free
+  Plan which limits the maximum upload size to 100MB.
+- The webhook URL, if having trouble getting one, visit the guide.
+- Runs Zipline in headless mode. This will entirely disable the front end, leaving
+  only the API accessible.
+- The amount of seconds a user has to wait before upload another image is 5.
+- The amount of seconds an admin has to wait before upload another image is 1.
+- You will need to configure the correct volumes, if using docker so that Zipline
+  can read the .pem files.
+- The default upload format is NAME.
+- The route to serve files on is /u.
+- Admin can upload a maximum of 50mb.
+- User can upload a maximum of 50mb.
+- Disabled file extensions include png, jpg, gif, mp4.
+- Date format for uploads is 'YYYY-MM-DD_HH:mm:ss'.
+- Default expiration for files is 1d.
+- Assumes mimetypes for application/octet-stream.
+- Due to privacy concerns when running Zipline with many users, you may want to hide
+  the number of files a user has uploaded from the statistics page so that other users
+  do not see emails or usernames.
+- For those who want to save data, or just don't want to have image previews on the
+  dashboard, you can disable them here.
+- After installing, please edit the docker-compose.yml file and find the line that
+  says CORE_SECRET=changethis and replace changethis with a random string.
+- After installing, please edit the .env.local file and find the line that says SECRET=changethis
+  and replace changethis with a random string.
+- Development will focus only on fixing bugs present in 3.7.0, there will be no more
+  minor releases.
+- Integration supports URL shortening.
+- Development will focus only on fixing bugs present in 3.7.0.
+- 'Roadmap & FAQ: https://diced.notion.site/Zipline-v4-Roadmap-058aceb8a35140e7af4c726560aa3db1?pvs=4'
+- LDAP authentication would be cool.
+- Multi-domain configuration options are desired.
+- Prometheus support is needed with a /stats endpoint.
+- Development will focus only on fixing bugs present in 3.7.0, there will be no more
+  minor releases (bugs fixed will be released under a patch release).
+- Uses API key for authentication — requires setup of API key in settings.
+errors:
+- 'error message: code 400'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Forbidden: exif disabled'
+- '404 Not Found: image not found'
+- '404 Not Found: image not found on fs'
+- '400 Bad Request: no body'
+- '400 Bad Request: no url'
+- '400 Bad Request: invalid max views (invalid number)'
+- '400 Bad Request: invalid max views (max views < 0)'
+- '400 Bad Request: vanity already exists'
+- '400 Bad Request: vanity is empty'
+- '401 Forbidden: no authorization'
+- '401 Forbidden: authorization incorrect'
+- invalid amount
+- invalid date
+- invalid date (UPLOADER_DEFAULT_EXPIRATION)
+- invalid image compression percent (invalid number)
+- invalid image compression percent (% < 0 || % > 100)
+- invalid max views (invalid number)
+- invalid max views (max views < 0)
+- no files
+- 'file[i]: size too big'
+- 'file[i]: no filename'
+- 'file[i]: disabled extension recieved: ext'
+- 'file[i]: filename already exists: filename'
+- no authorization
+- authorization incorrect
+- '403 Unauthorized: version hidden'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400 Bad Request: Check request parameters'
+- '401 Unauthorized: Check your authentication credentials'
+- '401 Unauthorized: Recheck API key or permissions.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://zipline.diced.sh
+source_metadata: null
