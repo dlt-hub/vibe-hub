@@ -1,0 +1,635 @@
+resources:
+- name: customers
+  endpoint:
+    path: /customers
+    method: POST
+    data_selector: customers
+    params:
+      addDebtsIfPossible: true
+- name: customersBatch
+  endpoint:
+    path: /customersBatch/
+    method: POST
+    data_selector: responses
+    params: {}
+- name: listCustomers
+  endpoint:
+    path: /customers/
+    method: GET
+    data_selector: customers
+    params: {}
+- name: customers
+  endpoint:
+    path: /api/v1/customers/
+    method: GET
+    data_selector: customers
+    params:
+      reference: comma separated strings
+      count: Integer
+      offset: Integer
+      startTime: '[Timestamp]'
+      endTime: '[Timestamp]'
+- name: customer
+  endpoint:
+    path: /customers/{customerId}
+    method: GET
+    data_selector: Customer
+- name: edit_contact_information
+  endpoint:
+    path: /api/v1/customers/CUSTOMER_ID
+    method: PUT
+    data_selector: customer
+    params: {}
+- name: add_comments_to_customer
+  endpoint:
+    path: /api/v1/customers/{customerId}/comments
+    method: POST
+    data_selector: ok
+- name: unsubscribe_contact_information
+  endpoint:
+    path: /api/v1/customers/{customerId}/unsubscribe
+    method: POST
+    data_selector: ok
+- name: list_debts_of_customer
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/
+    method: GET
+    data_selector: debts
+- name: add_new_debt_to_customer
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/
+    method: POST
+    data_selector: meta.id
+- name: retract_debt
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/retract
+    method: POST
+    data_selector: status
+    params:
+      keepIfOnPaymentPlan: 'true'
+      keepIfHasDispute: 'true'
+      skipTerminalValidation: 'false'
+      reason: ''
+- name: reopen_closed_debt
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/reopen
+    method: POST
+    data_selector: status
+    params: {}
+- name: get_debt_total_to_collect_balance
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/totalToCollectBalance
+    method: GET
+    data_selector: principal
+    params: {}
+- name: update_debt_client_fields
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/clientFields
+    method: PUT
+    data_selector: clientFields
+- name: update_out_of_statute_information
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/outOfStatuteInformation
+    method: PUT
+    data_selector: explicitOutOfStatuteInformation
+- name: update_post_charge_off_information
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/postChargeOffInformation
+    method: PUT
+    data_selector: postChargeOffInformation
+- name: change_default_date
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/defaultDate
+    method: PUT
+    data_selector: defaultDate
+- name: pause_collections
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/pauseCollections
+    method: POST
+    data_selector: pauseCollections
+- name: unpause_collections
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/unpauseCollections
+    method: POST
+    data_selector: unpauseCollections
+- name: list_payments_of_debt
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/payments/
+    method: GET
+    data_selector: payments
+- name: list_all_payments
+  endpoint:
+    path: /api/v1/customers/payments/
+    method: GET
+    data_selector: payments
+    params:
+      startTime: required
+      endTime: required
+      includeUnsettledPayments: 'false'
+- name: report_payment_of_debt
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/payments/
+    method: POST
+    data_selector: meta
+    params: {}
+- name: list_payment_plans_of_debt
+  endpoint:
+    path: /api/v1/debts/{debtId}/paymentPlans
+    method: GET
+    data_selector: application
+    params:
+      withInactivated: 'true'
+      from: required
+      to: required
+- name: get_attorney_representation
+  endpoint:
+    path: /api/v1/debts/{debtId}/representation/attorneyRepresentation
+    method: GET
+    data_selector: contactInfo
+    params: {}
+- name: get_debt_consolidator_representation
+  endpoint:
+    path: /api/v1/debts/{debtId}/representation/debtConsolidatorRepresentation
+    method: GET
+    data_selector: debtConsolidatorType
+    params: {}
+- name: add_attorney_representation
+  endpoint:
+    path: /api/v1/debts/{debtId}/representation/attorneyRepresentation
+    method: POST
+    data_selector: ok
+    params: {}
+- name: add_debt_consolidator_representation
+  endpoint:
+    path: /api/v1/debts/{debtId}/representation/debtConsolidatorRepresentation
+    method: POST
+    data_selector: ok
+    params: {}
+- name: Add Attorney Debt Consolidator Representation
+  endpoint:
+    path: /api/v1/debts/{debtId}/representation/attorneyDebtConsolidatorRepresentation
+    method: POST
+    data_selector: ok
+- name: Cancel Attorney Representation
+  endpoint:
+    path: /api/v1/debts/{debtId}/representation/cancelAttorneyRepresentation
+    method: POST
+    data_selector: ok
+- name: Cancel Debt Consolidator Representation
+  endpoint:
+    path: /api/v1/debts/{debtId}/representation/cancelDebtConsolidatorRepresentation
+    method: POST
+    data_selector: ok
+- name: List Creditor Brands
+  endpoint:
+    path: /v1/creditors/{creditorId}/brands/
+    method: GET
+    data_selector: brands
+- name: Update Creditor Brands
+  endpoint:
+    path: /v1/creditors/{creditorId}/brands
+    method: PUT
+- name: Add New Creditor Brand
+  endpoint:
+    path: /v1/creditors/{creditorId}/brands
+    method: POST
+- name: Get Creditor Information
+  endpoint:
+    path: /v1/creditors/{creditorId}/info
+    method: GET
+    data_selector: companyName
+- name: creditor
+  endpoint:
+    path: /creditor
+    method: GET
+    data_selector: records
+- name: creditor_brand
+  endpoint:
+    path: /creditor/brand
+    method: GET
+    data_selector: records
+- name: customer
+  endpoint:
+    path: /customer
+    method: GET
+    data_selector: records
+- name: debt
+  endpoint:
+    path: /debt
+    method: GET
+    data_selector: debt_records
+- name: debt_consolidator_representation
+  endpoint:
+    path: /debt_consolidator/representation
+    method: GET
+    data_selector: records
+- name: duplicated_reference
+  endpoint:
+    path: /duplicated_reference
+    method: GET
+    data_selector: records
+- name: error
+  endpoint:
+    path: /error
+    method: GET
+    data_selector: records
+- name: metadata
+  endpoint:
+    path: /metadata
+    method: GET
+    data_selector: records
+- name: monetary_amount
+  endpoint:
+    path: /monetary_amount
+    method: GET
+    data_selector: records
+- name: payment
+  endpoint:
+    path: /payment
+    method: GET
+    data_selector: records
+- name: payment_plan
+  endpoint:
+    path: /payment_plan
+    method: GET
+    data_selector: records
+- name: phone_number
+  endpoint:
+    path: /phone_number
+    method: GET
+    data_selector: records
+- name: postal_address
+  endpoint:
+    path: /postal_address
+    method: GET
+    data_selector: records
+- name: representation_cancellation
+  endpoint:
+    path: /representation_cancellation
+    method: GET
+    data_selector: records
+- name: customers
+  endpoint:
+    path: /customers/
+    method: GET
+- name: customers
+  endpoint:
+    path: /customers
+    method: POST
+    data_selector: customers
+    params:
+      addDebtsIfPossible: 'true'
+- name: customersBatch
+  endpoint:
+    path: /customersBatch/
+    method: POST
+    data_selector: customers
+    params: {}
+- name: listCustomers
+  endpoint:
+    path: /customers/
+    method: GET
+    data_selector: customers
+    params: {}
+- name: customers
+  endpoint:
+    path: /api/v1/customers/
+    method: GET
+    data_selector: customers
+    params:
+      reference: comma separated strings
+- name: customer
+  endpoint:
+    path: /customers/{customerId}
+    method: GET
+    data_selector: ''
+- name: add_contact_information
+  endpoint:
+    path: /api/v1/customers/{customerId}
+    method: PATCH
+    data_selector: Customer
+- name: edit_contact_information
+  endpoint:
+    path: /api/v1/customers/CUSTOMER_ID
+    method: PUT
+- name: add_comments_to_customer
+  endpoint:
+    path: /customers/{customerId}/comments
+    method: POST
+- name: unsubscribe_contact_information
+  endpoint:
+    path: /customers/{customerId}/unsubscribe
+    method: POST
+- name: list_debts_of_customer
+  endpoint:
+    path: /customers/{customerId}/debts/
+    method: GET
+- name: add_new_debt_to_customer
+  endpoint:
+    path: /customers/{customerId}/debts/
+    method: POST
+- name: retract_debt
+  endpoint:
+    path: /customers/{customerId}/debts/{debtId}/retract
+    method: POST
+    data_selector: status
+    params:
+      keepIfOnPaymentPlan: 'true'
+      keepIfHasDispute: 'true'
+      skipTerminalValidation: 'false'
+      reason: ''
+- name: reopen_closed_debt
+  endpoint:
+    path: /customers/{customerId}/debts/{debtId}/reopen
+    method: POST
+    data_selector: status
+    params: {}
+- name: get_debt_total_to_collect_balance
+  endpoint:
+    path: /customers/{customerId}/debts/{debtId}/totalToCollectBalance
+    method: GET
+    data_selector: principal
+    params: {}
+- name: update_debt_client_fields
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/clientFields
+    method: PUT
+- name: update_out_of_statute_information
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/outOfStatuteInformation
+    method: PUT
+- name: update_post_charge_off_information
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/postChargeOffInformation
+    method: PUT
+- name: change_default_date
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/defaultDate
+    method: PUT
+- name: pause_collections
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/pauseCollections
+    method: POST
+- name: unpause_collections
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/unpauseCollections
+    method: POST
+- name: list_payments_of_debt
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/payments/
+    method: GET
+- name: list_all_payments
+  endpoint:
+    path: /api/v1/customers/payments/
+    method: GET
+    data_selector: payments
+    params:
+      startTime: ''
+      endTime: ''
+      includeUnsettledPayments: 'false'
+- name: report_payment_of_debt
+  endpoint:
+    path: /api/v1/customers/{customerId}/debts/{debtId}/payments/
+    method: POST
+    data_selector: ''
+    params: {}
+- name: list_payment_plans_of_debt
+  endpoint:
+    path: /api/v1/debts/{debtId}/paymentPlans
+    method: GET
+    data_selector: ''
+    params:
+      withInactivated: 'true'
+      from: ''
+      to: ''
+- name: get_attorney_representation
+  endpoint:
+    path: /api/v1/debts/{debtId}/representation/attorneyRepresentation
+    method: GET
+    data_selector: ''
+    params: {}
+- name: get_debt_consolidator_representation
+  endpoint:
+    path: /api/v1/debts/{debtId}/representation/debtConsolidatorRepresentation
+    method: GET
+    data_selector: ''
+    params: {}
+- name: add_attorney_representation
+  endpoint:
+    path: /api/v1/debts/{debtId}/representation/attorneyRepresentation
+    method: POST
+    data_selector: ''
+    params: {}
+- name: add_debt_consolidator_representation
+  endpoint:
+    path: /api/v1/debts/{debtId}/representation/debtConsolidatorRepresentation
+    method: POST
+    data_selector: ''
+    params: {}
+- name: add_attorney_debt_consolidator_representation
+  endpoint:
+    path: /api/v1/debts/{debtId}/representation/attorneyDebtConsolidatorRepresentation
+    method: POST
+- name: cancel_attorney_representation
+  endpoint:
+    path: /api/v1/debts/{debtId}/representation/cancelAttorneyRepresentation
+    method: POST
+- name: cancel_debt_consolidator_representation
+  endpoint:
+    path: /api/v1/debts/{debtId}/representation/cancelDebtConsolidatorRepresentation
+    method: POST
+- name: list_creditor_brands
+  endpoint:
+    path: /api/v1/creditors/{creditorId}/brands/
+    method: GET
+- name: update_creditor_brands
+  endpoint:
+    path: /api/v1/creditors/{creditorId}/brands
+    method: PUT
+- name: add_new_creditor_brand
+  endpoint:
+    path: /api/v1/creditors/{creditorId}/brands
+    method: POST
+- name: get_creditor_information
+  endpoint:
+    path: /api/v1/creditors/{creditorId}/info
+    method: GET
+- name: creditor
+  endpoint:
+    path: /creditors
+    method: GET
+    data_selector: creditors
+- name: creditor_brand
+  endpoint:
+    path: /creditor_brands
+    method: GET
+    data_selector: creditor_brands
+- name: customer
+  endpoint:
+    path: /customers
+    method: GET
+    data_selector: customers
+- name: debt_request
+  endpoint:
+    path: /debt/request
+    method: POST
+    data_selector: debt
+    params: {}
+- name: debt_response
+  endpoint:
+    path: /debt/response
+    method: GET
+    data_selector: debt
+    params: {}
+- name: debt_consolidator
+  endpoint:
+    path: /debt_consolidator
+    method: GET
+    data_selector: records
+- name: duplicated_reference
+  endpoint:
+    path: /duplicated_reference
+    method: GET
+    data_selector: records
+- name: error
+  endpoint:
+    path: /error
+    method: GET
+    data_selector: records
+- name: metadata
+  endpoint:
+    path: /metadata
+    method: GET
+    data_selector: records
+- name: monetary_amount
+  endpoint:
+    path: /monetary_amount
+    method: GET
+    data_selector: records
+- name: payment
+  endpoint:
+    path: /payment
+    method: GET
+    data_selector: records
+- name: payment_plan
+  endpoint:
+    path: /payment_plan
+    method: GET
+    data_selector: records
+- name: phone_number
+  endpoint:
+    path: /phone_number
+    method: GET
+    data_selector: records
+- name: postal_address
+  endpoint:
+    path: /postal_address
+    method: GET
+    data_selector: records
+- name: representation_cancellation
+  endpoint:
+    path: /representation_cancellation
+    method: GET
+    data_selector: records
+- name: account_retractions
+  endpoint:
+    path: /postRetract
+    method: POST
+    data_selector: records
+- name: account_placements
+  endpoint:
+    path: /postAdd
+    method: POST
+    data_selector: records
+- name: payments
+  endpoint:
+    path: /inbound/v1/payments
+    method: POST
+    data_selector: ProcessedRecords
+    params: {}
+notes:
+- You must keep the colon (":") after your API key, as this represents a password
+  which is being left blank.
+- If your user account and its API key are associated with multiple creditors, you
+  must include a custom header in your request for all `/customer/` endpoints.
+- Use of V2 is recommended over V1, as it mirrors the request with results or errors
+  per account.
+- Max number of references to include is 100.
+- Limited to at most 100 results.
+- Retractions may result in fees. Please refer to the TOS and your contract.
+- Optional request header that can contain a free text description of the reason this
+  create/update request is being called.
+- Requires both startTime and endTime query parameters for payments endpoint.
+- Query parameters 'from' and 'to' are required for payment plans endpoint.
+- You cannot add a new creditor brand with this endpoint that contains a name already
+  possessed by another brand within the system.
+- Uses timestamps in milliseconds since Jan 1st, 1970 UTC.
+- The defaultTimestamp sent in the request will be converted to the date that it represents
+  but using the customers timezone.
+- Uses V2 for batch adding customers which mirrors the request with results or errors
+  per account.
+- The defaultTimestamp represents a specific moment in time using UTC timezone, which
+  may convert to another day depending on the customer's timezone.
+- The customer id appears in the meta field of the Customer object that was returned
+  to you when you added the customer.
+- The `startTime` and `endTime` parameters are required for listing payments.
+- The `to` and `from` parameters are required for listing payment plans.
+- The response has additional data and includes data provided in the request.
+errors:
+- '403: Request will fail if the X-TA-CREDITOR header is not included when associated
+  with multiple creditors.'
+- '104: Duplicated transactionId.'
+- '409: Duplicated transaction id.'
+- '400 Bad Request - Missing Information: If any parts of the contact information
+  are missing, the API returns a status 400 error with more information about what
+  necessary data is missing.'
+- '400: Comments must be smaller than 500 characters'
+- '400: email address is not valid'
+- '422: Debt is on payment plan.'
+- '400: Debt balance cannot be updated when it has an in progress payment plan.'
+- '409: DebtReopenError: Current debt status incompatible with re-opening.'
+- '400 Bad Request - Input Error: Input contained errors'
+- '422 Unprocessable Entity - Missing Required Fields: Notes should be provided when
+  unpausing collections'
+- '400: Missing Required Query Parameters'
+- '400: Missing Required Fields'
+- '400 Bad Request - No Attorney Representation: No Attorney representation information
+  found.'
+- '400 Bad Request - No Debt Consolidator Representation: No Debt consolidator representation
+  information found.'
+- '400 Bad Request - Missing Required Values: Missing original ids.'
+- '400 Bad Request - Duplicate Brand Names: Duplicate brand names detected. Make sure
+  to give all brands distinct names.'
+- '403: Error due to missing X-TA-CREDITOR header'
+- '400 Bad Request - Improperly Formatted Data: Invalid phone number found.'
+- '400 Bad Request - Missing Information: If any parts of the contact information
+  are missing, the API returns a status `400` error with more information about what
+  necessary data is missing.'
+- '400 Bad Request: Invalid Data'
+- '400: Debt balance cannot be updated when it has an in progress payment plan'
+- '409: DebtReopenError: Current debt status incompatible with re-opening'
+- '422 Unprocessable Entity: Debt status is terminal.'
+- '400: Missing required values'
+- '400: Improperly formatted request'
+- '400: Duplicate brand names detected.'
+- '422: PersonIn could not be validated'
+- 400 Bad Request
+- 404 Not Found
+- 409 Conflict
+- 415 Unsupported Media Type
+- 422 Unprocessable Entity
+- 500 Internal Server Error
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 400 Bad request - refer to message and/or FailedRecords for additional information.
+- 500 Internal server error - an error occurred while processing the request.
+- 400 Bad request - refer to message and/or FailedRecords for additional information
+- 500 Internal server error - an error occurred while processing the request
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.trueaccord.com
+  headers:
+    Accept: application/json
+source_metadata: null
