@@ -1,0 +1,225 @@
+resources:
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: ExtractResume
+  endpoint:
+    path: /ExtractResume
+    method: POST
+    data_selector: result
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: data_records
+  endpoint:
+    path: /api/v1/data
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: ExtractResume
+  endpoint:
+    path: /ExtractResume
+    method: POST
+    data_selector: response
+- name: stream.ExtractResume
+  endpoint:
+    path: /stream/ExtractResume
+    method: GET
+    data_selector: msg
+- name: prompt
+  endpoint:
+    path: /api/v1/prompts
+    method: GET
+    data_selector: data
+    params: {}
+- name: MyClient
+  endpoint:
+    path: client/MyClient
+    method: GET
+- name: ExtractReceiptInfo
+  endpoint:
+    path: /stream/ExtractReceiptInfo
+    method: POST
+    data_selector: items
+    params: {}
+- name: Recommendation
+  endpoint:
+    path: /recommendation
+    method: POST
+    data_selector: data
+    params: {}
+- name: AssistantMessage
+  endpoint:
+    path: /assistantMessage
+    method: POST
+    data_selector: data
+    params: {}
+- name: TestImageInput
+  endpoint:
+    path: /TestImageInput
+    method: POST
+    data_selector: res
+    params: {}
+- name: TestAudioInput
+  endpoint:
+    path: /TestAudioInput
+    method: POST
+    data_selector: res
+    params: {}
+- name: TestPdfInput
+  endpoint:
+    path: /TestPdfInput
+    method: POST
+    data_selector: res
+    params: {}
+- name: Collector
+  endpoint:
+    path: /guide/baml-advanced/collector-track-tokens
+    method: GET
+    data_selector: logs
+    params: {}
+- name: llm_client
+  endpoint:
+    path: /add_llm_client
+    method: POST
+    data_selector: client
+    params: {}
+- name: set_primary_client
+  endpoint:
+    path: /set_primary
+    method: POST
+    data_selector: client
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: messages
+  endpoint:
+    path: /v1/messages
+    method: POST
+    data_selector: messages
+- name: batch
+  endpoint:
+    path: /v1/chat/completions
+    method: POST
+    data_selector: response
+    params:
+      purpose: batch
+- name: generator target
+  endpoint:
+    path: /generator/target
+    method: GET
+    data_selector: records
+notes:
+- BAML-over-REST is currently a preview feature.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- HTTPResponses have a HTTPBody object. You must now call `.json()` or `.text()` to
+  access the http response message.
+- The BAML compiler generates a python client that imports and calls the function.
+- BAML does have some limitations we are continuously working on.
+- Developing requires VSCode.
+- Environment Variables are stored in VSCode’s local storage! We don’t save any additional
+  data to disk, or send them across the network.
+- Requires setup of connected app in Boundary
+- Be mindful of rate limits when querying data
+- This auto-reload approach works best if you’re only making changes to the prompts.
+- BAML integrates seamlessly with Go modules.
+- Elixir support is unstable. Please see the note in the repository.
+- To send logs and traces to Boundary Studio, you need to set the BOUNDARY_API_KEY
+  environment variable.
+- To enable logging, set the BAML_LOG environment variable.
+- To truncate each log entry to a certain length, set the BOUNDARY_MAX_LOG_CHUNK_CHARS
+  environment variable.
+- Uses OAuth2 with refresh token — requires setup of connected app in boundary
+- Some endpoints may return rate limit errors
+- Committing a lot of audio files into your repository can make it slow to clone and
+  pull your repository.
+- If you expect to commit >500MiB of audio, please read GitHub’s size limit documentation
+  and consider setting up large file storage.
+- Committing a lot of Pdf files into your repository can make it slow to clone and
+  pull your repository.
+- If you expect to commit >500MiB of Pdfs, please read GitHub’s size limit documentation
+  and consider setting up large file storage.
+- Committing large video files into your repository can make it slow to clone and
+  pull your repository.
+- If you expect to commit >500MiB of videos, please read GitHub’s size limit documentation
+  and consider setting up large file storage.
+- BAML lets you stream in structured JSON output from LLMs as it comes in.
+- Number fields are always streamed in only when the LLM completes them.
+- Pdf inputs must be provided as Base64 data
+- URL-based Pdf inputs are not currently supported
+- Pdf inputs are only supported by models that explicitly allow document modalities
+- Uses AbortControllers for cancelling operations
+- Abort controllers allow you to cancel ongoing LLM operations, which is essential
+  for user-initiated cancellations, implementing timeouts for long-running operations,
+  cleaning up resources when components unmount, and managing multiple parallel requests.
+- 'BAML provides two types of validations: @assert for strict validations and @check
+  for non-exception-raising validations.'
+- If you created your project using baml-cli init, then one has already been generated
+  for you!
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '429 Too Many Requests: Throttle API calls'
+- '401 Unauthorized: Check OAuth token validity'
+- '400: Bad Request'
+- '401: Unauthorized'
+- '403: Forbidden'
+- '404: Not Found'
+- '429: Too Many Requests'
+- '500: Internal Server Error'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - BOUNDARY_API_KEY
+client:
+  base_url: https://boundary.docs.buildwithfern.com
+  headers:
+    Accept: application/json
+source_metadata: null

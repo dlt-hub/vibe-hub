@@ -1,0 +1,354 @@
+resources:
+- name: Virtual Cluster
+  endpoint:
+    path: /warpstream/virtual-cluster
+    method: GET
+    data_selector: metadata
+- name: topic
+  endpoint:
+    path: /create-topic
+    method: POST
+    data_selector: result
+    params: {}
+- name: record
+  endpoint:
+    path: /produce
+    method: POST
+    data_selector: result
+    params: {}
+- name: fetch_record
+  endpoint:
+    path: /fetch
+    method: GET
+    data_selector: result
+    params: {}
+- name: kafka_connection
+  endpoint:
+    path: /subjects/foo/versions
+    method: POST
+    data_selector: id
+- name: bento_test
+  endpoint:
+    path: /kafka_franz_warpstream
+    method: POST
+    data_selector: output
+    params: {}
+- name: bento_test
+  endpoint:
+    path: /bento/test
+    method: POST
+    data_selector: data
+    params: {}
+- name: bento_test
+  endpoint:
+    path: /topics/bento_test
+    method: POST
+    data_selector: data
+    params: {}
+- name: bento_test_2
+  endpoint:
+    path: /topics/bento_test_2
+    method: POST
+    data_selector: data
+    params: {}
+- name: topic_mappings
+  endpoint:
+    path: /topic_mappings
+    method: GET
+    data_selector: mappings
+    params: {}
+- name: source_bootstrap_brokers
+  endpoint:
+    path: /source/bootstraps
+    method: POST
+    data_selector: brokers
+- name: topic_mappings
+  endpoint:
+    path: /topic/mappings
+    method: POST
+    data_selector: mappings
+- name: orbit
+  endpoint:
+    path: /warpstream/byoc/orbit
+    method: GET
+- name: consumer_groups
+  endpoint:
+    path: /api/v1/create_pipeline_configuration
+    method: POST
+    data_selector: configuration_yaml
+    params:
+      copy_offsets_enabled: true
+      destination_group_prefix: src_
+- name: cluster_config
+  endpoint:
+    path: /api/v1/create_pipeline_configuration
+    method: POST
+    data_selector: configuration_yaml
+    params:
+      copy_source_cluster_configuration: true
+      disable_copy_records: true
+- name: example_json_logs_topic
+  endpoint:
+    source_cluster_name: benchmark
+    source_topic: example_json_logs_topic
+    source_format: json
+    schema_mode: inline
+    schema:
+      fields:
+      - name: environment
+        type: string
+        id: 1
+      - name: service
+        type: string
+        id: 2
+      - name: status
+        type: string
+        id: 3
+      - name: message
+        type: string
+        id: 4
+- name: example_avro_events_topic
+  endpoint:
+    source_cluster_name: benchmark
+    source_topic: example_avro_events_topic
+    source_format: avro
+    schema_mode: inline
+    schema:
+      fields:
+      - name: event_id
+        id: 1
+        type: string
+      - name: user_id
+        id: 2
+        type: long
+      - name: session_id
+        id: 3
+        type: string
+      - name: profile
+        id: 4
+        type: struct
+        fields:
+        - name: country
+          id: 5
+          type: string
+        - name: language
+          id: 6
+          type: string
+      - name: device
+        id: 7
+        type: struct
+        fields:
+        - name: type
+          id: 8
+          type: string
+        - name: os
+          id: 9
+          type: struct
+          fields:
+          - name: name
+            id: 10
+            type: string
+          - name: version
+            id: 11
+            type: string
+          - name: vendor
+            id: 25
+            type: string
+            optional: true
+        - name: browser
+          id: 12
+          type: struct
+          fields:
+          - name: name
+            id: 13
+            type: string
+          - name: version
+            id: 14
+            type: string
+        - name: screen
+          id: 15
+          type: struct
+          fields:
+          - name: width
+            id: 16
+            type: int
+          - name: height
+            id: 17
+            type: int
+          - name: pixel_ratio
+            id: 18
+            type: double
+        - name: model
+          id: 19
+          type: string
+          optional: true
+      - name: cookies
+        id: 20
+        type: list
+        fields:
+        - name: element
+          id: 21
+          type: string
+      - name: event_attributes
+        id: 22
+        type: map
+        fields:
+        - name: key
+          id: 23
+          type: string
+        - name: value
+          id: 24
+          type: string
+- name: benchmark-consumer
+  endpoint:
+    path: /benchmark/consumer
+    method: GET
+    data_selector: records
+    params:
+      topic: ws-benchmark
+      num-clients: 1
+- name: benchmark-producer
+  endpoint:
+    path: /benchmark/producer
+    method: GET
+    data_selector: records
+    params: {}
+- name: user_roles
+  endpoint:
+    path: /warpstream/reference/api-reference/user-roles
+    method: GET
+    data_selector: roles
+- name: workspaces
+  endpoint:
+    path: /warpstream/reference/api-reference/workspaces
+    method: GET
+    data_selector: workspaces
+notes:
+- 'Fix a bug where S3 multi-part uploads from the produce path and the schema migrator
+  would fail with ''InvalidPart: One or more of the specified parts could not be found.
+  The part may not have been uploaded, or the specified entity tag may not match the
+  part''s entity tag''.'
+- Orbit ignores topic id in fetch responses if kafka version < 3.1.
+- Orbit makes metadata requests using topic name when max supported request version
+  is < 12.
+- Only restart Bento pipelines when their deployed configurations are modified.
+- Increase default timeout for loading data into the file cache from 5s to 15s.
+- Cap number of speculative/fast retries to 2% at most.
+- Supports automatic availability zone detection in kubernetes reading the node zone
+  label (requires version `0.10.0` of our helm charts).
+- This release is the first phase of a two-phase upgrade to WarpStream's internal
+  file format. This release adds support for reading the upgraded file format. You
+  MUST upgrade all Agents to this version before moving from any version < v520 to
+  any version > than v520.
+- In playground mode, the Agent will advertise its IP address as localhost instead
+  of the Docker internal IP address by default.
+- The WarpStream Agent is completely stateless and thus can be deployed however you
+  prefer to deploy stateless containers.
+- For production usage, the subcommand that you want to run is just called `agent`.
+- The region flag corresponds to the region that the WarpStream control plane is running
+  in.
+- WarpStream Agents need permission to perform various operations against the object
+  storage bucket.
+- 'The WarpStream Agent requires 2 ports to be exposed: 9092 and 8080.'
+- The default advertiseHostnameStrategy is auto-ip4.
+- The value of GOMAXPROCS must be a whole number and not a fraction.
+- Run the WarpStream Agents on network-optimized instances.
+- Auto-scaling is recommended based on CPU usage with a target of 50% average usage.
+- If deploying multiple Warpstream clusters in the same VPC, be aware of IP reuse
+  risks.
+- Set WARPSTREAM_HTTP_PROXY environment variable if a proxy is deployed between Agents
+  and Control Plane.
+- By default, the WarpStream Agent is configured to run with log level 'info'.
+- The Agent exposes an HTTP health check endpoint at '$IP:8080/v1/status'.
+- The Datadog Agent will scrape only 2,000 metrics by default.
+- To reduce the cardinality of the consumer group lag metrics, you can either disable
+  them entirely using the disableConsumerGroupMetrics flag.
+- Agents can be configured with TLS, mTLS, and SASL authentication.
+- Agents can be deployed behind a standard proxy / network load balancer because they're
+  completely stateless.
+- Configure your Kafka client to connect with TLS enabled using SASL PLAIN
+- The kafka_franz_warpstream blocks automatically configure the client with appropriate
+  SASL credentials if authentication is required.
+- Managed data pipelines run in your cloud account, on your VMs, and process data
+  in your buckets.
+- Managed data pipelines are currently only supported in WarpStream's BYOC product.
+- WarpStream specific functionality not available in Bento
+- Uses OAuth2 with refresh token — requires setup of connected app in warpstream
+- Bento runs pipelines in strict mode and rejects batches containing errors.
+- Pipeline groups can isolate managed pipelines onto different groups of Agents.
+- Secrets are managed using environment variables.
+- The Agents will append a ORBIT_ prefix to the values of the fields before using
+  the environment variables, so the environment variables in the Agent should be configured
+  as ORBIT_SASL_USERNAME_ENV_VAR and ORBIT_SASL_PASSWORD_ENV_VAR respectively.
+- Orbit can perfectly mirror Kafka records (including headers and preserving offsets),
+  topic configurations, cluster configurations, topic deletions, consumer group offsets,
+  and more.
+- Records copied from source to destination are identical down to the offsets of the
+  records.
+- To modify the YAML, hit the edit button, edit the YAML, and hit Save again.
+- Tableflow is currently available as an Early Access (EA) feature.
+- To enable service discovery to report all other Agents hostnames as localhost, add
+  'ws_host_override=localhost' to your Kafka client ID.
+- ACLs are only compatible with Agent version 526 and above.
+- For performance reasons, ACLs are cached, so changes to ACLs may take between 30
+  seconds to 1 minute to take effect.
+- Before enabling ACLs, be aware that improper configurations may lead to denied access
+  for producers and consumers.
+- If a resource has no associated ACLs, then only superusers can access that resource.
+- WarpStream utilizes a consumption-based billing model.
+- Billed usage for WarpStream resources is metered in hourly intervals.
+- WarpStream is a higher latency system than Apache Kafka, your Kafka client settings
+  must be tuned appropriately to work with WarpStream.
+- End to End latency can only be calculated when consuming data in real-time that
+  was produced using the WapStream producer benchmark tool.
+- This configuration is similar configuration that we recommend for the best performance.
+- We highly recommend sticking with the default of lz4 as it strikes the best balance
+  between compression ratio and performance.
+- ZSTD is also a good choice for clients that support it.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- WarpStream supports Apache Kafka transactions and Exactly Once Semantics.
+- Retention is based solely on the real-time when the record was created.
+- Application Keys authenticate requests to WarpStream's public HTTP API.
+- Raw data written to WarpStream clusters never leaves your VPC or object storage
+  buckets.
+- Metadata about Kafka workloads is required for the correct functioning of your clusters.
+- 'There are two ways to enable / configure partitions auto-scaling on a topic: The
+  WarpStream UI and the Kafka protocol''s AlterConfigs API.'
+- Serverless cluster operations are similar to BYOC clusters.
+- Kafka headers starting with “\_*ws*” are reserved for WarpStream.
+- The SAML Single Logout (SLO) Protocol, including the Single Logout URL, is not supported
+  in WarpStream SSO.
+- SSO connection names must be globally unique.
+- Domain verification is done via TXT records.
+- All users will be required to login via SSO if enabled.
+- Multi-region support can only be enabled at creation time, and is exclusive to Enterprise-tier
+  clusters.
+- Selecting one of the multi-region configurations will tell the control plane to
+  start storing the metadata for your cluster in the corresponding multi-region storage.
+- Agents use the -multiregion <region_1>,<region_2>,<region_3> flag to know which
+  regions form part of their multi-region control plane.
+- We recommend all our users to run their clusters on Auto Mode (the default setting).
+- Confluent offers Business and Premier support plans.
+- Workspaces and custom roles are enabled for some customers only.
+- A workspace can only be deleted after its virtual clusters and schema registries
+  have all been deleted.
+- Logs for denied authorizations can be enabled by setting the -enableACLLogs flag
+  or WARPSTREAM_ENABLE_ACL_LOGS environment variable to true on the Agents.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Rate limit is 5MB/vCPU/s if agent has both pipelines and another role.
+- Rate limit is 50MB/vCPU/s if agent has only the pipelines role.
+- Throttle API calls or reduce frequency
+- Break down filters or add selectivity
+- Produce requests containing records with at least one header starting with this
+  prefix will be rejected.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://www.warpstream.com
+  auth:
+    type: apikey
+    location: header
+    header_name: warpstream-api-key
+source_metadata: null

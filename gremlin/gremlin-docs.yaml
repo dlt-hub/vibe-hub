@@ -1,0 +1,431 @@
+resources:
+- name: agents
+  endpoint:
+    path: /agents
+    method: GET
+- name: apikeys
+  endpoint:
+    path: /apikeys
+    method: GET
+- name: attacks
+  endpoint:
+    path: /attacks
+    method: GET
+- name: companies
+  endpoint:
+    path: /companies
+    method: GET
+- name: health checks
+  endpoint:
+    path: /health checks
+    method: GET
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+- name: identifier
+  endpoint:
+    path: /api/identifier
+    method: GET
+    data_selector: records
+- name: team_id
+  endpoint:
+    path: /api/team_id
+    method: GET
+    data_selector: records
+- name: SAML Metadata
+  endpoint:
+    path: /v1/users/auth/saml/metadata
+    method: GET
+- name: clusters
+  endpoint:
+    path: /configurations/clusters
+    method: GET
+- name: Slack
+  endpoint:
+    path: /docs/platform-integrations-slack
+    method: GET
+- name: Datadog
+  endpoint:
+    path: /docs/platform-integrations-datadog
+    method: GET
+- name: Grafana Cloud k6
+  endpoint:
+    path: /docs/platform-integrations-grafana-cloud-k6
+    method: GET
+- name: Jira
+  endpoint:
+    path: /docs/platform-integrations-jira
+    method: GET
+- name: health_checks
+  endpoint:
+    path: /health-checks
+    method: GET
+    data_selector: checks
+- name: experiments
+  endpoint:
+    path: /experiments
+    method: GET
+    data_selector: records
+- name: status
+  endpoint:
+    path: /status
+    method: GET
+    data_selector: records
+- name: my-deployment
+  endpoint:
+    path: /services/data/vXX.X/sobjects/my-deployment
+    method: GET
+    data_selector: records
+    params: {}
+- name: reliability_tests
+  endpoint:
+    path: /reliability/tests
+    method: GET
+    data_selector: tests
+- name: reliability_score
+  endpoint:
+    path: /api/reliability/score
+    method: GET
+    data_selector: score
+    params: {}
+- name: experiments
+  endpoint:
+    path: /api/experiments
+    method: GET
+    data_selector: experiments
+- name: scenario
+  endpoint:
+    path: /scenarios
+    method: GET
+- name: jira_issue
+  endpoint:
+    path: /jira/issues
+    method: POST
+- name: gameday
+  endpoint:
+    path: /gamedays
+    method: POST
+    data_selector: results
+    params: {}
+- name: gremlin-sidecar
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: failure_flags_sdk
+  endpoint:
+    path: /failure-flags/sdk
+    method: GET
+    data_selector: sdk_instructions
+- name: failure_flags
+  endpoint:
+    path: /failure-flags
+    method: GET
+    data_selector: flags
+- name: experiments
+  endpoint:
+    path: /experiments
+    method: POST
+    data_selector: experiment
+- name: latency
+  endpoint:
+    path: /latency
+    method: POST
+    data_selector: latency
+    params: {}
+- name: error
+  endpoint:
+    path: /error
+    method: POST
+    data_selector: exception
+    params: {}
+- name: attacks
+  endpoint:
+    path: /v1/attacks/new
+    method: POST
+    data_selector: null
+    params:
+      teamId: e7352a6b-a9a0-513c-81e4-980f680a70c4
+- name: attacks
+  endpoint:
+    path: /v1/attacks/new
+    method: POST
+    data_selector: null
+    params: {}
+- name: detected_risks
+  endpoint:
+    path: /v1/detected_risks
+    method: GET
+    data_selector: risks
+- name: health_checks
+  endpoint:
+    path: /v1/health_checks
+    method: GET
+    data_selector: checks
+- name: Failure Flags by Proxy
+  endpoint:
+    path: /failure-flags/proxy
+    method: POST
+    data_selector: data
+- name: Healthcheck
+  endpoint:
+    path: /failure-flags/healthcheck
+    method: GET
+    data_selector: status
+- name: reliability_events
+  endpoint:
+    path: /api/v1/reliability/events
+    method: GET
+    data_selector: events
+    params: {}
+- name: reliability_score
+  endpoint:
+    path: /api/reliability/score
+    method: GET
+    data_selector: records
+- name: detected_risks
+  endpoint:
+    path: /api/detected/risks
+    method: GET
+    data_selector: records
+- name: blog_posts
+  endpoint:
+    path: /blog
+    method: GET
+    data_selector: items
+- name: blog
+  endpoint:
+    path: /blog
+    method: GET
+    data_selector: items
+    params: {}
+- name: reliability_management
+  endpoint:
+    path: /api/reliability_management
+    method: GET
+    data_selector: data
+    params: {}
+- name: chaos_engineering
+  endpoint:
+    path: /api/chaos_engineering
+    method: GET
+    data_selector: data
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: now_running
+  endpoint:
+    path: /now-running
+    method: GET
+    data_selector: activities
+- name: whats_scheduled
+  endpoint:
+    path: /schedules
+    method: GET
+    data_selector: scheduledActivities
+- name: what_ran
+  endpoint:
+    path: /run-history
+    method: GET
+    data_selector: recentActivities
+notes:
+- Some platforms have limitations or require additional configuration.
+- Gremlin only requires read-only access to your AWS account, and only for CloudWatch,
+  Route 53, and ELB.
+- Gremlin integrates with your observability tool to track the health of your services
+  during tests.
+- You need to add at least one monitor to continue.
+- Keep the configuration file secret, as anyone with access to it can add new hosts,
+  containers, or Kubernetes clusters to your Gremlin team.
+- By default, the /etc/gremlin/ directory is owned by the gremlin user and group and
+  cannot be read by other users.
+- Gremlin won't let you run reliability tests until you've added at least one Health
+  Check.
+- Avoid installing the Agent on a network-based filesystem to prevent latency and
+  connectivity issues.
+- The Gremlin Agent can be safely installed alongside service meshes such as Istio.
+- All certificates expire one year after creation.
+- Before the expiration date, you must create a new certificate, reconfigure all clients
+  with it, and delete the old certificate.
+- Any changes to config.yaml require a restart of the gremlind service.
+- DNS collection is experimental for Windows. User installation of WinPcap, Npcap,
+  or Win10Pcap is required.
+- PrivateLink connections are authorized on a per-account basis.
+- To verify that your VPC is connected, log in to an instance connected to the VPC
+  and run curl -v https://api.gremlin.com/v1.
+- Integration Agent can be deployed for your entire Gremlin company, or on a per-team
+  basis.
+- Reliability Intelligence is enabled by default.
+- 'Agents have two primary states: Active and Deactivated.'
+- Idle agents don't count towards your billable agents.
+- If an agent starts communicating with Gremlin again while still within the 12 hour
+  idle window, the agent returns to the Active state.
+- The agent only requires an outbound network connection to the Gremlin Control Plane,
+  letting you run it behind a firewall without opening inbound ports. All traffic
+  is encrypted.
+- It's important to keep Gremlin up to date, in order to take advantage of new features
+  and important bug fixes.
+- Most instructions require team and company-level privileges
+- Privilege assignment is always additive. Providing the user with a privilege in
+  one role they hold, and not providing it for them in another they hold, will result
+  in them receiving that privilege.
+- MFA can be forced for users across the entire company.
+- When logging in with SSO, you will not be prompted to use MFA.
+- Requires SAML configuration with a compatible Identity Provider (IDP).
+- You must have the COMPANY_SECURITY_WRITE privilege to configure SAML.
+- The Gremlin Kubernetes agent will automatically detect namespaces in your Kubernetes
+  cluster.
+- You can request access to a namespace within a cluster when creating an experiment.
+- Gremlin communicates with integrations over the public Internet by default.
+- Health Checks work by sending REST API requests to an endpoint that you specify.
+- Strongly recommend using monitors and/or alerts as endpoints for Health Checks.
+- If your firewall is blocking the utilization of the Health Check feature, and you
+  are unable to use Private Network Endpoints, you will need to add the following
+  IP address to your allow list.
+- Restricted Time Windows are set at the team level and only apply to members of the
+  team.
+- Attacks are now called Experiments.
+- You can export any report to a PDF by clicking Export at the top of the page.
+- 'Gremlin provides two ways to manage current and upcoming activities: “Now Running,”
+  and “What’s Scheduled.”'
+- The Now Running page shows which experiments, Scenarios, and reliability tests are
+  actively running in your Gremlin team.
+- The What’s Scheduled page shows the experiments, Scenarios, and reliability tests
+  scheduled to run within the next week.
+- Gremlin also provides a page for reviewing recent experiments called “What Ran.”
+- Using the same service IDs across multiple Gremlin teams is unsupported.
+- Uses Kubernetes annotations for service registration.
+- Gremlin supports annotations on Deployments, DeploymentConfigs, DaemonSets, StatefulSets,
+  and Argo Rollouts.
+- Detected Risks are high-priority reliability concerns that Gremlin automatically
+  identified in your environment.
+- This guide is also available as an interactive demo.
+- Uses AWS Elastic Load Balancers for detected risks
+- Allows reading information about services and reliability management
+- You must be a Company Manager, Company Admin, or Company Owner to create or edit
+  Test Suites.
+- Changing an active Test Suite will take effect immediately. Any actively running
+  tests will be halted, and any reliability scores will be reset.
+- Gremlin continuously monitors your service's state using Health Checks.
+- After the final stage in each reliability test, there is a 5-minute cooldown period.
+- Each reliability test is given a score between 0 and 100 based on whether your service
+  passed or failed.
+- Experiments were previously called Attacks.
+- By default, Gremlin will look for active targets when starting the experiment.
+- This option requires the 'Include New Targets' option to be enabled.
+- Gremlin provides a suite of pre-configured Scenarios called Recommended Scenarios.
+- Scenarios support branching, which lets you run one or more experiments simultaneously.
+- Jira integration must be enabled at the individual user level.
+- The Project, Issue Type, Priority, Assignee, and labels are all retrieved based
+  on the content in your connected Jira Cloud instance.
+- Failure Flags lets you run Chaos Engineering experiments, Scenarios, and reliability
+  tests on serverless workloads, containers, and similar managed environments.
+- It is safe to add Failure Flags to your code and leave them there.
+- It is easy to prevent experimentation in any environment.
+- Failure Flags agents are not in critical path for your application logic or network.
+- They are never exposed to sensitive customer data (encrypted or otherwise).
+- They do periodically reach out to Gremlin to determine if there are any experiments
+  targeting the attached application.
+- The Failure Flags agents are not in critical path for your application logic or
+  network.
+- They do not act as network proxies.
+- They do periodically reach out to Gremlin to determine if there are any experiments
+  targeting the attached application and cache those results for a short time.
+- You can add Failure-Flags-Sidecar to any Task without impacting your application
+  availability or performance.
+- Envoy v1.30 or later is required.
+- Gremlin Service Mesh Extension only affects network traffic when you run experiments.
+- It is safe to add a Failure Flags SDK to and leave in your application.
+- When naming your experiments, use only alphanumeric characters, hyphens, underscores,
+  and periods. Names can be up to 64 characters long.
+- 'The SDK currently supports two types of effects: latency and error.'
+- Bearer tokens have an expiration date.
+- All options from the CLI are available through the /attacks/new API, by passing
+  them via command.args.
+- Gremlin never intercepts the content or payload of any network traffic.
+- The Gremlin Service only functions via encrypted communication (HTTPS).
+- Gremlin runs as root within the container
+- Gremlin is restricted by the specific capabilities it requests
+- API supports OAuth2 authentication.
+- Improved logging around actions the Gremlin agent takes to rollback active experiments.
+- 'Gremlin now sends HTTP header `Content-Length: 0` during `POST` requests where
+  the request body is empty.'
+- Requires setup of connected app for OAuth2 authentication.
+- Requires setup of connected app in Gremlin
+- Some responses may include null values in nested fields
+- Gremlin provides chaos engineering tools and practices.
+- Minimize risks to revenue and brand by testing for weaknesses before they become
+  public outages or force you to decrease velocity and add manual engineering processes.
+- Test and improve the reliability of distributed systems across your environment,
+  including cloud platforms, bare metal, containers, and Kubernetes clusters.
+- Centralize reliability management and reporting. Identify core services and dependencies,
+  proactively test for reliability, track improvements, and see how reliability changes
+  over time.
+- Gremlin has three new ways to help you monitor and manage your reliability efforts.
+- Uses OAuth2 with refresh token — requires setup of connected app in Gremlin
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Shows current activities and schedules for reliability tests, scenarios, and experiments.
+errors:
+- 'No valid auth found: Team ID not found'
+- Team Secret not found
+- Team Certificate not found
+- Team Private Key not found
+- '401 Unauthorized: Recheck team secret or certificate authentication.'
+- 'CLIENTS_READ: Allows reading all client information within the team'
+- 'CLIENTS_WRITE: Allows editing all client information within the team'
+- '401 Unauthorized: Confirm that your VPC routing table and security groups are correctly
+  configured.'
+- 'W000: Linux: Agent upgrade recommended'
+- 'W001: Network experiments limited to container and Kubernetes targets'
+- You won't be able to delete this health check if a service is currently using it,
+  and the service has no other health checks to use instead.
+- You must be a Team Manager to create or edit Restricted Time Windows.
+- 'CrashLoopBackOff: Examine application logs to identify errors causing crashes'
+- 'ImagePullBackOff: Check image path and authentication to the container registry'
+- 'Unschedulable Pods: Ensure resource requests do not exceed node capacity'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- 'RELIABILITY_MANAGEMENT_RUN: Allows running of an RM test for a Team'
+- '403 Forbidden: Insufficient privileges to access this resource.'
+- Any misconfiguration, configuration omission, or service outage can only prevent
+  experimentation and will minimize any adverse impact to your applications.
+- 'Unauthorized: Recheck your credentials or token expiration'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Unauthorized: Recheck OAuth scopes or token expiration'
+- '401 Unauthorized: Check OAuth token and permissions.'
+- '403 Forbidden: Check user permissions for accessing the requested resource.'
+auth_info:
+  mentioned_objects:
+  - COMPANY_SECURITY_WRITE
+  - Security tab
+  - Authentication Preferences
+  - TEAMS_WRITE
+  - privilege
+  - SERVICES_READ
+  - Gremlin Team ID
+  - Gremlin Team Certificate
+  - Gremlin Team Private Key
+  - Bearer token
+  - API key
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://app.gremlin.com
+  auth:
+    type: oauth2
+source_metadata: null

@@ -1,0 +1,103 @@
+resources:
+- name: catalogue_snapshot
+  endpoint:
+    path: /catalogue/v2/works.json.gz
+    method: GET
+- name: london_moh_reports
+  endpoint:
+    path: /moh/Fulltext.zip
+    method: GET
+- name: works
+  endpoint:
+    path: /works
+    method: GET
+    data_selector: results
+    params:
+      pageSize: 10
+- name: works
+  endpoint:
+    path: /works
+    method: GET
+    data_selector: results
+    params:
+      subjects.label: Influenza
+- name: works
+  endpoint:
+    path: /works
+    method: GET
+    data_selector: results
+    params: {}
+- name: images
+  endpoint:
+    path: /images
+    method: GET
+    data_selector: results
+    params: {}
+- name: concepts
+  endpoint:
+    path: /concepts
+    method: GET
+    data_selector: results
+    params: {}
+- name: images
+  endpoint:
+    path: /images/{image_id}
+    method: GET
+    data_selector: visuallySimilar
+    params:
+      include: visuallySimilar
+- name: works_snapshot
+  endpoint:
+    path: /catalogue/v2/works.json.gz
+    method: GET
+    data_selector: null
+    params: {}
+- name: images
+  endpoint:
+    path: /images
+    method: GET
+    data_selector: results
+    params:
+      source.genres.label: genre
+      pageSize: '100'
+- name: train_loss
+  endpoint:
+    path: /train/loss
+    method: GET
+    data_selector: train_loss_data
+- name: model_predictions
+  endpoint:
+    path: /model/predictions
+    method: POST
+    data_selector: predictions_data
+- name: works
+  endpoint:
+    path: /catalogue/v2/works.json.gz
+    method: GET
+    data_selector: records
+- name: works
+  endpoint:
+    path: /works/{work_id}
+    method: GET
+    data_selector: title
+- name: concepts
+  endpoint:
+    path: /concepts/{concept_id}
+    method: GET
+    data_selector: label
+notes:
+- Only open image collections are available
+- The API limits its responses to 10,000 total results.
+- The rate limit is 2 requests per second.
+- Model can classify images of portraits and landscapes with 98% accuracy.
+errors:
+- '400 Bad Request: Only the first 10000 works are available in the API.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.wellcomecollection.org/catalogue/v2/
+  paginator:
+    type: page
+    page_size_param: pageSize
+    default_page_size: 10
+source_metadata: null

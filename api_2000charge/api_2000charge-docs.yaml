@@ -1,0 +1,290 @@
+resources:
+- name: transactions
+  endpoint:
+    path: /transactions
+    method: POST
+    data_selector: id
+    params: {}
+- name: transactions
+  endpoint:
+    path: /api/transactions
+    method: POST
+    data_selector: transaction
+    params: {}
+- name: payments
+  endpoint:
+    path: /api/payments
+    method: POST
+    data_selector: payment
+    params: {}
+- name: transactions
+  endpoint:
+    path: /api/transactions
+    method: POST
+    data_selector: id
+- name: transactions
+  endpoint:
+    path: /api/transactions
+    method: GET
+    data_selector: transactions
+    params:
+      limit: <LIMIT>
+      offset: <OFFSET>
+- name: payments
+  endpoint:
+    path: /api/payments
+    method: POST
+    data_selector: payment
+    params: {}
+- name: transactions
+  endpoint:
+    path: /api/transactions
+    method: POST
+    data_selector: id
+    params: {}
+- name: transaction
+  endpoint:
+    path: /api/transactions
+    method: POST
+    data_selector: response
+    params: {}
+- name: transactions
+  endpoint:
+    path: /transactions
+    method: POST
+    data_selector: response
+    params: {}
+- name: transaction
+  endpoint:
+    path: /api/transactions
+    method: POST
+    data_selector: records
+    params: {}
+- name: transactions
+  endpoint:
+    path: /api/transactions
+    method: POST
+    data_selector: id
+    params: {}
+- name: transactions
+  endpoint:
+    path: /transactions
+    method: POST
+    data_selector: transaction
+    params: {}
+- name: retrieve_transaction
+  endpoint:
+    path: /transactions/{Id}
+    method: GET
+    data_selector: transaction
+    params: {}
+- name: transactions
+  endpoint:
+    path: /api/transactions/
+    method: GET
+    data_selector: transactions
+    params:
+      offset: string
+      Limit: string
+      startDate: date
+      endDate: date
+- name: transaction_details
+  endpoint:
+    path: /api/sepa/transactions/
+    method: GET
+    data_selector: transactions
+    params:
+      offset: string
+      Limit: string
+      CreatedFrom: date
+      CreatedTo: date
+      transactionStatus: string
+- name: refunds
+  endpoint:
+    path: /api/{transactionId}/refunds/{refundId}
+    method: GET
+    data_selector: refund
+    params: {}
+- name: voids
+  endpoint:
+    path: /api/transactions/{transactionId}/voids
+    method: GET
+    data_selector: voidTransactions
+    params: {}
+- name: check_sms_verification
+  endpoint:
+    path: /api/websites/{publicKey}/paymentoptions/{paymentOption}
+    method: GET
+    data_selector: hasSmsVerification
+- name: receive_pin_by_sms
+  endpoint:
+    path: /api/phoneverification
+    method: POST
+    data_selector: phone
+- name: create_transaction
+  endpoint:
+    path: /api/transactions
+    method: POST
+    data_selector: id
+- name: refund_transaction
+  endpoint:
+    path: /api/transactions/{transactionId}/refunds
+    method: POST
+- name: void_transaction
+  endpoint:
+    path: /api/transactions/{transactionId}/voids
+    method: POST
+- name: create_transfer
+  endpoint:
+    path: /api/transfers
+    method: POST
+    data_selector: id
+- name: create_plan
+  endpoint:
+    path: /api/plans
+    method: POST
+    data_selector: id
+  params:
+    amount: 1000
+    currency: EUR
+    intervalUnit: Month
+    intervalCount: 1
+    billingCycles: 12
+    trialPeriod: 7
+    isConversionRateFixed: true
+- name: create_subscription
+  endpoint:
+    path: /api/subscriptions/hosted
+    method: POST
+    data_selector: id
+    params:
+      planId: pln_41cd17a123
+      quantity: 1
+      ipAddress: 123.1.1.1
+      returnUrl: https://developers.2000charge.com/returnpages/success.html
+      cancelUrl: https://developers.2000charge.com/returnpages/failure.html
+- name: create_transaction
+  endpoint:
+    path: /api/transactions/hosted
+    method: POST
+    data_selector: id
+    params:
+      amount: 200
+      currency: EUR
+      ipAddress: 123.1.1.1
+      returnUrl: https://developers.2000charge.com/returnpages/success.html
+      cancelUrl: https://developers.2000charge.com/returnpages/failure.html
+- name: institutions
+  endpoint:
+    path: /api/institutions/getInstitutionsForCountry/{countryIsoCode}
+    method: GET
+    data_selector: institutions
+- name: preauthorization
+  endpoint:
+    path: /api/preauthorizations
+    method: POST
+    data_selector: ''
+    params: {}
+- name: transactions
+  endpoint:
+    path: /api/transactions
+    method: POST
+    data_selector: ''
+    params: {}
+- name: customers
+  endpoint:
+    path: /api/customers
+    method: GET
+    data_selector: customers
+notes:
+- Requires a valid WEBSITE_SECRET_KEY for authentication.
+- You must specify 'returnUrl' and 'cancelUrl' parameters.
+- Uses Basic Authentication with secret key in the header.
+- Test mode statuses of the transactions are automatically changed to Funded after
+  a short delay, and blacklist/velocity controls are ignored.
+- You must specify returnUrl and cancelUrl parameters.
+- You must specify returnUrl and cancelUrl parameters. In response, redirectUrl will
+  be returned where customer needs to finish his payment.
+- Requires the use of a secret key for authentication
+- Different payment options like paysafe, pix, and poli are available
+- Payment options must be specified correctly as per the type of transaction.
+- The API requires a secret key for authentication.
+- Must include returnUrl and cancelUrl in the request.
+- SMS verification is mandatory on SEPA but can be disabled on a case by case basis.
+- To proceed past PIN entry field to complete test enter the test PIN number 1234.
+- Optional parameters can be later changed on the hosted page.
+- Production API Keys are available once you are verified, and are used to process
+  live transactions.
+- Tokenization must be used to be PCI compliant.
+errors:
+- '401 Unauthorized: Check your WEBSITE_SECRET_KEY.'
+- '400 Bad Request: Check your request payload.'
+- 'invalid_parameter_error: Invalid request errors arise when your request has invalid
+  parameters.'
+- 'api_error: API errors cover any other type of problem (e.g. a temporary problem
+  with servers) and should turn up only very infrequently.'
+- 'payment_error: All errors related to invalid payment data, velocity control, fraud
+  prevention, …'
+- '401 Unauthorized: Check your API key or credentials.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '401 Unauthorized: Check your secret key'
+- '400 Bad Request: Check the request format and required fields'
+- '401 Unauthorized: Check your API key or credentials'
+- 'INVALID_REQUEST: Check the request parameters.'
+- 'AUTHENTICATION_FAILED: Verify your secret key.'
+- '400 Bad Request: Check request parameters.'
+- '401 Unauthorized: Check API key.'
+- '404 Not Found: Transaction ID does not exist.'
+- 'Invalid phone number or invalid format submitted: Customer will not receive PIN
+  verification code.'
+- '401 Unauthorized: Check your credentials'
+- '400 Bad Request: Check the request parameters'
+- 'api_keys_not_provided: API keys are not provided'
+- 'invalid_api_keys: Invalid API key %s'
+- 'invalid_object_sent: Object is not sent or invalid object is sent'
+- 'missing_required_parameter: Missing required parameter %s'
+- 'invalid_parameter_error: Invalid parameter %s'
+- 'disabled_website: Disabled website'
+- 'invalid_website: Invalid website'
+- 'invalid_transaction_id: Invalid transaction'
+- 'invalid_original_transaction_id: Invalid transaction'
+- 'invalid_payment_id: Invalid payment id'
+- 'invalid_customer_id: Invalid customer id'
+- 'invalid_reason: Invalid reason'
+- 'provide_payment_or_token: Provide either payment object or token'
+- 'provide_customer_or_customerid: Provide either customer object or customerid'
+- 'invalid_payment_option: Invalid payment option'
+- 'invalid_iban: Invalid IBAN'
+- 'invalid_bic: Invalid BIC'
+- 'invalid_currency: Invalid currency'
+- 'negative_number: Must be positive number'
+- 'pin_not_sent: Pin must be sent'
+- 'email_domain_black_listed: Email domain is found on the black list'
+- 'information_on_black_list: Information sent on the transaction are found on the
+  blacklist'
+- 'customer_black_listed: Customer is found on the black list'
+- 'number_of_transaction_exceeded_limit: Number of the transactions exceeded limit'
+- 'volume_of_transaction_exceeded_limit: Volume of the transactions exceeded limit'
+- 'max_transaction_amount: Volume of the transactions is higher then maximum limit'
+- 'min_transaction_amount: Volume of the transactions is lower then minimum limit'
+- 'invalid_country: Invalid country'
+- 'parameter_can_have_100_characters_maximum: Parameter %s can have 100 characters
+  maximum.'
+- 'payment_option_is_not_active: Payment option is not active.'
+- 'cpf_name_and_birthdate_do_not_match: CPF does not belong to the person making the
+  payment.'
+- 'customer_reached_payment_limit: Customer reached the payment limit for the period.'
+- 'currency_is_not_active_in_system: Currency is not active in the system.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.2000charge.com
+  auth:
+    type: basic
+    location: header
+    header_name: Authorization
+  headers:
+    Content-Type: application/json
+source_metadata: null

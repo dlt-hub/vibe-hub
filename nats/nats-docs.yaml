@@ -1,0 +1,747 @@
+resources:
+- name: stream_info
+  endpoint:
+    path: $JS.API.STREAM.INFO.*
+    method: GET
+    data_selector: api.JSApiStreamInfoResponse
+    params: {}
+- name: stream_list
+  endpoint:
+    path: $JS.API.STREAM.LIST
+    method: GET
+    data_selector: api.JSApiStreamListResponse
+    params: {}
+- name: stream_names
+  endpoint:
+    path: $JS.API.STREAM.NAMES
+    method: GET
+    data_selector: api.JSApiStreamNamesResponse
+    params: {}
+- name: consumer_create
+  endpoint:
+    path: $JS.API.CONSUMER.CREATE.<stream>
+    method: POST
+    data_selector: api.JSApiConsumerCreateResponse
+    params: {}
+- name: consumer_list
+  endpoint:
+    path: $JS.API.CONSUMER.LIST.<stream>
+    method: GET
+    data_selector: api.JSApiConsumerListResponse
+    params: {}
+- name: consumer_info
+  endpoint:
+    path: $JS.API.CONSUMER.INFO.<stream>.<consumer>
+    method: GET
+    data_selector: api.JSApiConsumerInfoResponse
+    params: {}
+- name: Key Value Store
+  endpoint:
+    path: /nats-concepts/jetstream/key-value-store
+    method: GET
+    data_selector: values
+    params: {}
+- name: Object Store
+  endpoint:
+    path: /nats-concepts/jetstream/obj_store
+    method: GET
+    data_selector: objects
+    params: {}
+- name: stream_configuration
+  endpoint:
+    path: /jetstream/streams
+    method: POST
+    data_selector: stream
+    params: {}
+- name: my_stream
+  endpoint:
+    path: /stream/my_stream
+    method: POST
+    data_selector: subjects
+    params:
+      replicas: 1
+      storage: file
+      retention: limits
+      acknowledgments: true
+      discard_policy: old
+      duplicate_window: 2m0s
+      max_messages: unlimited
+      max_per_subject: unlimited
+      max_bytes: unlimited
+      max_age: unlimited
+      max_message_size: unlimited
+      max_consumers: unlimited
+- name: pull_consumer
+  endpoint:
+    path: /consumer/pull_consumer
+    method: POST
+    data_selector: name
+    params:
+      pull_mode: true
+      deliver_policy: all
+      ack_policy: explicit
+      ack_wait: 30.00s
+      replay_policy: instant
+      max_ack_pending: 1000
+      max_waiting_pulls: 512
+- name: bucket
+  endpoint:
+    path: /jetstream/buckets
+    method: POST
+    data_selector: buckets
+    params: {}
+- name: file
+  endpoint:
+    path: /jetstream/files
+    method: POST
+    data_selector: files
+    params: {}
+- name: orders
+  subject_transform:
+    src: orders.local.*
+    dest: orders.{{wildcard(1)}}
+  sources:
+  - name: other_orders
+    subject_transforms:
+    - src: orders.online.*
+      dest: orders.{{wildcard(1)}}
+  republish:
+  - src: orders.*
+    dest: orders.trace.{{wildcard(1)}}
+- name: nats_server
+  endpoint:
+    path: /nats-server
+    method: GET
+    data_selector: server_info
+    params: {}
+- name: messages
+  endpoint:
+    path: /publishing
+    method: POST
+    data_selector: messages
+    params: {}
+- name: service
+  endpoint:
+    path: /services
+    method: GET
+    data_selector: services
+    params: {}
+- name: endpoint
+  endpoint:
+    path: /services/{service_name}/endpoints
+    method: GET
+    data_selector: endpoints
+    params: {}
+- name: services
+  endpoint:
+    path: null
+    method: null
+    data_selector: null
+    params: null
+- name: functions
+  endpoint:
+    path: null
+    method: null
+    data_selector: null
+    params: null
+- name: server_options
+  endpoint:
+    path: /running-a-nats-service/introduction/flags
+    method: GET
+    data_selector: flags
+    params: {}
+- name: jetstream_options
+  endpoint:
+    path: /running-a-nats-service/introduction/flags
+    method: GET
+    data_selector: jetstream_options
+    params: {}
+- name: nats_server
+  endpoint:
+    path: /nats
+    method: GET
+    data_selector: info
+    params: {}
+- name: routez
+  endpoint:
+    path: /routez
+    method: GET
+    data_selector: routes
+- name: nats-cluster-node-1
+  endpoint:
+    path: /nats-cluster-node-1
+    method: CREATE
+    data_selector: ''
+    params: {}
+- name: ruby-nats
+  endpoint:
+    path: /
+    method: POST
+    data_selector: messages
+    params: {}
+- name: nats-cluster-node-2
+  endpoint:
+    path: /
+    method: POST
+    data_selector: messages
+    params: {}
+- name: nats-cluster-node-3
+  endpoint:
+    path: /
+    method: POST
+    data_selector: messages
+    params: {}
+- name: benchstream
+  endpoint:
+    path: /stream/list
+    method: GET
+- name: subscriber
+  endpoint:
+    path: /subscribe
+    method: POST
+    data_selector: message
+    params: {}
+- name: publisher
+  endpoint:
+    path: /publish
+    method: POST
+    data_selector: message
+    params: {}
+- name: jetstream
+  endpoint:
+    path: /jetstream
+    method: GET
+    data_selector: accounts
+    params: {}
+- name: jetstream
+  endpoint:
+    path: /jetstream
+    method: POST
+    data_selector: records
+    params: {}
+- name: HR
+  jetstream:
+    max_mem: 512M
+    max_file: 1G
+    max_streams: 10
+    max_consumers: 100
+- name: cluster
+  endpoint:
+    path: /cluster
+    method: GET
+    data_selector: servers
+    params: {}
+- name: cluster_seed_node
+  endpoint:
+    path: /cluster/seed
+    method: GET
+    data_selector: seed_info
+    params: {}
+- name: cluster_member
+  endpoint:
+    path: /cluster/member
+    method: GET
+    data_selector: member_info
+    params: {}
+- name: leafnode
+  endpoint:
+    path: /leafnodes
+    method: GET
+    data_selector: connections
+    params: {}
+- name: cluster_scoped
+  endpoint:
+    path: foo.cluster.scoped
+    method: GET
+    data_selector: destination
+    params:
+      weight: 100%
+      cluster: us-west-1
+- name: weighted_mapping
+  endpoint:
+    path: myservice.request
+    method: GET
+    data_selector: destination
+    params:
+      weight: 90%
+- name: wildcard_mapping
+  endpoint:
+    path: myservice.test.*
+    method: GET
+    data_selector: destination
+    params:
+      weight: 80%
+- name: chaos_testing
+  endpoint:
+    path: foo.loss.>
+    method: GET
+    data_selector: destination
+    params:
+      weight: 50%
+- name: server_information
+  endpoint:
+    path: $SYS.REQ.SERVER.<id>.VARZ
+    method: GET
+- name: connections
+  endpoint:
+    path: $SYS.REQ.SERVER.<id>.CONNZ
+    method: GET
+- name: routing
+  endpoint:
+    path: $SYS.REQ.SERVER.<id>.ROUTEZ
+    method: GET
+- name: gateways
+  endpoint:
+    path: $SYS.REQ.SERVER.<id>.GATEWAYZ
+    method: GET
+- name: leaf_nodes
+  endpoint:
+    path: $SYS.REQ.SERVER.<id>.LEAFZ
+    method: GET
+- name: subscription_routing
+  endpoint:
+    path: $SYS.REQ.SERVER.<id>.SUBSZ
+    method: GET
+- name: jetstream
+  endpoint:
+    path: $SYS.REQ.SERVER.<id>.JSZ
+    method: GET
+- name: accounts
+  endpoint:
+    path: $SYS.REQ.SERVER.<id>.ACCOUNTZ
+    method: GET
+- name: health
+  endpoint:
+    path: $SYS.REQ.SERVER.HEALTHZ
+    method: GET
+- name: general_information
+  endpoint:
+    path: /varz
+    method: GET
+- name: connection_information
+  endpoint:
+    path: /connz
+    method: GET
+- name: route_information
+  endpoint:
+    path: /routez
+    method: GET
+- name: gateway_information
+  endpoint:
+    path: /gatewayz
+    method: GET
+- name: leaf_node_information
+  endpoint:
+    path: /leafz
+    method: GET
+- name: subscription_routing_information
+  endpoint:
+    path: /subsz
+    method: GET
+- name: account_information
+  endpoint:
+    path: /accountz
+    method: GET
+- name: account_statistics
+  endpoint:
+    path: /accstatz
+    method: GET
+- name: jetstream_information
+  endpoint:
+    path: /jsz
+    method: GET
+- name: health
+  endpoint:
+    path: /healthz
+    method: GET
+- name: general_information
+  endpoint:
+    path: /varz
+    method: GET
+    data_selector: server_id
+- name: connection_information
+  endpoint:
+    path: /connz
+    method: GET
+    data_selector: connections
+- name: route_information
+  endpoint:
+    path: /routez
+    method: GET
+    data_selector: routes
+- name: gateway_information
+  endpoint:
+    path: /gatewayz
+    method: GET
+    data_selector: outbound_gateways
+- name: leaf_node_information
+  endpoint:
+    path: /leafz
+    method: GET
+    data_selector: leafs
+- name: subscription_routing_information
+  endpoint:
+    path: /subsz
+    method: GET
+    data_selector: num_subscriptions
+- name: account_information
+  endpoint:
+    path: /accountz
+    method: GET
+    data_selector: accounts
+- name: account_statistics
+  endpoint:
+    path: /accstatz
+    method: GET
+    data_selector: account_statz
+- name: jetstream_information
+  endpoint:
+    path: /jsz
+    method: GET
+    data_selector: account_details
+- name: health_check
+  endpoint:
+    path: /healthz
+    method: GET
+    data_selector: status
+- name: connection
+  endpoint:
+    path: /connect
+    method: CONNECT
+    data_selector: '{}'
+- name: subscription
+  endpoint:
+    path: /subscribe
+    method: SUB
+    data_selector: foo.*
+- name: publish
+  endpoint:
+    path: /publish
+    method: PUB
+    data_selector: foo.bar
+- name: unsubscribe
+  endpoint:
+    path: /unsubscribe
+    method: UNSUB
+    data_selector: '90'
+notes:
+- NATS supports various authentication methods including tokens, username/password,
+  and NKeys.
+- New options max_buffered_size and max_buffered_msgs enable rate limiting on Core
+  NATS publishing into JetStream streams
+- The js-server-only healthcheck no longer checks for the health of the metaleader
+  on v2.11.0
+- Zero downtime upgrades are table stakes.
+- Downgrading should be to 2.9.22 or later to ensure storage format changes are handled
+  appropriately.
+- NATS 2.0 was the largest feature release since the original code base for the server
+  was released.
+- Zero configuration disaster recovery
+- NATS is a connective technology that powers modern distributed systems.
+- NATS supports true multi-tenancy and decentralized security through accounts and
+  defining shared streams and services.
+- NATS supports TLS, NATS credentials, NKEYS (NATS ED25519 keys), username and password,
+  or simple token.
+- Uses Token authentication for connecting clients.
+- The NATS server listens for client connections on TCP Port 4222.
+- Supports a variety of authentication mechanisms including tokens, username/password,
+  and NKeys.
+- A well-designed subject hierarchy will make the job a lot easier for those tasks.
+- Messages have a maximum size which is set in the server configuration with `max_payload`.
+  The size is set to 1 MB by default, but can be increased up to 64 MB if needed.
+- NATS makes Request-Reply simple and powerful
+- NATS applications 'drain before exiting' (processing buffered messages before closing
+  the connection).
+- When a request is sent to a subject that has no subscribers, it can be convenient
+  to know about it right away.
+- NATS provides an additional feature named 'queue', which allows subscribers to register
+  themselves as part of a queue.
+- Queue group names follow case sensitivity and cannot contain whitespace.
+- Scale up is as simple as running another application, scale down is terminating
+  the application with a signal that drains the in flight requests.
+- Uses Token based authentication
+- JetStream is built into nats-server.
+- JetStream completely replaces the STAN legacy NATS streaming layer.
+- Use of tokens for authentication
+- Streams support various retention policies which define when messages in the stream
+  can be automatically deleted.
+- Streams support deduplication using a Nats-Msg-Id header.
+- Sources is a generalization of the Mirror and allows for sourcing data from one
+  or more streams concurrently.
+- If you require the target stream to act as a read-only replica, configure the stream
+  without listen subjects or temporarily disable the listen subjects through client
+  authorizations.
+- Supports Token authentication.
+- May require specific configurations for security.
+- Changes to the stream using source or mirror, e.g. deleting messages or publishing,
+  do not reflect back on the origin stream from which the data was received.
+- Deletes in the origin stream are NOT replicated through a source or mirror agreement.
+- A stream with sources can still act as a regular stream allowing direct write/publish
+  by local clients to the stream.
+- Sourcing messages does not retain sequence numbers. But it retain the in stream
+  sequence of messages.
+- Mirrored messages retains the sequence numbers and timestamps of the origin stream.
+- Sources and Mirror try to be efficient in replicating messages and are lenient towards
+  the source/mirror origin being unreachable (event for extended periods of time).
+- Source and mirror works with origin stream with workqueue retention in a limited
+  context.
+- Stream my_stream was created with subject 'foo'.
+- Consumer pull_consumer created on stream my_stream.
+- While we guarantee immediate consistency for monotonic writes and reads, we don't
+  guarantee read your writes.
+- 'A valid key can contain the following characters: `a-z`, `A-Z`, `0-9`, `_`, `-`,
+  `.`, `=` and `/`, i.e. it can be a dot-separated list of tokens (which means that
+  you can then use wildcards to match hierarchies of keys when watching a bucket).
+  The value can be any byte array.'
+- Object store is not a distributed storage system. All files in a bucket will need
+  to fit on the target file system.
+- Transforms can be defined on the root of the config file, on the individual account
+  level, on subjects imported into an account, and in JetStream context.
+- Transforms are applied as soon as a message enters the scope in which the transform
+  was defined.
+- Transforms are not applied recursively in the same scope.
+- Deterministic subject token partitioning allows you to use subject-based addressing
+  to deterministically divide a flow of messages.
+- Enabling TLS is recommended for secure connections.
+- Authentication can be done using Tokens, Username/Password, NKeys, or JWT.
+- Authenticated clients are identified as users and have a set of authorizations
+- NATS supports several kinds of connectivity directly to the NATS servers.
+- nsc version 2.2.0 has been released. This version of nsc only supports nats-server
+  v2.2.0 and nats-account-server v1.0.0.
+- Client API (asynchronous) subscribe call can return before the subscription is fully
+  established at the nats-server.
+- Uses Token authentication
+- The NATS execution engine is currently experimental. The documentation, feature
+  set, and any APIs are likely to change frequently.
+- The default, secure Nex services are statically-linked, 64-bit linux (elf) binaries
+  but you can also run native Mac or Windows binaries as services.
+- Nex's default secure mode makes extensive use of Firecracker which makes some pretty
+  strict demands of its environment.
+- NATS supports various authentication methods including tokens and username/password.
+- Nex is an open source, lightweight execution engine that runs alongside NATS.
+- NATS servers can cluster together to provide fault-tolerance and scalability.
+- NATS servers can run as Leaf Nodes connecting to a cluster.
+- NATS philosophy is simplicity. Installation is just decompressing a zip file and
+  copying the binary to an appropriate directory.
+- We recommend starting with at least 4 CPU cores and 8 GiB of memory to reduce the
+  risk of resource-related issues.
+- In the absence of any flags, the NATS server will start listening for NATS client
+  connections on port 4222.
+- By default, security is disabled.
+- JetStream should be enabled on at least one server
+- Avoid NAS or NFS storage for JetStream
+- The NATS server supports running as a Windows service. In fact, this is the recommended
+  way of running NATS on Windows.
+- For the environment variable NATS_STARTUP_DELAY to be accessible from the NATS service,
+  it is recommended to set it as a SYSTEM variable.
+- NATS_STARTUP_DELAY=30s will make the NATS server wait up to 30s, but will report
+  the service as RUNNING as soon as the server is ready to accept connections.
+- Be careful when setting resource limits for the nats-server containers.
+- The nats-server processes use resources in proportion to the load traffic generated
+  by all the client applications.
+- NATS (and JetStream) usage is high or in bursts — set the container resource limits
+  accordingly.
+- NATS server provided as a Docker image on Docker Hub.
+- 'By default, the NATS server exposes multiple ports: 4222 for clients, 8222 for
+  HTTP management, and 6222 for clustering.'
+- Uses credentials for route connections in the NATS cluster.
+- Supports various authentication mechanisms including tokens and username/password.
+- The NATS image is only 6 MB in size.
+- Install nats.py and dependencies to install nkeys
+- This mini-tutorial shows how to run a NATS server with JetStream enabled in a local
+  Docker container.
+- Uses token-based authentication
+- Your free account comes with up to 2 leaf connection, but the account is configured
+  to use at most 1 initially.
+- Your messages were routed transparently with millions of others, but they were not
+  visible to anyone outside of your Synadia Cloud account.
+- The recommended way to deploy NATS on Kubernetes is using Helm with the official
+  NATS Helm Chart.
+- The default configuration values of the chart will deploy a single NATS server as
+  a StatefulSet and a single replica nats-box Deployment.
+- Server output can be quiet unless interesting events occur.
+- TLS connections can be specified using tls://<server>:<port>.
+- The NATS configuration file is parsed with UTF-8 encoding.
+- The configuration parser is very forgiving.
+- JetStream does not implement standby and fault tolerance through a shared file system.
+- The NATS server has many flags that allow for simple testing of features from command
+  line.
+- The standard way of configuring the NATS server product is through a configuration
+  file.
+- JSON config files should be limited machine generated configuration files
+- JetStream is disabled by default. The minimal configuration will enable JetStream.
+- Multi-tenancy support available
+- Enabling JetStream requires specific configurations
+- JetStream is compatible with NATS 2.0 Multi-Tenancy using Accounts.
+- A JetStream enabled server supports creating fully isolated JetStream environments
+  for different accounts.
+- NATS supports running each server in clustered mode for high volume messaging systems
+  and resiliency and high availability.
+- Clustering allows servers to gossip about and connect to all known servers, forming
+  a full mesh dynamically.
+- NATS supports running each server in clustered mode for high volume messaging systems
+  and resiliency.
+- Servers with the routes option establish a route to the seed server.
+- Clients connecting to any server in the cluster will discover other servers in the
+  cluster.
+- Testing server A, B, and C shows successful message publishing and receiving.
+- Gateways enable connecting one or more clusters together into a full mesh; they
+  allow the formation of superclusters from smaller clusters.
+- All servers of a cluster need to have a gateway configuration with the same name.
+- TLS-first Handshake
+- Leaf nodes do not need to be reachable themselves.
+- Clients to leaf nodes authenticate locally.
+- Connections can be encrypted with TLS
+- Client connections can require authentication
+- Default timestamp for log entries is true.
+- Introduced in NATS Server v2.1.4, NATS allows for auto-rotation of log files when
+  the size is greater than the configured limit set in logfile_size_limit.
+- The backup files will have the same name as the original log file with the suffix
+  .yyyy.mm.dd.hh.mm.ss.micros.
+- nats-server does not have authentication/authorization for the monitoring endpoint
+- By default monitoring binds to every interface 0.0.0.0
+- To enable monitoring server, start NATS server with the monitoring flag -m and the
+  monitoring port
+- To test, run nats-server -m 8222, then go to http://localhost:8222/
+- NATS messages published to MQTT subscriptions are always delivered as QoS 0 messages.
+- MQTT published messages on topic names containing "`" or "`.\`" characters will
+  cause the connection to be closed. Presence of those characters in MQTT subscriptions
+  will result in error code in the SUBACK packet.
+- MQTT wildcard `#` may cause the NATS server to create two subscriptions.
+- MQTT concurrent sessions may result in the new connection to be evicted instead
+  of the existing one.
+- MQTT retained messages in clustering mode is best effort.
+- Subject mappings are defined and applied at the account level.
+- If using static account security, edit the server configuration file.
+- If using JWT Security, use nsc or customer tools to edit and push changes.
+- Changes to mappings in the configuration file take effect as soon as a reload signal
+  is sent to the server process.
+- Subject mapping changes take effect as soon as the modified account JWT is pushed
+  to the nats servers.
+- Using accounts requires either configuring authentication locally or using decentralized
+  authentication and authorization via jwt.
+- Applications have to authenticate such that a connection can be associated with
+  an account.
+- NATS Supports only WebSocket data frames in Binary, not Text format.
+- Monitoring the server via the monitoring endpoint and tools like nats-top
+- nats-server does not have authentication/authorization for the monitoring endpoint.
+- By default, monitoring binds to every interface 0.0.0.0.
+- JetStream is fully usable by only using core NATS
+- You can use the nsc CLI tool to manage identities.
+- Nkeys are a public-key signature system based on Ed25519 for the NATS ecosystem.
+- You can see the key (and any signing keys) of your operator using `nsc list keys
+  --show-seeds`, you should use a 'signing key' to create the account JWTs (as singing
+  keys can be revoked/rotated easily)
+- 'To delete accounts use the `"$SYS.REQ.CLAIMS.DELETE"` and make sure to enable JWT
+  deletion in your nats-server resolver (`config allow_delete: true` in the `resolver`
+  stanza of the server configuration).'
+- NATS supports various authentication methods including Token, Username/Password,
+  and NKeys.
+- Ensure the NATS server is configured for the desired authentication method.
+- Slow consumers identified in the client
+- Slow consumers identified by the server
+- NATS provides built-in mechanisms to automatically prune the registered listener
+  interest graph.
+- If a subscriber does not respond to ping requests from the server, the client is
+  cut off.
+- NATS favors the approach of protecting the system as a whole over accommodating
+  a particular consumer.
+- NATS server responds to various signals for managing server state
+- If there are multiple `nats-server` processes running, specify a PID or the absolute
+  path to a PID file.
+- As of NATS v2.10.0, a glob expression can be used to match one or more process IDs.
+- 'Lame duck mode is initiated by signaling the server: nats-server --signal ldm'
+- After entering lame duck mode, the server will stop accepting new connections, wait
+  for a 10 second grace period, then begin to evict clients over a period of time
+  configurable by the lame_duck_duration configuration option.
+- This period defaults to 2 minutes.
+- Uses OAuth2 with refresh token — requires setup of connected app in NATS
+- Profiling is an advanced operation for development purposes only.
+- Server operators should use the monitoring port instead for monitoring day-to-day
+  runtime statistics.
+- The profiling port is not authenticated and should not be exposed to clients or
+  the internet.
+- The profiling port binds to every interface by default.
+- Uses Token Authentication — requires proper token management
+- NATS is an open source, lightweight, high-performance cloud native infrastructure
+  messaging system.
+- Messages have a maximum size (which is set in the server configuration with `max_payload`)
+  that is enforced by the server and communicated to the client during connection
+  setup.
+- NATS uses subject-based messaging.
+- NATS supports various authentication methods including Tokens and Username/Password.
+- Uses a simple, text-based publish/subscribe style protocol.
+- Subject names are case-sensitive and must be non-empty alphanumeric strings.
+- The NATS server clustering protocol describes the protocols passed between NATS
+  servers within a cluster to share accounts, subscriptions, forward messages, and
+  share cluster topology regarding new servers.
+- It is a simple text-based protocol.
+- The NATS server implements a zero allocation byte parser that is fast and efficient.
+- The fields of NATS protocol messages are delimited by whitespace characters.
+- Authentication can be done using a User and Password or a Token.
+- Uses OAuth2 for authentication
+- NATS supports various authentication methods including Token, User/Password, and
+  NKey.
+- Uses token-based authentication for connecting clients
+- Core NATS offers 'at-most-once' delivery. NATS JetStream offers persistence with
+  'at-least-once' and 'exactly-once' delivery.
+errors:
+- '404: stream not found'
+- '-ERR: Non-admin APIs respond with errors'
+- '+OK: Successful operation'
+- '429: JSStreamTooManyRequests'
+- '401 Unauthorized: Recheck authentication credentials or token expiration'
+- 'Connection refused: Ensure the NATS server is running and reachable'
+- '503: No responders'
+- '401 Unauthorized: Check token validity'
+- '403 Forbidden: Check your authentication credentials.'
+- '500 Internal Server Error: Server error, try again later.'
+- '401 Unauthorized: Check authentication credentials.'
+- 'Connection refused: Ensure the server is running.'
+- '401 Unauthorized: Check your authentication credentials.'
+- '403 Forbidden: You do not have permission to access this resource.'
+- 'EOF: Connection closed unexpectedly'
+- unknown field 'PORT'
+- 'nats-server: variable reference for ''PORT'' on line 5 can not be found'
+- '403 Forbidden: Verify permissions for the requested action'
+- '503 Service Unavailable: NATS server may be down or unreachable.'
+- 'nats: slow consumer, messages dropped'
+- 'SIGKILL: Kills the process immediately'
+- 'SIGQUIT: Kills the process immediately and performs a core dump'
+- 'SIGINT: Stops the server gracefully'
+- 'SIGTERM: Stops the server gracefully'
+- 'SIGUSR1: Reopens the log file for log rotation'
+- 'SIGHUP: Reloads server configuration file'
+- 'SIGUSR2: Stops the server after evicting all clients (lame duck mode)'
+- 'max payload exceeded: Messages may exceed the maximum size limit set by the server.'
+- -ERR 'Unknown Protocol Operation'
+- -ERR 'Authorization Violation'
+- -ERR 'Stale Connection'
+- -ERR 'Maximum Connections Exceeded'
+- -ERR 'Slow Consumer'
+- -ERR 'Maximum Payload Violation'
+- -ERR 'Attempted To Connect To Route Port'
+- -ERR 'Authorization Timeout'
+- -ERR 'Invalid Client Protocol'
+- -ERR 'Maximum Control Line Exceeded'
+- -ERR 'Parser Error'
+- -ERR 'Secure Connection - TLS Required'
+- -ERR 'Invalid Subject'
+- -ERR 'Permissions Violation for Subscription to <subject>'
+- -ERR 'Permissions Violation for Publish to <subject>'
+- '-ERR: Indicates a protocol error. May cause the remote server to disconnect.'
+auth_info:
+  mentioned_objects:
+  - nkeys
+  - JWT
+  - Auth callout
+  - Tokens
+  - Username/Password
+  - NKeys
+client:
+  base_url: https://nats.io
+  auth:
+    type: token
+    location: header
+    header_name: Authorization
+source_metadata: null

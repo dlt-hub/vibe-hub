@@ -1,0 +1,100 @@
+resources:
+- name: account_application
+  endpoint:
+    path: /v2/webhook
+    method: post
+    data_selector: status
+    params: {}
+- name: file_metadata
+  endpoint:
+    path: /application/{applicationId}/file/{fileId}
+    method: POST
+    data_selector: webhook event
+    params:
+      applicationId: string <uuid>
+      fileId: string <uuid>
+- name: presigned_s3_url
+  endpoint:
+    path: /application/{applicationId}/file/{fileId}
+    method: PUT
+    data_selector: webhook event
+    params:
+      applicationId: string <uuid>
+      fileId: string <uuid>
+- name: delete_file
+  endpoint:
+    path: /application/{applicationId}/file/{fileId}
+    method: DELETE
+    data_selector: webhook event
+    params:
+      applicationId: string <uuid>
+      fileId: string <uuid>
+- name: GiftIssueNewAccount
+  endpoint:
+    path: /GiftIssueNewAccount
+    method: POST
+    data_selector: Result
+    params:
+      TransactionType: GiftIssueNewAccount
+- name: GiftRedeem
+  endpoint:
+    path: /GiftRedeem
+    method: POST
+    data_selector: Result
+    params:
+      TransactionType: GiftRedeem
+- name: GiftBalance
+  endpoint:
+    path: /GiftBalance
+    method: POST
+    data_selector: Result
+    params:
+      TransactionType: GiftBalance
+- name: GiftVoid
+  endpoint:
+    path: /GiftVoid
+    method: POST
+    data_selector: Result
+    params:
+      TransactionType: GiftVoid
+- name: GiftAddValue
+  endpoint:
+    path: /GiftAddValue
+    method: POST
+    data_selector: Result
+    params:
+      TransactionType: GiftAddValue
+- name: transaction
+  endpoint:
+    path: /api/v1/transactions
+    method: GET
+    data_selector: transactions
+    params: {}
+notes:
+- Uses PartnerAuthToken for authorization
+- Partners can subscribe to webhook events to receive real-time updates on the status
+  of an application.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Ensure to handle API rate limits appropriately
+- Some endpoints may require additional permissions
+- Ensure EI Server is updated to version 5.3.26.6 or later.
+- Upon receiving the Clover Dev Kit, a member of the IP team will assist in pairing
+  the device with the Clover Sandbox and adding it to the Gravity Dashboard Sandbox
+  for testing.
+- To initiate this setup, send an email to developersupport@gravitypayments.com.
+- If prompted for a passcode, try `1234` for a 4-digit code or `123456` for a 6-digit
+  code.
+errors:
+- '200: A webhook event. The status field indicates the type of event.'
+- '200: A webhook event. The `status` field indicates the type of event.'
+- '400 Bad Request: Check the request parameters'
+- '401 Unauthorized: Verify the access token'
+- '429 Too Many Requests: Rate limit exceeded'
+auth_info:
+  mentioned_objects:
+  - PartnerAuthToken
+client:
+  base_url: https://dev.gravitypayments.com
+  auth:
+    type: oauth2
+source_metadata: null

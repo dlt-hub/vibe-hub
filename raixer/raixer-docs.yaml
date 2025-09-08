@@ -1,0 +1,255 @@
+resources:
+- name: authorized_phone
+  endpoint:
+    path: /authorized-phones/v2
+    method: POST
+    data_selector: insertedId
+- name: authorized_phone_update
+  endpoint:
+    path: /authorized-phones/v2/{id}
+    method: PUT
+    data_selector: n
+- name: authorized_phone
+  endpoint:
+    path: /authorized-phones/:id
+    method: GET
+- name: connections
+  endpoint:
+    path: /connections
+    method: GET
+- name: guest
+  endpoint:
+    path: /guests/:bookingId
+    method: POST
+- name: device_history
+  endpoint:
+    path: /connections/:connection_id/history
+    method: GET
+    data_selector: records
+    params:
+      page: '1'
+- name: device
+  endpoint:
+    path: /devices/:device_id
+    method: GET
+    data_selector: records
+    params: {}
+- name: all_devices
+  endpoint:
+    path: /devices
+    method: GET
+    data_selector: records
+    params: {}
+- name: device_doors
+  endpoint:
+    path: /devices/edcba54321/doors
+    method: GET
+    data_selector: ''
+    params: {}
+- name: create_device_door
+  endpoint:
+    path: /devices/edcba54321/doors
+    method: POST
+    data_selector: ''
+    params: {}
+- name: update_device_door
+  endpoint:
+    path: /devices/edcba54321/doors/abcde54321
+    method: PUT
+    data_selector: ''
+    params: {}
+- name: device_sensors
+  endpoint:
+    path: /devices/edcba54321/sensors
+    method: GET
+    data_selector: ''
+    params: {}
+- name: create_sensor
+  endpoint:
+    path: /devices/edcba54321/sensors
+    method: POST
+    data_selector: ''
+    params: {}
+- name: update_sensor
+  endpoint:
+    path: /devices/edcba54321/sensors/abcde54321
+    method: PUT
+    data_selector: ''
+    params: {}
+- name: delete_door
+  endpoint:
+    path: /devices/edcba54321/doors/abcde54321
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: device_information
+  endpoint:
+    path: /devices/edcba54321/information
+    method: GET
+- name: device_vitals
+  endpoint:
+    path: /devices/edcba54321/vitals
+    method: GET
+- name: delete_sensor
+  endpoint:
+    path: /devices/edcba54321/sensors/abcde54321
+    method: DELETE
+- name: get_device_variable
+  endpoint:
+    path: /devices/edcba54321/variable/abcd
+    method: GET
+- name: execute_device_function
+  endpoint:
+    path: /devices/:deviceId/function/:functionName
+    method: POST
+- name: book_guest
+  endpoint:
+    path: /guests/:bookingId
+    method: POST
+- name: open_door
+  endpoint:
+    path: /devices/edcba54321/open-door/street
+    method: POST
+- name: start_job
+  endpoint:
+    path: /devices/edcba54321/start-job/street
+    method: POST
+    data_selector: result
+- name: stop_job
+  endpoint:
+    path: /devices/edcba54321/stop-job/street
+    method: POST
+    data_selector: result
+- name: manage_movement_alarm
+  endpoint:
+    path: /devices/edcba54321/movement-alarm/1
+    method: POST
+    data_selector: result
+- name: offline_auto_access
+  endpoint:
+    path: /devices/edcba54321/offline-auto-access
+    method: POST
+    data_selector: response
+    params: {}
+- name: auto_access_always_active
+  endpoint:
+    path: /devices/edcba54321/auto-access-always-active
+    method: POST
+    data_selector: response
+    params: {}
+- name: electric_piston
+  endpoint:
+    path: /devices/edcba54321/electric-piston/1
+    method: POST
+    data_selector: response
+    params: {}
+- name: schedules
+  endpoint:
+    path: /schedules
+    method: POST
+    data_selector: insertedId
+- name: get_schedule
+  endpoint:
+    path: /schedules/:id
+    method: GET
+    data_selector: _id
+- name: update_schedule
+  endpoint:
+    path: /schedules/:id
+    method: PUT
+    data_selector: insertedId
+- name: delete_schedule
+  endpoint:
+    path: /schedules/:id
+    method: DELETE
+    data_selector: result
+- name: location
+  endpoint:
+    path: /locations
+    method: POST
+- name: guest
+  endpoint:
+    path: /guests/:bookingId
+    method: POST
+- name: schedules
+  endpoint:
+    path: /schedules
+    method: GET
+    data_selector: records
+    params:
+      campaignId: abcde12345
+- name: bookings
+  endpoint:
+    path: /bookings
+    method: POST
+    data_selector: null
+    params: {}
+- name: update_booking
+  endpoint:
+    path: /bookings/:bookingId
+    method: PUT
+    data_selector: null
+    params: {}
+- name: guests
+  endpoint:
+    path: /guests/:bookingId
+    method: POST
+    data_selector: null
+    params: {}
+- name: guests
+  endpoint:
+    path: /guests/:bookingId
+    method: POST
+    data_selector: ''
+    params: {}
+- name: delete_booking
+  endpoint:
+    path: /bookings/:bookingId
+    method: DELETE
+    data_selector: ''
+    params: {}
+notes:
+- Make sure to replace your_encoded_base64_string with your encoded base 64 string
+  including your API username and password.
+- Old intercom devices (version 1), will always stop the auto access listening mode
+  at position 1, because they don't have more than one port.
+- If you have a new intercom device (version 2 or higher), with more than one port,
+  we highly recommend to configure its doors (sensors) through our APP to be able
+  to use this function accordingly.
+- A Raixer Device should always have at least 1 door configured.
+- Old intercom devices (version 1), will always stop the auto access listening mode
+  at position 1.
+- New intercom device (version 2 or higher) with more than one port should be configured
+  through the APP.
+- This functionality is only available to Access devices.
+- This functionality only works as intended if the device has an electric piston connected
+  and configured correctly.
+- Creates a new location in the system.
+- The userSign parameter is required and should contain a base64-encoded image of
+  the guest's digital signature.
+errors:
+- '400: Bad Request -- Your request is invalid, for example, you didn''t provide the
+  necessary parameters for a function or you didn''t pass the **Content-Type: application/json**
+  header.'
+- '401: Unauthorized -- You didn''t provide any authorization method or your API credentials
+  are wrong. In some cases, also means you are trying to access a device you don''t
+  have permission to.'
+- '403: Forbidden -- You are trying to access a non existing device.'
+- '404: Not Found -- The specified function could not be found or you tried to access
+  a function with an invalid method.'
+- '500: Internal Server Error -- We had a problem with our server. Try again later.
+  If the problem persists, please, get in contact with us.'
+- '503: Service Unavailable -- We''re temporarily offline for maintenance. Please
+  try again later.'
+- 'Error: locationId is required'
+- 'Error: booking not found'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.raixer.com
+  auth:
+    type: basic
+  headers:
+    Authorization: Basic your_encoded_base64_string
+    Content-Type: application/json
+source_metadata: null

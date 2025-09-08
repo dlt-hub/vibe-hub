@@ -1,0 +1,54 @@
+resources:
+- name: email_campaign
+  endpoint:
+    path: /api/v1/campaigns
+    method: GET
+    data_selector: records
+    params: {}
+- name: limechat_event
+  endpoint:
+    path: /api/v1/cvf-events
+    method: POST
+    data_selector: data
+    params: {}
+- name: add_to_list
+  endpoint:
+    path: /api/v1/addToList
+    method: POST
+    data_selector: response
+    params: {}
+- name: campaignReports
+  endpoint:
+    path: /api/v1/campaignReports/
+    method: GET
+    data_selector: data
+- name: specificCampaignReport
+  endpoint:
+    path: /api/v1/campaignReports/<campaignId>
+    method: GET
+    data_selector: data
+notes:
+- Mailmodo APIs are completely RESTful.
+- Uses OAuth2 with refresh token — requires setup of connected app in Mailmodo
+- Please grant read access to verify@mailmodo.com, so that Mailmodo team can monitor
+  your domain reputation.
+- Limechat cannot trigger Mailmodo directly; you will need Zapier or Pipedream as
+  an intermediary.
+- Use a delay of at least 1 hour before triggering WhatsApp to avoid message overload.
+- Please update mmApiKey value as mentioned under API key in your account settings.
+- campaignType can be CONTACT_LIST(for scheduled campaigns) or TRIGGERED(for triggered
+  campaigns)
+- The following method is only valid when the campaign is triggered via REST API.
+- Users require mmAPI key, form id and campaign id to configure the API.
+- Users require mmAPI key, block id and campaign id to configure the API.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+client:
+  base_url: https://api.mailmodo.com/
+  auth:
+    type: apikey
+source_metadata: null

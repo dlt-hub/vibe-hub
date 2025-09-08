@@ -1,0 +1,222 @@
+resources:
+- name: payment_methods
+  endpoint:
+    path: /v2/merchants/payment_methods
+    method: GET
+- name: payments
+  endpoint:
+    path: /v2/merchants/payments
+    method: GET
+- name: payment
+  endpoint:
+    path: /initiate_payment
+    method: POST
+    data_selector: payment_data
+    params: {}
+- name: payment_methods
+  endpoint:
+    path: /v2/merchants/payment_methods
+    method: GET
+- name: payment_methods
+  endpoint:
+    path: /pis/v2/merchants/payment_methods
+    method: GET
+    data_selector: methods
+    params: {}
+- name: payment_methods
+  endpoint:
+    path: /v2/merchants/payment_methods
+    method: GET
+- name: payments
+  endpoint:
+    path: /v2/merchants/payments
+    method: GET
+- name: payment
+  endpoint:
+    path: /api/payments
+    method: POST
+    data_selector: payment
+    params: {}
+- name: payment_methods
+  endpoint:
+    path: /v2/merchants/payment_methods
+    method: GET
+- name: payment_methods
+  endpoint:
+    path: /v2/merchants/payment_methods
+    method: GET
+- name: payments
+  endpoint:
+    path: /api/stargate/payments
+    method: POST
+    data_selector: payment_response
+    params: {}
+- name: payment_methods
+  endpoint:
+    path: /v2/merchants/payment_methods
+    method: GET
+    data_selector: payment_methods
+- name: payment_methods
+  endpoint:
+    path: /v2/merchants/payment_methods
+    method: GET
+    data_selector: EE.payment_methods
+    params:
+      merchant_reference: SO661123
+- name: payments
+  endpoint:
+    path: /v2/merchants/payments
+    method: GET
+    data_selector: payment_token
+    params:
+      merchant_reference: SO661123
+- name: payment_methods
+  endpoint:
+    path: /stores/payment-methods
+    method: GET
+    data_selector: results
+- name: payment_methods
+  endpoint:
+    path: /stores/payment-methods
+    method: GET
+- name: order
+  endpoint:
+    path: /orders/:orderUuid
+    method: GET
+- name: create_order
+  endpoint:
+    path: /orders
+    method: POST
+- name: create_refund
+  endpoint:
+    path: /refunds
+    method: POST
+- name: create_payment_link
+  endpoint:
+    path: /payment-links
+    method: POST
+- name: shipping_methods
+  endpoint:
+    path: /shipping-methods
+    method: GET
+- name: shipments
+  endpoint:
+    path: /shipments
+    method: POST
+- name: label_file
+  endpoint:
+    path: /label-file
+    method: POST
+- name: carriers
+  endpoint:
+    path: /carriers
+    method: GET
+- name: shipping_methods
+  endpoint:
+    path: /shipping-methods
+    method: GET
+- name: pickup_points
+  endpoint:
+    path: /shipping-methods/pickup-points
+    method: GET
+- name: courier_services
+  endpoint:
+    path: /shipping-methods/courier-services
+    method: GET
+- name: shipping_methods
+  endpoint:
+    path: /shipping-methods/filter-by-parcels
+    method: POST
+- name: shipments
+  endpoint:
+    path: /shipments
+    method: POST
+- name: update_shipment
+  endpoint:
+    path: /shipments/{shipmentId}
+    method: PATCH
+- name: get_shipment_details
+  endpoint:
+    path: /shipments/{shipmentId}
+    method: GET
+- name: create_label_file
+  endpoint:
+    path: /label-files
+    method: POST
+- name: label_file
+  endpoint:
+    path: /label-files/{labelFileId}
+    method: GET
+    data_selector: id
+    params:
+      labelFileId: string
+- name: webhook
+  endpoint:
+    path: /webhooks
+    method: POST
+    data_selector: id
+- name: all_webhooks
+  endpoint:
+    path: /webhooks
+    method: GET
+    data_selector: data
+- name: delete_webhook
+  endpoint:
+    path: /webhooks/{webHookId}
+    method: DELETE
+    params:
+      webHookId: string
+notes:
+- Card Payments are not available in the Sandbox environment, but may be tested with
+  Stripe test cards in Production.
+- The endpoint requires a JWT in the Authorization header as a bearer token.
+- Card Payments are not available in the Sandbox environment.
+- Card Payments are not available in the Sandbox environment
+- The endpoint requires a JWT in the Authorization header.
+- Cache the list of banks to avoid unnecessary requests.
+- The endpoint returns the list of available banks for a merchant.
+- Example request uses Authorization Bearer token.
+- Providing storeSetupData is mandatory and does not have a default value.
+- GET endpoints require a JWT in the Authorization header.
+- POST endpoints require that the request payload is the JWT and the token itself
+  contains the original request data.
+- Refer to the Authentication section for details.
+errors:
+- 'INVALID_REQUEST: Ensure all required parameters are provided.'
+- 'PAYMENT_FAILED: Check payment details and try again.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400: Input data validations failed.'
+- '401: JWT token validation failed.'
+- '404: Requested or related resource is not found.'
+- '200: Return all store shipping methods available for parcels.'
+- '201: Shipment was successfully created.'
+- '409: Shipment already exists.'
+- '500: There was a problem with creating the shipment.'
+- '200: Shipment was successfully updated.'
+- '500: There was a problem while updating the shipment.'
+- '404: Shipment not found.'
+- '201: Shipping labels were successfully created.'
+- '400: Bad request, validation failed.'
+- '500: There was a problem creating the label file.'
+- '200: Return the label file details.'
+- '500: There was a problem getting the label file.'
+- '201: Webhook was successfully created.'
+- '403: Webhook limit has been reached. You can currently create a maximum of 10 webhooks
+  per store.'
+- '409: Webhook already exists.'
+- '500: There was a problem creating the webhook.'
+- '200: Returns the list of webhooks for the store.'
+- '500: There was a problem fetching the webhooks.'
+- '200: Webhook deleted successfully.'
+- '500: There was a problem deleting the webhook.'
+auth_info:
+  mentioned_objects:
+  - Access Key
+  - Secret Key
+client:
+  base_url: https://api.payments.montonio.com/pis
+  auth:
+    type: jwt
+    location: header
+    header_name: Authorization
+source_metadata: null
