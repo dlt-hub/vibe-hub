@@ -1,0 +1,201 @@
+resources:
+- name: certifications
+  endpoint:
+    path: /certifications
+    method: GET
+    data_selector: records
+- name: entities
+  endpoint:
+    path: /entities
+    method: GET
+    data_selector: records
+- name: entity
+  endpoint:
+    path: /entities/{entity_id}
+    method: GET
+    data_selector: records
+- name: assets
+  endpoint:
+    path: /entities/{entity_id}/assets
+    method: GET
+    data_selector: records
+- name: asset
+  endpoint:
+    path: /entities/{entity_id}/assets/{gresb_asset_id}
+    method: GET
+    data_selector: records
+- name: responses
+  endpoint:
+    path: /entities/{entity_id}/responses
+    method: GET
+    data_selector: records
+- name: response
+  endpoint:
+    path: /entities/{entity_id}/responses/{response_id}
+    method: GET
+    data_selector: records
+- name: entities
+  endpoint:
+    path: /api/v1/entities
+    method: GET
+    data_selector: entities
+    params: {}
+- name: entity_assets
+  endpoint:
+    path: /api/v1/entities/{entity_id}/assets
+    method: GET
+    data_selector: assets
+    params: {}
+- name: entity_asset
+  endpoint:
+    path: /api/v1/entities/{entity_id}/assets/{asset_id}
+    method: GET
+    data_selector: asset
+    params: {}
+- name: create_asset
+  endpoint:
+    path: /entities/{entity_id}/assets
+    method: POST
+    data_selector: gresb_asset_id
+- name: update_asset
+  endpoint:
+    path: /entities/{entity_id}/assets/{asset_id}
+    method: PATCH
+    data_selector: gresb_asset_id
+- name: delete_asset
+  endpoint:
+    path: /entities/{entity_id}/assets/{asset_id}
+    method: DELETE
+    data_selector: gresb_asset_id
+- name: export_asset_spreadsheet
+  endpoint:
+    path: /entities/{entity_id}/asset_spreadsheet_export
+    method: POST
+    data_selector: url
+- name: batch_operations
+  endpoint:
+    path: /entities/{entity_id}/assets
+    method: POST
+    data_selector: created
+- name: asset_validation
+  endpoint:
+    path: /entities/{entity_id}/assets/validation
+    method: POST
+    data_selector: valid
+    params: {}
+- name: asset_outliers
+  endpoint:
+    path: /entities/{entity_id}/assets
+    method: GET
+    data_selector: ''
+    params: {}
+- name: energy_efficiency_measures
+  endpoint:
+    path: /api/v1/energy_efficiency
+    method: GET
+    data_selector: records
+- name: water_efficiency_measures
+  endpoint:
+    path: /api/v1/water_efficiency
+    method: GET
+    data_selector: records
+- name: waste_efficiency_measures
+  endpoint:
+    path: /api/v1/waste_efficiency
+    method: GET
+    data_selector: records
+- name: tenant_control
+  endpoint:
+    path: /api/v1/tenant_control
+    method: GET
+    data_selector: records
+- name: asset_vacancy
+  endpoint:
+    path: /api/v1/asset_vacancy
+    method: GET
+    data_selector: records
+- name: waste_data
+  endpoint:
+    path: /waste_data
+    method: GET
+    data_selector: records
+    params: {}
+- name: certifications
+  endpoint:
+    path: /certifications
+    method: GET
+    data_selector: records
+- name: energy_ratings
+  endpoint:
+    path: /energy_ratings
+    method: GET
+    data_selector: records
+- name: portfolio_data
+  endpoint:
+    path: /entities/{entity_id}/responses
+    method: GET
+    data_selector: records
+- name: lists
+  endpoint:
+    path: /lists
+    method: GET
+    data_selector: records
+- name: documents
+  endpoint:
+    path: /entities/{entity_id}/responses/{response_id}/documents
+    method: POST
+    data_selector: ''
+    params: {}
+- name: values_notes
+  endpoint:
+    path: /entities/{entity_id}/responses/{response_id}/values/PO_1_A1_EVD_NOTES_2
+    method: POST
+    data_selector: ''
+    params: {}
+- name: values_share
+  endpoint:
+    path: /entities/{entity_id}/responses/{response_id}/values/PO_1_A1_EVD_SHARE_2
+    method: POST
+    data_selector: ''
+    params: {}
+notes:
+- The access token expires after 2 hours and needs to be refreshed.
+- Ensure your entity is connected to your data partner account.
+- The authorization code will expire in 10 minutes.
+- You can update data for up to 5 years prior to the Assessment year.
+- Beware that if the asset we are trying to create or update raises any validation
+  errors due to our request, then the request will not be processed.
+- The request format for validation requires assets to be enclosed in an array assigned
+  to the fields 'create' or 'update'.
+- Evidence documents which are not public hyperlinks can be uploaded to the documents
+  endpoint.
+- To share a file with investors, set the sharing setting to true by sending 1 as
+  value.
+errors:
+- '401 Unauthorized: Authentication credentials were missing or invalid.'
+- '422 Unprocessable Entity: The request resulted in validation errors.'
+- '429 Too Many Requests: Excessive use of API.'
+- 'invalid_request: The request is missing a required parameter, includes an unsupported
+  parameter - value, or is otherwise malformed.'
+- 'invalid_redirect_uri: The redirect uri included is not valid.'
+- 'unauthorized_client: The client is not authorized to perform this request using
+  this method.'
+- 'access_denied: The resource owner or authorization server denied the request.'
+- 'invalid_scope: The requested scope is invalid, unknown, or malformed.'
+- 'server_error: The authorization server encountered an unexpected condition which
+  prevented it from fulfilling the request.'
+- 'temporarily_unavailable: The authorization server is currently unable to handle
+  the request due to a temporary overloading or maintenance of the server.'
+- 'REQUEST_LIMIT_EXCEEDED: Not more than 10 requests are allowed per minute.'
+- 'INVALID_DATA: Failed creates and updates due to validation errors.'
+- '400 Bad Request: Check the request format and required fields.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.gresb.com/api/v0
+  auth:
+    type: oauth2
+    flow: authorization_code
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+source_metadata: null
