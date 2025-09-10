@@ -1,0 +1,182 @@
+resources:
+- name: leap_provider
+  endpoint:
+    path: /cosmos/for-dapps-connect-to-leap
+    method: GET
+    data_selector: leap
+    params: {}
+- name: suggest_chain
+  endpoint:
+    path: /suggest-chain
+    method: POST
+- name: suggest_token
+  endpoint:
+    path: /suggestToken
+    method: POST
+    data_selector: data
+- name: get_secret20_viewing_key
+  endpoint:
+    path: /getSecret20ViewingKey
+    method: GET
+    data_selector: data
+- name: update_viewing_key
+  endpoint:
+    path: /updateViewingKey
+    method: POST
+    data_selector: data
+- name: WalletConnect Modal
+  endpoint:
+    path: /2.0/web/web3modal/react/wagmi/installation
+    method: GET
+    data_selector: QR and handle the connection
+- name: CosmosKit
+  endpoint:
+    path: /get-started
+    method: GET
+    data_selector: connect to any cosmos wallet
+- name: Wallet Adapters
+  endpoint:
+    path: /cosmos/for-dapps-connect-to-leap/wallet-adapters
+    method: GET
+    data_selector: records
+- name: rpc_methods
+  endpoint:
+    path: /rpc/methods
+    method: GET
+    data_selector: methods
+    params: {}
+- name: user_balances
+  endpoint:
+    path: /user/balances
+    method: GET
+    data_selector: balances
+    params: {}
+- name: user_activity
+  endpoint:
+    path: /user/activity
+    method: GET
+    data_selector: activity
+    params: {}
+- name: user_balances
+  endpoint:
+    path: /fetchBalance
+    method: GET
+    data_selector: result
+    params:
+      pagination:
+        limit: 1000
+- name: user_transactions
+  endpoint:
+    path: /fetchTransactions
+    method: GET
+    data_selector: result
+    params:
+      pagination:
+        limit: 100
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: leap-elements
+  endpoint:
+    path: /cosmos/elements/integrate-via-cdn-script-tag
+    method: GET
+    data_selector: script
+- name: swap
+  endpoint:
+    path: /embed/swaps
+    method: GET
+    data_selector: records
+    params:
+      sourceChainId: osmosis-1
+      destinationChainId: neutron-1
+      sourceAsset: ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2
+      destinationAsset: untrn
+- name: IBC Swaps
+  endpoint:
+    path: /cosmos/elements/tab-config
+    method: GET
+    data_selector: tabs
+    params: {}
+- name: Send
+  endpoint:
+    path: /cosmos/elements/tab-config
+    method: GET
+    data_selector: tabs
+    params: {}
+- name: Fiat On-Ramp
+  endpoint:
+    path: /cosmos/elements/tab-config
+    method: GET
+    data_selector: tabs
+    params: {}
+- name: Swaps
+  endpoint:
+    path: /cosmos/elements/tab-config
+    method: GET
+    data_selector: tabs
+    params: {}
+- name: Leap Wallet
+  endpoint:
+    path: /cosmos/resources/leap-assets
+    method: GET
+notes:
+- Direct integration using the provider globally available at window.leap.
+- Users access dapps through desktop browsers, mobile browsers, or in-app browsers
+- Integrate Wallet Connect v2 which should manage all Cosmos wallets
+- A Modal will be required for a user to select Leap or Keplr.
+- The dapp will have to maintain a persistent state to store which wallet is connected.
+- If window.leap is not available, use our dynamic link instead which will redirect
+  users to an Install page on the Desktop browser and to the dapp page on Leap mobile
+  app on the mobile browser.
+- This is an experimental feature supported on both the Leap extension and the mobile
+  apps
+- WalletConnect has a library called web3Modal which helps generate the QR and handle
+  the connection.
+- Cosmos Kit is an open-source library that helps to connect to any cosmos wallet
+  easily.
+- One common issue we have seen on Sei dapps is transactions not happening for Ledger
+  users. We recommend using getOfflineSignerAuto method rather than getOfflineSigner.
+- Compass Mobile Wallet (both iOS and Android) will be coming out soon as well with
+  Wallet Connect v2 supported.
+- Compass uses the EIP-1193 provider spec for wallet integration.
+- Supports fetching balances and user activity across multiple chains.
+- When using chains which share coin-types with others chains which you might not
+  have passed a record for, they will automatically be discovered and will be used
+  in fetching balances.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- We don't support theme customisation for elements embed yet.
+- If you don't want to use Elements React UI, you can still utilise the Elements Core
+  and Hooks libraries.
+- Start with installing the elements hooks package (which depends on @leapwallet/elements-core
+  package)
+- Using Leap Integrator ID for Skip API Access
+- For security purposes, do not use actual API KEY in the code, instead use integratorID
+- Blockchain nodes are unreliable.
+- Fallback Falooda will allow you to automatically pick one which is currently working
+  as expected.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://docs.leapwallet.io/cosmos
+  auth:
+    type: oauth2
+    flow: refresh_token
+source_metadata: null

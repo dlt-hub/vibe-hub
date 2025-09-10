@@ -1,0 +1,57 @@
+resources:
+- name: redis_manager
+  endpoint:
+    path: /
+    method: GET
+- name: events
+  endpoint:
+    path: /socket.io/
+    method: GET
+- name: events
+  endpoint:
+    method: GET
+notes:
+- 'Package contains two Socket.IO clients: simple client and event-driven client'
+- 'Each client comes in two variants: standard Python library and asyncio'
+- Simple client abstracts away connection logic and handles disconnections/reconnections
+  transparently
+- Event-driven client provides access to all Socket.IO protocol features
+- Client supports TLS/SSL connections using https:// URLs
+- Server certificate verification is enabled by default
+- Transport can be either 'websocket' or 'polling'
+- Default connection uses long-polling transport then attempts WebSocket upgrade
+- Multiple logical connections supported via namespaces with path syntax starting
+  with forward slash
+- Event handlers can be defined as regular functions or coroutines for asyncio client
+- Uses OAuth2 with refresh token – requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- For security reasons, this server enforces a same-origin policy by default
+- Contents of the user session are destroyed when the client disconnects
+- Class-based namespaces are singletons - single instance used for all clients
+- When using multiple workers, clients must connect directly over WebSocket
+- Kombu currently does not support asyncio, so it cannot be used with the socketio.AsyncServer
+  class
+- Kafka currently does not support asyncio, so it cannot be used with the socketio.AsyncServer
+  class
+- A limitation of the write-only client manager object is that it cannot receive callbacks
+  when emitting
+- Enforces same-origin policy by default - Origin header must match scheme and host
+- User session contents are destroyed when client disconnects
+- Long-polling transport incompatible with multi-worker Gunicorn load balancing
+- Multiple workers require WebSocket-only transport and message queue configuration
+- Socket.IO is a bidirectional protocol
+- Static file serving is intended for development use only
+- Clients can be in as many rooms as needed and can be moved between rooms when necessary
+- Each namespace works independently from the others, with separate session IDs, event
+  handlers and rooms
+errors:
+- '400 status code response: Origin header mismatch with connection URL'
+auth_info:
+  mentioned_objects:
+  - instrument
+  - auth
+client:
+  base_url: redis://
+  headers:
+    Accept: application/json
+source_metadata: null

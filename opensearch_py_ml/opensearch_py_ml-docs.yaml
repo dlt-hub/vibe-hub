@@ -1,0 +1,224 @@
+resources:
+- name: flights
+  endpoint:
+    path: /flights
+    method: GET
+    data_selector: records
+- name: pd_flights
+  endpoint:
+    path: /pd_flights
+    method: GET
+    data_selector: records
+    params: {}
+- name: oml_flights
+  endpoint:
+    path: /oml_flights
+    method: GET
+    data_selector: records
+    params: {}
+- name: online-retail
+  endpoint:
+    path: /data/online-retail.csv.gz
+    method: GET
+    data_selector: _source
+    params: {}
+- name: online-retail
+  endpoint:
+    path: /data/online-retail.csv.gz
+    method: GET
+    data_selector: _source
+- name: online-retail
+  endpoint:
+    path: /data/online-retail
+    method: GET
+    data_selector: records
+    params: {}
+- name: online-retail
+  endpoint:
+    path: /data/online-retail.csv.gz
+    method: GET
+    data_selector: _source
+- name: Synthetic_Query_Generation
+  endpoint:
+    path: /generate
+    method: GET
+- name: SentenceTransformerModel
+  endpoint:
+    path: /upload_model
+    method: POST
+- name: sentence_transformer_model
+  endpoint:
+    path: /ml-commons/upload
+    method: POST
+    data_selector: model
+    params: {}
+- name: sentence_transformer_model
+  endpoint:
+    path: /api/sentence_transformer
+    method: POST
+    data_selector: model
+    params: {}
+- name: ml_common_client
+  endpoint:
+    path: /api/ml_commons
+    method: POST
+    data_selector: upload
+    params: {}
+- name: sentence-transformers/msmarco-distilbert-base-tas-b
+  endpoint:
+    path: /sentence-transformers/msmarco-distilbert-base-tas-b
+    method: POST
+    data_selector: model
+    params: {}
+- name: model_registration
+  endpoint:
+    path: /ml-commons/register_model
+    method: POST
+    data_selector: model_id
+    params: {}
+- name: generate_embedding
+  endpoint:
+    path: /ml-commons/generate_embedding
+    method: POST
+    data_selector: inference_results
+    params: {}
+- name: model_info
+  endpoint:
+    path: /_ml/models/{model_id}
+    method: GET
+    data_selector: model_info
+- name: register_model
+  endpoint:
+    path: /_ml/models
+    method: POST
+    data_selector: model_registration
+- name: deploy_model
+  endpoint:
+    path: /_ml/models/{model_id}/_deploy
+    method: POST
+    data_selector: model_deployment
+- name: model_info
+  endpoint:
+    path: /ml_client/get_model_info
+    method: GET
+    data_selector: model_info
+- name: model
+  endpoint:
+    path: /mlcommons/register_model
+    method: POST
+    data_selector: model_id
+    params:
+      model_group_id: d4hfsYgBFp6IJxCcqpwi
+- name: model_info
+  endpoint:
+    path: /model_info
+    method: GET
+    data_selector: model_info
+    params: {}
+- name: generate_embedding
+  endpoint:
+    path: /generate_embedding
+    method: POST
+    data_selector: embeddings
+    params: {}
+- name: register_model
+  endpoint:
+    path: /ml-commons/api/register_model
+    method: POST
+    data_selector: model_id
+    params:
+      model_group_id: d4hfsYgBFp6IJxCcqpwi
+      isVerbose: true
+- name: deploy_model
+  endpoint:
+    path: /ml-commons/api/deploy_model
+    method: POST
+    data_selector: model_id
+- name: get_task_info
+  endpoint:
+    path: /ml-commons/api/get_task_info
+    method: GET
+    data_selector: task_info
+- name: get_model_info
+  endpoint:
+    path: /ml-commons/api/get_model_info
+    method: GET
+    data_selector: model_info
+- name: generate_embedding
+  endpoint:
+    path: /ml-commons/api/generate_embedding
+    method: POST
+    data_selector: embedding_output
+- name: undeploy_model
+  endpoint:
+    path: /ml/undeploy_model
+    method: POST
+    data_selector: stats
+    params: {}
+- name: delete_model
+  endpoint:
+    path: /ml/delete_model
+    method: DELETE
+    data_selector: result
+    params: {}
+- name: metrics_correlation
+  endpoint:
+    path: /ml-commons/metrics_correlation
+    method: POST
+    data_selector: output.inference_results
+- name: setup
+  endpoint:
+    path: /setup
+    method: POST
+    data_selector: configuration
+    params: {}
+- name: OpenAI
+  endpoint:
+    params:
+      api_key: test-api-key
+      connector_secret_name: test-secret
+      connector_role_prefix: test-role
+- name: register_model
+  endpoint:
+    path: /model/register
+    method: POST
+    data_selector: register_model
+    params: {}
+notes:
+- Uses OpenSearch client for authentication.
+- Data is indexed in the online-retail index.
+- Users will need to prepare a ml-commons_model_config.json file to config the model,
+  including model name
+- Users need to prepare a ml-commons_model_config.json file to configure the model.
+- 'Model id: ''4djw4okB2Ly7dmqcT7Xp'''
+- Model format must be set to ONNX when registering.
+- Use of basic authentication with username and password is for testing only; avoid
+  storing credentials in code.
+- Model state is DEPLOYED
+- Model format is TORCH_SCRIPT
+- Current worker node count is 1
+- From Opensearch 2.8, to register a model we need to have a model group.
+- By default, both of these values are `False`, we need to update to `True` to register
+  models from url or file system.
+- Model is deployed and can generate sentence embeddings
+- 'To register from url: plugins.ml_commons.allow_registering_model_via_url. To register
+  from file system: plugins.ml_commons.allow_registering_model_via_local_file.'
+- Requires setup of OpenSearch client to connect successfully.
+- For Amazon OpenSearch Service, ensure that you provide either the aws_role_name
+  or the aws_user_name, but not both.
+- The generated configuration file is crucial for subsequent CLI operations. Keep
+  it secure and accessible.
+errors:
+- '400 Bad Request: Check your request parameters.'
+- '401 Unauthorized: Check your authentication credentials.'
+- '404 Not Found: Ensure the model ID is correct.'
+- Model registration might throw exceptions if there are no ml nodes.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://localhost:9200
+  auth:
+    type: basic
+    username: admin
+    password: < admin password >
+source_metadata: null

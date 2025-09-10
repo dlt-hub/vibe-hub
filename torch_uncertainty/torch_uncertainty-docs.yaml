@@ -1,0 +1,813 @@
+resources:
+- name: ood_criteria
+  endpoint:
+    path: torch_uncertainty.ood_criteria
+- name: datamodules
+  endpoint:
+    path: torch_uncertainty.datamodules
+- name: datasets_classification
+  endpoint:
+    path: torch_uncertainty.datasets.classification
+- name: datasets_regression
+  endpoint:
+    path: torch_uncertainty.datasets.regression
+- name: datasets_segmentation
+  endpoint:
+    path: torch_uncertainty.datasets.segmentation
+- name: segmentation_routine
+  endpoint:
+    path: torch_uncertainty.routines.SegmentationRoutine
+    method: GET
+- name: VGGBaseline
+  endpoint:
+    path: torch_uncertainty.baselines.classification.VGGBaseline
+    method: GET
+- name: PackedLinear
+  endpoint:
+    path: /generated/torch_uncertainty.layers.PackedLinear
+    method: GET
+- name: ResNetBaseline
+  endpoint:
+    path: torch_uncertainty.baselines.classification.ResNetBaseline
+    method: GET
+    params:
+      num_classes: int
+      in_channels: int
+      loss: nn.Module
+      version: str
+      arch: int
+      style: imagenet
+      normalization_layer: torch.nn.modules.batchnorm.BatchNorm2d
+      num_estimators: 1
+      dropout_rate: 0.0
+      last_layer_dropout: false
+      width_multiplier: 1.0
+      groups: 1
+      conv_bias: false
+      gamma: 1
+      rho: 1.0
+      batch_repeat: 1
+      ood_criterion: msp
+      log_plots: false
+      save_in_csv: false
+      eval_ood: false
+      eval_shift: false
+      eval_grouping_loss: false
+      num_bins_cal_err: 15
+      pretrained: false
+- name: PackedMultiheadAttention
+  endpoint:
+    path: /layers/PackedMultiheadAttention
+    method: GET
+- name: PackedTransformerEncoderLayer
+  endpoint:
+    path: torch_uncertainty.layers.PackedTransformerEncoderLayer
+    method: class
+    params:
+      d_model: int
+      nhead: int
+      alpha: float
+      num_estimators: int
+      gamma: 1
+      dim_feedforward: 2048
+      dropout: 0.1
+      layer_norm_eps: 1.0e-05
+      bias: true
+      batch_first: false
+      norm_first: false
+      first: false
+      last: false
+- name: MaskedLinear
+  endpoint:
+    path: /torch_uncertainty/layers/MaskedLinear
+    method: GET
+- name: BayesLinear
+  endpoint:
+    path: /torch_uncertainty/layers/bayesian/BayesLinear
+    method: GET
+- name: LPBNNLinear
+  endpoint:
+    path: LPBNNLinear
+    method: GET
+- name: BetaNLL
+  endpoint:
+    path: /torch_uncertainty/losses/regression.html#BetaNLL
+    method: GET
+- name: LPBNNConv2d
+  endpoint:
+    path: /torch_uncertainty/layers/bayesian/LPBNNConv2d
+    method: GET
+- name: dota2_games
+  endpoint:
+    method: GET
+- name: Fractals
+  endpoint:
+    path: torch_uncertainty.datasets.Fractals
+- name: NormalLinear
+  endpoint:
+    path: torch_uncertainty.layers.distributions.NormalLinear
+    method: GET
+- name: AdaptiveCalibrationError
+  endpoint:
+    path: torch_uncertainty.metrics.classification.AdaptiveCalibrationError
+    method: GET
+    data_selector: class
+    params:
+      task: binary
+      num_bins: 10
+      norm: l1
+      num_classes: null
+      ignore_index: null
+      validate_args: true
+- name: AdaptiveCalibrationError
+  endpoint:
+    path: torch_uncertainty.metrics.classification.AdaptiveCalibrationError
+    method: CLASS
+    data_selector: metric_result
+    params:
+      task: binary
+      num_bins: 10
+      norm: l1
+      num_classes: null
+      ignore_index: null
+      validate_args: true
+- name: LaplaceLinear
+  endpoint:
+    path: torch_uncertainty.layers.distributions.LaplaceLinear
+    method: class
+    data_selector: distribution_parameters
+    params:
+      base_layer: nn.Module
+      event_dim: int
+      min_scale: 1e-06
+- name: HTRU2DataModule
+  endpoint:
+    path: torch_uncertainty.datamodules.HTRU2DataModule
+    method: GET
+    data_selector: class
+    params:
+      root: string
+      batch_size: int
+      eval_batch_size: int|None
+      val_split: 0.0
+      test_split: 0.2
+      num_workers: 1
+      pin_memory: true
+      persistent_workers: true
+      binary: true
+- name: CalibrationError
+  endpoint:
+    path: torch_uncertainty.metrics.classification.CalibrationError
+    method: class
+    data_selector: calibration_error
+    params:
+      task: binary
+      adaptive: false
+      num_bins: 10
+      norm: l1
+      num_classes: null
+      ignore_index: null
+      validate_args: true
+- name: DECLoss
+  endpoint:
+    path: /losses/DECLoss
+    method: GET
+    data_selector: torch_uncertainty.losses.DECLoss
+    params:
+      annealing_step: int
+      reg_weight: float
+      loss_type: str
+      reduction: str
+- name: CoverageRate
+  endpoint:
+    path: torch_uncertainty.metrics.classification.CoverageRate
+    method: class
+    data_selector: coverage_rate
+- name: StudentTLinear
+  endpoint:
+    path: /torch_uncertainty/layers/distributions/StudentTLinear
+    method: GET
+- name: muad_dataset
+  endpoint:
+    method: GET
+- name: DERLoss
+  endpoint:
+    path: torch_uncertainty.losses.DERLoss
+    method: class
+    params:
+      reg_weight: float
+      reduction: mean
+- name: NYUv2
+  endpoint:
+    params:
+      split: train
+      min_depth: 0.0
+      max_depth: 10.0
+      download: false
+- name: ELBOLoss
+  endpoint:
+    path: torch_uncertainty.losses.ELBOLoss
+    method: class
+    data_selector: ELBOLoss
+    params:
+      model: nn.Module
+      inner_loss: nn.Module
+      kl_weight: float
+      num_samples: int
+      dist_family: str
+- name: disagreement
+  endpoint:
+    path: torch_uncertainty.metrics.classification.Disagreement
+    method: GET
+    data_selector: probs
+    params:
+      reduction: mean
+- name: disagreement
+  endpoint:
+    path: torch_uncertainty.metrics.classification.Disagreement
+    method: class
+    data_selector: tensor
+    params:
+      reduction: mean
+- name: LaplaceConvNd
+  endpoint:
+    path: torch_uncertainty.layers.distributions.LaplaceConvNd
+    method: class
+    data_selector: class
+- name: MUADDataModule
+  endpoint:
+    path: MUADDataModule
+    method: GET
+    data_selector: segmentation
+    params:
+      root: str or Path
+      batch_size: int
+      version: full
+      eval_batch_size: None
+      eval_ood: 'False'
+      crop_size: '1024'
+      eval_size: (1024, 2048)
+      train_transform: None
+      test_transform: None
+      val_split: None
+      num_workers: '1'
+      pin_memory: 'True'
+      persistent_workers: 'True'
+- name: entropy
+  endpoint:
+    path: torch_uncertainty.metrics.classification.Entropy
+    method: GET
+    data_selector: compute
+    params:
+      reduction: mean
+- name: entropy
+  endpoint:
+    path: torch_uncertainty.metrics.classification.Entropy
+    method: GET
+    data_selector: Entropy
+    params:
+      reduction: mean
+- name: MutualInformation
+  endpoint:
+    path: torch_uncertainty.metrics.classification.MutualInformation
+    method: GET
+- name: KLDiv
+  endpoint:
+    path: torch_uncertainty.losses.KLDiv
+    method: class
+    params:
+      model: nn.Module
+- name: MNISTC
+  endpoint:
+    path: /datasets/classification/MNISTC
+    method: GET
+- name: StudentTConvNd
+  endpoint:
+    path: torch_uncertainty.layers.distributions.StudentTConvNd
+    method: GET
+- name: VariationRatio
+  endpoint:
+    path: torch_uncertainty.metrics.classification.VariationRatio
+    method: GET
+- name: VariationRatio
+  endpoint:
+    path: torch_uncertainty.metrics.classification.VariationRatio
+    method: class
+    data_selector: class
+    params:
+      probabilistic: true
+      reduction: mean
+- name: notmnist
+  endpoint:
+    method: GET
+- name: GroupingLoss
+  endpoint:
+    path: /torch_uncertainty/metrics/classification/GroupingLoss
+    method: GET
+- name: batch_ensemble
+  endpoint:
+    path: /torch_uncertainty/models/wrappers/batch_ensemble.html#batch_ensemble
+    method: GET
+- name: cifar10c
+  endpoint:
+    path: /CIFAR-10-C.tar
+    method: GET
+- name: MatrixScaler
+  endpoint:
+    path: torch_uncertainty.post_processing.MatrixScaler
+    method: class
+    params:
+      num_classes: int
+      model: nn.Module
+      init_w: 1
+      init_b: 0
+      lr: 0.1
+      max_iter: 200
+      eps: 1.0e-08
+      device: Optional
+- name: cifar100c
+  endpoint:
+    method: GET
+- name: DistributionNLL
+  endpoint:
+    path: torch_uncertainty.metrics.regression.DistributionNLL
+    method: GET
+- name: TemperatureScaler
+  endpoint:
+    path: /post_processing/calibration/temperature_scaler
+    method: GET
+- name: cityscapes
+  endpoint:
+    path: Cityscapes
+    method: GET
+    data_selector: root
+    params:
+      split: train
+      mode: fine
+      target_type: instance
+- name: cifar_10h_probs
+  endpoint:
+    path: cifar-10h-probs.npy
+    method: GET
+- name: log10_metric
+  endpoint:
+    path: torch_uncertainty.metrics.regression.Log10
+    method: class
+- name: log10_metric
+  endpoint:
+    path: torch_uncertainty.metrics.regression.Log10
+    method: class
+    data_selector: result
+- name: cifar10n_dataset
+  endpoint:
+    path: /cifar-10h-probs.npy
+    method: GET
+    params:
+      train: true
+      file_arg: aggre_label
+      download: false
+- name: BatchEnsemble
+  endpoint:
+    path: torch_uncertainty.models.BatchEnsemble
+    method: GET
+- name: cifar100n
+  endpoint:
+    path: /cifar-100h-probs.npy
+    method: GET
+    params:
+      train: true
+      file_arg: fine_label
+      download: false
+- name: CheckpointCollector
+  endpoint:
+    path: /torch_uncertainty/models/CheckpointCollector
+    method: GET
+- name: MeanGTRelativeAbsoluteError
+  endpoint:
+    path: torch_uncertainty.metrics.regression.MeanGTRelativeAbsoluteError
+    method: GET
+- name: MaxLogitCriterion
+  endpoint:
+    path: torch_uncertainty.ood_criteria.MaxLogitCriterion
+    method: class
+    data_selector: forward
+- name: ImageNetA
+  endpoint:
+    path: ImageNetA
+    method: GET
+    params:
+      root: str
+      split: str
+      transform: callable
+      target_transform: callable
+      download: bool
+- name: EMA
+  endpoint:
+    path: torch_uncertainty.models.EMA
+    method: GET
+- name: ImageNetC
+  endpoint:
+    path: torch_uncertainty.datasets.classification.ImageNetC
+    method: GET
+- name: EnergyCriterion
+  endpoint:
+    path: torch_uncertainty.ood_criteria.EnergyCriterion
+    method: forward
+    data_selector: Tensor
+    params:
+      inputs: Tensor of logits with shape (batch_size, num_classes)
+- name: ImageNetR
+  endpoint:
+    method: GET
+- name: MeanSquaredLogError
+  endpoint:
+    path: torch_uncertainty.metrics.regression.MeanSquaredLogError
+    method: GET
+- name: SWA
+  endpoint:
+    path: torch_uncertainty.models.SWA
+    method: class
+- name: EntropyCriterion
+  endpoint:
+    path: /torch_uncertainty/ood_criteria/EntropyCriterion
+    method: GET
+- name: silog
+  endpoint:
+    path: torch_uncertainty.metrics.regression.SILog
+    method: GET
+    data_selector: SILog
+    params:
+      sqrt: false
+      lmbda: 1.0
+- name: SILog
+  endpoint:
+    path: torch_uncertainty.metrics.regression.SILog
+    method: class
+    data_selector: result
+- name: SWAG
+  endpoint:
+    path: torch_uncertainty.models.SWAG
+    method: class
+    params:
+      model: nn.Module
+      cycle_start: int
+      cycle_length: int
+      scale: 1.0
+      diag_covariance: false
+      max_num_models: 20
+      var_clamp: 1.0e-06
+      num_estimators: 16
+- name: CategoricalNLL
+  endpoint:
+    path: torch_uncertainty.metrics.classification.CategoricalNLL
+    method: CLASS
+    data_selector: compute
+    params:
+      reduction: mean
+- name: CategoricalNLL
+  endpoint:
+    path: /torch_uncertainty/metrics/classification/CategoricalNLL
+    method: GET
+- name: OpenImageO
+  endpoint:
+    path: /datasets/classification/OpenImageO
+- name: PostProcessingCriterion
+  endpoint:
+    path: /ood_criteria/PostProcessingCriterion
+    method: GET
+- name: tiny_imagenet_c
+  endpoint:
+    path: /datasets/classification/TinyImageNetC
+    method: GET
+    params:
+      root: str | Path
+      subset: all
+      shift_severity: 1
+      download: false
+- name: bank_marketing
+  endpoint:
+    path: /datasets/Bank+Marketing
+    method: GET
+- name: FPRx
+  endpoint:
+    path: torch_uncertainty.metrics.classification.FPRx
+    method: CLASS
+- name: FPRx
+  endpoint:
+    path: /torch_uncertainty/metrics/classification/FPRx
+    method: GET
+    data_selector: FPRx
+- name: dota2_games
+  endpoint:
+    path: /dota2-games-dataset
+    method: GET
+    data_selector: records
+- name: FPR95
+  endpoint:
+    path: torch_uncertainty.metrics.classification.FPR95
+    method: class
+    data_selector: FPR95
+    params:
+      pos_label: int
+      kwargs: additional_arguments
+- name: AUGRC
+  endpoint:
+    path: torch_uncertainty.metrics.classification.AUGRC
+    method: compute
+- name: online_shoppers
+  endpoint:
+    path: /online_shoppers_intention/online_shoppers_intention.arff
+    method: GET
+- name: AURC
+  endpoint:
+    path: torch_uncertainty.metrics.classification.AURC
+    method: GET
+    data_selector: compute
+- name: spam_base
+  endpoint:
+    path: /datasets/classification/uci/spam_base
+    method: GET
+- name: ImageNetDataModule
+  endpoint:
+    path: torch_uncertainty.datamodules.ImageNetDataModule
+    method: GET
+    data_selector: test_dataloader
+    params:
+      root: str
+      batch_size: int
+      eval_batch_size: int
+      eval_ood: bool
+      eval_shift: bool
+      num_tta: int
+      shift_severity: int
+      val_split: float
+      postprocess_set: str
+      train_transform: nn.Module
+      test_transform: nn.Module
+      ood_ds: str
+      test_alt: str
+      procedure: str
+      train_size: int
+      interpolation: str
+      basic_augment: bool
+      rand_augment_opt: str
+      num_workers: int
+      pin_memory: bool
+      persistent_workers: bool
+- name: CIFAR100DataModule
+  endpoint:
+    path: CIFAR100DataModule
+    method: GET
+    data_selector: datasets
+    params:
+      root: str
+      batch_size: int
+      eval_batch_size: int
+      eval_ood: bool
+      eval_shift: bool
+      num_tta: int
+      shift_severity: int
+      val_split: float
+      postprocess_set: str
+      train_transform: nn.Module
+      test_transform: nn.Module
+      basic_augment: bool
+      cutout: int
+      randaugment: bool
+      auto_augment: str
+      num_dataloaders: int
+      num_workers: int
+      pin_memory: bool
+      persistent_workers: bool
+- name: AUSE
+  endpoint:
+    path: torch_uncertainty.metrics.AUSE
+    method: class
+    data_selector: metrics
+- name: CovAtxRisk
+  endpoint:
+    path: torch_uncertainty.metrics.classification.CovAtxRisk
+    method: class
+    data_selector: coverage_at_risk
+- name: CovAtxRisk
+  endpoint:
+    path: torch_uncertainty.metrics.classification.CovAtxRisk
+    method: GET
+    data_selector: coverage_at_risk
+- name: TinyImageNet
+  endpoint:
+    method: GET
+- name: boston-housing
+  endpoint:
+    path: /ml/machine-learning-databases/housing/housing.data
+- name: concrete
+  endpoint:
+    path: /ml/machine-learning-databases/concrete/compressive/Concrete_Data.xls
+- name: energy
+  endpoint:
+    path: /ml/machine-learning-databases/00242/ENB2012_data.xlsx
+- name: kin8nm
+  endpoint:
+    path: /ml/machine-learning-databases/kin8nm/dataset_2175_kin8nm.arff
+- name: naval-propulsion-plant
+  endpoint:
+    path: /ml/machine-learning-databases/00316/UCI%20CBM%20Dataset.zip
+- name: power-plant
+  endpoint:
+    path: /ml/machine-learning-databases/00294/CCPP.zip
+- name: protein
+  endpoint:
+    path: /ml/machine-learning-databases/00265/CASP.csv
+- name: wine-quality-red
+  endpoint:
+    path: /ml/machine-learning-databases/wine-quality/winequality-red.csv
+- name: yacht
+  endpoint:
+    path: /ml/machine-learning-databases/00243/yacht_hydrodynamics.data
+- name: ImageNetO
+  endpoint:
+    path: ImageNetO
+    method: INIT
+    params:
+      root: str
+      split: str
+      transform: callable
+      target_transform: callable
+      download: bool
+notes:
+- ResNet backbone baseline for classification providing support for various versions
+  and architectures
+- 'Supports multiple ResNet versions: std, packed, batched, masked, mimo, mc-dropout'
+- 'Supports ResNet architectures: 18, 32, 50, 101, 152'
+- Only uses pretrained weights if version is packed
+- need_weights=True and average_attn_weights are not supported yet thus have no effect
+- Packed-Ensembles-style MultiheadAttention layer implementation
+- Based on original Multihead Attention formulation from 'Attention Is All You Need'
+- LPBNN-style linear layer for Bayesian Neural Networks
+- Based on 'Encoding the latent posterior of Bayesian Neural Networks for uncertainty
+  quantification' paper
+- Supports multiple estimators and configurable hidden layer size
+- Parameter from range [0, 1] controlling relative weighting between data points,
+  where 0 corresponds to high weight on low error points and 1 to an equal weighting
+- 'Reduction options: ''none'' | ''mean'' | ''sum'''
+- There is no information on the license of the dataset. It may not be suitable for
+  commercial use.
+- Dataset used for PixMix augmentations
+- Computes the Adaptive Top-label Calibration Error (ACE) for classification tasks
+- Uses adaptive binning that ensures a more balanced representation of predictions
+  across bins
+- Particularly useful for datasets or models where predictions are concentrated in
+  certain regions of the probability space
+- Adaptive binning adjusts the size of bins to ensure a more uniform distribution
+  of samples across bins
+- If task='multiclass', num_classes must be provided; otherwise, a TypeError will
+  be raised
+- Ensure that num_classes matches the actual number of classes in the dataset for
+  multiclass tasks
+- The HTRU2 UCI classification datamodule
+- Root directory parameter specifies datasets location
+- Binary classification mode available via binary parameter
+- Bins are either uniformly distributed in [0,1] or adaptively sized if adaptive=True
+- If task='multiclass', num_classes must be an integer; otherwise, a TypeError is
+  raised
+- 'Three norms available: ECE (l1), MCE (max), and RMSCE (l2) for measuring calibration
+  error'
+- Deep evidential classification loss for quantifying classification uncertainty
+- Supports annealing step for regularization term weight
+- 'Multiple loss types available: ''mse'', ''log'', ''digamma'''
+- 'Reduction options: ''none'', ''mean'', ''sum'''
+- MUAD cannot be used for commercial purposes. Read MUAD's license carefully before
+  using it and verify that you can comply.
+- The Deep Evidential Regression loss combines negative log-likelihood loss of normal
+  inverse gamma distribution and weighted regularization term
+- Reduction parameter accepts 'none', 'mean', or 'sum'
+- Set the model to None if you use the ELBOLoss within the ClassificationRoutine.
+  It will get filled automatically.
+- ELBO loss for Bayesian Neural Networks. Use this loss function with the objective
+  that you seek to minimize as inner_loss.
+- dist_family None means point-wise prediction. Defaults to None.
+- A higher disagreement means a lower confidence
+- Make sure that the probabilities in probs are normalized to sum to one
+- Segmentation DataModule for the MUAD dataset
+- Version can be either 'full' or 'small'
+- Default transforms are injected for training and validation/test datasets
+- Training transforms include RandomRescale, RandomCrop, ColorJitter, RandomHorizontalFlip
+- Validation/Test transforms include Resize, ToDtype, Normalize
+- A higher entropy means a lower confidence
+- Supports both single model and multiple estimator configurations
+- Reduction parameter determines how to reduce over batch dimension
+- This dataset does not contain severity levels. Raise an issue if you want someone
+  to investigate this.
+- The dataset is released by the dataset's authors under the Creative Commons Attribution
+  4.0.
+- Student's T-Distribution Convolutional Density Layer
+- 'Input shape: (N,Cin,*) where * means any number of dimensions'
+- Output contains loc, scale, and df parameters for Student's t-distribution
+- Metric VariationRatio will save all predictions in buffer. For large datasets this
+  may lead to large memory footprint
+- A higher variation ratio indicates higher uncertainty or disagreement among the
+  estimators
+- CIFAR-10-C is a corrupted version of CIFAR-10 dataset for benchmarking neural network
+  robustness
+- Dataset contains 19 different corruption types with 5 severity levels each
+- Supports subset selection and severity level filtering
+- Requires download parameter to be True for automatic dataset download
+- Matrix scaling post-processing for calibrated probabilities
+- Based on On calibration of modern neural networks. In ICML 2017
+- Log10 metric computes the mean absolute error in the base-10 logarithmic space
+- Useful for scenarios where the data spans multiple orders of magnitude
+- 'Formula: Log10=1/N∑i=1N|log10(yi)−log10(yi^)|'
+- This metric is commonly used in tasks where the relative deviation of predictions
+  with respect to the ground truth is important
+- 'Formula: MAErel=1N∑iN|yi−yi^|yi where y is target values and y^ is predictions'
+- OOD criterion based on the maximum logit value
+- Computes the negative of the highest logit value across output dimensions
+- Lower maximum logits indicate greater uncertainty
+- Expected input type is logits
+- Returns negative of the maximum logit value for each sample
+- This is a subclass of ImageNetVariation that supports additional keyword arguments
+- Part of TorchUncertainty 0.7.0.post1 documentation
+- This criterion computes the negative log-sum-exp of the logits
+- Higher energy values indicate greater uncertainty
+- 'Formula: E(z)=−log⁡(∑i=1Cexp⁡(zi)) where z=[z1,z2,…,zC] is the logit vector'
+- Returns negative energy score for each sample
+- Stochastic Weight Averaging updates the SWA model every cycle_length epochs starting
+  at cycle_start
+- Uses the SWA model only at test time, otherwise uses the base model for training
+- OOD criterion based on entropy that computes the mean entropy of predicted probability
+  distribution
+- Higher entropy values indicate greater uncertainty
+- Uses formula H(p)=−∑i=1Cpilog⁡(pi) where p=[p1,p2,…,pC] is the probability vector
+- Scale-Invariant Logarithmic Loss metric designed for depth estimation tasks
+- Evaluates scale-invariant error between predicted and target values in log-space
+- Can return square root of SILog by setting sqrt parameter to True
+- Accounts for both variance of error and mean log difference between predictions
+  and targets
+- Modified from wjmaddox/swa_gaussian
+- Update the SWAG posterior every cycle_length epochs starting at cycle_start
+- Samples num_estimators models from the SWAG posterior after each update
+- Uses the SWAG posterior estimation only at test time
+- Call update_wrapper() at the end of each epoch
+- Call bn_update() to update the batchnorm statistics of the current SWAG samples
+- The corrupted TinyImageNet-C Dataset for benchmarking neural network robustness
+- Shift severity parameter ranges between 1 and 5
+- Subset parameter can be 'all' or keys in cifarc_subsets
+- The licenses of the datasets may differ from TorchUncertainty's license. Check before
+  use.
+- Dataset supports binary classification mode
+- Uses test_split of 0.2 and split_seed of 21893027 by default
+- Supports binary classification mode
+- Dataset can be split with configurable test_split ratio and split_seed
+- Calculate Area Under the Risk-Coverage curve for Selective Classification performance
+  assessment
+- Normalizes AURC as if support was between 0 and 1, impacting small sample sizes
+- Evaluates quality of uncertainty estimates by measuring ability to discriminate
+  between correct and incorrect predictions
+- Uses ImageNet as In-distribution dataset, OpenImage-O, INaturalist, ImageNet-0,
+  SVHN or DTD as Out-of-distribution dataset and ImageNet-C as shifted dataset
+- Returns ImageNet test set (in distribution data), OOD dataset test split (out-of-distribution
+  data), and/or ImageNetC data
+- DataModule for CIFAR100 dataset
+- Supports out-of-distribution evaluation with SVHN and CIFAR-100C
+- Includes test-time augmentation (TTA) support
+- Corruption severity can be adjusted for CIFAR100-C evaluation
+- Supports various augmentation techniques including RandAugment and cutout
+- A higher AUSE means a lower quality of the uncertainty estimates
+- The Area Under the Sparsification Error curve (AUSE) metric to evaluate the quality
+  of the uncertainty estimates
+- If there are multiple coverage values corresponding to the given risk, i.e., the
+  risk(coverage) is not monotonic, the coverage at x risk is the maximum coverage
+  value corresponding to the given risk
+- If no there is no coverage value corresponding to the given risk, return float('nan')
+- You may want to avoid using the boston-housing dataset because of ethical concerns
+- The licenses of the datasets may differ from TorchUncertainty's license. Check before
+  use
+- If download is True, downloads the dataset from the internet and puts it in the
+  root directory
+- If the dataset is already downloaded, it is not downloaded again
+errors:
+- 'ValueError: If reduction is not one of ''mean'', ''sum'', ''none'' or None'
+auth_info:
+  mentioned_objects:
+  - TUOODCriterion
+  - MaxLogitCriterion
+  - EnergyCriterion
+  - MaxSoftmaxCriterion
+  - EntropyCriterion
+  - MutualInformationCriterion
+  - PostProcessingCriterion
+  - VariationRatioCriterion
+  - SegmentationRoutine
+  - torch.nn.Module
+  - LightningModule
+  - AdaptiveCalibrationError
+  - CalibrationError
+  - torch.device
+  - torch.dtype
+  - Entropy
+  - torch.Tensor
+  - AURC
+  - Tensor
+client:
+  base_url: https://github.com/ENSTA-U2IS-AI/torch-uncertainty
+source_metadata: null

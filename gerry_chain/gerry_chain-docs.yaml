@@ -1,0 +1,316 @@
+resources:
+- name: pa_vtds
+  endpoint:
+    path: /tree/main/docs/_static/PA_VTDs.json
+    method: GET
+    data_selector: records
+- name: flows_from_changes
+  endpoint:
+    method: GET
+    data_selector: Dict
+- name: county_splits
+  endpoint:
+    method: GET
+    data_selector: Callable
+- name: cut_edges
+  endpoint:
+    method: GET
+    data_selector: Set[Tuple]
+- name: cut_edges_by_part
+  endpoint:
+    method: GET
+    data_selector: Set
+- name: boundary_nodes
+  endpoint:
+    method: GET
+    data_selector: Set
+- name: flips
+  endpoint:
+    method: GET
+    data_selector: Dict
+- name: perimeter
+  endpoint:
+    method: GET
+    data_selector: Dict[int, float]
+- name: exterior_boundaries
+  endpoint:
+    method: GET
+    data_selector: Dict
+- name: interior_boundaries
+  endpoint:
+    method: GET
+    data_selector: Dict
+- name: exterior_boundaries_as_a_set
+  endpoint:
+    method: GET
+    data_selector: Set
+- name: compute_edge_flows
+  endpoint:
+    method: GET
+    data_selector: Dict
+- name: election
+  endpoint:
+    path: gerrychain.updaters.election.Election
+    method: CLASS
+- name: election_results
+  endpoint:
+    path: gerrychain.updaters.election.ElectionResults
+    method: CLASS
+- name: election_updater
+  endpoint:
+    path: gerrychain.updaters.election.ElectionUpdater
+    method: CLASS
+- name: vote_distribution
+  endpoint:
+    method: function_call
+    params:
+      graph: nx.Graph
+      num_chunks: int
+      num_dists: int
+      pop_target: Union[int, float]
+      pop_col: str
+      epsilon: float
+      node_repeats: int
+      method: Callable
+- name: random_spanning_tree
+  endpoint:
+    method: function_call
+    params:
+      graph: networkx.classes.graph.Graph
+      region_surcharge: Optional[Dict]
+- name: recursive_seed_part
+  endpoint:
+    method: function_call
+    params:
+      graph: networkx.classes.graph.Graph
+      parts: Sequence
+      pop_target: Union[float, int]
+      pop_col: str
+      epsilon: float
+      method: Callable
+      node_repeats: int
+      n: Optional[int]
+      ceil: Optional[int]
+- name: recursive_seed_part_inner
+  endpoint:
+    method: function_call
+    params:
+      graph: networkx.classes.graph.Graph
+      num_dists: int
+      pop_target: Union[float, int]
+      pop_col: str
+      epsilon: float
+      method: Callable
+      node_repeats: int
+      n: Optional[int]
+      ceil: Optional[int]
+- name: recursive_tree_part
+  endpoint:
+    method: function_call
+    params:
+      graph: networkx.classes.graph.Graph
+      parts: Sequence
+      pop_target: Union[float, int]
+      pop_col: str
+      epsilon: float
+      node_repeats: int
+      method: Callable
+- name: uniform_spanning_tree
+  endpoint:
+    method: function_call
+    params:
+      graph: networkx.classes.graph.Graph
+      choice: Callable
+- name: elections
+  endpoint:
+    path: /elections
+    method: GET
+    data_selector: elections
+- name: updaters
+  endpoint:
+    path: /updaters
+    method: GET
+    data_selector: my_updaters
+- name: partition
+  endpoint:
+    path: /partition
+    method: GET
+    data_selector: initial_partition
+- name: chain
+  endpoint:
+    path: /chain
+    method: GET
+    data_selector: MarkovChain
+- name: PA_VTDs
+  endpoint:
+    path: PA_VTDs.json
+    method: GET
+- name: elections
+  endpoint:
+    data_selector: elections
+- name: partition
+  endpoint:
+    data_selector: initial_partition
+- name: graph
+  endpoint:
+    path: /from_json
+    method: GET
+    data_selector: nodes
+- name: partition
+  endpoint:
+    path: /partition
+    method: GET
+    data_selector: assignment
+- name: markov_chain
+  endpoint:
+    path: /chain
+    method: GET
+    data_selector: states
+- name: gerrymandria
+  endpoint:
+    path: /tree/main/docs/_static/gerrymandria.json
+    method: GET
+    data_selector: nodes
+- name: pa_vtds
+  endpoint:
+    path: /tree/main/docs/_static/PA_VTDs.json
+    method: GET
+    data_selector: nodes
+- name: markov_chain
+  endpoint:
+    method: recom
+    params:
+      pop_col: TOTPOP
+      pop_target: ideal_population
+      epsilon: 0.01
+      node_repeats: 2
+      region_surcharge:
+        muni: 1.0
+- name: partition
+  endpoint:
+    method: Partition
+    params:
+      assignment: district
+- name: graph
+  endpoint:
+    method: Graph.from_json
+    path: ./gerrymandria.json
+- name: mn_precincts
+  endpoint:
+    path: MN_precincts.geojson
+    method: GET
+    data_selector: features
+- name: optimization_methods
+  endpoint:
+    path: /docs/user/optimizers.html
+    method: GET
+- name: SingleMetricOptimizer
+  endpoint:
+    path: /optimization/SingleMetricOptimizer
+    method: GET
+- name: Gingleator
+  endpoint:
+    path: /optimization/Gingleator
+    method: GET
+- name: geographic_partition
+  endpoint:
+    method: from_random_assignment
+    params:
+      graph: graph
+      n_parts: 4
+      epsilon: 0.01
+      pop_col: TOTPOP
+- name: grid
+  endpoint:
+    method: GET
+- name: diversity_stats
+  endpoint:
+    method: GET
+- name: metagraph
+  endpoint:
+    method: GET
+- name: compactness_metrics
+  endpoint:
+    method: GET
+- name: partisan_metrics
+  endpoint:
+    method: GET
+notes:
+- Supports Python 3.9, 3.10, 3.11, and 3.12
+- Install with 'pip install gerrychain' or 'pip install gerrychain[geo]' for GIS functions
+- For reproducible environments, set PYTHONHASHSEED=0
+- May require geo_settings.txt for compatibility with GIS dependencies
+- GerryChain is a Python library for generating ensembles of redistricting plans
+- Requires downloading PA_VTDs.json file from GitHub repository
+- Uses Markov chain Monte Carlo methods for redistricting analysis
+- Supports various proposal functions beyond propose_random_flip
+- This is a Python library for election data analysis and gerrymandering research,
+  not a REST API
+- Election class represents data of one election with races in each partition part
+- ElectionResults provides methods to answer common election questions like wins,
+  seats, percentages
+- ElectionUpdater manages tallies and returns ElectionResults instances
+- Uses dual graph representation of districting plans
+- Supports region-aware ReCom with surcharge parameters
+- Chain can get stuck with overly restrictive constraints
+- Enable pair reselection to avoid RuntimeError when chain gets stuck
+- Increase node_repeats parameter if BipartitionWarning occurs
+- Supports region-aware ReCom chains with region_surcharge parameter
+- Chain can get stuck with overly restrictive constraints - enable allow_pair_reselection
+- Random seed should be set for reproducible results
+- Uses random seed 2024 for reproducible results
+- BipartitionWarning indicates difficulty finding balanced cut after 50 attempts
+- RuntimeError occurs after 100 failed attempts to find valid cut
+- Increasing node_repeats or enabling allow_pair_reselection can help when chain gets
+  stuck
+- Region-aware ReCom uses surcharges to keep specified regions together
+- Multiple region types can be specified with different surcharge weights
+- Uses GeographicPartition class for working with geometries
+- Supports plotting via geodataframe.plot method from geopandas
+- Built on top of matplotlib for visualization
+- Requires unzipping downloaded files as they are compressed
+- GerryChain is a Python library for redistricting analysis, not a REST API
+- 'Provides 3 optimization methods: Short Bursts, Simulated Annealing, and Tilted
+  Runs'
+- SingleMetricOptimizer is a wrapper around MarkovChain class
+- Gingleator is a subclass for specific optimization scenarios
+- Uses ReCom under the hood for SingleMetricOptimizer class
+- Gingles Districts are districts that are 50% + 1 of a minority population subgroup
+- 'Three optimization methods available: Short Bursts, Simulated Annealing, Tilted
+  Runs'
+- Short Bursts chains together a series of neutral explorers for short periods
+- Simulated Annealing varies probability of accepting worse plan according to temperature
+  schedule
+- Tilted Runs accepts worse plan with fixed probability and always accepts better
+  plans
+- CRS for data must be correct before using polsby_popper updater
+- Uses GeographicPartition class instead of regular Partition for area and perimeter
+  updaters
+- Polsby-popper score calculation relies on area and perimeter updaters
+errors:
+- 'BipartitionWarning: Failed to find a balanced cut after attempts - consider enabling
+  pair reselection'
+- 'RuntimeError: Could not find a possible cut after max attempts - enable allow_pair_reselection=True'
+- 'BipartitionWarning: Failed to find balanced cut after attempts - consider enabling
+  pair reselection'
+- 'RuntimeError: Could not find possible cut after max attempts - enable reselection
+  or adjust constraints'
+- 'BipartitionWarning: Failed to find a balanced cut after 50 attempts'
+- 'RuntimeError: Could not find a possible cut after 100 attempts'
+- 'UserWarning: Found overlaps among the given polygons'
+- 'UserWarning: Found islands (degree-0 nodes)'
+auth_info:
+  mentioned_objects:
+  - Partition
+  - Tally
+  - DataTally
+  - CountySplit
+  - Election
+  - ElectionResults
+  - GeographicPartition
+  - MarkovChain
+  - UpperBound
+  - Graph
+client:
+  base_url: https://github.com/mggg/GerryChain
+source_metadata: null

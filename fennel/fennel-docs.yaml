@@ -1,0 +1,59 @@
+resources:
+- name: task
+  endpoint:
+    method: GET
+- name: dead_letter_queue
+  endpoint:
+    method: GET
+- name: task_status
+  endpoint:
+    method: GET
+- name: task_results
+  endpoint:
+    method: GET
+- name: jobs
+  endpoint:
+    method: GET
+notes:
+- Task args and kwargs must be JSON-serialisable
+- Return values (if results storage is enabled) must be JSON-serialisable
+- Processing order is not guaranteed
+- Tasks will be processed at least once
+- Redis is not a highly durable database system
+- This is an alpha release. The project is under development, breaking changes are
+  likely
+- Task queue for Python 3.7+ based on Redis Streams with a Celery-like API
+- Supports both sync and async code
+- Automatic task discovery defaults to using **/tasks.py
+- Exceptionally small and understandable codebase
+- Uses Redis as backend for task queue processing
+- Supports both sync and async interfaces
+- Tasks are fire-and-forget by default with automatic retries using exponential backoff
+- Results storage can be disabled for fire-and-forget use cases
+- Worker processes need to discover tasks via autodiscover pattern
+- Default autodiscover pattern is '**/tasks.py'
+- Uses Redis-backed task queue with distributed workers
+- Results storage must be enabled for .get() method
+- Exponential backoff with jitter for retries
+- Maximum retry duration is 604800s (7 days)
+- 'Jobs have lifecycle statuses: UNKNOWN, SENT, EXECUTING, SUCCESS, RETRY, DEAD'
+- Uses Redis Streams as the fundamental queue data structure
+- Workers run multiple executor processes with consumer coroutines
+- 'Jobs transition through statuses: UNKNOWN -> SENT -> EXECUTING -> SUCCESS/RETRY/DEAD'
+- Failed jobs are retried if max_retries not exceeded, otherwise moved to dead-letter
+  queue
+- Results are stored in Redis List and expire after configurable duration
+errors:
+- 'TaskFailed: Original function raised an exception'
+- 'Timeout: Timeout seconds elapsed before result available'
+- 'ResultsDisabled: results_enabled=False when accessing task result'
+- 'UnknownTask: Worker unable to find Python function for task'
+- 'JobNotFound: Job information cannot be found in Redis'
+auth_info:
+  mentioned_objects:
+  - AsyncResult
+  - Task
+  - Job
+client:
+  base_url: redis://127.0.0.1
+source_metadata: null
