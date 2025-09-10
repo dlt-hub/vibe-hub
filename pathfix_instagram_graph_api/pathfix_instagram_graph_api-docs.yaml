@@ -1,0 +1,147 @@
+resources:
+- name: API Call
+  endpoint:
+    path: /oauth/method/{providername}/call
+    method: POST
+- name: oauth_method_call
+  endpoint:
+    path: /oauth/method/{providername}/call
+    method: POST
+    params:
+      public_key: '{{ dlt.secrets[''pathfix_public_key''] }}'
+      user_id: user_identifier
+- name: integrate_page
+  endpoint:
+    path: /integrate/page
+    method: GET
+    params:
+      public_key: '{{ dlt.secrets[''pathfix_public_key''] }}'
+      user_id: '{{ dlt.secrets[''pathfix_user_id''] }}'
+      providers: optional
+      header: optional
+      sub_header: optional
+      style: list-columns
+- name: oauth_call
+  endpoint:
+    path: /oauth/method/{provider}/call
+    method: POST
+- name: integrate
+  endpoint:
+    path: /integrate/command
+    method: GET
+- name: integrate_command
+  endpoint:
+    path: /integrate/command
+    method: GET
+notes:
+- You will need a Facebook Business account.
+- Pathfix will handle the connection, manage the Access and Refresh Tokens for each
+  user against each provider integration.
+- 'LinkedIn has updated their primary Product: Sign in with LinkedIn to Sign In with
+  LinkedIn using OpenID Connect'
+- Pathfix offers connectivity through both channels.
+- Enter the Client ID and Client Secret received from Stripe and hit Save
+- We recommend using Slack V2 for your oauth setup in Pathfix.
+- Add the following Scopes chat:write:user,channels:read and remember these for later.
+- You will need to create a developer account with each provider, this will allow
+  your integrations to be white-labelled.
+- Domain security validation required - originating app domain URL must be defined
+  in Application settings
+- Authentication requests validate originating domain matches configured domains
+- Up to 5 originating domains can be added per application, separated by comma
+- Failed domain validation shows 'Unauthorized Domain' error and terminates authentication
+- Requires registration at https://admin.typeform.com/account#/section/apps
+- Token expiration period should be set to Unlimited
+- 'Uses Pathfix as OAuth intermediary with redirect URL: https://labs.pathfix.com/integrate/command'
+- 'Stripe has 2 ways of offering connections: OAuth based (user facing) and API key
+  (server-to-server)'
+- This document details OAuth connection for end users
+- 'Redirect URL required: https://labs.pathfix.com/integrate/command'
+- Unlike other providers, WooCommerce does not have a developer console that requires
+  an app to be created
+- There is no ClientID or Client Secret required for the WooCommerce setup
+- WooCommerce sends the authentication tokens via a backend process that is handled
+  by Pathfix
+- No setup is required in WooCommerce to add this integration
+- For restricted scopes, Google requires a mandatory security assessment that is charged
+  by Google
+- Pathfix allows you to easily add end-user OAuth based integration
+- The example uses Google Task, but you can follow the same process and activate any
+  other Google Product API
+- You will need to create a developer account with Facebook and add an App for Facebook
+  Login
+- If you are working with Facebook and Instagram Graph API, make sure you create a
+  new app for each in Facebook developer portal
+- Under App Domain, enter pathfix.com
+- Valid OAuth Redirect URI should be https://labs.pathfix.com/integrate/command
+- Requires Google Cloud Platform project setup
+- App will be in test mode until submitted to Google for review
+- 'Uses Pathfix redirect URI: https://labs.pathfix.com/integrate/command'
+- Must be enrolled in Apple developer program
+- p8 key file must be reformatted into single line for use in Pathfix
+- Return URL must be set to https://labs.pathfix.com/integrate/command
+- Primary App ID must be linked to the key during configuration
+- Client Secret is displayed only once when created in Azure and must be copied immediately
+- For Microsoft Identity choose option 3 for account types (Any Azure AD directory
+  and personal Microsoft accounts)
+- For Azure Active Directory choose any of the first two account type options
+- Token expiry can be set to Never
+- All existing developer app before this change will continue to access the older
+  Sign in with LinkedIn product
+- Any new developer apps will now see the option with OpenID Connect (V2)
+- There is an approval/review process for each Product chosen
+- Advertising API goes through an approval cycle with the LinkedIn team
+- For Share on LinkedIn and Sign In with LinkedIn, the approval process needs to be
+  done by the admin/owner of the page
+- Requires Facebook developer account and app creation
+- 'OAuth redirect URI must be configured: https://labs.pathfix.com/integrate/command'
+- 'Default scopes include: email,pages_show_list,pages_manage_posts,catalog_management,pages_read_engagement,pages_read_user_content'
+- Separate apps needed for Facebook and Instagram Graph API integration
+- Pathfix integration does not support Sandbox accounts - Production apps only
+- Development keys will not work - must use Production keys
+- Requires Intuit Developer account and app creation
+- Requires existing TikTok developer account
+- Working on adding support for TikTok V2
+- For TikTok Marketing API, create developer account at https://ads.tiktok.com/marketing_api/homepage
+- Redirect URI must be set to https://labs.pathfix.com/integrate/command
+- Requires app submission for verification to avoid authorization errors
+- Must include 'View your user information' scope for authorization to work
+errors:
+- 'Unauthorized Domain: Add originating domain URL in Application settings under Pathfix
+  OAuth application'
+auth_info:
+  mentioned_objects:
+  - $pinc
+  - $pinc.oauth
+  - $pinc.auth
+  - chat:write:user
+  - channels:read
+  - $pinc.auth.providers
+  - $pinc.auth.profile
+  - Pathfix OAuth Connector
+  - Pathfix Public Key
+  - Access and Refresh Tokens
+  - OAuth Client ID
+  - Cloud Tasks API
+  - Google Tasks
+  - OAuth client ID
+  - Client Secret
+  - App IDs
+  - Services IDs
+  - Apple Keys
+  - Team ID
+  - Service Identifier
+  - p8 Key
+  - Key ID
+  - App Registration
+  - Tenant ID
+  - OAuth 2.0 settings
+  - Products
+  - Scopes
+  - Facebook Login
+  - Marketing API
+client:
+  base_url: https://labs.pathfix.com
+  auth:
+    type: oauth2
+source_metadata: null

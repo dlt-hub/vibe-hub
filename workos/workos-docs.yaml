@@ -1,0 +1,3400 @@
+resources:
+- name: events
+  endpoint:
+    path: /events
+    method: GET
+    data_selector: data
+    params:
+      events: dsync.user.created,dsync.user.updated,dsync.user.deleted
+- name: organizations
+  endpoint:
+    path: /organizations
+    method: GET
+    data_selector: data
+- name: get_organization
+  endpoint:
+    path: /organizations/:id
+    method: GET
+    data_selector: organization
+- name: update_organization
+  endpoint:
+    path: /organizations/:id
+    method: PUT
+    data_selector: organization
+- name: organization_domain
+  endpoint:
+    path: /organizations/:id
+    method: GET
+    data_selector: organization
+    params: {}
+- name: organization_domain
+  endpoint:
+    path: /organization_domain
+    method: GET
+    data_selector: object
+    params: {}
+- name: role
+  endpoint:
+    path: /role
+    method: GET
+    data_selector: object
+    params: {}
+- name: role
+  endpoint:
+    path: /organizations/:organization_id/roles
+    method: GET
+    data_selector: data
+- name: organizations
+  endpoint:
+    path: /organizations
+    method: GET
+    data_selector: data
+    params: {}
+- name: events
+  endpoint:
+    path: /events
+    method: GET
+    data_selector: data
+    params: {}
+- name: organization_roles
+  endpoint:
+    path: /organizations/:organization_id/roles
+    method: GET
+    data_selector: data
+- name: user
+  endpoint:
+    path: /user_management/users
+    method: GET
+    data_selector: data
+    params: {}
+- name: user_by_external_id
+  endpoint:
+    path: /user_management/users/external_id/:external_id
+    method: GET
+    data_selector: user
+    params: {}
+- name: create_user
+  endpoint:
+    path: /user_management/users
+    method: POST
+    data_selector: user
+    params: {}
+- name: delete_user
+  endpoint:
+    path: /user_management/users/:id
+    method: DELETE
+    data_selector: user
+    params: {}
+- name: password_reset
+  endpoint:
+    path: /user_management/password_reset
+    method: POST
+    data_selector: password_reset
+    params:
+      email: string
+- name: password_reset_confirm
+  endpoint:
+    path: /user_management/password_reset/confirm
+    method: POST
+    data_selector: object
+    params:
+      token: string
+      new_password: string
+- name: organization_domain
+  endpoint:
+    path: /organization_domain
+    method: GET
+    data_selector: object
+    params: {}
+- name: role
+  endpoint:
+    path: /roles
+    method: GET
+    data_selector: object
+    params: {}
+- name: user
+  endpoint:
+    path: /user_management/users
+    method: GET
+    data_selector: object
+    params: {}
+- name: authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: user
+    params: {}
+- name: sessions
+  endpoint:
+    path: /user_management/users/:id/sessions
+    method: GET
+    data_selector: data
+    params: {}
+- name: revoke_session
+  endpoint:
+    path: /user_management/sessions/revoke
+    method: POST
+    data_selector: session_id
+    params: {}
+- name: authentication_challenge
+  endpoint:
+    path: /user_management/authentication_challenge
+    method: GET
+    data_selector: object
+- name: password_reset
+  endpoint:
+    path: /user_management/password_reset
+    method: POST
+    data_selector: object
+- name: organization_membership
+  endpoint:
+    path: /user_management/organization_memberships/:id
+    method: GET
+    data_selector: organization_membership
+    params:
+      id: string
+- name: list_organization_memberships
+  endpoint:
+    path: /user_management/organization_memberships
+    method: GET
+    data_selector: organization_membership
+    params:
+      user_id: string
+      organization_id: string
+- name: create_organization_membership
+  endpoint:
+    path: /user_management/organization_memberships
+    method: POST
+    data_selector: organization_membership
+    params:
+      user_id: string
+      organization_id: string
+      role_slug: string
+- name: deactivate_organization_membership
+  endpoint:
+    path: /user_management/organization_memberships/:id/deactivate
+    method: PUT
+    data_selector: organization_membership
+    params:
+      id: string
+- name: invitation
+  endpoint:
+    path: /user_management/invitations/:id
+    method: GET
+    data_selector: invitation
+    params:
+      id: string
+- name: send_invitation
+  endpoint:
+    path: /user_management/invitations
+    method: POST
+    data_selector: invitation
+    params:
+      email: string
+      organization_id: string
+      expires_in_days: int
+      inviter_user_id: string
+      role_slug: string
+- name: organizations
+  endpoint:
+    path: /organizations
+    method: GET
+    data_selector: data
+    params:
+      domains: foo-corp.com
+- name: events
+  endpoint:
+    path: /events
+    method: GET
+    data_selector: data
+    params:
+      events:
+      - dsync.user.created
+      - dsync.user.updated
+      - dsync.user.deleted
+- name: organization_domain
+  endpoint:
+    path: /organizations/:organization_id/roles
+    method: GET
+    data_selector: data
+    params: {}
+- name: role
+  endpoint:
+    path: /user_management/users
+    method: GET
+    data_selector: data
+    params: {}
+- name: user
+  endpoint:
+    path: /user_management/users/:id
+    method: GET
+    data_selector: user
+    params: {}
+- name: authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: user
+    params: {}
+- name: list_sessions
+  endpoint:
+    path: /user_management/users/:id/sessions
+    method: GET
+    data_selector: data
+    params: {}
+- name: revoke_session
+  endpoint:
+    path: /user_management/sessions/revoke
+    method: POST
+    data_selector: session_id
+    params: {}
+- name: authentication_challenge
+  endpoint:
+    path: /user_management/users/:id/auth_factors
+    method: POST
+    data_selector: challenge
+    params:
+      id: string
+      type: totp
+      totp_issuer: Foo Corp
+      totp_user: bob@example.com
+- name: list_authentication_factors
+  endpoint:
+    path: /user_management/users/:id/auth_factors
+    method: GET
+    data_selector: data
+    params:
+      id: string
+- name: email_verification
+  endpoint:
+    path: /user_management/email_verification/:id
+    method: GET
+    data_selector: email_verification
+    params:
+      id: string
+- name: password_reset
+  endpoint:
+    path: /user_management/password_reset/:id
+    method: GET
+    data_selector: password_reset
+    params:
+      id: string
+- name: organization_membership
+  endpoint:
+    path: /user_management/organization_memberships/:id
+    method: GET
+    data_selector: organization_membership
+    params:
+      id: string
+- name: invitation
+  endpoint:
+    path: /user_management/invitations/:id
+    method: GET
+    data_selector: invitation
+    params:
+      id: string
+- name: sessions_logout
+  endpoint:
+    path: /user_management/sessions/logout
+    method: GET
+- name: logout
+  endpoint:
+    path: /user_management/sessions/logout
+    method: GET
+    data_selector: url
+    params:
+      session_id: string
+      return_to: string
+- name: organization_domain
+  endpoint:
+    path: /organizations/:organization_id/roles
+    method: GET
+    data_selector: data
+- name: role
+  endpoint:
+    path: /organizations/:organization_id/roles
+    method: GET
+    data_selector: data
+- name: user
+  endpoint:
+    path: /user_management/users
+    method: GET
+    data_selector: data
+- name: identity
+  endpoint:
+    path: /user_management/users/:id/identities
+    method: GET
+    data_selector: identities
+- name: authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: user
+    params: {}
+- name: sessions
+  endpoint:
+    path: /user_management/users/:id/sessions
+    method: GET
+    data_selector: data
+    params: {}
+- name: revoke_session
+  endpoint:
+    path: /user_management/sessions/revoke
+    method: POST
+    data_selector: ''
+    params: {}
+- name: authentication_challenge
+  endpoint:
+    path: /user_management/authentication_challenge
+    method: GET
+    data_selector: object
+    params: {}
+- name: email_verification
+  endpoint:
+    path: /user_management/email_verification/:id
+    method: GET
+    data_selector: data
+    params:
+      id: string
+- name: password_reset
+  endpoint:
+    path: /user_management/password_reset/:id
+    method: GET
+    data_selector: data
+    params:
+      id: string
+- name: organization_membership
+  endpoint:
+    path: /user_management/organization_memberships/:id
+    method: GET
+    data_selector: data
+    params:
+      id: string
+- name: invitation
+  endpoint:
+    path: /user_management/invitations/:id
+    method: GET
+    data_selector: data
+    params:
+      id: string
+- name: logout
+  endpoint:
+    path: /user_management/sessions/logout
+    method: GET
+    data_selector: url
+    params:
+      session_id: string
+      return_to: string
+- name: device_authorization
+  endpoint:
+    path: /user_management/authorize/device
+    method: POST
+    data_selector: none
+    params: {}
+- name: device_authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: none
+    params:
+      grant_type: urn:ietf:params:oauth:grant-type:device_code
+- name: sso_authorize
+  endpoint:
+    path: /sso/authorize
+    method: GET
+    data_selector: none
+    params:
+      response_type: code
+- name: sso_token
+  endpoint:
+    path: /sso/token
+    method: POST
+    data_selector: none
+    params:
+      grant_type: authorization_code
+- name: sso_profile
+  endpoint:
+    path: /sso/profile
+    method: GET
+    data_selector: none
+    params: {}
+- name: connections
+  endpoint:
+    path: /connections
+    method: GET
+    data_selector: data
+    params: {}
+- name: connection_details
+  endpoint:
+    path: /connections/:id
+    method: GET
+    data_selector: connection
+    params: {}
+- name: delete_connection
+  endpoint:
+    path: /connections/:id
+    method: DELETE
+    data_selector: none
+    params: {}
+- name: directories
+  endpoint:
+    path: /directories
+    method: GET
+    data_selector: data
+    params: {}
+- name: directory
+  endpoint:
+    path: /directories/:id
+    method: GET
+    data_selector: directory
+- name: directories
+  endpoint:
+    path: /directories
+    method: GET
+    data_selector: data
+    params:
+      search: string
+      organization_id: string
+      limit: number
+      before: string
+      after: string
+      order: asc | desc
+- name: directory_user
+  endpoint:
+    path: /directory_users/:id
+    method: GET
+    data_selector: directory_user
+- name: directory_users
+  endpoint:
+    path: /directory_users
+    method: GET
+    data_selector: data
+    params:
+      directory: string
+      group: string
+      limit: number
+      before: string
+      after: string
+      order: asc | desc
+- name: directory_group
+  endpoint:
+    path: /directory_groups/:id
+    method: GET
+    data_selector: directory_group
+- name: directory_groups
+  endpoint:
+    path: /directory_groups
+    method: GET
+    data_selector: data
+    params:
+      directory: string
+      user: string
+      limit: number
+      before: string
+      after: string
+      order: asc | desc
+- name: audit_log
+  endpoint:
+    path: /audit_logs/events
+    method: POST
+    data_selector: event
+- name: audit_log_schema
+  endpoint:
+    path: /audit_logs/actions/:name/schemas
+    method: POST
+    data_selector: audit_log_schema
+- name: audit_log_export
+  endpoint:
+    path: /audit_logs/exports/:id
+    method: GET
+    data_selector: audit_log_export
+- name: audit_logs_retention
+  endpoint:
+    path: /organizations/:id/audit_logs_retention
+    method: GET
+    data_selector: retention_period_in_days
+- name: audit_logs_retention
+  endpoint:
+    path: /organizations/:id/audit_logs_retention
+    method: PUT
+    params:
+      retention_period_in_days: 30
+- name: organization_domain
+  endpoint:
+    path: /organization_domains/:id
+    method: GET
+    params: {}
+- name: create_organization_domain
+  endpoint:
+    path: /organization_domains
+    method: POST
+    params:
+      organization_id: org_01EHT88Z8J8795GZNQ4ZP1J81T
+      domain: foo-corp.com
+- name: verify_organization_domain
+  endpoint:
+    path: /organization_domains/:id/verify
+    method: POST
+    params: {}
+- name: enroll_factor
+  endpoint:
+    path: /auth/factors/enroll
+    method: POST
+    params:
+      type: totp
+      totp_issuer: Foo Corp
+      totp_user: alan.turing@example.com
+- name: challenge_factor
+  endpoint:
+    path: /auth/factors/:id/challenge
+    method: POST
+    params: {}
+- name: verify_challenge
+  endpoint:
+    path: /auth/challenges/:id/verify
+    method: POST
+    params:
+      code: '123456'
+- name: get_factor
+  endpoint:
+    path: /auth/factors/:id
+    method: GET
+    params: {}
+- name: delete_factor
+  endpoint:
+    path: /auth/factors/:id
+    method: DELETE
+    params: {}
+- name: organization_domain
+  endpoint:
+    path: /organizations/:organization_id/roles
+    method: GET
+    data_selector: data
+    params: {}
+- name: authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: user
+    params: {}
+- name: sessions
+  endpoint:
+    path: /user_management/users/:id/sessions
+    method: GET
+    data_selector: data
+    params: {}
+- name: revoke_session
+  endpoint:
+    path: /user_management/sessions/revoke
+    method: POST
+    data_selector: session_id
+    params: {}
+- name: auth_factors
+  endpoint:
+    path: /user_management/users/:id/auth_factors
+    method: GET
+- name: email_verification
+  endpoint:
+    path: /user_management/email_verification/:id
+    method: GET
+- name: password_reset
+  endpoint:
+    path: /user_management/password_reset/:id
+    method: GET
+- name: organization_memberships
+  endpoint:
+    path: /user_management/organization_memberships
+    method: GET
+- name: invitations
+  endpoint:
+    path: /user_management/invitations
+    method: GET
+- name: logout
+  endpoint:
+    path: /user_management/sessions/logout
+    method: GET
+    params: {}
+- name: device_authorization
+  endpoint:
+    path: /user_management/authorize/device
+    method: POST
+    params: {}
+- name: device_authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    params: {}
+- name: sso_authorize
+  endpoint:
+    path: /sso/authorize
+    method: GET
+    params: {}
+- name: sso_token
+  endpoint:
+    path: /sso/token
+    method: POST
+    params: {}
+- name: sso_profile
+  endpoint:
+    path: /sso/profile
+    method: GET
+    params: {}
+- name: connections
+  endpoint:
+    path: /connections
+    method: GET
+    params: {}
+- name: get_connection
+  endpoint:
+    path: /connections/:id
+    method: GET
+    params: {}
+- name: delete_connection
+  endpoint:
+    path: /connections/:id
+    method: DELETE
+    params: {}
+- name: directory
+  endpoint:
+    path: /directories
+    method: GET
+    data_selector: data
+- name: directory_user
+  endpoint:
+    path: /directory_users
+    method: GET
+    data_selector: data
+- name: directory_group
+  endpoint:
+    path: /directory_groups
+    method: GET
+    data_selector: data
+- name: audit_log
+  endpoint:
+    path: /audit_logs/events
+    method: POST
+    data_selector: event
+- name: audit_log_export
+  endpoint:
+    path: /audit_logs/exports
+    method: POST
+    data_selector: audit_log_export
+- name: audit_logs_retention
+  endpoint:
+    path: /organizations/:id/audit_logs_retention
+    method: GET
+- name: organization_domain
+  endpoint:
+    path: /organization_domains/:id
+    method: GET
+- name: create_organization_domain
+  endpoint:
+    path: /organization-domains
+    method: POST
+- name: verify_organization_domain
+  endpoint:
+    path: /organization-domains/:id/verify
+    method: POST
+- name: enroll_auth_factor
+  endpoint:
+    path: /auth/factors/enroll
+    method: POST
+- name: challenge_auth_factor
+  endpoint:
+    path: /auth/factors/:id/challenge
+    method: POST
+- name: verify_auth_challenge
+  endpoint:
+    path: /auth/challenges/:id/verify
+    method: POST
+- name: get_auth_factor
+  endpoint:
+    path: /auth/factors/:id
+    method: GET
+- name: delete_auth_factor
+  endpoint:
+    path: /auth/factors/:id
+    method: DELETE
+- name: resource_types
+  endpoint:
+    path: /fga/v1/resource-types
+    method: GET
+- name: create_resource_type
+  endpoint:
+    path: /fga/v1/resource-types
+    method: POST
+- name: delete_resource_type
+  endpoint:
+    path: /fga/v1/resource-types/{resource_type}
+    method: DELETE
+- name: organization_domain
+  endpoint:
+    path: /organizations/:organization_id/roles
+    method: GET
+- name: user
+  endpoint:
+    path: /user_management/users/:id
+    method: GET
+- name: user_management
+  endpoint:
+    path: /user_management/users
+    method: GET
+- name: authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: user
+    params:
+      grant_type: password
+- name: sessions_revoke
+  endpoint:
+    path: /user_management/sessions/revoke
+    method: POST
+    data_selector: ''
+    params: {}
+- name: list_sessions
+  endpoint:
+    path: /user_management/users/:id/sessions
+    method: GET
+    data_selector: data
+    params: {}
+- name: authentication_challenge
+  endpoint:
+    path: /user_management/users/:id/auth_factors
+    method: POST
+    data_selector: challenge
+    params:
+      id: string
+      type: totp
+      totp_issuer: Foo Corp
+      totp_user: bob@example.com
+- name: list_authentication_factors
+  endpoint:
+    path: /user_management/users/:id/auth_factors
+    method: GET
+    data_selector: data
+    params:
+      id: string
+- name: logout_url
+  endpoint:
+    path: /user_management/sessions/logout
+    method: GET
+    data_selector: url
+- name: device_authorization
+  endpoint:
+    path: /user_management/authorize/device
+    method: POST
+    data_selector: device_code
+- name: token
+  endpoint:
+    path: /sso/token
+    method: POST
+    data_selector: access_token
+- name: profile
+  endpoint:
+    path: /sso/profile
+    method: GET
+    data_selector: profile
+- name: directory
+  endpoint:
+    path: /directories
+    method: GET
+    data_selector: data
+    params: {}
+- name: directory_user
+  endpoint:
+    path: /directory_users
+    method: GET
+    data_selector: data
+    params: {}
+- name: directory_group
+  endpoint:
+    path: /directory_groups
+    method: GET
+    data_selector: data
+    params: {}
+- name: audit_log_event
+  endpoint:
+    path: /audit_logs/events
+    method: POST
+    data_selector: event
+    params: {}
+- name: audit_log_export
+  endpoint:
+    path: /audit_logs/exports
+    method: POST
+    data_selector: export
+    params: {}
+- name: audit_logs_retention
+  endpoint:
+    path: /organizations/:id/audit_logs_retention
+    method: GET
+    data_selector: object
+    params: {}
+- name: organization_domain
+  endpoint:
+    path: /organization_domains/:id
+    method: GET
+    data_selector: object
+    params: {}
+- name: resource_type
+  endpoint:
+    path: /fga/v1/resource-types/:type
+    method: GET
+    data_selector: object
+    params: {}
+- name: organization_domain
+  endpoint:
+    path: /organizations/:organization_id/domain
+    method: GET
+    data_selector: object
+    params: {}
+- name: role
+  endpoint:
+    path: /organizations/:organization_id/roles
+    method: GET
+    data_selector: data
+    params: {}
+- name: user
+  endpoint:
+    path: /user_management/users
+    method: GET
+    data_selector: data
+    params: {}
+- name: authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: user
+- name: sessions
+  endpoint:
+    path: /user_management/users/:id/sessions
+    method: GET
+    data_selector: data
+- name: revoke_session
+  endpoint:
+    path: /user_management/sessions/revoke
+    method: POST
+    data_selector: ''
+- name: authentication_challenge
+  endpoint:
+    path: /user_management/users/:id/auth_factors
+    method: POST
+    data_selector: challenge
+    params:
+      id: string
+      type: totp
+      totp_issuer: Foo Corp
+      totp_user: bob@example.com
+- name: email_verification
+  endpoint:
+    path: /user_management/email_verification/:id
+    method: GET
+    data_selector: email_verification
+    params:
+      id: string
+- name: password_reset
+  endpoint:
+    path: /user_management/password_reset/:id
+    method: GET
+    data_selector: password_reset
+    params:
+      id: string
+- name: logout
+  endpoint:
+    path: /user_management/sessions/logout
+    method: GET
+    data_selector: url
+    params:
+      session_id: string
+      return_to: string
+- name: device_authorization
+  endpoint:
+    path: /user_management/authorize/device
+    method: POST
+    data_selector: device_code
+    params:
+      client_id: string
+- name: device_authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: access_token
+    params:
+      grant_type: urn:ietf:params:oauth:grant-type:device_code
+      device_code: string
+      client_id: string
+- name: authorization
+  endpoint:
+    path: /sso/authorize
+    method: GET
+    data_selector: url
+    params:
+      response_type: code
+      client_id: string
+      redirect_uri: string
+- name: token
+  endpoint:
+    path: /sso/token
+    method: POST
+    data_selector: access_token
+    params:
+      client_id: string
+      client_secret: string
+      grant_type: authorization_code
+      code: string
+- name: directory
+  endpoint:
+    path: /directories
+    method: GET
+- name: directory_user
+  endpoint:
+    path: /directory_users
+    method: GET
+- name: directory_group
+  endpoint:
+    path: /directory_groups
+    method: GET
+- name: audit_log_event
+  endpoint:
+    path: /audit_logs/events
+    method: POST
+- name: audit_log_export
+  endpoint:
+    path: /audit_logs/exports
+    method: POST
+- name: audit_logs_retention
+  endpoint:
+    path: /organizations/:id/audit_logs_retention
+    method: GET
+    data_selector: object
+    params: {}
+- name: organization_domain
+  endpoint:
+    path: /organization_domains/:id
+    method: GET
+    data_selector: object
+    params: {}
+- name: create_organization_domain
+  endpoint:
+    path: /organization_domains
+    method: POST
+    data_selector: object
+    params: {}
+- name: verify_organization_domain
+  endpoint:
+    path: /organization_domains/:id/verify
+    method: POST
+    data_selector: object
+    params: {}
+- name: enroll_factor
+  endpoint:
+    path: /auth/factors/enroll
+    method: POST
+    data_selector: object
+    params: {}
+- name: list_warrants
+  endpoint:
+    path: /fga/v1/warrants
+    method: GET
+    data_selector: data
+    params: {}
+- name: create_warrant
+  endpoint:
+    path: /fga/v1/warrants
+    method: POST
+    data_selector: object
+    params: {}
+- name: warrant
+  endpoint:
+    path: /fga/v1/warrants
+    method: POST
+    data_selector: warrants
+    params: {}
+- name: resource
+  endpoint:
+    path: /fga/v1/resources/:resource_type/:resource_id
+    method: PUT
+    data_selector: resource
+    params: {}
+- name: resources_batch
+  endpoint:
+    path: /fga/v1/resources/batch
+    method: POST
+    data_selector: data
+    params: {}
+- name: policies
+  endpoint:
+    path: /fga/v1/policies
+    method: GET
+    data_selector: policies
+    params: {}
+- name: organization_domain
+  endpoint:
+    path: /organization_domain
+    method: GET
+    data_selector: object
+    params: {}
+- name: role
+  endpoint:
+    path: /organizations/:organization_id/roles
+    method: GET
+    data_selector: data
+    params: {}
+- name: user
+  endpoint:
+    path: /user_management/users
+    method: GET
+    data_selector: data
+    params: {}
+- name: authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: user
+    params: {}
+- name: list_sessions
+  endpoint:
+    path: /user_management/users/:id/sessions
+    method: GET
+    data_selector: data
+    params: {}
+- name: revoke_session
+  endpoint:
+    path: /user_management/sessions/revoke
+    method: POST
+    data_selector: session_id
+    params: {}
+- name: authentication_challenge
+  endpoint:
+    path: /user_management/authentication_challenge
+    method: GET
+    data_selector: object
+- name: auth_factors
+  endpoint:
+    path: /user_management/users/:id/auth_factors
+    method: GET
+    data_selector: data
+- name: email_verification
+  endpoint:
+    path: /user_management/email_verification/:id
+    method: GET
+    data_selector: email_verification
+- name: password_reset
+  endpoint:
+    path: /user_management/password_reset/:id
+    method: GET
+    data_selector: password_reset
+- name: organization_membership
+  endpoint:
+    path: /user_management/organization_memberships/:id
+    method: GET
+    data_selector: organization_membership
+- name: invitations
+  endpoint:
+    path: /user_management/invitations/:id
+    method: GET
+    data_selector: invitation
+- name: logout
+  endpoint:
+    path: /user_management/sessions/logout
+    method: GET
+    data_selector: url
+    params: {}
+- name: authorize_device
+  endpoint:
+    path: /user_management/authorize/device
+    method: POST
+    data_selector: device_code
+    params: {}
+- name: authenticate_device
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: access_token
+    params:
+      grant_type: urn:ietf:params:oauth:grant-type:device_code
+- name: get_authorization_url
+  endpoint:
+    path: /sso/authorize
+    method: GET
+    data_selector: url
+    params:
+      response_type: code
+- name: get_token
+  endpoint:
+    path: /sso/token
+    method: POST
+    data_selector: access_token
+    params:
+      grant_type: authorization_code
+- name: get_profile
+  endpoint:
+    path: /sso/profile
+    method: GET
+    data_selector: profile
+    params: {}
+- name: list_connections
+  endpoint:
+    path: /connections
+    method: GET
+    data_selector: data
+    params: {}
+- name: get_connection
+  endpoint:
+    path: /connections/:id
+    method: GET
+    data_selector: connection
+    params: {}
+- name: delete_connection
+  endpoint:
+    path: /connections/:id
+    method: DELETE
+    data_selector: null
+    params: {}
+- name: directory
+  endpoint:
+    path: /directories
+    method: GET
+    data_selector: data
+    params: {}
+- name: directory_user
+  endpoint:
+    path: /directory_users
+    method: GET
+    data_selector: data
+    params: {}
+- name: directory_group
+  endpoint:
+    path: /directory_groups
+    method: GET
+    data_selector: data
+    params: {}
+- name: audit_log_event
+  endpoint:
+    path: /audit_logs/events
+    method: POST
+    data_selector: ''
+    params: {}
+- name: audit_log_export
+  endpoint:
+    path: /audit_logs/exports
+    method: POST
+    data_selector: ''
+    params: {}
+- name: audit_logs_retention
+  endpoint:
+    path: /organizations/:id/audit_logs_retention
+    method: GET
+    data_selector: object
+    params: {}
+- name: organization_domain
+  endpoint:
+    path: /organization_domains/:id
+    method: GET
+    data_selector: object
+    params: {}
+- name: create_organization_domain
+  endpoint:
+    path: /organization_domains
+    method: POST
+    data_selector: object
+    params: {}
+- name: verify_organization_domain
+  endpoint:
+    path: /organization_domains/:id/verify
+    method: POST
+    data_selector: object
+    params: {}
+- name: enroll_factor
+  endpoint:
+    path: /auth/factors/enroll
+    method: POST
+    data_selector: object
+    params: {}
+- name: challenge_factor
+  endpoint:
+    path: /auth/factors/:id/challenge
+    method: POST
+    data_selector: object
+    params: {}
+- name: verify_challenge
+  endpoint:
+    path: /auth/challenges/:id/verify
+    method: POST
+    data_selector: object
+    params: {}
+- name: get_factor
+  endpoint:
+    path: /auth/factors/:id
+    method: GET
+    data_selector: object
+    params: {}
+- name: delete_factor
+  endpoint:
+    path: /auth/factors/:id
+    method: DELETE
+    data_selector: object
+    params: {}
+- name: list_warrants
+  endpoint:
+    path: /fga/v1/warrants
+    method: GET
+    data_selector: data
+    params: {}
+- name: create_warrant
+  endpoint:
+    path: /fga/v1/warrants
+    method: POST
+    data_selector: object
+    params: {}
+- name: delete_warrant
+  endpoint:
+    path: /fga/v1/warrants
+    method: POST
+    data_selector: object
+    params: {}
+- name: warrants
+  endpoint:
+    path: /fga/v1/warrants
+    method: POST
+    data_selector: data
+- name: resources
+  endpoint:
+    path: /fga/v1/resources
+    method: GET
+    data_selector: data
+- name: resource
+  endpoint:
+    path: /fga/v1/resources/:resource_type/:resource_id
+    method: GET
+    data_selector: resource
+- name: batch_resources
+  endpoint:
+    path: /fga/v1/resources/batch
+    method: POST
+    data_selector: data
+- name: batch
+  endpoint:
+    path: /fga/v1/resources/batch
+    method: DELETE
+    data_selector: data
+    params:
+      op: delete
+      resources: array
+      resource_type: string
+      resource_id: string
+- name: organization_domain
+  endpoint:
+    path: /organization_domain
+    method: GET
+    data_selector: object
+- name: role
+  endpoint:
+    path: /roles
+    method: GET
+    data_selector: object
+- name: user
+  endpoint:
+    path: /user_management/users
+    method: GET
+    data_selector: object
+- name: identity
+  endpoint:
+    path: /user_management/users/:id/identities
+    method: GET
+    data_selector: identities
+- name: authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: user
+    params:
+      client_id: client_123456789
+      client_secret: sk_example_123456789
+      grant_type: password
+      email: marcelina@example.com
+      password: i8uv6g34kd490s
+      ip_address: 192.0.2.1
+      user_agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36
+        (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
+- name: authentication_challenge
+  endpoint:
+    path: /user_management/users/:id/auth_factors
+    method: POST
+    data_selector: challenge
+    params:
+      id: string
+      type: totp
+      totp_issuer: Foo Corp
+      totp_user: bob@example.com
+- name: list_authentication_factors
+  endpoint:
+    path: /user_management/users/:id/auth_factors
+    method: GET
+    data_selector: data
+    params:
+      id: string
+- name: email_verification
+  endpoint:
+    path: /user_management/email_verification/:id
+    method: GET
+    data_selector: email_verification
+    params:
+      id: string
+- name: password_reset
+  endpoint:
+    path: /user_management/password_reset/:id
+    method: GET
+    data_selector: password_reset
+    params:
+      id: string
+- name: organization_membership
+  endpoint:
+    path: /user_management/organization_memberships/:id
+    method: GET
+    data_selector: organization_membership
+    params:
+      id: string
+- name: invitation
+  endpoint:
+    path: /user_management/invitations/:id
+    method: GET
+    data_selector: invitation
+    params:
+      id: string
+- name: logout
+  endpoint:
+    path: /user_management/sessions/logout
+    method: GET
+    data_selector: url
+    params: {}
+- name: device_authorization
+  endpoint:
+    path: /user_management/authorize/device
+    method: POST
+    data_selector: device_code
+    params: {}
+- name: device_authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: access_token
+    params:
+      grant_type: urn:ietf:params:oauth:grant-type:device_code
+- name: authorization
+  endpoint:
+    path: /sso/authorize
+    method: GET
+    data_selector: url
+    params:
+      response_type: code
+- name: token
+  endpoint:
+    path: /sso/token
+    method: POST
+    data_selector: access_token
+    params:
+      grant_type: authorization_code
+- name: profile
+  endpoint:
+    path: /sso/profile
+    method: GET
+    data_selector: profile
+    params: {}
+- name: directory
+  endpoint:
+    path: /directories
+    method: GET
+    data_selector: data
+- name: directory_user
+  endpoint:
+    path: /directory_users
+    method: GET
+    data_selector: data
+- name: directory_group
+  endpoint:
+    path: /directory_groups
+    method: GET
+    data_selector: data
+- name: audit_log_event
+  endpoint:
+    path: /audit_logs/events
+    method: POST
+    data_selector: event
+- name: audit_log_export
+  endpoint:
+    path: /audit_logs/exports
+    method: POST
+    data_selector: audit_log_export
+- name: audit_logs_retention
+  endpoint:
+    path: /organizations/:id/audit_logs_retention
+    method: GET
+    data_selector: object
+    params: {}
+- name: organization_domain
+  endpoint:
+    path: /organization_domains/:id
+    method: GET
+    data_selector: object
+    params: {}
+- name: create_organization_domain
+  endpoint:
+    path: /organization_domains
+    method: POST
+    data_selector: object
+    params: {}
+- name: verify_organization_domain
+  endpoint:
+    path: /organization_domains/:id/verify
+    method: POST
+    data_selector: object
+    params: {}
+- name: enroll_factor
+  endpoint:
+    path: /auth/factors/enroll
+    method: POST
+    data_selector: object
+    params: {}
+- name: challenge_factor
+  endpoint:
+    path: /auth/factors/:id/challenge
+    method: POST
+    data_selector: object
+    params: {}
+- name: verify_challenge
+  endpoint:
+    path: /auth/challenges/:id/verify
+    method: POST
+    data_selector: object
+    params: {}
+- name: get_factor
+  endpoint:
+    path: /auth/factors/:id
+    method: GET
+    data_selector: object
+    params: {}
+- name: delete_factor
+  endpoint:
+    path: /auth/factors/:id
+    method: DELETE
+    data_selector: object
+    params: {}
+- name: resource_type
+  endpoint:
+    path: /fga/v1/resource-types/:type
+    method: GET
+    data_selector: object
+    params: {}
+- name: list_warrants
+  endpoint:
+    path: /fga/v1/warrants
+    method: GET
+    data_selector: data
+    params: {}
+- name: create_warrant
+  endpoint:
+    path: /fga/v1/warrants
+    method: POST
+    data_selector: object
+    params: {}
+- name: delete_warrant
+  endpoint:
+    path: /fga/v1/warrants
+    method: POST
+    data_selector: object
+    params: {}
+- name: warrants
+  endpoint:
+    path: /fga/v1/warrants
+    method: POST
+    data_selector: data
+- name: resources
+  endpoint:
+    path: /fga/v1/resources
+    method: GET
+    data_selector: data
+- name: resource
+  endpoint:
+    path: /fga/v1/resources/:resource_type/:resource_id
+    method: GET
+    data_selector: resource
+- name: batch_resources
+  endpoint:
+    path: /fga/v1/resources/batch
+    method: POST
+    data_selector: data
+- name: policies
+  endpoint:
+    path: /fga/v1/policies
+    method: GET
+    data_selector: data
+    params: {}
+- name: create_policy
+  endpoint:
+    path: /fga/v1/policies
+    method: POST
+    data_selector: policy
+    params: {}
+- name: update_policy
+  endpoint:
+    path: /fga/v1/policies/:name
+    method: PUT
+    data_selector: policy
+    params: {}
+- name: delete_policy
+  endpoint:
+    path: /fga/v1/policies/:name
+    method: DELETE
+    data_selector: policy
+    params: {}
+- name: check
+  endpoint:
+    path: /fga/v1/check
+    method: POST
+    data_selector: checks
+    params: {}
+- name: schema
+  endpoint:
+    path: /fga/v1/schema
+    method: GET
+    data_selector: schema
+    params: {}
+- name: query
+  endpoint:
+    path: /fga/v1/query
+    method: POST
+    data_selector: data
+    params: {}
+- name: user
+  endpoint:
+    path: /user_management/users
+    method: GET
+    data_selector: data
+- name: user_by_id
+  endpoint:
+    path: /user_management/users/:id
+    method: GET
+    data_selector: user
+- name: user_by_external_id
+  endpoint:
+    path: /user_management/users/external_id/:external_id
+    method: GET
+    data_selector: user
+- name: list_roles
+  endpoint:
+    path: /organizations/:organization_id/roles
+    method: GET
+    data_selector: data
+- name: authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: user
+    params: {}
+- name: sessions
+  endpoint:
+    path: /user_management/users/:id/sessions
+    method: GET
+    data_selector: data
+    params: {}
+- name: revoke_session
+  endpoint:
+    path: /user_management/sessions/revoke
+    method: POST
+    data_selector: session
+    params: {}
+- name: authentication_challenge
+  endpoint:
+    path: /user_management/authentication_challenge
+    method: GET
+- name: email_verification
+  endpoint:
+    path: /user_management/email_verification/:id
+    method: GET
+- name: password_reset
+  endpoint:
+    path: /user_management/password_reset/:id
+    method: GET
+- name: organization_membership
+  endpoint:
+    path: /user_management/organization_memberships/:id
+    method: GET
+- name: invitation
+  endpoint:
+    path: /user_management/invitations/:id
+    method: GET
+- name: logout
+  endpoint:
+    path: /user_management/sessions/logout
+    method: GET
+    data_selector: url
+    params:
+      session_id: string
+      return_to: string
+- name: device_authorization
+  endpoint:
+    path: /user_management/authorize/device
+    method: POST
+    data_selector: device_code
+    params:
+      client_id: string
+- name: device_authentication
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: access_token
+    params:
+      grant_type: urn:ietf:params:oauth:grant-type:device_code
+      device_code: string
+      client_id: string
+- name: sso_authorization
+  endpoint:
+    path: /sso/authorize
+    method: GET
+    data_selector: url
+    params:
+      response_type: code
+      client_id: string
+      redirect_uri: string
+      connection: string
+      state: string
+      provider_scopes: string
+- name: get_profile_and_token
+  endpoint:
+    path: /sso/token
+    method: POST
+    data_selector: access_token
+    params:
+      client_id: string
+      client_secret: string
+      grant_type: authorization_code
+      code: string
+- name: get_user_profile
+  endpoint:
+    path: /sso/profile
+    method: GET
+    data_selector: profile
+    params:
+      access_token: string
+- name: list_connections
+  endpoint:
+    path: /connections
+    method: GET
+    data_selector: data
+    params:
+      connection_type: string
+      domain: string
+      organization_id: string
+      after: string
+      before: string
+      limit: number
+      order: asc
+- name: directory
+  endpoint:
+    path: /directories
+    method: GET
+    data_selector: data
+    params: {}
+- name: directory_user
+  endpoint:
+    path: /directory_users
+    method: GET
+    data_selector: data
+    params: {}
+- name: directory_group
+  endpoint:
+    path: /directory_groups
+    method: GET
+    data_selector: data
+    params: {}
+- name: audit_log_event
+  endpoint:
+    path: /audit_logs/events
+    method: POST
+    data_selector: data
+    params: {}
+- name: audit_log_export
+  endpoint:
+    path: /audit_logs/exports
+    method: POST
+    data_selector: data
+    params: {}
+- name: audit_logs_retention
+  endpoint:
+    path: /organizations/:id/audit_logs_retention
+    method: GET
+    data_selector: object
+    params: {}
+- name: organization_domain
+  endpoint:
+    path: /organization_domains/:id
+    method: GET
+    data_selector: object
+    params: {}
+- name: resource_type
+  endpoint:
+    path: /fga/v1/resource-types/:type
+    method: GET
+    data_selector: object
+    params: {}
+- name: warrant
+  endpoint:
+    path: /fga/v1/warrants
+    method: GET
+    data_selector: data
+    params: {}
+- name: warrants
+  endpoint:
+    path: /fga/v1/warrants
+    method: POST
+    data_selector: data
+    params: {}
+- name: resources
+  endpoint:
+    path: /fga/v1/resources
+    method: GET
+    data_selector: data
+    params: {}
+- name: policies
+  endpoint:
+    path: /fga/v1/policies
+    method: GET
+    data_selector: data
+    params: {}
+- name: check
+  endpoint:
+    path: /fga/v1/check
+    method: POST
+    data_selector: result
+    params: {}
+- name: query
+  endpoint:
+    path: /fga/v1/query
+    method: GET
+    data_selector: data
+    params: {}
+- name: organization_domain
+  endpoint:
+    path: /organizations/:organization_id/domains
+    method: GET
+    data_selector: data
+- name: role
+  endpoint:
+    path: /organizations/:organization_id/roles
+    method: GET
+    data_selector: data
+- name: user
+  endpoint:
+    path: /user_management/users
+    method: GET
+    data_selector: data
+- name: authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: user
+    params:
+      client_id: client_123456789
+      client_secret: sk_example_123456789
+- name: auth_factors
+  endpoint:
+    path: /user_management/users/:id/auth_factors
+    method: GET
+    data_selector: data
+    params: {}
+- name: email_verification
+  endpoint:
+    path: /user_management/email_verification/:id
+    method: GET
+    data_selector: email_verification
+    params: {}
+- name: password_reset
+  endpoint:
+    path: /user_management/password_reset/:id
+    method: GET
+    data_selector: password_reset
+    params: {}
+- name: organization_memberships
+  endpoint:
+    path: /user_management/organization_memberships/:id
+    method: GET
+    data_selector: organization_membership
+    params: {}
+- name: invitations
+  endpoint:
+    path: /user_management/invitations/:id
+    method: GET
+    data_selector: invitation
+    params: {}
+- name: logout
+  endpoint:
+    path: /user_management/sessions/logout
+    method: GET
+    data_selector: url
+    params:
+      session_id: string
+      return_to: string
+- name: device_authorization
+  endpoint:
+    path: /user_management/authorize/device
+    method: POST
+    data_selector: device_code
+    params:
+      client_id: string
+- name: device_authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: access_token
+    params:
+      grant_type: urn:ietf:params:oauth:grant-type:device_code
+      device_code: string
+      client_id: string
+- name: sso_authorize
+  endpoint:
+    path: /sso/authorize
+    method: GET
+    data_selector: url
+    params:
+      response_type: code
+      client_id: string
+      redirect_uri: string
+      connection: string
+      provider_scopes: string
+- name: sso_token
+  endpoint:
+    path: /sso/token
+    method: POST
+    data_selector: access_token
+    params:
+      client_id: string
+      client_secret: string
+      grant_type: authorization_code
+      code: string
+- name: sso_profile
+  endpoint:
+    path: /sso/profile
+    method: GET
+    data_selector: profile
+    params:
+      access_token: string
+- name: directory
+  endpoint:
+    path: /directories
+    method: GET
+    data_selector: data
+    params: {}
+- name: directory_user
+  endpoint:
+    path: /directory_users
+    method: GET
+    data_selector: data
+    params: {}
+- name: directory_group
+  endpoint:
+    path: /directory_groups
+    method: GET
+    data_selector: data
+    params: {}
+- name: audit_log_events
+  endpoint:
+    path: /audit_logs/events
+    method: POST
+    data_selector: event
+    params: {}
+- name: audit_log_exports
+  endpoint:
+    path: /audit_logs/exports
+    method: POST
+    data_selector: export
+    params: {}
+- name: audit_logs_retention
+  endpoint:
+    path: /organizations/:id/audit_logs_retention
+    method: GET
+    data_selector: object
+    params: {}
+- name: organization_domain
+  endpoint:
+    path: /organization_domains/:id
+    method: GET
+    data_selector: object
+    params: {}
+- name: create_organization_domain
+  endpoint:
+    path: /organization-domains
+    method: POST
+    data_selector: object
+    params: {}
+- name: verify_organization_domain
+  endpoint:
+    path: /organization-domains/:id/verify
+    method: POST
+    data_selector: object
+    params: {}
+- name: enroll_authentication_factor
+  endpoint:
+    path: /auth/factors/enroll
+    method: POST
+    data_selector: object
+    params: {}
+- name: challenge_authentication_factor
+  endpoint:
+    path: /auth/factors/:id/challenge
+    method: POST
+    data_selector: object
+    params: {}
+- name: verify_authentication_challenge
+  endpoint:
+    path: /auth/challenges/:id/verify
+    method: POST
+    data_selector: object
+    params: {}
+- name: get_authentication_factor
+  endpoint:
+    path: /auth/factors/:id
+    method: GET
+    data_selector: object
+    params: {}
+- name: delete_authentication_factor
+  endpoint:
+    path: /auth/factors/:id
+    method: DELETE
+    data_selector: object
+    params: {}
+- name: resource_type
+  endpoint:
+    path: /fga/v1/resource-types/:type
+    method: GET
+    data_selector: object
+    params: {}
+- name: list_resource_types
+  endpoint:
+    path: /fga/v1/resource-types
+    method: GET
+    data_selector: data
+    params: {}
+- name: create_resource_type
+  endpoint:
+    path: /fga/v1/resource-types
+    method: POST
+    data_selector: object
+    params: {}
+- name: update_resource_type
+  endpoint:
+    path: /fga/v1/resource-types/:type
+    method: PUT
+    data_selector: object
+    params: {}
+- name: delete_resource_type
+  endpoint:
+    path: /fga/v1/resource-types/:type
+    method: DELETE
+    data_selector: object
+    params: {}
+- name: list_warrants
+  endpoint:
+    path: /fga/v1/warrants
+    method: GET
+    data_selector: data
+    params: {}
+- name: create_warrant
+  endpoint:
+    path: /fga/v1/warrants
+    method: POST
+    data_selector: object
+    params: {}
+- name: delete_warrant
+  endpoint:
+    path: /fga/v1/warrants
+    method: POST
+    data_selector: object
+    params: {}
+- name: warrant
+  endpoint:
+    path: /fga/v1/warrants
+    method: POST
+    data_selector: null
+    params: {}
+- name: resource
+  endpoint:
+    path: /fga/v1/resources
+    method: GET
+    data_selector: data
+    params: {}
+- name: policy
+  endpoint:
+    path: /fga/v1/policies
+    method: GET
+    data_selector: data
+    params: {}
+- name: check
+  endpoint:
+    path: /fga/v1/check
+    method: POST
+    data_selector: null
+    params: {}
+- name: query
+  endpoint:
+    path: /fga/v1/query
+    method: GET
+    data_selector: null
+    params: {}
+- name: schema
+  endpoint:
+    path: /fga/v1/schema
+    method: GET
+    data_selector: schema
+- name: apply_schema
+  endpoint:
+    path: /fga/v1/schema
+    method: POST
+    data_selector: ''
+- name: organization_domain
+  endpoint:
+    path: /organizations/:organization_id/roles
+    method: GET
+    data_selector: data
+- name: role
+  endpoint:
+    path: /organizations/:organization_id/roles
+    method: GET
+    data_selector: data
+- name: user
+  endpoint:
+    path: /user_management/users
+    method: GET
+    data_selector: data
+- name: authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: user
+    params: {}
+- name: sessions
+  endpoint:
+    path: /user_management/users/:id/sessions
+    method: GET
+    data_selector: data
+    params: {}
+- name: revoke_session
+  endpoint:
+    path: /user_management/sessions/revoke
+    method: POST
+    data_selector: status
+    params: {}
+- name: authentication_challenge
+  endpoint:
+    path: /user_management/users/:id/auth_factors
+    method: POST
+    data_selector: challenge
+    params:
+      id: string
+      type: totp
+      totp_issuer: Foo Corp
+      totp_user: bob@example.com
+- name: list_authentication_factors
+  endpoint:
+    path: /user_management/users/:id/auth_factors
+    method: GET
+    data_selector: data
+    params:
+      id: string
+- name: get_email_verification
+  endpoint:
+    path: /user_management/email_verification/:id
+    method: GET
+    data_selector: email_verification
+    params:
+      id: string
+- name: get_password_reset_token
+  endpoint:
+    path: /user_management/password_reset/:id
+    method: GET
+    data_selector: password_reset
+    params:
+      id: string
+- name: create_password_reset_token
+  endpoint:
+    path: /user_management/password_reset
+    method: POST
+    data_selector: password_reset
+    params:
+      email: string
+- name: reset_password
+  endpoint:
+    path: /user_management/password_reset/confirm
+    method: POST
+    data_selector: user
+    params:
+      token: string
+      new_password: string
+- name: get_organization_membership
+  endpoint:
+    path: /user_management/organization_memberships/:id
+    method: GET
+    data_selector: organization_membership
+    params:
+      id: string
+- name: list_organization_memberships
+  endpoint:
+    path: /user_management/organization_memberships
+    method: GET
+    data_selector: data
+    params:
+      user_id: string
+      organization_id: string
+      statuses: array
+      limit: number
+      before: string
+      after: string
+      order: asc | desc
+- name: create_organization_membership
+  endpoint:
+    path: /user_management/organization_memberships
+    method: POST
+    data_selector: organization_membership
+    params:
+      user_id: string
+      organization_id: string
+      role_slug: string
+- name: update_organization_membership
+  endpoint:
+    path: /user_management/organization_memberships/:id
+    method: PUT
+    data_selector: organization_membership
+    params:
+      id: string
+      role_slug: string
+- name: delete_organization_membership
+  endpoint:
+    path: /user_management/organization_memberships/:id
+    method: DELETE
+    data_selector: null
+    params:
+      id: string
+- name: deactivate_organization_membership
+  endpoint:
+    path: /user_management/organization_memberships/:id/deactivate
+    method: PUT
+    data_selector: organization_membership
+    params:
+      id: string
+- name: reactivate_organization_membership
+  endpoint:
+    path: /user_management/organization_memberships/:id/reactivate
+    method: PUT
+    data_selector: organization_membership
+    params:
+      id: string
+- name: get_invitation
+  endpoint:
+    path: /user_management/invitations/:id
+    method: GET
+    data_selector: invitation
+    params:
+      id: string
+- name: find_invitation_by_token
+  endpoint:
+    path: /user_management/invitations/by_token/:token
+    method: GET
+    data_selector: invitation
+    params:
+      token: string
+- name: list_invitations
+  endpoint:
+    path: /user_management/invitations
+    method: GET
+    data_selector: data
+    params:
+      email: string
+      organization_id: string
+      limit: number
+      before: string
+      after: string
+      order: asc | desc
+- name: send_invitation
+  endpoint:
+    path: /user_management/invitations
+    method: POST
+    data_selector: invitation
+    params:
+      email: string
+      organization_id: string
+      expires_in_days: int
+      inviter_user_id: string
+      role_slug: String
+- name: accept_invitation
+  endpoint:
+    path: /user_management/invitations/:id/accept
+    method: POST
+    data_selector: invitation
+    params:
+      id: string
+- name: revoke_invitation
+  endpoint:
+    path: /user_management/invitations/:id/revoke
+    method: POST
+    data_selector: invitation
+    params:
+      id: string
+- name: logout
+  endpoint:
+    path: /user_management/sessions/logout
+    method: GET
+    data_selector: url
+    params: {}
+- name: device_authorization
+  endpoint:
+    path: /user_management/authorize/device
+    method: POST
+    data_selector: device_code
+    params: {}
+- name: device_authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: access_token
+    params:
+      grant_type: urn:ietf:params:oauth:grant-type:device_code
+- name: sso_authorize
+  endpoint:
+    path: /sso/authorize
+    method: GET
+    data_selector: url
+    params:
+      response_type: code
+- name: sso_token
+  endpoint:
+    path: /sso/token
+    method: POST
+    data_selector: access_token
+    params:
+      grant_type: authorization_code
+- name: sso_profile
+  endpoint:
+    path: /sso/profile
+    method: GET
+    data_selector: profile
+    params: {}
+- name: connections
+  endpoint:
+    path: /connections
+    method: GET
+    data_selector: data
+    params: {}
+- name: directory
+  endpoint:
+    path: /directories
+    method: GET
+    data_selector: data
+    params: {}
+- name: directory_user
+  endpoint:
+    path: /directory_users
+    method: GET
+    data_selector: data
+    params: {}
+- name: directory_group
+  endpoint:
+    path: /directory_groups
+    method: GET
+    data_selector: data
+    params: {}
+- name: audit_log_event
+  endpoint:
+    path: /audit_logs/events
+    method: POST
+    data_selector: event
+    params: {}
+- name: audit_log_export
+  endpoint:
+    path: /audit_logs/exports
+    method: POST
+    data_selector: export
+    params: {}
+- name: audit_logs_retention
+  endpoint:
+    path: /organizations/:id/audit_logs_retention
+    method: GET
+    data_selector: object
+- name: organization_domain
+  endpoint:
+    path: /organization_domains/:id
+    method: GET
+    data_selector: object
+- name: create_organization_domain
+  endpoint:
+    path: /organization-domains
+    method: POST
+    data_selector: object
+- name: verify_organization_domain
+  endpoint:
+    path: /organization-domains/:id/verify
+    method: POST
+    data_selector: object
+- name: enroll_factor
+  endpoint:
+    path: /auth/factors/enroll
+    method: POST
+    data_selector: object
+- name: challenge_factor
+  endpoint:
+    path: /auth/factors/:id/challenge
+    method: POST
+    data_selector: object
+- name: get_factor
+  endpoint:
+    path: /auth/factors/:id
+    method: GET
+    data_selector: object
+- name: list_warrants
+  endpoint:
+    path: /fga/v1/warrants
+    method: GET
+    data_selector: data
+- name: create_warrant
+  endpoint:
+    path: /fga/v1/warrants
+    method: POST
+    data_selector: object
+- name: warrants
+  endpoint:
+    path: /fga/v1/warrants
+    method: POST
+    data_selector: data
+    params: {}
+- name: resources
+  endpoint:
+    path: /fga/v1/resources
+    method: GET
+    data_selector: data
+    params: {}
+- name: policies
+  endpoint:
+    path: /fga/v1/policies
+    method: GET
+    data_selector: data
+    params: {}
+- name: check
+  endpoint:
+    path: /fga/v1/check
+    method: POST
+    data_selector: result
+    params: {}
+- name: query
+  endpoint:
+    path: /fga/v1/query
+    method: GET
+    data_selector: data
+    params: {}
+- name: schema
+  endpoint:
+    path: /fga/v1/schema
+    method: GET
+    data_selector: data
+    params: {}
+- name: schema
+  endpoint:
+    path: /fga/v1/schema
+    method: POST
+- name: widget_token
+  endpoint:
+    path: /widgets/token
+    method: POST
+- name: organization_domain
+  endpoint:
+    path: /organization_domain
+    method: GET
+    data_selector: object
+    params: {}
+- name: role
+  endpoint:
+    path: /roles
+    method: GET
+    data_selector: object
+    params: {}
+- name: user
+  endpoint:
+    path: /user_management/users
+    method: GET
+    data_selector: object
+    params: {}
+- name: authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: user
+    params: {}
+- name: list_sessions
+  endpoint:
+    path: /user_management/users/:id/sessions
+    method: GET
+    data_selector: data
+    params: {}
+- name: revoke_session
+  endpoint:
+    path: /user_management/sessions/revoke
+    method: POST
+    data_selector: session
+    params: {}
+- name: authentication_factors
+  endpoint:
+    path: /user_management/users/:id/auth_factors
+    method: GET
+- name: email_verification
+  endpoint:
+    path: /user_management/email_verification/:id
+    method: GET
+- name: password_reset
+  endpoint:
+    path: /user_management/password_reset/:id
+    method: GET
+- name: organization_memberships
+  endpoint:
+    path: /user_management/organization_memberships/:id
+    method: GET
+- name: invitations
+  endpoint:
+    path: /user_management/invitations/:id
+    method: GET
+- name: logout
+  endpoint:
+    path: /user_management/sessions/logout
+    method: GET
+    data_selector: url
+    params: {}
+- name: device_authorization
+  endpoint:
+    path: /user_management/authorize/device
+    method: POST
+    data_selector: device_code
+    params: {}
+- name: device_authentication
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: access_token
+    params:
+      grant_type: urn:ietf:params:oauth:grant-type:device_code
+- name: authorization
+  endpoint:
+    path: /sso/authorize
+    method: GET
+    data_selector: url
+    params:
+      response_type: code
+- name: profile
+  endpoint:
+    path: /sso/profile
+    method: GET
+    data_selector: profile
+    params: {}
+- name: directory
+  endpoint:
+    path: /directories
+    method: GET
+    data_selector: data
+    params: {}
+- name: directory_user
+  endpoint:
+    path: /directory_users
+    method: GET
+    data_selector: data
+    params: {}
+- name: directory_group
+  endpoint:
+    path: /directory_groups
+    method: GET
+    data_selector: data
+    params: {}
+- name: audit_log_event
+  endpoint:
+    path: /audit_logs/events
+    method: POST
+    data_selector: event
+    params: {}
+- name: audit_log_export
+  endpoint:
+    path: /audit_logs/exports
+    method: POST
+    data_selector: export
+    params: {}
+- name: audit_logs_retention
+  endpoint:
+    path: /organizations/:id/audit_logs_retention
+    method: GET
+    data_selector: object
+    params: {}
+- name: organization_domain
+  endpoint:
+    path: /organization_domains/:id
+    method: GET
+    data_selector: object
+    params: {}
+- name: create_organization_domain
+  endpoint:
+    path: /organization_domains
+    method: POST
+    data_selector: object
+    params: {}
+- name: verify_organization_domain
+  endpoint:
+    path: /organization_domains/:id/verify
+    method: POST
+    data_selector: object
+    params: {}
+- name: enroll_authentication_factor
+  endpoint:
+    path: /auth/factors/enroll
+    method: POST
+    data_selector: object
+    params: {}
+- name: create_warrant
+  endpoint:
+    path: /fga/v1/warrants
+    method: POST
+    data_selector: object
+    params: {}
+- name: warrant
+  endpoint:
+    path: /fga/v1/warrants
+    method: POST
+    data_selector: ''
+    params: {}
+- name: resource
+  endpoint:
+    path: /fga/v1/resources
+    method: GET
+    data_selector: data
+    params: {}
+- name: policy
+  endpoint:
+    path: /fga/v1/policies
+    method: GET
+    data_selector: data
+    params: {}
+- name: check
+  endpoint:
+    path: /fga/v1/check
+    method: POST
+    data_selector: ''
+    params: {}
+- name: query
+  endpoint:
+    path: /fga/v1/query
+    method: GET
+    data_selector: data
+    params: {}
+- name: schema
+  endpoint:
+    path: /fga/v1/schema
+    method: POST
+- name: widget_token
+  endpoint:
+    path: /widgets/token
+    method: POST
+- name: token
+  endpoint:
+    path: /widgets/token
+    method: GET
+    data_selector: object
+    params:
+      organization_id: string
+      user_id: string
+      scopes:
+      - widgets:users-table:manage
+- name: organization_domain
+  endpoint:
+    path: /organizations/:organization_id/roles
+    method: GET
+- name: role
+  endpoint:
+    path: /user_management/users/:id
+    method: GET
+- name: user
+  endpoint:
+    path: /user_management/users
+    method: GET
+- name: authenticate
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: user
+    params:
+      client_id: client_123456789
+      client_secret: sk_example_123456789
+      grant_type: password
+      email: marcelina@example.com
+      password: i8uv6g34kd490s
+      ip_address: 192.0.2.1
+      user_agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36
+        (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
+- name: authentication_challenge
+  endpoint:
+    path: /user_management/users/:id/auth_factors
+    method: POST
+    data_selector: challenge
+    params:
+      id: string
+      type: totp
+- name: list_authentication_factors
+  endpoint:
+    path: /user_management/users/:id/auth_factors
+    method: GET
+    data_selector: data
+    params:
+      id: string
+- name: email_verification
+  endpoint:
+    path: /user_management/email_verification/:id
+    method: GET
+    data_selector: email_verification
+    params:
+      id: string
+- name: password_reset
+  endpoint:
+    path: /user_management/password_reset/:id
+    method: GET
+    data_selector: password_reset
+    params:
+      id: string
+- name: organization_membership
+  endpoint:
+    path: /user_management/organization_memberships/:id
+    method: GET
+    data_selector: organization_membership
+    params:
+      id: string
+- name: logout
+  endpoint:
+    path: /user_management/sessions/logout
+    method: GET
+    data_selector: url
+    params: {}
+- name: device_authorization
+  endpoint:
+    path: /user_management/authorize/device
+    method: POST
+    data_selector: device_code
+    params: {}
+- name: device_authentication
+  endpoint:
+    path: /user_management/authenticate
+    method: POST
+    data_selector: access_token
+    params:
+      grant_type: urn:ietf:params:oauth:grant-type:device_code
+- name: authorization_url
+  endpoint:
+    path: /sso/authorize
+    method: GET
+    data_selector: url
+    params:
+      response_type: code
+- name: token
+  endpoint:
+    path: /sso/token
+    method: POST
+    data_selector: access_token
+    params:
+      grant_type: authorization_code
+- name: profile
+  endpoint:
+    path: /sso/profile
+    method: GET
+    data_selector: profile
+    params: {}
+- name: connections
+  endpoint:
+    path: /connections
+    method: GET
+    data_selector: data
+    params: {}
+- name: delete_connection
+  endpoint:
+    path: /connections/:id
+    method: DELETE
+    data_selector: status
+    params: {}
+- name: directory
+  endpoint:
+    path: /directories
+    method: GET
+    data_selector: data
+    params: {}
+- name: directory_user
+  endpoint:
+    path: /directory_users
+    method: GET
+    data_selector: data
+    params: {}
+- name: directory_group
+  endpoint:
+    path: /directory_groups
+    method: GET
+    data_selector: data
+    params: {}
+- name: audit_log
+  endpoint:
+    path: /audit_logs/events
+    method: POST
+    data_selector: event
+    params: {}
+- name: audit_log_export
+  endpoint:
+    path: /audit_logs/exports
+    method: POST
+    data_selector: export
+    params: {}
+- name: audit_logs_retention
+  endpoint:
+    path: /organizations/:id/audit_logs_retention
+    method: GET
+    data_selector: object
+- name: organization_domain
+  endpoint:
+    path: /organization_domains/:id
+    method: GET
+    data_selector: object
+- name: resource_type
+  endpoint:
+    path: /fga/v1/resource-types/:type
+    method: GET
+    data_selector: object
+- name: warrant
+  endpoint:
+    path: /fga/v1/warrants
+    method: GET
+    data_selector: data
+- name: warrants
+  endpoint:
+    path: /fga/v1/warrants
+    method: POST
+    data_selector: ''
+    params: {}
+- name: resources
+  endpoint:
+    path: /fga/v1/resources
+    method: GET
+    data_selector: data
+    params: {}
+- name: policies
+  endpoint:
+    path: /fga/v1/policies
+    method: GET
+    data_selector: data
+    params: {}
+- name: check
+  endpoint:
+    path: /fga/v1/check
+    method: POST
+    data_selector: ''
+    params: {}
+- name: query
+  endpoint:
+    path: /fga/v1/query
+    method: GET
+    data_selector: data
+    params: {}
+- name: schema
+  endpoint:
+    path: /fga/v1/schema
+    method: GET
+    data_selector: ''
+    params: {}
+- name: schema
+  endpoint:
+    path: /fga/v1/schema
+    method: POST
+- name: widget_token
+  endpoint:
+    path: /widgets/token
+    method: POST
+- name: vault_kv
+  endpoint:
+    path: /vault/v1/kv
+    method: GET
+- name: vault_kv_metadata
+  endpoint:
+    path: /vault/v1/kv/:id/metadata
+    method: GET
+- name: vault_kv_versions
+  endpoint:
+    path: /vault/v1/kv/:id/versions
+    method: GET
+- name: vault_decrypt
+  endpoint:
+    path: /vault/v1/keys/decrypt
+    method: POST
+- name: vault_encrypt
+  endpoint:
+    path: /vault/v1/keys/data-key
+    method: POST
+- name: feature_flags
+  endpoint:
+    path: /organizations/:organization_id/feature-flags
+    method: GET
+    data_selector: data
+    params: {}
+- name: attempts
+  endpoint:
+    path: /radar/attempts
+    method: POST
+    data_selector: verdict
+    params: {}
+- name: send_passwordless_session
+  endpoint:
+    path: /passwordless/sessions/:id/send
+    method: POST
+    data_selector: success
+    params:
+      id: string
+- name: user_management
+  endpoint:
+    path: /user-management
+    method: GET
+    data_selector: data
+    params: {}
+- name: sso
+  endpoint:
+    path: /single-sign-on
+    method: GET
+    data_selector: data
+    params: {}
+- name: profile_and_token
+  endpoint:
+    path: /sso/token
+    method: POST
+    data_selector: profile
+    params:
+      client_id: client_123456789
+      client_secret: sk_example_123456789
+      grant_type: authorization_code
+      code: 01E2RJ4C05B52KKZ8FSRDAP23J
+- name: profile_data
+  endpoint:
+    path: /api/profile
+    method: GET
+    data_selector: data
+    params: {}
+- name: sso_authorization
+  endpoint:
+    path: /sso/authorize
+    method: GET
+    data_selector: authorization
+    params:
+      response_type: code
+      client_id: sk_example_123456
+      redirect_uri: https://example.com/callback
+      state: dj1kUXc0dzlXZ1hjUQ==
+      organization: org_01EHZNVPK3SFK441A1RGBFSHRT
+- name: portal
+  endpoint:
+    path: /portal/generate_link
+    method: POST
+    data_selector: link
+    params: {}
+- name: directory_users
+  endpoint:
+    path: /directory_users
+    method: GET
+    data_selector: users
+    params:
+      directory: directory_01ECAZ
+- name: audit_log_event
+  endpoint:
+    path: /audit_logs/events
+    method: POST
+    data_selector: event
+    params: {}
+- name: audit_log_event
+  endpoint:
+    path: /audit_logs/events
+    method: POST
+    data_selector: event
+    params:
+      organization_id: org_01EHWNCE74X7JSDV0X3SZ3KJNY
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+    data_selector: data
+- name: organizations
+  endpoint:
+    path: /organizations
+    method: GET
+    data_selector: data
+- name: user_management
+  endpoint:
+    path: /user-management
+    method: GET
+    data_selector: users
+- name: enterprise_sso
+  endpoint:
+    path: /single-sign-on
+    method: GET
+    data_selector: sso
+- name: radar
+  endpoint:
+    path: /radar
+    method: GET
+    data_selector: protection
+- name: admin_portal
+  endpoint:
+    path: /admin-portal
+    method: GET
+    data_selector: admin
+- name: directory_sync
+  endpoint:
+    path: /directory-sync
+    method: GET
+    data_selector: lifecycle
+- name: rbac
+  endpoint:
+    path: /rbac
+    method: GET
+    data_selector: permissions
+- name: authkit
+  endpoint:
+    path: /authkit
+    method: GET
+    data_selector: ui
+- name: audit_logs
+  endpoint:
+    path: /audit-logs
+    method: GET
+    data_selector: logs
+- name: vault
+  endpoint:
+    path: /vault
+    method: GET
+    data_selector: ekm
+- name: sso
+  endpoint:
+    path: /sso
+    method: POST
+    data_selector: data
+    params: {}
+- name: scim
+  endpoint:
+    path: /scim
+    method: GET
+    data_selector: data
+    params: {}
+- name: sso_connections
+  endpoint:
+    path: /sso/connections
+    method: GET
+    data_selector: connections
+    params: {}
+- name: audit_logs
+  endpoint:
+    path: /audit_logs
+    method: GET
+    data_selector: data
+    params: {}
+- name: sso_connections
+  endpoint:
+    path: /sso/connections
+    method: GET
+    data_selector: data
+    params: {}
+- name: scim
+  endpoint:
+    path: /scim
+    method: GET
+    data_selector: data
+    params: {}
+- name: startup_plan
+  endpoint:
+    path: /support-plans/startup
+    method: GET
+- name: scale_plan
+  endpoint:
+    path: /support-plans/scale
+    method: GET
+- name: enterprise_plan
+  endpoint:
+    path: /support-plans/enterprise
+    method: GET
+- name: sso_connections
+  endpoint:
+    path: /sso/connections
+    method: GET
+    data_selector: data
+    params: {}
+- name: audit_logs
+  endpoint:
+    path: /audit/logs
+    method: GET
+    data_selector: data
+    params: {}
+- name: user_management
+  endpoint:
+    path: /user-management
+    method: GET
+    data_selector: data
+    params: {}
+- name: single_sign_on
+  endpoint:
+    path: /single-sign-on
+    method: GET
+    data_selector: data
+    params: {}
+- name: user_management
+  endpoint:
+    path: /user-management
+    method: GET
+    data_selector: data
+    params: {}
+- name: single_sign_on
+  endpoint:
+    path: /single-sign-on
+    method: GET
+    data_selector: data
+    params: {}
+- name: directory_sync
+  endpoint:
+    path: /directory-sync
+    method: GET
+    data_selector: data
+    params: {}
+- name: audit_logs
+  endpoint:
+    path: /audit-logs
+    method: GET
+    data_selector: data
+    params: {}
+- name: profile
+  endpoint:
+    path: /sso/token
+    method: POST
+    params:
+      client_id: client_123456789
+      client_secret: sk_example_123456789
+      grant_type: authorization_code
+      code: 01E2RJ4C05B52KKZ8FSRDAP23J
+- name: profile_data
+  endpoint:
+    path: /profile/data
+    method: GET
+    data_selector: data
+    params: {}
+- name: subscriber_personal_data
+  endpoint:
+    path: /api/v1/subscriber_personal_data
+    method: GET
+    data_selector: data
+    params: {}
+- name: user_management
+  endpoint:
+    path: /user-management
+    method: GET
+    data_selector: records
+    params: {}
+- name: directory_sync
+  endpoint:
+    path: /directory-sync
+    method: GET
+    data_selector: records
+    params: {}
+- name: enroll_factor
+  endpoint:
+    path: /auth/factors/enroll
+    method: POST
+    data_selector: response
+    params: {}
+- name: incidents
+  endpoint:
+    path: /v1/incidents
+    method: GET
+    data_selector: data
+    params: {}
+- name: status
+  endpoint:
+    path: /v1/status
+    method: GET
+    data_selector: data
+    params: {}
+- name: user_management
+  endpoint:
+    path: /user-management
+    method: GET
+    data_selector: users
+    params: {}
+- name: enterprise_sso
+  endpoint:
+    path: /single-sign-on
+    method: GET
+    data_selector: sso
+    params: {}
+- name: Single Sign-On
+  endpoint:
+    path: /sso
+    method: POST
+- name: Audit Logs
+  endpoint:
+    path: /audit-logs
+    method: GET
+- name: Directory Sync
+  endpoint:
+    path: /directory-sync
+    method: POST
+- name: user_management
+  endpoint:
+    path: /user-management
+    method: GET
+    data_selector: data
+    params: {}
+- name: enterprise_sso
+  endpoint:
+    path: /single-sign-on
+    method: GET
+    data_selector: data
+    params: {}
+- name: radar
+  endpoint:
+    path: /radar
+    method: GET
+    data_selector: data
+    params: {}
+- name: check
+  endpoint:
+    path: /fga/check
+    method: POST
+    data_selector: data
+    params: {}
+- name: query
+  endpoint:
+    path: /fga/query
+    method: POST
+    data_selector: data
+    params: {}
+notes:
+- Supports OAuth 2.0 for authentication
+- Supports multiple authentication methods including password and magic auth.
+- Idempotency keys expire after 24 hours.
+- Multi-Factor Authentication can be enabled via the Authentication page in the WorkOS
+  dashboard.
+- Requires cookie password to load sealed session
+- Supports multiple authentication methods including Password and MagicAuth.
+- Refresh tokens may be rotated after use.
+- API requests must be made over HTTPS.
+- API keys should be kept secure and private.
+- Uses OAuth2 with password grant type.
+- Authorization requires a Bearer token.
+- Uses OAuth2 with client credentials flow.
+- Requires setup of connected app in WorkOS
+- SCIM is a game-changer for customers, saving time and reducing friction.
+- Integrates with multiple identity providers using SAML and OpenID Connect protocols
+- Detect, verify, and block harmful behavior in real time.
+- Protects your app against AI bots, account abuse, credential theft, and more.
+- Portal Links expire 5 minutes after they’re created.
+- Real-time updates with webhook events
+- Integrates with 12+ directory services
+- Set up enterprise-grade RBAC in minutes.
+- Use the WorkOS Dashboard to define the actions, targets, and metadata that you want
+  to record from your app.
+- Custom metadata can be added to the top-level event, the actor, or any targets associated.
+- WorkOS Vault provides secure storage and strict access control for any type of object
+  data, with encryption of individual keys backed by an HSM.
+- Data stays protected across its lifecycle - encrypted in transit, in use, and at
+  rest.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Real-time protection against bots, fraud, and abuse.
+- Supports JWTs for session management
+- Role-based Access Control is implemented in AuthKit
+- Get email notifications whenever WorkOS creates, updates or resolves an incident.
+- Get text message notifications whenever WorkOS creates or resolves an incident.
+- Ensure proper OAuth2 scopes are set for API access.
+- Uses OAuth2 with refresh token — requires setup of connected app in WorkOS
+- Some endpoints may have rate limits
+- WorkOS enables software companies to expand into the enterprise market.
+- Integrating was straightforward, pleasant, and fun.
+- WorkOS API requires setup of connected app for authentication
+- SSO is a crucial part of our Enterprise Pro plan
+- The Admin Portal has made customer onboarding a breeze
+- WorkOS provides easy-to-implement must-have functionality out of the box.
+- WorkOS is SOC 2 Type 2 & SOC 3 compliant.
+- WorkOS is GDPR compliant.
+- All customers have access to documentation, email support, and in-product web support.
+- WorkOS provides a far superior developer experience.
+- The Admin Portal has made customer onboarding a breeze.
+- SCIM is crucial for user lifecycle management.
+- Ensure proper OAuth2 setup in WorkOS dashboard
+- Includes support for multiple authentication methods.
+- Offers free tier for the first million active users.
+- Integration with multiple identity providers is supported.
+- WorkOS shall implement and maintain reasonable administrative, technical, and physical
+  safeguards designed to protect Subscriber Personal Data.
+- Some objects may return nulls in deeply nested fields
+- The Clauses are governed by the law of Ireland.
+- Any dispute arising from these Clauses shall be resolved by the courts of an EU
+  Member State.
+- This UK Addendum has been issued by the Information Commissioner for Parties making
+  Restricted Transfers.
+- The Information Commissioner considers that it provides Appropriate Safeguards for
+  Restricted Transfers when it is entered into as a legally binding contract.
+- API allows for incident notification subscriptions.
+- WorkOS is free up to 1 million MAUs.
+- The commitments outlined in this SLA will apply only to production use of the WorkOS
+  platform.
+- WorkOS takes security seriously.
+- We may change this policy from time to time.
+- Uses OAuth2 with refresh token
+- We shall not sell, transfer or lease out your personal data to third parties.
+- Simplify roles and permissions and fine-tune user access.
+- Some endpoints may have usage limits
+- Access control systems can be hybrid, combining multiple types.
+- ReBAC is a dynamic model based on user-resource relationships.
+- Implementing ABAC can be complex and requires careful planning.
+- FGA supports millions of authorization requests per second
+errors:
+- '401: The API key used was invalid.'
+- '403: The API key used did not have the correct permissions.'
+- '404: The resource was not found.'
+- '422: Validation failed for the request. Check that the parameters were correct.'
+- '429: Too many requests. Refer to the Rate Limits section.'
+- '400: The request was not acceptable. Check that the parameters were correct.'
+- '429: Too many requests.'
+- '5xx: Indicates an error with WorkOS servers.'
+- '200: Successful request.'
+- 'access_denied: The identity provider denied user access to the client application
+  or the user denied an OAuth authorization request at the identity provider.'
+- 'ambiguous_connection_selector: A connection could not be uniquely identified using
+  the provided connection selector (e.g., organization).'
+- 'connection_domain_invalid: There is no connection for the provided domain.'
+- 'connection_invalid: There is no connection for the provided ID.'
+- 'connection_strategy_invalid: The provider has multiple strategies associated per
+  environment.'
+- 'connection_unlinked: The connection associated with the request is unlinked.'
+- 'domain_connection_selector_not_allowed: This is a legacy error code that only applies
+  if using the deprecated ''domain'' query parameter which is no longer valid for
+  this endpoint.'
+- 'idp_initiated_sso_disabled: IdP-initiated SSO is disabled for the connection.'
+- 'invalid_connection_selector: A valid connection selector query parameter must be
+  provided in order to correctly determine the proper connection to return an authorization
+  URL for.'
+- 'organization_invalid: There is no organization matching the provided ID.'
+- 'oauth_failed: An OAuth authorization request failed for a user.'
+- 'profile_not_allowed_outside_organization: A profile was received that has an email
+  that is outside the organization''s domain and the organization does not allow this.'
+- 'server_error: The SSO authentication failed for the user.'
+- 'ambiguous_connection_selector: A connection could not be uniquely identified using
+  the provided connection selector (e.g., organization). This can occur when there
+  are multiple SSO connections under the same organization. If you need multiple SSO
+  connections for an organization, use the connection parameter to identify which
+  connection to use for SSO.'
+- 'profile_not_allowed_outside_organization: A profile was received that has an email
+  that is outside the organization’s domain and the organization does not allow this.'
+- 'email_verification_required: Email ownership must be verified before authentication.'
+- 'mfa_enrollment: The user must enroll in MFA to finish authenticating.'
+- 'mfa_challenge: The user must complete an MFA challenge to finish authenticating.'
+- 'organization_selection_required: The user must choose an organization to finish
+  their authentication.'
+- 'sso_required: User must authenticate using one of the matching connections.'
+- 'organization_authentication_methods_required: User must authenticate using one
+  of the methods allowed by the organization.'
+- 'invalid_jwt: The JWT is invalid.'
+- 'invalid_session_cookie: The session cookie is invalid.'
+- 'no_session_cookie_provided: No session cookie was provided.'
+- code: email_verification_required
+  message: Email ownership must be verified before authentication.
+- code: mfa_enrollment
+  message: The user must enroll in MFA to finish authenticating.
+- code: mfa_challenge
+  message: The user must complete an MFA challenge to finish authenticating.
+- code: organization_selection_required
+  message: The user must choose an organization to finish their authentication.
+- error: sso_required
+  error_description: User must authenticate using one of the matching connections.
+- error: organization_authentication_methods_required
+  error_description: User must authenticate using one of the methods allowed by the
+    organization.
+- 'access_denied: The identity provider denied user access to the client application'
+- 'organization_invalid: There is no organization matching the provided ID'
+- 'invalid_connection_selector: A valid connection selector query parameter must be
+  provided'
+- '401 Unauthorized: Recheck API key or token expiration'
+- 'authorization_pending: The authorization request is still pending as the user hasn’t
+  yet completed the user interaction flow.'
+- 'slow_down: The client is polling too frequently and should slow down.'
+- 'access_denied: The user declined the authorization request.'
+- email_verification_required
+- mfa_enrollment
+- mfa_challenge
+- organization_selection_required
+- sso_required
+- organization_authentication_methods_required
+- authorization_pending
+- slow_down
+- access_denied
+- expired_token
+- invalid_request
+- invalid_client
+- invalid_grant
+- unsupported_grant_type
+- 'expired_token: The device code has expired.'
+- 'invalid_request: The request is missing a required parameter or includes an invalid
+  parameter value.'
+- 'invalid_client: Client authentication failed.'
+- 'invalid_grant: The provided device code is invalid.'
+- 'unsupported_grant_type: The grant type is not supported.'
+- 'invalid_jwt: JWT is invalid'
+- 'invalid_session_cookie: Session cookie is invalid'
+- 'no_session_cookie_provided: No session cookie was provided'
+- 'invalid_request: The request is missing a required parameter.'
+- 'invalid_jwt: The provided JWT is invalid.'
+- 'invalid_session_cookie: The provided session cookie is invalid.'
+- 'access_denied: The identity provider denied user access to the client application.'
+- 'invalid_jwt: Invalid JWT provided.'
+- 'no_session_cookie_provided: No session cookie provided.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '401 Unauthorized: Recheck API key or permissions'
+- '401 Unauthorized: Recheck API key'
+- '401 Unauthorized: Check client credentials or token expiration'
+- 'INVALID_CREDENTIALS: Check your API keys or authentication details.'
+- 'USER_NOT_FOUND: Ensure the specified user exists.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'INVALID_CREDENTIALS: Check your client ID and secret'
+- 'RATE_LIMIT_EXCEEDED: Reduce the frequency of API calls'
+- '401 Unauthorized: Check OAuth scopes or token expiration.'
+- '400 Bad Request: Check request parameters'
+- '401 Unauthorized: Ensure valid OAuth token'
+- '404 Not Found: Verify endpoint path'
+- 'INVALID_GRANT: Check your client ID and secret'
+- 'UNAUTHORIZED: Ensure the access token is valid'
+- '401 Unauthorized: Check OAuth scopes or token validity'
+- 'INVALID_CLIENT: Check your client ID and secret.'
+- 'UNAUTHORIZED: Ensure your OAuth token is valid.'
+- '401 Unauthorized: Recheck OAuth token'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Check your authentication credentials.'
+- 'HTTP 5xx: Server Error - Indicates a problem with the WorkOS service.'
+- 'Unauthorized access: please check your credentials.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - organization_membership
+  - invitation
+  - user
+  - AuthKit
+  - SAML
+  - OIDC
+  - organization_id
+  - event
+  - OAuthToken
+  - NamedCredential
+  - OAuth2
+  - AccessToken
+client:
+  base_url: https://api.workos.com
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+source_metadata: null

@@ -1,0 +1,195 @@
+resources:
+- name: connection_credentials
+  endpoint:
+    path: /connect
+    method: GET
+    data_selector: records
+    params: {}
+- name: DeepgramSTTService
+  endpoint:
+    path: /stt
+    method: POST
+    data_selector: transcription
+    params: {}
+- name: CartesiaTTSService
+  endpoint:
+    path: /tts
+    method: POST
+    data_selector: audio
+    params: {}
+- name: OpenAILLMService
+  endpoint:
+    path: /llm
+    method: POST
+    data_selector: response
+    params: {}
+- name: DeepgramSTTService
+  endpoint:
+    path: /stt
+    method: POST
+    data_selector: transcription
+- name: OpenAILLMService
+  endpoint:
+    path: /llm
+    method: POST
+    data_selector: response
+- name: CartesiaTTSService
+  endpoint:
+    path: /tts
+    method: POST
+    data_selector: audio
+- name: DeepgramSTTService
+  endpoint:
+    path: /stt
+    method: POST
+    data_selector: data
+    params: {}
+- name: CartesiaTTSService
+  endpoint:
+    path: /tts
+    method: POST
+    data_selector: data
+    params: {}
+- name: OpenAILLMService
+  endpoint:
+    path: /llm
+    method: POST
+    data_selector: data
+    params: {}
+- name: DeepgramSTTService
+  endpoint:
+    path: /services/deepgram
+    method: POST
+    data_selector: transcription
+    params: {}
+- name: OpenAILLMService
+  endpoint:
+    path: /services/openai
+    method: POST
+    data_selector: response
+    params: {}
+- name: CartesiaTTSService
+  endpoint:
+    path: /services/cartesia
+    method: POST
+    data_selector: audio
+    params: {}
+- name: DeepgramSTTService
+  endpoint:
+    path: /stt
+    method: POST
+    data_selector: transcription
+- name: CartesiaTTSService
+  endpoint:
+    path: /tts
+    method: POST
+    data_selector: audio
+- name: OpenAILLMService
+  endpoint:
+    path: /llm
+    method: POST
+    data_selector: response
+- name: DeepgramSTTService
+  endpoint:
+    path: https://console.deepgram.com/signup
+    method: GET
+    data_selector: api_key
+- name: OpenAILLMService
+  endpoint:
+    path: https://auth.openai.com/create-account
+    method: GET
+    data_selector: api_key
+- name: CartesiaTTSService
+  endpoint:
+    path: https://play.cartesia.ai/sign-up
+    method: GET
+    data_selector: api_key
+- name: bot
+  endpoint:
+    path: /api/v1/bot
+    method: POST
+    data_selector: response
+    params: {}
+- name: Twilio WebSocket
+  endpoint:
+    path: /websocket/twilio
+    method: POST
+    data_selector: data
+- name: Daily PSTN Dial-in
+  endpoint:
+    path: /daily/pstn/dial-in
+    method: POST
+    data_selector: data
+- name: Daily PSTN Dial-out
+  endpoint:
+    path: /daily/pstn/dial-out
+    method: POST
+    data_selector: data
+- name: offer
+  endpoint:
+    path: /api/offer
+    method: GET
+    data_selector: records
+    params: {}
+- name: pipeline
+  endpoint:
+    path: /pipeline
+    method: POST
+    data_selector: data
+- name: PipelineTask
+  endpoint:
+    path: /server/pipeline/pipeline-task
+    method: POST
+- name: interruption_strategies
+  endpoint:
+    params:
+      default: '[]'
+notes:
+- Initial startup may take ~20 seconds as Pipecat downloads required models and imports.
+- Uses API keys from environment file.
+- Supports multiple AI services.
+- Uses API keys for authentication — requires setup of API keys in environment file
+- Uses API keys for each service configured in the environment file.
+- Make sure to allow microphone access when prompted by your browser.
+- If the WebRTC connection fails, first try a different browser. If that fails, make
+  sure you don’t have a VPN or firewall rules blocking traffic. WebRTC uses UDP to
+  communicate.
+- Check that your microphone and speakers are working and not muted.
+- Uses API keys for AI services — require setup in environment file
+- This example requires running both a server and ngrok tunnel in two separate terminal
+  windows.
+- Free ngrok URLs change on each restart.
+- Ensure your server is running and ngrok tunnel is active before making calls.
+- 'Client connects to local server: The development runner provides all necessary
+  endpoints'
+- 'API key security: Your web server keeps API keys secret from the client'
+- PipelineTask manages pipeline execution and lifecycle.
+- Default configuration - cancel after 5 minutes of inactivity
+- Idle detection only starts after the pipeline has begun processing frames
+- 'The heartbeat system uses two key timing constants: HEARTBEAT_SECONDS = 1.0 and
+  HEARTBEAT_MONITOR_SECONDS = 10.0'
+- Interruption strategies only affect behavior when the bot is actively speaking
+- When the bot is not speaking, user input is processed immediately regardless of
+  strategy configuration
+- The allow_interruptions parameter must be True for interruption strategies to work
+- User speech that doesn’t meet interruption criteria is discarded, not queued
+- Strategies are evaluated in order - first match wins
+- Both audio and text data are automatically fed to strategies based on their implementation
+- Word counting uses simple whitespace splitting for word boundaries
+- The idle callback won’t be triggered while the user or bot is actively speaking
+- The processor automatically cleans up its resources when the pipeline ends
+- Basic callbacks are supported for backward compatibility
+errors: []
+auth_info:
+  mentioned_objects:
+  - DEEPGRAM_API_KEY
+  - OPENAI_API_KEY
+  - CARTESIA_API_KEY
+  - DeepgramSTTService
+  - OpenAILLMService
+  - CartesiaTTSService
+client:
+  base_url: https://your-connect-end-point-here
+  headers:
+    Accept: application/json
+source_metadata: null

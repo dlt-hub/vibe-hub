@@ -1,0 +1,38 @@
+resources:
+- name: BoundLogger
+  endpoint:
+    path: /structlog.stdlib.BoundLogger
+    method: GET
+- name: ProcessorFormatter
+  endpoint:
+    path: /structlog.stdlib.ProcessorFormatter
+    method: GET
+notes:
+- Since sys.exc_clear() has been dropped in Python 3, there is currently no way to
+  avoid multiple tracebacks in your log files if using structlog together with Twisted
+  on Python 3
+- structlog currently only supports the legacy – but still perfectly working – Twisted
+  logging system found in twisted.python.log
+- The drawback of EventAdapter approach is that Twisted will format your exceptions
+  as multi-line log entries which is painful to parse
+- Should be able to be used as a drop-in replacement for standard library's logging
+- Requires configuration of both structlog and the logging system
+- Uses logging.basicConfig with format='%(message)s' for basic setup
+errors: []
+auth_info:
+  mentioned_objects:
+  - structlog.twisted.BoundLogger
+  - structlog.BoundLogger
+  - EventAdapter
+  - JSONRenderer
+  - JSONLogObserverWrapper
+  - PlainFileLogObserver
+  - logging.getLogger
+  - structlog.get_logger
+  - LoggerFactory
+  - BoundLogger
+client:
+  base_url: https://docs.python.org/3/library/logging.html
+  headers:
+    Accept: application/json
+source_metadata: null

@@ -1,0 +1,158 @@
+resources:
+- name: compressed_files
+  endpoint:
+    path: /vsizip/
+    method: GET
+- name: remote_filesystems
+  endpoint:
+    path: /vsis3/
+    method: GET
+- name: in_memory_datasets
+  endpoint:
+    path: /vsimem/
+    method: GET
+- name: shapefile
+  endpoint:
+    path: ne_10m_admin_0_countries.shp
+    method: GET
+- name: geopackage
+  endpoint:
+    path: /tmp/test.gpkg
+    method: GET
+- name: geojson
+  endpoint:
+    path: file.geojson
+    method: GET
+- name: flatgeobuf
+  endpoint:
+    path: file.fgb
+    method: GET
+- name: read_dataframe
+  endpoint:
+    method: GET
+    params:
+      layer: null
+      encoding: null
+      columns: null
+      read_geometry: true
+      force_2d: false
+      skip_features: 0
+      max_features: null
+      where: null
+      bbox: null
+      mask: null
+      fids: null
+      sql: null
+      sql_dialect: null
+      fid_as_index: false
+      use_arrow: null
+      on_invalid: raise
+      arrow_to_pandas_kwargs: null
+- name: write_dataframe
+  endpoint:
+    method: POST
+    params:
+      layer: null
+      driver: null
+      encoding: null
+      geometry_type: null
+      promote_to_multi: null
+      nan_as_null: true
+      append: false
+      use_arrow: null
+      dataset_metadata: null
+      layer_metadata: null
+      metadata: null
+      dataset_options: null
+      layer_options: null
+- name: detect_write_driver
+  endpoint:
+    method: function_call
+- name: get_gdal_config_option
+  endpoint:
+    method: function_call
+- name: list_drivers
+  endpoint:
+    method: function_call
+- name: list_layers
+  endpoint:
+    method: function_call
+- name: read_bounds
+  endpoint:
+    method: function_call
+- name: read_info
+  endpoint:
+    method: function_call
+- name: set_gdal_config_options
+  endpoint:
+    method: function_call
+- name: vsi_listtree
+  endpoint:
+    method: function_call
+- name: vsi_rmtree
+  endpoint:
+    method: function_call
+- name: vsi_unlink
+  endpoint:
+    method: function_call
+- name: read_dataframe
+  endpoint:
+    method: function_call
+- name: write_dataframe
+  endpoint:
+    method: function_call
+- name: read_arrow
+  endpoint:
+    method: function_call
+- name: open_arrow
+  endpoint:
+    method: function_call
+- name: write_arrow
+  endpoint:
+    method: function_call
+notes:
+- NULL values in string fields are represented as None
+- NULL values in boolean or integer fields cause re-cast to np.float64 with np.nan
+  representation
+- NULL values in date/datetime fields are set as np.datetime64('NaT')
+- Detection of NULL values is limited to subset of records being read
+- Measured geometry types are automatically downgraded to 3D equivalent with warning
+- Curvilinear, triangle, TIN, and surface geometries are automatically converted to
+  linear approximation
+- GDAL may incorrectly assume ISO-8859-1 encoding for ESRI Shapefiles leading to miscoding
+  errors
+- Field names and values are read into Python UTF-8 strings
+- No validation of attribute values or geometry types before writing
+- OSM data requires iterating over all features twice for feature count calculation
+- OSM data reading by layer may need to read all records in data source
+- Remote OSM data sources should be downloaded locally before reading
+- use_arrow=True option may speed up reading from OSM files
+- GDAL only supports datetimes at a millisecond resolution
+- Timezone information is preserved where possible, however GDAL only represents time
+  zones as UTC offsets
+- Not all file formats have dedicated support to store datetime data, like ESRI Shapefile
+- In-memory datasets limited to single-file data formats and does not support formats
+  with multiple files
+- User's responsibility to clean up the in-memory filesystem; pyogrio will not automatically
+  release those resources
+- Not all geometry or field types may be supported for all drivers
+- Using skip_features parameter may incur significant overhead if driver does not
+  support random seek capability
+- bbox values must be in the same CRS as the dataset
+- mask values must be in the same CRS as the dataset
+- If GEOS is not available, all geometries with bounding boxes that intersect bbox
+  will be returned instead of only intersecting geometries
+errors:
+- Measured geometry types warning can be ignored with warnings.filterwarnings
+- Invalid types may crash during writing with obscure error messages
+- Large OSM files may require enabling interleaved reading mode via OGR_INTERLEAVED_READING
+  config option
+- Spatial filter with Arrow interface returns incorrect results due to GDAL bug -
+  fixed expected in GDAL 3.8.0
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: /vsi
+  headers:
+    Accept: application/json
+source_metadata: null
