@@ -1,0 +1,60 @@
+resources:
+- name: get_request
+  endpoint:
+    path: /get
+    method: GET
+    data_selector: response
+- name: delay_request
+  endpoint:
+    path: /delay/2
+    method: GET
+    data_selector: response
+- name: ip_request
+  endpoint:
+    path: /ip
+    method: GET
+    data_selector: response
+- name: get
+  endpoint:
+    path: /get
+    method: GET
+    data_selector: response
+    params: {}
+- name: delay
+  endpoint:
+    path: /delay/2
+    method: GET
+    data_selector: response
+    params: {}
+- name: ip
+  endpoint:
+    path: /ip
+    method: GET
+    data_selector: origin
+    params: {}
+notes:
+- Keep responses for 360 seconds
+- Uses Cache-Control response headers for expiration, if available
+- Caching can be disabled if we want to get a fresh page and not cache it
+- The GitHub API is rate-limited at 5000 requests per hour if authenticated, or only
+  60 requests per hour otherwise.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Does not include backend or serializer settings
+- Does not include settings specified as python expressions, for example timedelta
+  objects or callback functions
+- By default, cached responses never expire
+- Some objects like Contact may return nulls in deeply nested fields
+- Get some debugging info about the cache
+- Uses SQLite as the backend for caching.
+- Caching can be disabled for specific requests.
+- By default, requests-cache will keep cached responses indefinitely.
+errors: []
+auth_info:
+  mentioned_objects:
+  - Github
+  - ACCESS_TOKEN
+client:
+  base_url: https://httpbin.org
+  headers:
+    Accept: application/json
+source_metadata: null

@@ -1,0 +1,148 @@
+resources:
+- name: values_append
+  endpoint:
+    path: /spreadsheets.values.append
+    method: POST
+    data_selector: response
+    params: {}
+- name: values_batch_get
+  endpoint:
+    path: /spreadsheets.values.batchGet
+    method: GET
+    data_selector: valueRanges
+    params: {}
+- name: values_clear
+  endpoint:
+    path: /spreadsheets.values.clear
+    method: POST
+    data_selector: response
+    params: {}
+- name: values_get
+  endpoint:
+    path: /spreadsheets.values.get
+    method: GET
+    data_selector: values
+    params: {}
+- name: values_update
+  endpoint:
+    path: /spreadsheets.values.update
+    method: PUT
+    data_selector: response
+    params: {}
+- name: batch_update
+  endpoint:
+    path: /batch_update
+    method: POST
+    data_selector: values
+- name: update_acell
+  endpoint:
+    path: /update_acell
+    method: POST
+    data_selector: value
+- name: update_cell
+  endpoint:
+    path: /update_cell
+    method: POST
+    data_selector: value
+- name: update_cells
+  endpoint:
+    path: /update_cells
+    method: POST
+    data_selector: cell_list
+- name: duplicate
+  endpoint:
+    path: /duplicate
+    method: POST
+    data_selector: new_sheet
+- name: find
+  endpoint:
+    path: /find
+    method: GET
+    data_selector: cell
+- name: findall
+  endpoint:
+    path: /findall
+    method: GET
+    data_selector: cells
+- name: format
+  endpoint:
+    path: /format
+    method: POST
+    data_selector: formatted_cells
+- name: freeze
+  endpoint:
+    path: /freeze
+    method: POST
+    data_selector: frozen
+- name: get
+  endpoint:
+    path: /get
+    method: GET
+    data_selector: values
+- name: get_all_cells
+  endpoint:
+    path: /get_all_cells
+    method: GET
+    data_selector: cells
+- name: get_all_records
+  endpoint:
+    path: /get_all_records
+    method: GET
+    data_selector: records
+- name: get_all_values
+  endpoint:
+    path: /get_all_values
+    method: GET
+    data_selector: values
+- name: get_note
+  endpoint:
+    path: /get_note
+    method: GET
+    data_selector: note
+- name: get_values
+  endpoint:
+    path: /get_values
+    method: GET
+    data_selector: values
+- name: worksheet
+  endpoint:
+    path: /gspread/worksheet
+    method: GET
+    data_selector: values
+    params: {}
+notes:
+- If you’re storing your user credentials in a place other than the default, you may
+  provide a path to that file.
+- The classes described below should not be instantiated by the end-user. Their instances
+  result from calling other objects’ methods.
+- Requires Google API client setup with OAuth2.
+- New in version 3.3.
+- If you want to store the credentials file somewhere else, specify the path to service_account.json
+  in service_account().
+- Make sure you store the credentials file in a safe place.
+- If you want to store the credentials file somewhere else, specify the path to credentials.json
+  and authorized_user.json in oauth().
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+errors:
+- '429 RESOURCE_EXHAUSTED: Throttle API calls or reduce frequency'
+auth_info:
+  mentioned_objects:
+  - OAuthCredentialObject
+  - OauthToken
+  - Spreadsheet
+  - GoogleCredentials
+  - AssertionSession
+client:
+  base_url: https://sheets.googleapis.com/v4
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://accounts.google.com/o/oauth2/token
+    client_id: '{{ dlt.secrets[''google_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''google_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''google_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

@@ -1,0 +1,122 @@
+resources:
+- name: tree
+  endpoint:
+    path: /api/v1/tree
+    method: GET
+    data_selector: records
+    params: {}
+- name: customer_interviews
+  endpoint:
+    path: /interviews
+    method: GET
+    data_selector: interviews
+- name: customer_feedback
+  endpoint:
+    path: /feedback
+    method: GET
+    data_selector: feedback
+- name: reports
+  endpoint:
+    path: /v1/reports
+    method: GET
+    data_selector: data
+    params: {}
+- name: statuses
+  endpoint:
+    path: /api/v1/statuses
+    method: GET
+    data_selector: data
+    params: {}
+- name: mcpServers
+  endpoint:
+    path: /mcp
+    method: GET
+- name: insights
+  endpoint:
+    path: /api/projects/{project_id}/insights
+    method: GET
+- name: metric_card
+  endpoint:
+    path: /api/metric_cards/{cardId}
+    method: PUT
+- name: cards_metrics
+  endpoint:
+    path: /v1/cards/{colAValue}/metrics
+    method: POST
+    data_selector: response
+    params: {}
+- name: opportunity_cards
+  endpoint:
+    path: /api/opportunity_cards
+    method: GET
+    data_selector: cards
+- name: solution_cards
+  endpoint:
+    path: /api/solution_cards
+    method: GET
+    data_selector: cards
+- name: assumption_cards
+  endpoint:
+    path: /api/assumption_cards
+    method: GET
+    data_selector: cards
+notes:
+- Some functionalities may have restrictions based on user roles.
+- Enhanced API authentication reliability with retry logic and exponential backoff
+  to handle concurrent access
+- Feedback can be submitted by anyone with view access.
+- Reports provide a streamlined view of work’s impact without overwhelming detail.
+- Custom fields in Vistaly support your team’s unique needs.
+- All workspaces start with a few default Custom Fields on Opportunity cards.
+- The roadmap view automatically syncs decisions made in the tree to prioritize opportunities
+  and solutions.
+- Filters are a great tool for creating custom views of your data.
+- Slack notifications will automatically be sent to your personal Slack bot channel
+  if enabled.
+- During trial, Editor seats are uncapped.
+- Starter plan comes with 4 Editor seats, with an option to pay $35/mo/user for up
+  to 4 additional Editor seats.
+- Business plan comes with 10 Editor seats, with an option to pay $70/mo/user for
+  up to 10 additional Editor seats.
+- Enterprise subscriptions are customized to your needs.
+- Uses API key for authentication.
+- Ensure the API key is active in Vistaly settings.
+- Vistaly supports required custom fields of types text and numeric. However, if your
+  Jira workflow enforces other custom attribute types on creation, please use the
+  'link workflow' until additional field types are supported.
+- You probably want to leave the 'timestamp' field blank, which will automatically
+  default to the time we receive the API call.
+- User tokens have broader permissions than bot tokens and should be handled with
+  extra care
+- User tokens will expire if the authorizing user changes their password
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects may return nulls in deeply nested fields
+- Opportunity Cards document customer problems, needs, or desires worth solving.
+- Hierarchical structure allows for transforming complex problems into manageable
+  components.
+- Vistaly is designed for collaboration.
+errors:
+- '400 Bad Request: Check your request parameters.'
+- '401 Unauthorized: Ensure your authentication details are correct.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'API key required: Verify your API key is correctly set.'
+- 'Authentication errors: Ensure your API key is valid and has necessary permissions.'
+- 'Token Expiration: User tokens expire if the authorizing user changes their password'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://app.vistaly.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.vistaly.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

@@ -1,0 +1,289 @@
+resources:
+- name: RawChannelReader
+  endpoint:
+    path: /RNS/RawChannelReader
+    method: GET
+    data_selector: records
+    params: {}
+- name: RawChannelWriter
+  endpoint:
+    path: /RNS/RawChannelWriter
+    method: GET
+    data_selector: records
+    params: {}
+- name: Transport
+  endpoint:
+    path: /RNS/Transport
+    method: GET
+    data_selector: records
+    params: {}
+- name: RNS Testnet Amsterdam
+  endpoint:
+    path: /RNS/Testnet/Asterdam
+    method: TCPClientInterface
+    data_selector: enabled
+    params:
+      target_host: amsterdam.connect.reticulum.network
+      target_port: 4965
+- name: RNS Testnet BetweenTheBorders
+  endpoint:
+    path: /RNS/Testnet/BetweenTheBorders
+    method: TCPClientInterface
+    data_selector: enabled
+    params:
+      target_host: reticulum.betweentheborders.com
+      target_port: 4242
+- name: RNS Testnet I2P Hub
+  endpoint:
+    path: /RNS/Testnet/I2P
+    method: I2PInterface
+    data_selector: enabled
+    params:
+      peers: g3br23bvx3lq5uddcsjii74xgmn6y5q325ovrkq2zw2wbzbqgbuq.b32.i2p
+- name: RNS Testnet Amsterdam
+  endpoint:
+    path: /tcp/amsterdam
+    method: GET
+    data_selector: records
+    params:
+      enabled: 'yes'
+      target_host: amsterdam.connect.reticulum.network
+      target_port: '4965'
+- name: RNS Testnet BetweenTheBorders
+  endpoint:
+    path: /tcp/betweentheborders
+    method: GET
+    data_selector: records
+    params:
+      enabled: 'yes'
+      target_host: reticulum.betweentheborders.com
+      target_port: '4242'
+- name: RNS Testnet I2P Hub
+  endpoint:
+    path: /i2p/hub
+    method: GET
+    data_selector: records
+    params:
+      enabled: 'yes'
+      peers: g3br23bvx3lq5uddcsjii74xgmn6y5q325ovrkq2zw2wbzbqgbuq.b32.i2p
+- name: Default Interface
+  endpoint:
+    path: /etc/reticulum
+    method: GET
+    data_selector: records
+    params: {}
+- name: AutoInterface
+  endpoint:
+    path: /interfaces/auto
+    method: GET
+    data_selector: interfaces
+    params: {}
+- name: BackboneInterface
+  endpoint:
+    path: /interfaces/backbone
+    method: GET
+    data_selector: interfaces
+    params: {}
+- name: TCPServerInterface
+  endpoint:
+    path: /interfaces/tcp_server
+    method: GET
+    data_selector: interfaces
+    params: {}
+- name: TCPClientInterface
+  endpoint:
+    path: /interfaces/tcp_client
+    method: GET
+    data_selector: interfaces
+    params: {}
+- name: UDP Interface
+  endpoint:
+    path: /udp
+    method: GET
+    data_selector: configuration
+    params:
+      listen_ip: 0.0.0.0
+      listen_port: 4242
+      forward_ip: 255.255.255.255
+      forward_port: 4242
+- name: I2P Interface
+  endpoint:
+    path: /i2p
+    method: GET
+    data_selector: configuration
+    params:
+      enabled: 'yes'
+      connectable: 'yes'
+- name: RNode LoRa Interface
+  endpoint:
+    path: /rnode_lora
+    method: GET
+    data_selector: configuration
+    params:
+      enabled: 'yes'
+      port: /dev/ttyUSB2
+      frequency: 867200000
+      bandwidth: 125000
+      txpower: 0
+      spreadingfactor: 7
+      codingrate: 5
+- name: RNode Multi Interface
+  endpoint:
+    path: /rnode_multi
+    method: GET
+    data_selector: configuration
+    params:
+      enabled: 'yes'
+      port: /dev/ttyACM0
+      frequency: 865600000
+      bandwidth: 1625000
+      txpower: 0
+      spreadingfactor: 7
+      codingrate: 5
+- name: Serial Interface
+  endpoint:
+    path: /serial
+    method: GET
+    data_selector: configuration
+    params:
+      enabled: 'yes'
+      port: /dev/ttyUSB0
+      speed: 115200
+      databits: 8
+      parity: none
+      stopbits: 1
+      command: netcat -l 5757
+      respawn_delay: 5
+- name: Packet Radio KISS Interface
+  endpoint:
+    path: /kiss
+    method: GET
+    data_selector: configuration
+    params:
+      enabled: 'yes'
+      port: /dev/ttyUSB1
+      speed: 115200
+      databits: 8
+      parity: none
+      stopbits: 1
+      txtail: 10
+      persistence: 200
+      slottime: 20
+      flow_control: false
+- name: Packet Radio AX.25 KISS Interface
+  endpoint:
+    path: /ax25_kiss
+    method: GET
+    data_selector: configuration
+    params:
+      callsign: NO1CLL
+      ssid: 0
+      enabled: 'yes'
+      port: /dev/ttyUSB2
+      speed: 115200
+      databits: 8
+      parity: none
+      stopbits: 1
+      preamble: 150
+      txtail: 10
+      persistence: 200
+      slottime: 20
+      flow_control: false
+- name: file_transfer
+  endpoint:
+    path: /files
+    method: GET
+    data_selector: files
+    params: {}
+- name: custom_interface
+  endpoint:
+    path: /interfaces
+    method: POST
+    data_selector: interfaces
+    params: {}
+notes:
+- Timeout for link establishment in seconds per hop is 6
+- Grace period in seconds used in link timeout calculation is 5
+- Default interval for sending keep-alive packets on established links in seconds
+  is 360
+- If no traffic or keep-alive packets are received within this period, the link will
+  be marked as stale, and a final keep-alive packet will be sent.
+- Static functions for creating buffered streams that send and receive over a Channel.
+- Reticulum is an experimental networking stack and should be considered as such.
+- An experimental public testnet has been made accessible over both I2P and TCP.
+- --break-system-packages directive is a somewhat misleading choice of words. Setting
+  it will not break any system packages, but will allow installing pip packages user-
+  and system-wide.
+- Some version combinations of macOS and Python require you to manually add your installed
+  pip packages directory to your PATH environment variable.
+- It is currently recommended to use a 64-bit version of the Raspberry Pi OS to run
+  Reticulum.
+- Don’t use the testnet entry-points as hardcoded or default interfaces in any applications
+  you ship to users.
+- The `--break-system-packages` directive is a somewhat misleading choice of words.
+  Setting it will of course not break any system packages, but will simply allow installing
+  `pip` packages user- and system-wide. While this *could* in rare cases lead to version
+  conflicts, it does not generally pose any problems, especially not in the case of
+  installing Reticulum.
+- --break-system-packages directive is somewhat misleading; it allows installing pip
+  packages user- and system-wide without generally causing problems.
+- Some version combinations of macOS and Python require manual addition of pip packages
+  directory to PATH.
+- The --break-system-packages directive is a somewhat misleading choice of words.
+  Setting it will of course not break any system packages, but will simply allow installing
+  pip packages user- and system-wide. While this could in rare cases lead to version
+  conflicts, it does not generally pose any problems, especially not in the case of
+  installing Reticulum.
+- Some version combinations of macOS and Python require you to manually add your installed
+  pip packages directory to your PATH environment variable, before you can use installed
+  commands in your terminal.
+- While it is possible to install and run Reticulum on 32-bit Rasperry Pi OSes, it
+  will require manually configuring and installing required build dependencies, and
+  is not detailed in this manual.
+- On some architectures, including RISC-V, not all dependencies have precompiled binaries.
+- At the time of releasing this manual, work is underway to create pre-built Reticulum
+  packages for OpenWRT, with full configuration, service and uci integration.
+- Uses pip for installation
+- Requires setup of connected app in api
+- On OpenWRT systems with sufficient storage and memory, you can install Reticulum
+  and related utilities using the opkg package manager and pip.
+- The above instructions have been verified and tested on OpenWRT 21.02 only.
+- Depending on your device configuration, you may need to adjust firewall rules for
+  Reticulum connectivity to and from your device to work.
+- --break-system-packages directive is somewhat misleading; it allows installing pip
+  packages user- and system-wide
+- Reticulum can be installed via pip
+- Includes a range of utilities for network management
+- When asked by the installer, make sure to add the Python program to your PATH environment
+  variables.
+- The rnspure package requires no external dependencies for installation.
+- Reticulum is distributed as a Python module, containing the networking core.
+- When Reticulum is first started on a new system, a basic configuration file is created.
+- Probing destinations may not always receive replies.
+- Remote management requires enabling in configuration.
+- Reticulum aims to require as little coordination and trust as possible.
+- Reticulum is completely medium agnostic.
+- If you want to use the internal pure-python primitives, it is highly advisable that
+  you have a good understanding of the risks that this pose, and make an informed
+  decision on whether those risks are acceptable to you.
+- Reticulum supports many kinds of devices as networking interfaces.
+- A small subset of devices may block AutoInterface peer discovery.
+- Radio frequency spectrum is a legally controlled resource, and legislation varies
+  widely around the world.
+- Using RNS Resources for large file transfers is not recommended.
+- If you need to transfer large files, use the Bundle class instead.
+- This interface requires a serial communication module to be installed.
+- Ensure proper configuration of the serial port parameters.
+errors:
+- 'No configuration directory found: create ~/.reticulum or specify one via command
+  line.'
+- 'TIMEOUT: The link timed out, exiting now'
+- 'DESTINATION_CLOSED: The link was closed by the server, exiting now'
+- 'INVALID_DATA: Invalid file list data received, closing link'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://reticulum.network
+  headers:
+    Accept: application/json
+source_metadata: null

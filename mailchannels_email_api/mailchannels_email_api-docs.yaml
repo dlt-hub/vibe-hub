@@ -1,0 +1,260 @@
+resources:
+- name: activate_sub_account
+  endpoint:
+    path: /sub-account/:handle/activate
+    method: POST
+- name: sub_account_api_key
+  endpoint:
+    path: /sub-account/:handle/api-key
+    method: POST
+    data_selector: id
+    params: {}
+- name: create_sub_account_smtp_password
+  endpoint:
+    path: /sub-account/:handle/smtp-password
+    method: POST
+- name: create_sub_account
+  endpoint:
+    path: /sub-account
+    method: POST
+    data_selector: response
+    params: {}
+- name: suppression_list
+  endpoint:
+    path: /suppression-list
+    method: POST
+    data_selector: errors
+    params: {}
+- name: delete_customer_webhooks
+  endpoint:
+    path: /webhook
+    method: DELETE
+    data_selector: null
+    params: {}
+- name: delete_sub_account_api_key
+  endpoint:
+    path: /sub-account/:handle/api-key/:id
+    method: DELETE
+    data_selector: null
+    params: {}
+- name: delete_sub_account_limit
+  endpoint:
+    path: /sub-account/:handle/limit
+    method: DELETE
+    data_selector: null
+    params:
+      handle: required
+- name: delete_sub_account_smtp_password
+  endpoint:
+    path: /sub-account/:handle/smtp-password/:id
+    method: DELETE
+    data_selector: null
+    params:
+      handle: required
+      id: required
+- name: delete_sub_account
+  endpoint:
+    path: /sub-account/:handle
+    method: DELETE
+- name: suppression_entry
+  endpoint:
+    path: /suppression-list/recipients/:recipient
+    method: DELETE
+    data_selector: errors
+    params: {}
+- name: dkim_spf_domain_lockdown_check
+  endpoint:
+    path: /check-domain
+    method: POST
+    data_selector: check_results
+- name: enroll_webhook
+  endpoint:
+    path: /webhook
+    method: POST
+    params:
+      endpoint: required
+- name: customer_webhooks
+  endpoint:
+    path: /webhook
+    method: GET
+    data_selector: webhook
+- name: engagement_metrics
+  endpoint:
+    path: /metrics/engagement
+    method: GET
+    data_selector: buckets
+    params: {}
+- name: performance_metrics
+  endpoint:
+    path: /metrics/performance
+    method: GET
+    data_selector: metrics
+    params: {}
+- name: recipient_behaviour_metrics
+  endpoint:
+    path: /metrics/recipient-behaviour
+    method: GET
+    data_selector: buckets
+    params: {}
+- name: sub_account_api_key
+  endpoint:
+    path: /sub-account/:handle/api-key
+    method: GET
+    data_selector: records
+    params:
+      limit: 100
+      offset: 0
+- name: sub_account_limit
+  endpoint:
+    path: /sub-account/:handle/limit
+    method: GET
+    data_selector: sends
+    params: {}
+- name: sub_account_smtp_password
+  endpoint:
+    path: /sub-account/:handle/smtp-password
+    method: GET
+    data_selector: enabled, id, smtp_password
+    params: {}
+- name: sub_account_usage
+  endpoint:
+    path: /sub-account/:handle/usage
+    method: GET
+    data_selector: total_usage
+    params: {}
+- name: sub_account
+  endpoint:
+    path: /sub-account
+    method: GET
+    data_selector: records
+    params:
+      limit: 1000
+      offset: 0
+- name: suppression_list
+  endpoint:
+    path: /suppression-list
+    method: GET
+    data_selector: suppression_list
+    params:
+      limit: '1000'
+      offset: '0'
+- name: usage_stats
+  endpoint:
+    path: /usage
+    method: GET
+    data_selector: period_end_date
+    params: {}
+- name: volume_metrics
+  endpoint:
+    path: /metrics/volume
+    method: GET
+    data_selector: buckets
+    params: {}
+- name: webhook_signing_key
+  endpoint:
+    path: /webhook/public-key
+    method: GET
+    data_selector: key
+    params:
+      id: string
+- name: send_email
+  endpoint:
+    path: /send
+    method: POST
+    data_selector: data
+- name: set_sub_account_limit
+  endpoint:
+    path: /sub-account/:handle/limit
+    method: PUT
+    data_selector: limit
+    params: {}
+- name: suspend_sub_account
+  endpoint:
+    path: /sub-account/:handle/suspend
+    method: POST
+- name: validate_enrolled_webhook
+  endpoint:
+    path: /webhook/validate
+    method: POST
+    data_selector: results
+    params: {}
+- name: send_email
+  endpoint:
+    path: /send
+    method: POST
+- name: send_email
+  endpoint:
+    path: /send
+    method: POST
+    data_selector: personalizations
+- name: personalizations
+  endpoint:
+    path: /personalizations
+    method: POST
+    data_selector: personalizations
+notes:
+- Supports optional filters for time range, and campaign ID.
+- Retrieves usage statistics during the current billing period.
+- Proper DKIM implementation significantly improves email deliverability and reduces
+  the likelihood of your emails being marked as spam.
+- Maximum of 1000 attachments per email
+- Combined size limit (attachments + email content) is 30MB
+- Base64 encoding is required for all attachment content
+errors:
+- '403: The operation is forbidden. The parent account does not have permission to
+  activate the sub-account.'
+- '404: The specified sub-account does not exist.'
+- '500: An unexpected internal error occurred.'
+- '403: The operation is forbidden. You can''t create API keys for this sub-account.'
+- '422: You have reached the limit of API keys you can create for this sub-account.'
+- '403: The operation is forbidden. You can''t create SMTP passwords for this sub-account.'
+- '422: You have reached the limit of SMTP passwords you can create for this sub-account.'
+- '400: Malformed request. The request body is invalid.'
+- '403: The operation is forbidden. The parent account does not have permission to
+  create sub-accounts.'
+- '409: A sub-account with the specified name already exists.'
+- 400 Bad request. The request body is invalid.
+- 409 Conflicts. One or more suppression entries in the request already exist and
+  cannot be created again.
+- 413 Payload too large. The request exceeds the maximum allowed total of 1000 suppression
+  entries for the parent account and/or its sub-accounts.
+- 500 An unexpected internal error occurred.
+- 503 Temporarily unavailable for maintenance.
+- '400: Missing or invalid API key ID.'
+- '400: Missing or invalid SMTP password ID.'
+- '400: Bad request. The request is invalid.'
+- '503: Temporarily unavailable for maintenance.'
+- 'Bad Request: Invalid request format'
+- User does not have access to this feature
+- Internal Server Error
+- '400 Bad Request: Check query parameters'
+- '500 Internal Server Error: Try again later'
+- '500 Internal Server Error: Retry the request'
+- 400 Bad Request
+- 500 Internal Server Error
+- '404: Sub-account not found'
+- '500: Internal Server Error'
+- '400 Bad Request: The limit and/or offset query parameter are invalid.'
+- '500 Internal Error: An unexpected internal error occurred.'
+- '400 Bad Request: The request is invalid.'
+- Bad Request
+- '404: The key is not found'
+- '400 Bad Request: User does not have access to this feature'
+- 413 Payload too large - The total message size should not exceed 30MB.
+- 502 Bad Gateway
+- '400: Missing or invalid limit value'
+- '404: The specified sub-account does not exist'
+- '500: An unexpected internal error occurred'
+- Bad Request. Provided request ID is too long.
+- No webhooks found for the account
+- 'Email size limit exceeded: Your email message exceeds the size limit and will be
+  rejected.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.mailchannels.net/tx/v1
+  auth:
+    type: apikey
+    location: header
+    header_name: X-Api-Key
+source_metadata: null

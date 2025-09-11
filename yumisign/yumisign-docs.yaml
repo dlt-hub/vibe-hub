@@ -1,0 +1,73 @@
+resources:
+- name: organization_member
+  endpoint:
+    path: /api/v1/organization/members
+    method: POST
+    data_selector: members
+    params: {}
+- name: organization_members
+  endpoint:
+    path: /api/v1/organization/members
+    method: GET
+    data_selector: null
+    params: {}
+- name: organization_roles
+  endpoint:
+    path: /api/v1/organization/roles
+    method: GET
+    data_selector: ''
+- name: workspace
+  endpoint:
+    path: /api/v1/workspaces
+    method: POST
+    data_selector: ''
+    params:
+      name: required
+      description: optional
+- name: workspaces
+  endpoint:
+    path: /api/v1/workspaces
+    method: GET
+    data_selector: ''
+- name: workspace_templates
+  endpoint:
+    path: /api/v1/workspaces/{workspaceId}/templates
+    method: GET
+    params:
+      page: 1
+      limit: 8
+- name: create_workflow_from_template
+  endpoint:
+    path: /api/v1/cloner/template/{templateId}/workflow
+    method: POST
+- name: quick_envelopes
+  endpoint:
+    path: /quick/envelopes
+    method: POST
+notes:
+- API Key is always linked to an organization member, to be able to determine who
+  is creating project using it.
+- API Key is displayed only once when created.
+- YumiSign uses webhooks to notify your application when an event happens in your
+  workflows.
+- Authorization codes may only be exchanged once and expire 10 minutes after issuance.
+- Refresh Token will be used to create a new access token each time it expires.
+- YumiSign can sign the webhook events it sends to your endpoints by including a signature
+  in each event’s YUMISIGN-SIGNATURE header.
+- The only valid live signature scheme is v1.
+- YumiSign generates signatures using a hash-based message authentication code (HMAC)
+  with SHA-256.
+errors:
+- '400: Bad Request. For example the request can have a missing information or not
+  valid JSON.'
+- '401: Unauthorized'
+- 'Validation error: This value should not be blank.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://app.yumisign.com
+  auth:
+    type: apikey
+    location: header
+    header_name: X-YumiSign-Api-Key
+source_metadata: null

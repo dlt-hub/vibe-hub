@@ -1,0 +1,103 @@
+resources:
+- name: LoroDoc
+  endpoint:
+    path: /docs/api/js#LoroDoc
+    method: GET
+    data_selector: LoroDoc
+    params: {}
+- name: import
+  endpoint:
+    path: /import
+    method: POST
+    data_selector: ImportStatusJS
+    params: {}
+- name: updates_encoding
+  endpoint:
+    path: /docs/tutorial/encoding
+    method: GET
+    data_selector: operations
+    params: {}
+- name: snapshot_encoding
+  endpoint:
+    path: /docs/tutorial/encoding
+    method: GET
+    data_selector: document_state
+    params: {}
+- name: shallow_snapshot_encoding
+  endpoint:
+    path: /docs/tutorial/encoding
+    method: GET
+    data_selector: historical_operations
+    params: {}
+- name: container
+  endpoint:
+    path: /api/v1/container
+    method: GET
+    data_selector: containers
+    params: {}
+notes:
+- Never share PeerIDs between concurrent sessions (tabs/devices) - causes document
+  divergence
+- Use random PeerIDs (default) unless you have strict single-ownership locking
+- Creating root containers does not record operations; nested container creation does.
+- Avoid concurrent creation of child containers with the same key in LoroMaps.
+- LoroText uses UTF-16 encoding, matching JavaScript’s native string encoding.
+- 'Index Misalignment: UTF-16 indices differ from visual character count.'
+- 'Performance: Cursor queries on deleted positions require history traversal.'
+- 'Concurrent moves can create cycles: Loro detects and prevents these automatically'
+- Fractional indexing has interleaving issues but maintains relative ordering
+- Default timeout is 30000ms (30 seconds)
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- By default, editing is disabled in detached mode. However, you can enable it.
+- The import() method returns an object detailing the success and pending operations.
+- Both List and MovableList utilize Fugue to achieve maximal non-interleaving.
+- MovableList uses the algorithm from Moving Elements in List CRDTs to implement the
+  move operation.
+- Fractional Index has an interleaving issue, but we believe this is acceptable for
+  tree structures.
+- In centralized environments, we can use linear version numbers to represent a version,
+  such as incrementing a number each time or using timestamps.
+- CRDTs can be used in decentralized environments, and their version representation
+  is different.
+- Events are emitted asynchronously after a microtask.
+- Loro 1.0 has stabilized the data format and will not have any breaking changes.
+- Using `doc.checkout(frontiers)` to jump to a specific version places the document
+  in a detached state, preventing further edits.
+- Be careful when using `doc.setPeerId(newId)`
+- Root containers don’t need operations to be initialized
+- When initializing child containers of LoroMap in parallel, overwrites can occur
+  instead of automatic merging.
+- Use redaction to safely share document history
+- Use shallow snapshots to completely remove old history
+- 'Memory efficiency: Load OpLog without state (relay servers)'
+- 'Time travel: Navigate history without losing the log'
+- 'Fast startup: Load state via snapshots, fetch history later'
+- 'Flexible storage: Store separately for optimization'
+- 'Frontiers have a key limitation when dealing with unknown operations: When you
+  have a Frontier pointing to operations you don’t know about, you cannot determine
+  the complete set of operation IDs included in that version.'
+- Import status tells you what operations were applied and what’s pending due to missing
+  dependencies. Essential for handling out-of-order updates in distributed systems.
+- Peer IDs are unique identifiers for each editing session in Loro’s distributed system.
+- New peer ID generated for each LoroDoc instance, even when loading same document.
+- Shallow snapshots are like Git’s shallow clone - maintain current state while removing
+  old history.
+- Peers can only sync if they have versions after the shallow snapshot point.
+- When initializing child containers in parallel, overwrites can occur instead of
+  automatic merging.
+- By default, Loro and Automerge preserve the whole editing history in a directed
+  acyclic graph like Git.
+- When a container holds substantial data or serves as the primary storage for document
+  content, overwriting it can lead to the unintended hiding/loss of critical information.
+- Last updated on August 30, 2025
+- Can only track a single peer. When the peer ID of the document changes, it will
+  clear the undo stack and the redo stack and track the new peer ID.
+- Loro is not a strict implementation of Event Graph Walker. Rather, Loro is heavily
+  inspired by Eg-Walker’s design philosophy.
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://cdn.jsdelivr.net/npm/loro-crdt@1.0.9/web/index.js
+source_metadata: null

@@ -1,0 +1,160 @@
+resources:
+- name: signals
+  endpoint:
+    path: /rpc
+    method: POST
+    data_selector: result
+    params: {}
+- name: publish_signals
+  endpoint:
+    path: /v1/rpc
+    method: POST
+    data_selector: params.itemsBySignal
+    params: {}
+- name: get stations data
+  endpoint:
+    path: /api/getstationsdata
+    method: GET
+    data_selector: msg.payload.devices
+- name: current_weather
+  endpoint:
+    path: /data/2.5/weather
+    method: GET
+    data_selector: weather
+    params: {}
+- name: forecast
+  endpoint:
+    path: /data/2.5/forecast
+    method: GET
+    data_selector: list
+    params: {}
+- name: home_info
+  endpoint:
+    path: /api/v2/me
+    method: GET
+    data_selector: payload
+- name: zone_info
+  endpoint:
+    path: /api/v2/homes/{homeId}/zones
+    method: GET
+    data_selector: payload
+- name: zone_state
+  endpoint:
+    path: /api/v2/homes/{homeId}/zones/{zoneId}/state
+    method: GET
+    data_selector: payload
+- name: weather
+  endpoint:
+    path: /api/v2/homes/{homeId}/weather
+    method: GET
+    data_selector: payload
+- name: home_info
+  endpoint:
+    path: /log/home/info
+    method: GET
+    data_selector: homeId, zoneId
+- name: viewer
+  endpoint:
+    path: /
+    method: POST
+    data_selector: data.viewer.homes
+    params: {}
+- name: homes
+  endpoint:
+    path: /viewer/homes
+    method: POST
+    data_selector: data.viewer.homes
+- name: consumption
+  endpoint:
+    path: /viewer/homes/consumption
+    method: POST
+    data_selector: data.viewer.homes.consumption.nodes
+- name: sparkplug_b_messages
+  endpoint:
+    path: spBv1.0/#
+    method: SUBSCRIBE
+    data_selector: payload.metrics
+    params: {}
+- name: NodeID
+  endpoint:
+    path: /namespace
+    method: GET
+    data_selector: nodes
+    params: {}
+- name: tags
+  endpoint:
+    path: /tags
+    method: POST
+    data_selector: tags
+    params: {}
+- name: counter
+  endpoint:
+    path: /json1/data
+    method: POST
+    data_selector: data
+    params: {}
+- name: data_to_server
+  endpoint:
+    path: /services/data
+    method: POST
+    data_selector: data
+    params:
+      source: Modbus
+      protocol: MQTT
+      json_format: "{\n  \"times\": [\n    %t\n  ],\n  \"series\": {\n    \"%i-%z\"\
+        : [%a]\n  }\n}"
+      segment_count: 1
+      send_as_object: 'on'
+      port: 1883
+      keepalive: 60
+      topic: dataframe
+      client_id: <Basic Auth username>
+      period: <interval for data transmission>
+      qos: 1
+      data_filtering: All data
+      retry_on_fail: 'on'
+      use_tls: 'off'
+      use_credentials: 'on'
+      username: <Basic Auth username>
+      password: <Basic Auth password>
+notes:
+- Publishing signals through API is supported in version 1.1beta1.
+- If you found any errors, ambiguities or have any suggestions on how to make this
+  guide better, please contact us via chat or send an email to hello@clarify.io.
+- Adjust the inject node to run periodically. Every 10 minutes should be appropriate
+  for the Netatmo data source.
+- Uses api-key for authentication — requires OpenWeatherMap account
+- You need to have the username and password you use for tado.com, or the Tado app.
+- Requires OAuth2 authentication and proper setup of client credentials.
+- Tibber uses a GraphQL API
+- Requires a developer account from Tibber and an access token
+- Requires setup of OAuth2 for authentication
+- Uses OAuth 2.0 as the credential type
+- Uses MQTT protocol to subscribe to Sparkplug B messages.
+- Publicly available OPCUA Demo server at opc.tcp://opcuademo.sterfive.com:26543 that
+  exposes some simulated values.
+- The only required config parameters are username and password, the other parameters
+  have sane defaults.
+- If you haven't already used Node-RED on the device, you will need to get an API
+  key from the user settings.
+- Clarify supports a maximum resolution of 1/s.
+- Change the Message Format from Standard Template to Advanced Template.
+errors:
+- '401 Unauthorized: Check your API key'
+- '404 Not Found: Verify the location is correct'
+- '429 Too Many Requests: Reduce request frequency'
+- '401 Unauthorized: Check your credentials and OAuth token.'
+- '403 Forbidden: Insufficient permissions for the requested resource.'
+- '404 Not Found: The requested resource does not exist.'
+- '-32011 Too many requests: returned when access to a specific RPC method exceeds
+  our rate-limit.'
+- '-32022 Too many items selected: returns when too many items are selected in a clarify.evaluate
+  call.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+client:
+  base_url: https://api.clarify.io/v1/rpc
+  headers:
+    Accept: application/json
+source_metadata: null

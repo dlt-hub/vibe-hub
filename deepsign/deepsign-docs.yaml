@@ -1,0 +1,189 @@
+resources:
+- name: upload_document
+  endpoint:
+    path: /api/v1/documents/file
+    method: POST
+    data_selector: documentId
+- name: overview
+  endpoint:
+    path: /api/v1/overview
+    method: GET
+    data_selector: documents
+- name: documents
+  endpoint:
+    path: /api/v1/documents/{documentId}
+    method: GET
+    data_selector: documentId
+- name: documents_update
+  endpoint:
+    path: /api/v1/documents/{documentId}
+    method: PUT
+    data_selector: ''
+    params: {}
+- name: documents_withdraw
+  endpoint:
+    path: /api/v1/documents/{documentId}/withdraw
+    method: PUT
+    data_selector: ''
+    params: {}
+- name: delete_document
+  endpoint:
+    path: /api/v1/documents/{documentId}
+    method: DELETE
+- name: scan_predefined
+  endpoint:
+    path: /api/v1/documents/file/scan-predefined
+    method: POST
+- name: overview
+  endpoint:
+    path: /api/v1/overview
+    method: GET
+    params:
+      offset: 0
+      limit: 50
+- name: available_modes
+  endpoint:
+    path: /api/v1/available-modes
+    method: GET
+    data_selector: timestamp
+- name: add_signee
+  endpoint:
+    path: /api/v1/documents/{documentId}/signees
+    method: POST
+    data_selector: signeeId
+- name: get_signee
+  endpoint:
+    path: /api/v1/documents/{documentId}/signees/{signeeId}
+    method: GET
+    data_selector: signeeId
+- name: update_signee
+  endpoint:
+    path: /api/v1/documents/{documentId}/signees/{signeeId}
+    method: PUT
+    data_selector: signeeId
+- name: delete_signee
+  endpoint:
+    path: /api/v1/documents/{documentId}/signees/{signeeId}
+    method: DELETE
+    data_selector: signeeId
+- name: resend_invitation
+  endpoint:
+    path: /api/v1/documents/{documentId}/signees/{signeeId}/resend-invitation
+    method: POST
+    data_selector: ''
+- name: add_observer
+  endpoint:
+    path: /api/v1/documents/{documentId}/observers
+    method: POST
+    data_selector: ''
+    params: {}
+- name: delete_observer
+  endpoint:
+    path: /api/v1/documents/{documentId}/observers/{observerId}
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: apply_seal
+  endpoint:
+    path: /api/v1/service/file/seal
+    method: POST
+    data_selector: response
+    params: {}
+- name: available_seals
+  endpoint:
+    path: /api/v1/users/me/seals
+    method: GET
+    data_selector: response
+    params: {}
+- name: hash_sign
+  endpoint:
+    path: /api/v1/service/hash/sign
+    method: POST
+    data_selector: signatureData
+    params: {}
+- name: hash_seal
+  endpoint:
+    path: /api/v1/service/hash/seal
+    method: POST
+    data_selector: signatureData
+    params: {}
+- name: person_register
+  endpoint:
+    path: /api/v1/persons/register
+    method: POST
+    data_selector: ''
+    params: {}
+- name: person_status
+  endpoint:
+    path: /api/v1/persons/status
+    method: POST
+    data_selector: ''
+    params: {}
+- name: document_update
+  endpoint:
+    path: /api/v1/documents/{documentId}
+    method: PUT
+    data_selector: ''
+    params: {}
+- name: document_file
+  endpoint:
+    path: /api/v1/documents/file
+    method: POST
+    data_selector: ''
+    params: {}
+- name: document_access_url
+  endpoint:
+    path: /api/v1/documents/{documentId}/document-access-url
+    method: POST
+    data_selector: url
+- name: service_user
+  endpoint:
+    path: /third-party-connection/
+    method: POST
+    data_selector: service_account
+    params: {}
+notes:
+- All DeepSign API calls require the Authorization header to be included in requests.
+- The upload document endpoint requires a multipart mime POST request.
+- The document can only be updated in 'draft' mode.
+- The download URL's are only valid for short periods of time.
+- Only documents in 'draft' or 'withdrawn' mode can be deleted.
+- The document upload is a multipart mime POST request.
+- 'Make sure the HTTP Header ''Content-Type: application/json'' is used, otherwise
+  an error may occur.'
+- If no autographPosition is defined the seal will not be visible, and only electronically
+  certified.
+- The 'hashId' must conform to the pattern [a-z-_0-9] with a maximum length of 50.
+- The returned DeepID registration URL must be opened on the person's mobile device.
+- Callback URLs must be accessible to DeepCloud.
+- Service user credentials must be copied manually to the client application, as they
+  are only displayed once.
+errors:
+- '415 Unsupported Media Type: Ensure all required Content-Type headers are set.'
+- '403 Forbidden: The download URL is no longer valid.'
+- 'HTTP 204 No Content: Successful deletion'
+- 'HTTP 415 Unsupported Media Type: Check Content-Type headers'
+- '400 Bad Request: HashId must match the specified pattern.'
+- '400: Bad Request: Your request is invalid.'
+- '401: Unauthorized: Your API "access_token" is wrong.'
+- '403: Forbidden: The request is not allowed.'
+- '404: Not Found: No data could not be found.'
+- '405: Method Not Allowed: The method call is invalid.'
+- '408: Request Timeout: The request has taken too long.'
+- '429: Too Many Requests: Too many requests within a given time interval.'
+- '500: Internal Server Error: There was a problem with the server. Try again later.'
+- '503: Service Unavailable: Temporarily offline for maintenance. Please try again
+  later.'
+- '504: Gateway Timeout: The server gateway or proxy, did not response within a specified
+  time.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.sign.deepbox.swiss
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+  headers:
+    Accept-Charset: UTF-8
+source_metadata: null

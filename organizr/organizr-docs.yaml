@@ -1,0 +1,262 @@
+resources:
+- name: sonarr_status
+  endpoint:
+    path: /api/v2/socks/sonarr/api/system/status
+    method: GET
+    params:
+      apikey: sonarrAPIkey
+- name: api
+  endpoint:
+    path: /api/v2
+    method: GET
+    data_selector: records
+- name: homepage_tab
+  endpoint:
+    path: api/v2/page/homepage
+    method: GET
+    data_selector: records
+- name: Plex Authentication
+  endpoint:
+    path: /api/plex/auth
+    method: POST
+- name: ldap_authentication
+  endpoint:
+    path: /ldap/auth
+    method: POST
+    data_selector: authentication_result
+    params: {}
+- name: organizr-auth
+  endpoint:
+    path: /api/v2/auth/$1
+    method: proxy_pass
+    data_selector: ''
+    params: {}
+- name: reauth
+  endpoint:
+    path: /sonarr
+    method: GET
+    params: {}
+- name: auth
+  endpoint:
+    path: /auth/1
+    method: GET
+- name: Tautulli Users
+  endpoint:
+    path: /api/users
+    method: GET
+- name: Overseerr
+  endpoint:
+    path: /api/overseerr
+    method: GET
+- name: Petio
+  endpoint:
+    path: /api/petio
+    method: GET
+    data_selector: data
+- name: Ombi
+  endpoint:
+    path: /auth/cookie
+    method: GET
+- name: Komga
+  endpoint:
+    path: /
+    method: GET
+- name: plex
+  endpoint:
+    params:
+      enabled: true
+      cookie: true
+      machineID: true
+      token: true
+      plexAdmin: email
+      strict: true
+      oAuthEnabled: true
+      backend: true
+- name: ombi
+  endpoint:
+    params:
+      enabled: true
+      cookie: true
+      url: http://docker.home.lab:3579/
+      api: true
+- name: tautulli
+  endpoint:
+    params:
+      enabled: true
+      cookie: false
+      url: http://docker.home.lab:8181
+- name: api_socks
+  endpoint:
+    path: /api/v2/socks/sonarr/
+    method: GET
+    data_selector: data
+    params: {}
+- name: multiple_api_socks
+  endpoint:
+    path: /api/v2/multiple/socks/sonarr/{#}
+    method: GET
+    data_selector: data
+    params: {}
+- name: active_streams
+  endpoint:
+    path: /status/sessions
+    method: GET
+- name: recent_items
+  endpoint:
+    path: /library/recentlyAdded
+    method: GET
+- name: media_search
+  endpoint:
+    path: /search
+    method: GET
+- name: playlists
+  endpoint:
+    path: /playlists
+    method: GET
+- name: error_pages
+  endpoint:
+    path: /api/v2/organizr/error
+    method: GET
+    data_selector: error_codes
+    params: {}
+- name: organizr_auth
+  endpoint:
+    path: /etc/fail2ban/filter.d/organizr-auth.conf
+    method: CREATE
+    data_selector: failregex
+    params: {}
+- name: jail_local
+  endpoint:
+    path: /etc/fail2ban/jail.local
+    method: EDIT
+    data_selector: organizr-auth
+    params:
+      enabled: 'true'
+      port: http,https
+      logtimezone: UTC
+      filter: organizr-auth
+      logpath: /var/www/html/db/logs/organizr*.log
+      ignoreip: 192.168.1.0/24
+- name: pages
+  endpoint:
+    path: /api/v2/page
+    method: GET
+    data_selector: data
+    params: {}
+- name: custom_page
+  endpoint:
+    path: /api/v2/page/name_here
+    method: GET
+    data_selector: data
+    params: {}
+- name: sonarr_api
+  endpoint:
+    path: /sonarr/api
+    method: GET
+- name: smtp_helper
+  endpoint:
+    path: /api/v2/help/smtp
+    method: GET
+    params:
+      apikey: '12345678901234567890'
+- name: login
+  endpoint:
+    path: /api/v2/login
+    method: POST
+- name: migration
+  endpoint:
+    path: /api/v2/update/migrate/2.1.0
+    method: GET
+- name: Test
+  endpoint:
+    path: api/v2/plugins/test/settings
+    method: GET
+    data_selector: settings
+    params: {}
+- name: user_management
+  endpoint:
+    path: /api/user-management
+    method: POST
+    data_selector: users
+    params: {}
+notes:
+- The second component needed for Organizr to run is PHP.
+- Make sure you have setup Nginx and PHP
+- You may need to change the path to the socket depending on what version of PHP you
+  installed
+- Uses API Key for access
+- Change the Authentication type to Organizr DB + Backend. Choose Plex as the Authentication
+  Backend.
+- Enable Plex oAuth will bring up a Plex login screen that will flow credentials through
+  plex.tv.
+- Currently there are some limitations to using LDAP
+- The Native Nginx rewrite block has been reported as not working for all setups.
+  Use the Native Nginx Proxy Pass method if it fails.
+- Using OAuth / JWT tokens
+- Log any denied access
+- The secret to use to validate the token needs to be passed to Caddy either as an
+  environment variable named `JWT_SECRET` or in a file, specified with the `secret`
+  configuration option.
+- Note that the http.jwt plugin is not installed in default Caddy builds.
+- Note that caddy-security plugin is not installed in default Caddy builds.
+- Utilizes Traefik's auth-forward feature
+- Plex SSO will only work with Plex reverse proxied as a subdirectory and not as a
+  subdomain.
+- Plex SSO doesn't work if Plex Reverse Proxy is a subdomain - It must be on the same
+  domain as Organizr.
+- Overseerr Fallback User & Overseerr Password not used yet.
+- Fill out the URL for your Ombi install (it can be the local IP or local DNS and
+  port) and copy your API key from Ombi's settings to the Token box.
+- Enable Ombi SSO
+- SSO doesn't work if Reverse Proxy is a subdomain - It must be on the same domain
+  as Organizr
+- Using SSO with Proxy Auth allows you to access an apps UI using only one sign in.
+- Current Login used oAuth
+- Remember me button was toggle on login
+- Cookie Length in days
+- Disables the Certificate of the URL provided if https
+- Uses a Custom Certificate for the verification of the URL provided if https
+- Minimum Authentication must be set to at least the same or lower than the homepage's
+  Tab Group
+- You can setup logo/images for the checks if you add an images URL to the tags section
+  for that check
+- As of Version 2.1.500 the restore process has not been written for Organizr.
+- Uses NGINX to configure custom error pages.
+- The ignore IP is so that fail2ban won’t ban your local IP.
+- To display text only for specific user groups.
+- If your Sonarr isn't running on the same machine, change out the 127.0.0.1 to the
+  IP of the machine where it is running.
+- If you are running it on a non-standard port, change it in both places.
+- Some objects may return nulls in deeply nested fields
+- Webserver - Nginx (or any other webserver that works with php)
+- PHP 7.1.3 or later
+- If you're reverse proxying, check your proxy.conf for buffer sizes.
+- If not reverse proxying, add fastcgi buffer settings to NGINX config.
+- Browsers are starting to enforce strict rules on Cookies set by web apps.
+- 'The only way to bypass that is to use Option #1 or Option #2'
+- This is caused by Caddy not adding the necessary headers when forwarding the login
+  request to Organizr.
+- Using the 'transparent' preset or manually adding the necessary headers solves the
+  issue.
+- Migrates some settings from 2.0 to 2.1
+- Plugin version must be 2.1.1140 or higher
+errors:
+- 401 User Unauthorized
+- '404 Not Found: Check the endpoint path or parameters'
+- '401 Unauthorized: Redirect back to the login page'
+- '400 Bad Request: Respond with the error page for the error codes listed'
+- '500 Internal Server Error: Respond with the error page for the error codes listed'
+- 'nginx: [emerg] could not build server_names_hash, you should increase server_names_hash_bucket_size:
+  32'
+- '200: SMTP activated with Organizr SMTP account'
+- '401: Not Authorized'
+- upstream sent too big header while reading response header from upstream
+auth_info:
+  mentioned_objects:
+  - organizr_token_<uuid>
+  - organizrHash
+client:
+  base_url: https://demo.organizr.app
+  headers:
+    Token: Organizr's API Key
+source_metadata: null
