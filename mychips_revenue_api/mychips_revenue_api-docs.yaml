@@ -1,0 +1,118 @@
+resources:
+- name: revenue_metrics
+  endpoint:
+    path: /graphql
+    method: POST
+    data_selector: data.revenueMetrics
+    params:
+      dateFrom: dateFrom
+      dateTo: dateTo
+- name: AdUnit
+  endpoint:
+    path: /create/adunit
+    method: POST
+    data_selector: adUnit
+    params: {}
+- name: postback
+  endpoint:
+    path: /reward-handling/webhook-s2s-postback
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: rejected_postback
+  endpoint:
+    path: /postback
+    method: GET
+    data_selector: rejected_reason_id
+    params: {}
+- name: IAP S2S Webhook Postback
+  endpoint:
+    path: /postback
+    method: POST
+- name: reward_user
+  endpoint:
+    path: /reward-user
+    method: POST
+    data_selector: rewardInfo
+    params: {}
+- name: s2s_postbacks
+  endpoint:
+    path: /s2s-postbacks
+    method: POST
+    data_selector: postbackInfo
+    params: {}
+- name: offerwall
+  endpoint:
+    path: /offerwall
+    method: GET
+    data_selector: records
+- name: reward_user
+  endpoint:
+    path: /reward-user
+    method: GET
+    data_selector: reward
+    params: {}
+- name: offerwall
+  endpoint:
+    path: /offerwall
+    method: GET
+    data_selector: offerwallData
+- name: offerwall
+  endpoint:
+    path: /offerwall
+    method: GET
+- name: iframe
+  endpoint:
+    path: /content
+    method: GET
+    data_selector: iframe
+    params: {}
+- name: offerwall
+  endpoint:
+    path: /content
+    method: GET
+    params:
+      content_id: YOUR_CONTENT_ID
+      user_id: YOUR_USER_ID
+      webview: '1'
+notes:
+- 'Please ensure the following requirements are met: Parameter Parsing, IP Whitelisting,
+  Support for CPI Bidding Postbacks'
+- Use the provided IPs to avoid security issues and validate incoming postbacks.
+- Be aware of potential manipulation of the X-Forwarded-For header.
+- payout and user_payout will be always set to 0 for rejected events
+- Supports sending up to five custom aff_sub parameters (aff_sub1, aff_sub2, aff_sub3,
+  aff_sub4, aff_sub5) through the SDK.
+- 'Unity Version Requirement: Minimum version 2020.3.'
+- If you are testing in Sandbox mode, the value of the macro {user_payout} will be
+  0.
+- If no title is set, the toolbar remains blank as before.
+- Minimum version requirement 27.
+- Obtain your API key and User ID from Universal Developer Portal
+- Use this method only if you have selected Self-Managed Currency.
+- If you already support S2S postback please skip this snippet.
+- 'Be cautious: If you’re using an Expo SDK version lower than v52, carefully follow
+  the instructions in Section 3.2 to ensure compatibility.'
+- The SDK no longer enforces daily caps or sliding-window restrictions. Publishers
+  can now call the reward/balance API without limits.
+- Obtain your API key from Universal Developer Portal
+- If there is no reward and no error, nothing will happen
+- If you prefer server-to-server communication, MyChips can send a postback to your
+  server with bonus information
+- If there is no reward and no error, nothing will happen.
+- If you do not provide a specific user ID, one will be automatically generated.
+errors:
+- 'Invalid Date Range: Property DateFrom must be earlier than or equal to DateTo.
+  Please correct the date range.'
+- 'Syntax or Time Range Error: Property DateTo should be in the format yyyy-MM-dd
+  HH:mm:ss. Please correct it.'
+- 'Invalid API Key: The current user is not authorized to access this resource.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://public-api.myappfree.com/graphql/index.html
+  auth:
+    type: apikey
+    location: header
+    header_name: x-api-key
+source_metadata: null

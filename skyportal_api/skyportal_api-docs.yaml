@@ -1,0 +1,84 @@
+resources:
+- name: sysinfo
+  endpoint:
+    path: /api/sysinfo
+    method: GET
+- name: candidates
+  endpoint:
+    path: /api/candidates
+    method: GET
+    params:
+      numPerPage: 100
+      pageNumber: 1
+- name: sources
+  endpoint:
+    path: /api/sources
+    method: GET
+    params:
+      includeComments: true
+      includeThumbnails: false
+- name: sources
+  endpoint:
+    path: /sources
+    method: GET
+    data_selector: data.sources
+    params:
+      pageNumber: 1
+      numPerPage: 100
+- name: finding_chart
+  endpoint:
+    path: /api/sources/{obj_id}/finder
+    method: GET
+- name: unsourced_finder
+  endpoint:
+    path: /api/unsourced_finder
+    method: GET
+- name: moving_object_followup
+  endpoint:
+    path: /api/moving_object/{obj_name}/followup
+    method: POST
+- name: catalog_queries
+  endpoint:
+    path: /api/catalog_queries
+    method: POST
+- name: gcn_event_tags
+  endpoint:
+    path: /api/gcn_event/tags/{dateobs}
+    method: POST
+- name: gcn_event_notice_download
+  endpoint:
+    path: /api/gcn_event/{dateobs}/notice/{notice_id}/download
+    method: GET
+- name: moving_object_followup
+  endpoint:
+    path: /api/moving_object/{obj_name}/followup
+    method: POST
+    data_selector: status
+    params: {}
+- name: public_releases
+  endpoint:
+    path: /public/releases
+    method: GET
+    data_selector: status
+    params: {}
+notes:
+- Requires setup of connected app for OAuth2
+errors:
+- '400: Invalid API endpoint'
+- '400 Bad Request: Check request parameters'
+- '200: Success response'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://fritz.science
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Content-Type: application/json
+  paginator:
+    type: page
+    page_size_param: numPerPage
+    default_page_size: 100
+source_metadata: null

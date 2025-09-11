@@ -1,0 +1,148 @@
+resources:
+- name: models
+  endpoint:
+    path: /models
+    method: GET
+- name: orders
+  endpoint:
+    path: /forest/orders
+    method: POST
+    data_selector: success
+    params: {}
+- name: customers
+  endpoint:
+    path: /forest/customers
+    method: GET
+    data_selector: fields
+- name: customers
+  endpoint:
+    path: /forest/customers
+    method: GET
+    data_selector: fields
+- name: customer
+  endpoint:
+    path: /forest/customers
+    method: GET
+    data_selector: records
+- name: customer_stats
+  endpoint:
+    path: /customer_stats
+    method: GET
+    data_selector: customerStats
+    params:
+      limit: page.size
+      offset: page.number
+- name: customer_stats
+  endpoint:
+    path: /customer_stats
+    method: GET
+    data_selector: customerStats
+    params: {}
+- name: companies
+  endpoint:
+    path: /companies
+    method: POST
+- name: companies
+  endpoint:
+    path: /companies/:companyId
+    method: PUT
+- name: companies
+  endpoint:
+    path: /companies/:companyId
+    method: DELETE
+- name: companies
+  endpoint:
+    path: /companies/:companyId
+    method: GET
+- name: companies
+  endpoint:
+    path: /companies
+    method: GET
+- name: companies
+  endpoint:
+    path: /companies/count
+    method: GET
+- name: companies
+  endpoint:
+    path: /companies.csv
+    method: GET
+- name: appointments
+  endpoint:
+    path: /forest_appointment
+    method: GET
+    data_selector: records
+    params:
+      filters: '{"aggregator":"and","conditions":[{"field":"start_date","operator":"greater_than","value":"startDate"},{"field":"start_date","operator":"less_than","value":"endDate"}]}'
+      timezone: America/Los_Angeles
+      page[number]: 1
+      page[size]: 50
+- name: products
+  endpoint:
+    path: /forest/products
+    method: GET
+    data_selector: segments
+    params: {}
+- name: books_count
+  endpoint:
+    path: /books/count
+    method: GET
+    data_selector: count
+    params: {}
+- name: books
+  endpoint:
+    path: /books/count
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- This feature requires an agent version 7 or higher.
+- The .forestadmin-schema.json file must be versioned and deployed for any remote
+  environment.
+- Forest Admin instantly provides all common admin tasks such as CRUD operations,
+  simple chart rendering, user group management, and WYSIWYG interface editor.
+- Forest Admin provides a very simple framework to handle all parts of your admin
+  backend configuration.
+- 'You must make sure that all your Smart Actions routes are configured with the Smart
+  Action middleware: `permissionMiddlewareCreator.smartAction()`.'
+- This step is not necessary if you are the creator of the project, as your development
+  environment is already generated.
+- Data never transits through Forest Admin's servers
+- Some objects like Contact may return nulls in deeply nested fields
+- Some actions are only available when 1+ record(s) are selected.
+- A Smart Field is a column that displays processed-on-the-fly data.
+- By default, your Smart Field is considered as read-only.
+- Filtering is only available on agents version 6.7+.
+- 'The option is_searchable: true allows to display the search bar.'
+- 'The option is_searchable: true added to your collection allows to display the search
+  bar. Note that you will have to implement the search yourself by including it into
+  your own get logic.'
+- Your code must be compatible with Ember 4.12.
+- You’re free to implement the business logic you need. The only requirement is to
+  return a valid Sequelize condition.
+- Scopes are applied to the entire application excluding global smart actions, API
+  & SQL charts and Collaboration & Activities.
+- Show only Smart fields you absolutely need.
+- Reduce the number of records per page.
+- Reduce the number of fields displayed.
+- Having Relationship fields can decrease your performance, especially if your tables
+  have a lot of records.
+- Count is deactivated for the Operations team
+- Count is deactivated for the Operations team if filters are not present.
+- Ensure you’ve enabled the Layout Editor mode to add, edit or delete a chart.
+- You may have to add CORS headers to enable the domain app.forestadmin.com to trigger
+  API call on your Application URL, which is on a different domain name (e.g. localhost:8000).
+- The Admin Backend is hosted on your end.
+- Data never transits through Forest Admin's servers.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://demo.forestadmin.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+source_metadata: null

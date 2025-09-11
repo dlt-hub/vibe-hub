@@ -1,0 +1,111 @@
+resources:
+- name: memory_object_stream
+  endpoint:
+    path: /api/memory_object_stream
+    method: GET
+    data_selector: records
+- name: stapled_stream
+  endpoint:
+    path: /api/stapled_stream
+    method: GET
+    data_selector: records
+- name: buffered_byte_stream
+  endpoint:
+    path: /api/buffered_byte_stream
+    method: GET
+    data_selector: records
+- name: text_stream
+  endpoint:
+    path: /api/text_stream
+    method: GET
+    data_selector: records
+- name: file_stream
+  endpoint:
+    path: /api/file_stream
+    method: GET
+    data_selector: records
+- name: tls_stream
+  endpoint:
+    path: /api/tls_stream
+    method: GET
+    data_selector: records
+- name: memory_object_stream
+  endpoint:
+    path: /api/memory_object_stream
+    method: GET
+    data_selector: records
+- name: stapled_stream
+  endpoint:
+    path: /api/stapled_stream
+    method: GET
+    data_selector: records
+- name: buffered_byte_stream
+  endpoint:
+    path: /api/buffered_byte_stream
+    method: GET
+    data_selector: records
+- name: text_stream
+  endpoint:
+    path: /api/text_stream
+    method: GET
+    data_selector: records
+- name: file_stream
+  endpoint:
+    path: /api/file_stream
+    method: GET
+    data_selector: records
+- name: tls_stream
+  endpoint:
+    path: /api/tls_stream
+    method: GET
+    data_selector: records
+- name: asynchronous_file_io_support
+  endpoint:
+    path: /asynchronous/file/io/support
+    method: GET
+    data_selector: contents
+    params: {}
+- name: asynchronous_path_operations
+  endpoint:
+    path: /asynchronous/path/operations
+    method: GET
+    data_selector: contents
+    params: {}
+notes:
+- Cancellation in AnyIO follows the model established by the trio framework.
+- Always reraise the cancellation exception if you catch it.
+- AnyIO primitives are not thread-safe, therefore they should not be used directly
+  from worker threads.
+- Unlike the standard BSD sockets interface and most other networking libraries, AnyIO
+  (from 2.0 onwards) signals the end of any stream by raising the EndOfStream exception
+  instead of returning an empty bytes object.
+- The UNIX socket listener does not remove the socket it creates, so you may need
+  to delete them manually.
+- Do not spawn too many threads, as the context switching overhead may cause your
+  system to slow down to a crawl.
+- A few dozen threads should be fine, but hundreds are probably bad.
+- On Windows and Python 3.7 and earlier, asyncio uses SelectorEventLoop by default
+  which does not support subprocesses. It is recommended to upgrade to at least Python
+  3.8 to overcome this limitation.
+- Even cancellable=False runs can be cancelled before the request has been sent to
+  the worker process.
+- Signal handlers can only be installed in the main thread, so they will not work
+  when the event loop is being run through BlockingPortal.
+- Windows does not natively support signals so do not rely on this in a cross platform
+  application.
+- Windows does not support the SIGTERM signal so if you need a mechanism for graceful
+  shutdown on Windows, you will have to find another way.
+- AnyIO is not just a compatibility layer for bridging asyncio and Trio.
+- There are strong merits in switching to AnyIO APIs even if you are developing an
+  application and not a library.
+- AnyIO provides its own set of async file I/O APIs, including an async compatible
+  counterpart for the Path class.
+- AnyIO provides a built-in pytest plugin for running asynchronous tests.
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://anyio.readthedocs.io
+  headers:
+    Accept: application/json
+source_metadata: null

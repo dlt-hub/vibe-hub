@@ -1,0 +1,1790 @@
+resources:
+- name: services
+  endpoint:
+    path: /services
+    method: GET
+    data_selector: records
+    params: {}
+- name: data_explorer
+  endpoint:
+    path: /data/explorer
+    method: GET
+    data_selector: records
+    params: {}
+- name: opcuaConnection
+  endpoint:
+    type: Cybus::Connection
+    properties:
+      protocol: Opcua
+      connection:
+        host: '!ref opcuaHost'
+        port: '!ref opcuaPort'
+- name: RandomDataExample
+  endpoint:
+    type: Cybus::Endpoint
+    properties:
+      protocol: Opcua
+      connection: '!ref opcuaConnection'
+      subscribe:
+        nodeId: ns=2;i=11021
+- name: mapping
+  endpoint:
+    type: Cybus::Mapping
+    properties:
+      mappings:
+      - subscribe:
+          endpoint: '!ref RandomDataExample'
+        publish:
+          topic: '!sub ''example/opcua/dataexample'''
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+    data_selector: users
+    params: {}
+- name: users
+  endpoint:
+    path: /api/users/<userId>
+    method: POST
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: production_data
+  endpoint:
+    path: /api/production/data
+    method: GET
+    data_selector: data
+    params:
+      incremental: updated_at
+- name: Cybus:Node
+  endpoint:
+    path: /documentation/services/service-commissioning-files/resources/cybus-node
+    method: POST
+    data_selector: node
+    params:
+      operation: transaction
+- name: mssqlDatabase
+  endpoint:
+    path: /mssqlDatabase
+    method: GET
+    data_selector: properties
+    params: {}
+- name: mssqlConnection
+  endpoint:
+    path: /mssqlConnection
+    method: GET
+    data_selector: properties
+    params: {}
+- name: mssqlVersionB
+  endpoint:
+    path: /mssqlVersionB
+    method: GET
+    data_selector: properties
+    params: {}
+- name: agent
+  endpoint:
+    path: /documentation/agents/installing-agents
+    method: GET
+    data_selector: records
+- name: Cybus::Connection
+- name: Cybus::Endpoint
+- name: Cybus::Mapping
+- name: client_registration
+  endpoint:
+    path: /api/client-registry/register
+    method: POST
+- name: CA certificates
+  endpoint:
+    path: /documentation/security/tls-certificates/ca-certificates
+    method: GET
+- name: Client certificates
+  endpoint:
+    path: /documentation/security/tls-certificates/client-certificates
+    method: GET
+- name: Server certificates
+  endpoint:
+    path: /documentation/security/tls-certificates/server-certificates
+    method: GET
+- name: users
+  endpoint:
+    path: /api/users
+    method: GET
+    data_selector: token
+    params:
+      apiToken: <TOKEN OBTAINED IN PREVIOUS STEP HERE>
+- name: admin
+  endpoint:
+    path: /admin
+    method: GET
+    data_selector: token
+    params:
+      apiToken: <TOKEN>
+- name: systemstate
+  endpoint:
+    path: /documentation/industry-protocol-details/systemstate/systemstateendpoint
+    method: GET
+- name: system_container_view
+  endpoint:
+    path: /system/container/view
+    method: GET
+- name: container_details_view
+  endpoint:
+    path: /container/details/view
+    method: GET
+- name: container_logs_view
+  endpoint:
+    path: /container/logs/view
+    method: GET
+- name: configuration_view
+  endpoint:
+    path: /configuration/view
+    method: GET
+- name: environment_variables_view
+  endpoint:
+    path: /environment/variables/view
+    method: GET
+- name: system_container_status
+  endpoint:
+    path: /system/container/status
+    method: GET
+- name: System Container View
+  endpoint:
+    path: /reference/api-reference/api-definition-3
+    method: GET
+    data_selector: status
+    params: {}
+- name: system_status
+  endpoint:
+    path: /reference/api-reference/api-definition-3
+    method: GET
+    data_selector: metrics
+- name: license_information
+  endpoint:
+    path: /api/license
+    method: GET
+    data_selector: license_details
+    params: {}
+- name: system_information
+  endpoint:
+    path: /reference/api-reference/api-definition-3
+    method: GET
+- name: database_maintenance
+  endpoint:
+    path: /api/maintenance/db
+    method: GET
+    data_selector: running
+    params: {}
+- name: database_backup
+  endpoint:
+    path: /api/maintenance/db/backup
+    method: POST
+    data_selector: ''
+    params: {}
+- name: download_backup
+  endpoint:
+    path: /api/maintenance/db/backup
+    method: GET
+    data_selector: ''
+    params: {}
+- name: restore_database
+  endpoint:
+    path: /api/maintenance/db/restore
+    method: POST
+    data_selector: ''
+    params: {}
+- name: cybus_connection
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Cybus::Connection
+    method: GET
+- name: cybus_container
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Cybus::Container
+    method: GET
+- name: cybus_endpoint
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Cybus::Endpoint
+    method: GET
+- name: cybus_file
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Cybus::File
+    method: GET
+- name: cybus_ingressroute
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Cybus::IngressRoute
+    method: GET
+- name: cybus_link
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Cybus::Link
+    method: GET
+- name: cybus_mapping
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Cybus::Mapping
+    method: GET
+- name: cybus_node
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Cybus::Node
+    method: GET
+- name: cybus_role
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Cybus::Role
+    method: GET
+- name: cybus_server
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Cybus::Server
+    method: GET
+- name: cybus_user
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Cybus::User
+    method: GET
+- name: cybus_volume
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Cybus::Volume
+    method: GET
+- name: values.yaml
+  endpoint:
+    path: /get/values
+    method: GET
+    data_selector: values
+    params: {}
+- name: broker
+  endpoint:
+    params:
+      podAntiAffinity: hard
+      podAntiAffinityTopologyKey: kubernetes.io/os=linux
+- name: broker_storage
+  endpoint:
+    params:
+      data_size: 5Gi
+      log_size: 500Mi
+- name: connection_properties
+  endpoint:
+    path: /documentation/industry-protocol-details/ads/adsconnection
+    method: GET
+- name: endpoint_properties
+  endpoint:
+    path: /documentation/industry-protocol-details/ads/adsendpoint
+    method: GET
+- name: adsConnection
+  endpoint:
+    path: /set
+    method: POST
+    data_selector: value
+    params: {}
+- name: adsQuery1
+  endpoint:
+    path: /req
+    method: POST
+    data_selector: value
+    params: {}
+- name: adsQuery2
+  endpoint:
+    path: /res
+    method: POST
+    data_selector: value
+    params: {}
+- name: bacnetReadBinaryOutput
+  endpoint:
+    path: /path/to/bacnetReadBinaryOutput
+    method: GET
+    data_selector: read
+    params:
+      objectType: binary-output
+      objectInstance: 303
+      property: present-value
+- name: bacnetWriteBinaryOutput
+  endpoint:
+    path: /path/to/bacnetWriteBinaryOutput
+    method: POST
+    data_selector: write
+    params:
+      objectType: binary-output
+      objectInstance: 303
+      property: present-value
+      priority: 8
+      propertyTag: 7
+- name: set
+  endpoint:
+    path: /set
+    method: POST
+    data_selector: value
+    params: {}
+- name: read
+  endpoint:
+    path: /res
+    method: GET
+    data_selector: value
+    params: {}
+- name: ethernetIpConnection
+  endpoint:
+    path: /set
+    method: POST
+    data_selector: value
+    params: {}
+- name: sampleSubscription
+  endpoint:
+    path: /req
+    method: GET
+    data_selector: value
+    params: {}
+- name: sampleRead
+  endpoint:
+    path: /req
+    method: GET
+    data_selector: value
+    params: {}
+- name: sampleWrite
+  endpoint:
+    path: /set
+    method: POST
+    data_selector: value
+    params: {}
+- name: subscribeExample1
+  endpoint:
+    path: /subscribe/cnc_statinfo2
+    method: GET
+- name: readExample1
+  endpoint:
+    path: /read/cnc_sysinfo
+    method: GET
+- name: hbmdaqSubscribe
+  endpoint:
+    path: /hbmdaqSubscribe
+    method: GET
+    data_selector: signal
+    params: {}
+- name: getStateSubscribe
+  endpoint:
+    path: /getStateSubscribe
+    method: POST
+    data_selector: result
+    params: {}
+- name: setToolTableRow
+  endpoint:
+    path: /setToolTableRow
+    method: POST
+    data_selector: result
+    params: {}
+- name: onToolTableChangedSubscribe
+  endpoint:
+    path: /onToolTableChangedSubscribe
+    method: POST
+    data_selector: result
+    params: {}
+- name: heidenhainConnection
+  endpoint:
+    path: /heidenhainConnection
+    method: POST
+    data_selector: properties
+    params: {}
+- name: getVersion
+  endpoint:
+    path: /getVersion
+    method: GET
+    data_selector: result
+    params: {}
+- name: getNcUpTime
+  endpoint:
+    path: /getNcUpTime
+    method: GET
+    data_selector: result
+    params: {}
+- name: getToolTable
+  endpoint:
+    path: /getToolTable
+    method: GET
+    data_selector: result
+    params: {}
+- name: onToolTableChanged
+  endpoint:
+    path: /notify/onToolChanged
+    method: SUBSCRIBE
+    data_selector: result
+    params: {}
+- name: onProgramChanged
+  endpoint:
+    path: /notify/onProgramChanged
+    method: SUBSCRIBE
+    data_selector: result
+    params: {}
+- name: base
+  endpoint:
+    path: /
+    method: GET
+    data_selector: null
+    params: {}
+- name: counter
+  endpoint:
+    path: /counter
+    method: GET
+    data_selector: null
+    params: {}
+- name: getPost
+  endpoint:
+    path: /post
+    method: GET
+    data_selector: null
+    params: {}
+- name: writePost
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: null
+    params: {}
+- name: postRoute
+  endpoint:
+    path: /data/cybustest/postRoute
+    method: POST
+    data_selector: value
+- name: putRoute
+  endpoint:
+    path: /data/cybustest/putRoute
+    method: PUT
+    data_selector: value
+- name: getRoute
+  endpoint:
+    path: /data/cybustest/getRoute
+    method: GET
+    data_selector: value
+- name: turbineWrite
+  endpoint:
+    path: /set
+    method: POST
+    data_selector: measurement
+    params: {}
+- name: rotaryEncoderWrite
+  endpoint:
+    path: /set
+    method: POST
+    data_selector: measurement
+    params: {}
+- name: rotary_encoder_angle
+  endpoint:
+    path: /res
+    method: GET
+    data_selector: _measurement
+    params:
+      query: 'from(bucket:"turbine") |> range(start: -1d) |> filter(fn: (r) => r._measurement
+        == "rotary_encoder")'
+- name: kafkaConnection
+  endpoint:
+    path: /kafkaConnection
+    method: write
+    data_selector: properties
+    params:
+      clientType: consumer
+      brokers:
+      - 192.168.0.1:9092
+- name: kafkaSubscribeExample
+  endpoint:
+    path: /kafkaSubscribeExample
+    method: subscribe
+    data_selector: properties
+    params:
+      fromBeginning: false
+      topic: some_test_topic
+- name: kafkaConnection
+  endpoint:
+    path: /kafkaconnection
+    method: POST
+    data_selector: properties
+    params: {}
+- name: kafkaSubscribeExample
+  endpoint:
+    path: /kafkasubscribeexample
+    method: POST
+    data_selector: properties
+    params: {}
+- name: modbusConnection
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params:
+      host: 192.168.10.30
+      port: 502
+      initialDelay: 1000
+      maxDelay: 30000
+      incrementFactor: 2
+- name: readCoil
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params:
+      fc: 1
+      length: 2
+      interval: 1000
+      address: 3
+      dataType: boolean
+- name: writeCoil
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params:
+      fc: 5
+      length: 2
+      address: 3
+      dataType: boolean
+- name: readRegister
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params:
+      fc: 3
+      length: 2
+      interval: 1000
+      address: 1
+      dataType: int16BE
+- name: writeRegister
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params:
+      fc: 6
+      length: 2
+      address: 1
+      dataType: int16BE
+- name: modbusConnection
+  endpoint:
+    path: /modbusConnection
+    method: GET
+    data_selector: properties
+    params: {}
+- name: readCoil
+  endpoint:
+    path: /readCoil
+    method: GET
+    data_selector: properties
+    params: {}
+- name: writeCoil
+  endpoint:
+    path: /writeCoil
+    method: GET
+    data_selector: properties
+    params: {}
+- name: readRegister
+  endpoint:
+    path: /readRegister
+    method: GET
+    data_selector: properties
+    params: {}
+- name: writeRegister
+  endpoint:
+    path: /writeRegister
+    method: GET
+    data_selector: properties
+    params: {}
+- name: mapping
+  endpoint:
+    path: /mapping
+    method: GET
+    data_selector: properties
+    params: {}
+- name: testEndpoint1
+  endpoint:
+    path: /some/test1
+    method: SUBSCRIBE
+    data_selector: messages
+    params: {}
+- name: mssqlQuery1
+  endpoint:
+    path: /req
+    method: subscribe
+    data_selector: query
+    params:
+      interval: 2000
+- name: mssqlQuery2
+  endpoint:
+    path: /set
+    method: write
+    data_selector: query
+    params: {}
+- name: multipleTags
+  endpoint:
+    path: /multipleTags
+    method: SUBSCRIBE
+    data_selector: value
+    params:
+      tags:
+      - Triangle Waves.Int4
+      - Triangle Waves.Real4
+      interval: 2000
+- name: triangleWaveReal4
+  endpoint:
+    path: /triangleWaveReal4
+    method: SUBSCRIBE
+    data_selector: value
+    params:
+      tag: Triangle Waves.Real4
+      interval: 2000
+- name: writeTag
+  endpoint:
+    path: /writeTag
+    method: SET
+    data_selector: value
+    params:
+      tag: Triangle Waves.Int4
+      type: INTEGER
+- name: browse
+  endpoint:
+    path: /browse
+    method: READ
+    data_selector: value
+    params:
+      browse: flat
+- name: s7Connection
+  endpoint:
+    path: s7Connection
+    method: GET
+    data_selector: properties
+    params: {}
+- name: s7EndpointQX00
+  endpoint:
+    path: s7EndpointQX00
+    method: GET
+    data_selector: properties
+    params: {}
+- name: s7EndpointAIB0
+  endpoint:
+    path: s7EndpointAIB0
+    method: GET
+    data_selector: properties
+    params: {}
+- name: raw
+  endpoint:
+    path: /shdrConnection
+    method: subscribe
+    data_selector: key
+    params:
+      type: sample
+- name: xact
+  endpoint:
+    path: /shdrConnection
+    method: subscribe
+    data_selector: key
+    params:
+      type: sample
+- name: temperature
+  endpoint:
+    path: /shdrConnection
+    method: subscribe
+    data_selector: key
+    params:
+      type: condition
+- name: getMachineInfo
+  endpoint:
+    path: /getMachineInfo
+    method: GET
+    data_selector: result
+- name: getMachineState
+  endpoint:
+    path: /getMachineState
+    method: GET
+    data_selector: result
+- name: getSpindleSpeed
+  endpoint:
+    path: /getSpindleSpeed
+    method: GET
+    data_selector: result
+- name: getSpindleFeed
+  endpoint:
+    path: /getSpindleFeed
+    method: GET
+    data_selector: result
+- name: onNcProgramChanged
+  endpoint:
+    path: /onNcProgramChanged
+    method: NOTIFY
+    data_selector: result
+- name: getTool
+  endpoint:
+    path: /getTool
+    method: GET
+    data_selector: tool
+    params: {}
+- name: getToolComplete
+  endpoint:
+    path: /getToolComplete
+    method: GET
+    data_selector: tool
+    params: {}
+- name: getTools
+  endpoint:
+    path: /getTools
+    method: GET
+    data_selector: tools
+    params: {}
+- name: getToolsComplete
+  endpoint:
+    path: /getToolsComplete
+    method: GET
+    data_selector: tools
+    params: {}
+- name: createTool
+  endpoint:
+    path: /createTool
+    method: POST
+    data_selector: status
+    params: {}
+- name: setToolFields
+  endpoint:
+    path: /setToolFields
+    method: POST
+    data_selector: status
+    params: {}
+- name: deleteTool
+  endpoint:
+    path: /deleteTool
+    method: DELETE
+    data_selector: status
+    params: {}
+- name: getMagazine
+  endpoint:
+    path: /getMagazine
+    method: GET
+    data_selector: magazine
+    params: {}
+- name: getMagazines
+  endpoint:
+    path: /getMagazines
+    method: GET
+    data_selector: magazines
+    params: {}
+- name: readFile
+  endpoint:
+    path: /readFile
+    method: GET
+    data_selector: data
+    params: {}
+- name: writeFile
+  endpoint:
+    path: /writeFile
+    method: POST
+    data_selector: status
+    params: {}
+- name: getToolComplete
+  endpoint:
+    path: /getToolComplete
+    method: GET
+    data_selector: result
+    params: {}
+- name: setTool
+  endpoint:
+    path: /setTool
+    method: POST
+    data_selector: result
+    params: {}
+- name: sqlQuery1
+  endpoint:
+    path: /req
+    method: GET
+    data_selector: value
+    params:
+      query: SELECT * FROM people
+      interval: 2000
+- name: sqlQuery2
+  endpoint:
+    path: /set
+    method: POST
+    data_selector: value
+    params:
+      query: INSERT INTO people (name, lastname, gender) VALUES ($name, $lastname,
+        $gender)
+- name: system_state
+  endpoint:
+    path: /systemstate
+    method: GET
+- name: someConnection
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: someEndpoint
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params:
+      resourceId: '!sub ''${Cybus::ServiceId}-someConnection'''
+- name: anotherEndpoint
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params:
+      resourceId: '!sub ''${Cybus::ServiceId}-someEndpoint'''
+- name: wermaSubscribe
+  endpoint:
+    path: /werma/subscribe
+    method: POST
+    data_selector: value
+    params: {}
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+    data_selector: records
+- name: roles
+  endpoint:
+    path: /roles
+    method: GET
+    data_selector: records
+- name: ldap_configuration
+  endpoint:
+    path: /auth/ldap
+    method: GET
+    data_selector: enabled
+    params: {}
+- name: mfa_configuration
+  endpoint:
+    path: /auth/mfa
+    method: GET
+    data_selector: enabled
+    params: {}
+- name: ms_entra_id_configuration
+  endpoint:
+    path: /auth/msEntraId
+    method: GET
+    data_selector: enabled
+    params: {}
+- name: list_users
+  endpoint:
+    path: /listUsers
+    method: GET
+    data_selector: users
+    params: {}
+- name: list_usernames
+  endpoint:
+    path: /users/usernames
+    method: GET
+    data_selector: ''
+    params: {}
+- name: create_new_user
+  endpoint:
+    path: /users
+    method: POST
+    data_selector: ''
+    params: {}
+- name: delete_users_in_batch
+  endpoint:
+    path: /users/batch/delete
+    method: POST
+    data_selector: ''
+    params: {}
+- name: change_user_password
+  endpoint:
+    path: /users/change-password
+    method: PUT
+    data_selector: ''
+    params: {}
+- name: roles
+  endpoint:
+    path: /roles
+    method: GET
+    data_selector: object[]
+- name: paginated_roles
+  endpoint:
+    path: /roles/page
+    method: GET
+    data_selector: object
+    params:
+      rowsPerPage: '1'
+      pageNumber: '1'
+- name: roles_names
+  endpoint:
+    path: /roles/names
+    method: GET
+    data_selector: object[]
+- name: specific_role
+  endpoint:
+    path: /roles/{id}
+    method: GET
+    data_selector: object
+- name: update_role
+  endpoint:
+    path: /roles/{id}
+    method: PUT
+    data_selector: object
+- name: delete_role
+  endpoint:
+    path: /roles/{id}
+    method: DELETE
+    data_selector: No content
+- name: list_role_permissions
+  endpoint:
+    path: /roles/{id}/permissions
+    method: GET
+    data_selector: object[]
+- name: add_permission
+  endpoint:
+    path: /roles/{id}/permissions
+    method: POST
+    data_selector: No content
+- name: update_permission
+  endpoint:
+    path: /roles/{id}/permissions/{pemId}
+    method: GET
+    data_selector: object
+- name: delete_permission
+  endpoint:
+    path: /roles/{id}/permissions/{pemId}
+    method: DELETE
+    data_selector: No content
+- name: login
+  endpoint:
+    path: /login
+    method: POST
+    data_selector: object
+- name: session
+  endpoint:
+    path: /session
+    method: GET
+    data_selector: object
+- name: permissions
+  endpoint:
+    path: /permissions
+    method: GET
+    data_selector: object[]
+- name: permissions_page
+  endpoint:
+    path: /permissions/page
+    method: GET
+    data_selector: object
+- name: permissions_ids
+  endpoint:
+    path: /permissions/ids
+    method: GET
+    data_selector: object[]
+- name: logout
+  endpoint:
+    path: /logout
+    method: POST
+    data_selector: No content
+- name: client_registration
+  endpoint:
+    path: /client-registry/register
+    method: POST
+    data_selector: Response
+    params: {}
+- name: pending_requests
+  endpoint:
+    path: /client-registry
+    method: GET
+    data_selector: Response
+    params: {}
+- name: registration_status
+  endpoint:
+    path: /client-registry/status
+    method: GET
+    data_selector: Response
+    params: {}
+- name: open_registration
+  endpoint:
+    path: /client-registry/open
+    method: POST
+    data_selector: Response
+    params: {}
+- name: lock_registration
+  endpoint:
+    path: /client-registry/lock
+    method: POST
+    data_selector: Response
+    params: {}
+- name: confirm_user
+  endpoint:
+    path: /client-registry/confirm
+    method: POST
+    data_selector: Response
+    params: {}
+- name: delete_runner
+  endpoint:
+    path: /client-registry/runners/{id}
+    method: DELETE
+    data_selector: No content
+    params:
+      id: string
+- name: list_certificates
+  endpoint:
+    path: /certificates
+    method: GET
+    data_selector: Array of certificates
+    params: {}
+- name: delete_certificate
+  endpoint:
+    path: /certificates
+    method: DELETE
+    data_selector: No content
+    params:
+      id: string
+- name: add_certificate
+  endpoint:
+    path: /certificates
+    method: POST
+    data_selector: Array of added certificates
+    params: {}
+- name: get_certificate_content
+  endpoint:
+    path: /certificates/content
+    method: GET
+    data_selector: Certificate content
+    params:
+      id: string
+- name: enable_mfa
+  endpoint:
+    path: /mfa/enable
+    method: POST
+    data_selector: ok
+    params: {}
+- name: validate_mfa
+  endpoint:
+    path: /mfa/validate
+    method: POST
+    data_selector: ok
+    params: {}
+- name: login_mfa
+  endpoint:
+    path: /mfa/login
+    method: POST
+    data_selector: ok
+    params: {}
+- name: disable_mfa
+  endpoint:
+    path: /mfa/disable
+    method: POST
+    data_selector: ok
+    params: {}
+- name: regenerate_backup_codes
+  endpoint:
+    path: /mfa/regenerate/backupcodes
+    method: POST
+    data_selector: ok
+    params: {}
+- name: is_enrolled_mfa
+  endpoint:
+    path: /mfa/isenrolled
+    method: GET
+    data_selector: ok
+    params: {}
+- name: service
+  endpoint:
+    path: /services/v2/services
+    method: GET
+    data_selector: records
+    params: {}
+- name: resource
+  endpoint:
+    path: /services/v2/resources
+    method: GET
+    data_selector: records
+    params: {}
+- name: services
+  endpoint:
+    path: /services
+    method: GET
+- name: service_schemas
+  endpoint:
+    path: /services/parameters/schema
+    method: POST
+- name: service_dependencies
+  endpoint:
+    path: /services/id/dependencies
+    method: GET
+- name: ingress_routes
+  endpoint:
+    path: /services/ingress/routes
+    method: GET
+- name: links
+  endpoint:
+    path: /services/links
+    method: GET
+- name: resource_schemas
+  endpoint:
+    path: /resources/schemas
+    method: GET
+- name: specific_service
+  endpoint:
+    path: /services/id
+    method: GET
+- name: installed_services_count
+  endpoint:
+    path: /services/stats/count
+    method: GET
+- name: validate_service
+  endpoint:
+    path: /validate/service
+    method: POST
+    data_selector: No content
+    params: {}
+- name: create_service
+  endpoint:
+    path: /services
+    method: POST
+    data_selector: Response
+    params: {}
+- name: read_all_services
+  endpoint:
+    path: /services
+    method: GET
+    data_selector: No content
+    params: {}
+- name: get_service_count
+  endpoint:
+    path: /v2/services/stats/count
+    method: GET
+    data_selector: Response
+    params: {}
+- name: get_service_deletion_status
+  endpoint:
+    path: /services/{id}/deletion-status
+    method: GET
+    data_selector: Response
+    params: {}
+- name: update_service
+  endpoint:
+    path: /v2/services/{id}
+    method: PUT
+    data_selector: Response
+    params: {}
+- name: get_service_commissioning_file
+  endpoint:
+    path: /v2/services/{id}/serviceCommissioningFile
+    method: GET
+    data_selector: Response
+    params: {}
+- name: get_service_dependencies
+  endpoint:
+    path: /services/{id}/dependencies
+    method: GET
+    data_selector: Response
+    params: {}
+- name: get_all_ingress_routes
+  endpoint:
+    path: /services/ingress-routes
+    method: GET
+    data_selector: Ingress routes
+    params: {}
+- name: get_all_links
+  endpoint:
+    path: /services/links
+    method: GET
+    data_selector: Links
+    params: {}
+- name: perform_operation_on_service
+  endpoint:
+    path: /services/{id}/operation
+    method: PUT
+    data_selector: Service
+    params: {}
+- name: delete_resource_runner
+  endpoint:
+    path: /resources/runners/{id}
+    method: DELETE
+    data_selector: OK
+    params: {}
+- name: get_resource_schemas
+  endpoint:
+    path: /resources/schemas
+    method: GET
+    data_selector: Resource schemas in a JSON string
+    params: {}
+- name: store_resources_schemas
+  endpoint:
+    path: /resources/schemas
+    method: POST
+    data_selector: Resource schemas stored
+    params: {}
+- name: read_all_v2_services
+  endpoint:
+    path: /v2/services
+    method: GET
+    data_selector: Array of services
+    params: {}
+- name: get_paginated_service_ids
+  endpoint:
+    path: /v2/services/ids
+    method: GET
+    data_selector: Get paginated list of service IDs for all Services order lexicographically
+      Ascending
+    params: {}
+- name: get_specific_service
+  endpoint:
+    path: /v2/services/{id}
+    method: GET
+    data_selector: Service
+    params: {}
+- name: service_resources
+  endpoint:
+    path: /api/v2/services/{serviceId}/resources
+    method: GET
+    data_selector: data
+    params:
+      serviceId: string
+- name: all_resources
+  endpoint:
+    path: /api/v2/resources
+    method: GET
+    data_selector: data
+    params: {}
+- name: specific_resource
+  endpoint:
+    path: /api/v2/resources/{resourceId}
+    method: GET
+    data_selector: data
+    params:
+      resourceId: string
+- name: resource_count_by_category
+  endpoint:
+    path: /api/v2/resources/count/{category}
+    method: GET
+    data_selector: data
+    params:
+      category: string
+- name: service_containers
+  endpoint:
+    path: /containers
+    method: GET
+    data_selector: containers
+    params: {}
+- name: core_containers
+  endpoint:
+    path: /core-containers
+    method: GET
+    data_selector: coreContainers
+    params: {}
+- name: images
+  endpoint:
+    path: /images
+    method: GET
+    data_selector: images
+    params: {}
+- name: networks
+  endpoint:
+    path: /networks
+    method: GET
+    data_selector: networks
+    params: {}
+- name: volumes
+  endpoint:
+    path: /volumes
+    method: GET
+    data_selector: volumes
+    params: {}
+- name: service_containers
+  endpoint:
+    path: /containers
+    method: GET
+    data_selector: containers
+- name: core_containers
+  endpoint:
+    path: /core_containers
+    method: GET
+    data_selector: core_containers
+- name: images
+  endpoint:
+    path: /images
+    method: GET
+    data_selector: images
+- name: networks
+  endpoint:
+    path: /networks
+    method: GET
+    data_selector: networks
+- name: volumes
+  endpoint:
+    path: /volumes
+    method: GET
+    data_selector: volumes
+- name: service_containers
+  endpoint:
+    path: /api/containers
+    method: GET
+    data_selector: object[]
+- name: inspect_service_container
+  endpoint:
+    path: /api/containers/{name}/inspect
+    method: GET
+    data_selector: object
+- name: service_container_logs
+  endpoint:
+    path: /api/containers/{name}/logs
+    method: GET
+    data_selector: string
+- name: service_container_state
+  endpoint:
+    path: /api/containers/{name}/state
+    method: GET
+    data_selector: object
+- name: orchestrator_info
+  endpoint:
+    path: /api/containers/orchestrator
+    method: GET
+    data_selector: object
+- name: core_containers
+  endpoint:
+    path: /api/core-containers
+    method: GET
+    data_selector: object[]
+- name: inspect_core_container
+  endpoint:
+    path: /api/core-containers/{name}/inspect
+    method: GET
+    data_selector: object
+- name: core_container_logs
+  endpoint:
+    path: /api/core-containers/{name}/logs
+    method: GET
+    data_selector: string
+- name: core_container_state
+  endpoint:
+    path: /api/core-containers/{name}/state
+    method: GET
+    data_selector: object
+- name: images
+  endpoint:
+    path: /api/images
+    method: GET
+    data_selector: object[]
+- name: inspect_image
+  endpoint:
+    path: /api/images/{name}/inspect
+    method: GET
+    data_selector: object
+- name: networks
+  endpoint:
+    path: /api/networks
+    method: GET
+    data_selector: object[]
+- name: inspect_network
+  endpoint:
+    path: /api/networks/{name}/inspect
+    method: GET
+    data_selector: object
+- name: volumes
+  endpoint:
+    path: /api/volumes
+    method: GET
+    data_selector: object
+- name: inspect_volume
+  endpoint:
+    path: /api/volumes/{name}/inspect
+    method: GET
+    data_selector: object
+- name: system_info
+  endpoint:
+    path: /system/info
+    method: GET
+- name: preflight_info
+  endpoint:
+    path: /system/preflight
+    method: GET
+- name: license_file
+  endpoint:
+    path: /system/licensefile
+    method: PUT
+- name: refresh_license
+  endpoint:
+    path: /system/refresh
+    method: GET
+- name: health_data
+  endpoint:
+    path: /system/health
+    method: GET
+- name: vrpc_health_data
+  endpoint:
+    path: /system/vrpchealth
+    method: GET
+- name: system_metrics
+  endpoint:
+    path: /system/metrics
+    method: GET
+- name: send_metrics
+  endpoint:
+    path: /system/metrics
+    method: PUT
+- name: system_agents
+  endpoint:
+    path: /system/agents
+    method: GET
+- name: marketplace_apps
+  endpoint:
+    path: /marketplace/apps
+    method: GET
+- name: marketplace_app
+  endpoint:
+    path: /marketplace/app
+    method: GET
+- name: marketplace_app_meta
+  endpoint:
+    path: /marketplace/app/meta
+    method: GET
+- name: system_info
+  endpoint:
+    path: /system/info
+    method: GET
+    data_selector: data
+    params: {}
+- name: system_health
+  endpoint:
+    path: /system/health
+    method: GET
+    data_selector: data
+    params: {}
+- name: system_metrics
+  endpoint:
+    path: /system/metrics
+    method: GET
+    data_selector: data
+    params: {}
+- name: system_info
+  endpoint:
+    path: /api/system/info
+    method: GET
+    data_selector: records
+    params: {}
+- name: system_preflight
+  endpoint:
+    path: /api/system/preflight
+    method: GET
+    data_selector: records
+    params: {}
+- name: system_licensefile
+  endpoint:
+    path: /api/system/licensefile
+    method: PUT
+    data_selector: records
+    params: {}
+- name: system_refresh
+  endpoint:
+    path: /api/system/refresh
+    method: GET
+    data_selector: records
+    params: {}
+- name: system_health
+  endpoint:
+    path: /api/system/health
+    method: GET
+    data_selector: records
+    params: {}
+- name: system_vrpcHealth
+  endpoint:
+    path: /api/system/vrpcHealth
+    method: GET
+    data_selector: records
+    params: {}
+- name: system_metrics
+  endpoint:
+    path: /api/system/metrics
+    method: GET
+    data_selector: records
+    params: {}
+- name: system_agents
+  endpoint:
+    path: /api/system/agents
+    method: GET
+    data_selector: records
+    params: {}
+- name: marketplace_apps
+  endpoint:
+    path: /api/marketplace/apps
+    method: GET
+    data_selector: records
+    params: {}
+- name: marketplace_app_info
+  endpoint:
+    path: /api/marketplace/app
+    method: GET
+    data_selector: records
+    params: {}
+- name: marketplace_app_meta
+  endpoint:
+    path: /api/marketplace/app/meta
+    method: GET
+    data_selector: records
+    params: {}
+- name: states_deviations
+  endpoint:
+    path: /api/v2/resources/states/deviations
+    method: GET
+- name: states_deviations_count
+  endpoint:
+    path: /api/v2/resources/states/deviations/count
+    method: GET
+- name: states_deviations_services
+  endpoint:
+    path: /api/v2/resources/states/deviations/services
+    method: GET
+- name: states
+  endpoint:
+    path: /api/v2/resources/states
+    method: GET
+- name: resource_runners
+  endpoint:
+    path: /api/v2/resource-runners
+    method: GET
+- name: rst_httpschemas
+  endpoint:
+    path: /api/v2/resources/rst/httpschemas
+    method: GET
+- name: resource_states_deviations
+  endpoint:
+    path: /api/v2/resources/states/deviations
+    method: GET
+    data_selector: data
+    params:
+      page: 1
+      itemsPerPage: 50
+- name: resource_states_deviations_count
+  endpoint:
+    path: /api/v2/resources/states/deviations/count
+    method: GET
+    data_selector: data
+    params:
+      page: 1
+      itemsPerPage: 50
+- name: resource_states_deviations_services
+  endpoint:
+    path: /api/v2/resources/states/deviations/services
+    method: GET
+    data_selector: data
+    params:
+      page: 1
+      itemsPerPage: 50
+- name: resource_states
+  endpoint:
+    path: /api/v2/resources/states
+    method: GET
+    data_selector: data
+    params:
+      page: 1
+      itemsPerPage: 50
+- name: resource_runners
+  endpoint:
+    path: /api/v2/resource-runners
+    method: GET
+    data_selector: data
+    params:
+      page: 1
+      itemsPerPage: 50
+- name: http_schemas
+  endpoint:
+    path: /api/v2/resources/rst/httpschemas
+    method: GET
+    data_selector: data
+- name: mqtt_topics
+  endpoint:
+    path: /api/v2/mqtt/topics
+    method: GET
+    data_selector: data
+    params:
+      prefix: string
+      depth: integer
+      limit: integer
+      offset: integer
+      last_node: string
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in Cybus
+- Some objects may return nulls in deeply nested fields
+- Avoid installing Docker through the Snap package manager due to known issues.
+- Connectware is designed to operate on Linux systems, deployed with Docker Compose
+  or Kubernetes.
+- 'Default login credentials are Username: admin, Password: admin.'
+- Connectware requires a valid license key to operate.
+- If your Connectware installation does not have Internet access, you can upload a
+  valid license file manually.
+- If you have any workload besides Connectware Core Services in this namespace, they
+  will be restarted too.
+- If you want to stop Connectware (rather than restart it), or if you need to perform
+  maintenance tasks while it remains stopped, you can end the procedure at this step.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Default administrator user named 'admin' with 'connectware-admin' role.
+- Client must provide username and password when Mutual TLS is disabled.
+- Requires a valid x.509 client certificate signed by the Connectware CA when Mutual
+  TLS is enabled.
+- The configured MQTT prefix should include the trailing topic level separator / at
+  the end.
+- Some objects like Contact may return nulls in deeply nested fields
+- Connectware uses NATS with max_payload set to 32 MB. This is the maximum payload
+  size allowed by NATS.
+- Requires OAuth2 setup for access to production data.
+- A default service ID is automatically generated from the name property in the service
+  commissioning file's metadata.
+- You must change the default service ID to a unique value if the service commissioning
+  file is used for more than one instance.
+- When a deviation occurs, a pop-up notification appears in the Admin UI.
+- Persistent deviations may require additional troubleshooting or consultation with
+  your system administrator.
+- Regularly review logs to stay proactive in system management.
+- Set up log rotation to manage storage efficiently.
+- Use filtered views to focus on specific services or issues.
+- Leverage the Log Details dialog for in-depth analysis of critical events.
+- Consider integrating log data with external analysis tools for advanced insights.
+- Rules are applied directly within Connectware's data processing pipeline, enabling
+  powerful data transformations.
+- Consider the potential impact of rule changes on your data processing pipeline.
+  Test your rules thoroughly to ensure they produce the desired results.
+- Shared subscriptions enable load balancing across multiple clients.
+- Connectware supports mutual TLS (Transport Layer Security) for agent communication.
+- Unidirectional communication from the agent to the Connectware server simplifies
+  firewall rules.
+- Agent container does not require any incoming TCP/IP ports to be opened.
+- The registration process must be finished using the web-interface.
+- If you encounter a `409 Conflict` error, it means that there is a registration conflict
+  that must be resolved.
+- You cannot monitor Docker logs (or debug output) of agent containers directly in
+  Connectware.
+- Short-term temporary connection outages can be covered by using the MQTT QoS level.
+- QoS level must be set on a per-endpoint basis.
+- Setting a non-zero QoS level will ensure that no in-flight MQTT message is getting
+  lost.
+- Eliminating the need to manually distribute credentials.
+- Enabling secure, automated credential exchange in the background.
+- Providing administrator oversight while minimizing manual intervention.
+- Supporting certificate-based authentication for enhanced security.
+- Clients generate their own passwords during registration
+- New users have no permissions by default
+- Connectware manages certificates to ensure secure communication between devices
+  and systems.
+- The environment variable is validated during system startup. If there is a misconfiguration
+  (e.g., JSON syntax error), the auth-server container will fail to start and log
+  an appropriate error message.
+- Real-time insights into your data.
+- Monitoring data helps maintain system performance and allows for quick issue resolution
+  in data flows.
+- The built-in Node-RED Workbench is designed for prototyping and testing purposes
+  only.
+- Node-RED Workbench projects are only available for Docker deployments and not for
+  Kubernetes deployments.
+- It is recommended to start a backup of the Docker volumes and the database backup
+  at approximately the same time.
+- During the backup operation there should be no changes in the service configuration.
+- After a restore, Connectware should restart, and all Admin-UI browser sessions should
+  be restarted as well.
+- In versions up to 1.0.82, the *protocol-mapper* volume(s) were also containing service
+  commissioning file data, but starting with 1.0.83, all this data is stored only
+  within the *service-manager* volume and there is no longer any actively used *protocol-mapper*
+  volume.
+- By default, CybusMQ deduplicates messages for overlapping subscriptions.
+- Helm version 3 is installed on your system.
+- The Kubernetes command line tool kubectl is configured and has access to the target
+  installation.
+- The disk space needed for our brokers depends on customers use-cases, especially
+  in regards to use of QoS > 0 and retained messages, as well as message size.
+- Currently this means pod restarts, which result in the necessity for clients to
+  reconnect.
+- This procedure depends on removing the StatefulSet. This leaves the broker cluster
+  open to failures caused by cluster events or human error. Therefore this should
+  be executed with great care and only in a stable cluster.
+- Issues that exist right after an upgrade or reconfiguration of Connectware are often
+  related to misconfiguration within the Helm values.
+- Problems that start and persist later are connected to cluster infrastructure.
+- If raw bytes should be written, the JSON representation of a Javascript Buffer should
+  be used.
+- 64-bit integers should be written using a Buffer object.
+- This protocol implementation provides an abstraction layer for connecting to InfluxDB
+  which is a time series database.
+- As a time series database InfluxDB store data in collections called ‘measurements’
+  and each ‘measurement’ stores ‘points’ which in turn are formed by a timestamp,
+  a value, fields and tags to achieve different groupings.
+- This version of the protocol supports the Flux query language for InfluxDB.
+- Writes are asynchronous and data is written based on the flushInterval, which by
+  default is 10 seconds.
+- Shdr is the underlying protocol of MTConnect, which implements the communication
+  between an MTConnect Adapter and MTConnect Agent.
+- Requires Sinumerik Operate and OPC UA license.
+- Driver created tool number automatically.
+- The Sopas protocol is used to communicate with sensor devices from SICK AG.
+- Always validate results using your established development and testing processes.
+- Using ChatGPT’s technology, users can automatically create configuration files for
+  Cybus GmbH’s Connectware. These files must be reviewed by a qualified and appropriately
+  trained professional before being used in a production environment.
+- Authorization is required for all endpoints.
+- Requires API key for authorization.
+- Requires setup of connected app in Connectware.
+- Authorization is required using API key in the header.
+- Release requires manual upgrade steps.
+- 'HTTP protocol: Add OAuth Client Credentials authentication support to HTTP Protocol'
+- The documented REST API health endpoint was not working as expected, but instead
+  /api/system/info is available to be used for health checking.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Check logs for errors.
+- Verify network connectivity between components.
+- Ensure that the configuration files are valid and correctly formatted.
+- '401 Unauthorized: Check your credentials or token expiration.'
+- Must not exceed 63 characters for Docker deployments.
+- Hyphens are not permitted in service IDs.
+- '409 Conflict: Registration conflict that must be resolved'
+- '409 Conflict: A conflicting registration might be pending, or a user with the same
+  username already existing.'
+- '201 Created: Registration granted; the client can now authenticate.'
+- '202 Accepted: Registration is pending admin approval.'
+- '400 Bad Request: Malformed or incomplete request.'
+- '409 Conflict: Username already exists or request is duplicated.'
+- '422 Unprocessable Entity: Username or password violates policy requirements.'
+- '423 Locked: Registration endpoint is currently locked.'
+- '403 Forbidden: Access is denied.'
+- '400 Invalid request: Check request parameters.'
+- 401 Unauthorized
+- 400 Invalid Request.
+- 409 Conflict.
+- 422 Policy violation.
+- 423 Locked.
+- '401 Unauthorized: Invalid API key'
+- '404 Not Found: Resource does not exist'
+- '500 Internal Server Error: Server encountered an error'
+- '400: Bad Request'
+- '500: Internal Server Error'
+- '400: Invalid request'
+- '401: Unauthorized'
+- '400: Problem with query parameters'
+- '404: No matched MQTT topics'
+- '413: Query would result too many nodes, user needs to narrow down the search'
+- '429: Request had to stay in queue for more than 10s or queue already has 10 waiting
+  requests, default rate is 10 per second, max 3 concurrent running request'
+- '500: Query crashed for any reason'
+- '504: Query processing took more than 10s'
+auth_info:
+  mentioned_objects:
+  - AuthProvider
+  - OAuth2Token
+  - OAuthToken
+  - NamedCredential
+  - OauthToken
+client:
+  base_url: /api
+  auth:
+    type: ApiKey
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

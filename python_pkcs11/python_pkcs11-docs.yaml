@@ -1,0 +1,474 @@
+resources:
+- name: AES
+  endpoint:
+    path: /aes
+    method: POST
+    data_selector: data
+    params: {}
+- name: 3DES
+  endpoint:
+    path: /3des
+    method: POST
+    data_selector: data
+    params: {}
+- name: RSA
+  endpoint:
+    path: /rsa
+    method: POST
+    data_selector: data
+    params: {}
+- name: DSA
+  endpoint:
+    path: /dsa
+    method: POST
+    data_selector: data
+    params: {}
+- name: Diffie-Hellman
+  endpoint:
+    path: /diffie-hellman
+    method: POST
+    data_selector: data
+    params: {}
+- name: RSA
+  endpoint:
+    path: /pkcs11/rsa
+    method: GET
+- name: DSA
+  endpoint:
+    path: /pkcs11/dsa
+    method: GET
+- name: Elliptic Curve
+  endpoint:
+    path: /pkcs11/elliptic_curve
+    method: GET
+- name: Diffie-Hellman
+  endpoint:
+    path: /pkcs11/diffie_hellman
+    method: GET
+- name: token
+  endpoint:
+    path: /tokens
+    method: GET
+    data_selector: tokens
+- name: signing_verifying
+  endpoint:
+    path: /signing/verifying
+    method: GET
+    data_selector: mechanisms
+    params: {}
+- name: aes
+  endpoint:
+    path: /aes
+    method: GET
+    data_selector: mac
+    params: {}
+- name: des2_3
+  endpoint:
+    path: /des2_3
+    method: GET
+    data_selector: mac
+    params: {}
+- name: keys
+  endpoint:
+    path: /keys
+    method: GET
+    data_selector: keys
+    params: {}
+- name: tokens
+  endpoint:
+    path: /tokens
+    method: GET
+    data_selector: tokens
+    params: {}
+- name: RSA
+  endpoint:
+    path: /rsa
+    method: POST
+    data_selector: keys
+    params: {}
+- name: DSA
+  endpoint:
+    path: /dsa
+    method: POST
+    data_selector: keys
+    params: {}
+- name: Diffie-Hellman
+  endpoint:
+    path: /dh
+    method: POST
+    data_selector: keys
+    params: {}
+- name: Elliptic Curve
+  endpoint:
+    path: /ec
+    method: POST
+    data_selector: keys
+    params: {}
+- name: AES
+  endpoint:
+    path: /aes
+    method: POST
+    data_selector: records
+    params:
+      user_pin: '1234'
+- name: 3DES
+  endpoint:
+    path: /3des
+    method: POST
+    data_selector: records
+    params:
+      user_pin: '1234'
+- name: RSA
+  endpoint:
+    path: /rsa
+    method: POST
+    data_selector: records
+    params:
+      user_pin: '1234'
+- name: DSA
+  endpoint:
+    path: /dsa
+    method: POST
+    data_selector: records
+    params:
+      user_pin: '1234'
+- name: Diffie-Hellman
+  endpoint:
+    path: /diffie-hellman
+    method: POST
+    data_selector: records
+    params:
+      user_pin: '1234'
+- name: token
+  endpoint:
+    path: /api/tokens
+    method: GET
+    data_selector: tokens
+    params: {}
+- name: signing_and_verifying
+  endpoint:
+    path: /signing_verifying
+    method: GET
+    data_selector: mechanisms
+    params: {}
+- name: AES
+  endpoint:
+    path: /aes
+    method: GET
+    data_selector: mechanisms
+    params: {}
+- name: DES2_3
+  endpoint:
+    path: /des2_3
+    method: GET
+    data_selector: mechanisms
+    params: {}
+- name: keys
+  endpoint:
+    path: /api/keys
+    method: GET
+    data_selector: keys
+    params: {}
+- name: tokens
+  endpoint:
+    path: /api/tokens
+    method: GET
+    data_selector: tokens
+    params: {}
+- name: RSA
+  endpoint:
+    path: /pkcs11/rsa
+    method: POST
+    data_selector: public_key
+    params: {}
+- name: DSA
+  endpoint:
+    path: /pkcs11/dsa
+    method: POST
+    data_selector: public_key
+    params: {}
+- name: Elliptic Curve
+  endpoint:
+    path: /pkcs11/ec
+    method: POST
+    data_selector: public_key
+    params: {}
+- name: Diffie-Hellman
+  endpoint:
+    path: /pkcs11/dh
+    method: POST
+    data_selector: public_key
+    params: {}
+- name: CertificateType
+  endpoint:
+    path: /pkcs11/constants/CertificateType
+    method: GET
+    data_selector: records
+    params: {}
+- name: MechanismFlag
+  endpoint:
+    path: /pkcs11/constants/MechanismFlag
+    method: GET
+    data_selector: records
+    params: {}
+- name: SlotFlag
+  endpoint:
+    path: /pkcs11/constants/SlotFlag
+    method: GET
+    data_selector: records
+    params: {}
+- name: TokenFlag
+  endpoint:
+    path: /pkcs11/constants/TokenFlag
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Key types beginning with an underscore are historic and are best avoided.
+- Some mechanisms including cryptographic hash functions and certain block modes are
+  no longer considered secure, and should not be used for new applications, e.g. MD2,
+  MD5, SHA1, ECB.
+- SHA-1 is no longer considered secure.
+- Identical blocks will encipher to the same result.
+- A high level, 'more Pythonic' interface to the PKCS#11 standard to support HSM and
+  Smartcard devices in Python.
+- The interface is designed to follow the logical structure of a HSM.
+- Assuming your PKCS#11 library is set as PKCS11_MODULE and contains a token named
+  DEMO
+- Tokens are secured with a passphrase (PIN). Not all implementations use pins in
+  their underlying implementation, but these are required for PKCS#11.
+- Tokens are secured with a passphrase (PIN).
+- It is important to close sessions when you are finished with them.
+- Choosing domain parameters is not covered in this document. Domain parameters are
+  often either specified by the requirements you are implementing for, or have a standard
+  implementation to derive quality parameters. Some domain parameters (e.g. choice
+  of elliptic curve) can drastically weaken the cryptosystem.
+- It is best to only import/export public keys. You should, whenever possible, generate
+  and store secret and private keys within the boundary of your HSM.
+- PEM certificates are base64-encoded versions of the canonical DER-encoded forms
+  used in python-pkcs11. Conversion between PEM and DER can be achieved using asn1crypto.pem.
+- 'The PKCS #11 library is running within your process, using your memory, etc.'
+- These mechanisms do not store the IV. You must store the IV yourself, e.g. on the
+  front of the ciphertext. It is safe to store an IV in the clear.
+- 'PKCS #11 is protocol agnostic and does not define or implement any codecs for the
+  storing of enciphered data.'
+- The default signing and verification mechanism for RSA is DSA_SHA512.
+- 'Other mechanisms are available: DSA - No hashing. 20, 28, 32, 48 or 64 bits. DSA_SHA*
+  - DSA with SHAx message digesting.'
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Key derivation mechanisms do not verify the authenticity of the other party. Your
+  application should include a mechanism to verify the other user’s public key is
+  really from that user to avoid man-in-the-middle attacks.
+- Other DH derivation mechanisms including X9.42 derivation are not currently supported.
+- Other ECDH derivation mechanisms including co-factor derivation and MQV derivation
+  are not currently supported.
+- Thread safety is managed using a reenterant lock to control access to multi-step
+  operations.
+- The device is not a cryptographic accelerator. Only key generation and the private
+  key operations (sign and decrypt) are supported.
+- Public key operations should be done by extracting the public key and working on
+  the computer.
+- Session lifetime objects are not supported and the value of pkcs11.constants.Attribute.TOKEN
+  and the store keyword argument are ignored. All objects will be stored to the device.
+- Smartcard-HSM can generate a shared key via ECDH key exchange.
+- The interface is designed to follow the logical structure of a HSM, with useful
+  defaults for obscurely documented parameters.
+- 'Numerous utility functions to convert between PKCS #11 data structures and common
+  interchange formats including PKCS #1 and X.509.'
+- 'PKCS #15 defines a standard for storing cryptographic objects within the HSM device
+  to enable interoperability between devices and tokens.'
+- Environment variables can configure library behavior.
+- Choosing domain parameters is not covered in this document.
+- Whenever possible, generate and store secret keys within the boundary of your HSM.
+- The default mechanism for RSA signing and verification is RSA_SHA512_PKCS.
+- 'PKCS #11 requires specific configuration for session management.'
+- Ensure to close sessions to avoid resource leaks.
+- Other mechanisms are available.
+- PEM certificates are base64-encoded versions of the canonical DER-encoded forms
+  used in python-pkcs11.
+- Considered insecure. Use AES where possible.
+- The lock is not released until the iterator is consumed (or garbage collected).
+- Failing to close a session may leak resources into your memory space, HSM daemon
+  or HSM hardware.
+- The device is not a cryptographic accelerator. Only key generation and the private
+  key operations (sign and decrypt) are supported. Public key operations should be
+  done by extracting the public key and working on the computer.
+- SmartcardHSM doesn't accept DER-encoded EC_POINTs for derivation
+errors:
+- 'AlreadyInitialized: pkcs11 was already initialized with another library.'
+- 'AnotherUserAlreadyLoggedIn: Another user is already logged in.'
+- 'AttributeTypeInvalid: Invalid attribute type.'
+- 'AttributeValueInvalid: Invalid attribute value.'
+- 'AttributeReadOnly: Attempted to set a read-only attribute.'
+- 'AttributeSensitive: Attempted to obtain a sensitive attribute value.'
+- 'ArgumentsBad: Bad arguments passed into PKCS#11.'
+- 'DataInvalid: Invalid plaintext input data.'
+- 'DataLenRange: Plaintext input data has a bad length.'
+- 'DomainParamsInvalid: Invalid or unsupported domain parameters.'
+- 'DeviceError: Device error occurred.'
+- 'DeviceMemory: Insufficient memory on the token.'
+- 'DeviceRemoved: Token removed during execution.'
+- 'EncryptedDataInvalid: Invalid encrypted input data.'
+- 'EncryptedDataLenRange: Invalid ciphertext length.'
+- 'ExceededMaxIterations: Maximum iterations exceeded.'
+- 'FunctionCancelled: Function was cancelled.'
+- 'FunctionFailed: Function failed.'
+- 'FunctionRejected: Function was rejected.'
+- 'FunctionNotSupported: Function not supported.'
+- 'KeyHandleInvalid: Invalid key handle.'
+- 'KeyIndigestible: Key cannot be digested.'
+- 'KeyNeeded: Key is needed.'
+- 'KeyNotNeeded: Key is not needed.'
+- 'KeyNotWrappable: Key cannot be wrapped.'
+- 'KeySizeRange: Key size is out of range.'
+- 'KeyTypeInconsistent: Inconsistent key type.'
+- 'KeyUnextractable: Key is unextractable.'
+- 'GeneralError: General error occurred.'
+- 'HostMemory: Insufficient memory on host.'
+- 'MechanismInvalid: Mechanism cannot be used.'
+- 'MechanismParamInvalid: Invalid mechanism parameters.'
+- 'MultipleObjectsReturned: Multiple objects matched search.'
+- 'MultipleTokensReturned: Multiple tokens matched search.'
+- 'NoEvent: No slot events detected.'
+- 'NoSuchKey: No matching key found.'
+- 'NoSuchToken: No matching token found.'
+- 'ObjectHandleInvalid: Invalid object handle.'
+- 'OperationActive: Active operation prevents execution.'
+- 'OperationNotInitialized: Operation not initialized.'
+- 'PinExpired: PIN has expired.'
+- 'PinIncorrect: Incorrect PIN.'
+- 'PinInvalid: Invalid PIN.'
+- 'PinLenRange: PIN length out of range.'
+- 'PinLocked: PIN is locked.'
+- 'PinTooWeak: PIN is too weak.'
+- 'PublicKeyInvalid: Invalid public key.'
+- 'RandomNoRNG: No random number generator available.'
+- 'RandomSeedNotSupported: Random seed not supported.'
+- 'SessionClosed: Session closed during execution.'
+- 'SessionCount: Too many existing sessions.'
+- 'SessionExists: Session already exists.'
+- 'SessionHandleInvalid: Invalid session handle.'
+- 'SessionReadOnly: Attempted to write to read-only session.'
+- 'SessionReadOnlyExists: Read-only session exists.'
+- 'SessionReadWriteSOExists: Read/write session already exists.'
+- 'SignatureLenRange: Signature length out of range.'
+- 'SignatureInvalid: Invalid signature.'
+- 'SlotIDInvalid: Invalid slot ID.'
+- 'TemplateIncomplete: Required attributes missing.'
+- 'TemplateInconsistent: Template values are contradictory.'
+- 'TokenNotPresent: Token not present in slot.'
+- 'TokenNotRecognised: Token not recognized.'
+- 'TokenWriteProtected: Token is write protected.'
+- 'UnwrappingKeyHandleInvalid: Invalid unwrapping key handle.'
+- 'UnwrappingKeySizeRange: Unwrapping key size out of range.'
+- 'UnwrappingKeyTypeInconsistent: Unwrapping key type inconsistent.'
+- 'UserAlreadyLoggedIn: User is already logged in.'
+- 'UserNotLoggedIn: User is not logged in.'
+- 'UserPinNotInitialized: User PIN not initialized.'
+- 'UserTooManyTypes: Too many distinct users logged in.'
+- 'WrappedKeyInvalid: Invalid wrapped key.'
+- 'WrappedKeyLenRange: Wrapped key length out of range.'
+- 'WrappingKeyHandleInvalid: Invalid wrapping key handle.'
+- 'WrappingKeySizeRange: Wrapping key size out of range.'
+- 'WrappingKeyTypeInconsistent: Wrapping key type inconsistent.'
+- 'NO_SUCH_TOKEN: Check the token label.'
+- 'MULTIPLE_TOKENS_RETURNED: Ensure the token label is unique.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- SmartcardHSM doesn't accept DER-encoded EC_POINTs for derivation
+- 'NoSuchToken: Token not found.'
+- 'MultipleTokensReturned: More than one token found.'
+- 'TOKEN_NOT_FOUND: Ensure the token label is correct.'
+- 'SESSION_NOT_LOGGED_IN: Log in to access private objects.'
+- 'INVALID_PIN: Check the user PIN provided.'
+- 'Warning: SHA-1 is no longer considered secure.'
+- 'AttributeTypeInvalid: The attribute type is invalid.'
+- 'AttributeValueInvalid: The attribute value is invalid.'
+- 'AttributeReadOnly: An attempt was made to set a value for an attribute which may
+  not be set by the application.'
+- 'AttributeSensitive: An attempt was made to obtain the value of a sensitive attribute.'
+- 'ArgumentsBad: Bad arguments were passed into PKCS#11.'
+- 'DataInvalid: The plaintext input data to a cryptographic operation is invalid.'
+- 'DataLenRange: The plaintext input data to a cryptographic operation has a bad length.'
+- 'DomainParamsInvalid: Invalid or unsupported domain parameters were supplied.'
+- 'DeviceError: A device error occurred.'
+- 'DeviceMemory: Insufficient memory to perform the requested function.'
+- 'DeviceRemoved: The token was removed during the execution of the function.'
+- 'EncryptedDataInvalid: The encrypted input to a decryption operation is invalid.'
+- 'EncryptedDataLenRange: The ciphertext input to a decryption operation has a bad
+  length.'
+- 'ExceededMaxIterations: An iterative algorithm failed because we have exceeded the
+  maximum number of iterations.'
+- 'FunctionCancelled: The function was cancelled.'
+- 'FunctionFailed: The function failed.'
+- 'FunctionRejected: The function was rejected.'
+- 'FunctionNotSupported: The function is not supported.'
+- 'KeyHandleInvalid: The key handle is invalid.'
+- 'KeyIndigestible: The key is indigestible.'
+- 'KeyNeeded: A key is needed.'
+- 'KeyNotNeeded: A key is not needed.'
+- 'KeyNotWrappable: The key cannot be wrapped.'
+- 'KeySizeRange: The key size is out of range.'
+- 'KeyTypeInconsistent: The key type is inconsistent.'
+- 'KeyUnextractable: The key is unextractable.'
+- 'GeneralError: A general error occurred.'
+- 'HostMemory: Insufficient memory on the host.'
+- 'MechanismInvalid: The mechanism is invalid.'
+- 'MechanismParamInvalid: The mechanism parameter is invalid.'
+- 'MultipleObjectsReturned: Multiple objects matched the search parameters.'
+- 'MultipleTokensReturned: Multiple tokens matched the search parameters.'
+- 'NoEvent: No slot events were detected.'
+- 'NoSuchKey: No key matching the parameters was found.'
+- 'NoSuchToken: No token matching the parameters was found.'
+- 'ObjectHandleInvalid: The object handle is invalid.'
+- 'OperationActive: An active operation prevents activation of the specified operation.'
+- 'OperationNotInitialized: The operation is not initialized.'
+- 'PinExpired: The PIN has expired.'
+- 'PinIncorrect: The PIN is incorrect.'
+- 'PinInvalid: The PIN is invalid.'
+- 'PinLenRange: The specified PIN is too long or too short.'
+- 'PinLocked: The PIN is locked.'
+- 'PinTooWeak: The PIN is too weak.'
+- 'PublicKeyInvalid: The public key is invalid.'
+- 'RandomNoRNG: No random number generator is available.'
+- 'RandomSeedNotSupported: The random seed is not supported.'
+- 'SessionClosed: The session was closed during the execution of the function.'
+- 'SessionExists: The session already exists.'
+- 'SessionHandleInvalid: The session handle is invalid.'
+- 'SessionReadOnly: Attempted to write to a read-only session.'
+- 'SessionReadOnlyExists: A read-only session exists.'
+- 'SessionReadWriteSOExists: A read/write session exists.'
+- 'SignatureLenRange: The signature length is out of range.'
+- 'SignatureInvalid: The signature is invalid.'
+- 'SlotIDInvalid: The slot ID is invalid.'
+- 'TemplateIncomplete: Required attributes are missing.'
+- 'TokenNotPresent: The token was not present.'
+- 'TokenNotRecognised: The token is not recognized.'
+- 'TokenWriteProtected: The token is write-protected.'
+- 'UnwrappingKeyHandleInvalid: The unwrapping key handle is invalid.'
+- 'UnwrappingKeySizeRange: The unwrapping key size is out of range.'
+- 'UnwrappingKeyTypeInconsistent: The unwrapping key type is inconsistent.'
+- 'UserAlreadyLoggedIn: A user is already logged in.'
+- 'UserNotLoggedIn: No user is logged in.'
+- 'UserPinNotInitialized: The user''s PIN is not initialized.'
+- 'UserTooManyTypes: Too many distinct users are logged in.'
+- 'WrappedKeyInvalid: The wrapped key is invalid.'
+- 'WrappedKeyLenRange: The wrapped key length is out of range.'
+- 'WrappingKeyHandleInvalid: The wrapping key handle is invalid.'
+- 'WrappingKeySizeRange: The wrapping key size is out of range.'
+- 'WrappingKeyTypeInconsistent: The wrapping key type is inconsistent.'
+auth_info:
+  mentioned_objects:
+  - pkcs11.Token
+  - pkcs11.Session
+  - pkcs11
+  - Token
+  - Session
+  - Key
+client:
+  base_url: http://python-pkcs11.readthedocs.io/en/latest/
+  headers:
+    Accept: application/json
+source_metadata: null

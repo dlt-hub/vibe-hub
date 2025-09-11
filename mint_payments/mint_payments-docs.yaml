@@ -1,0 +1,231 @@
+resources:
+- name: transactions
+  endpoint:
+    path: /transactions
+    method: POST
+    data_selector: transaction
+    params: {}
+- name: update_transaction
+  endpoint:
+    path: /update/transaction
+    method: POST
+    data_selector: transaction
+    params: {}
+- name: authorise_payment
+  endpoint:
+    path: /authorise/payment
+    method: POST
+    data_selector: transaction
+    params: {}
+- name: cancel_payment
+  endpoint:
+    path: /cancel/transactions
+    method: POST
+    data_selector: transaction
+    params: {}
+- name: transaction_inquiry
+  endpoint:
+    path: /transaction-by-id/{transaction_id}
+    method: GET
+    data_selector: transaction
+    params: {}
+- name: status_history
+  endpoint:
+    path: /{transaction_id}/status-history
+    method: GET
+    data_selector: transaction
+    params: {}
+- name: search_transactions
+  endpoint:
+    path: /transaction_search
+    method: GET
+    data_selector: transactions
+    params: {}
+- name: search_transaction
+  endpoint:
+    path: /transaction_search
+    method: GET
+    data_selector: transactions
+    params:
+      payer_number: ''
+      payee_number: ''
+      page: ''
+      size: ''
+- name: search_payee
+  endpoint:
+    path: /payee-search
+    method: GET
+    data_selector: payees
+    params:
+      company_number: ''
+      payee_name_or_number: ''
+      is_search_all: ''
+      is_payer_search: ''
+      page: ''
+      size: ''
+- name: transaction_token
+  endpoint:
+    path: /v5/transaction_token
+    method: POST
+    data_selector: transaction_token
+    params: {}
+- name: purchase
+  endpoint:
+    path: /v5/purchase
+    method: POST
+    data_selector: purchase
+    params: {}
+- name: capture
+  endpoint:
+    path: /v5/purchase/{purchase_reference}/capture
+    method: POST
+    data_selector: capture
+    params: {}
+- name: cancel
+  endpoint:
+    path: /v5/purchase/{purchase_reference}/cancel
+    method: POST
+    data_selector: cancel
+    params: {}
+- name: cancel_purchase
+  endpoint:
+    path: /v5/purchase/cancel
+    method: POST
+    data_selector: response
+    params: {}
+- name: surcharge
+  endpoint:
+    path: /v5/surcharge
+    method: POST
+    data_selector: surcharge
+    params: {}
+- name: refund
+  endpoint:
+    path: /v5/purchase/{purchase_reference}/refund
+    method: POST
+    data_selector: refund
+    params: {}
+- name: transaction_status
+  endpoint:
+    path: /v5/purchase/{invoice_number|purchase_reference}
+    method: POST
+    data_selector: transaction_status
+    params: {}
+- name: three_ds_redirect
+  endpoint:
+    path: /v5/purchase/{purchase_reference}/3dsredirect
+    method: POST
+    data_selector: three_ds_redirect
+    params: {}
+- name: invalidate_card
+  endpoint:
+    path: /v5/invalidate_card
+    method: POST
+    data_selector: response
+    params: {}
+- name: card
+  endpoint:
+    path: /v5/card
+    method: POST
+    data_selector: response
+    params: {}
+- name: tokenize_card
+  endpoint:
+    path: /v5/tokenize_card
+    method: POST
+    data_selector: response
+    params: {}
+- name: direct_debit
+  endpoint:
+    path: /v5/direct_debit
+    method: POST
+    data_selector: response
+    params: {}
+- name: direct_debit_fee
+  endpoint:
+    path: /v5/direct_debit_fee
+    method: POST
+    data_selector: response
+    params: {}
+- name: direct_debit_refund
+  endpoint:
+    path: /direct_debit/{purchase_reference}/refund
+    method: POST
+    data_selector: refund
+    params: {}
+- name: HPP Integration
+  endpoint:
+    path: /<companyToken>
+    method: POST
+    data_selector: input_parameters
+    params: {}
+- name: webhook
+  endpoint:
+    path: /webhook
+    method: POST
+    data_selector: transaction_reference
+    params: {}
+- name: transaction_token
+  endpoint:
+    path: /mpay/v5/transaction_token
+    method: POST
+    data_selector: response
+    params: {}
+- name: purchase
+  endpoint:
+    path: /mpay/v5/purchase
+    method: POST
+    data_selector: response
+    params: {}
+notes:
+- mPay uses an API keys to uniquely authenticate requests. Your API key will be issued
+  by Mint during the on-boarding process.
+- Transaction Token is issued by mPay for single use only. Once a token is used it
+  will be invalidated and cannot be used anymore.
+- Many endpoints will return transaction status.
+- Transaction token needs to be passed as a parameter to the purchase or refund endpoint.
+- Token is one per transaction and has a 5-minute expiry time.
+- The request must hold a valid session token.
+- The URL of POST request will look like https://hpp-uatsb.mintpayments.net/<companyToken>
+- The input parameters are strings.
+- An outgoing webhook URL can be set up by Mint admins for a merchant account in the
+  admin setup.
+- The domain must also be allowed out of the firewall.
+- The OTT service is for tokenising credit / debit cards only.
+- Each token can only be used once and expires after 1 hour if not used.
+errors:
+- '400: Bad request - The request contains missing parameters, is in an incorrect
+  shape, or failed another validation test'
+- '401: Unauthorized - Please verify that the authentication token is provided and
+  is valid'
+- '403: Forbidden, cases where customer do not have API enabled, service not enabled
+  etc.'
+- '404: Not found - The requested endpoint does not exist'
+- '500: Server error - Something went wrong on our end; please let us know if you
+  are receiving this error.'
+- 200 OK - Purchase Successful - not an ERROR
+- 400 - Bad request - The request contains missing parameters, is in an incorrect
+  shape, or failed another validation test
+- 401 - Unauthorized - Please verify that the authentication token is provided and
+  is valid
+- 403 - Forbidden, cases where customer do not have API enabled, service not enabled
+  etc.
+- 404 - Not found - The requested endpoint does not exist
+- 405 - Method not allowed
+- 500 - Server error - Something went wrong on our end; please let us know if you
+  are receiving this error.
+- 200 OK - Purchase Declined ERRORs
+- Non 200 ERRORs
+- '401 Unauthorized: Recheck session token or authentication details.'
+- '401 Unauthorized: Recheck API key or company token'
+- '1: Card number is invalid'
+- '2: CVV is invalid'
+- '4: Expiry date is invalid'
+- '100010: You are not authorised to access this service for this account'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://secure-uatsb.mintpayments.net/mpay/
+  auth:
+    type: apikey
+source_metadata: null

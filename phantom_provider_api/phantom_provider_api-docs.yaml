@@ -1,0 +1,188 @@
+resources:
+- name: requestAccounts
+  endpoint:
+    path: /requestAccounts
+    method: GET
+    data_selector: BtcAccount[]
+- name: signMessage
+  endpoint:
+    path: /signMessage
+    method: POST
+    data_selector: signature
+- name: signPSBT
+  endpoint:
+    path: /signPSBT
+    method: POST
+    data_selector: serialized PSBT
+- name: provider_methods
+  endpoint:
+    path: /ul/<version>/<method>
+    method: GET
+- name: custom_protocol_handler
+  endpoint:
+    path: phantom://<version>/<method>
+    method: GET
+- name: browse_deeplink
+  endpoint:
+    path: /other-methods/browse
+    method: GET
+- name: transaction
+  endpoint:
+    path: /solana/sending-a-transaction
+    method: POST
+    data_selector: signature
+- name: signMessage
+  endpoint:
+    path: /solana/signing-a-message
+    method: POST
+    data_selector: signedMessage
+    params: {}
+- name: provider_detection
+  endpoint:
+    path: /detect-provider
+    method: GET
+    data_selector: provider
+    params: {}
+- name: send_transaction
+  endpoint:
+    path: /eth_sendTransaction
+    method: POST
+    data_selector: params
+- name: sign_message
+  endpoint:
+    path: /solana/signing-a-message
+    method: POST
+    data_selector: signatures
+    params: {}
+- name: detect_provider
+  endpoint:
+    path: /detect-provider
+    method: GET
+    data_selector: phantom
+    params: {}
+- name: transaction
+  endpoint:
+    path: /sui/sending-a-transaction
+    method: POST
+    data_selector: transactionParams
+    params: {}
+- name: BtcAccount
+  endpoint:
+    data_selector: accounts
+- name: signPSBT
+  endpoint:
+    path: /send-transaction
+    method: POST
+    data_selector: result
+    params: {}
+- name: sign_message
+  endpoint:
+    path: /bitcoin/signing-a-message
+    method: POST
+    data_selector: signature
+    params: {}
+- name: PhantomProvider
+  endpoint:
+    path: /v1/wallets
+    method: GET
+    data_selector: wallets
+    params: {}
+- name: wallet
+  endpoint:
+    path: /wallets
+    method: GET
+- name: PhantomProvider
+  endpoint:
+    path: /wallets
+    method: GET
+- name: Server SDK
+  endpoint:
+    path: /sdks/server-sdk
+    method: GET
+    data_selector: sdk_doc
+    params: {}
+- name: React SDK
+  endpoint:
+    path: /sdks/react-sdk
+    method: GET
+    data_selector: sdk_doc
+    params: {}
+- name: Browser SDK
+  endpoint:
+    path: /sdks/browser-sdk
+    method: GET
+    data_selector: sdk_doc
+    params: {}
+- name: React Native SDK
+  endpoint:
+    path: /sdks/react-native-sdk
+    method: GET
+    data_selector: sdk_doc
+    params: {}
+notes:
+- Connects to the user’s Phantom account.
+- Signs a message with the user’s Phantom account.
+- Signs a Partially-Signed Bitcoin Transaction (PSBT).
+- Phantom works by creating and managing private keys on behalf of its users.
+- Currently only Solana is supported for deeplinks.
+- It is recommended to use universal links.
+- Limit the transaction to one signer.
+- If the transaction requires multiple signers, sign it with Phantom first using signTransaction
+  instead of signAndSendTransaction, then collect signatures from the other signers.
+- If your transaction approaches Solana’s size limit, split it into multiple signing
+  requests or use Address Lookup Tables.
+- Phantom’s browser extension and mobile in-app browser will both inject a `phantom`
+  object into the window of any web application the user visits, provided that site
+  is using `https://`, on `localhost`, or is `127.0.0.1.`
+- Phantom will not inject the provider into iframes or sites that use `http://`.
+- Users must approve a connection request before the app can make additional requests
+  such as signing a message or sending a transaction.
+- Once permission is established for the first time, the web application’s domain
+  will be whitelisted for future connection requests.
+- Easiest way is using the signAndSendTransaction method on the provider.
+- Supports versioned transactions with Address Lookup Tables
+- Maximum of 256 accounts in a single atomic transaction using LUTs
+- Users must enable the Monad Testnet in Phantom’s settings before interacting with
+  it.
+- Phantom will not inject the provider into iframes or sites using http://.
+- Transaction object needs to be signed using the sender’s private key.
+- Message signatures do not involve network fees and are a convenient way for apps
+  to verify ownership of an address.
+- Phantom will not inject the provider into iframes or sites using http://
+- Once a user has established a connection, Phantom will add the website they opened
+  a connection with to a list of Connected Apps.
+- Phantom supports signing transactions using the Partially Signed Bitcoin Transaction
+  (PSBT) format.
+- The Server SDK is currently experimental and not ready for production use.
+- The React SDK provides React hooks for integrating Phantom wallet functionality.
+- Supports both browser extension and embedded wallet types
+- 'Supports multiple OAuth providers: Google, Apple, and Custom JWT.'
+errors:
+- '4001: User rejected the request.'
+- code: 4900
+  message: Phantom could not connect to the network.
+- code: 4100
+  message: The requested method and/or account has not been authorized by the user.
+- code: 4001
+  message: The user rejected the request through Phantom.
+- code: -32000
+  message: Missing or invalid parameters.
+- code: -32002
+  message: This error occurs when a dapp attempts to submit a new transaction while
+    Phantom’s approval dialog is already open for a previous transaction. Only one
+    approve window can be open at a time. Users should approve or reject their transaction
+    before initiating a new transaction.
+- code: -32003
+  message: Phantom does not recognize a valid transaction.
+- code: -32601
+  message: Phantom does not recognize the method.
+- code: -32603
+  message: Something went wrong within Phantom.
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://phantom.com
+  headers:
+    Accept: application/json
+source_metadata: null
