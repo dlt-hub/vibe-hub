@@ -1,0 +1,141 @@
+resources:
+- name: Property
+  endpoint:
+    path: /Property
+    method: GET
+    data_selector: value
+    params:
+      incremental: ModificationTimestamp
+- name: Property
+  endpoint:
+    path: /Property
+    method: GET
+- name: Member
+  endpoint:
+    path: /Member
+    method: GET
+- name: Office
+  endpoint:
+    path: /Office
+    method: GET
+- name: OpenHouse
+  endpoint:
+    path: /OpenHouse
+    method: GET
+- name: Lookup
+  endpoint:
+    path: /Lookup
+    method: GET
+- name: Lookup
+  endpoint:
+    path: /Lookup
+    method: GET
+    data_selector: value
+    params:
+      filter: OriginatingSystemName eq 'actris' and MlgCanView eq true
+- name: Property
+  endpoint:
+    path: /Property
+    method: GET
+    data_selector: value
+    params:
+      filter: OriginatingSystemName eq 'actris'
+- name: Property
+  endpoint:
+    path: /Property
+    method: GET
+    data_selector: records
+    params:
+      filter: OriginatingSystemName eq 'maris2'
+- name: Property
+  endpoint:
+    path: /Property
+    method: GET
+    data_selector: value
+    params:
+      filter: OriginatingSystemName eq 'actris' and MlgCanView eq true
+- name: Property
+  endpoint:
+    path: /Property
+    method: GET
+    data_selector: records
+    params: {}
+- name: Member
+  endpoint:
+    path: /Member
+    method: GET
+    data_selector: records
+    params: {}
+- name: Office
+  endpoint:
+    path: /Office
+    method: GET
+    data_selector: records
+    params: {}
+- name: OpenHouse
+  endpoint:
+    path: /OpenHouse
+    method: GET
+    data_selector: records
+    params: {}
+- name: Lookup
+  endpoint:
+    path: /Lookup
+    method: GET
+    data_selector: records
+    params: {}
+- name: Lookup
+  endpoint:
+    path: /Lookup
+    method: GET
+    data_selector: value
+    params:
+      incremental: ModificationTimestamp
+- name: Property
+  endpoint:
+    path: /Property
+    method: GET
+    data_selector: value
+    params:
+      incremental: ModificationTimestamp
+notes:
+- All data is compressed using gzip compression to shrink the overall payload size.
+- If you use expand in the request, the records per request limit reduces to 1000
+  at most per request.
+- Each record has a field called MlgCanView which indicates whether the record should
+  be kept in your database.
+- After 7 days records marked MlgCanView false will be removed from the data feed
+  entirely.
+- Please do not pull from this resource more frequently than once a day.
+- Non-Alphanumeric characters can create issues with oData and the RESO Web API. For
+  this purpose special characters must be stripped from the values provided in key
+  fields.
+- The MLS Grid uses a simplified Oauth 2 authentication schema with long term tokens.
+- ALL Data Consumers should treat this change as an initial import of a new MLS source.
+- 'New Local Fields Prefix: MIS_'
+- 'New Prefixed KeyField Values: MIS'
+- 'MLS Affected: RMLS Alliance'
+- 'Date of Change: April 30, 2025'
+- 'Resources Affected: PROPERTY, OFFICE'
+- 'Type of Change: FIELD NAME CHANGES, LOOKUP NAME CHANGES'
+- DO NOT re-pull old records as these changes will not be immediately available on
+  old records.
+- If you use expand in the request, the records per request limit reduces to 1000.
+- Do not pull from this resource more frequently than once a day.
+errors:
+- '5000 records per request: You can receive at most 5000 records per request.'
+- 'OR operator limit: The query must include no more than 5 ''or'' operators per query.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'HTTP 429: Access token suspended for concerning behavior.'
+- 'QUERY_LIMIT_EXCEEDED: The query must include no more than 5 ''or'' operators per
+  query.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.mlsgrid.com/v2/
+  headers:
+    Authorization: Bearer access_token
+  paginator:
+    type: cursor
+    cursor_path: '@odata.nextLink'
+source_metadata: null

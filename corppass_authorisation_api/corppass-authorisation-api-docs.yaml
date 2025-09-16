@@ -1,0 +1,72 @@
+resources:
+- name: authorization_info
+  endpoint:
+    path: /authorization/info
+    method: GET
+    data_selector: data
+- name: OpenID Discovery Endpoint
+  endpoint:
+    path: /.well-known/openid-configuration
+    method: GET
+- name: JWKS Endpoint
+  endpoint:
+    path: /.well-known/keys
+    method: GET
+- name: Authorization Endpoint
+  endpoint:
+    path: /mga/sps/oauth/oauth20/authorize
+    method: GET
+- name: Token Endpoint
+  endpoint:
+    path: /mga/sps/oauth/oauth20/token
+    method: POST
+- name: Authorization Info Endpoint
+  endpoint:
+    path: /authorization-info
+    method: GET
+- name: authorization_info
+  endpoint:
+    path: /authorization-info
+    method: POST
+- name: pushed_authorization_request
+  endpoint:
+    path: /request
+    method: POST
+- name: user_roles
+  endpoint:
+    path: /api/user_roles
+    method: GET
+    data_selector: roles
+    params: {}
+notes:
+- Ensure to include valid scopes for access.
+- By default, use the white fill button to pair it with your service’s interface.
+- Alternatively, you may use the red fill button if it’s suitable.
+- The scope parameter is mandatory in the authorization request and must include openid.
+- The access token issued by the token endpoint has a validity period of 10 minutes.
+- The Access Token issued by the `/token` endpoint must be passed as a Bearer token
+  in the header.
+- Must contain at least the `openid` scope.
+- Corppass only supports `code` as a valid value for response_type.
+- Currently, Corppass only supports `S256` as a valid value for code_challenge_method.
+- Multiple callback URLs can be associated with each service if required.
+- Some configurations cannot be modified after a digital service is published.
+- 'Users have different roles: Admin User, Staging Admin User, Read Only User.'
+errors:
+- 'invalid_client: Check client credentials'
+- 'invalid_grant: Ensure the authorization code is valid'
+- Any requested scope that is not recognized or authorized by the authorization server
+  will result in an error.
+- '403 Forbidden: Check user permissions or role assignments.'
+auth_info:
+  mentioned_objects:
+  - Client JWKS
+  - JWS and JWE
+  - Client Assertion JWT
+client:
+  base_url: https://corppass.gov.sg
+  auth:
+    type: oauth2
+  headers:
+    Content-Type: application/x-www-form-urlencoded; charset=utf-8
+source_metadata: null

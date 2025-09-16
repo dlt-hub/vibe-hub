@@ -1,0 +1,108 @@
+resources:
+- name: source_registries
+  endpoint:
+    path: /api/v1/registry/{project_id}/source-registries
+    method: GET
+- name: create_source_registry
+  endpoint:
+    path: /api/v1/registry/{project_id}/source-registries
+    method: POST
+- name: view_source_registry
+  endpoint:
+    path: /api/v1/registry/{project_id}/source-registries/{name}
+    method: GET
+- name: delete_source_registry
+  endpoint:
+    path: /api/v1/registry/{project_id}/source-registries/{name}
+    method: DELETE
+- name: create_role
+  endpoint:
+    path: /api/v1/iam/{project_id}/roles
+    method: POST
+- name: list_roles
+  endpoint:
+    path: /api/v1/iam/{project_id}/roles
+    method: GET
+- name: update_role
+  endpoint:
+    path: /api/v1/iam/{project_id}/roles/{role_name}
+    method: PATCH
+- name: delete_role
+  endpoint:
+    path: /api/v1/iam/{project_id}/roles/{role_name}
+    method: DELETE
+- name: assign_role_membership
+  endpoint:
+    path: /api/v1/iam/{project_id}/roles/{role_name}/members
+    method: POST
+- name: remove_role_membership
+  endpoint:
+    path: /api/v1/iam/{project_id}/roles/{role_name}/members/{identity_id}
+    method: DELETE
+- name: list_role_members
+  endpoint:
+    path: /api/v1/iam/{project_id}/roles/{role_name}/members
+    method: GET
+- name: search_roles
+  endpoint:
+    path: /api/v1/iam/{project_id}/search/roles
+    method: POST
+- name: policies
+  endpoint:
+    path: /api/v1/iam/{project_id}/policies
+    method: GET
+- name: customer_data
+  endpoint:
+    path: /services/data/v1.0/customers
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+notes:
+- License validation with JWT tokens that double as Docker credentials.
+- Dual-purpose tokens serve as both license validation tokens and Docker registry
+  credentials.
+- JWT token serves as both license proof and registry authentication credential
+- 'Customers receive: License token (JWT) to set as LICENSE_TOKEN environment variable'
+- Unified approach means customers only need one credential for both software access
+  and license validation.
+- Changing product structure affects new product keys only. Existing customer keys
+  retain their original configuration.
+- Deleting a product invalidates all associated customer keys. Customers will lose
+  access to licensed features and registry permissions.
+- Customers use their JWT token for authentication
+- Uses OAuth2 with refresh token — requires setup of connected app in Hiphops
+- Some objects may return nulls in deeply nested fields
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.hiphops.io
+  resources:
+  - name: create_identity
+    endpoint:
+      path: /api/v1/iam/{project_id}/identities
+      method: POST
+  - name: delete_identity
+    endpoint:
+      path: /api/v1/iam/{project_id}/identities/{id}
+      method: DELETE
+  - name: list_identities
+    endpoint:
+      path: /api/v1/iam/{project_id}/identities
+      method: GET
+  - name: create_jwt
+    endpoint:
+      path: /api/v1/iam/{project_id}/identities/{id}/jwt
+      method: POST
+  - name: revoke_jwts
+    endpoint:
+      path: /api/v1/iam/{project_id}/identities/{id}/revoke
+      method: POST
+source_metadata: null

@@ -1,0 +1,333 @@
+resources:
+- name: crosscheck
+  endpoint:
+    path: /reference/crosscheck-4
+    method: POST
+- name: jobs
+  endpoint:
+    path: /reference/findjobs
+    method: GET
+- name: invites
+  endpoint:
+    path: /reference/sendinvites
+    method: POST
+- name: aml
+  endpoint:
+    path: /reference/amljob
+    method: GET
+- name: ssn
+  endpoint:
+    path: /reference/private_ssnjob
+    method: POST
+- name: tin
+  endpoint:
+    path: /reference/tinverify
+    method: POST
+- name: dob
+  endpoint:
+    path: /reference/dobjob
+    method: POST
+- name: documents
+  endpoint:
+    path: /reference/getdocs
+    method: GET
+- name: verification_jobs
+  endpoint:
+    path: /yourapi/idv
+    method: POST
+    data_selector: job
+    params: {}
+- name: ip_address_result
+  endpoint:
+    path: /ip-address-check
+    method: POST
+    data_selector: result
+    params:
+      enableIPAddress: true
+      ipaddress: <user_ip_address>
+- name: verification_results
+  endpoint:
+    path: /verification/results
+    method: POST
+    data_selector: result
+    params: {}
+- name: send_invite
+  endpoint:
+    path: /api/invites
+    method: POST
+- name: list_invites
+  endpoint:
+    path: /api/invites
+    method: GET
+- name: resend_invite
+  endpoint:
+    path: /api/invites
+    method: POST
+- name: users
+  endpoint:
+    path: /users
+    method: POST
+    data_selector: new_user
+    params: {}
+- name: jobs
+  endpoint:
+    path: /jobs
+    method: GET
+    data_selector: items
+    params:
+      page: 1
+      pageSize: 100
+- name: download_job_pdf
+  endpoint:
+    path: /reference/downloadjobpdf
+    method: GET
+- name: Driver's License Validation
+  endpoint:
+    path: /v0.13.4/reference/findjobs-1
+    method: GET
+    data_selector: result.dlv
+    params: {}
+- name: crosscheck
+  endpoint:
+    path: /reference/crosscheck-4
+    method: POST
+- name: CrossCheck
+  endpoint:
+    path: /docs/crosscheck-2
+    method: POST
+    data_selector: darkweb
+    params:
+      darkweb: true
+- name: reverification
+  endpoint:
+    path: /reverification
+    method: POST
+    data_selector: job
+    params: {}
+- name: location_checks
+  endpoint:
+    path: /location/checks
+    method: GET
+    data_selector: result
+    params:
+      enablePhysicalAddress: 'true'
+      enableIPAddress: 'true'
+      enableGeoLocation: 'true'
+- name: submit_job
+  endpoint:
+    path: /api/jobs
+    method: POST
+- name: Submit Identity CrossCheck
+  endpoint:
+    path: /api/identity/crosscheck
+    method: POST
+- name: update_job_review
+  endpoint:
+    path: /jobs/{id}/review
+    method: PUT
+- name: Download Job PDF
+  endpoint:
+    path: /api/jobs/{id}/download
+    method: GET
+- name: invites
+  endpoint:
+    path: /invites
+    method: GET
+    data_selector: invite
+    params:
+      page: 1
+      pageSize: 10
+- name: aml_result
+  endpoint:
+    path: /aml
+    method: GET
+    data_selector: data
+    params: {}
+- name: Submit AML Job
+  endpoint:
+    path: /api/aml
+    method: POST
+- name: ssn_check
+  endpoint:
+    path: /api/private-ssn/verify
+    method: POST
+- name: eCBSV Check
+  endpoint:
+    path: /verify
+    method: POST
+- name: TIN Verification
+  endpoint:
+    path: /api/tin/verify
+    method: POST
+- name: Retrieve TIN Verification Result
+  endpoint:
+    path: /api/tinjobs
+    method: GET
+- name: tin_verification_result
+  endpoint:
+    path: /api/tin/jobs/{id}
+    method: GET
+    data_selector: object
+- name: dob_verification
+  endpoint:
+    path: /api/dob/verify
+    method: POST
+- name: supported_id_documents
+  endpoint:
+    path: /api/identity/documents
+    method: GET
+    data_selector: documents
+- name: jobs
+  endpoint:
+    path: /jobs
+    method: GET
+    data_selector: items
+    params:
+      page: 1
+      pageSize: 100
+- name: identity_crosscheck
+  endpoint:
+    path: /api/identity/crosscheck
+    method: POST
+- name: send_invite
+  endpoint:
+    path: /api/invites
+    method: POST
+    data_selector: invite
+- name: list_invites
+  endpoint:
+    path: /api/invites
+    method: GET
+    data_selector: invites
+- name: resend_invite
+  endpoint:
+    path: /api/invites
+    method: POST
+    data_selector: invite
+- name: Retrieve AML Result
+  endpoint:
+    path: /api/aml
+    method: GET
+    data_selector: data
+    params: {}
+- name: ssn_check
+  endpoint:
+    path: /api/private-ssn/verify
+    method: POST
+    data_selector: object
+- name: tin_verification
+  endpoint:
+    path: /api/tin/verify
+    method: POST
+- name: retrieve_tin_verification_result
+  endpoint:
+    path: /api/tinjobs
+    method: GET
+- name: dob_verification
+  endpoint:
+    path: /api/dob/verify
+    method: POST
+- name: supported_id_documents
+  endpoint:
+    path: /api/identity/documents
+    method: GET
+    data_selector: documents
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- API access and data is encrypted in transit using TLS 1.2.
+- Submit Job endpoint has a payload limit of 20MB.
+- Each account receives 50 Free IDs on sign-up, which can be used for testing purposes.
+- Browser permissions for the camera require an https host.
+- The Vouched function and subsequent calls to .mount() should only happen once per
+  verification session.
+- Sessions are uniquely identified by the time limited token property.
+- In order to enable the Mobile Handoff functionality, set the crossDevice, crossDeviceSMS,
+  and crossDeviceQRCode parameters to true.
+- The handoff forwards the verification to a Vouched hosted site.
+- Allow camera access to perform identity verification
+- Vouched enforces a rate limiting policy on API requests to maintain the stability
+  and reliability of our identity verification services.
+- All API endpoints are subject to the same rate limit.
+- Please reach out to use if you need a higher rate limit, support@vouched.id.
+- Two-Factor Authentication (2FA) can be used to help protect your account from unauthorized
+  access by requiring you to enter an additional code when you sign in.
+- 'Jobs have various statuses: Approved, Failed, Active, Removed, Warning.'
+- Only one of each key type can be active at a given time. Recreating a key will immediately
+  invalidate the previous key.
+- 'Common warnings are: data-checks/crosscheck error, expired document, DLV error,
+  and AML error.'
+- Customers can validate driver’s licenses, learner’s permits, and government-issued
+  IDs with government and proprietary data sources in 45 US states and Washington,
+  D.C.
+- US territories defined as insular areas (such as Puerto Rico) are not supported.
+- The CrossCheck feature might have an additional cost, depending on your identity
+  package.
+- Dark Web is currently unavailable. Please reach out to Vouched Support for any questions.
+- The Dark Web feature can be turned on as an add-on to CrossCheck only.
+- Reverification is only supported in the JS Plugin and 'avant' theme currently.
+- Live eCBSV verifications are only allowed to be performed on real users.
+- For every live verification, it is required to collect consent from the end user.
+- All three features are part of our Advance and Premier packages.
+- 'Payload Limits: The Submit Job endpoint has a payload limit of 20MB.'
+errors:
+- '413: Payload too large'
+- InvalidRequestError
+- FaceMatchError
+- NameMatchError
+- BarcodeMatchError
+- BirthDateMatchError
+- ExpiredIdError
+- InvalidIdPhotoError
+- UnsupportedIdPhotoError
+- InvalidUserPhotoError
+- AuthenticationError
+- ConnectionError
+- UnknownSystemError
+- InvalidIdError
+- TooManyRequestsError
+- 'HTTP Status Code: 429'
+- UnprocessableContentError
+- 'Error: check was not performed and the result is null due to multiple reasons,
+  including issues extracting data from the license and the provided document being
+  unsupported.'
+- 'InvalidRequestError: Phone number and/or email address is required'
+- InvalidRequestError - The request is invalid.
+- FaceMatchError - The face match score was lower than the threshold.
+- NameMatchError - The name match score was lower than the threshold.
+- BarcodeMatchError - The barcode match score was lower than the threshold.
+- BirthDateMatchError - The birth date match score was lower than the threshold.
+- ExpiredIdError - The ID’s expiration date has passed.
+- InvalidIdPhotoError - The ID is invalid.
+- UnsupportedIdPhotoError - The ID is not supported.
+- InvalidUserPhotoError - The user photo (selfie) is invalid.
+- AuthenticationError - The request could not be authenticated.
+- ConnectionError - A connection error occurred while communicating to the Vouched
+  service.
+- InvalidIdError - The ID is invalid.
+- TooManyRequestsError - the Vouched service has throttled this request.
+- UnprocessableContentError - The request contains incorrectly formatted or missing
+  data.
+- UnknownSystemError - A unknown system error occurred.
+- 400 InvalidRequestError - The request is invalid.
+- 401 AuthenticationError - The request could not be authenticated.
+- 404 ConnectionError - A connection error occurred while communicating to the Vouched
+  service.
+- 429 TooManyRequestsError - the Vouched service has throttled this request.
+- 500 UnknownSystemError - A unknown system error occurred.
+- 422 UnprocessableContentError - The request contains incorrectly formatted or missing
+  data.
+- 'InvalidRequestError: The request is invalid.'
+- 'AuthenticationError: The request could not be authenticated.'
+- 'ConnectionError: A connection error occurred while communicating to the Vouched
+  service.'
+- 'TooManyRequestsError: the Vouched service has throttled this request.'
+- 'UnknownSystemError: A unknown system error occurred.'
+- 404 Not Found
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://verify.vouched.id
+  headers:
+    Accept: application/json
+source_metadata: null
