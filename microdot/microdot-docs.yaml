@@ -1,0 +1,171 @@
+resources:
+- name: login_user
+  endpoint:
+    path: /login
+    method: POST
+- name: logout_user
+  endpoint:
+    path: /logout
+    method: POST
+- name: get_user
+  endpoint:
+    path: /users/<username>
+    method: GET
+- name: get_user_multiple
+  endpoint:
+    path: /users/<firstname>/<lastname>
+    method: GET
+- name: get_user_with_id
+  endpoint:
+    path: /users/<int:id>/<string:username>
+    method: GET
+- name: get_test
+  endpoint:
+    path: /tests/<path:path>
+    method: GET
+- name: get_user_regex
+  endpoint:
+    path: /users/<re:[a-zA-Z][a-zA-Z0-9]*:username>
+    method: GET
+- name: get_user_hex
+  endpoint:
+    path: /users/<hex:user_id>
+    method: GET
+- name: root
+  endpoint:
+    path: /
+    method: GET
+    data_selector: response
+- name: active_users
+  endpoint:
+    path: /users/active
+    method: GET
+    data_selector: response
+- name: invoices
+  endpoint:
+    path: /invoices
+    method: GET
+    data_selector: response
+- name: users_with_username
+  endpoint:
+    path: /users/<username>
+    method: GET
+    data_selector: response
+- name: users_with_fullname
+  endpoint:
+    path: /users/<firstname>/<lastname>
+    method: GET
+    data_selector: response
+- name: users_with_id
+  endpoint:
+    path: /users/<int:id>/<string:username>
+    method: GET
+    data_selector: response
+- name: default_route
+  endpoint:
+    path: /
+    method: GET
+    data_selector: response
+- name: root
+  endpoint:
+    path: /
+    method: GET
+    data_selector: response
+    params: {}
+- name: active_users
+  endpoint:
+    path: /users/active
+    method: GET
+    data_selector: response
+    params: {}
+- name: invoices
+  endpoint:
+    path: /invoices
+    method: GET
+    data_selector: response
+    params: {}
+- name: get_user
+  endpoint:
+    path: /users/<username>
+    method: GET
+    data_selector: response
+    params: {}
+- name: session
+  endpoint:
+    path: /login
+    method: POST
+    data_selector: user
+    params: {}
+- name: cors
+  endpoint:
+    path: /cors
+    method: GET
+    data_selector: cors
+    params: {}
+- name: test_client
+  endpoint:
+    path: /test_client
+    method: GET
+    data_selector: test
+    params: {}
+notes:
+- The default login URL is '/login'.
+- Uses a default redirect URL of '/' after login
+- Basic Authentication requires a username and password.
+- The server starts on port 5000 by default.
+- When using CPython, the certificate and key files must be given in PEM format. When
+  using MicroPython, these files must be given in DER format.
+- During the handling of a request, the Request.url_prefix attribute is set to the
+  URL prefix under which the sub-application was mounted, or an empty string if the
+  endpoint did not come from a sub-application or the sub-application was mounted
+  without a URL prefix.
+- It is possible to issue a redirect that is relative to the sub-application.
+- Microdot is an asynchronous framework that uses the asyncio package.
+- Web servers are designed to run forever, and are often stopped by sending them an
+  interrupt signal.
+- The client must set the Content-Type header to application/json for the json attribute
+  of the request object to be populated.
+- Form submissions automatically parsed when the Content-Type header is set by the
+  client to application/x-www-form-urlencoded.
+- For form submissions that use the multipart/form-data content type the Multipart
+  Forms extension must be used.
+- The maximum size accepted for the request body, in bytes, is 16KB. When a client
+  sends a request that is larger than this, the server will respond with a 413 error.
+- The maximum size that is loaded in the body attribute, in bytes, is also 16KB.
+- During the handling of a request, the Request.url_prefix attribute is set to the
+  URL prefix under which the sub-application was mounted.
+- Request-specific after-request handlers are called by Microdot after the route function
+  returns and all the application-wide after-request handlers have been called.
+- Under CPython, the generator function can be a `def` or `async def` function, as
+  well as a class-based generator.
+- Under MicroPython, asynchronous generator functions are not supported, so only `def`
+  generator functions can be used.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- The logged in state of the user is stored in the user session cookie.
+- An optional 'remember me' cookie can keep the user logged in across browser sessions.
+- Microdot is a fairly small framework, so its size is not something you need to be
+  concerned about unless you are working with MicroPython on hardware with a very
+  small amount of disk space and/or RAM.
+- The process to create a custom firmware is unfortunately non-trivial and different
+  for each microcontroller platform.
+errors:
+- '401 Unauthorized: Recheck credentials.'
+- 400 for malformed requests.
+- 404 for URLs that are unknown.
+- 405 for URLs that are known, but not implemented for the requested HTTP method.
+- 413 for requests that are larger than the allowed size.
+- 500 when the application raises an unhandled exception.
+- '400: Malformed requests'
+- '404: URLs that are unknown'
+- '405: URLs that are known, but not implemented for the requested HTTP method'
+- '413: Requests that are larger than the allowed size'
+- '500: Unhandled exceptions'
+auth_info:
+  mentioned_objects:
+  - BasicAuth
+  - TokenAuth
+client:
+  base_url: http://localhost:5000
+  headers:
+    Accept: application/json
+source_metadata: null

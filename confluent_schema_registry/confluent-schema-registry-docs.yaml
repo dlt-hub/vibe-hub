@@ -1,0 +1,408 @@
+resources:
+- name: schema_versions
+  endpoint:
+    path: /subjects/${schemaName}/versions
+    method: POST
+    data_selector: versions
+    params: {}
+- name: categories
+  endpoint:
+    path: /categories
+    method: GET
+- name: latest
+  endpoint:
+    path: /latest
+    method: GET
+- name: top
+  endpoint:
+    path: /top
+    method: GET
+- name: categories
+  endpoint:
+    path: /categories
+    method: GET
+- name: latest
+  endpoint:
+    path: /latest
+    method: GET
+- name: top
+  endpoint:
+    path: /top
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: schemas
+  endpoint:
+    path: /schemas
+    method: GET
+    data_selector: schemas
+- name: summit_topics
+  endpoint:
+    path: /c/summit/40/l/latest
+    method: GET
+    data_selector: topics
+- name: site_feedback
+  endpoint:
+    path: /c/site-feedback/2
+    method: GET
+    data_selector: topics
+- name: ksqlDB
+  endpoint:
+    path: /t/ksqldb-processing-time/38102
+    method: GET
+- name: replication
+  endpoint:
+    path: /mirror-maker/configurations
+    method: GET
+    data_selector: configurations
+    params: {}
+- name: MM2 Configuration
+  endpoint:
+    path: /mm2/configuration
+    method: GET
+    data_selector: records
+- name: errors
+  endpoint:
+    path: /errors
+    method: GET
+    data_selector: records
+    params: {}
+- name: '{{ source_cluster_name }}->{{ dest_cluster_name }}'
+  endpoint:
+    path: '{{ source_cluster_name }}->{{ dest_cluster_name }}'
+    method: GET
+    data_selector: errors.retry.timeout
+    params:
+      errors.retry.timeout: 600000
+      errors.retry.delay.max.ms: 30000
+- name: '{{ dest_cluster_name }}->{{ source_cluster_name }}'
+  endpoint:
+    path: '{{ dest_cluster_name }}->{{ source_cluster_name }}'
+    method: GET
+    data_selector: errors.retry.timeout
+    params:
+      errors.retry.timeout: 600000
+      errors.retry.delay.max.ms: 30000
+- name: errors
+  endpoint:
+    path: /errors
+    method: POST
+    data_selector: error_context
+    params:
+      retry_timeout: 600000
+      retry_delay_max_ms: 30000
+      deadletterqueue_topic_name: dbeng-mm2-forward-deadletterqueue
+      tolerance: all
+- name: MM2 Configuration
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: forward_deadletterqueue
+  endpoint:
+    path: /dbeng-mm2-forward-deadletterqueue
+    method: POST
+- name: backward_deadletterqueue
+  endpoint:
+    path: /dbeng-mm2-backward-deadletterqueue
+    method: POST
+- name: replication
+  endpoint:
+    path: /replication
+    method: POST
+    data_selector: replication_status
+    params: {}
+- name: kafka_streams
+  endpoint:
+    path: /streams
+    method: GET
+    data_selector: records
+- name: consumer_group_status
+  endpoint:
+    path: /t/consumer-group-status-metric/38042
+    method: GET
+- name: KafkaConnector
+  endpoint:
+    path: /kafka/connectors
+    method: POST
+- name: schema_registry_error
+  endpoint:
+    path: /t/schema-registry-error
+    method: GET
+    data_selector: records
+- name: produce_data
+  endpoint:
+    path: /clusters/{cluster_id}/topics/{topic_name}/records
+    method: POST
+    data_selector: records
+- name: customer
+  endpoint:
+    path: /subjects/customer/versions
+    method: POST
+    data_selector: references
+    params: {}
+- name: person
+  endpoint:
+    path: /subjects/person/versions
+    method: POST
+    data_selector: references
+    params: {}
+- name: hello
+  endpoint:
+    path: /subjects/hello/versions
+    method: POST
+    data_selector: schema
+- name: foo
+  endpoint:
+    path: /subjects/foo/versions
+    method: POST
+    data_selector: schema
+- name: register_schema_hello
+  endpoint:
+    path: /subjects/hello/versions
+    method: POST
+    data_selector: ''
+    params: {}
+- name: register_schema_foo
+  endpoint:
+    path: /subjects/foo/versions
+    method: POST
+    data_selector: ''
+    params: {}
+- name: Forecast
+  endpoint:
+    path: /t/schema-reference-unknown-type/10737
+    method: GET
+    data_selector: records
+- name: purchase
+  endpoint:
+    path: /schemas
+    method: GET
+    data_selector: properties
+    params: {}
+- name: topic_produce
+  endpoint:
+    path: /kafka/topic/produce
+    method: POST
+    data_selector: message
+    params:
+      bootstrap: localhost:9092
+      protocol: PLAINTEXT
+      value-format: avro
+      schema: true
+      schema-registry-endpoint: localhost:8081
+- name: schema_id
+  endpoint:
+    path: /t/schema-id-returned-by-cachedschemaregistryclient
+    method: GET
+    data_selector: schema_id
+    params: {}
+- name: databricks_kafka_topic
+  endpoint:
+    path: /t/how-to-write-data-in-schemaregistry-format-with-sparkstructured/10888
+    method: GET
+    data_selector: schema_id
+    params: {}
+- name: ConfluentRegistryAvroDeserializationSchema
+  endpoint:
+    path: /t/usage-of-schema-registry-url-in-confluent-registry-avro-deserialization-schema-flink/7044
+    method: GET
+    data_selector: records
+notes:
+- Able to create the schemas successfully.
+- Getting 422 status code error because complex type reference not provided.
+- Get $425 of free Confluent Cloud, without a credit card by following these steps
+- The industry’s only cloud-native, fully managed event streaming platform powered
+  by Apache Kafka.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Confluent Schema Registry provides a serving layer for your metadata.
+- It provides a RESTful interface for storing and retrieving your Avro®, JSON Schema,
+  and Protobuf schemas.
+- This forum is all about data streaming.
+- Topics are organised into categories.
+- This forum exists so that participants can learn, communicate, contribute and collaborate.
+- KafkaConsumer::consume method returns ERR__TIMED_OUT when there are more messages
+  in the brokers
+- MM2 is running in active/active mode with bidirectional replication
+- Every 2 weeks or so, corrupt records cause the affected node to stop replicating
+  data
+- Uses active/active mode with bidirectional replication between clusters
+- Tolerate all errors.
+- Every 2 weeks or so, if MM2 encounters a corrupt record from the source, the affected
+  node stops replicating data.
+- Need to check the KIPs for more information on corrupt records.
+- The issue is happening on the 3.8.1 environment.
+- The issue should have been fixed with version 3.5.1.
+- Despite the error-handling configs, replication remains stuck until manual restart
+  on all nodes.
+- This leads to increasing lag on certain topics and partitions.
+- Is there a way to make MM2 skip corrupt records gracefully and continue replicating?
+- Are we missing any critical config to enable proper dead-letter handling or error
+  resilience?
+- Has anyone faced a similar issue with corrupt records stalling replication in MM2
+  active/active setups?
+- Failure scenario due to missing REST server feature
+- MM2 is running on the destination Kafka cluster (3.8.1).
+- Bidirectional replication between clusters.
+- The HTTP Source Connector automatically converts all date fields to epoch format.
+- This behavior can affect our data quality because some fields may contain values
+  that look like dates but are not actual dates.
+- There is currently no available parameter in the connector configuration to disable
+  automatic date conversion.
+- Using Value_Format JSON in KsqlDB may result in null topic messages when using Kafka
+  Schema.
+- Control Center was included in Confluent Platform 6.0.0
+- Confluent Platform 8.0 introduced a standalone Control Center that is packaged separately
+- Has anyone experienced similar ISR flapping issues after re-adding a broker with
+  the same node ID? Any guidance or best practices on how to stabilize the broker
+  and prevent continuous ISR churn would be greatly appreciated.
+- proprietary connectors should use enterprise image confluentinc/cp-server-connect
+- The dockerfile is set up to use cp-kafka-connect version 7.9.0
+- An environment variable KAFKA_LOG4J_OPTS is used to specify the properties file
+  location
+- My application records operations that must have a unique ID provided by the client.
+- I expect X messages returning to it, each message having a single output with the
+  same `id_cmd` marked either as 'executed' or 'rejected'.
+- All our consumers are configured with *read_commited*.
+- I performed the upgrade by completely shutting down the system and restarting it
+  after updating the code.
+- Confluent Cloud relies on API keys for auth
+- Uses append-only log storage
+- Sliding windows only recompute when a new event occurs
+- The message is 1054490 bytes when serialized which is larger than 1048576, which
+  is the value of the max.request.size configuration.
+- Increasing the max.request.size works, but it will need to be done every time the
+  batch size increases.
+- cannot establish sink connector from Event Hubs to Iceberg tables in Azure ADLSv2
+- using Azure Event Hubs standard tier
+- using Kafka Connect on Azure Kubernetes
+- using Snowflake’s iceberg REST catalog (AKA “Polaris”)
+- Schema Registry needs a different API key (distinct from this path, which gives
+  you an API key for Kafka).
+- The service account should have RBAC set up to access Schema Registry.
+- The Registry doesn’t use API keys.
+- Can we register schema under the subject using Rest API in Confluent Cloud?
+- What URL we can use to do that?
+- Can we change the subject mode using Rest API in Confluent Cloud?
+- If you upload a schema which references other schema types then they must be explicitly
+  declared in a references list.
+- Invalid schema error when trying to reference enum in another schema
+- The schema registry process was not running due to conflict with spark UI port 8081.
+- 'User cannot access the resource; error code: 403'
+- The compatibility check for the schema is set to 'None'.
+- When using the AVRO bytes schema, there are extra bytes at the front of the payload.
+- The schema registry supports Protobuf as well.
+- Mirroring data doesn’t transfer schema ids.
+- You’ll also have to mirror the _schemas topic for the registry, where all the IDs
+  are stored.
+- When using ConfluentRegistryAvroDeserializationSchema.forGeneric(s1, REGISTRY_URL),
+  the new column in r2 is ignored if not handled properly.
+errors:
+- '422: Complex type reference not provided.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- ERR__TIMED_OUT
+- 'NullPointerException: Exception thrown by the agent'
+- Broker registered with feature metadata.version that is unknown to the controller
+- 'Error handling setup for corrupt records: retry for at most 10 minutes with a maximum
+  delay of 30 seconds'
+- Every 2 weeks, if MM2 encounters a corrupt record from the source, the affected
+  node stops replicating data
+- 'CorruptRecordException: Invalid magic found in record'
+- 'CorruptRecordException: Record is corrupt'
+- 'IO error forwarding REST request: java.net.SocketTimeoutException: Connect Timeout'
+- 'Request to leader to reconfigure connector tasks failed: IO Error trying to forward
+  REST request: java.net.SocketTimeoutException: Connect Timeout'
+- Errors are tolerated with a timeout of 600000 milliseconds and a maximum delay of
+  30000 milliseconds between retries.
+- 'CorruptRecordException: Record is corrupt (stored crc = <value>)'
+- 'java.net.SocketTimeoutException: Connect Timeout'
+- 'REQUEST_TIMEOUT: Check your network connection.'
+- 'CORRUPT_RECORD: Review the record format or content.'
+- 'java.lang.NoSuchMethodError: ''void org.apache.kafka.connect.util.KafkaBasedLog.<init>(java.lang.String,
+  java.util.Map, java.util.Map, org.apache.kafka.connect.util.Callback, org.apache.kafka.common.utils.Time,
+  java.lang.Runnable)'''
+- '500 Internal Server Error: Request timed out. The worker is currently performing
+  multi-property validation for the connector.'
+- 'splunk.validation.disable: true'
+- '[Errno 13] Permission denied: ''/etc/kafka/connect-log4j.properties'''
+- '[Errno 13] Permission denied: ‘/etc/kafka/connect-log4j.properties’'
+- 'java.lang.AssertionError: Expecting map to contain only expected entries'
+- 'org.apache.kafka.common.errors.RecordTooLargeException: The message is 1054490
+  bytes when serialized which is larger than 1048576, which is the value of the max.request.size
+  configuration.'
+- 'Could not find a coordinator with type TRANSACTION with key <KEY> due to unexpected
+  error: FindCoordinator asked for coordinator with type code 1 which is not supported.
+  type code 1 is only supported in Premium or Dedicated sku.'
+- 'Access Denied: Ensure the service account has the required permissions.'
+- '401 Unauthorized: Unauthorized'
+- '403: User is denied operation on this server. (HTTP status code 403, SR code 40301)'
+- failed to validate Schema Registry API credential
+- HTTP 405 Method Not Allowed
+- Error when fetching schema by id.
+- Error when registering schema.
+- 'Unrecognized field: references; error code: 422'
+- '"com.acme.Referenced" is not a defined name. The type of the "f2" field must be
+  a defined name or a {"type": ...} expression.'
+- '"com.acme.Referenced\" is not a defined name. The type of the \"f2\" field must
+  be a defined name or a {\"type\": ...} expression.'
+- ERROR Could not parse Avro schema (io.confluent.kafka.schemaregistry.avro.AvroSchemaProvider)
+- 'org.apache.avro.SchemaParseException: "org.wcn.Detail" is not a defined name. The
+  type of the "detail" field must be a defined name or a {"type": ...} expression.'
+- 'Invalid schema with refs [] of type AVRO, details: "ServiceEnum" is not a defined
+  name. The type of the "service" field must be a defined name or a {"type": ...}
+  expression.'
+- 'org.apache.kafka.common.errors.SerializationException: Error registering Avro schema'
+- 'Caused by: io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException:
+  Unexpected character (''<'' (code 60)): expected a valid value (JSON String, Number,
+  Array, Object or token ''null'', ''true'' or ''false'')'
+- 'SerializationException: Error registering Avro schema'
+- 'Unexpected character (''<'' (code 60)): expected a valid value (JSON String, Number,
+  Array, Object or token ''null'', ''true'' or ''false'')'
+- 'Error registering Avro schema: Register schema operation failed while writing to
+  the Kafka store; error code: 50001'
+- 'Caused by: org.apache.kafka.common.errors.SerializationException: Error registering
+  Avro schema["null","string"]'
+- 'Caused by: io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException:
+  Error; error code: 50005'
+- '403: User cannot access the resource'
+- 'Schema not found; error code: 40403'
+- 'runtime error: invalid memory address or nil pointer dereference'
+- De-serialization exception when schema ID is not present in schema registry.
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: http://localhost:8087
+  headers:
+    Content-Type: application/json
+source_metadata: null

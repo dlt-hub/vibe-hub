@@ -1,0 +1,292 @@
+resources:
+- name: dataset
+  endpoint:
+    path: /data/query/<dataset>
+    method: GET
+    data_selector: '*'
+    params: {}
+- name: documents
+  endpoint:
+    path: /documents
+    method: GET
+    data_selector: documents
+- name: assets
+  endpoint:
+    path: /assets
+    method: GET
+    data_selector: assets
+- name: copy_dataset
+  endpoint:
+    path: /projects/:projectId/datasets/:datasetName/copy
+    method: PUT
+    data_selector: datasetName
+- name: job_status
+  endpoint:
+    path: /jobs/:jobId
+    method: GET
+    data_selector: state
+- name: listen_job_status
+  endpoint:
+    path: /jobs/:jobId/listen
+    method: GET
+    data_selector: event
+- name: movies
+  endpoint:
+    path: /api/movies
+    method: GET
+    data_selector: records
+    params: {}
+- name: people
+  endpoint:
+    path: /api/people
+    method: GET
+    data_selector: records
+    params: {}
+- name: documents
+  endpoint:
+    path: /v1/data/documents
+    method: GET
+    data_selector: documents
+    params: {}
+- name: transactions
+  endpoint:
+    path: /docs/content-lake/transactions
+    method: POST
+    data_selector: mutations
+- name: documents
+  endpoint:
+    path: /v1/data/documents
+    method: GET
+    data_selector: documents
+- name: permissionResourceSchemas
+  endpoint:
+    path: /projects/${projectId}/permissionResourceSchemas
+    method: GET
+- name: grants
+  endpoint:
+    path: /projects/${projectId}/grants
+    method: POST
+- name: permissionResources
+  endpoint:
+    path: /projects/${projectId}/permissionResources
+    method: POST
+- name: roles
+  endpoint:
+    path: /projects/${projectId}/roles
+    method: POST
+- name: roles
+  endpoint:
+    path: /projects/${projectId}/roles
+    method: POST
+    data_selector: roles
+- name: permissionResources
+  endpoint:
+    path: /projects/${projectId}/permissionResources
+    method: GET
+    data_selector: permissionResources
+- name: grants
+  endpoint:
+    path: /projects/${projectId}/grants
+    method: POST
+    data_selector: grants
+- name: administrator
+  endpoint:
+    path: /administrator
+    method: GET
+    data_selector: grants
+    params: {}
+- name: contributor
+  endpoint:
+    path: /contributor
+    method: GET
+    data_selector: grants
+    params: {}
+- name: create-session
+  endpoint:
+    path: /create-session
+    method: GET
+    data_selector: grants
+    params: {}
+- name: deploy-studio
+  endpoint:
+    path: /deploy-studio
+    method: GET
+    data_selector: grants
+    params: {}
+- name: developer
+  endpoint:
+    path: /developer
+    method: GET
+    data_selector: grants
+    params: {}
+- name: editor
+  endpoint:
+    path: /editor
+    method: GET
+    data_selector: grants
+    params: {}
+- name: viewer
+  endpoint:
+    path: /viewer
+    method: GET
+    data_selector: grants
+    params: {}
+- name: administrator
+  endpoint:
+    path: /projects/administrator
+    method: GET
+- name: contributor
+  endpoint:
+    path: /projects/contributor
+    method: GET
+- name: create-session
+  endpoint:
+    path: /projects/create-session
+    method: GET
+- name: deploy-studio
+  endpoint:
+    path: /projects/deploy-studio
+    method: GET
+- name: developer
+  endpoint:
+    path: /projects/developer
+    method: GET
+- name: content
+  endpoint:
+    path: /api/content
+    method: GET
+    data_selector: results
+- name: jobs
+  endpoint:
+    path: /jobs
+    method: GET
+- name: webhooks
+  endpoint:
+    path: /docs/http-reference/webhooks
+    method: GET
+    data_selector: records
+- name: agent_actions
+  endpoint:
+    path: /agent-actions
+    method: GET
+- name: users
+  endpoint:
+    path: /v2025-07-11/access/{resourceType}/{resourceId}/users
+    method: GET
+    data_selector: users
+- name: roles
+  endpoint:
+    path: /v2025-07-11/access/{resourceType}/{resourceId}/roles
+    method: GET
+    data_selector: roles
+- name: permissions
+  endpoint:
+    path: /v2025-07-11/access/{resourceType}/{resourceId}/permissions
+    method: GET
+    data_selector: permissions
+- name: live_content
+  endpoint:
+    path: /v2021-03-25/data
+    method: GET
+    data_selector: result
+notes:
+- Live Content API requires API version v2021-03-25 or later.
+- A dataset name must be between 1 and 64 characters long.
+- It may only contain lowercase characters (a-z), numbers (0-9), hyphens (-), and
+  underscores (_), and must begin and end with a lowercase letter or number.
+- Sanity uses JSON documents for storing details about assets.
+- Cloud Clone provides a more efficient way of duplicating datasets.
+- This feature is part of our Advanced Dataset Management offering on the enterprise
+  plan.
+- Requires OAuth2 authentication with a connected app setup.
+- A comprehensive set of examples can be found in the cheat sheet.
+- Custom GROQ functions are available on all API versions except v1.
+- Functions are limited to specific formats and do not support recursion or multiple
+  parameters.
+- If your query doesn't work as expected, it might be related to API versioning or
+  Perspectives.
+- Uses OAuth2 with refresh token — requires setup of connected app in Sanity
+- Some queries may return nulls in deeply nested fields
+- GraphQL mutations are not currently supported.
+- Metadata is added to your assets asynchronously after uploading!
+- Changing the schema later will not remove previously added metadata details.
+- Non-integer values for parameters expecting integers may cause performance issues
+  or timeouts.
+- Small images get scaled up to the width or height you specify. To avoid this use
+  `&fit=max`.
+- Small images get scaled up to the width or height you specify.
+- 'Transactions are atomic: either all of the mutations succeed or they all fail.'
+- Transactions are strongly consistent but queries are eventually consistent.
+- Ensure you have appropriate permissions set up in your Sanity project.
+- Changing the schema for a Sanity Studio workspace will not automatically change
+  or delete existing content in your dataset.
+- Migrations adhere to the same rate limits as other API interactions with the Sanity
+  Content Lake.
+- If your migrations involve numerous patches, consider regulating the volume of simultaneous
+  mutation requests to manage your API call rate with the --concurrency flag.
+- Keep in mind that editors may be editing in the Studio while the migration is running.
+- Web applications often use perspectives to retrieve initial server-side or static
+  content.
+- CORS is only about browser security, and does not apply when requesting from e.g.
+  Node.js or curl.
+- In order to modify data, the API request must be authenticated with an access token
+  that has write access.
+- A grant is the root item in the roles system, representing the ability to perform
+  a specific action or give access to a specific resource.
+- A member always references the system via a role and is defined by an associated
+  email.
+- Creating custom roles and permissions is a paid feature available in the Growth
+  plan.
+- Requires OAuth authentication for API access
+- Ensure proper permissions are set for API access
+- Ensure correct permissions are set for roles
+- Requires setup of OAuth application in Sanity
+- Pagination may be required for large datasets
+- Sanity Studio v4 is live! Learn more about the Node.js 20+ requirement, and upgrade
+  today.
+- Uses OAuth2 for authentication.
+- Tokens need viewer access rights to fetch draft content.
+- The OAuth2 API implements a standard RFC 6749 compatible API using an authorization
+  grant type flow only.
+- Renewing is done by making the user re-authenticate, as we don't support refresh
+  tokens.
+- Only published documents will be synced to Shopify. Drafts are not processed.
+errors:
+- '401 Unauthorized: Check authentication credentials.'
+- '404 Not Found: Ensure the endpoint exists and is correct.'
+- Target dataset <name> already exists
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- Invalid option in metadata array will throw an error
+- '409 Conflict: Document revision ID does not match.'
+- '403 Forbidden: Check your API token permissions'
+- '404 Not Found: Verify the endpoint path'
+- '500 Internal Server Error: Retry the request or check service status'
+- '403 Forbidden: Check user permissions'
+- '401 Unauthorized: Verify API tokens'
+- '403 Forbidden: Insufficient permissions'
+- '404 Not Found: Resource does not exist'
+- '500 Internal Server Error: Try again later'
+- '401 Unauthorized: Check token validity'
+- '404 Not Found: Verify endpoint path'
+- '429 Too Many Requests: Implement exponential backoff'
+- '401 Unauthorized: Check the access token.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - apiBearerToken
+  - OAuth
+  - API Key
+  - Token
+  - Role
+  - Grants
+client:
+  base_url: https://www.sanity.io
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+source_metadata: null
