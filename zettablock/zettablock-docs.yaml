@@ -1,0 +1,784 @@
+resources:
+- name: data_lake_query
+  endpoint:
+    path: /api/v1/databases/AwsDataCatalog/queries
+    method: POST
+    data_selector: id
+- name: token_price_data_24h
+  endpoint:
+    path: /prices/token_price_data_24h
+    method: GET
+    data_selector: records
+    params: {}
+- name: real_time_token_price_data_24h
+  endpoint:
+    path: /prices/real_time_token_price_data_24h
+    method: GET
+    data_selector: token_prices_24h
+    params: {}
+- name: top_100_pools
+  endpoint:
+    path: /swaps/top_100_pools
+    method: GET
+    data_selector: records
+    params: {}
+- name: native_balance
+  endpoint:
+    path: /graphql
+    method: POST
+    data_selector: data.native_balance
+- name: token_balance
+  endpoint:
+    path: /graphql
+    method: POST
+    data_selector: data.token_balance
+- name: token_balances
+  endpoint:
+    path: /graphql
+    method: POST
+    data_selector: data.token_balances
+- name: token_metadata
+  endpoint:
+    path: /graphql
+    method: POST
+    data_selector: data.token_metadata
+- name: native_balance
+  endpoint:
+    path: /api/v1/dataset/sq_f5abb78bafe94f00be4b00f9da8449e1/graphql
+    method: POST
+    data_selector: records
+    params:
+      limit: 300
+- name: token_prices_24h
+  endpoint:
+    path: /api/v1/dataset/sq_f5abb78bafe94f00be4b00f9da8449e1/graphql
+    method: POST
+    data_selector: token_prices_24h
+    params: {}
+- name: token_balances
+  endpoint:
+    path: /v2/explore/graphql/ethereum
+    method: POST
+    data_selector: data.token_balances
+    params:
+      address: '0x3416cf6c708da44db2624d63ea0aaef7113527c6'
+      contract_address:
+      - '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+      - '0xdac17f958d2ee523a2206206994597c13d831ec7'
+- name: compound_borrow
+  endpoint:
+    path: /compound/ethereum_v2_borrow
+    method: GET
+    data_selector: records
+    params:
+      incremental: data_creation_date
+- name: aave_v1_borrow
+  endpoint:
+    path: /aave/ethereum_aave_v1_borrow
+    method: GET
+    data_selector: records
+    params:
+      incremental: data_creation_date
+- name: aave_v2_borrow
+  endpoint:
+    path: /aave/ethereum_aave_v2_borrow
+    method: GET
+    data_selector: records
+    params:
+      incremental: data_creation_date
+- name: compound_supply
+  endpoint:
+    path: /compound/ethereum_v2_supply
+    method: GET
+    data_selector: records
+    params:
+      incremental: data_creation_date
+- name: aave_v1_supply
+  endpoint:
+    path: /aave/ethereum_aave_v1_supply
+    method: GET
+    data_selector: records
+    params:
+      incremental: data_creation_date
+- name: aave_v2_supply
+  endpoint:
+    path: /aave/ethereum_aave_v2_supply
+    method: GET
+    data_selector: records
+    params:
+      incremental: data_creation_date
+- name: sui_swap_volume
+  endpoint:
+    path: /dex/sui_dex_swaps
+    method: SELECT
+    data_selector: records
+    params: {}
+- name: price_sui
+  endpoint:
+    path: /prices/usd
+    method: SELECT
+    data_selector: records
+    params: {}
+- name: price_sui_latest
+  endpoint:
+    path: /prices/usd_latest
+    method: SELECT
+    data_selector: records
+    params: {}
+- name: validators
+  endpoint:
+    path: /beacon_mainnet/validators
+    method: GET
+    data_selector: '*'
+- name: deposits
+  endpoint:
+    path: /beacon_mainnet/deposits
+    method: GET
+    data_selector: '*'
+- name: withdrawals
+  endpoint:
+    path: /beacon_mainnet/withdrawals
+    method: GET
+    data_selector: '*'
+- name: transactions
+  endpoint:
+    path: /graphql
+    method: POST
+    data_selector: transactions
+    params: {}
+- name: assets
+  endpoint:
+    path: /graphql
+    method: POST
+    data_selector: assets
+    params: {}
+- name: ethereum_mainnet.native_token_transfers
+  endpoint:
+    path: /ethereum_mainnet/native_token_transfers
+    method: GET
+    data_selector: records
+    params:
+      query: SELECT from_address, transaction_hash, amount FROM ( SELECT from_address,
+        transaction_hash, (CAST(VALUE as numeric) / POW(10, 18)) AS amount FROM ethereum_mainnet.native_token_transfers
+        WHERE block_date = CURRENT_DATE ) AS subquery WHERE amount > 50 GROUP BY 1,
+        2, 3
+- name: default
+  endpoint:
+    path: /default
+    method: GET
+- name: sui_mainnet_balance_changes_raw
+  endpoint:
+    path: projects/zettablock-data/topics/sui_mainnet_balance_changes_raw
+    method: GET
+    data_selector: records
+- name: sui_mainnet_checkpoints_raw
+  endpoint:
+    path: projects/zettablock-data/topics/sui_mainnet_checkpoints_raw
+    method: GET
+    data_selector: records
+- name: sui_mainnet_events_raw
+  endpoint:
+    path: projects/zettablock-data/topics/sui_mainnet_events_raw
+    method: GET
+    data_selector: records
+- name: sui_mainnet_object_changes_raw
+  endpoint:
+    path: projects/zettablock-data/topics/sui_mainnet_object_changes_raw
+    method: GET
+    data_selector: records
+- name: sui_mainnet_transaction_blocks_raw
+  endpoint:
+    path: projects/zettablock-data/topics/sui_mainnet_transaction_blocks_raw
+    method: GET
+    data_selector: records
+- name: sui_mainnet_transactions_raw
+  endpoint:
+    path: projects/zettablock-data/topics/sui_mainnet_transactions_raw
+    method: GET
+    data_selector: records
+- name: transactions_raw
+  endpoint:
+    path: /projects/zettablock-data/topics/sui_mainnet_transactions_raw
+    method: GET
+    data_selector: records
+    params: {}
+- name: events_raw
+  endpoint:
+    path: /projects/zettablock-data/topics/sui_mainnet_events_raw
+    method: GET
+    data_selector: records
+    params: {}
+- name: object_changes_raw
+  endpoint:
+    path: /projects/zettablock-data/topics/sui_mainnet_object_changes_raw
+    method: GET
+    data_selector: records
+    params: {}
+- name: transaction_blocks_raw
+  endpoint:
+    path: /projects/zettablock-data/topics/sui_mainnet_transaction_blocks_raw
+    method: GET
+    data_selector: records
+    params: {}
+- name: balance_changes_raw
+  endpoint:
+    path: /projects/zettablock-data/topics/sui_mainnet_balance_changes_raw
+    method: GET
+    data_selector: records
+    params: {}
+- name: transaction
+  endpoint:
+    path: /projects/zettablock-data/topics/sui_mainnet_transactions_raw
+    method: GET
+    data_selector: transactions
+- name: base_dex_pools
+  endpoint:
+    path: /dex/base_dex_pools
+    method: GET
+    data_selector: '*'
+    params: {}
+- name: ethereum_dex_swaps
+  endpoint:
+    path: /dex/ethereum_dex_swaps
+    method: GET
+    data_selector: '*'
+    params: {}
+- name: prices_usd_latest
+  endpoint:
+    path: /prices/usd_latest
+    method: GET
+    data_selector: '*'
+    params: {}
+- name: databases
+  endpoint:
+    path: /api/v1/databases
+    method: GET
+    data_selector: items
+- name: sql_query
+  endpoint:
+    path: /qugate/v1/databases/{catalog}/queries
+    method: POST
+    data_selector: id
+- name: query_status
+  endpoint:
+    path: /qugate/v1/queryruns/{query_run_id}/status
+    method: GET
+    data_selector: state
+- name: query_results
+  endpoint:
+    path: /qugate/v1/stream/queryruns/{query_run_id}/result
+    method: GET
+    data_selector: result
+- name: ethereum_mainnet_logs
+  endpoint:
+    path: /ethereum_mainnet/logs
+    method: GET
+    data_selector: logs
+    params:
+      data_creation_date: '2023-06-22'
+- name: ethereum_mainnet_transactions
+  endpoint:
+    path: /ethereum_mainnet/transactions
+    method: GET
+    data_selector: transactions
+    params:
+      data_creation_date: '2023-06-22'
+- name: correct_sql_example
+  endpoint:
+    path: /examples/correct_sql
+    method: GET
+    data_selector: examples
+    params: {}
+- name: wrong_sql_example
+  endpoint:
+    path: /examples/wrong_sql
+    method: GET
+    data_selector: examples
+    params: {}
+- name: Token Price Data for the Last 24h Hours
+  endpoint:
+    path: /token_prices_24h
+    method: GET
+    data_selector: records
+    params:
+      is_10m: 1
+- name: Real Time Token Price Data for the Last 24h Hours
+  endpoint:
+    path: /token_prices_24h
+    method: GET
+    data_selector: token_prices_24h
+    params:
+      is10Minutes: true
+- name: Swaps Data
+  endpoint:
+    path: /swaps
+    method: GET
+    data_selector: records
+    params:
+      limit: 100
+      orderBy: swap_count_24h
+- name: fungible_token_balance
+  endpoint:
+    path: /balances/fungible
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: fungible_token_balance
+  endpoint:
+    path: /balances/fungible
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: native_token_balance
+  endpoint:
+    path: /api/v2/balances/native
+    method: GET
+    data_selector: data.result
+    params:
+      chain_id: 1
+      account_address: required
+- name: native_token_balance
+  endpoint:
+    path: /balances/native
+    method: GET
+    data_selector: data.result
+    params:
+      chain_id: 1
+      account_address: string
+- name: blocks
+  endpoint:
+    path: /blocks
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: blocks
+  endpoint:
+    path: /blocks
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: latest_block
+  endpoint:
+    path: /blocks/latest
+    method: GET
+    data_selector: data.result
+    params:
+      chain_id: 1
+- name: latest_block
+  endpoint:
+    path: /blocks/latest
+    method: GET
+    data_selector: data.result
+    params:
+      chain_id: 1
+- name: latest_token_prices
+  endpoint:
+    path: /prices/latest
+    method: GET
+- name: latest_token_prices
+  endpoint:
+    path: /prices/latest
+    method: GET
+    data_selector: data
+- name: historical_token_prices
+  endpoint:
+    path: /prices/minute
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+- name: historical_token_prices
+  endpoint:
+    path: /prices/minute
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+- name: token_metadata
+  endpoint:
+    path: /token_metadata
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: token_metadata
+  endpoint:
+    path: /api/v2/token_metadata
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: traces
+  endpoint:
+    path: /api/v2/traces
+    method: GET
+    data_selector: data
+    params:
+      page_number: '1'
+      results_per_page: '20'
+      chain_id: '1'
+- name: traces
+  endpoint:
+    path: /api/v2/traces
+    method: GET
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: transactions
+  endpoint:
+    path: /transactions
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: transactions
+  endpoint:
+    path: /transactions
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: erc1155_batch_transfers
+  endpoint:
+    path: /api/v2/transfers/erc1155/batch
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: erc1155_single_token_transfers
+  endpoint:
+    path: /transfers/erc1155/single
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: erc1155_batch_transfers
+  endpoint:
+    path: /transfers/erc1155/batch
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: erc721_transfers
+  endpoint:
+    path: /transfers/erc721
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: erc1155_single_transfers
+  endpoint:
+    path: /transfers/erc1155/single
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: fungible_token_transfers
+  endpoint:
+    path: /api/v2/transfers/fungible
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: erc721_token_transfers
+  endpoint:
+    path: /transfers/erc721
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: native_token_transfers
+  endpoint:
+    path: /transfers/native
+    method: GET
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: fungible_token_transfers
+  endpoint:
+    path: /api/v2/transfers/fungible
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: attestations
+  endpoint:
+    path: /beacon/attestations
+    method: GET
+    data_selector: data
+    params:
+      incremental: slot_number
+- name: native_token_transfers
+  endpoint:
+    path: /transfers/native
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: beacon_validators
+  endpoint:
+    path: /beacon/validators
+    method: GET
+    params:
+      page_number: 1
+- name: attestations
+  endpoint:
+    path: /beacon/attestations
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+- name: beacon_attester_slashings
+  endpoint:
+    path: /beacon/attester_slashings
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+- name: beacon_validators
+  endpoint:
+    path: /api/v2/beacon/validators
+    method: GET
+    params:
+      page_number: 1
+      results_per_page: 20
+- name: beacon_blocks
+  endpoint:
+    path: /beacon/blocks
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+- name: beacon_attester_slashings
+  endpoint:
+    path: /api/v2/beacon/attester_slashings
+    method: GET
+    params:
+      page_number: '1'
+      results_per_page: '20'
+- name: deposits
+  endpoint:
+    path: /beacon/deposits
+    method: GET
+    params:
+      page_number: 1
+      results_per_page: 20
+- name: beacon_blocks
+  endpoint:
+    path: /beacon/blocks
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+- name: proposer_slashings
+  endpoint:
+    path: /beacon/proposer_slashings
+    method: GET
+    data_selector: data
+    params:
+      slot_number: slot_number
+      index: index
+      page_number: '1'
+      results_per_page: '20'
+- name: deposits
+  endpoint:
+    path: /beacon/deposits
+    method: GET
+    data_selector: data
+    params:
+      page_number: '1'
+      results_per_page: '20'
+- name: voluntary_exits
+  endpoint:
+    path: /beacon/voluntary_exits
+    method: GET
+    params:
+      page_number: 1
+      results_per_page: 20
+- name: proposer_slashings
+  endpoint:
+    path: /beacon/proposer_slashings
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+- name: withdrawals
+  endpoint:
+    path: /beacon/withdrawals
+    method: GET
+    data_selector: data
+    params:
+      page_number: '1'
+- name: voluntary_exits
+  endpoint:
+    path: /beacon/voluntary_exits
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+- name: custom_graphql_api
+  endpoint:
+    path: /api/v1/dataset/{id}/graphql
+    method: POST
+    data_selector: data
+- name: withdrawals
+  endpoint:
+    path: /beacon/withdrawals
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+- name: fungible_token_balance
+  endpoint:
+    path: /balances/fungible
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: custom_api_call
+  endpoint:
+    path: /dataset/{id}/graphql
+    method: POST
+- name: attestations
+  endpoint:
+    path: /beacon/attestations
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+- name: fungible_token_balance
+  endpoint:
+    path: /balances/fungible
+    method: GET
+    data_selector: data
+    params:
+      page_number: 1
+      results_per_page: 20
+      chain_id: 1
+- name: attestations
+  endpoint:
+    path: /beacon/attestations
+    method: GET
+    params:
+      page_number: '1'
+      results_per_page: '20'
+notes:
+- You need an API key to interact with the Prebuilt API. You can find the API key
+  in the settings page.
+- ZettaBlock now supports 12+ chains, with more chains on the way.
+- 'Real-Time Data Streams: Stay ahead of the curve with real-time data streamed directly
+  to your database or warehouse.'
+- Supports webhooks for various notification-based use cases.
+- This quickstart focuses on creating and customizing APIs using SQL within ZettaBlock.
+- CSV Download limit of 5MB/query
+- Analytics API download limits vary by plan
+- The shorter the refresh interval, the more real-time the API but it will consume
+  more compute units.
+- This option is not recommended for the dataset with more than 1 million records
+  for now.
+- Set the refresh interval of your API to 'real-time' to ensure continuous data updates.
+- Dashboards are a feature for you to save different data visualizations in one location,
+  while also enabling you to easily share them with others.
+- Utilize the Incremental Refresh feature to save CUs as your API continues to refresh.
+- Monitoring full and partial withdrawal proofs on the Ethereum blockchain is crucial
+  for applications that manage or track the staking and restaking processes.
+- Integration with ZettaBlock enables real-time insights and data access.
+- Webhooks are currently only supported for real-time (postgreSQL) tables.
+- Compute units measure resources used for queries and API calls.
+- CU consumption is fixed at a flat rate per each API call.
+- Incremental refresh is used to update a portion of a dataset while preserving existing
+  data.
+- Users have full control over what to incrementally refresh.
+- API Key is required for authentication.
+- No cost for data ingestion and storage.
+- ZettaBlock offers a free tier for developers, which includes access to prebuilt
+  APIs, running custom queries, and creating dashboards.
+- Please always include the DATABASE name with the TABLE name.
+- You do not need to wrap the name of DATABASE and TABLE.
+- Only column names are selectable.
+- These examples showcase the most common mistakes that people often make. By practicing
+  writing SQL, you will quickly learn from your own mistakes!
+- Queries should be optimized for Presto.
+- ZettaBlock uses columnar storage formats.
+- Ensure that the user has read-only privileges.
+- Binding to 0.0.0.0 will allow connecting to the database from any IP address.
+- Connection with TLS/SSL security protocol for MongoDb Atlas Cluster is enabled by
+  default.
+- Ensure MongoDB is accessible from external servers.
+- Use an encrypted connection with TLS/SSL.
+- Requires API key for authentication
+errors:
+- 'bad_request: This request is not supported.'
+- 'not_found: The resource is not found'
+- 'unauthorized: The bearer token is not valid.'
+- 'too_many_requests: The rate limit is hit'
+- 'internal_error: The server-side error encountered'
+- '400 Bad Request: Check your query syntax.'
+- '404 Not Found: Ensure the endpoint exists.'
+- '500 Internal Server Error: Try again later.'
+- 'Failed to submit query: Check SQL syntax.'
+- The response from the database was invalid.
+- Query took more than 5 minutes.
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.zettablock.com/api/v2
+  headers:
+    X-API-KEY: 882bd487-7b87-4f39-a881-4bde5a7eecd5
+    accept: application/json
+source_metadata: null

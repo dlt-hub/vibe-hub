@@ -1,0 +1,198 @@
+resources:
+- name: chemistry_data
+  endpoint:
+    path: /local_initialize_chemistry_parameters
+    method: POST
+    data_selector: data
+- name: chemistry_data_storage
+  endpoint:
+    path: /local_initialize_chemistry_data
+    method: POST
+    data_selector: data
+- name: grackle_field_data
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: grackle_cooling_time
+  endpoint:
+    path: grackle/cooling_time
+    method: GET
+    data_selector: fields
+    params: {}
+- name: grackle_temperature
+  endpoint:
+    path: grackle/temperature
+    method: GET
+    data_selector: fields
+    params: {}
+- name: grackle_gamma
+  endpoint:
+    path: grackle/gamma
+    method: GET
+    data_selector: fields
+    params: {}
+- name: grackle_molecular_weight
+  endpoint:
+    path: grackle/molecular_weight
+    method: GET
+    data_selector: fields
+    params: {}
+- name: grackle_pressure
+  endpoint:
+    path: grackle/pressure
+    method: GET
+    data_selector: fields
+    params: {}
+- name: grackle_dust_temperature
+  endpoint:
+    path: grackle/dust_temperature
+    method: GET
+    data_selector: fields
+    params: {}
+- name: chemistry_data
+  endpoint:
+    path: /chemistry_data
+    method: POST
+    data_selector: parameters
+- name: code_units
+  endpoint:
+    path: /code_units
+    method: POST
+    data_selector: units
+- name: density
+  endpoint:
+    data_selector: density
+- name: internal_energy
+  endpoint:
+    data_selector: internal_energy
+- name: x_velocity
+  endpoint:
+    data_selector: x_velocity
+- name: y_velocity
+  endpoint:
+    data_selector: y_velocity
+- name: z_velocity
+  endpoint:
+    data_selector: z_velocity
+- name: HI_density
+  endpoint:
+    data_selector: HI_density
+- name: HII_density
+  endpoint:
+    data_selector: HII_density
+- name: HeI_density
+  endpoint:
+    data_selector: HeI_density
+- name: HeII_density
+  endpoint:
+    data_selector: HeII_density
+- name: HeIII_density
+  endpoint:
+    data_selector: HeIII_density
+- name: e_density
+  endpoint:
+    data_selector: e_density
+- name: HM_density
+  endpoint:
+    data_selector: HM_density
+- name: H2I_density
+  endpoint:
+    data_selector: H2I_density
+- name: H2II_density
+  endpoint:
+    data_selector: H2II_density
+- name: DI_density
+  endpoint:
+    data_selector: DI_density
+- name: DII_density
+  endpoint:
+    data_selector: DII_density
+- name: HDI_density
+  endpoint:
+    data_selector: HDI_density
+- name: metal_density
+  endpoint:
+    data_selector: metal_density
+- name: volumetric_heating_rate
+  endpoint:
+    data_selector: volumetric_heating_rate
+- name: specific_heating_rate
+  endpoint:
+    data_selector: specific_heating_rate
+- name: RT_heating_rate
+  endpoint:
+    data_selector: RT_heating_rate
+- name: RT_HI_ionization_rate
+  endpoint:
+    data_selector: RT_HI_ionization_rate
+- name: RT_HeI_ionization_rate
+  endpoint:
+    data_selector: RT_HeI_ionization_rate
+- name: RT_HeII_ionization_rate
+  endpoint:
+    data_selector: RT_HeII_ionization_rate
+- name: RT_H2_dissociation_rate
+  endpoint:
+    data_selector: RT_H2_dissociation_rate
+notes:
+- By default, grackle will not print anything but error messages. However, a short
+  summary of the running configuration can be printed by setting grackle_verbose to
+  1. In a parallel code, it is recommended that output only be enabled for the root
+  process.
+- The electron mass density should be scaled by the ratio of the proton mass to the
+  electron mass.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- The cooling rates in the files below are known to have unphysically high heating
+  rates at low densities.
+- It is not recommended to use these files with primordial_chemistry set to 0.
+- We are strongly committed to maintaining backwards compatibility with the public
+  API.
+- At the time of writing, the current design of Grackle’s API is not conducive to
+  supporting a stable ABI.
+- Pygrackle can only be run when Grackle is compiled without OpenMP.
+- The community of participants in open source scientific projects is made up of members
+  from around the globe with a diverse set of skills, personalities, and experiences.
+- This code of conduct applies to all community situations online and offline, including
+  mailing lists, forums, social media, conferences, meetings, associated social events,
+  and one-to-one interactions.
+- Grackle is a community project.
+- Grackle is under the Enzo public license, a BSD-like license.
+- This page employs some strong language to express the developers’ intentions about
+  what are officially supported ways for Grackle to be used.
+- Be advised that things may break if you use Grackle in an unsupported manner.
+- Uses CMake build system — requires version 3.16 or newer.
+- Classic build system is deprecated since version 3.4 and scheduled for removal in
+  version 3.5.
+- Uses libtool for building and installation.
+- Compiling Grackle in single precision is not recommended.
+- Gracklepy was formerly known as Pygrackle.
+- The vast majority of Grackle calculation requires Grackle’s data files.
+- Grackle currently supports two APIs.
+- The Local API is explicitly thread-safe as it involves no global data.
+- As of version 2.2, Grackle can be run with OpenMP parallelism.
+- When compiling Grackle with the classic build system, execute `make omp-on` before
+  compiling.
+- When using the CMake build system, set the `GRACKLE_USE_OPENMP` cmake-variable to
+  `ON`.
+- A potential workaround for most of the above difficulties when you have a shared
+  library and static library installed is that we create a new file called grackle_static.pc
+  that gets shipped alongside grackle.pc.
+- This workaround is undesirable (unless there is strong user-demand) for a number
+  of reasons.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Could NOT find HDF5: Ensure hdf5 is installed and development files are included.'
+- 'Fatal Error: omp_lib.h: No such file or directory: Use the default (Makefile) backend.'
+- 'Generic Fortran Compiler Errors: Use the default (Makefile) backend.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://github.com/grackle-project/grackle
+  headers:
+    Accept: application/json
+source_metadata: null

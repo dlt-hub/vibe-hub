@@ -1,0 +1,48 @@
+resources:
+- name: entities
+  endpoint:
+    path: /entities
+    method: GET
+    data_selector: records
+    params: {}
+- name: records
+  endpoint:
+    path: /records
+    method: GET
+    data_selector: records
+    params: {}
+- name: deployment
+  endpoint:
+    path: /deployment
+    method: POST
+    data_selector: result
+- name: golden_record
+  endpoint:
+    path: /entity
+    method: POST
+    data_selector: data.entity.entity.goldenRecord
+notes:
+- The Tilores API is highly customizable.
+- Uses OAuth2 with refresh token — requires setup of connected app in tilores
+- Some objects may return nulls in deeply nested fields
+- Each record must have a unique ID.
+- A record ID must never contain a colon.
+- Rules define how records are connected into entities and also how you can search
+  through your existing entities.
+- Deployment requires valid AWS credentials and a registered AWS account.
+- You must have valid AWS credentials configured to use this command.
+- The API Lambda invocations include the query, mutation and introspection requests.
+- Uses GraphQL for querying records.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Error: failed getting S3 Bucket (tilotech-artifacts)'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://tilores.io/api
+  auth:
+    type: oauth2
+    flow: refresh_token
+source_metadata: null

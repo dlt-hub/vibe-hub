@@ -1,0 +1,272 @@
+resources:
+- name: epoch_activity_scoring
+  endpoint:
+    path: /epoch/activity/scoring
+    method: GET
+    data_selector: records
+- name: consolidated_activity_detection
+  endpoint:
+    path: /consolidated/activity/detection
+    method: GET
+    data_selector: records
+- name: Roenneberg
+  endpoint:
+    path: /Roenneberg
+    method: GET
+    data_selector: records
+    params:
+      trend_period: 24h
+      min_trend_period: 12h
+      threshold: '0.15'
+      min_seed_period: 30Min
+      max_test_period: 12h
+      r_consec_below: 30Min
+- name: raw_activity
+  endpoint:
+    path: /io/read_raw_awd
+    method: GET
+    data_selector: raw
+    params:
+      start_time: '1918-01-24 08:00:00'
+      period: 9 days
+- name: daily_activity_profile
+  endpoint:
+    path: /api/daily_activity
+    method: GET
+    data_selector: daily_activity_data
+    params: {}
+- name: smooth
+  endpoint:
+    path: /smooth
+    method: GET
+    data_selector: y_est
+    params:
+      binarize: false
+      method: scott
+      verbose: false
+- name: fit_reader
+  endpoint:
+    path: /fit_reader
+    method: GET
+    data_selector: reader
+    params:
+      n_jobs: 10
+      prefer: threads
+      verbose: 10
+- name: FLM
+  endpoint:
+    path: /pyActigraphy/FLM
+    method: GET
+    data_selector: records
+- name: raw_activity
+  endpoint:
+    path: /read_raw_awd
+    method: GET
+    data_selector: daily_avg
+    params:
+      start_time: '1918-01-24 08:00:00'
+      period: 9 days
+- name: daily_activity_profile
+  endpoint:
+    path: /average_daily_activity
+    method: GET
+    data_selector: daily_avg
+    params:
+      freq: 30min
+- name: raw_awd
+  endpoint:
+    path: /io/read_raw_awd
+    method: GET
+    data_selector: records
+    params:
+      start_time: '1918-01-24 08:00:00'
+      period: 9 days
+- name: flm_fourier
+  endpoint:
+    path: /analysis/FLM
+    method: POST
+    data_selector: records
+    params:
+      basis: fourier
+      sampling_freq: 10min
+      max_order: 10
+- name: flm_spline
+  endpoint:
+    path: /analysis/FLM
+    method: POST
+    data_selector: records
+    params:
+      basis: spline
+      sampling_freq: 30min
+      max_order: 3
+- name: fractal_dfa
+  endpoint:
+    path: /pyActigraphy/analysis/fractal/dfa
+    method: GET
+    data_selector: q_th_order_msq_fluc
+- name: fractal_mfdfa
+  endpoint:
+    path: /pyActigraphy/analysis/fractal/mfdfa
+    method: GET
+    data_selector: q_th_order_msq_fluctuations
+- name: raw_data
+  endpoint:
+    path: /read_raw_awd
+    method: GET
+    data_selector: raw
+    params:
+      start_time: '1918-01-24 08:00:00'
+      period: 9 days
+- name: light_data
+  endpoint:
+    path: /light
+    method: GET
+    data_selector: light
+    params: {}
+- name: light
+  endpoint:
+    path: /light
+    method: GET
+    data_selector: filtered_signal
+- name: light_readings
+  endpoint:
+    path: /api/light_readings
+    method: GET
+    data_selector: records
+    params: {}
+- name: light_exposure_level
+  endpoint:
+    path: /light_exposure_level
+    method: GET
+    data_selector: levels
+- name: summary_statistics_per_time_bin
+  endpoint:
+    path: /summary_statistics_per_time_bin
+    method: GET
+    data_selector: ss
+- name: TAT
+  endpoint:
+    path: raw/light/TAT
+    method: GET
+    data_selector: tat
+- name: TATp
+  endpoint:
+    path: raw/light/TATp
+    method: GET
+    data_selector: tatp
+- name: MLiT
+  endpoint:
+    path: raw/light/MLiT
+    method: GET
+    data_selector: MLiT
+- name: light_exposure_level
+  endpoint:
+    path: /light/exposure_level
+    method: GET
+    data_selector: levels
+    params: {}
+- name: summary_statistics_per_time_bin
+  endpoint:
+    path: /light/summary_statistics
+    method: GET
+    data_selector: ss
+    params: {}
+- name: time_above_threshold
+  endpoint:
+    path: /light/TAT
+    method: GET
+    data_selector: tat
+    params: {}
+- name: TAT
+  endpoint:
+    params:
+      threshold: 1
+      oformat: minute
+- name: TATp
+  endpoint:
+    params:
+      threshold: 2
+      oformat: minute
+- name: MLiT
+  endpoint:
+    params:
+      threshold: np.log10(500+1)
+- name: MLiTp
+  endpoint:
+    params:
+      threshold: np.log10(500+1)
+- name: light_extremum
+  endpoint:
+    path: /light/get_light_extremum
+    method: GET
+    data_selector: extremum
+- name: LMX
+  endpoint:
+    path: /light/LMX
+    method: GET
+    data_selector: lmx
+    params:
+      length: 5h
+      lowest: true
+- name: IS
+  endpoint:
+    path: /light/IS
+    method: GET
+    data_selector: IS
+    params:
+      binarize: false
+      threshold: 0
+- name: IV
+  endpoint:
+    path: /light/IV
+    method: GET
+    data_selector: IV
+    params:
+      binarize: false
+      threshold: 4
+notes:
+- The weights of the gaussian-like kernels and thresholds are device and population
+  dependent.
+- Default parameters for algorithms may be tuned to specific populations.
+- The performance of this algorithm has been evaluated for actigraphy data aggregated
+  in 10-min bins.
+- Uses batch analysis for multiple subjects
+- Output results are formatted as a Pandas.DataFrame
+- The pyActigraphy package allows users to model the daily activity profile only.
+- The package allows users to model the daily activity profile only.
+- The DFA method computes the q-th order mean squared fluctuations for different segment
+  lengths.
+- The MFDFA extends the DFA method by evaluating local fluctuations at various q-orders.
+- The development of the pyActigraphy module for analysing light exposure data was
+  led and financially supported by members of the Daylight Academy Project.
+- The recording starts at 9:00 on the fictional date of the 1st of January 1918 and
+  ends exactly 4 days later.
+- This function is essentially a wrapper to the scipy.signal.butter function.
+- Light data are (log10+1)-transformed in pyActigraphy
+- 'Default settings: mean exposure level per acquisition epoch'
+- The LMX variable is derived from the L5 and M10 defined as the mean hourly activity
+  levels during the 5/10 least/most active hours.
+errors: []
+auth_info:
+  mentioned_objects:
+  - BaseRaw
+  - RawReader
+  - FiltersMixin
+  - BaseLog
+  - SSTLog
+  - MetricsMixin
+  - ActivityReport
+  - ScoringMixin
+  - SleepDiary
+  - SleepBoutMixin
+  - LightRecording
+  - LightMetricsMixin
+  - GenLightDevice
+  - Cosinor
+  - FLM
+  - Fractal
+  - LIDS
+  - SSA
+client:
+  base_url: https://daylight.academy/projects/state-of-light-in-humans/
+source_metadata: null
