@@ -1,0 +1,420 @@
+resources:
+- name: accounts
+  endpoint:
+    path: /accounts
+    method: GET
+    data_selector: records
+- name: media
+  endpoint:
+    path: /media
+    method: GET
+    data_selector: records
+- name: tags
+  endpoint:
+    path: /tags
+    method: GET
+    data_selector: records
+- name: posts
+  endpoint:
+    path: /posts
+    method: GET
+    data_selector: records
+- name: mixpost
+  endpoint:
+    path: /mixpost
+    method: GET
+    data_selector: records
+    params: {}
+- name: mysql
+  endpoint:
+    path: /mysql
+    method: GET
+    data_selector: records
+    params: {}
+- name: redis
+  endpoint:
+    path: /redis
+    method: GET
+    data_selector: records
+    params: {}
+- name: mixpost
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Mixpost
+    method: GET
+    data_selector: records
+- name: mysql
+  endpoint:
+    path: /services/data/vXX.X/sobjects/MySQL
+    method: GET
+    data_selector: records
+- name: redis
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Redis
+    method: GET
+    data_selector: records
+- name: mixpost
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Mixpost
+    method: GET
+    data_selector: records
+- name: mysql
+  endpoint:
+    image: mysql/mysql-server:8.0
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+    - mysql:/var/lib/mysql
+    healthcheck:
+      test:
+      - CMD
+      - mysqladmin
+      - ping
+      - -p ${DB_PASSWORD}
+      retries: 3
+      timeout: 5s
+    restart: unless-stopped
+- name: redis
+  endpoint:
+    image: redis:latest
+    command: redis-server --appendonly yes --replica-read-only no
+    volumes:
+    - redis:/data
+    healthcheck:
+      test:
+      - CMD
+      - redis-cli
+      - ping
+      retries: 3
+      timeout: 5s
+    restart: unless-stopped
+- name: mixpost_horizon
+  endpoint:
+    path: /path-to-your-project/artisan/horizon
+    method: GET
+    data_selector: process_name
+    params: {}
+- name: mixpost_reverb
+  endpoint:
+    path: /path-to-your-project/artisan/reverb:start
+    method: GET
+    data_selector: process_name
+    params: {}
+- name: mixpost
+  endpoint:
+    path: /mixpost
+    method: GET
+- name: license
+  endpoint:
+    path: /license
+    method: GET
+    data_selector: records
+- name: application
+  endpoint:
+    path: /application
+    method: GET
+    data_selector: records
+- name: Subscription Plans
+  endpoint:
+    path: /services/payment/plans
+    method: POST
+    data_selector: plans
+    params: {}
+- name: billing_settings
+  endpoint:
+    path: /api/billing/settings
+    method: GET
+    data_selector: settings
+    params: {}
+- name: accounts
+  endpoint:
+    path: /accounts
+    method: GET
+    data_selector: data
+- name: accounts
+  endpoint:
+    path: /accounts
+    method: GET
+    data_selector: data
+- name: account
+  endpoint:
+    path: /accounts/<accountUuid>
+    method: GET
+- name: account
+  endpoint:
+    path: /<workspaceUuid>/accounts/<accountUuid>
+    method: GET
+- name: media
+  endpoint:
+    path: /media
+    method: GET
+    data_selector: data
+- name: media
+  endpoint:
+    path: /media
+    method: GET
+    data_selector: data
+- name: media
+  endpoint:
+    path: /<workspaceUuid>/media/<mediaUuid>
+    method: GET
+    data_selector: response
+    params: {}
+- name: media
+  endpoint:
+    path: /media/<mediaUuid>
+    method: GET
+- name: update_media_file
+  endpoint:
+    path: /api/<workspaceUuid>/media/<mediaUuid>
+    method: PUT
+    data_selector: success
+- name: update_media_file
+  endpoint:
+    path: /<workspaceUuid>/media/<mediaUuid>
+    method: PUT
+    data_selector: success
+- name: upload_media
+  endpoint:
+    path: /media
+    method: POST
+    data_selector: id
+- name: media
+  endpoint:
+    path: /media
+    method: POST
+    data_selector: id
+- name: delete_media_file
+  endpoint:
+    path: /api/<workspaceUuid>/media
+    method: DELETE
+    data_selector: success
+    params:
+      items: []
+- name: delete_media_file
+  endpoint:
+    path: /api/<workspaceUuid>/media
+    method: DELETE
+    data_selector: success
+    params:
+      items: '[1,2]'
+- name: tags
+  endpoint:
+    path: /tags
+    method: GET
+    data_selector: data
+- name: tags
+  endpoint:
+    path: /tags
+    method: GET
+    data_selector: data
+- name: tag
+  endpoint:
+    path: /<workspaceUuid>/tags/<tagUuid>
+    method: GET
+- name: tag
+  endpoint:
+    path: /api/<workspaceUuid>/tags/<tagUuid>
+    method: GET
+    data_selector: id
+- name: create_tag
+  endpoint:
+    path: /tags
+    method: POST
+    data_selector: id
+- name: tag
+  endpoint:
+    path: /tags
+    method: POST
+    data_selector: ''
+    params: {}
+- name: update_tag
+  endpoint:
+    path: /<MIXPOST_CORE_PATH>/api/<workspaceUuid>/tags/{tagUuid}
+    method: PUT
+- name: tag
+  endpoint:
+    path: /tags/{tagUuid}
+    method: PUT
+    data_selector: success
+- name: delete_tag
+  endpoint:
+    path: /tags/{tagUuid}
+    method: DELETE
+- name: delete_tag
+  endpoint:
+    path: /tags/{tagUuid}
+    method: DELETE
+- name: posts
+  endpoint:
+    path: /posts
+    method: GET
+    data_selector: data
+- name: posts
+  endpoint:
+    path: /<workspaceUuid>/posts
+    method: GET
+    data_selector: data
+    params:
+      page: '1'
+- name: post
+  endpoint:
+    path: /<workspaceUuid>/posts/<postUuid>
+    method: GET
+- name: post
+  endpoint:
+    path: /posts/<postUuid>
+    method: GET
+- name: posts
+  endpoint:
+    path: /posts
+    method: POST
+- name: posts
+  endpoint:
+    path: /posts
+    method: POST
+- name: update_post
+  endpoint:
+    path: /api/<workspaceUuid>/posts/{postUuid}
+    method: PUT
+- name: update_post
+  endpoint:
+    path: /<workspaceUuid>/posts/{postUuid}
+    method: PUT
+- name: delete_post
+  endpoint:
+    path: /posts/{postUuid}
+    method: DELETE
+- name: delete_post
+  endpoint:
+    path: /<MIXPOST_CORE_PATH>/api/<workspaceUuid>/posts/{postUuid}
+    method: DELETE
+- name: delete_multiple_post
+  endpoint:
+    path: /api/<workspaceUuid>/posts
+    method: DELETE
+- name: delete_multiple_post
+  endpoint:
+    path: /<workspaceUuid>/posts
+    method: DELETE
+- name: schedule_post
+  endpoint:
+    path: /<MIXPOST_CORE_PATH>/api/<workspaceUuid>/posts/schedule/{postUuid}
+    method: POST
+    data_selector: success
+- name: add_post_to_queue
+  endpoint:
+    path: /<MIXPOST_CORE_PATH>/api/<workspaceUuid>/posts/add-to-queue/{postUuid}
+    method: POST
+- name: schedule_post
+  endpoint:
+    path: /<MIXPOST_CORE_PATH>/api/<workspaceUuid>/posts/schedule/{postUuid}
+    method: POST
+- name: approve_post
+  endpoint:
+    path: /<workspaceUuid>/posts/approve/{postUuid}
+    method: POST
+- name: add_post_to_queue
+  endpoint:
+    path: /<MIXPOST_CORE_PATH>/api/<workspaceUuid>/posts/add-to-queue/{postUuid}
+    method: POST
+- name: approve_post
+  endpoint:
+    path: /api/<workspaceUuid>/posts/approve/{postUuid}
+    method: POST
+notes:
+- API endpoints are protected and require an access token.
+- Mixpost must be installed directly on a primary domain or a subdomain. Installation
+  in a subdirectory is not supported and will result in operational issues.
+- Status page is available only with the Pro and Enterprise packages.
+- If you modify the URL prefix, ensure you update the callback URLs in all third-party
+  services.
+- If you have access to Mixpost Dashboard, navigate to the Admin Console, then Status,
+  to check that all systems are operating correctly. Status page is available only
+  with the Pro and Enterprise packages.
+- Ensure that your APP_URL contains only the base URL and does not include any path
+  or a trailing slash.
+- If you have installed Mixpost manually or within an existing Laravel application,
+  create a symbolic link from the public/storage directory to storage/app/public to
+  ensure proper file storage access.
+- 'Caution Against Changing APP_KEY: We advise against modifying the APP_KEY in your
+  environment settings. Altering this key disrupts the application''s ability to decrypt
+  previously stored credentials, impacting functionalities such as access to service
+  credentials and connection to social account credentials.'
+- If the APP_KEY has been changed, Mixpost will no longer be able to decrypt existing
+  Mastodon app credentials.
+- Specify the email address to be used for SSL certificate registration and notifications.
+- Mixpost Lite does not come with any user management, we assume that you already
+  provide this in your own app.
+- Some objects like Contact may return nulls in deeply nested fields
+- Mixpost is now accessible through the previously specified APP_URL.
+- It's important to keep your Mixpost Lite version up to date.
+- Following these steps will ensure that your Mixpost Lite installation is updated
+  with the latest versions, maintaining performance and security standards.
+- Always secure your webhooks using the secret key to maintain data integrity and
+  security.
+- Many social networks require a fully developed website to approve your application.
+- We recommend integrating or adapting our samples into your existing website to meet
+  these requirements effectively.
+- Many social networks, such as TikTok, require a fully developed website to approve
+  your application. We recommend integrating or adapting our samples into your existing
+  website to meet these requirements effectively.
+- To get started with Pusher, register on their platform, create a new channel, and
+  retrieve your app keys.
+- Due to the long-running nature of WebSocket servers, you may need to make some optimizations
+  to your server and hosting environment.
+- To access the Mixpost Dashboard, you must create an admin.
+- Ensure your PHP and web server configurations are set accordingly for file uploads.
+- Mixpost uses Job Batching and requires a database migration for job batches.
+- Mixpost utilizes its unique internal exception handler.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Make sure you have the right file permissions
+- Due to the long-running nature of WebSocket servers, you may need to make some optimizations
+  to your server and hosting environment to ensure your Reverb server can effectively
+  handle the optimal number of connections for the resources available on your server.
+- Mixpost utilizes its unique internal exception handler rather than the default App\Exceptions\ExceptionHandler.
+- To validate if Composer can read your auth.json you can run composer config --list
+  --global | grep packages.inovector.com
+- Ensure that assets get republished each time Mixpost Enterprise is updated by adding
+  commands to the post-update-cmd of the scripts section of your composer.json.
+- Ensure environment variables are set correctly for deployment.
+- A workspace is the primary entity for billing. In other words, all charges, payments,
+  and subscriptions are tied to the workspace.
+- Default settings can be customized in the Enterprise Console.
+errors:
+- 'Too Many Open Files: This error typically occurs when the number of open files
+  exceeds the system limit.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 403 Access forbidden.
+- 404 Workspace not found.
+- 401 Unauthenticated.
+- '401: Unauthenticated.'
+- '403: Access forbidden.'
+- '404: Workspace not found.'
+- '404: Account not found.'
+- 404 Media not found.
+- '404: Media not found.'
+- 422 Validation errors
+- '422: Validation errors'
+- 403 Access forbidden
+- 404 Workspace not found
+- 404 Tag not found
+- '401 Unauthorized: Unauthenticated.'
+- '403 Forbidden: Access forbidden.'
+- '404 Not Found: Workspace not found or Tag not found.'
+- '404: Tag not found.'
+- Unauthenticated.
+- Access forbidden.
+- Workspace not found.
+- 404 Post not found.
+- '404: Post not found.'
+- '404 Not Found: Workspace not found.'
+- '422 Unprocessable Entity: Validation errors'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://mixpost.app
+  headers:
+    Accept: application/json
+source_metadata: null

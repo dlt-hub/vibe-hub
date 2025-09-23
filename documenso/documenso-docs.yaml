@@ -1,0 +1,271 @@
+resources:
+- name: documents
+  endpoint:
+    path: /api/v1/documents
+    method: POST
+    data_selector: documentId
+- name: templates
+  endpoint:
+    path: /api/v1/templates/{templateId}/generate-document
+    method: POST
+    data_selector: documentId
+- name: add_field
+  endpoint:
+    path: /api/v1/documents/{documentId}/fields
+    method: POST
+    data_selector: '[]'
+- name: generate_document
+  endpoint:
+    path: /api/v1/templates/{templateId}/generate-document
+    method: POST
+    data_selector: '{}'
+- name: use_template
+  endpoint:
+    path: /api/v2-beta/template/use
+    method: POST
+    data_selector: '{}'
+- name: plans
+  endpoint:
+    path: /plans
+    method: GET
+    data_selector: plans
+    params: {}
+- name: registration
+  endpoint:
+    path: /registration
+    method: POST
+    data_selector: user
+    params: {}
+- name: organisations
+  endpoint:
+    path: /organisations
+    method: GET
+    data_selector: records
+    params: {}
+- name: organisation_members
+  endpoint:
+    path: /users/organisations/members
+    method: GET
+    data_selector: records
+- name: organisation_groups
+  endpoint:
+    path: /organisations/groups
+    method: GET
+    data_selector: groups
+    params: {}
+- name: teams
+  endpoint:
+    path: /teams
+    method: GET
+    data_selector: teams
+    params: {}
+- name: team_members
+  endpoint:
+    path: /teams/members
+    method: GET
+    data_selector: members
+    params: {}
+- name: signature_field
+  endpoint:
+    path: /users/documents/fields/signature
+    method: GET
+    data_selector: fields
+    params: {}
+- name: email_field
+  endpoint:
+    path: /users/documents/fields/email
+    method: GET
+    data_selector: fields
+    params: {}
+- name: name_field
+  endpoint:
+    path: /users/documents/fields/name
+    method: GET
+    data_selector: fields
+    params: {}
+- name: date_field
+  endpoint:
+    path: /users/documents/fields/date
+    method: GET
+    data_selector: fields
+    params: {}
+- name: text_field
+  endpoint:
+    path: /users/documents/fields/text
+    method: GET
+    data_selector: fields
+    params: {}
+- name: number_field
+  endpoint:
+    path: /users/documents/fields/number
+    method: GET
+    data_selector: fields
+    params: {}
+- name: dropdown_select_field
+  endpoint:
+    path: /dropdown/select/field
+    method: GET
+    data_selector: settings
+    params: {}
+- name: field_coordinates
+  endpoint:
+    path: /documents/<document-id>/edit
+    method: GET
+    params:
+      devmode: 'true'
+- name: documenso
+  endpoint:
+    path: /developers/public-api
+    method: GET
+- name: EmbedDirectTemplate
+  endpoint:
+    path: /developers/embedding/react
+    method: GET
+    data_selector: records
+    params: {}
+- name: EmbedSignDocument
+  endpoint:
+    path: /developers/embedding/react
+    method: GET
+    data_selector: records
+    params: {}
+- name: EmbedDirectTemplate
+  endpoint:
+    path: /developers/embedding/vue
+    method: GET
+    data_selector: records
+- name: EmbedSignDocument
+  endpoint:
+    path: /developers/embedding/vue
+    method: GET
+    data_selector: records
+- name: EmbedDirectTemplate
+  endpoint:
+    path: /developers/embedding/svelte
+    method: GET
+    data_selector: token
+    params: {}
+- name: EmbedSignDocument
+  endpoint:
+    path: /developers/embedding/svelte
+    method: GET
+    data_selector: token
+    params: {}
+- name: EmbedDirectTemplate
+  endpoint:
+    path: /embed-direct-template
+    method: GET
+    data_selector: token
+- name: EmbedSignDocument
+  endpoint:
+    path: /embed-sign-document
+    method: GET
+    data_selector: token
+- name: EmbedDirectTemplate
+  endpoint:
+    path: /embed/direct-template
+    method: POST
+    data_selector: token
+- name: EmbedSignDocument
+  endpoint:
+    path: /embed/sign-document
+    method: POST
+    data_selector: token
+- name: create_presign_token
+  endpoint:
+    path: /api/v2-beta/embedding/create-presign-token
+    method: POST
+- name: webhook_events
+  endpoint:
+    path: /webhooks
+    method: POST
+    data_selector: event
+    params: {}
+notes:
+- The globalActionAuth property is only available for Enterprise accounts.
+- All plans are subject to the Fair Use Policy
+- Logging in with Google will not require a 2FA code.
+- Logging in using a passkey will also not require a 2FA code since passkeys are considered
+  2FA by design.
+- Setting the public profile URL is mandatory to publish your profile.
+- The basic team plan includes 5 organisation members. Going over the 5 members will
+  charge your organisation according to the seat plan pricing.
+- Document Access feature is only available for Enterprise accounts.
+- Recipient Authentication feature is only available for Enterprise accounts.
+- The dropdown/select field settings include options like Required, Read only, and
+  Default value.
+- The field can't be required and read-only at the same time.
+- A read-only field can't have an empty select field. It must have a default value.
+- The signer must fill out a required field.
+- The default value must be one of the options.
+- The field auto-signs if there is a default value.
+- The field can't be signed with a value not in the options list.
+- The signer can't modify the field if it's read-only.
+- It should contain at least one option.
+- Email Domains is only available to Enterprise customers and custom plans
+- If you change the default email, it will not retroactively update any existing documents
+  with the old default email.
+- If the email domain becomes invalid, all emails using that domain will fail to send.
+- Direct Link Signing allows you to create a shareable link for document signing.
+- Recipients can fill in their information and sign directly.
+- Use the limitless accounts as much as you like while respecting the spirit and intended
+  scope of the account.
+- Last updated on August 25, 2025
+- This guide assumes that you have both docker and docker-compose installed on your
+  machine.
+- Set up environment variables in the .env file
+- Use 'npm i' to install dependencies required for the project
+- These steps should be run on a UNIX based system, otherwise you may run into an
+  error.
+- When running the application in Docker, you may encounter permission issues when
+  attempting to sign documents using your certificate (.p12) file.
+- For local development, the password can be left empty.
+- To enable field coordinates, use the devmode query parameter.
+- A self-signed certificate should suffice if your industry has no special signing
+  regulation.
+- If you want more "officially backed" signatures, you will need to buy a certificate
+  from a CA (Certificate Authority).
+- Accept the Contributor License Agreement to ensure we can accept your contributions.
+- We store our translations in PO files, which are located in our GitHub repository.
+- Contributions are made through GitHub Pull Requests, so you will need a GitHub account
+  to contribute.
+- The API key has access to your account and all its resources.
+- No rate limit headers are currently provided. When you receive a 429 response, wait
+  at least 60 seconds before retrying.
+- Embedding is currently available for all users on a Teams Plan and above, as well
+  as Early Adopter's within a team.
+- Platform customers have access to advanced styling options
+- Platform customers have access to advanced styling options.
+- Supports both direct link templates and signing tokens
+- Token has a default expiration of 1 hour, but customizable.
+- Webhooks provide a way to keep data in sync across different platforms.
+- Webhooks can trigger automated workflows that start when an event occurs.
+- Webhooks are available to individual users and teams.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'DNS Verification Fails: Double-check all DNS record values, ensure records are
+  added to the correct domain, wait for DNS propagation (up to 48 hours)'
+- 'Emails Not Delivering: Check domain reputation and blacklist status, verify SPF,
+  DKIM, and DMARC records, review bounce and spam reports'
+- '401 Unauthorized: Recheck API key validity'
+- 'TOO_MANY_REQUESTS: HTTP rate limit exceeded'
+- 'LIMIT_EXCEEDED: Resource usage limit exceeded'
+- '400 Bad Request: Ensure the webhook URL is valid.'
+- '404 Not Found: Check if the specified event is supported.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://app.documenso.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.documenso.com/oauth/token
+    client_id: '{{ dlt.secrets[''documenso_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''documenso_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''documenso_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null
