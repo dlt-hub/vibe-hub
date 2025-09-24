@@ -1,0 +1,206 @@
+resources:
+- name: components
+  endpoint:
+    path: /components
+    method: GET
+    data_selector: records
+- name: companies
+  endpoint:
+    path: /companies
+    method: GET
+    data_selector: records
+- name: retrieve_templates
+  endpoint:
+    path: /retrieve/templates
+    method: GET
+- name: retrieve_cost_structures
+  endpoint:
+    path: /retrieve/cost/structures
+    method: GET
+- name: employees
+  endpoint:
+    path: /employees
+    method: GET
+    params:
+      include_restricted: true
+- name: create_employee
+  endpoint:
+    path: /create_employee
+    method: POST
+    data_selector: employee
+    params:
+      finalise: boolean
+- name: retrieve_employee
+  endpoint:
+    path: /retrieve_employee/{employee_id}
+    method: GET
+    data_selector: employee
+    params:
+      category: string
+      effective_date: string
+- name: update_employee
+  endpoint:
+    path: /update_employee/{employee_id}
+    method: PATCH
+    data_selector: employee
+- name: delete_employee
+  endpoint:
+    path: /delete_employee/{employee_id}
+    method: DELETE
+- name: terminate_employee
+  endpoint:
+    path: /terminate_employee/{employee_id}
+    method: POST
+    data_selector: termination
+- name: leave_types
+  endpoint:
+    path: /leave/types
+    method: GET
+    data_selector: leaveTypes
+    params:
+      companyid: KzMOQWE347X15wewwApIYw
+- name: employee_group_assignments
+  endpoint:
+    path: /employee/group/assignments/{employee_group_assignment_id}
+    method: GET
+    data_selector: assignments
+- name: retrieve_leave_requests_for_employee
+  endpoint:
+    path: /leave_requests/employee
+    method: GET
+    params:
+      start_date: required
+      end_date: required
+      employee_id: required
+- name: retrieve_leave_requests_for_company
+  endpoint:
+    path: /leave_requests/company
+    method: GET
+    params:
+      start_date: required
+      end_date: required
+      company_id: required
+- name: public_holidays
+  endpoint:
+    path: /retrieve_public_holidays
+    method: GET
+    params:
+      employee_id: required
+      start_date: optional
+      end_date: optional
+- name: leave_balances
+  endpoint:
+    path: /retrieve_leave_balances
+    method: GET
+    params:
+      company_id: optional
+      employee_id: optional
+      payrun_id: optional
+      leave_type_ids: required
+      convert_aliw: optional
+      effective_date: optional
+- name: payslips
+  endpoint:
+    path: /retrieve_payslips
+    method: GET
+    params:
+      employee_id: required
+      start_date: optional
+      end_date: optional
+      payrun_id: optional
+      filename_format: optional
+- name: pay_components
+  endpoint:
+    path: /retrieve_pay_components
+    method: GET
+    params:
+      employee_id: required
+      effective_date: required
+- name: pay_component_values
+  endpoint:
+    path: /paycomponents/values
+    method: GET
+- name: pay_groups
+  endpoint:
+    path: /paygroups
+    method: GET
+- name: pay_runs
+  endpoint:
+    path: /payruns
+    method: GET
+- name: reference_values
+  endpoint:
+    path: /referencevalues
+    method: GET
+- name: webhook_subscriptions
+  endpoint:
+    path: /webhooks/subscriptions/{webhookSubscriptionId}
+    method: DELETE
+    data_selector: records
+- name: reports
+  endpoint:
+    path: /reports
+    method: GET
+    data_selector: records
+- name: timesheets
+  endpoint:
+    path: /timesheets
+    method: GET
+    data_selector: records
+- name: work_patterns
+  endpoint:
+    path: /work_patterns/{employee_id}
+    method: GET
+    data_selector: records
+- name: employee_created
+  endpoint:
+    path: /employee_created
+    method: POST
+    data_selector: Id
+    params: {}
+- name: employee_updated
+  endpoint:
+    path: /employee_updated
+    method: POST
+    data_selector: Id
+    params: {}
+- name: employee_finalised
+  endpoint:
+    path: /employee_finalised
+    method: POST
+    data_selector: Id
+    params: {}
+- name: pay_run_finalised
+  endpoint:
+    path: /pay_run_finalised
+    method: POST
+    data_selector: Id
+    params: {}
+- name: webhook_subscriptions
+  endpoint:
+    path: /v/1/webhooks/subscriptions/{webhookSubscriptionId}
+    method: DELETE
+    data_selector: 'null'
+    params: {}
+notes:
+- Requires OAuth2 setup.
+- Uses OAuth2 — requires setup of connected app in DataPay
+- Employees will have new leave balances when a pay run is finalised.
+- Requires OAuth2 authorization
+errors:
+- '400: The request is invalid, e.g. missing required fields, invalid values, etc.'
+- '401: The access token is invalid or expired.'
+- '404: Either the base URL or the format of URL is incorrect.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://www.datapaylive.co.nz/api/v/1
+  auth:
+    type: oauth2
+    flow: client_credentials
+    token_url: https://auth.sample.com/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+  headers:
+    Authorization: Bearer {{ access_token }}
+source_metadata: null

@@ -1,0 +1,51 @@
+resources:
+- name: StatsClient
+  endpoint:
+    path: /
+    method: GET
+    data_selector: stats
+    params: {}
+- name: TCPStatsClient
+  endpoint:
+    path: /
+    method: GET
+    data_selector: tcp_stats
+    params: {}
+- name: UnixSocketStatsClient
+  endpoint:
+    path: /
+    method: GET
+    data_selector: unix_socket_stats
+    params: {}
+- name: StatsClient
+  endpoint:
+    path: /
+    method: GET
+    data_selector: records
+    params: {}
+- name: Pipeline
+  endpoint:
+    path: /reference.html#Pipeline
+    method: GET
+    data_selector: stats
+    params: {}
+notes:
+- Each public stats API method supports a `rate` parameter, but statsd doesn’t always
+  use it the same way.
+- Python will inherently bind to an ephemeral port on all interfaces (0.0.0.0) for
+  each configured client.
+- Support for gauge deltas was added to the server in 0.6.0.
+- Pipeline instances are not thread-safe.
+- It is not thread-safe, so it is recommended to not share it across threads unless
+  a lot of attention is paid to make sure that no two threads ever use it at once.
+- The socket_path parameter is required. It has no default.
+- The host, port and ipv6 parameters are not allowed.
+- The application process must have permission to write to the socket.
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: http://localhost:8125
+  auth:
+    type: none
+source_metadata: null

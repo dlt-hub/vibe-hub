@@ -1,0 +1,226 @@
+resources:
+- name: asset_price
+  endpoint:
+    path: /get_asset_price
+    method: GET
+    data_selector: output
+    params: {}
+- name: market_prices
+  endpoint:
+    path: /starknet/assets
+    method: GET
+    data_selector: assets
+    params: {}
+- name: asset_price
+  endpoint:
+    path: /get_asset_price
+    method: GET
+    data_selector: price
+    params: {}
+- name: onchain_checkpoints
+  endpoint:
+    path: /node/v1/onchain/checkpoints/{base}/{quote}
+    method: GET
+    data_selector: object[]
+    params:
+      network: starknet-mainnet
+      limit: x >= 0
+- name: onchain_history
+  endpoint:
+    path: /node/v1/onchain/history/{base}/{quote}
+    method: GET
+    data_selector: records
+    params:
+      network: starknet-mainnet
+      timestamp: required
+- name: onchain_checkpoints
+  endpoint:
+    path: /node/v1/onchain/checkpoints/{base}/{quote}
+    method: GET
+    data_selector: records
+    params:
+      network: starknet-mainnet
+      limit: null
+- name: onchain_publishers
+  endpoint:
+    path: /node/v1/onchain/publishers
+    method: GET
+    data_selector: components
+- name: onchain_history
+  endpoint:
+    path: /node/v1/onchain/history/{base}/{quote}
+    method: GET
+    data_selector: '[]'
+- name: onchain_pair_data
+  endpoint:
+    path: /node/v1/onchain/{base}/{quote}
+    method: GET
+    data_selector: object
+    params:
+      network: required
+      aggregation: 'null'
+      routing: 'null'
+      timestamp: 'null'
+      components: 'null'
+      variations: 'null'
+- name: onchain_publishers
+  endpoint:
+    path: /node/v1/onchain/publishers
+    method: GET
+    data_selector: components
+    params:
+      network: starknet-mainnet
+      data_type: Spot
+- name: onchain_pair_data
+  endpoint:
+    path: /node/v1/onchain/{base}/{quote}
+    method: GET
+    data_selector: object
+- name: price_updates
+  endpoint:
+    path: /node/v1/data/price/subscribe
+    method: GET
+    data_selector: price
+    params: {}
+- name: price_updates
+  endpoint:
+    path: /node/v1/data/subscribe
+    method: GET
+    data_selector: msg_type
+    params: {}
+- name: ohlc
+  endpoint:
+    path: /node/v1/onchain/ohlc/subscribe
+    method: GET
+    data_selector: candles
+    params: {}
+- name: price_updates
+  endpoint:
+    path: /node/v1/data/price/subscribe
+    method: GET
+    data_selector: price
+    params: {}
+- name: open_interest_instruments
+  endpoint:
+    path: /node/v1/open_interest/instruments
+    method: GET
+    data_selector: records
+- name: candlestick
+  endpoint:
+    path: /onchain/ohlc/subscribe
+    method: GET
+    data_selector: candles
+    params: {}
+- name: open_interest
+  endpoint:
+    path: /node/v1/open_interest/{base}/{quote}
+    method: GET
+    data_selector: open_interest
+    params:
+      source: source
+      timestamp: timestamp
+- name: open_interest_instruments
+  endpoint:
+    path: /node/v1/open_interest/instruments
+    method: GET
+    data_selector: records
+    params: {}
+- name: historical_open_interests
+  endpoint:
+    path: /node/v1/open_interest/history/{base}/{quote}
+    method: GET
+    data_selector: object[]
+    params:
+      base: string
+      quote: string
+      source: string
+      timestamp: string
+- name: open_interest
+  endpoint:
+    path: /node/v1/open_interest/{base}/{quote}
+    method: GET
+    data_selector: open_interest
+- name: candlestick_aggregation
+  endpoint:
+    path: /node/v1/aggregation/candlestick/{base}/{quote}
+    method: GET
+    data_selector: data
+    params: {}
+- name: historical_open_interests
+  endpoint:
+    path: /node/v1/open_interest/history/{base}/{quote}
+    method: GET
+    data_selector: records
+    params:
+      base: string
+      quote: string
+      source: string
+      timestamp: string
+- name: data_pair
+  endpoint:
+    path: /node/v1/data/{base}/{quote}
+    method: GET
+    data_selector: components
+    params: {}
+- name: candlestick_aggregation
+  endpoint:
+    path: /node/v1/aggregation/candlestick/{base}/{quote}
+    method: GET
+    data_selector: data
+- name: multi_stream
+  endpoint:
+    path: /node/v1/data/multi/stream
+    method: GET
+    data_selector: price entries
+    params:
+      get_entry_params: required
+      pairs: required
+      historical_prices: integer | null
+- name: data_pair
+  endpoint:
+    path: /node/v1/data/{base}/{quote}
+    method: GET
+- name: multi_stream
+  endpoint:
+    path: /node/v1/data/multi/stream
+    method: GET
+    data_selector: stream
+    params:
+      get_entry_params: required
+      pairs: required
+      historical_prices: integer | null
+notes:
+- Pragma supports a wide range of cryptocurrency pairs and currencies with ongoing
+  expansion
+- We strongly encourage you to use conversion rate feeds for xSTRK and sSTRK, given
+  the low number of sources available on the market rate.
+- All WebSocket connections are currently public and open without authentication.
+- In the near future, WebSocket connections will require authentication using an API
+  key similar to the REST API.
+- Includes cryptographic signatures
+- Verifiable price data
+- Individual publisher prices
+- Ideal for StarkEx integration
+- Slightly larger payload size
+- Updates every 500ms with minimal processing overhead
+- All numeric values are returned as strings to preserve precision
+- Currently, we only support OHLC data for onchain data, but it will soon be available
+  for offchain data as well.
+- The response is of type object[].
+- This is an SSE endpoint.
+errors:
+- 'Connection Closed Unexpectedly: Possible causes include rate limit exceeded (256
+  KB/s) or inactivity timeout (60 seconds without messages).'
+- 'Message Format Errors: Possible causes include incorrectly formatted JSON messages
+  or invalid subscription parameters.'
+- 'High Latency: Possible causes include network congestion or geographic distance
+  from server.'
+- Rate limit exceeded (256 KB/s)
+- Inactivity timeout (60 seconds without messages)
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://{environment}.pragma.build
+  headers:
+    Accept: application/json
+source_metadata: null
