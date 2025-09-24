@@ -1,0 +1,1866 @@
+resources:
+- name: transaction
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: transaction_data
+- name: transaction_v2
+  endpoint:
+    path: /v2/post
+    method: POST
+    data_selector: transaction_data
+- name: sale_request
+  endpoint:
+    path: /sale
+    method: POST
+    data_selector: result
+    params:
+      action: SALE
+      order_id: String up to 255 characters
+      order_amount: Format depends on currency
+      order_currency: 3-letter code
+      order_description: String up to 1024 characters
+      payer_first_name: String up to 32 characters
+      payer_last_name: String up to 32 characters
+      payer_address: String up to 255 characters
+      payer_country: 2-letter code
+      payer_city: String up to 40 characters
+      payer_zip: String up to 10 characters
+      payer_email: String up to 256 characters
+      payer_phone: String up to 32 characters
+      payer_ip: XXX.XXX.XXX.XXX
+      term_url_3ds: String up to 1024 characters
+      hash: Special signature to validate your request
+- name: capture_request
+  endpoint:
+    path: /capture
+    method: POST
+    data_selector: response
+    params:
+      action: CAPTURE
+      client_key: UUID format value
+      trans_id: UUID format value
+      amount: Format depends on currency
+      hash: Special signature to validate your request
+- name: creditvoid_request
+  endpoint:
+    path: /creditvoid
+    method: POST
+    data_selector: response
+    params:
+      action: CREDITVOID
+      client_key: UUID format value
+      trans_id: UUID format value
+      amount: Format depends on currency
+      hash: Special signature to validate your request
+- name: void_request
+  endpoint:
+    path: /void
+    method: POST
+    data_selector: response
+    params:
+      action: VOID
+      client_key: CLIENT_KEY
+      trans_id: String up to 255 characters
+      hash: Special signature to validate your request
+- name: debit_transaction
+  endpoint:
+    path: /api/debit
+    method: POST
+    data_selector: result
+    params:
+      action: DEBIT
+- name: credit2card
+  endpoint:
+    path: /credit2card
+    method: POST
+    data_selector: results
+    params:
+      action: CREDIT2CARD
+      client_key: ''
+      order_id: ''
+      order_amount: ''
+      order_currency: ''
+      order_description: ''
+      card_number: ''
+      hash: ''
+- name: get_trans_status
+  endpoint:
+    path: /get_trans_status
+    method: POST
+    data_selector: result
+    params:
+      action: GET_TRANS_STATUS
+- name: get_trans_details
+  endpoint:
+    path: /get_trans_details
+    method: POST
+    data_selector: result
+    params:
+      action: GET_TRANS_DETAILS
+- name: GET_TRANS_STATUS_BY_ORDER
+  endpoint:
+    path: /get_trans_status_by_order
+    method: POST
+    data_selector: result
+    params:
+      action: GET_TRANS_STATUS_BY_ORDER
+      client_key: UUID format value
+      order_id: UUID format value
+      hash: CREDIT2CARD
+- name: RECURRING_SALE
+  endpoint:
+    path: /recurring_sale
+    method: POST
+    data_selector: result
+    params:
+      action: RECURRING_SALE
+      client_key: UUID format value
+      order_id: String up to 255 characters
+      order_amount: Integer or Float value
+      order_description: String up to 1024 characters
+      recurring_first_trans_id: UUID format value
+      recurring_token: UUID format value
+      hash: see Appendix A, Formula 1
+- name: RETRY
+  endpoint:
+    path: /retry
+    method: POST
+    data_selector: result
+    params:
+      action: RETRY
+      client_key: UUID format value
+      trans_id: UUID format value
+      hash: see Appendix A, Formula 1
+- name: CREATE_SCHEDULE
+  endpoint:
+    path: /create_schedule
+    method: POST
+    data_selector: result
+    params:
+      action: CREATE_SCHEDULE
+      client_key: UUID format value
+      name: String up to 100 characters
+      interval_length: Number
+      interval_unit: day or month
+      payments_count: Number
+      hash: see Appendix A, Formula 3
+- name: PAUSE_SCHEDULE
+  endpoint:
+    path: /pause_schedule
+    method: POST
+    data_selector: result
+    params:
+      action: PAUSE_SCHEDULE
+      client_key: UUID format value
+      schedule_id: UUID format value
+      hash: see Appendix A, Formula 4
+- name: RUN_SCHEDULE
+  endpoint:
+    path: /run_schedule
+    method: POST
+    data_selector: result
+    params:
+      action: RUN_SCHEDULE
+      client_key: UUID format value
+      schedule_id: UUID format value
+      hash: see Appendix A, Formula 4
+- name: DELETE_SCHEDULE
+  endpoint:
+    path: /delete_schedule
+    method: POST
+    data_selector: result
+    params:
+      action: DELETE_SCHEDULE
+      client_key: UUID format value
+      schedule_id: UUID format value
+      hash: see Appendix A, Formula 4
+- name: SCHEDULE_INFO
+  endpoint:
+    path: /schedule_info
+    method: GET
+    data_selector: result
+    params:
+      action: SCHEDULE_INFO
+      client_key: UUID format value
+      schedule_id: UUID format value
+      hash: see Appendix A, Formula 4
+- name: DESCHEDULE
+  endpoint:
+    path: /deschedule
+    method: POST
+    data_selector: result
+    params:
+      action: DESCHEDULE
+      client_key: UUID format value
+      recurring_token: UUID format value
+      schedule_id: UUID format value
+      hash: see Appendix A, Formula 4
+- name: sale_request
+  endpoint:
+    path: /sale
+    method: POST
+    data_selector: response
+    params:
+      digital_wallet: applepay
+      payment_token: YOUR_PAYMENT_TOKEN
+- name: DEBIT
+  endpoint:
+    path: /post
+    method: POST
+- name: CREDIT2CARD
+  endpoint:
+    path: /post
+    method: POST
+- name: CARD2CARD
+  endpoint:
+    path: /post
+    method: POST
+- name: session
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: ''
+    params: {}
+- name: recurring_payment
+  endpoint:
+    path: /api/v1/payment/recurring
+    method: POST
+    data_selector: ''
+    params: {}
+- name: payment_retry
+  endpoint:
+    path: /api/v1/payment/retry
+    method: POST
+    data_selector: ''
+    params: {}
+- name: get_transaction_status
+  endpoint:
+    path: /api/v1/payment/status
+    method: POST
+    data_selector: ''
+    params: {}
+- name: payment_status
+  endpoint:
+    path: /api/v1/payment/status
+    method: POST
+    data_selector: ''
+    params: {}
+- name: refund
+  endpoint:
+    path: /api/v1/payment/refund
+    method: POST
+    data_selector: ''
+    params: {}
+- name: void
+  endpoint:
+    path: /api/v1/payment/void
+    method: POST
+    data_selector: ''
+    params: {}
+- name: payment_methods
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: ''
+    params: {}
+- name: apple_pay_payment
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params:
+      merchant_key: xxxxx-xxxxx-xxxxx
+      operation: purchase
+      methods:
+      - applepay
+      parameters:
+        merchant_identifier: Merchant ID
+        certificate: '*.pem'
+        private_key: '*.key'
+        processing_private_key: Processing Private Key
+      order:
+        number: order-1234
+        amount: '1000.19'
+        currency: BRL
+        description: Important gift
+      cancel_url: https://example.com/cancel
+      success_url: https://example.com/success
+      customer:
+        name: John Doe
+        email: test@gmail.com
+      billing_address:
+        country: US
+        state: CA
+        city: Los Angeles
+        address: Moor Building 35274
+        zip: '123456'
+        phone: '347771112233'
+      hash: '{{session_hash}}'
+- name: m2p-debit
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params:
+      merchant_key: xxxxx-xxxxx-xxxxx
+      operation: purchase
+      methods:
+      - m2p-debit
+      parameters:
+        m2p-debit:
+          paymentGatewayName: gateway
+          paymentCurrency: BTC
+          tradingAccountLogin: login
+- name: m2p-withdrawal
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params:
+      merchant_key: xxxxx-xxxxx-xxxxx
+      operation: purchase
+      methods:
+      - m2p-withdrawal
+      parameters:
+        m2p-withdrawal:
+          withdrawCurrency: BTC
+          address: mkzePZfMeoYsoGcavSJFT7UKSjsU2BEgzt
+          tradingAccountLogin: login
+- name: pagsmile
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params:
+      merchant_key: xxxxx-xxxxx-xxxxx
+      operation: purchase
+      methods:
+      - pagsmile
+      parameters:
+        pagsmile:
+          document_number: document_number
+          document_type: document_type
+- name: papara
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params:
+      merchant_key: xxxxx-xxxxx-xxxxx
+      operation: purchase
+      methods:
+      - papara
+      parameters:
+        papara:
+          memberId: member Id
+- name: payok-upi
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params:
+      merchant_key: xxxxx-xxxxx-xxxxx
+      operation: purchase
+      methods:
+      - payok-upi
+      parameters:
+        payok-upi:
+          personal_id: personal id
+- name: paythrough-upi
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params:
+      merchant_key: xxxxx-xxxxx-xxxxx
+      operation: purchase
+      methods:
+      - paythrough-upi
+      parameters:
+        paythrough-upi:
+          upi_id: joyoberoihrl@okaxis
+- name: payment_methods
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: methods
+    params: {}
+- name: tabby
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters.tabby
+    params:
+      category: Clothes
+      buyer_registered_since: 2019-08-2414:15:22
+      buyer_loyalty_level: 0
+- name: tamara
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters.tamara
+    params:
+      shipping_amount: 1.01
+      tax_amount: 1.01
+      product_reference_id: item54321
+      product_type: Clothes
+      product_sku: ABC-12345-S-BL
+      product_amount: 998.17
+- name: yapily
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters.yapily
+    params:
+      payee_name: Payee Name
+      payee_country: GB
+      payee_identifications:
+      - type: SORT_CODE
+        identification: '123456'
+      - type: ACCOUNT_NUMBER
+        identification: '12345678'
+- name: yo-uganda-limited
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters.yo-uganda-limited
+    params:
+      AccountProviderCode: '89128734651234'
+      NarrativeFileName: file.img
+      NarrativeFileBase64: iVBORw0KGgoAAAANSUhEUgAAAAEAAAADCAYAAABS3WWCAAAABHNCSVQICAgIfAhkiAAAABl0RVh0U29mdHdhcmUAZ25vbWUtc2NyZWVuc2hvdO8Dvz4AAAA1aVRYdENyZWF0aW9uIFRpbWUAAAAAANGB0YAsIDEwLdGC0YDQsC0yMDIzIDEyOjA4OjQ3ICswMzAwEHyhlwAAABdJREFUCJlj+P///38mBgYGBiYGBgYGADH7BAGR0RGuAAAAAElFTkSuQmCC
+      ProviderReferenceText: thank you
+- name: session
+  endpoint:
+    path: /api/v1/session
+    method: POST
+- name: session
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: null
+    params: {}
+- name: recurring_payment
+  endpoint:
+    path: /api/v1/payment/recurring
+    method: POST
+    data_selector: order
+    params: {}
+- name: retry_payment
+  endpoint:
+    path: /api/v1/payment/retry
+    method: POST
+    data_selector: payment_id
+    params: {}
+- name: transaction_status
+  endpoint:
+    path: /api/v1/payment/status
+    method: POST
+    data_selector: payment_id
+    params: {}
+- name: session
+  endpoint:
+    path: /api/v1/session
+    method: POST
+- name: payment_status
+  endpoint:
+    path: /api/v1/payment/status
+    method: POST
+- name: refund
+  endpoint:
+    path: /api/v1/payment/refund
+    method: POST
+- name: void
+  endpoint:
+    path: /api/v1/payment/void
+    method: POST
+- name: payment_methods
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: null
+    params: {}
+- name: session
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: null
+    params: {}
+- name: apple_pay
+  endpoint:
+    path: /api/v1/applepay
+    method: POST
+    data_selector: response
+    params: {}
+- name: googlepay
+  endpoint:
+    path: /api/v1/googlepay
+    method: POST
+    data_selector: payment_token
+    params: {}
+- name: m2p-debit
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params:
+      paymentGatewayName: Required
+      paymentCurrency: Required
+      tradingAccountLogin: Optional
+- name: m2p-withdrawal
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params:
+      withdrawCurrency: Required
+      address: Required
+      tradingAccountLogin: Optional
+- name: pagsmile
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params:
+      document_number: Conditional
+      document_type: Conditional
+- name: papara
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params:
+      memberId: Conditional
+- name: payok-upi
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params:
+      personal_id: Conditional
+- name: paythrough-upi
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params:
+      upi_id: Required
+- name: session
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: data
+    params: {}
+- name: recurring_payment
+  endpoint:
+    path: /api/v1/payment/recurring
+    method: POST
+- name: retry_payment
+  endpoint:
+    path: /api/v1/payment/retry
+    method: POST
+- name: get_transaction_status
+  endpoint:
+    path: /api/v1/payment/status
+    method: POST
+- name: payment_status
+  endpoint:
+    path: /api/v1/payment/status
+    method: POST
+    data_selector: ''
+    params: {}
+- name: refund
+  endpoint:
+    path: /api/v1/payment/refund
+    method: POST
+    data_selector: ''
+    params: {}
+- name: void
+  endpoint:
+    path: /api/v1/payment/void
+    method: POST
+    data_selector: ''
+    params: {}
+- name: payment_methods
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: applepay
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: awcc
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: billplz
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: dl
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params:
+      document_number: document_number
+- name: dlocal
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters
+    params:
+      document_number: document_number
+- name: googlepay
+  endpoint:
+    path: /googlepay
+    method: POST
+    data_selector: paymentToken
+    params: {}
+- name: m2p-debit
+  endpoint:
+    path: /m2p-debit
+    method: POST
+    data_selector: parameters
+    params:
+      paymentGatewayName: required
+      paymentCurrency: required
+      tradingAccountLogin: optional
+- name: m2p-withdrawal
+  endpoint:
+    path: /m2p-withdrawal
+    method: POST
+    data_selector: parameters
+    params:
+      withdrawCurrency: required
+      address: required
+      tradingAccountLogin: optional
+- name: payok-upi
+  endpoint:
+    path: /payok-upi
+    method: POST
+    data_selector: parameters
+    params:
+      personal_id: conditional
+- name: paythrough-upi
+  endpoint:
+    path: /paythrough-upi
+    method: POST
+    data_selector: parameters
+    params:
+      upi_id: required
+- name: payment_methods
+  endpoint:
+    path: /api/v1/payment_methods
+    method: GET
+    data_selector: methods
+    params: {}
+- name: phone-pe
+  endpoint:
+    path: /payment-methods/phone-pe
+    method: GET
+- name: pix
+  endpoint:
+    path: /payment-methods/pix
+    method: GET
+- name: ppro-alipay
+  endpoint:
+    path: /payment-methods/ppro-alipay
+    method: GET
+- name: ppro-bitpay
+  endpoint:
+    path: /payment-methods/ppro-bitpay
+    method: GET
+- name: ppro-dragonpay
+  endpoint:
+    path: /payment-methods/ppro-dragonpay
+    method: GET
+- name: ppro-fpx
+  endpoint:
+    path: /payment-methods/ppro-fpx
+    method: GET
+- name: ppro-ideal
+  endpoint:
+    path: /payment-methods/ppro-ideal
+    method: GET
+- name: ppro-klarna
+  endpoint:
+    path: /payment-methods/ppro-klarna
+    method: GET
+- name: ppro-przelewy24
+  endpoint:
+    path: /payment-methods/ppro-przelewy24
+    method: GET
+- name: ppro-safetypay
+  endpoint:
+    path: /payment-methods/ppro-safetypay
+    method: GET
+- name: ppro-skrill
+  endpoint:
+    path: /payment-methods/ppro-skrill
+    method: GET
+- name: ppro-sofort
+  endpoint:
+    path: /payment-methods/ppro-sofort
+    method: GET
+- name: ppro-trustly
+  endpoint:
+    path: /payment-methods/ppro-trustly
+    method: GET
+- name: ppro-unionpay
+  endpoint:
+    path: /payment-methods/ppro-unionpay
+    method: GET
+- name: ppro-wechat5
+  endpoint:
+    path: /payment-methods/ppro-wechat5
+    method: GET
+- name: ppro-wechatonline
+  endpoint:
+    path: /payment-methods/ppro-wechatonline
+    method: GET
+- name: pr-cash
+  endpoint:
+    path: /payment-methods/pr-cash
+    method: GET
+- name: pr-creditcard
+  endpoint:
+    path: /payment-methods/pr-creditcard
+    method: GET
+- name: pr-cryptocurrency
+  endpoint:
+    path: /payment-methods/pr-cryptocurrency
+    method: GET
+- name: pr-online
+  endpoint:
+    path: /payment-methods/pr-online
+    method: GET
+- name: ptbs
+  endpoint:
+    path: /payment-methods/ptbs
+    method: GET
+- name: ptn-email
+  endpoint:
+    path: /payment-methods/ptn-email
+    method: GET
+- name: ptn-inapp
+  endpoint:
+    path: /payment-methods/ptn-inapp
+    method: GET
+- name: ptn-sms
+  endpoint:
+    path: /payment-methods/ptn-sms
+    method: GET
+- name: pyk-bkmexpress
+  endpoint:
+    path: /payment-methods/pyk-bkmexpress
+    method: GET
+- name: pyk-momo
+  endpoint:
+    path: /payment-methods/pyk-momo
+    method: GET
+- name: pyk-nequipush
+  endpoint:
+    path: /payment-methods/pyk-nequipush
+    method: GET
+- name: pyk-paparawallet
+  endpoint:
+    path: /payment-methods/pyk-paparawallet
+    method: GET
+- name: pyk-promptpay
+  endpoint:
+    path: /payment-methods/pyk-promptpay
+    method: GET
+- name: pyk-truemoney
+  endpoint:
+    path: /payment-methods/pyk-truemoney
+    method: GET
+- name: pyk-upi
+  endpoint:
+    path: /payment-methods/pyk-upi
+    method: GET
+- name: pyk-viettelpay
+  endpoint:
+    path: /payment-methods/pyk-viettelpay
+    method: GET
+- name: pyk-zalopay
+  endpoint:
+    path: /payment-methods/pyk-zalopay
+    method: GET
+- name: paypal
+  endpoint:
+    path: /payment-methods/paypal
+    method: GET
+- name: paythrough-upi
+  endpoint:
+    path: /payment-methods/paythrough-upi
+    method: GET
+- name: saopayments
+  endpoint:
+    path: /payment-methods/saopayments
+    method: GET
+- name: securepaycard
+  endpoint:
+    path: /payment-methods/securepaycard
+    method: GET
+- name: sepa
+  endpoint:
+    path: /payment-methods/sepa
+    method: GET
+- name: skrill
+  endpoint:
+    path: /payment-methods/skrill
+    method: GET
+- name: sofortuber
+  endpoint:
+    path: /payment-methods/sofortuber
+    method: GET
+- name: stcpay
+  endpoint:
+    path: /payment-methods/stcpay
+    method: GET
+- name: stripe-js
+  endpoint:
+    path: /payment-methods/stripe-js
+    method: GET
+- name: swifipay-deposit
+  endpoint:
+    path: /payment-methods/swifipay-deposit
+    method: GET
+- name: sz-in-imps
+  endpoint:
+    path: /payment-methods/sz-in-imps
+    method: GET
+- name: sz-in-paytm
+  endpoint:
+    path: /payment-methods/sz-in-paytm
+    method: GET
+- name: sz-in-upi
+  endpoint:
+    path: /payment-methods/sz-in-upi
+    method: GET
+- name: sz-jp-p2p
+  endpoint:
+    path: /payment-methods/sz-jp-p2p
+    method: GET
+- name: sz-kr-p2p
+  endpoint:
+    path: /payment-methods/sz-kr-p2p
+    method: GET
+- name: sz-my-ob
+  endpoint:
+    path: /payment-methods/sz-my-ob
+    method: GET
+- name: sz-th-ob
+  endpoint:
+    path: /payment-methods/sz-th-ob
+    method: GET
+- name: sz-th-qr
+  endpoint:
+    path: /payment-methods/sz-th-qr
+    method: GET
+- name: sz-vn-ob
+  endpoint:
+    path: /payment-methods/sz-vn-ob
+    method: GET
+- name: sz-vn-p2p
+  endpoint:
+    path: /payment-methods/sz-vn-p2p
+    method: GET
+- name: trustgate
+  endpoint:
+    path: /payment-methods/trustgate
+    method: GET
+- name: tabby
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters.tabby
+    params:
+      category: Clothes
+      buyer_registered_since: 2019-08-2414:15:22
+      buyer_loyalty_level: 0
+- name: tamara
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters.tamara
+    params:
+      shipping_amount: 1.01
+      tax_amount: 1.01
+      product_reference_id: item54321
+      product_type: Clothes
+      product_sku: ABC-12345-S-BL
+      product_amount: 998.17
+- name: yapily
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters.yapily
+    params:
+      payee_name: Payee Name
+      payee_country: GB
+      payee_identifications:
+      - type: SORT_CODE
+        identification: '123456'
+      - type: ACCOUNT_NUMBER
+        identification: '12345678'
+- name: yo-uganda-limited
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters.yo-uganda-limited
+    params:
+      AccountProviderCode: '89128734651234'
+      NarrativeFileName: file.img
+      NarrativeFileBase64: iVBORw0KGgoAAAANSUhEUgAAAAEAAAADCAYAAABS3WWCAAAABHNCSVQICAgIfAhkiAAAABl0RVh0U29mdHdhcmUAZ25vbWUtc2NyZWVuc2hvdO8Dvz4AAAA1aVRYdENyZWF0aW9uIFRpbWUAAAAAANGB0YAsIDEwLdGC0YDQsC0yMDIzIDEyOjA4OjQ3ICswMzAwEHyhlwAAABdJREFUCJlj+P///38mBgYGBiYGBgYGADH7BAGR0RGuAAAAAElFTkSuQmCC
+      ProviderReferenceText: thank you
+- name: tabby
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters.tabby
+    params: {}
+- name: tamara
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters.tamara
+    params: {}
+- name: yapily
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters.yapily
+    params: {}
+- name: yo-uganda-limited
+  endpoint:
+    path: /api/v1/session
+    method: POST
+    data_selector: parameters.yo-uganda-limited
+    params: {}
+- name: SALE
+  endpoint:
+    path: /sale
+    method: POST
+    data_selector: result
+    params:
+      action: SALE
+      client_key: CLIENT_KEY
+      order_id: Transaction ID in the Clients system
+      order_amount: Order amount
+      order_currency: Currency
+      return_url: URL to which Customer should be returned after operation in third-party
+        system
+      hash: Special signature to validate your request to Payment Platform
+- name: sale
+  endpoint:
+    path: /sale
+    method: POST
+    data_selector: result
+    params:
+      action: SALE
+      client_key: CLIENT_KEY
+      order_id: Transaction ID in the Clients system
+      order_amount: Order amount
+      order_currency: Currency
+      return_url: URL to which Customer should be returned after operation in third-party
+        system
+      hash: Special signature to validate your request to Payment Platform
+- name: credit2virtual
+  endpoint:
+    path: /credit2virtual
+    method: POST
+    data_selector: result
+    params:
+      action: CREDIT2VIRTUAL
+- name: credit2virtual
+  endpoint:
+    path: /api/credit2virtual
+    method: POST
+    data_selector: result
+    params:
+      action: CREDIT2VIRTUAL
+      client_key: CLIENT_KEY
+      brand: String up to 36 characters
+      order_id: String up to 255 characters
+      order_amount: varies by currency
+      order_currency: 3-letter code
+      order_description: String up to 1024 characters
+      hash: special signature
+- name: credit2crypto
+  endpoint:
+    path: /api/credit2crypto
+    method: POST
+    data_selector: result
+    params:
+      action: CREDIT2CRYPTO
+      client_key: CLIENT_KEY
+      brand: String up to 36 characters
+      order_id: String up to 255 characters
+      order_amount: varies by currency
+      order_currency: 3 to 6 characters
+      order_description: String up to 1024 characters
+      hash: special signature
+- name: creditvoid
+  endpoint:
+    path: /api/creditvoid
+    method: POST
+    data_selector: result
+    params:
+      action: CREDITVOID
+      client_key: CLIENT_KEY
+      trans_id: String up to 255 characters
+      amount: varies by currency
+      hash: special signature
+- name: void
+  endpoint:
+    path: /api/void
+    method: POST
+    data_selector: result
+    params:
+      action: VOID
+      client_key: CLIENT_KEY
+      trans_id: String up to 255 characters
+      hash: special signature
+- name: CREDIT2VIRTUAL
+  endpoint:
+    path: /credit2virtual
+    method: POST
+    data_selector: result
+    params:
+      action: CREDIT2VIRTUAL
+      client_key: CLIENT_KEY
+      order_id: String up to 255 characters
+      order_amount: Format depends on currency
+      order_currency: 3-letter code
+      order_description: String up to 1024 characters
+      parameters: Array of the parameters for specific brand
+      hash: Special signature to validate your request to Payment Platform
+- name: CREDIT2CRYPTO
+  endpoint:
+    path: /credit2crypto
+    method: POST
+    data_selector: result
+    params:
+      action: CREDIT2CRYPTO
+      client_key: CLIENT_KEY
+      order_id: String up to 255 characters
+      order_amount: Format depends on currency
+      order_currency: alpha code, from 3 to 6 characters
+      order_description: String up to 1024 characters
+      hash: Special signature to validate your request to Payment Platform
+- name: CREDITVOID
+  endpoint:
+    path: /creditvoid
+    method: POST
+    data_selector: result
+    params:
+      action: CREDITVOID
+      client_key: CLIENT_KEY
+      trans_id: String up to 255 characters
+      amount: Format depends on currency
+      hash: Special signature to validate your request to Payment Platform
+- name: VOID
+  endpoint:
+    path: /void
+    method: POST
+    data_selector: result
+    params:
+      action: VOID
+      client_key: CLIENT_KEY
+      trans_id: String up to 255 characters
+      hash: Special signature to validate your request to Payment Platform
+- name: debit_transaction
+  endpoint:
+    path: /api/debit
+    method: POST
+    data_selector: result
+    params: {}
+- name: debit_calculation
+  endpoint:
+    path: /api/debit/calculate
+    method: POST
+    data_selector: result
+    params: {}
+- name: debit_complete
+  endpoint:
+    path: /api/debit/complete
+    method: POST
+    data_selector: result
+    params: {}
+- name: get_transaction_status
+  endpoint:
+    path: /get_trans_status
+    method: POST
+    data_selector: result
+    params:
+      action: GET_TRANS_STATUS
+      client_key: CLIENT_KEY
+      trans_id: transaction_id
+      hash: signature
+- name: debit_transaction
+  endpoint:
+    path: /debit/transaction
+    method: POST
+    data_selector: result
+    params:
+      action: DEBIT2VIRTUAL
+- name: debit_transaction_calc
+  endpoint:
+    path: /debit/calc
+    method: POST
+    data_selector: result
+    params:
+      action: DEBIT2VIRTUAL_CALC
+- name: debit_transaction_complete
+  endpoint:
+    path: /debit/complete
+    method: POST
+    data_selector: result
+    params:
+      action: DEBIT2VIRTUAL_COMPLETE
+- name: get_trans_status
+  endpoint:
+    path: /get_trans_status
+    method: POST
+    data_selector: result
+    params:
+      action: GET_TRANS_STATUS
+      client_key: CLIENT_KEY
+      trans_id: String up to 255 characters
+      hash: Special signature to validate your request
+- name: apple_pay
+  endpoint:
+    path: /post-va
+    method: POST
+    data_selector: paymentData
+    params: {}
+- name: apple_pay
+  endpoint:
+    path: /post-va
+    method: POST
+    data_selector: parameters
+    params:
+      brand: applepay
+- name: axxi-pin
+  endpoint:
+    path: /post-va
+    method: POST
+    data_selector: parameters
+    params:
+      brand: axxi-pin
+- name: beeline
+  endpoint:
+    path: /post-va
+    method: POST
+    data_selector: parameters
+    params:
+      brand: beeline
+- name: billplz
+  endpoint:
+    path: /post-va
+    method: POST
+    data_selector: parameters
+    params:
+      brand: billplz
+- name: dl
+  endpoint:
+    path: /post-va
+    method: POST
+    data_selector: parameters
+    params:
+      brand: dl
+- name: dlocal
+  endpoint:
+    path: /post-va
+    method: POST
+    data_selector: parameters
+    params:
+      brand: dlocal
+- name: doku-hpp
+  endpoint:
+    path: /post-va
+    method: POST
+    data_selector: parameters
+    params:
+      brand: doku-hpp
+- name: fairpay
+  endpoint:
+    path: /post-va
+    method: POST
+    data_selector: parameters
+    params:
+      brand: fairpay
+- name: googlepay
+  endpoint:
+    path: /post-va
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: payment
+  endpoint:
+    path: /post-va
+    method: POST
+    data_selector: response
+    params:
+      brand: googlepay
+- name: CREDIT2VIRTUAL
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: ''
+    params:
+      payee_country: String
+      payee_phone: String
+- name: CREDIT2VIRTUAL
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      payee_country: UG
+      payee_phone: 0987654321
+- name: astropay
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      brand: astropay
+      country: String 2 characters
+      merchant_user_id: String up to 64 characters
+      phone: String up to 50 characters
+- name: bitolo_inr
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      brand: bitolo-inr
+      account_holder_firstname: String
+      account_holder_lastname: String
+      bank_name: String
+      account_no: String
+      ifsc_code: String
+- name: bitolo_brl
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      brand: bitolo-brl
+      mode_of_payout: String
+      account_holder_firstname: String
+      account_holder_lastname: String
+      tax_id: String
+- name: fairpay
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      brand: fairpay
+      method: String
+      firstName: String
+      lastName: String
+      documentNumber: String
+      documentType: String
+      account: String
+      accountType: String
+- name: jvz
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      brand: jvz
+      holder_name: String
+      bank_acc_number: String
+      name_of_bank: String
+      banking_code: String
+      user_email: String
+      user_country: String
+      user_phone: String
+- name: help2pay
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      brand: help2pay
+      ClientIP: String
+      bankCode: String
+      toBankAccountName: String
+      toBankAccountNumber: String
+- name: mercury
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      brand: mercury
+      recipient_name: String
+      recipient_email: String
+      recipient_accountNumber: String
+      recipient_routingNumber: String
+      recipient_electronicAccountType: String
+      recipient_address1: String
+      recipient_city: String
+      recipient_region: String
+      recipient_postalCode: String
+      recipient_country: String
+- name: mpesa
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      brand: mpesa
+      CommandID: String
+      PartyB: String
+- name: noda
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      brand: noda
+      iban: String
+      beneficiaryName: String
+- name: one-collection
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      brand: one-collection
+      FullName: String
+      BankName: String
+      BankCode: String
+      BranchName: String
+      BranchCode: String
+      AccountNumber: String
+- name: papara
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      brand: papara
+      memberId: String
+      NameSurname: String
+      AccountNumber: String
+- name: astropay
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      country: String
+      merchant_user_id: String
+      phone: String
+- name: bitolo_inr
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      account_holder_firstname: String
+      account_holder_lastname: String
+      bank_name: String
+      account_no: String
+      ifsc_code: String
+- name: bitolo_brl
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      mode_of_payout: String
+      account_holder_firstname: String
+      account_holder_lastname: String
+      tax_id: String
+- name: fairpay
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      method: String
+      firstName: String
+      lastName: String
+      documentNumber: String
+      documentType: String
+      bankCode: String
+      account: String
+      accountType: String
+- name: jvz
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      holder_name: String
+      bank_acc_number: String
+      name_of_bank: String
+      banking_code: String
+      user_email: String
+      user_country: String
+      user_phone: String
+- name: help2pay
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      ClientIP: String
+      bankCode: String
+      toBankAccountName: String
+      toBankAccountNumber: String
+- name: mercury
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      recipient_name: String
+      recipient_email: String
+      recipient_accountNumber: String
+      recipient_routingNumber: String
+      recipient_electronicAccountType: String
+      recipient_address1: String
+      recipient_city: String
+      recipient_region: String
+      recipient_postalCode: String
+      recipient_country: String
+- name: mpesa
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      CommandID: String
+      PartyB: String
+- name: noda
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      iban: String
+      beneficiaryName: String
+- name: one-collection
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      FullName: String
+      BankName: String
+      BankCode: String
+      BranchName: String
+      BranchCode: String
+      AccountNumber: String
+- name: papara
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      memberId: String
+      NameSurname: String
+      AccountNumber: String
+- name: netbanking-upi
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      country_code: IN
+      user_name: test
+      account_name: test
+      account_number: '1234567890'
+      bank_name: apnaBank
+      bank_ifsc: ASBL00000007
+      bank_branch: Mumbai
+      bank_address: Sakinaka
+- name: payneteasyhpp
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      payee_first_name: John
+      payee_last_name: Doe
+      phone: '233557009903'
+      account_number: '233557009903'
+      account_name: MTN
+      payee_country: GH
+- name: payftr-in
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      country: IN
+      account_holder_name: Jane Doe
+      account_number: '1233455790'
+      bank_name: India Bank
+      bank_code: HDFC0000123
+      phone: '1234567890'
+      email: sakinaka@email.com
+- name: payok-payout
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      countryCode: IN
+      number: '33440987654321'
+      orgId: '0005'
+      orgCode: BANKCODE
+      orgName: Bank Name
+      holderName: Jane Doe
+      firstName: Homer
+      lastName: Simpson
+      email: hsimpson@email.com
+      phone: 0987654321
+- name: paytota
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      payee_phone: 0987654321
+- name: payretailers
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      BeneficiaryFirstName: Jonh
+      BeneficiaryLastName: Doe
+      DocumentType: '1'
+      DocumentNumber: '12346'
+      Email: jonhdoe@email.com
+      Country: BR
+      BankName: '033'
+      AccountNumber: '002555343456'
+      PayoutAccountTypeCode: '002'
+- name: ptn-email
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      CustomerName: Jonh Doe
+      Email: email@cutomer.com
+      SecurityQuestion: color
+      SecurityQuestionAnswer: red
+- name: ptn-sms
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      CustomerName: Jonh Doe
+      PhoneNumber: 0987654321
+      SecurityQuestion: color
+      SecurityQuestionAnswer: red
+- name: pyk-payout
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      countryCode: IN
+      number: '33440987654321'
+      orgId: '0005'
+      orgCode: BANKCODE
+      orgName: Bank Name
+      holderName: Jane Doe
+      firstName: Homer
+      lastName: Simpson
+      email: hsimpson@email.com
+      phone: 0987654321
+- name: CREDIT2VIRTUAL
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      payee_phone: string
+      AccountProviderCode: string
+      NarrativeFileName: string
+      NarrativeFileBase64: string
+      ProviderReferenceText: string
+- name: netbanking-upi
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      country_code: IN
+      user_name: test
+      account_name: test
+      account_number: '1234567890'
+      bank_name: apnaBank
+      bank_ifsc: ASBL00000007
+      bank_branch: Mumbai
+      bank_address: Sakinaka
+- name: payneteasyhpp
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      first_name: John
+      last_name: Doe
+      payee_first_name: John
+      payee_last_name: Doe
+      phone: '233557009903'
+      account_number: '233557009903'
+      account_name: MTN
+      payee_phone: '233557009903'
+      payee_email: hsimpson@email.com
+      bank_name: Bank Name
+      bank_code: BANKCODE
+      payee_country: GH
+- name: payftr-in
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      country: IN
+      account_holder_name: Jane Doe
+      account_number: '1233455790'
+      bank_name: India Bank
+      bank_code: HDFC0000123
+      phone: '1234567890'
+      email: sakinaka@email.com
+- name: payok-payout
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      countryCode: IN
+      number: '33440987654321'
+      orgId: '0005'
+      orgCode: BANKCODE
+      orgName: Bank Name
+      holderName: Jane Doe
+      firstName: Homer
+      lastName: Simpson
+      email: hsimpson@email.com
+      phone: 0987654321
+- name: paytota
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      payee_phone: 0987654321
+- name: payretailers
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      BeneficiaryFirstName: Jonh
+      BeneficiaryLastName: Doe
+      DocumentType: '1'
+      DocumentNumber: '12346'
+      Email: jonhdoe@email.com
+      Country: BR
+      BankName: '033'
+      AccountNumber: '002555343456'
+      PayoutAccountTypeCode: '002'
+- name: ptn-email
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      CustomerName: Jonh Doe
+      Email: email@cutomer.com
+      SecurityQuestion: color
+      SecurityQuestionAnswer: red
+- name: ptn-sms
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      CustomerName: Jonh Doe
+      PhoneNumber: 0987654321
+      SecurityQuestion: color
+      SecurityQuestionAnswer: red
+- name: pyk-payout
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      countryCode: IN
+      number: '33440987654321'
+      orgId: '0005'
+      orgCode: BANKCODE
+      orgName: Bank Name
+      holderName: Jane Doe
+      firstName: Homer
+      lastName: Simpson
+      email: hsimpson@email.com
+      phone: 0987654321
+- name: CREDIT2VIRTUAL
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: parameters
+    params:
+      payee_phone: '+256771234567'
+      AccountProviderCode: provider54321
+      NarrativeFileName: file.img
+      NarrativeFileBase64: iVBORw0KGgoAAAANSUhEUgAAAAEAAAADCAYAAABS3WWCAAAABHNCSVQICAgIfAhkiAAAABl0RVh0U29mdHdhcmUAZ25vbWUtc2NyZWVuc2hvdO8Dvz4AAA
+      ProviderReferenceText: thank you
+- name: payment_session
+  endpoint:
+    path: /sdk/pay-session.js
+    method: GET
+    data_selector: session
+notes:
+- API requires integration using Checkout API
+- Request data must be sent in JSON format
+- MontyPay offers a wide range of connectors compatible with major POS systems and
+  e-commerce platforms for effortless integration.
+- MontyPay ensures every transaction is secure and compliant.
+- MontyPay retains the right to amend this policy at any time and without notice.
+- Services of MP target people aged 18 and above. Only people from ages of 18 and
+  above are permitted to use the services.
+- We do not knowingly engage people younger than the age of 18.
+- Merchants are required to comply with the Payment Card Industry Data Security Standards
+  (PCI DSS).
+- Notification URL may be temporarily blocked due to consistently receiving timeouts.
+- If cascading is triggered for the order, in general case you will receive only callback
+  for the last payment attempt.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Pay attention that currencies 'UGX', 'JPY', 'KRW', 'CLP' must be send in the format
+  XX.XX, with the zeros after comma.
+- 'Format for 2-exponent currencies: XX.XX.'
+- When using cascading, use a unique order_id for each payment.
+- The response logic for a status request depends on the Cascading Context for Get
+  Status setting.
+- Before using Apple Pay via S2S CARD protocol, review how to obtain Apple Pay payment
+  token.
+- Uses merchant_key for Merchant identification
+- Operation can be purchase, debit, or transfer
+- Note that the notification URL may be temporarily blocked due to consistently receiving
+  timeouts in response to the callback.
+- If five timeouts accumulate within five minutes for a merchant’s notification URL,
+  it will be blocked for 15 minutes.
+- Response logic for a status request depends on the Cascading Context for Get Status
+  setting.
+- Use Merchant Test Key as value of the merchant_key parameter for test transactions.
+- Ensure that the payment provider has confirmed the Apple Pay certificates and verified
+  your domain in the Apple Pay account.
+- Some objects like Contact may return nulls in deeply nested fields.
+- If the payment provider is the gateway, it is important to clarify whether they
+  expect the token to include additional information, such as the payer's address
+  or phone number.
+- Ensure your provider supports operations for Google Pay payments.
+- Checkout protocol requires requests to be sent using JSON formatting with the specified
+  content type.
+- If the payer closes the payment form without initiating the payment, redirection
+  to 'cancel_url' occurs without passing additional parameters.
+- Some connector services may require additional parameters.
+- Requires setup of merchant key.
+- 'Different operations available: purchase, debit, transfer.'
+- Requires setup of connected app in Apple Developer account
+- Ensure the payment provider has confirmed Apple Pay certificates
+- Use Merchant Test Key as value of the `merchant_key` parameter for test transactions.
+- 'Choose the environment: TEST or PRODUCTION'
+- 'Allowed Auth Method: PAN_ONLY or CRYPTOGRAM_3DS'
+- 'Supported Networks: MASTERCARD, VISA, AMEX, DISCOVER, JCB'
+- If the required method is GET and the redirect_url contains query parameters, make
+  sure to implement the redirect accordingly.
+- The notification URL may be temporarily blocked due to consistently receiving timeouts.
+- Use POST requests for actions.
+- CREDIT2VIRTUAL and CREDIT2CRYPTO require client_key for requests
+- VOID request can only be performed on transactions with SETTLED status
+- Ensure all parameters are correctly formatted as per API specifications.
+- Ensure appropriate settings in the admin panel for extended data.
+- Make test requests using test email identifiers.
+- Before using Apple Pay via S2S APM protocol, you should review the section carefully.
+- Ensure that the environment used to generate the payment token matches the corresponding
+  setting in the admin panel to avoid processing issues.
+- The Private Key is required for Google token decryption.
+- Merchants must adhere to the Google Pay APIs Acceptable Use Policy.
+- Private Key is required for Google token decryption.
+- Currently, only acquiring payment forms with a CARD payment method, ApplePay and
+  GooglePay are supported.
+- 'The form must contain at least inputs with such id: payer_card, payer_cvv, payer_expiryDate,
+  payer_name.'
+errors:
+- 'ERROR: Request has errors and was not validated by Payment Platform'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck API key or token expiration'
+- '204002: Enabled merchant mappings or MIDs not found.'
+- '204003: Payment type not supported.'
+- '204004: Payment method not supported.'
+- '204005: Payment action not supported.'
+- '204006: Payment system/brand not supported.'
+- '204007: Day MID limit is not set or exceeded.'
+- '204008: Day Merchant mapping limit is not set or exceeded.'
+- '204009: Payment type not found.'
+- '204010: Payment method not found.'
+- '204011: Payment system/brand not found.'
+- '204012: Payment currency not found.'
+- '204013: Payment action not found.'
+- '204014: Month MID limit is exceeded.'
+- '204015: Week Merchant mapping limit is exceeded.'
+- '208001: Payment not found.'
+- '208002: Not acceptable to request the 3ds for payment not in 3ds status.'
+- '208003: Not acceptable to request the capture for payment not in pending status.'
+- '208004: Not acceptable to request the capture for amount bigger than auth amount.'
+- '208005: Not acceptable to request the refund for payment not in settled or pending
+  status.'
+- '208006: Not acceptable to request the refund for amount bigger than payment amount.'
+- '208008: Not acceptable to request the reversal for amount bigger than payment amount.'
+- '208009: Not acceptable to request the reversal for partial amount.'
+- '208010: Not acceptable to request the chargeback for amount bigger than payment''s
+  amount.'
+- '205005: Card token is invalid or not found.'
+- '205006: Card token is expired.'
+- '205007: Card token is not accessible.'
+- '400: Duplicate request.'
+- '100000: Previous payment not completed.'
+- If any requirement is not met, the SALE request returns error.
+- '400 Bad Request: Request data is invalid.'
+- 'hash: Hash is not valid.'
+- Invalid card number
+- The expiration date of card is expired and not valid.
+- Invalid security code
+- 'The name on card field must contain at least 2 words: first name and last name.'
+- 'TIMEOUT: Notification URL blocked for 15 minutes after 5 timeouts.'
+- 'INVALID_REQUEST: Ensure all required parameters are included.'
+- 'DECLINED: Check the decline reason for transaction.'
+- 'ERROR: Error message'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://test.apiurl.com
+  auth:
+    type: apikey
+source_metadata: null

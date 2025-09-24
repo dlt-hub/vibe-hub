@@ -1,0 +1,86 @@
+resources:
+- name: facilities
+  endpoint:
+    path: /api/facilities/
+    method: GET
+    data_selector: facilities
+- name: order
+  endpoint:
+    path: /orders
+    method: GET
+    data_selector: records
+- name: picking_task
+  endpoint:
+    path: /api/picking-task
+    method: GET
+    data_selector: tasks
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: external_action
+  endpoint:
+    path: /external-actions
+    method: POST
+    data_selector: data
+notes:
+- This page is outdated. Please go to our new documentation under https://docs.fulfillmenttools.com/documentation.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- JWT Token has an expiration period of 3600 seconds (1 hour).
+- Use refreshToken to obtain a new token without providing credentials again.
+- General Information about Pre-/Backorders
+- Substitute items can just be configured via API
+- Some objects like Contact may return nulls in deeply nested fields
+- It is possible that an order could not be routed, for example because all available
+  facilities can't pass a specific fence.
+- After a configurable amount of time (in minutes), such an order is set into a “not_routable”
+  state if it could not be routed to any facility beforehand. The default is set to
+  8 hours.
+- Our eventing mechanism does not guarantee correct ordering of events.
+- We guarantee an at least once delivery of events.
+- The fulfillmenttools Connect app is a certified integration connector that synchronizes
+  information between your commercetools project and your fulfillmenttools project.
+- You can learn more about commercetools Connect.
+- Eventing does not guarantee correct ordering of events.
+- At least once delivery of events.
+- The connector makes use of commercetools subscriptions to get notified once the
+  OrderState of an Order is changed to Confirmed.
+- Depending on the shipping method of the commercetools order, either a Ship-from-Store
+  order or a Click&Collect order is created in fulfillmenttools.
+- Some objects may return nulls in deeply nested fields
+- Spanish is supported as a new language in Backoffice, Operations Web App, Operations
+  App, and Returns App
+- Uses OAuth2 with refresh token — requires setup of connected app in fulfillmenttools
+- Use external identity providers to authenticate to fulfillmenttools
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- If the service reachable by the callbackUrl does not answer in time or with a response
+  code other than 200 OK the subscription will initiate an exponential retry pattern.
+- '200 OK: Subscription must respond with this code to signal successful receipt of
+  the event.'
+- Delivery failure results in exponential backoff for retries.
+auth_info:
+  mentioned_objects:
+  - AuthToken
+  - refreshToken
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - Microsoft Entra ID
+  - Azure Active Directory
+client:
+  base_url: https://fulfillmenttools.github.io/api-reference-ui/
+source_metadata: null

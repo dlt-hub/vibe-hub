@@ -1,0 +1,146 @@
+resources:
+- name: job
+  endpoint:
+    path: /jobs
+    method: GET
+    data_selector: jobs
+    params: {}
+- name: register_worker
+  endpoint:
+    path: /register_worker
+    method: POST
+    data_selector: worker_id
+- name: retry_job
+  endpoint:
+    path: /retry_job
+    method: POST
+    data_selector: result
+- name: retry_job_by_id
+  endpoint:
+    path: /retry_job_by_id
+    method: POST
+    data_selector: result
+- name: unregister_worker
+  endpoint:
+    path: /unregister_worker
+    method: DELETE
+    data_selector: status
+- name: update_heartbeat
+  endpoint:
+    path: /update_heartbeat
+    method: POST
+    data_selector: status
+- name: tasks
+  endpoint:
+    path: /tasks
+    method: POST
+- name: jobs
+  endpoint:
+    path: /jobs
+    method: GET
+    data_selector: jobs
+    params: {}
+- name: register_worker
+  endpoint:
+    path: /register_worker
+    method: POST
+    data_selector: worker_id
+- name: retry_job
+  endpoint:
+    path: /retry_job
+    method: POST
+    data_selector: job_status
+- name: unregister_worker
+  endpoint:
+    path: /unregister_worker
+    method: DELETE
+    data_selector: status
+- name: update_heartbeat
+  endpoint:
+    path: /update_heartbeat
+    method: PUT
+    data_selector: status
+- name: procrastinate_jobs
+  endpoint:
+    path: /jobs
+    method: GET
+    data_selector: jobs
+    params: {}
+- name: jobs
+  endpoint:
+    path: /jobs
+    method: GET
+    data_selector: records
+    params: {}
+- name: tasks
+  endpoint:
+    path: /tasks
+    method: GET
+    data_selector: records
+    params: {}
+- name: migrations
+  endpoint:
+    path: /procrastinate/sql/migrations
+    method: POST
+    data_selector: records
+    params: {}
+- name: tasks
+  endpoint:
+    path: /tasks
+    method: GET
+    data_selector: tasks
+- name: job_cancellation
+  endpoint:
+    path: /jobs/cancellation
+    method: POST
+- name: job_priority
+  endpoint:
+    path: /jobs/priority
+    method: POST
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Procrastinate is an open-source Python 3.9+ distributed task processing library.
+- Requires setup of connected app in api
+- Procrastinate is asynchronous at core and designed to work with PostgreSQL.
+- Procrastinate is an open-source Python 3.9+ distributed task processing library,
+  leveraging PostgreSQL 13+ to store task definitions, manage locks and dispatch tasks.
+- The development database can be launched using Docker with a single command.
+- Dependencies for the package are handled by uv in pyproject.toml.
+- Dependencies for the development environment are kept in uv.lock.
+- Some objects may return nulls in deeply nested fields
+- Remove the procrastinate_jobs.started_at column
+- Procrastinate is based on PostgreSQL's ability to manage locks.
+- Jobs are consumed in priority and creation order.
+- The development environment is managed by uv.
+- Use Docker for Procrastinate development if you don’t want to install system requirements.
+- If you need to edit the name or body of a release in the GitHub UI, don’t forget
+  to also rebuild the stable and latest doc on readthedocs.
+- This release officially adds Blueprints with their supported API.
+- When the worker cannot function correctly, it will crash instead of entering a half-broken
+  state.
+- Django integration refactored completely
+- New job cancellation feature added
+- When a job ends with an exception, but it's retried, instead of logging the exception
+  at 'ERROR' level, it logs as 'INFO' level.
+errors:
+- 'UnboundTaskError: The Task was used before it was bound to an App.'
+- 'AlreadyEnqueued: There is already a job waiting in the queue with the same queueing
+  lock.'
+- 'AppNotOpen: App was not open. Procrastinate App needs to be opened using: app.open(),
+  await app.open_async(), with app.open():, async with app.open_async():.'
+- 'ConnectorException: Database error.'
+- 'JobAborted: Job was aborted.'
+- 'LoadFromPathError: App was not found at the provided path, or the loaded object
+  is not an App.'
+- 'ProcrastinateException: Unexpected Procrastinate error.'
+- 'TaskNotFound: Task cannot be imported.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: http://localhost:5432
+  headers:
+    Accept: application/json
+source_metadata: null

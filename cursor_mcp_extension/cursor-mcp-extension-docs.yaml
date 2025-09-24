@@ -1,0 +1,106 @@
+resources:
+- name: registerServer
+  endpoint:
+    path: /vscode.cursor.mcp.registerServer
+    method: POST
+- name: unregisterServer
+  endpoint:
+    path: /vscode.cursor.mcp.unregisterServer
+    method: POST
+- name: background_agents
+  endpoint:
+    path: /en/background-agent
+    method: GET
+    data_selector: agents
+    params: {}
+- name: project_rules
+  endpoint:
+    path: /.cursor/rules
+    method: GET
+    data_selector: rules
+- name: user_rules
+  endpoint:
+    path: /settings/rules
+    method: GET
+    data_selector: rules
+- name: Background Agent
+  endpoint:
+    path: /dashboard/background-agents
+    method: GET
+    data_selector: agents
+    params: {}
+- name: shell_commands
+  endpoint:
+    path: /en/configuration/shell
+    method: GET
+    data_selector: commands
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in Cursor
+- Cursor CLI is currently in beta, we’d love your feedback on it!
+- Context is the foundation of effective AI coding, consisting of intent (what you
+  want) and state (what exists). Providing both helps Cursor make accurate predictions.
+- Use surgical context with @-symbols (@code, @file, @folder) to guide Cursor precisely,
+  rather than relying solely on automatic context gathering.
+- Capture repeatable knowledge in rules for team-wide reuse, and extend Cursor’s capabilities
+  with Model Context Protocol to connect external systems.
+- Insufficient context leads to hallucinations or inefficiency, while too much irrelevant
+  context dilutes the signal. Strike the right balance for optimal results.
+- While Cursor works without an account, signing up unlocks all AI features.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Tab is a specialized Cursor model for autocompletion.
+- Background agents require data retention on the order of a few days.
+- Ensure you’re logged in and have connected your GitHub account.
+- You will also need to be on a Pro Trial or paid plan with usage based pricing enabled.
+- Project rules are stored in .cursor/rules and are version-controlled.
+- User rules apply globally across all projects.
+- Cursor indexes all files except those in ignore files (e.g. .gitignore, .cursorignore).
+- Ignoring large content files improves answer accuracy.
+- Cursor reads and indexes your project’s codebase to power its features.
+- Control which directories and files Cursor can access using a `.cursorignore` file
+  in your root directory.
+- MCP servers use environment variables for authentication.
+- Cursor supports OAuth for servers that require it.
+- Requires Cursor admin access and GitHub org admin access.
+- Background Agents require temporary code storage while running.
+- Custom API keys only work with standard chat models.
+- Cursor supports both light and dark themes for your coding environment.
+- Cursor inherits VS Code’s theming capabilities - use any VS Code theme, create custom
+  themes, and install theme extensions from the marketplace.
+- Commands are installed in your system’s default shell configuration file (e.g.,
+  .bashrc, .zshrc, or .config/fish/config.fish).
+- All third party MCP connections must be explicitly approved by the user.
+- Teams accounts are charged per seat with pro-rated billing for new members.
+- Invoices must be downloaded manually from the billing portal.
+- Cursor relies on HTTP/2 for AI features because it handles streamed responses efficiently
+- Some corporate proxies (e.g., Zscaler) block HTTP/2
+- Request IDs are limited when Privacy Mode is enabled.
+- Cursor issues can stem from extensions, app data, or system problems.
+- Try disabling all extensions temporarily to identify problematic ones.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Agent runs are not starting: Ensure you’re logged in and have connected your GitHub
+  account.'
+- 'Can''t see agent runs on mobile: Try refreshing the page or clearing your browser
+  cache.'
+- 'Unable to Sign In to Cursor: Disable your firewall or antivirus software - they
+  may block the sign-in process'
+- 'Suspicious Activity Message: Your request may have been blocked as a security measure'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://cursor.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.cursor.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

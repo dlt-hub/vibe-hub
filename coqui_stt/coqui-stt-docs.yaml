@@ -1,0 +1,263 @@
+resources:
+- name: flashlight_output
+  endpoint:
+    data_selector: FlashlightOutput
+- name: flashlight_beam_search_decoder_batch
+  endpoint:
+    path: /flashlight/beam_search_decoder_batch
+    method: POST
+    data_selector: output
+    params:
+      beam_threshold: 25.0
+      cutoff_top_n: 40
+      silence_score: 0.0
+      merge_with_log_add: false
+      criterion_type: native_client.ctcdecode.swigwrapper.FlashlightDecoderState.CTC
+      num_results: 1
+- name: model_manager
+  endpoint:
+    path: /stt-model-manager
+    method: GET
+    data_selector: models
+    params: {}
+- name: model_manager
+  endpoint:
+    path: /model_manager
+    method: GET
+    data_selector: models
+    params: {}
+- name: fine_tuning
+  endpoint:
+    path: /fine_tuning
+    method: POST
+    data_selector: checkpoint
+    params:
+      checkpoint_dir: path/to/checkpoint/folder
+      train_files: my-train.csv
+      dev_files: my-dev.csv
+      test_files: my_test.csv
+- name: transfer_learning
+  endpoint:
+    path: /transfer_learning
+    method: POST
+    data_selector: checkpoint
+    params:
+      drop_source_layers: 1
+      alphabet_config_path: my-alphabet.txt
+      save_checkpoint_dir: path/to/output-checkpoint/folder
+      load_checkpoint_dir: path/to/input-checkpoint/folder
+      train_files: my-new-language-train.csv
+      dev_files: my-new-language-dev.csv
+      test_files: my-new-language-test.csv
+- name: common_voice_data
+  endpoint:
+    path: /common-voice-data
+    method: GET
+    data_selector: data
+- name: train_data
+  endpoint:
+    path: /data/train
+    method: GET
+    data_selector: train_files
+    params: {}
+- name: dev_data
+  endpoint:
+    path: /data/dev
+    method: GET
+    data_selector: dev_files
+    params: {}
+- name: test_data
+  endpoint:
+    path: /data/test
+    method: GET
+    data_selector: test_files
+    params: {}
+- name: export_model
+  endpoint:
+    path: /export_model
+    method: POST
+    data_selector: export_results
+    params:
+      checkpoint_dir: path/to/existing/model/checkpoints
+      export_dir: where/to/export/model
+- name: export_model
+  endpoint:
+    path: /export_model
+    method: POST
+    data_selector: results
+    params:
+      checkpoint_dir: path/to/existing/model/checkpoints
+      export_dir: where/to/export/model
+- name: model_geometry
+  endpoint:
+    path: /model/geometry
+    method: GET
+    data_selector: model_parameters
+    params: {}
+- name: model_geometry
+  endpoint:
+    data_selector: n_input
+- name: single_file_inference
+  endpoint:
+    path: /coqui_stt_training/training_graph_inference
+    method: POST
+    data_selector: transcription
+    params:
+      checkpoint_dir: coqui-stt-1.0.0-checkpoint
+      scorer_path: huge-vocabulary.scorer
+      n_hidden: 2048
+      one_shot_infer: audio/2830-3980-0043.wav
+- name: directory_transcription
+  endpoint:
+    path: /coqui_stt_training/transcribe
+    method: POST
+    data_selector: transcription_results
+    params:
+      checkpoint_dir: coqui-stt-1.0.0-checkpoint
+      n_hidden: 2048
+      scorer_path: huge-vocabulary.scorer
+      vad_aggressiveness: 0
+      src: audio/
+      recursive: true
+- name: STT
+  endpoint:
+    path: /STT
+    method: POST
+    data_selector: Transcripts
+- name: Metadata
+  endpoint:
+    path: /metadata
+    method: GET
+    data_selector: transcripts
+    params: {}
+- name: CandidateTranscript
+  endpoint:
+    path: /candidatetranscript
+    method: GET
+    data_selector: tokens
+    params: {}
+- name: TokenMetadata
+  endpoint:
+    path: /tokenmetadata
+    method: GET
+    data_selector: text
+    params: {}
+- name: STT
+  endpoint:
+    path: /STT
+    method: GET
+    data_selector: Transcripts
+notes:
+- Deployment can be done via command-line client or language binding.
+- Training on Windows is not currently supported.
+- Highly recommended to install TensorFlow with GPU support for faster training.
+- You can find pre-trained models ready for deployment on the Coqui Model Zoo.
+- The acoustic model uses the .tflite extension. Language models use the extension
+  .scorer.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Training on Windows is not currently supported
+- Highly recommended to install TensorFlow with GPU support for faster training
+- Release models are trained with --n_hidden 2048
+- Release models are trained with --train_cudnn
+- You cannot use --automatic_mixed_precision when loading release checkpoints
+- You cannot use --automatic_mixed_precision when loading release checkpoints, as
+  they do not use automatic mixed precision training.
+- Automatic mixed precision training can speed up STT training and evaluation by approximately
+  30% to 40% on a Volta generation V100 GPU.
+- Checkpoints are representations of the parameters of a neural network.
+- Checkpointing occurs at a configurable time interval.
+- Resuming from checkpoints happens automatically by re-starting training with the
+  same --checkpoint_dir of the former run.
+- Be aware that checkpoints are only valid for the same model geometry from which
+  they were generated.
+- During training, model parameters are continually updated, and checkpoints allow
+  graceful interruption of a training run without data loss.
+- If you interrupt a training run for any reason, you can pick up where you left off
+  by using the checkpoints as a starting place.
+- Checkpoints are only valid for the same model geometry from which they were generated.
+- n_input is 26 by default.
+- n_context is 9 by default.
+- By default n_input is 26.
+- By default n_context is 9.
+- The training package contains options for performing inference directly from a checkpoint.
+- Requires the Python webrtcvad package to be installed.
+- It is strongly recommended that you always use our pre-built 🐸STT binaries unless
+  you have a reason to do build them yourself.
+- If you’d like to build the language bindings or the decoder package, you’ll also
+  need SWIG master.
+- Requires installation of the Python webrtcvad package for Voice Activity Detection.
+- It is strongly recommended that you always use our pre-built 🐸STT binaries (available
+  with every release)
+- This method will free the state pointer (`aSctx`)
+- Some objects like Contact may return nulls in deeply nested fields
+- Training text is around 44GB compressed, which should give you an idea of the size
+  of a corpus needed for general speech recognition.
+- Uses an external scorer to improve accuracy of predicted transcripts.
+errors:
+- 'Model version too old for the client: Upgrade to a newer model or downgrade the
+  client.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'STT_ERR_OK: No error.'
+- 'STT_ERR_NO_MODEL: Missing model information.'
+- 'STT_ERR_INVALID_ALPHABET: Invalid alphabet embedded in model. (Data corruption?)'
+- 'STT_ERR_INVALID_SHAPE: Invalid model shape.'
+- 'STT_ERR_INVALID_SCORER: Invalid scorer file.'
+- 'STT_ERR_MODEL_INCOMPATIBLE: Incompatible model.'
+- 'STT_ERR_SCORER_NOT_ENABLED: External scorer is not enabled.'
+- 'STT_ERR_SCORER_UNREADABLE: Could not read scorer file.'
+- 'STT_ERR_SCORER_INVALID_LM: Could not recognize language model header in scorer.'
+- 'STT_ERR_SCORER_NO_TRIE: Reached end of scorer file before loading vocabulary trie.'
+- 'STT_ERR_SCORER_INVALID_TRIE: Invalid magic in trie header.'
+- 'STT_ERR_SCORER_VERSION_MISMATCH: Scorer file version does not match expected version.'
+- 'STT_ERR_FAIL_INIT_MMAP: Failed to initialize memory mapped model.'
+- 'STT_ERR_FAIL_INIT_SESS: Failed to initialize the session.'
+- 'STT_ERR_FAIL_INTERPRETER: Interpreter failed.'
+- 'STT_ERR_FAIL_RUN_SESS: Failed to run the session.'
+- 'STT_ERR_FAIL_CREATE_STREAM: Error creating the stream.'
+- 'STT_ERR_FAIL_READ_PROTOBUF: Error reading the proto buffer model file.'
+- 'STT_ERR_FAIL_CREATE_SESS: Failed to create session.'
+- 'STT_ERR_FAIL_CREATE_MODEL: Could not allocate model state.'
+- 'STT_ERR_FAIL_INSERT_HOTWORD: Could not insert hot-word.'
+- 'STT_ERR_FAIL_CLEAR_HOTWORD: Could not clear hot-words.'
+- 'STT_ERR_FAIL_ERASE_HOTWORD: Could not erase hot-word.'
+- Zero on success, non-zero on failure
+- 'STT_ERR_NO_MODEL: No model loaded.'
+- 'STT_ERR_INVALID_ALPHABET: Invalid alphabet provided.'
+- 'STT_ERR_INVALID_SHAPE: Model shape is invalid.'
+- 'STT_ERR_INVALID_SCORER: Scorer is not valid.'
+- 'STT_ERR_MODEL_INCOMPATIBLE: Model is incompatible.'
+- 'STT_ERR_SCORER_NOT_ENABLED: Scorer is not enabled.'
+- 'STT_ERR_FAIL_INIT_MMAP: Failed to initialize memory map.'
+- 'STT_ERR_FAIL_INIT_SESS: Failed to initialize session.'
+- 'STT_ERR_FAIL_INTERPRETER: Interpreter failure.'
+- 'STT_ERR_FAIL_RUN_SESS: Failed to run session.'
+- 'STT_ERR_FAIL_CREATE_STREAM: Failed to create stream.'
+- 'STT_ERR_FAIL_READ_PROTOBUF: Failed to read protobuf.'
+- 'STT_ERR_FAIL_INSERT_HOTWORD: Failed to insert hotword.'
+- 'STT_ERR_FAIL_CLEAR_HOTWORD: Failed to clear hotword.'
+- 'STT_ERR_FAIL_ERASE_HOTWORD: Failed to erase hotword.'
+- STT_ERR_NO_MODEL
+- STT_ERR_INVALID_ALPHABET
+- STT_ERR_INVALID_SHAPE
+- STT_ERR_INVALID_SCORER
+- STT_ERR_MODEL_INCOMPATIBLE
+- STT_ERR_SCORER_NOT_ENABLED
+- STT_ERR_FAIL_INIT_MMAP
+- STT_ERR_FAIL_INIT_SESS
+- STT_ERR_FAIL_INTERPRETER
+- STT_ERR_FAIL_RUN_SESS
+- STT_ERR_FAIL_CREATE_STREAM
+- STT_ERR_FAIL_READ_PROTOBUF
+- STT_ERR_FAIL_CREATE_SESS
+- STT_ERR_FAIL_INSERT_HOTWORD
+- STT_ERR_FAIL_CLEAR_HOTWORD
+- STT_ERR_FAIL_ERASE_HOTWORD
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://github.com/coqui-ai/STT
+  headers:
+    Accept: application/json
+source_metadata: null
