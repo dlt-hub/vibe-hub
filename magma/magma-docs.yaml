@@ -1,0 +1,159 @@
+resources:
+- name: versions_list
+  endpoint:
+    path: /api-docs/endpoints/versions-list
+    method: GET
+- name: version_details
+  endpoint:
+    path: /api-docs/endpoints/version-details
+    method: GET
+- name: download
+  endpoint:
+    path: /api-docs/endpoints/download
+    method: GET
+- name: latest_version
+  endpoint:
+    path: /api-docs/endpoints/latest-version
+    method: GET
+- name: latest_download
+  endpoint:
+    path: /api-docs/endpoints/latest-download
+    method: GET
+- name: direct_jar_download
+  endpoint:
+    path: /api-docs/endpoints/direct-jar-download
+    method: GET
+- name: server_properties
+  endpoint:
+    path: /server.properties
+    method: GET
+    data_selector: properties
+    params: {}
+- name: spigot_yml
+  endpoint:
+    path: /spigot.yml
+    method: GET
+    data_selector: settings
+    params: {}
+- name: bukkit_yml
+  endpoint:
+    path: /bukkit.yml
+    method: GET
+    data_selector: settings
+    params: {}
+- name: magma
+  endpoint:
+    path: /magma
+    method: GET
+- name: download
+  endpoint:
+    path: /api/versions/{version}/download
+    method: GET
+    data_selector: null
+    params:
+      type: installer
+- name: latest_download
+  endpoint:
+    path: /versions/latest/download
+    method: GET
+    data_selector: ''
+    params:
+      type: installer
+- name: latest_download
+  endpoint:
+    path: /versions/latest/download
+    method: GET
+    data_selector: ''
+    params:
+      type: installer
+- name: latest_version
+  endpoint:
+    path: /api/versions/latest
+    method: GET
+    data_selector: groupId, artifactId, version, minecraftVersion, installerUrl, launcherUrl,
+      changelogUrl, isStable, hasLauncher, hasInstaller, hasChangelog, fileSize, releaseDate
+    params: {}
+- name: latest_version
+  endpoint:
+    path: /api/versions/latest
+    method: GET
+    data_selector: version
+- name: version_details
+  endpoint:
+    path: /api/versions/{version}
+    method: GET
+    data_selector: version
+    params: {}
+- name: versions
+  endpoint:
+    path: /versions
+    method: GET
+    data_selector: versions
+    params:
+      limit: 10
+- name: version_details
+  endpoint:
+    path: /api/versions/{version}
+    method: GET
+    data_selector: groupId, artifactId, version, minecraftVersion, installerUrl, launcherUrl,
+      changelogUrl, isStable, hasLauncher, hasInstaller, hasChangelog, fileSize, releaseDate
+    params: {}
+- name: versions
+  endpoint:
+    path: /versions
+    method: GET
+    data_selector: versions
+    params:
+      limit: 10
+- name: direct_jar_download
+  endpoint:
+    path: /downloads/magma.jar
+    method: GET
+- name: direct_jar_download
+  endpoint:
+    path: /downloads/magma.jar
+    method: GET
+notes:
+- The API works by fetching and parsing the Maven metadata from the official Magma
+  repository
+- Caches responses for 1 hour to reduce load on the Maven server
+- Returns an empty array if no versions can be found
+- Magma works with NeoForge mods (not Fabric mods)
+- Mods must match your Minecraft and NeoForge version
+- Some mods may conflict with certain Bukkit plugins
+- Use Java 21 or newer for best performance
+- Consider removing unused mods to reduce resource usage
+- Magma requires Java 21 or newer
+- This endpoint always downloads the latest version of the Magma launcher.
+- If the launcher is not available for the latest version, it will fall back to the
+  regular JAR.
+- The downloaded file will be named `magma-{VERSION}-launcher.jar` where `{VERSION}`
+  is the latest version number.
+errors:
+- '200 OK: Request successful, data returned'
+- '500 Internal Server Error: Server error occurred'
+- 'Failed to bind to address: Port is already in use by another application'
+- 'Error occurred during initialization of VM: Incorrect Java arguments or not enough
+  system memory'
+- 'Unsupported major.minor version: Using wrong Java version'
+- 'Could not reserve enough space for object heap: Allocating more memory than your
+  system has available'
+- 'java.lang.NoSuchMethodError or java.lang.ClassNotFoundException: Mod/plugin compatibility
+  issue or missing dependency'
+- '400: Bad Request - Missing version parameter or invalid type'
+- '404: Not Found - The requested file was not found'
+- '500: Server Error - Failed to process download request'
+- '400: Bad Request - Invalid type parameter'
+- '404: Not Found - No versions available or requested file not found'
+- '404: Not Found - No versions are available'
+- '500: Server Error - Failed to fetch latest version'
+- '400: Bad Request - Missing or invalid version parameter'
+- '404: Not Found - The requested version was not found'
+- '500: Server Error - Failed to fetch version details'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: /api
+  headers: {}
+  paginator: {}
+source_metadata: null
