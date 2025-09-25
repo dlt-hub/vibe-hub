@@ -1,0 +1,138 @@
+resources:
+- name: compute
+  endpoint:
+    path: /compute
+    method: GET
+    data_selector: instances
+    params: {}
+- name: network
+  endpoint:
+    path: /network
+    method: GET
+    data_selector: networks
+    params: {}
+- name: instance
+  endpoint:
+    path: /v1/instances
+    method: GET
+    data_selector: data
+- name: stacks
+  endpoint:
+    path: /stacks
+    method: GET
+    data_selector: stacks
+- name: Disaster Recovery
+  endpoint:
+    path: /disaster-recovery
+    method: GET
+- name: Disaster Recovery
+  endpoint:
+    path: /disaster-recovery
+    method: GET
+    data_selector: snapshots
+- name: volume_types
+  endpoint:
+    path: /volume/types
+    method: GET
+    data_selector: volume_types
+    params: {}
+- name: administrative_access
+  endpoint:
+    path: /administrative/access
+    method: GET
+    data_selector: administrative_access
+    params: {}
+- name: volume_types
+  endpoint:
+    path: /volume-types
+    method: GET
+    data_selector: volume_types
+    params: {}
+- name: encryption_secrets
+  endpoint:
+    path: /encryption-secrets
+    method: GET
+    data_selector: secrets
+    params: {}
+- name: images
+  endpoint:
+    path: /images
+    method: GET
+    data_selector: images
+    params: {}
+- name: example_resource
+  endpoint:
+    path: /example/path
+    method: GET
+    data_selector: data
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- API requires setup of connected app in Cleura Cloud
+- This is the Cleura documentation web site.
+- Any resources created in a tutorial will be charged at normal rates
+- Requires OAuth2 authentication — refer to the authentication guide for setup.
+- Use the openstack.cloud Ansible collection to create networks, routers, and servers
+  in Cleura Cloud.
+- Use an Ansible dynamic inventory plugin to automate the discovery of your cloud
+  resources, enabling the management of massively scalable virtual data centers in
+  Cleura Cloud.
+- Requires setup of connected app in Cleura
+- Some responses may include null values for optional fields
+- There is simply no support for deleting all resources belonging to a project in
+  one fell swoop, not even at the OpenStack API level.
+- To delete a project with no associated resources, a user with domain admin privileges
+  may utilize the OpenStack CLI.
+- Object storage in Cleura Cloud is implemented via the Ceph Object Gateway.
+- The S3 API does not natively know about OpenStack authentication.
+- Disaster recovery is enabled by default for new servers.
+- If you delete the original volume, then all snapshots will also be deleted.
+- The Cleura Cloud Marketplace is an online self-service portal that allows you to
+  deploy pre-configured applications.
+- Flavor names in Cleura Cloud follow a convention, which can be summarized as `X.YcZgb`.
+- Requires setup of OAuth2 authentication.
+- Some objects like Contact may return nulls in deeply nested fields
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Check OAuth scopes or token expiration'
+- '401 Unauthorized: Please check your credentials.'
+- '403 Forbidden: You do not have permission to access this resource.'
+- '401 Unauthorized: Check your authentication details'
+- '404 Not Found: Verify the resource path'
+- '429 Too Many Requests: Rate limit exceeded'
+- '401 Unauthorized: Check your credentials'
+- '404 Not Found: Verify the endpoint'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.cleura.cloud
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.cleura.cloud/oauth2/token
+    client_id: '{{ dlt.secrets[''cleura_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''cleura_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''cleura_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

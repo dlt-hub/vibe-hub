@@ -1,0 +1,137 @@
+resources:
+- name: test_collection
+  endpoint:
+    path: /test_collection
+    method: GET
+- name: hello_world
+  endpoint:
+    path: /hello
+    method: GET
+- name: view_items
+  endpoint:
+    path: /item
+    method: GET
+- name: login
+  endpoint:
+    path: /login
+    method: POST
+- name: hello_world
+  endpoint:
+    path: /hello
+    method: GET
+    data_selector: null
+    params: {}
+- name: view_items
+  endpoint:
+    path: /item
+    method: GET
+    data_selector: null
+    params:
+      id: null
+- name: login
+  endpoint:
+    path: /login
+    method: POST
+    data_selector: null
+    params:
+      username: foo
+      password: bar
+- name: index
+  endpoint:
+    path: /
+    method: GET
+- name: about
+  endpoint:
+    path: /about/
+    method: GET
+- name: login
+  endpoint:
+    path: /login
+    method: POST
+- name: my-profile
+  endpoint:
+    path: /my-profile
+    method: GET
+- name: blog
+  endpoint:
+    path: /blog
+    method: GET
+- name: article
+  endpoint:
+    path: /article
+    method: GET
+- name: locustfile
+  endpoint:
+    path: locust_files/my_locust_file.py
+    method: GET
+    data_selector: records
+    params: {}
+- name: master
+  endpoint:
+    path: /services/data/v2.40.4/sobjects/master
+    method: GET
+    data_selector: records
+- name: worker
+  endpoint:
+    path: /services/data/v2.40.4/sobjects/worker
+    method: GET
+    data_selector: records
+- name: MyUser
+  endpoint:
+    path: /
+    method: GET
+notes:
+- If abstract is True, the class is meant to be subclassed, and locust will not spawn
+  users of this class during a test.
+- wait between 3.0 and 10.5 seconds after each task
+- Interpreting performance test results is quite complex (and mostly out of scope
+  for this manual), but if your graphs start looking like this, the target service/system
+  cannot handle the load and you have found a bottleneck.
+- If your response times are *not* increasing then add even more users until you find
+  the service’s breaking point, or celebrate that your service is already performant
+  enough for your expected load.
+- HttpUser is not a real browser, and thus will not parse an HTML response to load
+  resources or render the page.
+- HttpUser is not a real browser and does not parse an HTML response.
+- All instances of this class will be limited to 10 concurrent connections at most.
+- 'Configuration values are read (and overridden) in the following order: ~/.locust.conf
+  -> ./locust.conf -> ./pyproject.toml -> (file specified using --conf) -> env vars
+  -> cmd args.'
+- Because Python cannot fully utilize more than one core per process (see GIL), you
+  need to run one worker instance per processor core in order to have access to all
+  your computing power.
+- There is almost no limit to how many Users you can run per worker.
+- 'VS Code’s `launch.json` looks like this: {"version": "0.2.0","configurations":
+  [{"name": "Run current file","type": "debugpy","request": "launch","program": "${file}","console":
+  "integratedTerminal","gevent": true},{"name": "Run current locust scenario headless","type":
+  "debugpy","request": "launch","module": "locust","args": ["-f","${file}","--headless","--users=5"],"console":
+  "integratedTerminal","gevent": true},{"name": "Run current locust scenario, autostart","type":
+  "debugpy","request": "launch","module": "locust","args": ["-f","${file}","--users=5","--autostart","--print-stats","-L=ERROR"],"console":
+  "integratedTerminal","gevent": true},{"name": "(test debug only)","type": "debugpy","request":
+  "launch","gevent": true,"purpose": ["debug-test"]}]}'
+- Windows users should try using a different command with --mount.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Event hooks can be used to extend Locust in different ways.
+- Request context can provide data about the request.
+- Locust uses Flask to serve the web UI.
+- Some packages such as boto3 may have incompatibility when using Locust as a library,
+  where monkey patching is already applied.
+- The Web UI is built using React and Typescript
+- Locust’s client in HttpUser inherits from requests and the vast majority of parameters
+  and methods for requests should just work with Locust.
+- wait_time now defaults to zero
+errors:
+- 'error 5xx: Check your server logs. If it works at low load then it is almost certainly
+  not a Locust issue, but an issue with the system you are testing.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: http://localhost:19530
+  auth:
+    type: basic
+    auth: root:Milvus
+source_metadata: null
