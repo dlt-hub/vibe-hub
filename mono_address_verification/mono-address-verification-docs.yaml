@@ -1,0 +1,242 @@
+resources:
+- name: address_verification
+  endpoint:
+    path: /v3/lookup/address
+    method: POST
+    data_selector: ''
+    params: {}
+- name: create_customer
+  endpoint:
+    path: /v2/customers
+    method: POST
+    data_selector: response
+    params: {}
+- name: create_business_customer
+  endpoint:
+    path: /v2/customers
+    method: POST
+    data_selector: ''
+- name: customer
+  endpoint:
+    path: /v2/customers/{id}
+    method: GET
+    data_selector: result
+    params: {}
+- name: customers
+  endpoint:
+    path: /v2/customers
+    method: GET
+    data_selector: records
+- name: customer_transactions
+  endpoint:
+    path: /v2/customers/{id}/transactions
+    method: GET
+    data_selector: transactions
+    params:
+      period: last12months
+      page: 1
+      account: '{accountId}'
+- name: linked_accounts
+  endpoint:
+    path: /v2/accounts
+    method: GET
+    data_selector: records
+- name: update_customer
+  endpoint:
+    path: /v2/customers/{id}
+    method: PATCH
+    data_selector: identity
+    params: {}
+- name: delete_customer
+  endpoint:
+    path: /v2/customers/{id}
+    method: DELETE
+    data_selector: null
+    params: {}
+- name: authenticate
+  endpoint:
+    path: /v2/telecom/auth
+    method: POST
+    data_selector: data
+    params: {}
+- name: verify_otp
+  endpoint:
+    path: /v2/telecom/verify
+    method: POST
+    data_selector: data
+    params: {}
+- name: account_details
+  endpoint:
+    path: /v2/accounts/auth
+    method: POST
+    data_selector: data
+    params: {}
+- name: account_info
+  endpoint:
+    path: /v2/accounts/{account_id}
+    method: GET
+    data_selector: data
+    params: {}
+- name: initiate_payment
+  endpoint:
+    path: /v2/payments/initiate
+    method: POST
+    data_selector: ''
+    params: {}
+- name: verify_payment_status
+  endpoint:
+    path: /api/directpay/verify
+    method: GET
+    data_selector: ''
+    params: {}
+- name: fetch_payments
+  endpoint:
+    path: /api/directpay/fetch-payments
+    method: GET
+    data_selector: ''
+    params: {}
+- name: payout
+  endpoint:
+    path: /v2/payments/payouts
+    method: GET
+    data_selector: records
+- name: check_user_status
+  endpoint:
+    path: /owo/v1/users/status
+    method: GET
+    data_selector: result
+    params: {}
+- name: source_account
+  endpoint:
+    path: /disburse/source-accounts
+    method: POST
+    data_selector: app
+    params: {}
+- name: initiate_bvn_lookup
+  endpoint:
+    path: /v2/lookup/bvn/initiate
+    method: POST
+    data_selector: result
+    params: {}
+- name: verify_bvn_otp
+  endpoint:
+    path: /api/bvn/verify-otp
+    method: POST
+    data_selector: result
+    params: {}
+- name: fetch_bvn_details
+  endpoint:
+    path: /api/bvn/fetch-bvn
+    method: POST
+    data_selector: result
+    params: {}
+- name: business
+  endpoint:
+    path: /v3/lookup/cac
+    method: GET
+    data_selector: id
+    params:
+      search: mono
+- name: bank_listing_nip
+  endpoint:
+    path: /v3/lookup/banks
+    method: GET
+    data_selector: records
+- name: passport_lookup
+  endpoint:
+    path: /v3/lookup/passport
+    method: POST
+    data_selector: result
+- name: tin_lookup
+  endpoint:
+    path: /v3/lookup/tin
+    method: POST
+    data_selector: null
+    params: {}
+- name: NIN
+  endpoint:
+    path: /v3/lookup/nin
+    method: POST
+    data_selector: result
+    params: {}
+- name: driver_license
+  endpoint:
+    path: /v3/lookup/driver_license
+    method: POST
+    data_selector: result
+- name: account_number_lookup
+  endpoint:
+    path: /v3/lookup/account-number
+    method: POST
+    data_selector: null
+    params: {}
+- name: credit_history
+  endpoint:
+    path: /v3/lookup/credit-history/{provider}
+    method: POST
+    data_selector: result
+- name: mashup
+  endpoint:
+    path: /v3/lookup/mashup
+    method: POST
+    data_selector: result
+- name: initiate_prove
+  endpoint:
+    path: /v1/prove/initiate
+    method: POST
+    data_selector: response
+    params: {}
+- name: fetch_customer_details
+  endpoint:
+    path: /api/prove/fetch-customer-details
+    method: GET
+    data_selector: response
+    params: {}
+- name: fetch_all_customer_details
+  endpoint:
+    path: /api/prove/fetch-all-customer-details
+    method: GET
+    data_selector: response
+    params: {}
+- name: blacklist_customer
+  endpoint:
+    path: /api/prove/blacklist-customer
+    method: POST
+    data_selector: response
+    params: {}
+- name: whitelist_customer
+  endpoint:
+    path: /api/prove/whitelist-customer
+    method: POST
+    data_selector: response
+    params: {}
+- name: revoke_data_access
+  endpoint:
+    path: /api/prove/revoke-data-access
+    method: DELETE
+    data_selector: response
+    params: {}
+- name: institutions
+  endpoint:
+    path: /v3/institutions
+    method: GET
+notes:
+- This resource is to retrieve information about a single customer.
+- Requires user's phone number and telco provider for authentication.
+- Dashboard application secret key must be included in headers.
+- This resource verifies the national identification number of a user.
+- This resource verifies the account and returns the masked BVN attached to the account
+  number supplied.
+errors:
+- 400 - Invalid Customer Id
+- 400 - Invalid NIN Number
+- 400 - Invalid account number
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.withmono.com
+  headers:
+    accept: application/json
+    content-type: application/json
+    mono-sec-key: string
+source_metadata: null

@@ -1,0 +1,217 @@
+resources:
+- name: transaction_verification
+  endpoint:
+    path: /verify-payment/{tx_ref}
+    method: GET
+    data_selector: data
+- name: webhook_payload
+  endpoint:
+    path: /webhook
+    method: POST
+    data_selector: event_type
+    params: {}
+- name: wallet_balance
+  endpoint:
+    path: /wallet-balance
+    method: GET
+    data_selector: data
+    params:
+      currency: MWK
+- name: verify_payment
+  endpoint:
+    path: /verify-payment/{tx_ref}
+    method: GET
+    data_selector: data
+- name: inline_checkout
+  endpoint:
+    path: /js/popup.js
+    method: GET
+    data_selector: payment
+    params: {}
+- name: wallet_balance
+  endpoint:
+    path: /wallet-balance
+    method: GET
+    data_selector: data
+    params:
+      currency: MWK
+- name: payment
+  endpoint:
+    path: /js/popup.js
+    method: GET
+    data_selector: response
+    params: {}
+- name: initiate_transaction
+  endpoint:
+    path: /payment
+    method: POST
+    data_selector: data
+- name: payment
+  endpoint:
+    path: /hosted-payment-page
+    method: POST
+    data_selector: form
+    params: {}
+- name: initiate_transaction
+  endpoint:
+    path: /payment
+    method: POST
+    data_selector: data
+    params: {}
+- name: HTML Checkout
+  endpoint:
+    path: /hosted-payment-page
+    method: POST
+    data_selector: form
+    params: {}
+- name: initialize_charge
+  endpoint:
+    path: /direct-charge/payments/initialize
+    method: POST
+    data_selector: data
+    params: {}
+- name: charge_card
+  endpoint:
+    path: /charge-card
+    method: POST
+    data_selector: success
+- name: verify_card_charge
+  endpoint:
+    path: /charge-card/verify/{charge_id}
+    method: GET
+    data_selector: success
+- name: bank_transfer_charge
+  endpoint:
+    path: /direct-charge/payments/initialize
+    method: POST
+    data_selector: data.payment_account_details
+    params: {}
+- name: mobile_money_verification
+  endpoint:
+    path: /mobile-money/payments/{{chargeId}}/verify
+    method: GET
+- name: bank_verification
+  endpoint:
+    path: /direct-charge/transactions/{{charge_id}}/details
+    method: GET
+- name: mobile_money_verification
+  endpoint:
+    path: /mobile-money/payments/{{chargeId}}/verify
+    method: GET
+- name: bank_verification
+  endpoint:
+    path: /direct-charge/transactions/{{charge_id}}/details
+    method: GET
+- name: single_charge_details
+  endpoint:
+    path: /mobile-money/payments/{{chargeId}}/details
+    method: GET
+    data_selector: data
+    params: {}
+- name: direct_charge_details
+  endpoint:
+    path: /direct-charge/transactions/{{charge_id}}/details
+    method: GET
+    data_selector: data
+    params: {}
+- name: create_transfer
+  endpoint:
+    path: /create_transfer
+    method: POST
+- name: get_operator_id
+  endpoint:
+    path: /get_operator_id
+    method: GET
+- name: get_banks
+  endpoint:
+    path: /get_banks
+    method: GET
+- name: single_charge_details
+  endpoint:
+    path: /mobile-money/payments/{{chargeId}}/details
+    method: GET
+    data_selector: data
+    params: {}
+- name: direct_charge_details
+  endpoint:
+    path: /direct-charge/transactions/{{charge_id}}/details
+    method: GET
+    data_selector: data
+    params: {}
+- name: mobile_money_payouts
+  endpoint:
+    path: /mobile-money/payouts/initialize
+    method: POST
+    data_selector: data
+    params: {}
+- name: mobile_money_payouts_initialize
+  endpoint:
+    path: /mobile-money/payouts/initialize
+    method: POST
+    data_selector: data
+    params: {}
+- name: bank_payout
+  endpoint:
+    path: /direct-charge/payouts/initialize
+    method: POST
+    data_selector: data.transaction
+    params: {}
+- name: bank_payout
+  endpoint:
+    path: /direct-charge/payouts/initialize
+    method: POST
+    data_selector: data.transaction
+    params: {}
+notes:
+- Webhook requests must return a 200 HTTP status code to acknowledge receipt.
+- If a 200 status code is not received, the webhook call will be retried three times
+  with 30-minute intervals.
+- To ensure that the request received on your webhook is actually coming from PayChangu,
+  it is necessary to carry out a validation check on the incoming request using the
+  'Signature' header.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Use test card 4242 4242 4242 4242 Airtel Money Number 990000000
+- The payment page will remain open, allowing the customer to try again until payment
+  succeeds or they choose to cancel.
+- You can use the PayChangu API in test mode, which does not affect your live data.
+- Once the customer submits the form, they’ll be redirected to the payment page to
+  complete their transaction.
+- The API key you use to authenticate the request determines whether the request is
+  live mode or test mode.
+- Form must use the POST method and set its action attribute to PayChangu’s checkout
+  URL.
+- Bank transfer is currently only supported for MWK transactions.
+- The account expires in 1 hour from the time generated.
+- Processing direct card charges requires handling sensitive customer data, so PCI
+  DSS compliance is mandatory.
+- To verify a transaction, pass the charge ID in the URL.
+- Uses Bearer token for Authorization
+- This endpoint only support Mobile Money if your planning on sending to banks then
+  use the bank method.
+errors:
+- 'DECLINED: Transaction declined.'
+- 'TIMED_OUT: Response timed out'
+- 'EXPIRED_CARD: Transaction declined due to expired card'
+- 'INSUFFICIENT_FUNDS: Transaction declined due to insufficient funds'
+- 'AUTHENTICATION_FAILED: 3DS authentication failed'
+- 'NOT_ENROLLED_3D_SECURE: Cardholder is not enrolled in 3D Secure'
+- 'EXCEEDED_RETRY_LIMIT: Transaction retry limit exceeded'
+- 'CARD_NOT_ENROLLED: The card is not enrolled for 3DS authentication'
+- 'AUTHENTICATION_NOT_AVAILABLE: Authentication is not currently available'
+- 'AUTHENTICATION_ATTEMPTED: Authentication was attempted but the card issuer did
+  not perform the authentication'
+- 'CARD_DOES_NOT_SUPPORT_3DS: The card does not support 3DS authentication'
+- If we do not receive a 200 status code, we will retry the webhook call three times,
+  with a 30-minute interval between each attempt.
+- 'Insufficient funds: The payment attempt fails.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck API key or token expiration'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.paychangu.com
+  headers:
+    Accept: application/json
+source_metadata: null

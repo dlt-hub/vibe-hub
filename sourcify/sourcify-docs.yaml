@@ -1,0 +1,134 @@
+resources:
+- name: contract_metadata
+  endpoint:
+    path: /api/metadata
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: Contract Metadata
+  endpoint:
+    path: /api/metadata
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: sourcify_sync
+  endpoint:
+    path: /sourcify_sync
+    method: GET
+    data_selector: records
+- name: sourcify_sync
+  endpoint:
+    path: /sourcify_sync
+    method: GET
+    data_selector: records
+- name: verified_contracts
+  endpoint:
+    path: /verified_contracts
+    method: GET
+    data_selector: records
+- name: chains
+  endpoint:
+    path: /docs/monitoring
+    method: GET
+    data_selector: chains
+    params: {}
+- name: contracts
+  endpoint:
+    path: /api/v2/contracts
+    method: POST
+    data_selector: data
+    params: {}
+- name: verified_contracts
+  endpoint:
+    path: /api/v2/verified_contracts
+    method: GET
+    data_selector: data
+    params: {}
+- name: verified_contracts
+  endpoint:
+    path: /api/v2/verified-contracts
+    method: POST
+    data_selector: data
+    params: {}
+- name: vyper_verification
+  endpoint:
+    path: /v2/verify
+    method: POST
+    data_selector: results
+    params: {}
+- name: contract_verification
+  endpoint:
+    path: /verify
+    method: POST
+    data_selector: data
+- name: cross_chain_lookup
+  endpoint:
+    path: /lookup
+    method: GET
+    data_selector: data
+- name: vyper_verification
+  endpoint:
+    path: /v2/verify
+    method: POST
+    data_selector: result
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in sourcify
+- Some objects may return nulls in deeply nested fields
+- Sourcify is a source-code verification service for Ethereum smart contracts supporting
+  Solidity and Vyper.
+- Available only for Solidity
+- Vyper contracts don't support this
+- Sourcify operates on a non-profit basis
+- Sourcify faces resource limitations that prevent it from monitoring every single
+  smart contract on every chain
+- Migration process may take hours.
+- The script will take days and a small portion of old contracts will not be verified.
+- Migration process may take hours to complete.
+- Ensure to monitor the migration status through the respective SQL queries.
+- Encourage users to run their own Sourcify server instance.
+- 'Total number of chains: 240'
+- The maximum uploaded file size is 30 MB.
+- Use Sourcify APIv2 instead of the legacy API.
+- Exact Matches available only for Solidity
+- Vyper contracts don't support exact matches
+- If you are running a different local chain, you can add it to Sourcify manually.
+- The server requires a PostgreSQL database.
+- API endpoints are available for submitting new contracts for verification or retrieving
+  verified contracts.
+- Use Sourcify APIv2 instead of legacy API.
+- Vyper doesn't support metadata, so most of Sourcify features are not available for
+  Vyper.
+- Sourcify supports Vyper verification only via the stateless /v2/verify API endpoint.
+- Create .env file with custom server URLs
+- Node.js version 20 or higher recommended
+- Verification via UI is not possible due to lack of metadata support.
+- Infura and Alchemy keys must be placed in the url string as above in {INFURA_API_KEY}
+- The default log level of the monitor is set to 'info'.
+- By default you can pass the following environment variables in .env.template for
+  authenticating with the RPCs
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'DB_AUTH_ERROR: Check your database credentials'
+- 'eth_blockNumber: Start monitoring from the latest block.'
+- Maximum number of retry attempts for contract verification requests after encountering
+  an error
+- Delay in milliseconds between each retry attempt for verification requests to Sourcify
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://sourcify.dev
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.sourcify.dev/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

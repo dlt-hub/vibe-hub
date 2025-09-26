@@ -1,0 +1,255 @@
+resources:
+- name: Pelican RPM
+  endpoint:
+    path: /install/rhel
+    method: GET
+- name: Linux Standalone Binary
+  endpoint:
+    path: /install/linux-binary
+    method: GET
+- name: pelican_deb_package
+  endpoint:
+    path: /install/debian
+    method: GET
+    data_selector: downloads
+    params: {}
+- name: pelican_standalone_binary
+  endpoint:
+    path: /install/linux-binary
+    method: GET
+    data_selector: downloads
+    params: {}
+- name: pelican_apk
+  endpoint:
+    path: /pelican_7.5.8_p1_x86_64.apk
+    method: GET
+    data_selector: records
+    params: {}
+- name: pelican_standalone_binary
+  endpoint:
+    path: /install/linux-binary
+    method: GET
+    data_selector: records
+    params: {}
+- name: origin
+  endpoint:
+    path: /origin
+    method: GET
+    data_selector: records
+    params: {}
+- name: data
+  endpoint:
+    path: /run/pelican/cache/data
+    method: GET
+    data_selector: hexadecimal name values
+    params: {}
+- name: meta
+  endpoint:
+    path: /run/pelican/cache/meta
+    method: GET
+    data_selector: hexadecimal name values
+    params: {}
+- name: namespace
+  endpoint:
+    path: /run/pelican/cache/namespace
+    method: GET
+    data_selector: symbolic links
+    params: {}
+- name: director
+  endpoint:
+    path: /director
+    method: GET
+- name: registry
+  endpoint:
+    path: /registry
+    method: GET
+- name: server
+  endpoint:
+    path: /server
+    method: GET
+- name: data_transfer
+  endpoint:
+    path: /
+    method: GET
+- name: browser_interface
+  endpoint:
+    path: /
+    method: GET
+- name: first_export
+  endpoint:
+    path: /first/path
+    method: GET
+    data_selector: data
+    params: {}
+- name: second_export
+  endpoint:
+    path: /second/path
+    method: GET
+    data_selector: data
+    params: {}
+- name: origin
+  endpoint:
+    path: /origin
+    method: GET
+    data_selector: records
+- name: first_export
+  endpoint:
+    path: /first/path
+    method: GET
+    data_selector: Capabilities
+    params: {}
+- name: second_export
+  endpoint:
+    path: /second/path
+    method: GET
+    data_selector: Capabilities
+    params: {}
+- name: first-bucket
+  endpoint:
+    path: /first/namespace
+    method: GET
+    data_selector: objects
+    params: {}
+- name: second-bucket
+  endpoint:
+    path: /second/namespace
+    method: GET
+    data_selector: objects
+    params: {}
+- name: first-bucket
+  endpoint:
+    path: /first/namespace
+    method: GET
+    data_selector: records
+    params: {}
+- name: second-bucket
+  endpoint:
+    path: /second/namespace
+    method: GET
+    data_selector: records
+    params: {}
+- name: metrics
+  endpoint:
+    path: /metrics
+    method: GET
+    data_selector: metrics
+    params: {}
+- name: prometheus_query
+  endpoint:
+    path: /api/v1.0/prometheus/query
+    method: GET
+    data_selector: query_result
+    params: {}
+- name: object_discovery
+  endpoint:
+    path: /api/v1.0/director/object/some/object
+    method: GET
+- name: origin_discovery
+  endpoint:
+    path: /api/v1.0/director/origin/some/object
+    method: GET
+notes:
+- Pelican executables can run as a client or a server
+- Requires additional package dependencies for some non-RPM installations when running
+  as a server
+- You can install Pelican from the standalone RPM, or with the binary `.tar.gz` file.
+- Pelican Debian package does not contain dependencies such as XRootD for Pelican
+  servers.
+- Use Pelican Docker image instead if you want to serve a Pelican server.
+- Pelican Alpine Linux package does not contain dependencies such as XRootD for Pelican
+  servers.
+- The shell should expand $(uname -m) with the machine’s hardware platform.
+- Installation must happen through a terminal.
+- To make the pelican command available everywhere on your Mac without needing a relative
+  path, you need to add it to your system’s PATH environment variable.
+- Pelican provides a binary file instead of a MSI installer for Windows.
+- Pelican Docker image currently does not support binding a directory on your host
+  machine as the directory for a Pelican cache to store cached objects.
+- To successfully run a Pelican director server, additional configuration is required.
+- To successfully run a Pelican registry server, additional configuration is required.
+- Pelican’s preferred configuration mechanism is via a YAML file found at /etc/pelican/pelican.yaml.
+- A bool indicating whether Pelican should emit debug messages in its log.
+- This allows a 'man in the middle' attack on the connection but can simplify testing.
+- 'NOTE: This config option is incompatible with multiple exports defined via `Origin.Exports`
+  and is ignored when the origin exports multiple prefixes.'
+- The default value of /var/run/pelican should never be used for production caches.
+- It's important that any values for Cache.DataLocations and Cache.MetaLocations are
+  NOT subdirectories of Cache.NamespaceLocation.
+- Director service uses MaxMind GeoLite City database to determine cache proximity.
+- Enabling CheckOriginPresence generates additional load on the origin.
+- The queue keeps 100 messages in memory. If the shoveler is disconnected from the
+  message bus, it will store messages over the 100 in memory onto disk.
+- Protected namespaces require authorization to access objects.
+- Users must supply their own JWT that’s signed by the origin for some origins.
+- Be careful when using the OSDF binary with pelican:// URL schemes; a federation
+  URL is required.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Choosing a good federation prefix for Pelican is important for organizing data
+- Namespace prefixes are hierarchical and can be subdivided
+- Pelican Origins do NOT store any data themselves; their primary function is to facilitate
+  data accessibility.
+- Both ports 8443 for data transfers and 8444 for the browser interface need to be
+  accessible.
+- Pelican has chosen ports 8443 for data transfers and 8444 for the browser interface
+  as defaults.
+- Uses HTTPS for secure data transfer.
+- Pelican can serve data from various storage backends including POSIX and S3.
+- Requires HTTP ports 8443 for data and 8444 for browser interface to be open.
+- The server runs on port 443 for the web UI.
+- Data access port is configurable.
+- Pelican requires a valid domain name with TLS credentials.
+- Origins do NOT store any data themselves.
+- The data from this Origin’s underlying filesystem is designated as publicly readable.
+- Some versions of the Pelican CLI (`v7.13.0 - v7.14.0`) contain a bug that generates
+  invalid public keys.
+- It is advised that the Origin admin completes the registration as soon as they can.
+- Pelican must be configured to host an S3 backend, using the configuration option
+  `Origin.StorageType = s3`.
+- Some buckets might require credentials that prove you’re allowed to access the objects
+  they contain.
+- Pelican must be configured to host an S3 backend, using the configuration option
+  Origin.StorageType = s3
+- The token must be generated by the Pelican Origin using its private key.
+- The token has `read` permission to the `/` prefix, meaning it can be used to read
+  any objects on this Origin.
+- Pelican servers use https for serving its web UI, handling objects transfer requests
+  and internal http requests.
+- Pelican registry follows OIDC for user authentication and uses CILogon as the OpenID
+  Provider by default.
+- Pelican director runs on port 8444 by default.
+- The Pelican cache listens to two TCP ports for file transfers and Web UI. By default,
+  the file transfer port is at 8442 and the Web UI and APIs port is at 8444.
+- Serving a Pelican cache with a standalone Pelican binary is possible, but not recommended
+  or supported.
+- The /metrics endpoint is protected and requires authentication to view.
+- Pelican does not support Prometheus native /graph endpoint.
+- Pelican protects the Prometheus endpoint by asking for a JWT to verify the user
+  accessing the endpoint.
+- The namespace private key is a powerful secret and should never be shared with others.
+- Never send anyone your private key.
+- Currently, there is no way to pass additional arguments to the pelican object command-equivalent
+  used at the EP.
+- The configuration is overridden for all transfers involving the Plugin within the
+  job.
+- Pelican encourages leaving breadcrumbs of data provenance in namespace prefixes
+- Researchers can help address 'Findability' and 'Reusability' through practicing
+  good data hygiene
+- Directors may implement more intelligent cache selection schemes.
+- The database used for geo-location may not always be accurate.
+errors:
+- 'docker: no matching manifest for linux/arm64/v8 in the manifest list entries.'
+- Enabling this option may also restrict which caches in a federation can serve the
+  origin, unless all caches are running pelican v7.15.0 or newer.
+- Pelican will fail to start with a warning if using restricted paths/characters
+- '403: Advertisement verification failed'
+- '500: Director has errors when verifying or saving the advertisement'
+- 'Invalid IP address: Client''s IP may be in a private range.'
+- 'Confidence range too large: Database reports greater than 900km.'
+auth_info:
+  mentioned_objects:
+  - JWT
+client:
+  base_url: https://osg-htc.org
+  headers:
+    Accept: application/json
+source_metadata: null

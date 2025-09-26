@@ -1,0 +1,134 @@
+resources:
+- name: commercial_case
+  endpoint:
+    path: /2024-05/commercial/cases
+    method: POST
+    data_selector: data
+    params: {}
+- name: commercial_cases
+  endpoint:
+    path: /api/2024-05/commercial/cases
+    method: GET
+    data_selector: data
+    params:
+      external_id: external_id
+- name: single_commercial_case
+  endpoint:
+    path: /api/2024-05/commercial/cases/{case_id}
+    method: GET
+    data_selector: data
+    params:
+      lineOfBusinessId: lineOfBusinessId
+- name: export_commercial_case_pdf
+  endpoint:
+    path: /api/2024-05/commercial/cases/{case_id}.pdf
+    method: GET
+    data_selector: errors
+- name: add_documents_to_commercial_case
+  endpoint:
+    path: /api/2024-05/commercial/cases/{case_id}/documents
+    method: POST
+    data_selector: data
+- name: add_or_update_quote_to_commercial_case
+  endpoint:
+    path: /api/2024-05/commercial/cases/{case_id}/quote
+    method: POST
+    data_selector: '{}'
+- name: remove_quote_from_commercial_case
+  endpoint:
+    path: /api/2024-05/commercial/cases/{case_id}/quote
+    method: DELETE
+    data_selector: '{}'
+- name: create_case
+  endpoint:
+    path: /2024-05/life/cases
+    method: POST
+    data_selector: case
+    params: {}
+- name: get_all_life_cases
+  endpoint:
+    path: /2024-05/life/cases
+    method: GET
+    data_selector: data
+    params:
+      external_id: string
+- name: get_life_case
+  endpoint:
+    path: /2024-05/life/cases/{case_id}
+    method: GET
+    data_selector: data
+    params: {}
+- name: export_life_case_pdf
+  endpoint:
+    path: /2024-05/life/cases/{case_id}.pdf
+    method: GET
+    data_selector: data
+    params: {}
+- name: add_documents_to_life_case
+  endpoint:
+    path: /2024-05/life/cases/{case_id}/documents
+    method: POST
+    data_selector: data
+    params: {}
+- name: add_metadata_to_integration
+  endpoint:
+    path: /2024-05/life/cases/{case_id}/integrations/{integration_id}
+    method: PATCH
+    data_selector: data
+    params: {}
+- name: cases_updated
+  endpoint:
+    path: /webhooks
+    method: POST
+    data_selector: body.data
+    params: {}
+- name: integrations_finished
+  endpoint:
+    path: /webhooks
+    method: POST
+    data_selector: body.data
+    params: {}
+- name: integrations_errored
+  endpoint:
+    path: /webhooks
+    method: POST
+    data_selector: body.data
+    params: {}
+- name: integration
+  endpoint:
+    path: /life/cases/{caseId}/integrations/{integrationId}
+    method: PATCH
+    data_selector: files
+    params: {}
+notes:
+- Webhook resource MUST accept requests with content type application/json
+- Webhook resource MUST return a response with a 200 status to indicate that the request
+  was processed successfully
+- Your webhook resource MUST accept requests with content type `application/json`
+- Your webhook resource MUST return a response with a `200` status to indicate that
+  the request was processed successfully
+- Integration ID is required for all API requests related to FileNet.
+errors:
+- '400: Bad Request'
+- '401: Unauthorized'
+- '409: Conflict'
+- '422: Unprocessable Entity'
+- '500: Internal Server Error'
+- '429: Too Many Requests'
+- 'Unauthorized: Invalid Sixfold API key'
+- 400 Bad Request
+- 401 Unauthorized
+- 404 Not Found
+- 409 Conflict
+- 422 Unprocessable Entity
+- 500 Internal Server Error
+- '500: FileNet server error'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://sixfold.ai
+  auth:
+    type: apikey
+  headers:
+    SIXFOLD-API-KEY: <your key>
+source_metadata: null

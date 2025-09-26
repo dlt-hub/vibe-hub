@@ -1,0 +1,64 @@
+resources:
+- name: Density
+  endpoint:
+    path: /glidertools/physics/potential_density
+    method: POST
+    data_selector: density
+- name: Mixed Layer Depth
+  endpoint:
+    path: /glidertools/physics/mixed_layer_depth
+    method: POST
+    data_selector: mixed_layer_depth
+- name: Backscatter
+  endpoint:
+    path: /optics/backscatter
+    method: GET
+    data_selector: data
+    params: {}
+- name: PAR
+  endpoint:
+    path: /optics/par
+    method: GET
+    data_selector: data
+    params: {}
+- name: Fluorescence
+  endpoint:
+    path: /optics/fluorescence
+    method: GET
+    data_selector: data
+    params: {}
+- name: calibration
+  endpoint:
+    path: /calibration
+    method: GET
+    data_selector: samples
+    params: {}
+notes:
+- 'Removing outliers with IQR * 2.5: 1551 obs'
+- Removing spikes with rolling median (spike window=5)
+- Removing horizontal outliers (fraction=0.2, multiplier=2.5)
+- Smoothing with Savitzky-Golay filter (window=11, order=2)
+- The optics module contains functions that process backscatter, PAR and fluorescence.
+- Mask bad profiles based on deep values (ref depth=300m)
+- Number of bad profiles = 19/672
+- Dark count correction
+- Quenching correction
+- Spike identification (spike window=11)
+- Generating figures for despiking and quenching report
+- Bottle calibration can be done using the calibration module.
+- The bottle file needs to be in a specific format with dates (datetime64 format),
+  depth and the variable values.
+- GliderTools automatically selects bin sizes according to the sampling frequency
+  of the dataset for every 50m.
+- Gridded data can be passed to the plot function without x- and y-coordinates, as
+  these are contained in the gridded data.
+- Contributions are highly welcomed and appreciated.
+- Never commit to master.
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://github.com/GliderToolsCommunity/GliderTools
+  headers:
+    Accept: application/json
+source_metadata: null
