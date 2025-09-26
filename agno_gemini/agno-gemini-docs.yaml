@@ -1,0 +1,290 @@
+resources:
+- name: Gemini Model
+  endpoint:
+    path: /models/gemini
+    method: GET
+- name: cancel_run
+  endpoint:
+    path: /cancel-run
+    method: POST
+    data_selector: bool
+    params:
+      run_id: str
+- name: get_run_output
+  endpoint:
+    path: /get-run-output
+    method: GET
+    data_selector: Optional[RunOutput]
+    params:
+      run_id: str
+      session_id: str
+- name: get_last_run_output
+  endpoint:
+    path: /get-last-run-output
+    method: GET
+    data_selector: Optional[RunOutput]
+    params:
+      session_id: str
+- name: get_session
+  endpoint:
+    path: /get-session
+    method: GET
+    data_selector: Optional[AgentSession]
+    params:
+      session_id: str
+- name: get_session_summary
+  endpoint:
+    path: /get-session-summary
+    method: GET
+    data_selector: Session summary
+    params:
+      session_id: str
+- name: get_user_memories
+  endpoint:
+    path: /get-user-memories
+    method: GET
+    data_selector: List[UserMemory]
+    params:
+      user_id: str
+- name: get_session_state
+  endpoint:
+    path: /get-session-state
+    method: GET
+    data_selector: Dict[str, Any]
+    params:
+      session_id: str
+- name: get_session_metrics
+  endpoint:
+    path: /get-session-metrics
+    method: GET
+    data_selector: Optional[Metrics]
+    params:
+      session_id: str
+- name: delete_session
+  endpoint:
+    path: /delete-session
+    method: DELETE
+    data_selector: None
+    params:
+      session_id: str
+- name: save_session
+  endpoint:
+    path: /save-session
+    method: POST
+    data_selector: None
+    params:
+      session: AgentSession
+- name: rename
+  endpoint:
+    path: /rename
+    method: POST
+    data_selector: None
+    params:
+      name: str
+      session_id: str
+- name: get_session_name
+  endpoint:
+    path: /get-session-name
+    method: GET
+    data_selector: str
+    params:
+      session_id: str
+- name: set_session_name
+  endpoint:
+    path: /set-session-name
+    method: POST
+    data_selector: AgentSession
+    params:
+      session_id: str
+      autogenerate: bool
+      session_name: Optional[str]
+- name: get_messages_for_session
+  endpoint:
+    path: /get-messages-for-session
+    method: GET
+    data_selector: List[Message]
+    params:
+      session_id: str
+- name: get_chat_history
+  endpoint:
+    path: /get-chat-history
+    method: GET
+    data_selector: List[Message]
+    params:
+      session_id: str
+- name: add_tool
+  endpoint:
+    path: /add-tool
+    method: POST
+    data_selector: None
+    params:
+      tool: Union[Toolkit, Callable, Function, Dict]
+- name: set_tools
+  endpoint:
+    path: /set-tools
+    method: POST
+    data_selector: None
+    params:
+      tools: List[Union[Toolkit, Callable, Function, Dict]]
+- name: blog_post
+  endpoint:
+    path: /blog/post
+    method: POST
+    data_selector: content
+    params: {}
+- name: model
+  endpoint:
+    path: /models
+    method: GET
+    data_selector: models
+    params: {}
+- name: claude_model
+  endpoint:
+    path: /models/claude
+    method: GET
+    data_selector: model
+- name: blog_post
+  endpoint:
+    path: /generate_blog_post
+    method: POST
+    data_selector: blog_post
+    params: {}
+- name: HuggingFace Model
+  endpoint:
+    path: /models
+    method: GET
+- name: MistralChat
+  endpoint:
+    path: /models/mistral
+    method: POST
+    data_selector: response
+    params: {}
+- name: model
+  endpoint:
+    path: /models
+    method: GET
+    data_selector: models
+    params: {}
+- name: ClaudeModel
+  endpoint:
+    path: /models/claude
+    method: GET
+- name: model
+  endpoint:
+    path: /models
+    method: GET
+- name: deepseek_model
+  endpoint:
+    path: /model
+    method: POST
+    data_selector: response
+    params: {}
+- name: model
+  endpoint:
+    path: /models/aws-bedrock
+    method: GET
+    data_selector: models
+    params: {}
+- name: HuggingFace
+  endpoint:
+    path: /models
+    method: GET
+    data_selector: models
+- name: mistral_model
+  endpoint:
+    path: /mistral/models
+    method: GET
+    data_selector: models
+- name: models
+  endpoint:
+    path: /models
+    method: GET
+    data_selector: models
+- name: model
+  endpoint:
+    path: /models
+    method: GET
+    data_selector: models
+    params: {}
+- name: xAI_model
+  endpoint:
+    path: /v1/models
+    method: GET
+    data_selector: models
+    params: {}
+- name: WorkflowRunOutput
+  endpoint:
+    path: /workflow/run/output
+    method: GET
+    data_selector: output
+    params: {}
+- name: ollama_model
+  endpoint:
+    path: /models/ollama
+    method: GET
+    data_selector: models
+    params: {}
+- name: OpenAILike
+  endpoint:
+    path: /models/openai_like
+    method: GET
+    data_selector: models
+- name: WorkflowRunOutput
+  endpoint:
+    path: /workflows/run/output
+    method: GET
+    data_selector: content
+- name: StepInput
+  endpoint:
+    path: /reference/workflows/step_input
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: loop_steps
+  endpoint:
+    path: /reference/workflows/loop-steps
+    method: GET
+    data_selector: steps
+    params:
+      max_iterations: 3
+notes:
+- AgentOS runs entirely within your cloud environment
+- No conversations, logs, or metrics are sent to external services
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- With the new AgentOS platform, monitoring is done using your own data.
+- The script won’t cleanup the old tables, in case you still need them.
+- The script is idempotent. If something goes wrong or if you stop it mid-run, you
+  can run it again.
+- Metrics are automatically converted from v1 to v2 format.
+- Advanced blog post generator with research and content creation capabilities
+- The Ollama model provides access to locally-hosted open source models.
+- The id of the Anthropic Claude model to use is "claude-3-5-sonnet-20241022".
+- The name of the model is "Claude".
+- The provider of the model is "Anthropic".
+- The model provides access to Cohere's language models.
+- Workflows 2.0 introduces a new, more flexible and powerful way to build workflows.
+- Uses API key for authentication
+- Defaults to environment variable TOGETHER_API_KEY.
+- Ensure API key is kept confidential.
+- Rate limits apply to API usage.
+- The API key to authorize requests to Together defaults to environment variable TOGETHER_API_KEY.
+- API key for authenticating requests to the xAI service is retrieved from the environment
+  variable XAI_API_KEY.
+- Agno supports various event types related to workflow execution.
+- The OpenAI Like model works as a wrapper for the OpenAILike models.
+- Returns main content/output from the workflow execution
+- Contains metrics aggregated from all steps
+- Steps to execute in each loop iteration are required
+errors:
+- '401 Unauthorized: Invalid API key'
+- '403 Forbidden: Check API key permissions.'
+- '404 Not Found: Verify the endpoint URL.'
+- '500 Internal Server Error: Retry after a brief wait.'
+auth_info:
+  mentioned_objects:
+  - OPENROUTER_API_KEY
+client:
+  base_url: https://os.agno.com
+  auth:
+    type: oauth2
+source_metadata: null

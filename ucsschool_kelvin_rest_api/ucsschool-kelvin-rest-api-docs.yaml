@@ -1,0 +1,179 @@
+resources:
+- name: roles
+  endpoint:
+    path: /roles
+    method: GET
+- name: schools
+  endpoint:
+    path: /schools
+    method: GET
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+- name: classes
+  endpoint:
+    path: /classes
+    method: GET
+- name: workgroups
+  endpoint:
+    path: /workgroups
+    method: GET
+- name: roles
+  endpoint:
+    path: /roles/
+    method: GET
+    data_selector: ''
+- name: roles
+  endpoint:
+    path: /resource-roles.html
+    method: GET
+- name: schools
+  endpoint:
+    path: /resource-schools.html
+    method: GET
+- name: users
+  endpoint:
+    path: /resource-users.html
+    method: GET
+- name: classes
+  endpoint:
+    path: /resource-classes.html
+    method: GET
+- name: workgroups
+  endpoint:
+    path: /resource-workgroups.html
+    method: GET
+- name: schools
+  endpoint:
+    path: /schools/
+    method: GET
+    data_selector: ''
+    params: {}
+- name: roles
+  endpoint:
+    path: /roles/
+    method: GET
+    data_selector: records
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+    data_selector: records
+    params: {}
+- name: schools
+  endpoint:
+    path: /schools/
+    method: GET
+    data_selector: records
+- name: users
+  endpoint:
+    path: /users
+    method: POST
+    data_selector: dn
+    params: {}
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+    data_selector: records
+    params: {}
+- name: classes
+  endpoint:
+    path: /classes
+    method: GET
+    data_selector: records
+    params:
+      school: DEMOSCHOOL
+- name: users
+  endpoint:
+    path: /users/
+    method: POST
+    data_selector: users
+- name: workgroups
+  endpoint:
+    path: /workgroups/
+    method: GET
+    data_selector: ''
+    params:
+      school: <schoolname>
+- name: classes
+  endpoint:
+    path: /classes/
+    method: GET
+    data_selector: records
+    params:
+      school: DEMOSCHOOL
+- name: workgroups
+  endpoint:
+    path: /workgroups
+    method: GET
+    data_selector: ''
+    params:
+      school: DEMOSCHOOL
+notes:
+- No pagination
+- The websites for Univention product documentation doesn’t use Cookies.
+- The UCS@school Kelvin REST API can be used out of the box, but there are various
+  parameters that can be configured.
+- The token will be valid for a configurable amount of time (default 60 minutes),
+  after which it must be renewed.
+- Only members of the group ucsschool-kelvin-rest-api-admins are allowed to access
+  the API.
+- Token is valid for a configurable amount of time (default 60 minutes)
+- All operations will be executed using the cn=admin LDAP account
+- The item list of the Roles resource is hard coded.
+- Searching for roles (with ?name=abc* or similar) is not supported.
+- Requests to resource endpoints must carry a valid token.
+- Sending no or an invalid token leads to the server responding with HTTP status 401.
+- The Schools resource currently supports listing and creating objects but does not
+  support modifying or deleting OUs.
+- UCS@school uses the UDM REST API to access LDAP.
+- Schools resource only supports listing and creating objects. It does not support
+  modifying or deleting OUs.
+- The password attribute is missing in the response, because UCS systems never stores
+  or sends clear text passwords.
+- The Users resource is represented in the LDAP tree as user objects.
+- The queried school has to exist, whilst the class to be created must not exist.
+- Matching of the queried class and school is case-insensitive.
+- The search for the school name is case sensitive and requires exact match.
+- Matching of the queried workgroup and school is case-sensitive.
+- The queried school has to exist, whilst the workgroup to be created must not exist.
+- Whenever a new UDM module, extended option or extended attribute is installed, the
+  OpenAPI client library used by the Python UDM REST API Client library must be rebuilt
+  to be able to access the new module/attribute.
+- It is thus necessary to rebuild the OpenAPI client manually.
+- The Kelvin API can now be installed on servers with the role DC Primary and DC Backup.
+- The Kelvin API now supports udm properties on all Kelvin resources except roles.
+errors:
+- '401 Unauthorized: Only members of the group ucsschool-kelvin-rest-api-admins are
+  allowed to access the API'
+- '401 Unauthorized: Sending no or an invalid token leads to the server responding
+  with HTTP status'
+- '401: Unauthorized'
+- '500 Internal Server Error: Occurs when UDM properties are set after the initial
+  creation of the school.'
+- '500: Internal Server Error - school was created with an error following the subsequent
+  alteration.'
+- '204 No Content: Successful deletion'
+- '201 Created: User successfully created'
+- '200 OK: User successfully modified'
+- 'HTTP/1.1 204 NO CONTENT: Class deleted successfully.'
+- '204 No Content: Successfully deleted user.'
+- '201 Created: User successfully created.'
+- '200 OK: User successfully modified.'
+- '204 NO CONTENT: The workgroup got deleted successfully.'
+- '204 NO CONTENT: Indicates successful deletion of a class.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Creating schools does not work in single server environments: A bug exists for
+  this, see bug 55506.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://<fqdn>/ucsschool/kelvin/v1/
+  auth:
+    type: token
+    token_url: https://<fqdn>/ucsschool/kelvin/token/
+source_metadata: null

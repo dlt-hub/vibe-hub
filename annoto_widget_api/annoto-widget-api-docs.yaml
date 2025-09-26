@@ -1,0 +1,132 @@
+resources:
+- name: widget
+  endpoint:
+    path: /widget
+    method: GET
+    data_selector: widgets
+- name: widget
+  endpoint:
+    path: /widget
+    method: GET
+    data_selector: records
+- name: analytics_events
+  endpoint:
+    path: /api/v1/analytics/events
+    method: GET
+    data_selector: events
+    params: {}
+- name: analytics_events
+  endpoint:
+    path: /events
+    method: GET
+    data_selector: events
+- name: widget_utilities
+  endpoint:
+    path: /developers/widget
+    method: GET
+    data_selector: widget_utilities
+    params: {}
+- name: course_details
+  endpoint:
+    path: /course/details
+    method: GET
+    data_selector: courseDetails
+    params: {}
+- name: course_dashboard
+  endpoint:
+    path: /developers/dashboard/course-embed
+    method: GET
+    data_selector: courseDetails
+    params: {}
+- name: annoto_configuration
+  endpoint:
+    path: /annoto/configuration
+    method: GET
+    data_selector: config
+    params: {}
+- name: annoto_configuration
+  endpoint:
+    path: /kaltura-plugin/customise-annoto-widget-configuration
+    method: GET
+    data_selector: config
+- name: Wistia Plugin
+  endpoint:
+    path: /developers/wistia-plugin/setup-annoto-plugin
+    method: GET
+    data_selector: plugin
+    params: {}
+- name: iframe_api
+  endpoint:
+    path: /widget-iframe-api/latest/client.js
+    method: GET
+- name: webhook_message
+  endpoint:
+    path: /webhook
+    method: POST
+    data_selector: data
+    params: {}
+- name: widget
+  endpoint:
+    path: /widget
+    method: GET
+- name: widgets
+  endpoint:
+    path: /widget
+    method: POST
+notes:
+- For full API documentation, please refer to the AnnotoApi Reference.
+- For user guides and how to setup Annoto please head to our main docs site.
+- Uses OAuth2 with refresh token — requires setup of connected app in Annoto
+- Requires integration key provided by Annoto during setup
+- LTI outcomes reporting is supported
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- The dashboard supports various configuration options.
+- JWT user SSO token (recommended, but can be dynamically authenticated using the
+  API as well)
+- The most recommended way is to provide the User's SSO token to the widget configuration.
+- Setup requires Kaltura player embedded using any form of embed except the IFrame
+  embed.
+- Annoto plugin script must be loaded after the Kaltura Player script.
+- Annoto plugin configuration must be added to the plugins section of the player configuration
+  object
+- The script tag for the Annoto plugin must come after the Kaltura player script tag
+- Naming the plugin 'annoto' is mandatory (this is just how Kaltura works).
+- If Annoto LTI is used, the customerKey is not required.
+- Demo Mode allows you to try out the product but all comments created are not saved
+  after page refresh.
+- If customerKey is not provided, Annoto Will load in Demo Mode.
+- config is already setup by the Kaltura Annoto plugin, so we need only to override
+  the required configuration, such as clientId, getPageUrl hook, etc.
+- If we already have the userJwtToken use it, alternatively the annotoAPI can be saved
+  in a variable and used asynchronously.
+- The annotoApi can be used to accomplish various tasks such as dynamically hide/show
+  the widget, load new configuration and maybe the most common task to perform Single
+  Sign On (SSO) authentication.
+- Flashvar based resource includes will only work on relative paths.
+- Wistia iframe embeds take the exact same JSON parameters as a Standard embed, but
+  they must be properly URL-encoded using a bracket syntax.
+- The widget would not load in the Wistia player Iframe yet. The widget is bootstrapped
+  and loaded once the setup is complete.
+- The Iframe Client API requires the Wistia player Iframe embed element as constructor
+  argument
+- The JWT token MUST be signed using HS256 algorithm.
+- THE SECRET MUST BE KEPT CONFIDENTIAL ON YOUR SERVERS.
+- The Annoto Widget is loaded inside the Wistia player iframe so direct access to
+  the Widget API and configuration is not possible.
+- Webhook messages are automatically sent out when their event is fired in the source
+  system.
+- Webhook messages include a secure signature for validation.
+- Webhook messages are POST requests with JSON body.
+- Annoto application provides flexibility in how it integrates in the website.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Ensure the webhook request is validated with the signature.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+client:
+  base_url: https://cdn.annoto.net/playkit-plugin/latest/plugin.js
+  headers:
+    Accept: application/json
+source_metadata: null

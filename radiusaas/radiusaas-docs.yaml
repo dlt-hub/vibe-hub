@@ -1,0 +1,427 @@
+resources:
+- name: engine
+  endpoint:
+    path: /logs/engine
+    method: GET
+    data_selector: logs
+- name: proxy
+  endpoint:
+    path: /logs/proxy
+    method: GET
+    data_selector: logs
+- name: detail
+  endpoint:
+    path: /logs/detail
+    method: GET
+    data_selector: logs
+- name: radsec
+  endpoint:
+    path: /logs/radsec
+    method: GET
+    data_selector: logs
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+- name: RadSec
+  endpoint:
+    path: /settings/server
+    method: GET
+- name: RADIUS
+  endpoint:
+    path: /settings/proxy
+    method: GET
+- name: engine
+  endpoint:
+    path: /logs/engine
+    method: GET
+- name: proxy
+  endpoint:
+    path: /logs/proxy
+    method: GET
+- name: detail
+  endpoint:
+    path: /logs/detail
+    method: GET
+- name: radsec
+  endpoint:
+    path: /logs/radsec
+    method: GET
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+- name: proxy_settings
+  endpoint:
+    path: /settings/proxy
+    method: GET
+- name: trusted_certificates
+  endpoint:
+    path: /admin-portal/settings/trusted-roots
+    method: GET
+    data_selector: certificates
+- name: rules
+  endpoint:
+    path: /api/rules
+    method: GET
+    data_selector: rules
+    params: {}
+- name: Microsoft Teams Channel
+  endpoint:
+    path: /admin-portal/settings/log-exporter/teams
+    method: GET
+- name: Azure Log Analytics Workspace
+  endpoint:
+    path: /admin-portal/settings/log-exporter/log-analytics
+    method: GET
+- name: Generic Webhook
+  endpoint:
+    path: /admin-portal/settings/log-exporter/generic-webhook
+    method: GET
+- name: rules
+  endpoint:
+    path: /rules
+    method: GET
+- name: Network payloads
+  endpoint:
+    path: /profile-deployment/jamf-pro
+    method: GET
+    data_selector: payloads
+    params: {}
+- name: Certificate payloads
+  endpoint:
+    path: /profile-deployment/jamf-pro/certificate-payloads
+    method: GET
+    data_selector: payloads
+    params: {}
+- name: SCEP payload
+  endpoint:
+    path: /profile-deployment/jamf-pro/scep-payload
+    method: GET
+    data_selector: payloads
+    params: {}
+- name: Server Trust
+  endpoint:
+    path: /configuration/renew-certificate
+    method: GET
+    data_selector: certificate
+    params: {}
+- name: wifi_profile
+  endpoint:
+    path: /profile-deployment/jamf-pro/wifi-profile
+    method: GET
+- name: Server Trust
+  endpoint:
+    path: /profile-deployment/google-workspace/server-trust
+    method: GET
+- name: WiFi Profile
+  endpoint:
+    path: /profile-deployment/google-workspace/wifi-profile
+    method: GET
+- name: EAP Fragmentation
+  endpoint:
+    path: /configuration/access-point-setup/radius
+    method: GET
+    data_selector: records
+- name: MAC Authentication Bypass (MAB)
+  endpoint:
+    path: /configuration/mab
+    method: GET
+    data_selector: records
+- name: MAC-based Authentication (MBA)
+  endpoint:
+    path: /configuration/mba
+    method: GET
+    data_selector: records
+- name: RADIUS Server Backend API
+  endpoint:
+    path: /api/backend
+    method: GET
+- name: RADIUSaaS Admin Portal
+  endpoint:
+    path: /admin
+    method: GET
+- name: Kubernetes Cluster Management API
+  endpoint:
+    path: /api/kubernetes
+    method: GET
+- name: status
+  endpoint:
+    path: /api/status
+    method: GET
+- name: status
+  endpoint:
+    path: /api/status
+    method: GET
+- name: subscription_management
+  endpoint:
+    path: /subscription_management
+    method: GET
+    data_selector: subscriptions
+    params: {}
+notes:
+- To authenticate a call to the REST API, populate an HTTP Authorization header with
+  each request.
+- Authentication is based on certificates.
+- Choose a CA which provides a publicly accessible OCSP or CRL endpoint.
+- RADIUSaaS offers easy and secure authentication for accessing network resources.
+- RADIUSaaS can be used globally.
+- RADIUSaaS' core service can be deployed into datacenters in Australia, European
+  Union, United Kingdom, and United States of America.
+- RADIUSaaS requires configuration for both RADIUS and RadSec depending on network
+  equipment.
+- Mandatory steps include PKI setup, Trusted CA setup, RADIUS Server Certificate configuration,
+  and Network equipment configuration.
+- This is a mandatory step.
+- If you are using any of the below PKIs, please follow the relevant guides instead.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Requires setup of connected app in api
+- Access Points require a valid client certificate (typically referred to as 'RadSec
+  Client Certificate' or 'RadSec Certificate'). This client certificate must have
+  the EKU Client Authentication (1.3.6.1.5.5.7.3.2) and not Server Authentication.
+- Access Points must trust the CA that issued the RADIUS Server Certificate.
+- RADIUSaaS must trust the CA that issued the RadSec client certificate on your access
+  points.
+- The RadSec protocol requires a shared secret to compute the MD5 integrity checks.
+- The shared secret is defined as the literal string 'radsec'.
+- If you are renewing the Customer-CA or a BYO CA with a different root and FQDN from
+  the previous one then please follow the steps to re-deploy this certificate to your
+  clients.
+- If you are using a BYO certificate with no change to the CA's root certificate and
+  the FQDN (Subject and SAN), you can skip the re-deployment step.
+- Remember to configure a secondary RADIUS server whenever possible.
+- A server certificate is essential for securing both the EAP-TLS inner tunnel and
+  the RadSec TLS outer tunnel on RADIUSaaS.
+- Ensure to renew your certificate before it expires.
+- Under the insights group Dashboards and Log views can be found
+- Wait until all your clients have received the updated profile(s).
+- Log types not mentioned in the table are less relevant for common trouble shooting
+  scenarios.
+- RADIUSaaS operates a RadSec service to provide secure cloud-based authentication
+  for its users.
+- RADIUSaaS provides RADIUS Proxies that handle the protocol conversion from RADIUS
+  to RadSec.
+- RADIUSaaS does NOT provide failover between RadSec endpoints.
+- Log types not mentioned in below table are less relevant for common trouble shooting
+  scenarios.
+- By default, SCEPman Certificate Master issues certificates that are valid for 730
+  days.
+- Ensure to monitor the expiry of your server certificate and renew it in due time
+  to prevent service interruptions.
+- Do not let the RADIUS Server Certificate expire. It will break the authentication.
+- By default, we recommend enabling OCSP Soft fail to increase the availability of
+  the service by allowing authentication requests to be accepted even if the OCSP
+  responder cannot be reached.
+- Proxies facilitate the protocol conversion from RADIUS to RadSec.
+- Each user accepts the consent upon first login to the portal.
+- RADIUSaaS operates a RadSec service to provide secure cloud-based authentication.
+- Multiple RadSec endpoints can be configured for redundancy.
+- Administrators can grant consent for all users on behalf of the organization.
+- When using an Apple ID to log into RADIUSaaS, make sure to not hide your email address.
+- For the Client Scope, 'openid email' is required.
+- Proxies are necessary in case your authenticators only support traditional RADIUS
+  / UDP for AAA.
+- Each proxy can handle up to 1,500 concurrent connections flawlessly.
+- This corresponds to a time-based performance of 10,000 authentications per minute
+  per proxy.
+- All rules are applied after successful credential authentication.
+- Any authentication is allowed by default if no rule is defined.
+- RADIUSaaS supports multiple IDPs for authentication
+- Administrators can invalidate all previously issued access tokens
+- Logs will be fetched every 60 seconds and sent to your configured Export Target(s).
+- For the Client Scope `openid email` is required.
+- Some objects may return nulls in deeply nested fields
+- Any authentication is allowed if no rule is defined by default.
+- The default rule still requires the presence of valid authentication credentials.
+- This is only required if you are using a RADIUS server certificate that was issued
+  by a CA that your clients do not already trust.
+- We strongly recommend to configure all 802.1X-relevant payloads in a single Configuration
+  Profile in Jamf - and one Configuration Profile per assignment type (Computers,
+  Devices, Users).
+- We strongly recommend to not use any spaces or special characters in your SSID.
+- When downloading the Server certificate, use only the green-marked certificate.
+- A password is not required, since it is only the public key part that is contained
+  in the file and that needs to be uploaded.
+- Do not use any spaces or special characters in your SSID.
+- A password is not required for the certificate upload, since it is only the public
+  key part that is contained in the file.
+- Common name is case-sensitive.
+- Check that your client has a certificate to authenticate and that you are using
+  the correct WiFi configuration profile or XML.
+- 'Check that you''ve done the following: Told your RADIUS Server which certificates
+  are allowed to connect.'
+- Make sure that you have referenced the RADIUS server certificate in your WiFi profile.
+- Client needs a certificate to authenticate.
+- Check that RADIUS server is configured to recognize certificates.
+- Ensure correct WiFi configuration profile or XML is used.
+- Meraki does not offer a user-configurable EAP fragmentation setting in its dashboard,
+  which can be a significant limitation.
+- The UPN/email address provided as technical admin must be authenticatable against
+  some Microsoft Entra ID (Azure AD).
+- The UPN/email address must have been registered on your RADIUSaaS instance.
+- In case your Microsoft Entra ID (Azure AD) user has no rights to grant the required
+  permissions, no corresponding Enterprise Application will be auto-created.
+- Not all vendors provide user-configurable EAP fragmentation settings.
+- RADIUSaaS will neither trigger an authentication nor send a termination request
+  via its accounting port to the client.
+- RADIUSaaS will neither trigger an authentication nor send a termination request
+  via its accounting port to the client, potentially triggering a re-authentication.
+- Windows 11 24H2 introduced stricter certificate requirements for WPA3-Enterprise
+  192-bit encryption, leading to authentication failures if the entire certificate
+  chain does not meet specific cryptographic strength standards.
+- This update mandates RSA key lengths of at least 3072-bits or ECDSA with the P-384
+  curve for all certificates involved in the authentication process.
+- Organizations using certificates with weaker parameters, such as RSA 2048-bit, may
+  encounter issues.
+- Intune does not currently include an option in its SCEP profile to specify a key
+  size of 3072-bits which could be stored in the Trusted Platform Module (TPM) of
+  the receiving computer.
+- Currently the only feasible solution for Windows clients is to use 4096-bit RSA
+  key enrolled in Software Key Storage Provider (KSP).
+- As Intune's WiFi profile only provides WPA2-Enterprise you will need to use an external
+  tool to create a WPA3-Enterprise WiFi profile.
+- Windows 11 24H2 introduced stricter certificate requirements for WPA3-Enterprise
+  192-bit encryption.
+- Intune does not currently include an option in its SCEP profile to specify a key
+  size of 3072-bits.
+- If the devices are able to connect eventually without noticeable delays, such errors
+  can be ignored. If this is not the case, try increasing your EAP timeouts.
+- Higher Availability & Fewer Disruptions
+- Better Tolerance of OCSP Service Outages
+- Minimal Impact on Business Continuity
+- 'Security Risk: Revoked Certificates May Be Accepted'
+- Lack of Visibility Into System-wide Issues
+- Higher Security Assurance
+- Clear Operational Signals
+- Single Point of Failure
+- Reliance on OCSP Service Uptime
+- Possible Frustration for Users
+- MAB provides little to no security and should not be used because MAC addresses
+  can be spoofed easily.
+- MBA requires users to be formatted as username = password = MAC address.
+- RADIUSaaS is not affected by the Blast-RADIUS vulnerability.
+- RADIUSaaS only supports EAP-based authentication protocols.
+- RADIUSaaS Admin portal provides features to assign roles to every user.
+- If a problem occurs when querying the OCSP responder such as a timeout or incorrect
+  data, the application treats the certificate revocation status as 'good'.
+- If a problem occurs when querying the OCSP responder such as a timeout or incorrect
+  data, the application treats the certificate revocation status as 'revoked'.
+- If the OCSP hosting provider experiences downtime or certificate-related issues,
+  authentications will still succeed.
+- If the system silently bypasses revocation checks, administrators might not immediately
+  notice that an OCSP responder is down or misconfigured, prolonging the vulnerability
+  window.
+- If the OCSP responder is down, DDOS attacked, unreachable, or misconfigured, all
+  valid certificate authentications fail.
+- Uses certificate-based authentication — no secrets transported if certificate-based
+  authentication is used.
+- Administrative access is realized through OAuth 2.0 authentication against an IDP
+  for identities or accounts that are registered on the platform.
+- RADIUSaaS relies on certificate-based authentication for secure traffic.
+- The certificates will be checked every 10 hours and the data is cached for 60 seconds.
+- RADIUSaaS supports administrative SSO.
+- Certificates will be checked every 10 hours, and the data is cached for 60 seconds.
+- Migration phase starts after July 2025 Release (18 July 2025)
+- Migration phase ends on 31 October 2025
+- If using RADIUS protocol, update network equipment to new RADIUS proxy IP address
+  before 31 October 2025
+- The subscription for RADIUSaaS is user-based.
+- The minimum amount of users that can be subscribed for one organization is 50.
+- A user subscription is bound to a single user for at least one calendar month and
+  cannot be shared with other users.
+- If your configuration uses one of the affected RADIUS proxies, you must update your
+  network equipment to use the new RADIUS proxy IP address.
+- Complete this change before 31 October 2025 to avoid service disruption.
+- RADIUSaaS does not display your license consumption.
+- RADIUSaaS is offered as a monthly or annual subscription plan with different User
+  Segments.
+- The annual plan is discounted by 10% in comparison to the monthly plan.
+- The platform automatically selects the best price / tier
+- You will only be charged by Microsoft, once you have completed the enrolment on
+  our platform and received our welcome email.
+- RADIUSaaS is offered as a monthly or annual subscription plan with different user
+  segments.
+- Annual plan is discounted by 10%.
+- Bundle plans allow one-time purchase of SCEPman Setup Support.
+- Cleverbridge allows you to manage any aspect of your subscription via their self-management
+  portal.
+- Some objects like Contact may return nulls in deeply nested fields
+- RADIUSaaS is offered as a monthly or annual subscription plan
+- Customers with an active subscription of RADIUSaaS are eligible for support services.
+- Support is included in the subscription fee of RADIUSaaS.
+- Service is operated 24x7
+- Service availability goal is 99.5%
+- When using your own server certificate, your RADIUS server requires the complete
+  certificate chain.
+- Wi-Fi configuration does not get deployed if Wi-Fi, SCEP and Trusted certificate
+  profiles are assigned to different groups.
+- Android seems to require an UPN in Subject alternative name in newer versions.
+- Select the Root CA certificate for server validation.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- The RadSec protocol requires a shared secret to compute the MD5 integrity checks.
+  The RadSec RFC defines this shared secret as the literal string 'radsec'.
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- 'OCSP responder cannot be reached: Authentication requests will be rejected if disabled.'
+- Permission request dialogue may appear for users if no consent has been given
+- 'TLS Alert write:fatal:unknown CA: Your Client doesn''t know the Server certificate
+  and rejects the connection.'
+- 'Login incorrect (eap_tls: SSL says error 20 : unable to get local issuer certificate):
+  Your RADIUS server doesn''t know the issuer of the certificate which was used for
+  authentication.'
+- 'eap_tls: (TLS) Alert read:fatal:certificate unknown: There is a space character
+  somewhere in the Certificate server name.'
+- '0xc7d24fc5'
+- '-942518331'
+- 'TLS Alert write:fatal:unknown CA: Your Client doesn''t know the Server certificate.'
+- 'TLS Alert write:fatal:decrypt error: Possible bug in TPM software.'
+- 'Cannot continue, as the peer is misbehaving: Verify certificates on affected devices.'
+- 'Fragment Dropping: Many firewalls and CGNAT devices may drop fragments or fail
+  to reassemble them correctly.'
+- 'Packet Loss: If even one fragment is lost during transit, the entire original UDP
+  datagram cannot be reassembled by the server.'
+- 'SEC_E_ALGORITHM_MISMATCH: Look for this error in the Event Viewer as an indicator
+  for incompatibility in the cryptographic algorithms between the client and the server.'
+- 'SEC_E_ALGORITHM_MISMATCH: Incompatibility in the cryptographic algorithms between
+  the client and the server.'
+- No EAP session matching state
+- Proxy Session Resumption
+- Error in error
+- Certificate status was revoked previously
+- 'No EAP session matching state: The RADIUS protocol is stateless and since it is
+  normally transmitted over UDP, it has to validate if all packages have arrived,
+  if their integrity persists, if they can be correctly assembled in the correct order.'
+- 'Proxy Session Resumption: Your proxies will create a TCP session with your RadSec
+  server(s). These sessions have to be reinitiated every 30 seconds. As long as there
+  is no error within those messages, these log entries are expected.'
+- 'Error in error: Since your RadSec server(s) are globally available, anyone on the
+  Internet can try to connect to them. If no valid (mutual) TLS connection can be
+  established, this error message is generated and expected.'
+- 'Certificate status was revoked previously: If a certificate is found to be revoked,
+  this status will be cached for 2 minutes. Additional attempts to authenticate this
+  certificate will directly be rejected.'
+- 'Access-Accept: Access granted'
+- 'Access-Reject: Access denied'
+- 'Unauthorized: Check certificate or credentials'
+- Service outages must be reported by customers to support as soon as possible and
+  at the latest within 24 hours after occurrence.
+- 'TLS Alert write:fatal:decrypt error: This may be a bug of the TPM software on your
+  Windows machines.'
+- 'Cannot continue, as the peer is misbehaving: indicates that the client stopped
+  communicating with the RADIUS service.'
+- 'Common error codes: 0xc7d24fc5 or -942518331'
+auth_info:
+  mentioned_objects:
+  - OAuth2
+  - OpenID Connect
+  - Microsoft Entra ID
+  - RADIUSaaS Enterprise Application
+  - Enterprise Application
+  - JWT access tokens
+  - IDP
+client:
+  base_url: https://www.radius-as-a-service.com/
+  auth:
+    type: username/password
+source_metadata: null

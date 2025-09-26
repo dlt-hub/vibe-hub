@@ -1,0 +1,212 @@
+resources:
+- name: create_gift_card
+  endpoint:
+    path: /public/gift-cards
+    method: POST
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: authorization_status
+  endpoint:
+    path: /v1/public/authorization/status
+    method: GET
+- name: list_card_designs
+  endpoint:
+    path: /public/card-designs
+    method: GET
+- name: card_design
+  endpoint:
+    path: /public/card-designs
+    method: POST
+- name: search_gift_cards
+  endpoint:
+    path: /gift-cards
+    method: GET
+- name: retrieve_gift_card_by_qr_code
+  endpoint:
+    path: /v1/public/gift-cards/qr-code/{qrCodeContent}
+    method: GET
+- name: retrieve_gift_card
+  endpoint:
+    path: /v1/public/gift-cards/{giftCardIdOrCode}
+    method: GET
+- name: adjust_balance
+  endpoint:
+    path: /gift-cards/{giftCardIdOrCode}/adjust-balance
+    method: POST
+- name: redeem_gift_card
+  endpoint:
+    path: /public/gift-cards/{giftCardIdOrCode}/charge
+    method: POST
+- name: update_gift_card_recipient
+  endpoint:
+    path: /public/gift-cards/{giftCardIdOrCode}/recipient
+    method: PUT
+- name: reload_gift_card
+  endpoint:
+    path: /public/gift-cards/{giftCardIdOrCode}/reload
+    method: POST
+- name: reload_gift_card
+  endpoint:
+    path: /public/gift-cards/{giftCardIdOrCode}/reload
+    method: POST
+- name: create_gift_card_recipient_notification
+  endpoint:
+    path: /public/gift-cards/{giftCardIdOrCode}/notifications/recipient
+    method: POST
+- name: gift_card_recipient_notification
+  endpoint:
+    path: /v1/public/gift-cards/{giftCardIdOrCode}/notifications/recipient
+    method: POST
+- name: locations
+  endpoint:
+    path: /reference/locations-1
+    method: GET
+- name: locations
+  endpoint:
+    path: /reference/locations-1
+    method: GET
+- name: locations
+  endpoint:
+    path: /locations
+    method: GET
+- name: locations
+  endpoint:
+    path: /locations
+    method: GET
+- name: create_location
+  endpoint:
+    path: /locations
+    method: POST
+- name: location
+  endpoint:
+    path: /locations
+    method: POST
+- name: retrieve_location
+  endpoint:
+    path: /v1/public/locations/{locationIdOrExternalId}
+    method: GET
+- name: locations
+  endpoint:
+    path: /v1/public/locations/{locationIdOrExternalId}
+    method: GET
+- name: update_location
+  endpoint:
+    path: /locations/{locationIdOrExternalId}
+    method: PUT
+- name: update_location
+  endpoint:
+    path: /locations/{locationIdOrExternalId}
+    method: PUT
+- name: transactions
+  endpoint:
+    path: /transactions
+    method: GET
+- name: transactions
+  endpoint:
+    path: /transactions
+    method: GET
+- name: transaction
+  endpoint:
+    path: /v1/public/transactions/{transactionId}
+    method: GET
+- name: webhook
+  endpoint:
+    path: /reference/webhooks
+    method: GET
+- name: list_webhooks
+  endpoint:
+    path: /reference/list
+    method: GET
+- name: create_webhook
+  endpoint:
+    path: /reference/create_1
+    method: POST
+- name: delete_webhook
+  endpoint:
+    path: /reference/delete
+    method: DELETE
+- name: webhooks
+  endpoint:
+    path: /v1/public/webhooks
+    method: GET
+    data_selector: webhooks
+- name: transaction
+  endpoint:
+    path: /public/transactions/{transactionId}
+    method: GET
+- name: webhook
+  endpoint:
+    path: /webhooks
+    method: POST
+- name: webhooks
+  endpoint:
+    path: /reference/webhooks
+    method: GET
+    data_selector: records
+    params: {}
+- name: delete_webhook
+  endpoint:
+    path: /v1/public/webhooks/{webhookSubscriptionId}
+    method: DELETE
+- name: webhooks
+  endpoint:
+    path: /v1/public/webhooks
+    method: GET
+    data_selector: records
+- name: webhook
+  endpoint:
+    path: /v1/public/webhooks
+    method: POST
+- name: webhook
+  endpoint:
+    path: /webhooks/{webhookSubscriptionId}
+    method: DELETE
+notes:
+- The API Key must be present on an API request as a Bearer token in an Authorization
+  header.
+- All API requests must be made over HTTPS.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Webhook events can be sent to your registered endpoint as JSON payloads.
+- Loopz uses HTTPS to send webhook events to your app as a JSON payload.
+errors:
+- API requests without authentication will fail.
+- 'Unauthorized: API requests without authentication will fail.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400 - Bad Request: The request was unacceptable, often due to missing a required
+  parameter.'
+- '401 - Unauthorized: No valid API key provided.'
+- '403 - Forbidden: The API key doesn''t have permissions to perform the request.'
+- '404 - Not Found: The requested resource doesn''t exist.'
+- '409 - Conflict: The request conflicts with another request (perhaps due to using
+  the same idempotent key).'
+- '429 - Too Many Requests: Too many requests hit the API too quickly. We recommend
+  an exponential backoff of your requests. Up to 250 requests per API key per minute
+  are allowed.'
+- '5** - Server Error: Something went wrong on Loopz'' end. (Contact support or check
+  our status page.)'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.loopz.io/v1
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+source_metadata: null

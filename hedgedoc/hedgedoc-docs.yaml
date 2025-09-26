@@ -1,0 +1,252 @@
+resources:
+- name: create_note
+  endpoint:
+    path: /new
+    method: GET
+- name: import_markdown
+  endpoint:
+    path: /new
+    method: POST
+- name: import_markdown_with_alias
+  endpoint:
+    path: /new/<ALIAS>
+    method: POST
+- name: download_note
+  endpoint:
+    path: /<NOTE>/download
+    method: GET
+- name: publish_note
+  endpoint:
+    path: /<NOTE>/publish
+    method: GET
+- name: slide_present_note
+  endpoint:
+    path: /<NOTE>/slide
+    method: GET
+- name: note_info
+  endpoint:
+    path: /<NOTE>/info
+    method: GET
+- name: note_revisions
+  endpoint:
+    path: /<NOTE>/revision
+    method: GET
+- name: note_revision_info
+  endpoint:
+    path: /<NOTE>/revision/<REVISION-ID>
+    method: GET
+- name: create_gist
+  endpoint:
+    path: /<NOTE>/gist
+    method: GET
+- name: user_profile
+  endpoint:
+    path: /me
+    method: GET
+- name: export_user_notes
+  endpoint:
+    path: /me/export
+    method: GET
+- name: user_history
+  endpoint:
+    path: /history
+    method: GET
+- name: replace_user_history
+  endpoint:
+    path: /history
+    method: POST
+- name: delete_user_history
+  endpoint:
+    path: /history
+    method: DELETE
+- name: toggle_pinned_status
+  endpoint:
+    path: /history/<NOTE>
+    method: POST
+- name: delete_note_from_history
+  endpoint:
+    path: /history/<NOTE>
+    method: DELETE
+- name: server_status
+  endpoint:
+    path: /status
+    method: GET
+- name: prometheus_metrics
+  endpoint:
+    path: /metrics
+    method: GET
+- name: sockets
+  endpoint:
+    path: /sockets.io/
+    method: GET
+- name: notes
+  endpoint:
+    path: /api/notes
+    method: GET
+    data_selector: records
+- name: database
+  endpoint:
+    path: /var/lib/postgresql/data
+    method: GET
+    data_selector: records
+- name: app
+  endpoint:
+    path: /hedgedoc/public/uploads
+    method: GET
+    data_selector: records
+- name: production
+  endpoint:
+    path: /config.json
+    method: GET
+    data_selector: production
+- name: hedgedoc
+  endpoint:
+    path: /hedgedoc
+    method: GET
+    data_selector: records
+    params: {}
+- name: s3_upload
+  endpoint:
+    path: /s3/upload
+    method: POST
+    data_selector: records
+- name: image_upload
+  endpoint:
+    path: /your-bucket-name
+    method: POST
+    data_selector: images
+    params: {}
+- name: migrate_pads
+  endpoint:
+    path: /p/{pad_name}/export/txt
+    method: GET
+    data_selector: pad_content
+- name: terms_of_use
+  endpoint:
+    path: ./public/docs/terms-of-use.md
+    method: GET
+- name: privacy_policy
+  endpoint:
+    path: ./public/docs/privacy.md
+    method: GET
+- name: imprint
+  endpoint:
+    path: ./public/docs/imprint.md
+    method: GET
+- name: YAML metadata
+  endpoint:
+    path: /supported-yaml-metadata
+    method: GET
+    data_selector: YAML metas
+- name: note
+  endpoint:
+    path: /new
+    method: POST
+    data_selector: default
+    params: {}
+- name: note_download
+  endpoint:
+    path: /{note}/download
+    method: GET
+    data_selector: default
+    params: {}
+- name: note_publish
+  endpoint:
+    path: /{note}/publish
+    method: GET
+    data_selector: default
+    params: {}
+- name: note_slide
+  endpoint:
+    path: /{note}/slide
+    method: GET
+    data_selector: default
+    params: {}
+- name: note_info
+  endpoint:
+    path: /{note}/info
+    method: GET
+    data_selector: default
+    params: {}
+- name: note_revision
+  endpoint:
+    path: /{note}/revision
+    method: GET
+    data_selector: default
+    params: {}
+- name: note_revision_id
+  endpoint:
+    path: /{note}/revision/{revision-id}
+    method: GET
+    data_selector: default
+    params: {}
+- name: note_gist
+  endpoint:
+    path: /{note}/gist
+    method: GET
+    data_selector: default
+    params: {}
+- name: user_profile
+  endpoint:
+    path: /me
+    method: GET
+    data_selector: default
+    params: {}
+- name: user_export
+  endpoint:
+    path: /me/export
+    method: GET
+    data_selector: default
+    params: {}
+- name: user_history
+  endpoint:
+    path: /history
+    method: GET
+    data_selector: default
+    params: {}
+- name: user_history_note
+  endpoint:
+    path: /history/{note}
+    method: POST
+    data_selector: default
+    params: {}
+- name: server_status
+  endpoint:
+    path: /status
+    method: GET
+    data_selector: default
+    params: {}
+notes:
+- If you use Cloudflare as reverse proxy, then you MUST disable Rocket Loader, or
+  your HedgeDoc instance may be broken.
+- NGINX proxy_pass directives must NOT have trailing slashes.
+- Environment variables take precedence over configurations from the config files.
+- Allowing your HedgeDoc instance to be embedded in other pages increases the risk
+  of clickjacking, XSS and other attacks. Therefore, we recommend to not enable this
+  option.
+- Make sure to use the latest release from https://hedgedoc.org/latest-release
+- By default, HedgeDoc will change the permissions of the uploads directory to `0700`
+  on every start of the Docker container.
+- These are not officially supported by the HedgeDoc maintainers. If you encounter
+  issues or have questions, please first reach out to downstream packagers.
+- Use different values for endpoint and port for production setup.
+- Replace `bucket_name` with your bucket name in policies.
+- Remember your user credentials(`key`/`access token`).
+- Edit `config.json` and set keys for S3 access.
+- HedgeDoc has no direct/native support for storing images in Google Cloud Storage
+  Buckets, but it can use S3 interoperability.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Rate-limiting for basic user/password
+errors:
+- '401 Unauthorized: Check your credentials.'
+- 'AUTH failed: No cookie transmitted'
+auth_info:
+  mentioned_objects:
+  - OAuth
+client:
+  base_url: https://github.com/hedgedoc/hedgedoc
+  auth:
+    type: oauth2
+  headers:
+    Accept: application/json
+source_metadata: null

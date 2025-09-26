@@ -1,0 +1,905 @@
+resources:
+- name: docker_compose_file
+  endpoint:
+    path: /docker-compose.yml
+    method: GET
+    data_selector: file
+    params: {}
+- name: dtrack-apiserver
+  endpoint:
+    path: /dependencytrack/apiserver
+    method: GET
+    data_selector: records
+    params: {}
+- name: dtrack-frontend
+  endpoint:
+    path: /dependencytrack/frontend
+    method: GET
+    data_selector: records
+    params: {}
+- name: dtrack-apiserver
+  endpoint:
+    path: /api/v1
+    method: GET
+- name: dtrack-frontend
+  endpoint:
+    path: /
+    method: GET
+- name: users
+  endpoint:
+    path: /api/users
+    method: GET
+- name: teams
+  endpoint:
+    path: /api/teams
+    method: GET
+- name: permissions
+  endpoint:
+    path: /api/permissions
+    method: GET
+- name: alpine
+  endpoint:
+    path: /api/alpine
+    method: GET
+    data_selector: records
+- name: alpine.worker.threads
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params: {}
+- name: alpine.worker.thread.multiplier
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: config
+  endpoint:
+    path: /static/config.json
+    method: GET
+- name: PostgreSQL
+  endpoint:
+    path: /getting-started/database-support/
+    method: GET
+    data_selector: records
+    params: {}
+- name: Microsoft SQL Server
+  endpoint:
+    path: /getting-started/database-support/
+    method: GET
+    data_selector: records
+    params: {}
+- name: MySQL
+  endpoint:
+    path: /getting-started/database-support/
+    method: GET
+    data_selector: records
+    params: {}
+- name: LdapSyncTask
+  endpoint:
+    params:
+      initial_delay: 10s
+      default_interval: 6h
+- name: GitHubAdvisoryMirrorTask
+  endpoint:
+    params:
+      initial_delay: 10s
+      default_interval: 24h
+- name: NistMirrorTask
+  endpoint:
+    params:
+      initial_delay: 1m
+      default_interval: 24h
+- name: EpssMirrorTask
+  endpoint:
+    params:
+      default_interval: (Immediately after NistMirrorTask)
+- name: OsvMirrorTask
+  endpoint:
+    params:
+      initial_delay: 10s
+      default_interval: 24h
+- name: VulnDbSyncTask
+  endpoint:
+    params:
+      initial_delay: 1m
+      default_interval: 24h
+- name: PortfolioMetricsUpdateTask
+  endpoint:
+    params:
+      initial_delay: 10s
+      default_interval: 1h
+- name: VulnerabilityMetricsUpdateTask
+  endpoint:
+    params:
+      initial_delay: 10s
+      default_interval: 1h
+- name: VulnerabilityAnalysisTask
+  endpoint:
+    params:
+      initial_delay: 6h
+      default_interval: 24h
+- name: RepositoryMetaAnalyzerTask
+  endpoint:
+    params:
+      initial_delay: 1h
+      default_interval: 24h
+- name: InternalComponentIdentificationTask
+  endpoint:
+    params:
+      initial_delay: 1h
+      default_interval: 6h
+- name: ClearComponentAnalysisCacheTask
+  endpoint:
+    params:
+      initial_delay: 10s
+      default_interval: 72h
+- name: FortifySscUploadTask
+  endpoint:
+    params:
+      initial_delay: 5m
+      default_interval: 1h
+- name: DefectDojoUploadTask
+  endpoint:
+    params:
+      initial_delay: 5m
+      default_interval: 1h
+- name: KennaSecurityUploadTask
+  endpoint:
+    params:
+      initial_delay: 5m
+      default_interval: 1h
+- name: IndexTask
+  endpoint:
+    params:
+      initial_delay: 3h
+      default_interval: 72h
+- name: Microsoft Active Directory
+  endpoint:
+    path: /ldap/active-directory
+    method: GET
+    data_selector: records
+    params:
+      enabled: 'true'
+      server_url: ldap://ldap.example.com:3268
+      basedn: dc=example,dc=com
+      auth: simple
+      username_format: '%s@example.com'
+      bind_username: cn=ServiceAccount,ou=Users,dc=example,dc=com
+      bind_password: mypassword
+      attribute_name: userPrincipalName
+      attribute_mail: mail
+      groups_filter: (&(objectClass=group)(objectCategory=Group))
+      user_groups_filter: (member:1.2.840.113556.1.4.1941:={USER_DN})
+      groups_search_filter: (&(objectClass=group)(objectCategory=Group)(cn=*{SEARCH_TERM}*))
+      users_search_filter: (&(objectClass=user)(objectCategory=Person)(cn=*{SEARCH_TERM}*))
+- name: ApacheDS
+  endpoint:
+    path: /ldap/apacheds
+    method: GET
+    data_selector: records
+    params:
+      enabled: 'true'
+      server_url: ldap://ldap.example.com:389
+      basedn: dc=example,dc=com
+      auth: simple
+      username_format: '%s'
+      bind_username: uid=ServiceAccount,ou=system
+      bind_password: mypassword
+      attribute_name: cn
+      attribute_mail: mail
+      groups_filter: (&(objectClass=groupOfUniqueNames))
+      user_groups_filter: (&(objectClass=groupOfUniqueNames)(uniqueMember={USER_DN}))
+      groups_search_filter: (&(objectClass=groupOfUniqueNames)(cn=*{SEARCH_TERM}*))
+      users_search_filter: (&(objectClass=inetOrgPerson)(cn=*{SEARCH_TERM}*))
+- name: Fedora 389 Directory
+  endpoint:
+    path: /ldap/fedora-389
+    method: GET
+    data_selector: records
+    params:
+      enabled: 'true'
+      server_url: ldap://ldap.example.com:389
+      basedn: dc=example,dc=com
+      auth: simple
+      username_format: '%s'
+      bind_username: cn=directory manager
+      bind_password: mypassword
+      attribute_name: uid
+      attribute_mail: mail
+      groups_filter: (&(objectClass=groupOfUniqueNames))
+      user_groups_filter: (&(objectClass=groupOfUniqueNames)(uniqueMember={USER_DN}))
+      groups_search_filter: (&(objectClass=groupOfUniqueNames)(cn=*{SEARCH_TERM}*))
+      users_search_filter: (&(objectClass=inetOrgPerson)(cn=*{SEARCH_TERM}*))
+- name: NetIQ/Novell eDirectory
+  endpoint:
+    path: /ldap/netiq-edirectory
+    method: GET
+    data_selector: records
+    params:
+      enabled: 'true'
+      server_url: ldaps://ldap.example.com:636
+      basedn: o=example
+      auth: simple
+      username_format: '%s'
+      bind_username: cn=ServiceAccount,o=example
+      bind_password: mypassword
+      attribute_name: uid
+      attribute_mail: mail
+      groups_filter: (&(objectClass=groupOfUniqueNames))
+      user_groups_filter: (&(objectClass=groupOfUniqueNames)(uniqueMember={USER_DN}))
+      groups_search_filter: (&(objectClass=groupOfUniqueNames)(cn=*{SEARCH_TERM}*))
+      users_search_filter: (&(objectClass=inetOrgPerson)(cn=*{SEARCH_TERM}*))
+- name: OpenID Connect
+  endpoint:
+    path: /static/oidc-callback.html
+    method: GET
+- name: hikaricp_connections_min
+  endpoint:
+    path: /hikaricp/connections/min
+    method: GET
+    data_selector: records
+- name: hikaricp_connections_pending
+  endpoint:
+    path: /hikaricp/connections/pending
+    method: GET
+    data_selector: records
+- name: hikaricp_connections_idle
+  endpoint:
+    path: /hikaricp/connections/idle
+    method: GET
+    data_selector: records
+- name: hikaricp_connections_timeout_total
+  endpoint:
+    path: /hikaricp/connections/timeout/total
+    method: GET
+    data_selector: records
+- name: hikaricp_connections_creation_seconds_max
+  endpoint:
+    path: /hikaricp/connections/creation/seconds/max
+    method: GET
+    data_selector: records
+- name: hikaricp_connections_creation_seconds
+  endpoint:
+    path: /hikaricp/connections/creation/seconds
+    method: GET
+    data_selector: records
+- name: hikaricp_connections_active
+  endpoint:
+    path: /hikaricp/connections/active
+    method: GET
+    data_selector: records
+- name: hikaricp_connections_max
+  endpoint:
+    path: /hikaricp/connections/max
+    method: GET
+    data_selector: records
+- name: hikaricp_connections_acquire_seconds
+  endpoint:
+    path: /hikaricp/connections/acquire/seconds
+    method: GET
+    data_selector: records
+- name: hikaricp_connections_acquire_seconds_max
+  endpoint:
+    path: /hikaricp/connections/acquire/seconds/max
+    method: GET
+    data_selector: records
+- name: alpine_events_published_total
+  endpoint:
+    path: /alpine/events/published/total
+    method: GET
+    data_selector: records
+- name: alpine_notifications_published_total
+  endpoint:
+    path: /alpine/notifications/published/total
+    method: GET
+    data_selector: records
+- name: alpine_event_processing_seconds
+  endpoint:
+    path: /alpine/event/processing/seconds
+    method: GET
+    data_selector: records
+- name: alpine_event_processing_seconds_max
+  endpoint:
+    path: /alpine/event/processing/seconds/max
+    method: GET
+    data_selector: records
+- name: executor_pool_max_threads
+  endpoint:
+    path: /executor/pool/max/threads
+    method: GET
+    data_selector: records
+- name: executor_pool_core_threads
+  endpoint:
+    path: /executor/pool/core/threads
+    method: GET
+    data_selector: records
+- name: executor_pool_size_threads
+  endpoint:
+    path: /executor/pool/size/threads
+    method: GET
+    data_selector: records
+- name: executor_active_threads
+  endpoint:
+    path: /executor/active/threads
+    method: GET
+    data_selector: records
+- name: executor_completed_tasks_total
+  endpoint:
+    path: /executor/completed/tasks/total
+    method: GET
+    data_selector: records
+- name: executor_queued_tasks
+  endpoint:
+    path: /executor/queued/tasks
+    method: GET
+    data_selector: records
+- name: executor_queue_remaining_tasks
+  endpoint:
+    path: /executor/queue/remaining/tasks
+    method: GET
+    data_selector: records
+- name: search_index_ram_used_bytes
+  endpoint:
+    path: /search/index/ram/used/bytes
+    method: GET
+    data_selector: records
+- name: search_index_docs_ram_total_objects
+  endpoint:
+    path: /search/index/docs/ram/total/objects
+    method: GET
+    data_selector: records
+- name: search_index_docs_total_objects
+  endpoint:
+    path: /search/index/docs/total/objects
+    method: GET
+    data_selector: records
+- name: search_index_operations_total
+  endpoint:
+    path: /search/index/operations/total
+    method: GET
+    data_selector: records
+- name: resilience4j_retry_calls_total
+  endpoint:
+    path: /resilience4j/retry/calls/total
+    method: GET
+    data_selector: records
+- name: config_property
+  endpoint:
+    path: /api/v1/configProperty
+    method: POST
+    data_selector: null
+    params: {}
+- name: bom
+  endpoint:
+    path: /api/v1/bom
+    method: PUT
+    data_selector: project
+    params: {}
+- name: vulnerability
+  endpoint:
+    path: /api/v1/vulnerability/source/NVD/vuln/{cveID}/projects
+    method: GET
+    data_selector: projects
+    params: {}
+- name: project
+  endpoint:
+    path: /api/v1/project
+    method: GET
+    data_selector: projects
+    params: {}
+- name: findings
+  endpoint:
+    path: /api/v1/finding/project/{uuid}/export
+    method: GET
+- name: integration
+  endpoint:
+    path: /integrations/fortify-ssc/
+    method: POST
+- name: KDI connector
+  endpoint:
+    path: /api/kdi-connector
+    method: POST
+    data_selector: results
+    params: {}
+- name: notification
+  endpoint:
+    path: /notifications
+    method: GET
+    data_selector: notification
+    params: {}
+- name: vulnerable_components_badge
+  endpoint:
+    path: /api/v1/badge/vulns/project/{name}/{version}
+    method: GET
+    data_selector: badge
+    params: {}
+- name: policy_violations_badge
+  endpoint:
+    path: /api/v1/badge/violations/project/{name}/{version}
+    method: GET
+    data_selector: badge
+    params: {}
+- name: project
+  endpoint:
+    path: /api/v1/project/{uuid}
+    method: GET
+    data_selector: records
+- name: tag
+  endpoint:
+    path: /api/v1/tag/policy/{uuid}
+    method: GET
+    data_selector: records
+- name: projects
+  endpoint:
+    path: /api/projects
+    method: GET
+    data_selector: records
+    params: {}
+- name: vulnerabilities
+  endpoint:
+    path: /api/vulnerabilities
+    method: GET
+    data_selector: records
+    params: {}
+- name: bom
+  endpoint:
+    path: /v1/bom
+    method: GET
+    data_selector: records
+- name: component
+  endpoint:
+    path: /v1/component
+    method: GET
+    data_selector: records
+- name: finding
+  endpoint:
+    path: /v1/finding
+    method: GET
+    data_selector: records
+- name: metrics
+  endpoint:
+    path: /v1/metrics
+    method: GET
+    data_selector: records
+- name: project
+  endpoint:
+    path: /v1/project
+    method: GET
+    data_selector: records
+- name: service
+  endpoint:
+    path: /v1/service
+    method: GET
+    data_selector: records
+- name: violation
+  endpoint:
+    path: /v1/violation
+    method: GET
+    data_selector: records
+- name: vulnerability
+  endpoint:
+    path: /v1/vulnerability
+    method: GET
+    data_selector: records
+- name: projects
+  endpoint:
+    path: /api/projects
+    method: GET
+    data_selector: data
+    params: {}
+- name: vulnerabilities
+  endpoint:
+    path: /api/vulnerabilities
+    method: GET
+    data_selector: data
+    params: {}
+- name: project
+  endpoint:
+    path: /api/v1/project/{uuid}
+    method: GET
+    data_selector: records
+- name: tag
+  endpoint:
+    path: /api/v1/tag/policy/{uuid}
+    method: GET
+    data_selector: records
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: project
+  endpoint:
+    path: /api/v4/projects
+    method: GET
+    data_selector: projects
+- name: vulnerability
+  endpoint:
+    path: /api/v4/vulnerabilities
+    method: GET
+    data_selector: vulnerabilities
+- name: vulnerability_aliases
+  endpoint:
+    path: /vulnerability/aliases
+    method: GET
+    data_selector: records
+    params: {}
+- name: osv_integration
+  endpoint:
+    path: /osv/integration
+    method: GET
+    data_selector: records
+    params: {}
+- name: bom_json
+  endpoint:
+    path: /dependency-track/releases/download/4.4.2/bom.json
+    method: GET
+    data_selector: records
+- name: bom_xml
+  endpoint:
+    path: /dependency-track/releases/download/4.4.2/bom.xml
+    method: GET
+    data_selector: records
+- name: bom_json
+  endpoint:
+    path: /dependency-track/releases/download/4.0.0/bom.json
+    method: GET
+- name: bom_xml
+  endpoint:
+    path: /dependency-track/releases/download/4.0.0/bom.xml
+    method: GET
+- name: policy_violation
+  endpoint:
+    path: /api/v1/policy-violation
+    method: GET
+    data_selector: records
+    params: {}
+- name: project
+  endpoint:
+    path: /api/v1/project
+    method: GET
+    data_selector: records
+    params: {}
+- name: bom
+  endpoint:
+    path: /v1/bom/
+    method: GET
+- name: component
+  endpoint:
+    path: /v1/component/
+    method: GET
+- name: finding
+  endpoint:
+    path: /v1/finding/
+    method: GET
+- name: metrics
+  endpoint:
+    path: /v1/metrics/
+    method: GET
+- name: project
+  endpoint:
+    path: /v1/project/
+    method: GET
+- name: service
+  endpoint:
+    path: /v1/service/
+    method: GET
+- name: violation
+  endpoint:
+    path: /v1/violation/
+    method: GET
+- name: vulnerability
+  endpoint:
+    path: /v1/vulnerability/
+    method: GET
+- name: dependency_track_embedded
+  endpoint:
+    path: /dependency-track/releases/download/3.4.1/dependency-track-embedded.war
+    method: GET
+- name: dependency_track
+  endpoint:
+    path: /dependency-track/releases/download/3.4.1/dependency-track.war
+    method: GET
+- name: project
+  endpoint:
+    path: /api/v1/projects
+    method: GET
+    data_selector: records
+- name: project
+  endpoint:
+    path: /api/v1/project/{uuid}
+    method: GET
+    data_selector: records
+- name: tag
+  endpoint:
+    path: /api/v1/tag/policy/{uuid}
+    method: GET
+    data_selector: records
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: vulnerability
+  endpoint:
+    path: /api/v1/vulnerabilities
+    method: GET
+    data_selector: records
+    params: {}
+- name: project
+  endpoint:
+    path: /api/projects
+    method: GET
+    data_selector: data
+    params: {}
+- name: vulnerability
+  endpoint:
+    path: /api/vulnerabilities
+    method: GET
+    data_selector: data
+    params: {}
+- name: vulnerabilities
+  endpoint:
+    path: /api/v1/vulnerabilities
+    method: GET
+    data_selector: data
+- name: projects
+  endpoint:
+    path: /api/v1/projects
+    method: GET
+    data_selector: data
+- name: portfolio_access_control
+  endpoint:
+    path: /v1/portfolio/*
+    method: GET
+    data_selector: records
+    params: {}
+- name: component
+  endpoint:
+    path: /v1/component/*
+    method: GET
+    data_selector: records
+    params: {}
+- name: finding
+  endpoint:
+    path: /v1/finding/*
+    method: GET
+    data_selector: records
+    params: {}
+- name: metrics
+  endpoint:
+    path: /v1/metrics/*
+    method: GET
+    data_selector: records
+    params: {}
+- name: project
+  endpoint:
+    path: /v1/project/*
+    method: GET
+    data_selector: records
+    params: {}
+- name: service
+  endpoint:
+    path: /v1/service/*
+    method: GET
+    data_selector: records
+    params: {}
+- name: violation
+  endpoint:
+    path: /v1/violation/*
+    method: GET
+    data_selector: records
+    params: {}
+- name: vulnerability
+  endpoint:
+    path: /v1/vulnerability/*
+    method: GET
+    data_selector: records
+    params: {}
+- name: bom_json
+  endpoint:
+    path: /bom.json
+    method: GET
+    data_selector: data
+    params: {}
+- name: bom_xml
+  endpoint:
+    path: /bom.xml
+    method: GET
+    data_selector: data
+    params: {}
+notes:
+- API Keys will be stored in a hashed format in the database, making them invisible
+  after their initial creation.
+- OAuth 2.0 + OpenID Connect (OIDC) support for single sign-on (authN/authZ)
+- The ‘latest’ tag in Docker Hub will always refer to the latest stable GA release.
+- The bundled container does not support OpenID Connect authentication.
+- The chart does not include an external database such as PostgreSQL, and instead
+  defaults to an embedded H2 database. H2 is not intended for production usage.
+- The Executable WAR is deprecated and will no longer be distributed in a future version
+  of Dependency-Track
+- These requirements can be disabled by setting the ‘system.requirement.check.enabled’
+  property or the ‘SYSTEM_REQUIREMENT_CHECK_ENABLED’ environment variable to ‘false’.
+- The default embedded H2 database is designed to quickly evaluate and experiment
+  with Dependency-Track.
+- Do not use the embedded H2 database in production environments.
+- Uses OpenID Connect for user authentication
+- Default value for alpine.worker.threads is 0.
+- Default value for alpine.worker.thread.multiplier is 4.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- The embedded H2 database is not intended for production use!
+- Support for H2, Microsoft SQL Server, and MySQL will be dropped in Dependency-Track
+  v5.
+- OIDC integration requires you to register Dependency-Track as an app in your tenant
+- The front-end will not display the OIDC login button if the Dependency-Track service
+  is unable to connect to your OIDC server’s .well-known/openid-configuration endpoint.
+- Before v4.3.0, Dependency-Track exclusively used the /userinfo endpoint of the IdP
+  to get user information.
+- 'Recommended setting for production: Select Groups assigned to the application to
+  ensure optimal performance and avoid Single Sign-On (SSO) issues.'
+- Dependency-Track is configured to connect to internal systems over TLS.
+- 'Most common situations include: Dependency-Track is configured to use a HTTP proxy
+  to connect to external services, Dependency-Track is configured to use an internal
+  identity provider for OpenID Connect.'
+- For containerized deployments, $HOME will refer to the /data directory.
+- Starting with v4.8.0, Dependency-Track exposes health information according to the
+  MicroProfile Health specification.
+- Telemetry data is first submitted one minute after application startup.
+- From then onwards, it is submitted on a daily basis.
+- Ingestion of files as well as changes to the components via REST or from the user
+  interface.
+- Organizations are encouraged to start with sharing SBOM data with other departments
+  or business units within the same organization prior to sharing data with external
+  parties.
+- Dependency-Track relies heavily on the data provided by the NVD and includes a full
+  mirror, which is kept up-to-date on a daily basis, or upon the restarting of the
+  Dependency-Track instance.
+- Usage of the NVD APIs does not require an API key. However, unauthenticated usage
+  is subject to aggressive rate limiting, which can cause initial mirroring operations
+  to take significantly more time to complete.
+- A personal access token (PAT) is required in order to authenticate with GitHub,
+  but no scopes have to be assigned to it.
+- The mirror is refreshed daily, or upon restart of the Dependency-Track instance.
+- This is a preview feature only. Data may not be fully synchronized. Doing backup
+  is recommended before enabling it.
+- Unauthenticated usage of OSS Index is subject to stricter rate limiting and does
+  not grant access to Sonatype’s proprietary vulnerability intelligence data.
+- When rate limiting becomes an issue, or access to the proprietary data is desired,
+  register a free account and configure the API credentials in Dependency-Track’s
+  administration panel.
+- Access to the Snyk REST API requires an enterprise plan subscription.
+- The Snyk integration is disabled by default.
+- The Trivy integration requires an external Trivy server and is disabled by default.
+- VulnDB subscription plans may have a limit on the number of requests that can be
+  made to the service per month.
+- Dependency-Track does not monitor this, nor throttle its requests when limits are
+  nearing or have been reached.
+- Components that are identified as ‘internal’ will only be analyzed using ‘internal’
+  repositories. Non-internal components will only be analyzed using non-internal repositories.
+  Disabled repositories will be omitted from component metadata analysis.
+- By default, components are not identified as internal.
+- VIEW_VULNERABILITY permission is required to use the findings API.
+- Dependency-Track requires the use of a CIToken.
+- Dependency-Track v3.4.0 or higher is required.
+- Dependency-Track can automatically publish results to the Kenna Security platform
+  providing a consolidated view of every vulnerability across an organization including
+  vulnerable components.
+- Dependency-Track pushes findings to Kenna on a periodic basis (configurable).
+- Dependency-Track v4.1.0 or higher
+- DefectDojo 1.13.1 or higher
+- Uses Pebble Templates to generate notifications.
+- The default template override flag is switched off by default and can set at initial
+  startup with environment variable DEFAULT_TEMPLATES_OVERRIDE_ENABLED.
+- The default templates base directory is set to ${user.home} by default and can be
+  set at initial startup with environment variable DEFAULT_TEMPLATES_OVERRIDE_BASE_DIRECTORY.
+- A restart is needed for the modification to be taken into account.
+- You must set appropriate rights to the provided Pebble templates base directory
+  in order to prevent untrusted third party to supply a fraudulent template which
+  can lead to a code execution vulnerability.
+- It is recommended to setup a schedule for ThreadFix to automatically import Dependency-Track
+  results periodically.
+- Dependency Track crashes when run as a container
+- Dependency Track stops working after 1-2 weeks
+- Existing API keys will be automatically hashed during this upgrade.
+- Accessing badges requires the new VIEW_BADGES permission.
+- Unauthenticated access to badges is deprecated and will be fully removed in v4.13.
+- Snyk integration requires a paid subscription with REST API access.
+- Various improvements to aliases will be coming in future releases.
+- Portfolio Access Control is a beta feature in v4.3.
+- The Dependency-Track v4 data model is incompatible with previous releases. As a
+  result, it is not possible to simply upgrade as with previous versions. A data migration
+  is required to update from 3.8 to 4.0.
+- Four Dependency-Track distribution variants are provided.
+- The traditional WAR distribution is deprecated and no longer supported. It is still
+  being produced as of this release but will be discontinued in a future release.
+- Docker images have been moved from the OWASP organization on Docker Hub to a dedicated
+  Dependency-Track organization.
+- The FrontEnd requires deployment to the root (“/”) context. Deploying to any context
+  other than root is no longer supported.
+- API Key Overhaul — API keys are now stored as SHA3-256 hashes.
+- Scheduled summary notifications help reduce alert fatigue.
+- Ensure to have necessary permissions for API access.
+- Check the rate limits to avoid throttling.
+- The API server now requires Java 21 or newer.
+- The `/api/swagger.json` endpoint no longer exists.
+- To enable the optimized BOM ingestion, toggle the *BOM Processing V2* option in
+  the administration panel under *Configuration* -> *Experimental*
+- Validation of uploaded BOMs and VEXs is enabled per default, but can be disabled
+  in the administration panel under *Configuration* -> *BOM Formats* -> *BOM Validation*
+- Users who cannot perform this upgrade immediately can configure NVD mirroring to
+  be performed via the NVD REST API instead.
+- Existing API keys will be automatically hashed during this upgrade. It will not
+  be possible to view them in plain text ever again after the upgrade completed.
+- Added support for hierarchical project relationships
+- Added support for vulnerability analysis with Snyk
+- Added support for OWASP Risk Rating methodology
+- BOM processing is now an atomic operation, such that errors occurring midway do
+  not cause a partial state to be left behind.
+- Uploaded files will be rejected if they fail schema validation.
+- Portfolio Access Control is a beta feature in v4.3. By default, Portfolio Access
+  Control is disabled.
+- API keys generated after the upgrade will be prefixed with `odt_`.
+- The `parentUuid` field has been removed from the project model and will thus no
+  longer be returned by the REST API.
+- Synchronization of vulnerability aliases is now disabled by default for OSV and
+  Snyk.
+- 'OpenID Connect: The client ID of the frontend has to be passed to the API server
+  via the alpine.oidc.client.id property'
+- Some changes in this release are irreversible.
+- Some objects like project may return nulls in deeply nested fields
+- Uses OAuth2 with refresh token — requires setup of connected app in Dependency-Track
+- Portfolio Access Control is a beta feature in v4.3
+- By default, Portfolio Access Control is disabled.
+- This release of Dependency-Track supports a wide range of LDAP implementations and
+  has been tested with Active Directory, ApacheDS, Fedora 389 Directory, and NetIQ/Novell
+  eDirectory.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException:
+  unable to find valid certification path to requested target'
+- '401 Unauthorized: Check API key permissions'
+- '401 Unauthorized: Recheck API key or permissions'
+- Network outage between Dependency-Track and notification destination
+- Faulty proxy configuration, causing Dependency-Track to be unable to reach the notification
+  destination
+- Misconfiguration of notification rules in Dependency-Track, causing the notification
+  to not be sent
+- Bug in Dependency-Track’s notification routing mechanism, causing the notification
+  to not be sent
+- Syntactically invalid notification content, causing the destination system to fail
+  upon parsing it
+- 'PKIX path building failed: Check TLS certificate configuration'
+- '413 Request Entity Too Large: Expand maximum upload size in Kubernetes'
+- '403 Forbidden: Check your API key or permissions.'
+- '404 Not Found: Verify the endpoint URL.'
+- 'AlreadyClosedException: Transaction has already started'
+- 'NullPointerException: When computing enabled OSV ecosystems'
+- 'PROJECT_AUDIT_CHANGE: Missing some information in email notification'
+auth_info:
+  mentioned_objects:
+  - OpenID Connect Groups
+  - Access Management
+  - Teams
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: http://localhost:8081
+  headers:
+    Accept: application/json
+source_metadata: null

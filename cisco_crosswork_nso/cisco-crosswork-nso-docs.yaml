@@ -1,0 +1,156 @@
+resources:
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: Local Install
+  endpoint:
+    path: /guides/administration/installation-and-deployment/local-install
+    method: GET
+    data_selector: installation types
+    params: {}
+- name: System Install
+  endpoint:
+    path: /guides/administration/installation-and-deployment/system-install
+    method: GET
+    data_selector: installation types
+    params: {}
+- name: device
+  endpoint:
+    path: /restconf/data/devices
+    method: GET
+    data_selector: items
+    params: {}
+- name: service
+  endpoint:
+    path: /restconf/data/services
+    method: GET
+    data_selector: items
+    params: {}
+- name: service
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Service
+    method: GET
+    data_selector: records
+    params: {}
+- name: device
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Device
+    method: GET
+    data_selector: records
+    params: {}
+- name: learning_paths
+  endpoint:
+    path: /services/data/vXX.X/sobjects/LearningPaths
+    method: GET
+    data_selector: records
+- name: Device Turnup
+  endpoint:
+    path: /nso/device/turnup
+    method: POST
+    data_selector: result
+    params: {}
+- name: NFV Orchestration
+  endpoint:
+    path: /nso/nfv/orchestration
+    method: POST
+    data_selector: result
+    params: {}
+- name: SD-WAN Orchestration
+  endpoint:
+    path: /nso/sdwan/orchestration
+    method: POST
+    data_selector: result
+    params: {}
+- name: ACL Management
+  endpoint:
+    path: /nso/acl/management
+    method: POST
+    data_selector: result
+    params: {}
+- name: QoS Management
+  endpoint:
+    path: /nso/qos/management
+    method: POST
+    data_selector: result
+    params: {}
+- name: Config Audit
+  endpoint:
+    path: /nso/config/audit
+    method: GET
+    data_selector: result
+    params: {}
+- name: OS Upgrade
+  endpoint:
+    path: /nso/os/upgrade
+    method: POST
+    data_selector: result
+    params: {}
+- name: ncs_instance
+  endpoint:
+    path: /nso-instance
+    method: GET
+    data_selector: records
+- name: nso-instance
+  endpoint:
+    path: /nso-instance
+    method: GET
+    data_selector: files
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- FIPS support is currently limited to installer-based setups and not available on
+  Cisco-provided containers.
+- Subtree filtering and JSON format are not yet supported in YANG-Push functionality
+  for RESTCONF.
+- Local Install is used for development, lab, and evaluation purposes.
+- System Install is used when installing NSO for a centralized, always-on, production-grade,
+  system-wide deployment.
+- Users are required to authenticate before accessing the Web UI.
+- Uses OAuth2 for authentication.
+- Develop services and more in NSO.
+- Requires setup of connected app in Cisco API
+- Some objects may return nulls in deeply nested fields
+- Ensure OAuth2 tokens are valid and refreshed properly.
+- NSO has configuration templates for different device types and roles.
+- NSO can manage multiple devices in one operation and retry any failures.
+- NSO supports multiple vendor devices including Cisco, Juniper, and others
+- NSO can perform network audits to detect changes in device configurations
+- NSO can run on macOS or Linux systems.
+- NCS is the original name of the NSO product, so many the commands and application
+  features will be prefaced with `ncs`.
+- NCS is the original name of the NSO product, so many the commands and application
+  features will be prefaced with `ncs`. Think of `ncs` as another name for NSO.
+- You need to be in the `nso-instance` directory each time you want to start or stop
+  NSO. If you have multiple instances, you need to navigate to each one to use the
+  `ncs` command to start or stop each one.
+- NSO uses YANG as the overall modeling language to manage devices and services.
+- Configuration changes are replicated to the read-only secondaries in high-availability
+  mode.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '401 Unauthorized: Check OAuth2 token validity.'
+- '404 Not Found: Verify endpoint path.'
+- '500 Internal Server Error: Contact support for assistance.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://nso-docs.cisco.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+source_metadata: null
