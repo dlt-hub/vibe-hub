@@ -1,0 +1,84 @@
+resources:
+- name: recovery
+  endpoint:
+    path: /v2/activity/recovery
+    method: GET
+    data_selector: records
+    params:
+      limit: '10'
+- name: cycle
+  endpoint:
+    path: /v2/activity/cycle
+    method: GET
+    data_selector: records
+    params:
+      limit: '10'
+- name: workout
+  endpoint:
+    path: /v2/activity/workout
+    method: GET
+    data_selector: records
+    params: {}
+- name: sleep
+  endpoint:
+    path: /v2/activity/sleep
+    method: GET
+    data_selector: records
+    params: {}
+- name: workout
+  endpoint:
+    path: /get/v2/activity/workout
+    method: GET
+    data_selector: records
+    params:
+      limit: 10
+- name: cycle
+  endpoint:
+    path: /developer/v1/cycle
+    method: GET
+    data_selector: records
+    params:
+      limit: '1'
+- name: recovery
+  endpoint:
+    path: /developer/v1/cycle/{cycleId}/recovery
+    method: GET
+    data_selector: ''
+    params: {}
+notes:
+- 'IMPORTANT: v2 of the WHOOP API is now available and migration is required by October
+  1, 2025. The current v1 API and webhooks will be removed after this date.'
+- The v2 API offers several improvements while maintaining compatibility with core
+  functionality.
+- Deprecation of v1 API and webhooks will occur after October 1, 2025.
+- v2 of the WHOOP API is now available and migration is required by October 1, 2025.
+- 'IMPORTANT: v2 of the WHOOP API is now available and migration is required by October
+  1, 2025.'
+- Uses OAuth2 with refresh token — requires setup of connected app in WHOOP
+- You should refresh tokens every hour.
+- Not every Cycle has a Recovery - the user may not have worn their strap the previous
+  day.
+- New users may be calibrating. New users require calibration before the Recovery
+  score is relevant to them.
+errors:
+- '400: Client error constructing the request'
+- '401: Invalid authorization'
+- '429: Request rejected due to rate limiting'
+- '500: Server error occurred while making request'
+- '429 - Too Many Requests: Rate limit exceeded'
+- '404: Recovery does not exist for the current cycle'
+- Received {status} status from Whoop
+auth_info:
+  mentioned_objects:
+  - OauthToken
+client:
+  base_url: https://api.prod.whoop.com
+  auth:
+    type: oauth2
+    flow: authorizationCode
+    token_url: https://api.prod.whoop.com/oauth/oauth2/token
+  paginator:
+    type: cursor
+    page_size_param: limit
+    default_page_size: 10
+source_metadata: null

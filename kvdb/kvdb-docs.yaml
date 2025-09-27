@@ -1,0 +1,95 @@
+resources:
+- name: buckets
+  endpoint:
+    path: /BUCKET
+    method: GET
+    data_selector: keys
+    params: {}
+- name: set_key
+  endpoint:
+    path: /BUCKET/KEY
+    method: POST
+    data_selector: response
+    params: {}
+- name: list_keys
+  endpoint:
+    path: /BUCKET/
+    method: GET
+    data_selector: keys
+    params:
+      limit: '10000'
+      skip: '0'
+- name: delete_bucket
+  endpoint:
+    path: /BUCKET/
+    method: DELETE
+    data_selector: response
+    params: {}
+- name: access_token
+  endpoint:
+    path: /BUCKET/tokens/
+    method: POST
+    data_selector: access_token
+    params:
+      prefix: 'user:123:'
+      permissions: read,enumerate
+      ttl: 3600
+- name: waitinglist
+  endpoint:
+    path: /Fd55uogXyxYdnXJvnyN8Xo
+    method: POST
+    data_selector: row
+    params:
+      prefix: waitinglist_
+      values: 'true'
+- name: hit_counter
+  endpoint:
+    path: /{bucket_id}/{key}
+    method: PATCH
+    data_selector: value
+    params: {}
+- name: hit_counter
+  endpoint:
+    path: /{bucket_id}/{key}
+    method: PATCH
+    data_selector: value
+    params: {}
+- name: retrieve_hit_counts
+  endpoint:
+    path: /{bucket_id}/?values=true
+    method: GET
+    data_selector: values
+    params: {}
+notes:
+- Use of the bucket secret key provides full access to the bucket.
+- The maximum length of a key is 128 bytes.
+- You SHOULD NOT use access keys in client-side applications.
+- For privacy reasons, consider encrypting personal information.
+- Values will consist of integers and we use the KVdb API to increment them.
+- Keys should be formatted as URL:YYYY-MM-DD
+- Ensure proper expiration policy for keys
+errors:
+- 'HTTP 429: Rate limit exceeded.'
+- 'HTTP 401: Unauthorized access.'
+- '400: Bad Request -- Your request is invalid.'
+- '401: Unauthorized -- Your API key is wrong.'
+- '403: Forbidden -- Bucket policy blocked the request.'
+- '404: Not Found -- The specified key could not be found.'
+- '405: Method Not Allowed -- You tried to access a bucket or key with an invalid
+  method.'
+- '406: Not Acceptable -- You requested an unsupported output format.'
+- '410: Gone -- The requested resource has been removed from our servers.'
+- '418: I''m a teapot.'
+- '429: Too Many Requests -- You''re making too many requests! Slow down!'
+- '500: Internal Server Error -- We had a problem with our server. Try again later.'
+- '503: Service Unavailable -- We''re temporarily offline for maintenance. Please
+  try again later.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://kvdb.io
+  auth:
+    type: basic
+    location: header
+    header_name: Authorization
+source_metadata: null

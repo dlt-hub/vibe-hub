@@ -1,0 +1,48 @@
+resources:
+- name: create_card
+  endpoint:
+    path: /issuing/cards
+    method: POST
+    data_selector: data
+    params: {}
+- name: cards
+  endpoint:
+    path: /issuing/v1/cards
+    method: GET
+    data_selector: records
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Adyen ensures you’re compliant with the latest regulatory requirements and changes.
+- Simplify authentication with a smart solution that ensures compliance with PSD2
+  SCA.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Uses OAuth2 for authentication.
+- Adyen Issuing is currently available for businesses in the US, UK, and Europe only.
+- Some objects like Contact may return nulls in deeply nested fields
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://ca-live.adyen.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+source_metadata: null

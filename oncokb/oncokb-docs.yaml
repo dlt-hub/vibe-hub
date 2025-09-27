@@ -1,0 +1,99 @@
+resources:
+- name: annotate_mutations_by_protein_change
+  endpoint:
+    path: /api/v1/annotate/mutations/byProteinChange
+    method: GET
+    data_selector: query
+    params: {}
+- name: annotate_copy_number_alterations
+  endpoint:
+    path: /api/v1/annotate/copyNumberAlterations
+    method: GET
+    data_selector: query
+    params: {}
+- name: annotate_structural_variants
+  endpoint:
+    path: /api/v1/annotate/structuralVariants
+    method: GET
+    data_selector: query
+    params: {}
+- name: annotate_mutations_by_genomic_change
+  endpoint:
+    path: /api/v1/annotate/mutations/byGenomicChange
+    method: GET
+    data_selector: query
+    params: {}
+- name: annotate_mutations_by_HGVSg
+  endpoint:
+    path: /annotate/mutations/byHGVSg
+    method: GET
+    data_selector: query
+    params:
+      hgvsg: 7:g.140453136A>T
+      tumorType: Melanoma
+- name: annotate_mutations_byHGVSg
+  endpoint:
+    path: /api/v1/annotate/mutations/byHGVSg
+    method: POST
+    data_selector: response
+    params: {}
+- name: annotate_mutations_byHGVSg
+  endpoint:
+    path: /api/v1/annotate/mutations/byHGVSg
+    method: POST
+    data_selector: response
+    params: {}
+- name: maf_annotator
+  endpoint:
+    path: /mafAnnotator
+    method: POST
+    data_selector: results
+    params: {}
+- name: fusion_annotator
+  endpoint:
+    path: /fusionAnnotator
+    method: POST
+    data_selector: results
+    params: {}
+- name: cna_annotator
+  endpoint:
+    path: /cnaAnnotator
+    method: POST
+    data_selector: results
+    params: {}
+- name: clinical_data_annotator
+  endpoint:
+    path: /clinicalDataAnnotator
+    method: POST
+    data_selector: results
+    params: {}
+- name: oncokb_plots
+  endpoint:
+    path: /oncokbPlots
+    method: POST
+    data_selector: results
+    params: {}
+notes:
+- 'You need to specify your API token in the request header with Authorization: Bearer
+  [your token].'
+- The main instance is authenticated and provides accurate results.
+- All variants from WES and WGS datasets have been annotated (and cached in Genome
+  Nexus) prior to benchmarking OncoKB HGVSg endpoint.
+- Redis caching was disabled for performance tests.
+- You need a token before accessing the OncoKB™ data via its web API.
+- Default OncoKB™ base url is http://oncokb.org
+errors:
+- '401 Unauthorized: Ensure you have a valid token.'
+- '403 Forbidden: Check your license status for access.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OncoKB Token
+client:
+  base_url: https://www.oncokb.dev.aws.mskcc.org
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+source_metadata: null
