@@ -1,0 +1,324 @@
+resources:
+- name: claimless_payment
+  endpoint:
+    path: /claimless-payments
+    method: POST
+- name: create_account
+  endpoint:
+    path: /veem/v1.2/account
+    method: POST
+- name: edit_account
+  endpoint:
+    path: /veem/v1.2/account/{accountId}
+    method: PATCH
+- name: get_account
+  endpoint:
+    path: /veem/v1.2/account/{accountId}
+    method: GET
+- name: account
+  endpoint:
+    path: /api/v1/account
+    method: GET
+    data_selector: accountSetUpStatus
+    params: {}
+- name: add_document
+  endpoint:
+    path: /veem/v1.2/account/documents/{DocumentType}
+    method: POST
+- name: open_bank_account
+  endpoint:
+    path: /veem/v1.2/account/bank-account
+    method: POST
+- name: edit_bank_account
+  endpoint:
+    path: /veem/v1.2/account/bank-account/{bankId}
+    method: PATCH
+- name: beneficial_ownership
+  endpoint:
+    path: /veem/v1.2/beneficial-ownership
+    method: POST
+    data_selector: beneficialOwnerShip
+- name: get_beneficial_ownership
+  endpoint:
+    path: /veem/v1.2/beneficial-ownership
+    method: GET
+    data_selector: beneficialOwnerShip
+- name: createPayment
+  endpoint:
+    path: /veem/v1.2/payments
+    method: POST
+    data_selector: requestId
+    params: {}
+- name: cancelPayment
+  endpoint:
+    path: /veem/v1.2/payments/{paymentId}/cancel
+    method: POST
+    data_selector: claimLink
+    params: {}
+- name: claimless_payments
+  endpoint:
+    path: /veem/v1.2/claimless-payments
+    method: POST
+    data_selector: response
+    params: {}
+- name: payment_status
+  endpoint:
+    path: /veem/v1.2/payments/{paymentId}
+    method: GET
+    data_selector: response
+- name: generate_payment_quote
+  endpoint:
+    path: /veem/v1.2/exchangerates/quote
+    method: POST
+- name: generate_bulk_payment_quote
+  endpoint:
+    path: /veem/v1.2/exchangerates/quote/bulk
+    method: POST
+- name: generate_enhanced_payment_quote
+  endpoint:
+    path: /veem/v1.2/exchangerates/quote/enhanced
+    method: POST
+- name: invoices
+  endpoint:
+    path: /veem/v1.2/invoices
+    method: POST
+    data_selector: requestId
+- name: claim_invoice
+  endpoint:
+    path: /veem/v1.2/invoices/claim
+    method: POST
+    data_selector: ''
+    params: {}
+- name: cancel_invoice
+  endpoint:
+    path: /v1.2/invoices/{{invoiceId}}/cancel
+    method: POST
+    data_selector: response
+    params: {}
+- name: funding_methods
+  endpoint:
+    path: /veem/v1.2/funding-methods
+    method: GET
+    data_selector: fundingMethods
+- name: payment_report
+  endpoint:
+    path: /veem/v1.2/payments/report
+    method: GET
+    params:
+      startDate: ''
+      endDate: ''
+- name: create_wallet
+  endpoint:
+    path: /v1.2/wallets
+    method: POST
+    data_selector: id
+- name: add_funds
+  endpoint:
+    path: /v1.2/payments/wallet/addFunds
+    method: POST
+    data_selector: requestId
+- name: list_wallets
+  endpoint:
+    path: /v1.2/wallets
+    method: GET
+    data_selector: '[].id'
+- name: list_wallet_by_id
+  endpoint:
+    path: /v1.2/wallets/{{wallet_id}}
+    method: GET
+    data_selector: id
+- name: wallet_withdraw
+  endpoint:
+    path: /v1.2/payments/wallet/withdraw
+    method: GET
+    data_selector: id
+- name: move_funds_between_wallets
+  endpoint:
+    path: /v1.2/payments/wallet/convert
+    method: GET
+    data_selector: id
+- name: search_customer
+  endpoint:
+    path: /reference/searchcustomersusingget_2
+    method: GET
+    data_selector: accountId
+    params: {}
+- name: create_payment
+  endpoint:
+    path: /reference/createpaymentusingpost_2
+    method: POST
+    data_selector: fundingMethod
+    params: {}
+- name: search_customer
+  endpoint:
+    path: /reference/searchcustomersusingget_2
+    method: GET
+- name: create_payment
+  endpoint:
+    path: /reference/createpaymentusingpost_2
+    method: POST
+- name: search_customer
+  endpoint:
+    path: /reference/searchcustomersusingget_2
+    method: GET
+- name: search_customer
+  endpoint:
+    path: /reference/searchcustomersusingget_2
+    method: GET
+- name: create_callback
+  endpoint:
+    path: /veem/v1.2/webhooks
+    method: POST
+- name: update_callback
+  endpoint:
+    path: /veem/v1.2/webhooks/{webhookId}
+    method: PATCH
+- name: get_callbacks
+  endpoint:
+    path: /veem/v1.2/webhooks
+    method: GET
+- name: delete_callback
+  endpoint:
+    path: /veem/v1.2/webhooks/{webhookId}
+    method: DELETE
+- name: edit_account
+  endpoint:
+    path: /account/{accountId}
+    method: PATCH
+- name: claimless_payments
+  endpoint:
+    path: /veem/v1.2/claimless-payments
+    method: POST
+    data_selector: response
+    params: {}
+- name: country_currency_map
+  endpoint:
+    path: /veem/public/v1.2/country-currency-map
+    method: GET
+    data_selector: countries
+    params: {}
+- name: claimless_payment
+  endpoint:
+    path: /claimless-payments
+    method: POST
+- name: addBankAccount
+  endpoint:
+    path: /veem/v1.2/account/bank-account
+    method: POST
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- When an account is ready to send payments, the field will be 'READY', otherwise
+  it will be 'MISSING_INFORMATION'. Note that an account could be READY, but first
+  requires verification before it is able to send payments.
+- bearerToken is the Authorization token that belongs to the account created
+- When adding beneficial ownership information, you can add details for individual
+  ownership, business ownership or both simultaneously.
+- X-Request-Id must be unique for each transaction using the same account.
+- Reusing X-request-id without changing the value will result in a 409 (Conflict)
+  status.
+- Failure to use a valid bearer token will result in a 404 (Not Found) status.
+- A payment's status will update a few times until it's completed. We recommend that
+  you check on the status of a payment every 30 min after it's created.
+- If sweepToWalletId is present we are moving the funds to the specified wallet_id.
+  If it is not present we try to find the credit default funding method.
+- 'Invoices cannot be cancelled if they are in following statuses: Claimed, MarkAsPaid,
+  Cancelled, or Closed.'
+- X-Request-Id can be any string, but it must be unique for each different transaction
+  you do using the same account.
+- Environment can be sandbox or production
+- Uses OAuth2 authentication
+- On sandbox, use the provided bank account and routing numbers for testing
+- Requires setup of connected app in Veem
+- Ensure customer account exists before collecting BOI
+- Identity Check Plugin allows verification of customers.
+- The Veem Web SDK provides granular error data in order to allow you to better ascertain
+  the criticality of errors thrown within the SDK, as well as when to reset the SDK
+  due to an unrecoverable error.
+- Once you configure webhooks URL, Veem will send notification for payment status
+  updates.
+- Reusing X-request-id without changing the value will result in a 500 (Internal Server
+  Error) status.
+- Generate reports with filtered payment data for clear insights
+- Uses OAuth2 for authentication
+- X-Request-id can be any string, but it must be unique for each different transaction.
+errors:
+- '500 Internal Server Error: Reusing the same X-REQUEST-ID'
+- '404 Not Found: Invalid bearer token provided'
+- '400 Bad Request: Missing bank account fields: [routingNumber, bankAccountNumber]'
+- '409 Conflict: Reusing the X-request-id header without changing the value.'
+- '404 Not Found: Failure to use a valid bearer token.'
+- '400 Bad Request: If any mandatory field is missing.'
+- '401 Unauthorized: Full authentication is required to access this resource.'
+- '404 Not Found: Resource not found.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '50009044: from: or/and to: objects are missing - Status 400 (Bad Request)'
+- '50009048: from.accountId: or/and to.accountId are missing - Status 400 (Bad Request)'
+- '50001403: at least one of from.amount: or to.amount is required - Status 400 (Bad
+  Request)'
+- '50001402: only one of from.amount: or to.amount is required - Status 400 (Bad Request)'
+- '50009043: from.currency: or to.currency is missing - Status 400 (Bad Request)'
+- '50009047: from.fundingMethodId or to.fundingMethodId is missing - Status 400 (Bad
+  Request)'
+- '50009046: from.fundingMethodType or to.fundingMethodType is missing - Status 400
+  (Bad Request)'
+- '401: The token is invalid or expired - Status 401 (Unauthorized)'
+- '403: The token owner lacks permission to operate the current API - Status 403 (Forbidden)'
+- '404: Resource not found - Status 404 (Not Found)'
+- '500: Status 500 (Internal Server Error)'
+- 'DATE_CAN_NOT_BE_BIGGER_1_YEAR: The date range cannot exceed one year'
+- 'END_DATE_CAN_NOT_BE_EARLIER_THAN_START_DATE: End date cannot be earlier than start
+  date'
+- 'START_DATE_CAN_NOT_BE_IN_THE_FUTURE: Start date cannot be in the future'
+- 'INVALID_COUNTRY_CODE: The specified ISO country code is invalid: X'
+- 'INVALID_EMAIL_ADDRESS: The email address X is invalid'
+- 'PARTIAL_EMAIL_TOO_SHORT: Email search requires at least X characters. X is too
+  short'
+- 'MISSING_BANK_ACCOUNT: No bank account set up for account X'
+- 'EMPTY_ACCOUNT_REQUEST: Account request is empty'
+- 'MISSING_COUNTRY_CODE: ISO country code is missing'
+- 'MISSING_ACCOUNT_TYPE: Account type is missing'
+- 'FIRST_NAME_IS_BLANK: First name is empty'
+- 'LAST_NAME_IS_BLANK: Last name is empty'
+- 'BUSINESS_NAME_IS_BLANK: Business name is empty'
+- 'PHONE_NUMBER_IS_BLANK: Phone number is empty'
+- 'INVALID_NUMBER_FOR_REGION: Invalid number for region: X'
+- 'INVALID_CURRENCY_CODE: The currency is not acceptable: X'
+- 'PAYER_CANNOT_SEND_PAYMENT: The payer country X cannot send any payment'
+- 'PAYEE_CANNOT_RECEIVE_PAYMENT: The payee country X cannot receive any payment'
+- 'MISSING_CURRENCY_CODE: Currency code is missing'
+- 'CONTRACTOR_CANNOT_SEND_PAYMENT: Payer cannot be a contractor'
+- 'FUNDING_METHOD_NOT_FOUND: Funding method of type X not found'
+- 'BANK_ACCOUNT_NOT_UPDATABLE: Bank account cannot be updated, reason: X'
+- 'priority=0: SDK initialization error: Fatal errors pertaining to the SDK configuration,
+  or instantiation of the SDK. SDK has found itself in a non-recoverable state and
+  should be restarted. Most commonly, these errors indicate a malformed SDK configuration.'
+- 'priority=1: SDK execution error: Fatal errors pertaining to the SDK application.
+  Application has found itself in a non-recoverable state and should be restarted.
+  This would require a resolution by Veem''s internal team.'
+- 'priority=2: SDK application error handling: Non-fatal errors handled by the SDK
+  application itself. Examples of these errors can be network errors. No action is
+  needed and can be ignored.'
+- '400: bad_request'
+- '401: unauthorized'
+- '403: forbidden'
+- '404: not_found'
+- '405: method_not_allowed'
+- '409: conflict'
+- '412: precondition_failed'
+- '500: internal_server_error'
+- '503: unavailable'
+- '500 Internal Server Error: Reusing X-request-id without changing the value.'
+auth_info:
+  mentioned_objects:
+  - bearerToken
+client:
+  base_url: https://sandbox-api.veem.com
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+  headers:
+    X-request-id: UUID
+source_metadata: null

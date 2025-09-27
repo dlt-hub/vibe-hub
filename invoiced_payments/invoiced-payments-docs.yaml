@@ -1,0 +1,282 @@
+resources:
+- name: payment
+  endpoint:
+    path: /payments
+    method: GET
+    data_selector: records
+- name: customers
+  endpoint:
+    path: /customers
+    method: GET
+- name: get_current_balance
+  endpoint:
+    path: /customers/balance
+    method: GET
+- name: customers
+  endpoint:
+    path: /customers
+    method: GET
+    data_selector: records
+    params: {}
+- name: invoices
+  endpoint:
+    path: /invoices
+    method: GET
+- name: create_invoice
+  endpoint:
+    path: /invoices
+    method: POST
+- name: retrieve_invoice
+  endpoint:
+    path: /invoices/:id
+    method: GET
+- name: update_invoice
+  endpoint:
+    path: /invoices/:id
+    method: PATCH
+- name: send_invoice_email
+  endpoint:
+    path: /invoices/:id/emails
+    method: POST
+- name: invoices
+  endpoint:
+    path: /invoices
+    method: GET
+    data_selector: records
+- name: credit_note
+  endpoint:
+    path: /credit_notes
+    method: GET
+    data_selector: records
+    params: {}
+- name: credit_note
+  endpoint:
+    path: /credit_notes
+    method: GET
+    data_selector: records
+    params: {}
+- name: estimate
+  endpoint:
+    path: /estimates
+    method: GET
+- name: estimates
+  endpoint:
+    path: /estimates
+    method: GET
+    data_selector: records
+    params: {}
+- name: payment_plan
+  endpoint:
+    path: /invoices/:invoice_id/payment_plan
+    method: PUT
+    data_selector: installments
+    params: {}
+- name: retrieve_payment_plan
+  endpoint:
+    path: /invoices/:invoice_id/payment_plan
+    method: GET
+    data_selector: installments
+    params: {}
+- name: cancel_payment_plan
+  endpoint:
+    path: /invoices/:invoice_id/payment_plan
+    method: DELETE
+    data_selector: null
+    params: {}
+- name: credit_balance_adjustments
+  endpoint:
+    path: /credit_balance_adjustments
+    method: GET
+    data_selector: records
+- name: contacts
+  endpoint:
+    path: /customers/:customer_id/contacts
+    method: GET
+    data_selector: contacts
+- name: item
+  endpoint:
+    path: /items
+    method: GET
+    data_selector: items
+    params: {}
+- name: tax_rates
+  endpoint:
+    path: /tax_rates
+    method: GET
+    data_selector: '[]'
+- name: charge
+  endpoint:
+    path: /charges
+    method: POST
+    data_selector: charge
+    params: {}
+- name: charges
+  endpoint:
+    path: /charges
+    method: POST
+    data_selector: charge
+- name: charges
+  endpoint:
+    path: /charges
+    method: POST
+- name: refund
+  endpoint:
+    path: /charges/:id/refunds
+    method: POST
+    data_selector: refund
+    params:
+      amount: '400'
+- name: payment_sources
+  endpoint:
+    path: /customers/:customer_id/payment_sources
+    method: GET
+    data_selector: records
+    params: {}
+- name: delete_payment_source
+  endpoint:
+    path: /customers/:customer_id/cards/:id
+    method: DELETE
+    data_selector: none
+    params: {}
+- name: subscriptions
+  endpoint:
+    path: /subscriptions
+    method: GET
+    data_selector: subscriptions
+    params: {}
+- name: preview_subscription
+  endpoint:
+    path: /subscriptions/preview
+    method: GET
+    data_selector: first_invoice
+    params: {}
+- name: retrieve_subscription
+  endpoint:
+    path: /subscriptions/:id
+    method: GET
+    data_selector: ''
+    params: {}
+- name: update_subscription
+  endpoint:
+    path: /subscriptions/:id
+    method: PATCH
+    data_selector: ''
+    params: {}
+- name: cancel_subscription
+  endpoint:
+    path: /subscriptions/:id
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: subscriptions
+  endpoint:
+    path: /subscriptions
+    method: GET
+    data_selector: ''
+    params: {}
+- name: pending_line_items
+  endpoint:
+    path: /customers/:customer_id/line_items
+    method: GET
+    data_selector: records
+- name: plans
+  endpoint:
+    path: /plans
+    method: GET
+    data_selector: records
+    params: {}
+- name: coupons
+  endpoint:
+    path: /coupons
+    method: GET
+    data_selector: '[]'
+    params: {}
+- name: event
+  endpoint:
+    path: /events/:id
+    method: GET
+    data_selector: data.object
+- name: events
+  endpoint:
+    path: /events
+    method: GET
+    data_selector: data
+    params:
+      related_to: ''
+- name: files
+  endpoint:
+    path: /files
+    method: POST
+    data_selector: file
+    params: {}
+- name: retrieve_file
+  endpoint:
+    path: /files/:id
+    method: GET
+    data_selector: file
+    params: {}
+- name: delete_file
+  endpoint:
+    path: /files/:id
+    method: DELETE
+    data_selector: file
+    params: {}
+- name: notes
+  endpoint:
+    path: /notes
+    method: GET
+    data_selector: notes
+- name: tasks
+  endpoint:
+    path: /tasks
+    method: GET
+    data_selector: '[*]'
+    params: {}
+notes:
+- Payments can only be associated with a single customer at a time.
+- Twilio must be connected to Invoiced for requests to succeed.
+- Lob must be connected to Invoiced for requests to succeed.
+- Optional cutoff_date parameter can be used for filtering invoices.
+- Credit notes must be issued against an existing invoice.
+- This endpoint retrieves all credit notes.
+- Payment plans allow you to collect an invoice balance over multiple installments.
+- Charges represent a payment processed given a customer's payment source, such as
+  a credit card or bank account.
+- This endpoint allows you to process a payment.
+- Requests must supply exactly one of a) `payment_source_type` with `payment_source_id`,
+  b) `invoiced_token`, or c) `gateway_token`.
+- Partial refunds are allowed, however, the total amount refunded cannot exceed the
+  original charge amount.
+- Subscriptions can have a fixed or infinite duration.
+- Setting the cycles property will end the subscription after a fixed number of billing
+  cycles.
+- Represents an internal note related to a customer or invoice. These notes appear
+  in the Invoiced dashboard only and are distinct from the customer-facing notes field
+  on the invoice object.
+- Tasks are to-do items associated with collection efforts for a customer.
+errors:
+- '400 Bad Request: Invalid request parameters'
+- '401 Unauthorized: Incorrect or missing API key'
+- '403 Forbidden: You do not have permission to view a resource or perform an action'
+- '404 Not Found: The specified resource could not be found'
+- '429 Too Many Requests: You''re moving too fast! Slow down!'
+- '500 Internal Server Error: There was a problem on our end'
+- '401 Unauthorized: Recheck API key'
+- '401 Unauthorized: Recheck API key or permissions'
+- '204 No Content: Successful deletion of a credit note'
+- '204 No Content: Indicates successful cancellation of the payment plan.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck API key or token expiration'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Failure reason if refund fails
+- '401 Unauthorized: Check API key or permissions'
+- '204 No Content: Successful deletion of a coupon'
+- '204 No Content: Successful delete'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.invoiced.com
+  auth:
+    type: apikey
+source_metadata: null

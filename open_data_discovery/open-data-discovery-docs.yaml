@@ -1,0 +1,243 @@
+resources:
+- name: lookup_table
+  endpoint:
+    path: /odd/collector_config/plugins
+    method: GET
+    data_selector: data
+    params: {}
+- name: Vector Store
+  endpoint:
+    path: /odd/collector_config/plugins
+    method: GET
+    data_selector: datasets
+    params: {}
+- name: Query Examples
+  endpoint:
+    path: /odd/query/examples
+    method: GET
+    data_selector: queryExamples
+    params: {}
+- name: Data Quality Dashboard
+  endpoint:
+    path: /odd/data/quality/dashboard
+    method: GET
+    data_selector: qualityMetrics
+    params: {}
+- name: Data Entity Statuses
+  endpoint:
+    path: /odd/data/entities/statuses
+    method: GET
+    data_selector: dataEntityStatuses
+    params: {}
+- name: Dim_Customers
+- name: Dim_Books
+- name: Dim_Cards
+- name: Fct_transactions
+- name: Dim_currency
+- name: Dim_payment_types
+- name: Dim_Customers
+  endpoint:
+    path: /customers
+    method: GET
+    data_selector: records
+- name: Dim_Books
+  endpoint:
+    path: /books
+    method: GET
+    data_selector: records
+- name: Dim_Cards
+  endpoint:
+    path: /cards
+    method: GET
+    data_selector: records
+- name: Fct_transactions
+  endpoint:
+    path: /transactions
+    method: GET
+    data_selector: records
+- name: Dim_currency
+  endpoint:
+    path: /currency
+    method: GET
+    data_selector: records
+- name: Dim_payment_types
+  endpoint:
+    path: /payment_types
+    method: GET
+    data_selector: records
+- name: collector
+  endpoint:
+    path: /management/collectors
+    method: GET
+    data_selector: collectors
+    params: {}
+- name: odd-platform
+  endpoint:
+    path: /api/v3/webjars/swagger-ui/index.html
+    method: GET
+    data_selector: records
+- name: event_subscriptions
+  endpoint:
+    path: /api/slack/events
+    method: POST
+    data_selector: events
+    params: {}
+- name: event_subscriptions
+  endpoint:
+    path: /api/slack/events
+    method: POST
+    data_selector: events
+- name: odd-platform
+  endpoint:
+    path: /odd-platform
+    method: GET
+- name: oddrn-models-package
+  endpoint:
+    path: /oddrn-models-package
+    method: GET
+- name: oddrn-generator
+  endpoint:
+    path: /oddrn-generator
+    method: GET
+- name: odd-collectors
+  endpoint:
+    path: /odd-collectors
+    method: GET
+- name: odd-collector
+  endpoint:
+    path: /odd-collector
+    method: GET
+- name: odd-collector-aws
+  endpoint:
+    path: /odd-collector-aws
+    method: GET
+- name: odd-collector-gcp
+  endpoint:
+    path: /odd-collector-gcp
+    method: GET
+- name: odd-collector-azure
+  endpoint:
+    path: /odd-collector-azure
+    method: GET
+- name: odd-collector-sdk
+  endpoint:
+    path: /odd-collector-sdk
+    method: GET
+- name: odd-collector-profiler
+  endpoint:
+    path: /odd-collector-profiler
+    method: GET
+- name: odd-cli
+  endpoint:
+    path: /odd-cli
+    method: GET
+- name: odd-dbt
+  endpoint:
+    path: /odd-dbt
+    method: GET
+- name: odd-great-expectations
+  endpoint:
+    path: /odd-great-expectations
+    method: GET
+- name: odd-airflow
+  endpoint:
+    path: /odd-airflow
+    method: GET
+- name: odd-airflow-2
+  endpoint:
+    path: /odd-airflow-2
+    method: GET
+- name: odd-examples
+  endpoint:
+    path: /odd-examples
+    method: GET
+- name: ingestion-api
+  endpoint:
+    path: /api/v3/api-docs
+    method: GET
+- name: platform-api
+  endpoint:
+    path: /api/v3/api-docs
+    method: GET
+- name: collector
+  endpoint:
+    path: /create-collector
+    method: POST
+    data_selector: token
+notes:
+- ODD Platform requires consumers of the Ingestion API to use the same ODDRN strings
+  for the same entities.
+- ODD Platform requires consumers of the Ingestion API (ODD Collectors and self-written
+  agents) to use the same ODDRN strings for the same entities.
+- The platform utilizes PostgreSQL replication mechanism to ensure notifications are
+  sent even in the event of network lag or platform crashes.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- If users chose to set the `enabled` parameter to `false`, then they also need to
+  remember to also configure the database so it doesn’t save logs for notifications.
+- Filtering configuration is optional and if not to configured, Collectors will retrieve
+  all available metadata from the source.
+- Attachment size should not exceed 20MB
+- A single data entity has the capability to accommodate multiple files and links
+- Filtering configuration is optional and if not configured, Collectors will retrieve
+  all available metadata from the source.
+- This functionality is not the preferred method and is disabled by default
+- Secure this connection as well, as you can
+- Each time the table structure is modified, a new revision of structure is generated,
+  allowing table version differences to be tracked.
+- The attachment size should not exceed 20MB.
+- Customer full name, age, address and payment details should be anonymized as these
+  are PII data protected by GDPR and PCI DSS.
+- Deprecation process is well-managed, all users are notified in advance and risks
+  mitigated.
+- ODD is compatible with Great Expectations and Pandas Profiling.
+- The ODD Platform is compatible with Great Expectations and Pandas Profiling.
+- Set to streaming data load mode.
+- Has a history depth of ten calendar years.
+- Contains all sales data, not just the one of customers subscribed to a newsletter.
+- Has a denormalized structure.
+- Has a history depth of ten calendar year.
+- Has denormalized structure.
+- This configuration is basic and best suited as a demo sandbox.
+- You should be able to see new data sources and data entities that correspond with
+  them.
+- In this setup there are no certificates created to use encrypted communication.
+- Only http protocol is supported in this setup.
+- In this setup there are no certificates created to use encrypted communication.
+  Be aware that only http protocol is supported in this setup.
+- Uses OAuth2 for authentication.
+- Ensure the Slack application is properly configured with required scopes.
+- ODD Platform supports various types of authentication methods and allows users to
+  customize access control rules freely.
+- Authentication mechanisms supported by ODD Platform.
+- Requires setup of Slack application with specified scopes.
+- It is very important to have fine-grained access control in your data catalog.
+- The easiest way to have ODD Platform at your disposal locally is to launch a PostgreSQL
+  docker container as a ODD Platform's database using docker-compose
+- libraries pyodbc , confluent-kafka and grpcio have problem during installing and
+  building project on M1 Macbooks.
+- Build and run section of the whole ODD infrastructure
+- The easiest way to have ODD Platform at your disposal locally is to launch a PostgreSQL
+  docker container as a ODD Platform's database using docker-compose.
+- Create collector in the ODD Platform and copy created token using the guide.
+errors:
+- failed jobs
+- failed data quality tests
+- backwards incompatible schema changes
+- distribution anomalies
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Stale metadata indicates a lack of information regarding updates from the source
+- '401 Unauthorized: Check if the OAuth token is valid and has the necessary scopes.'
+- 'Invalid token: Recheck Slack application OAuth token.'
+auth_info:
+  mentioned_objects:
+  - OAuth & Permissions
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: http://localhost:8080
+  headers:
+    Accept: application/json
+source_metadata: null
