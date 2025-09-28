@@ -1,0 +1,87 @@
+resources:
+- name: resorts
+  endpoint:
+    path: /resort/{id}/snowreport
+    method: GET
+- name: snowreport
+  endpoint:
+    path: /resort/{id}/snowreport
+    method: GET
+- name: weather
+  endpoint:
+    path: /resort/{id}/weather
+    method: GET
+- name: webcams
+  endpoint:
+    path: /resort/{id}/webcams
+    method: GET
+- name: profile
+  endpoint:
+    path: /resort/{id}/profile
+    method: GET
+- name: resorts
+  endpoint:
+    path: /resorts
+    method: GET
+    data_selector: '[]'
+    params: {}
+- name: batch_requests
+  endpoint:
+    params:
+      regionId: string
+      resortIds: comma-separated string
+- name: snowreport
+  endpoint:
+    path: /resort/{resortId}/snowreport
+    method: GET
+    data_selector: response
+    params: {}
+- name: webcams
+  endpoint:
+    path: /resort/{resortId}/webcams
+    method: GET
+    data_selector: object[]
+- name: resort_profile
+  endpoint:
+    path: /resort/{resortId}/profile
+    method: GET
+    data_selector: response
+- name: daily_weather
+  endpoint:
+    path: /resort/{resortId}/weather/daily
+    method: GET
+    data_selector: weatherItems
+- name: hourly_weather
+  endpoint:
+    path: /resort/{resortId}/weather/hourly
+    method: GET
+    data_selector: weatherItems
+- name: regions
+  endpoint:
+    path: /regions
+    method: GET
+    data_selector: responses
+    params:
+      searchstring: Optional
+notes:
+- All measurements for snowfall and weather are provided in metric units.
+- Most ski resorts offer daily updates, but there may be times when a resort doesn't
+  update promptly.
+- At least one of regionId or resortIds is required.
+- Snow reports are sourced directly from the ski resorts and are only recorded during
+  the ski season.
+- Always filter based on updatedDt as the resort snow report can be outdated.
+errors:
+- By default, your partner api account is limited to 10 requests per second and 5k
+  requests per day.
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck API key'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://partner-api.onthesnow.com
+  auth:
+    type: apikey
+    location: header
+    header_name: x-api-key
+source_metadata: null
