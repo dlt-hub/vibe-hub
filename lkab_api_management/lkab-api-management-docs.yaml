@@ -1,0 +1,166 @@
+resources:
+- name: Create API Repo (OAS Based)
+  endpoint:
+    path: /api-management-apis/_build?definitionId=547
+    method: GET
+- name: repository_permissions
+  endpoint:
+    path: /api/repository/permissions
+    method: GET
+    data_selector: permissions
+    params: {}
+- name: invite_contributors
+  endpoint:
+    path: /api/repository/invite
+    method: POST
+    data_selector: invite_status
+    params: {}
+- name: deploy_access_setup
+  endpoint:
+    path: /api/repository/deploy_access
+    method: POST
+    data_selector: deploy_status
+    params: {}
+- name: external
+  endpoint:
+    path: /external
+    method: GET
+- name: internal
+  endpoint:
+    path: /internal
+    method: GET
+- name: integration
+  endpoint:
+    path: /integration
+    method: GET
+- name: maintenance
+  endpoint:
+    path: /maintenance
+    method: GET
+- name: sensor-data
+  endpoint:
+    path: /sensor-data
+    method: GET
+- name: analysis
+  endpoint:
+    path: /analysis
+    method: GET
+- name: logistics
+  endpoint:
+    path: /logistics
+    method: GET
+- name: mining
+  endpoint:
+    path: /mining
+    method: GET
+- name: processing
+  endpoint:
+    path: /processing
+    method: GET
+- name: communications
+  endpoint:
+    path: /communications
+    method: GET
+- name: development
+  endpoint:
+    path: /development
+    method: GET
+- name: temperature
+  endpoint:
+    path: /lkab.iot.{sensorId}.temperature
+    method: send
+    data_selector: messages
+    params:
+      sensorId: 'Id of the temperature sensor. Use # to get temperatures from all
+        sensors'
+- name: temperature_change
+  endpoint:
+    path: /channels/lkab.iot.{sensorId}.temperature
+    method: send
+    data_selector: messages
+    params:
+      sensorId: 'Id of the temperature sensor. Use # to get temperatures from all
+        sensors'
+- name: validate_specifications
+  endpoint:
+    path: /development/asyncapi/specifications/file/validate
+    method: POST
+    data_selector: asyncapi
+    params: {}
+- name: create_specification
+  endpoint:
+    path: /specifications
+    method: POST
+    data_selector: specification
+    params: {}
+- name: maximo_integration_exchange
+  endpoint:
+    path: /maximo/integration/v1/exchange
+    method: POST
+    data_selector: settings
+    params: {}
+- name: maximo_integration_apollo_queue_wo
+  endpoint:
+    path: /maximo/integration/apollo/wo/queue
+    method: POST
+    data_selector: settings
+    params: {}
+- name: maximo_integration_apollo_binding_wo
+  endpoint:
+    path: /maximo/integration/apollo/binding/wo
+    method: POST
+    data_selector: settings
+    params: {}
+- name: quntiq_biztalk_v1_logisticstopic_stage_shovel
+  endpoint:
+    path: /quintiq/biztalk/v1/logistics/topic/shovel
+    method: POST
+    data_selector: info
+    params: {}
+notes:
+- All APIs published to the API Management platform should use OAuth2 authorization.
+- Each API SHOULD be stored in a GIT repository with a dedicated release pipeline.
+- The agreed and assigned API basepath SHOULD be documented along with the assigned
+  API Id in the API Catalog.
+- Azure API Management need to be given GET access to the secrets in the Key Vault
+  if Key Vault is being used.
+- LKABs Azure environment will resolve LKAB internal DNS names.
+- Optional. For a standard backend with a azure ad token. Leave the default value
+  standard as is. If you know you will have browser based clients with cors support
+  you can use standard-cors instead.
+- Policies are a collection of statements that are run sequentially on the request
+  or response of an API.
+- 'Policies are applied at three levels: Tenant, API, and Operation.'
+- To host a key vault for your api you must specify which LKAB Azure Account who will
+  be administrating the secrets in that key vault.
+- Requires setup of permissions for api-management-apis Build Service (LKAB) and Mockingbird
+  Build Service (LKAB)
+- Access to the Mockingbird DevOps project is required for setting up deploy access
+- Default no one has access to a published API in the developer portal.
+- Each published API in LKAB's API Management has individual access control, using
+  OAuth2.
+- To be able to use the 'Try it' function in the API portal, the API owner needs to
+  provide so-called 'Delegated permission' for your user account.
+- The API basepaths are globally unique within the API Management platform.
+- To avoid collisions, the basepath assigned to an API published to the LKAB API Management
+  platform needs to conform with the pre-defined set of basepaths.
+- To be able to create app registrations you need appropriate permissions in LKAB
+  Azure AD.
+- Having separate apps for test and production restricts access to the production
+  environment via testing credentials.
+- The temperature API provides temperature change from sensors
+- Queue names should be suffixed with .queue
+- Deadletter queue names should be suffixed with .deadletter.queue
+- To enable communication between LKAB API Management and your API you'll have to
+  request firewall port openings from LKAB Servicedesk.
+errors:
+- If your API requests get blocked, you should have a look at the ruleset to validate
+  that your API client conforms to the rules defined.
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.lomi.lkab.com
+  auth:
+    type: oauth2
+source_metadata: null
