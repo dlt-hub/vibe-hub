@@ -1,0 +1,187 @@
+resources:
+- name: attachments
+  endpoint:
+    path: /api/attachments
+    method: POST
+    data_selector: attachmentId
+- name: ledger_receipts
+  endpoint:
+    path: /api/ledgerreceipts/{ledgerreceiptId}
+    method: GET
+    data_selector: transactions
+- name: webhooks
+  endpoint:
+    path: /webhooks
+    method: POST
+    data_selector: ''
+    params: {}
+- name: company
+  endpoint:
+    path: /company
+    method: GET
+    data_selector: company
+    params: {}
+- name: payroll_salaryslips
+  endpoint:
+    path: /payrolls/salaryslips/{id}
+    method: GET
+    data_selector: salarySlip
+    params: {}
+- name: payroll_salarylists
+  endpoint:
+    path: /payrolls/salarylists
+    method: POST
+    data_selector: salaryList
+    params: {}
+- name: vats_settings
+  endpoint:
+    path: /vats/settings
+    method: GET
+    data_selector: vatSettings
+    params: {}
+- name: company_usagesettings
+  endpoint:
+    path: /company/usagesettings
+    method: GET
+    data_selector: usageSettings
+    params: {}
+- name: availability
+  endpoint:
+    path: /sie/availability
+    method: GET
+- name: file
+  endpoint:
+    path: /sie/file
+    method: GET
+- name: salarylists
+  endpoint:
+    path: /payrolls/salarylists
+    method: GET
+- name: salarylist_by_id
+  endpoint:
+    path: /payrolls/salarylists/{id}
+    method: GET
+- name: salaryslips
+  endpoint:
+    path: /payrolls/salaryslips
+    method: GET
+- name: journals
+  endpoint:
+    path: /journals
+    method: GET
+- name: invoice_image
+  endpoint:
+    path: /invoices/{invoiceId}/image
+    method: GET
+- name: integration_customers
+  endpoint:
+    path: /integrations/{integrationId}/customers
+    method: GET
+notes:
+- Procountor API is meant to be used for the Procountor Financials/Taloushallinto
+  version.
+- API endpoints that use two-factor authentication require API authentication as they
+  can't be used with M2M authentication.
+- The testing server allows maximum of 90 requests per minute per client whereas the
+  production server 60 requests per second per client
+- Avoid sending sensitive information (password, API client secret, API key, refresh
+  token, authorization code) in the request URL
+- Two-factor authentication is not enabled in testing environment. The test server
+  will always accept any actions requiring two-factor authentication.
+- Machine to machine authentication is the only authentication method available for
+  users with 'API login only' user right limitation enabled.
+- Use of Procountor API is limited to a maximum of 60 requests per second per client
+  on production server.
+- You should use the machine-to-machine authentication flow.
+- Verify that you are passing all the required query parameters in the URL, and that
+  all the parameters are percent-encoded.
+- The login form uses JavaScript and cookies. Make sure that you have JavaScript and
+  cookies enabled in your browser.
+- Verify that you are passing all the required query parameters in the URL, and all
+  the requested post parameters in the request body.
+- Redirect URI must match the one configured for your API client in Procountor backend.
+- The authorization code can be used only once.
+- Client is disabled in environment settings.
+- Clients using the API must implement total sum calculation for ledger receipts.
+- Webhooks require 2-factor authentication.
+- The API requires setup of connected app in Procountor.
+- Some endpoints may have breaking changes in future releases.
+- Some endpoints may require specific permissions to access certain resources.
+- Ensure to handle pagination where applicable.
+- To begin with your development process submit a request for a private testing environment.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Exceeding the limit may result in suspending the service
+  for the API client in question.'
+- 'QUERY_TIMEOUT: Please familiarize yourself with other query parameters.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'redirect uri mismatch error: Redirect URI must match the one configured for your
+  API client in Procountor backend.'
+- 'invalid authorization code error: The authorization code can be used only once.'
+- 'Client is disabled in environment settings: The company the user is trying to access
+  has not enabled the use of invoiceable APIs.'
+- '200 OK: Successful request'
+- '400: INVALID_PAYER_BANK_ACCOUNT'
+- 'ABSENT_DAYS_CAN_NOT_BE_MORE_THAN_WORKDAYS: Absent days can''t be more than working
+  days.'
+- 'ACCIDENT_INSURANCE_POLICY_NOT_ACTIVE: Accident insurance policy must be active
+  for new objects. It can be inactive for update if it is the same as the current
+  one.'
+- 'ACTUAL_WORKDAYS_INVALID_DAYS: The number of days provided is insufficient for correction
+  or exceeds the allowed range based on the number of days in the payment period.'
+- 'BANK_ACCOUNT_DOES_NOT_BELONG_TO_THIS_COMPANY: Bank account of a sales invoice must
+  belong to the current company. See the manual for instructions on adding a bank
+  account: http://support.procountor.com/en/maksuliikenne/pankkiyhteydet.html. The
+  bank account must not include any spaces.'
+- 'BANK_REFERENCE_CODE_MUST_BE_EMPTY: Bank reference code is required to be empty
+  for Danish Kreditor form codes GIK01 and FIK73'
+- 'BOTH_EARNINGS_PERIOD_DATES_MUST_BELONG_TO_SAME_HOLIDAY_CREDIT_YEAR: Both earnings
+  period dates must be long to the same holiday credit year.'
+- 'BOTH_EARNINGS_PERIOD_DATES_SET_OR_EMPTY: Both earnings period start and end date
+  must be set or both empty.'
+- 'CAR_BENEFIT_DETAILS_MUST_NOT_BE_NULL: Car benefit details are mandatory if the
+  salary base row''s salary type is Car Benefit - otherwise car benefit details must
+  not be provided.'
+- 'CASH_DISCOUNT_NOT_ALLOWED: Cash discount disabled in usage settings.'
+- 'CLOSED_FISCAL_PERIOD: Invoice date must not be in a closed fiscal period. Use GET
+  /fiscalyears to fetch fiscal years and their statuses.'
+- 'COUNTERPARTY_ADDRESS_MANDATORY: Foreign payments require a counterparty address
+  with name, street and zip.'
+- 'DATE_MUST_BE_IN_OPEN_HOLIDAY_CREDIT_YEAR: Date must be in an open holiday credit
+  year.'
+- 'DATE_MUST_BE_WORKING_DAY: Payment should be made at working days.'
+- 'DATE_MUST_NOT_BE_IN_CLOSED_FINANCIAL_PERIOD: Date must not be placed in a closed
+  financial period. Date can be outside of a financial period.'
+- 'DIMENSIONS_MUST_BE_UNIQUE_WITHIN_TRANSACTION: Dimension items must be unique within
+  the transaction, i.e. you cannot specify a value for the same dimension item twice.'
+- 'DUE_DATE_BEFORE_BILL_DATE: Billing (creation) date must precede invoice due date.'
+- 'DUE_DATE_PASSED_OR_TOO_CLOSE: Saving or sending the e-invoice should not be possible
+  if the due date has passed or is the same date than sending date.'
+- 'EINVOICE_ADDRESS_MISSING: EInvoice address required for direct payment method.'
+- 'EMPLOYMENT_REGISTRATION_GROUNDS_EMPTY_OR_TOO_LONG: Provided employment registration
+  grounds is empty and keva provided or too long.'
+- 'EMPLOYMENT_REQUIRED: Required employment field is empty or invalid'
+- 'EMPLOYMENT_TERMINATION_REASON_TOO_LONG: Provided termination reason is too long.'
+- 'EMPTY_BANK_REFERENCE_FORM_CODE: Form code (bank reference code type) cannot be
+  empty.'
+- 'ERROR_ACCOUNT_NUMBER_MISSING: Missing bank account number.'
+- '400: Invalid argument. Bank account is not allowed for payment methods'
+- '401: Unauthorized access, check OAuth scopes or token expiration'
+- '403 Forbidden: User does not have access rights.'
+- '400 Bad Request: Check the parameters being sent.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.procountor.com
+  auth:
+    type: oauth2
+    flow: authorization_code
+    token_url: https://api.procountor.com/api/oauth/token
+    client_id: <client_id>
+    client_secret: <client_secret>
+    redirect_uri: <redirect_uri>
+    location: header
+    header_name: Authorization
+source_metadata: null

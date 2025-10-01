@@ -1,0 +1,157 @@
+resources:
+- name: create_deposit_intent
+  endpoint:
+    path: /transfer/deposit
+    method: POST
+    data_selector: url
+    params: {}
+- name: submit_kyc_information
+  endpoint:
+    path: /api/register
+    method: POST
+    data_selector: response
+    params: {}
+- name: retrieve_kyc_status
+  endpoint:
+    path: /api/accounts/:account_id/kyc
+    method: GET
+    data_selector: status
+    params: {}
+- name: create_deposit_intent
+  endpoint:
+    path: /transfer/deposit
+    method: POST
+    data_selector: data
+- name: submit_kyc_information
+  endpoint:
+    path: /api/register
+    method: POST
+    data_selector: data
+- name: retrieve_kyc_status
+  endpoint:
+    path: /api/accounts/:account_id/kyc
+    method: GET
+    data_selector: data
+- name: create_deposit_intent
+  endpoint:
+    path: /transfer/deposit
+    method: GET
+    data_selector: url
+    params:
+      asset_code: USD
+      account: string
+      email_address: string
+- name: create_withdraw_intent
+  endpoint:
+    path: /transfer/withdraw
+    method: GET
+    data_selector: url
+    params:
+      type: bank_account
+      asset_code: USD
+      account: string
+      email_address: string
+- name: submit_kyc_information
+  endpoint:
+    path: /api/register
+    method: POST
+    data_selector: result
+    params:
+      identifier: string
+      name: string
+      birthday[month]: number
+      birthday[day]: number
+      birthday[year]: number
+      tax-country: string
+      tax-id-number: string
+      address[street-1]: string
+      address[city]: string
+      address[postal-code]: string
+      address[region]: string
+      address[country]: string
+      primary-phone-number: string
+      gender: string
+- name: create_deposit_intent
+  endpoint:
+    path: /transfer/deposit
+    method: GET
+    data_selector: url
+    params:
+      asset_code: USD
+      account: ''
+      email_address: ''
+- name: submit_kyc_information
+  endpoint:
+    path: /api/register
+    method: POST
+    data_selector: result
+    params:
+      identifier: ''
+      name: ''
+      birthday:
+        month: ''
+        day: ''
+        year: ''
+      tax-country: ''
+      tax-id-number: ''
+      address:
+        street-1: ''
+        street-2: ''
+        city: ''
+        postal-code: ''
+        region: ''
+        country: ''
+      primary-phone-number: ''
+      gender: ''
+- name: create_withdraw_intent
+  endpoint:
+    path: /transfer/withdraw
+    method: GET
+    data_selector: url
+    params:
+      type: bank_account
+      asset_code: USD
+      account: ''
+      amount: ''
+      email_address: ''
+- name: create_withdraw_intent
+  endpoint:
+    path: /transfer/withdraw
+    method: GET
+    params:
+      type: bank_account
+      asset_code: USD
+      email_address: j%40anchorusd.com
+- name: create_withdraw_intent
+  endpoint:
+    path: /transfer/withdraw
+    method: GET
+    params:
+      type: bank_account
+      asset_code: USD
+      email_address: j%40anchorusd.com
+notes:
+- The fundamental API methods are permissionless and do not require an API key.
+- The Create Deposit Intent and Create Withdraw Intent API methods are permissionless
+  — they do not require an API key.
+- The API is designed for compliance with Stellar's SEP-0006 protocol.
+- The fundamental Create Deposit Intent and Create Withdraw Intent API methods are
+  permissionless.
+- AnchorUSD will respond with status code `403 Forbidden`, to indicate that interactive
+  onboarding is required before the user can make a deposit.
+- If the response type is 'interactive_customer_info_needed', an interactive onboarding
+  flow is required.
+errors:
+- '403 Forbidden: Indicates that interactive onboarding is required.'
+- '403 Forbidden: Interactive onboarding is required before the user can make a deposit.'
+- '403 Forbidden: Interactive onboarding is required.'
+- '200 OK: Successful KYC submission.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://sandbox-api.anchorusd.com
+  auth:
+    type: http_basic
+    location: header
+    header_name: Authorization
+source_metadata: null

@@ -1,0 +1,217 @@
+resources:
+- name: cards
+  endpoint:
+    path: /v1/cards
+    method: GET
+    data_selector: cards
+    params:
+      limit: 50
+- name: search_cards
+  endpoint:
+    path: /v1/cards/search
+    method: GET
+    data_selector: cards
+    params:
+      limit: 50
+- name: card
+  endpoint:
+    path: /v1/cards/:cardId
+    method: GET
+    data_selector: card
+    params: {}
+- name: CardScanView
+  endpoint:
+    method: GET
+- name: CardScanView
+  endpoint:
+    path: /api/card_scan
+    method: POST
+- name: CardScanner
+  endpoint:
+    path: /api/cardscanner
+    method: POST
+    data_selector: data
+    params:
+      sessionToken: required
+- name: CardScanner
+  endpoint:
+    path: /api/card-scan
+    method: POST
+- name: CardScanConfig
+  endpoint:
+    path: /ai/cardscan/config
+    method: POST
+    data_selector: config
+- name: card
+  endpoint:
+    path: /card
+    method: POST
+    data_selector: card
+    params: {}
+- name: eligibility
+  endpoint:
+    path: /eligibility
+    method: POST
+    data_selector: eligibility
+    params: {}
+- name: upload_url
+  endpoint:
+    path: /generate_upload_url
+    method: POST
+    data_selector: upload_data
+- name: create_card
+  endpoint:
+    path: /createCard
+    method: POST
+    data_selector: card
+    params: {}
+- name: generate_upload_url
+  endpoint:
+    path: /generateCardUploadUrl
+    method: POST
+    data_selector: uploadData
+    params: {}
+- name: get_card
+  endpoint:
+    path: /getCard
+    method: GET
+    data_selector: card
+    params: {}
+- name: payer_match
+  endpoint:
+    path: /api#get-card
+    method: GET
+    data_selector: payer_match
+- name: card
+  endpoint:
+    path: /webhooks/cardscan
+    method: POST
+    data_selector: payload
+    params: {}
+- name: webhook_event
+  endpoint:
+    path: /webhooks/cardscan
+    method: POST
+    data_selector: payload
+    params: {}
+- name: eligibility_recent
+  endpoint:
+    path: /eligibility/recent
+    method: GET
+- name: eligibility_by_patient
+  endpoint:
+    path: /eligibility/by_patient/{patient_id}
+    method: GET
+- name: card_scans_pending
+  endpoint:
+    path: /card_scans/pending
+    method: GET
+notes:
+- The S3 URL only supports HTTP POSTs, not PUTs.
+- Image uploads have a maximum size of 50MB and a minimum of 5KB.
+- Keeping our client's data and their user's data secure is our number one priority.
+- We use defense in depth, starting with a robust authentication model which can be
+  deployed on the end users' devices with minimal security exposure.
+- The sandbox API is not HIPAA compliant and should NOT be used for PHI.
+- Uses JWT token for session authentication.
+- This screen will be shown on setup connection failure (websocket or initial REST
+  API call), network error, auth failure (invalid or expired token), and camera error
+  (without webToMobileHandOff or enableCameraPermissionModal enabled).
+- This screen will be shown on direct upload of an invalid image (i.e. a photo of
+  a cat) or when all 12+ scan attempts have been exhausted because of poor input quality
+  or complete backend failure.
+- See Authentication on where to get this sessionToken.
+- SDK requires camera access to scan insurance cards.
+- Developers must handle camera permission requests before loading the CardScan widget.
+- Our SDK requires camera access to scan insurance cards.
+- Currently only supported by the React UI Widget
+- WebSocket URL is required for fullScan
+- Uses API key for authentication
+- The client will log all requests and responses
+- Uses API key for authentication — requires setup of connected app in CardScan
+- Custom configuration options available
+- Uses API key for authentication.
+- Ensure to handle rate limiting.
+- Eligibility verification is a paid add-on feature. Please ensure that you have the
+  appropriate subscription plan to access this functionality.
+- Payer Match is a paid feature only available to our Enterprise customers.
+- Matches are generated during the scanning process and will be returned once the
+  card scan is completed.
+- Payer matching works best when paired with backside scanning as many cards have
+  important details only found on the backside of the card.
+- If the user declines camera permissions in the Request Permission modal, they will
+  be redirected to the Camera Permission modal.
+- The noCameraModalConfig object allows customization of the No Camera Modal in the
+  application.
+- If title is not provided, the modal will use the default title 'No camera access'
+- If instructions is not provided, the modal will use the default text 'To scan your
+  card, allow us to use your camera in Settings > Privacy > Camera'
+- If settingsButton is not provided, the button will use the default text 'Go to settings'
+- Webhook payloads contain only event metadata and identifiers.
+- Verify the webhook signature and timestamp when processing.
+- It's important to disable CSRF protection for your webhook endpoint.
+- CardScan.ai automatically retries failed webhook deliveries using an exponential
+  backoff strategy to ensure reliable delivery.
+- If all delivery attempts to an endpoint fail for a period of 5 days, the endpoint
+  will be automatically disabled to prevent unnecessary retry attempts.
+- Webhooks must respond within 15 seconds.
+- Uses OAuth2 with bearer token.
+- WCAG 2.1 Level AA Compliant
+- Accessibility features have been tested and verified on Windows, Android, iOS, and
+  macOS
+- HIPAA Compliance required for integration
+- All test cards are synthetic samples for testing purposes only. They do not contain
+  real patient information.
+errors:
+- '401 Unauthorized: Unknown authorization error - please check your token format
+  and try again'
+- '400 Bad Request: limit must be a positive integer and less than 500'
+- '419 Authentication Timeout: Token is expired'
+- '400 Invalid UUID: Invalid card_id, the ID must be formatted as a UUID.'
+- '401 Missing or invalid token: Unknown authorization error - please check your token
+  format and try again'
+- '403 Token is expired: Token is expired'
+- '404 Card not found: No resource found for card_id'
+- '401 Unauthorized: Recheck API key validity'
+- 'VideoError: Various system errors of getUserMedia, including: ''Permission Denied''
+  and ''Camera not found'''
+- 'WSError: ''No websocket found - critical failure'''
+- 'ResponseError: Various HTTP errors returned from XMLHttpRequest and the CardScan.ai
+  backend.'
+- 'VideoError 670: Various system errors including: ''Permission Denied'' and ''Camera
+  not found'''
+- 'VideoError 675: Various system media errors, including: ''Permission Denied'' and
+  ''The element has no supported sources.'''
+- 'WSError 640: ''No websocket found - critical failure'''
+- '401 Unauthorized: Invalid API key or session token'
+- '404 Not Found: Card not found'
+- '429 Too Many Requests: Rate limit exceeded'
+- '404: Card not found'
+- '429: Rate limit exceeded'
+- '401: Invalid API key or session token'
+- 'InvalidNPIException: Ensure that it is correctly registered in the NPI database.'
+- 'MismatchedDOBException: Verify that the patient''s DOB is correct and formatted
+  in the YYYYMMDD format.'
+- 'NameMisspelledException: Check for any common misspellings in the patient''s name.'
+- 'Invalid signature: Check your webhook verification logic.'
+- 'Invalid signature: Verify webhook signatures for security.'
+- 'Field not found: Rule is skipped and logged as a warning.'
+- 'Webhook timeout: Rule continues with default behavior.'
+- 'Invalid comparison: Rule fails validation and is skipped.'
+- 'Action failure: Rule logs the error but the request continues processing.'
+- 'Rule syntax error: Rule is disabled until corrected.'
+auth_info:
+  mentioned_objects:
+  - API Key
+client:
+  base_url: https://sandbox.cardscan.ai/v1
+  auth:
+    type: apikey
+    client_id: '{{ dlt.secrets[''api_key''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+source_metadata: null

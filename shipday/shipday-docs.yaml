@@ -1,0 +1,253 @@
+resources:
+- name: order_status_update
+  endpoint:
+    path: /order-status-update
+    method: POST
+    data_selector: event
+    params: {}
+- name: delivery_order
+  endpoint:
+    path: /reference/delivery-order-object
+    method: GET
+    data_selector: records
+- name: active_orders
+  endpoint:
+    path: /orders
+    method: GET
+- name: order_details
+  endpoint:
+    path: /orders/{ordernumber}
+    method: GET
+    data_selector: object
+- name: insert_order
+  endpoint:
+    path: /orders
+    method: POST
+- name: edit_order
+  endpoint:
+    path: /order/edit/{orderId}
+    method: PUT
+- name: delete_order
+  endpoint:
+    path: /orders/{orderId}
+    method: DELETE
+- name: orders_query
+  endpoint:
+    path: /orders/query
+    method: POST
+    data_selector: Array
+- name: assign_order_to_driver
+  endpoint:
+    path: /orders/assign/{orderId}/{carrierId}
+    method: PUT
+- name: unassign_order
+  endpoint:
+    path: /orders/unassign/{orderId}
+    method: PUT
+- name: Order Ready to Pickup
+  endpoint:
+    path: /orders/{orderId}/meta
+    method: PUT
+- name: order_status_update
+  endpoint:
+    path: /orders/{orderId}/status
+    method: PUT
+- name: pickup_order
+  endpoint:
+    path: /pickup-orders
+    method: GET
+    data_selector: records
+- name: pickup_order
+  endpoint:
+    path: /pickup-orders/{orderId}
+    method: GET
+    data_selector: object
+- name: pickup_order
+  endpoint:
+    path: /pickup-orders
+    method: POST
+- name: edit_pickup_order
+  endpoint:
+    path: /pickup-orders/{orderId}
+    method: PUT
+- name: delete_pickup_order
+  endpoint:
+    path: /pickup-orders/{orderId}
+    method: DELETE
+- name: carrier
+  endpoint:
+    path: /reference/carrier-object
+    method: GET
+    data_selector: records
+- name: carriers
+  endpoint:
+    path: /carriers
+    method: GET
+    data_selector: object
+    params: {}
+- name: carrier
+  endpoint:
+    path: /carriers
+    method: POST
+- name: delete_carrier
+  endpoint:
+    path: /carriers/{carrierid}
+    method: DELETE
+- name: EtaDataPublic
+  endpoint:
+    path: /etadatapublic
+    method: GET
+    data_selector: fixedData
+    params: {}
+- name: order_delivery_progress
+  endpoint:
+    path: /order/progress/{trackingId}
+    method: GET
+- name: Delivery Orders
+  endpoint:
+    path: /reference/delivery-order-object
+    method: GET
+- name: Pickup Orders
+  endpoint:
+    path: /reference/pickup-order-object
+    method: GET
+- name: Carriers
+  endpoint:
+    path: /reference/carrier-object
+    method: GET
+- name: Delivery Tracking
+  endpoint:
+    path: /reference/etadatapublic-object
+    method: GET
+- name: Shipday Partner Orders
+  endpoint:
+    path: /reference/partner-order-object
+    method: GET
+- name: Retrieve Members
+  endpoint:
+    path: /reference/member-details-object
+    method: GET
+- name: On-Demand Delivery
+  endpoint:
+    path: /reference/on-demand-delivery
+    method: GET
+- name: partner_order
+  endpoint:
+    path: /reference/partner-order-object
+    method: GET
+    data_selector: records
+- name: completed_orders
+  endpoint:
+    path: /partner/members/{companyId}/completedOrders
+    method: GET
+    data_selector: Array
+- name: orders_query
+  endpoint:
+    path: /partner/orders
+    method: POST
+- name: member_details
+  endpoint:
+    path: /retrieve-members
+    method: GET
+    data_selector: records
+    params: {}
+- name: members
+  endpoint:
+    path: /partner/members
+    method: GET
+    data_selector: Array
+- name: pickup-orders
+  endpoint:
+    path: /pickup-orders/{orderId}
+    method: GET
+- name: on_demand_delivery_details
+  endpoint:
+    path: /on-demand-delivery-details
+    method: GET
+    data_selector: records
+- name: services
+  endpoint:
+    path: /on-demand/services
+    method: GET
+    data_selector: object
+- name: estimate
+  endpoint:
+    path: /on-demand/estimate/{orderId}
+    method: GET
+    data_selector: object
+    params: {}
+- name: assign
+  endpoint:
+    path: /on-demand/assign
+    method: POST
+- name: delivery_orders
+  endpoint:
+    path: /pickup-orders
+    method: GET
+- name: pickup_orders
+  endpoint:
+    path: /pickup-orders/{orderId}
+    method: GET
+- name: cancel_order
+  endpoint:
+    path: /on-demand/cancel/{orderId}
+    method: POST
+- name: availability
+  endpoint:
+    path: /on-demand/availability
+    method: POST
+- name: driver_location_update
+  endpoint:
+    path: /driver-location-update
+    method: POST
+    data_selector: payload
+- name: pickup_order
+  endpoint:
+    path: /pickup-orders/{orderId}
+    method: GET
+- name: pickup_order
+  endpoint:
+    path: /pickup-orders
+    method: GET
+- name: pickup_order_details
+  endpoint:
+    path: /pickup-orders/{orderId}
+    method: GET
+notes:
+- 3rd party system needs to provide an endpoint to receive webhooks.
+- Validation token is sent in the webhook header data as 'token'.
+- Keep your API key secure. Do not share it with anyone outside of your organization
+  and do not put it in your source code that can be accessed publicly.
+- ACTIVE orders are those which are neither ALREADY_DELIVERED nor FAILED_DELIVERY
+  nor INCOMPLETE
+- Customer feedback or comments about the order (null if no feedback provided)
+- Indicates whether the order is scheduled for future delivery
+- Replace the orderId in the path param with the actual orderId of the order that
+  you want to edit.
+- All datetimes are in UTC ISO format
+- This API is only available for customer having plan BUSINESS ADVANCED.
+- There is a rate limit of at most 3 requests per minute per trackingId.
+- Uses OAuth2 for authentication
+- Webhook configuration requires internal setup by Shipday team
+errors:
+- '200 OK: The request has succeeded.'
+- '400 Bad Request: The server could not understand the request due to invalid syntax.'
+- '401 Unauthenticated: The client must authenticate itself to get the requested response.'
+- '429 Too Many Requests: The user has sent too many requests in a given amount of
+  time. We recommend to implement exponential back-off.'
+- '500, 501, 502, 503 Service Unavailable: The server is not able to handle the request.
+  This can be because our servers are down for maintenance or they are overloaded.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.shipday.com
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

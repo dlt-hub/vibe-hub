@@ -1,0 +1,151 @@
+resources:
+- name: Connection
+  endpoint:
+    path: /happybase.Connection
+    method: GET
+- name: Table
+  endpoint:
+    path: /happybase.Table
+    method: GET
+- name: Batch
+  endpoint:
+    path: /happybase.Batch
+    method: GET
+- name: ConnectionPool
+  endpoint:
+    path: /happybase.ConnectionPool
+    method: GET
+- name: Table
+  endpoint:
+    path: /Table
+    method: GET
+    data_selector: records
+    params: {}
+- name: Batch
+  endpoint:
+    path: /Batch
+    method: GET
+    data_selector: records
+    params: {}
+- name: ConnectionPool
+  endpoint:
+    path: /ConnectionPool
+    method: GET
+    data_selector: records
+    params: {}
+- name: Connection
+  endpoint:
+    path: /happybase.Connection
+    method: GET
+    data_selector: parameters
+    params:
+      host: localhost
+      port: 9090
+      timeout: null
+      autoconnect: true
+      table_prefix: null
+      table_prefix_separator: _
+      compat: '0.98'
+      transport: buffered
+      protocol: binary
+- name: Table
+  endpoint:
+    path: /happybase.Table
+    method: GET
+    data_selector: methods
+    params: {}
+- name: Batch
+  endpoint:
+    path: /happybase.Batch
+    method: GET
+    data_selector: methods
+    params: {}
+- name: ConnectionPool
+  endpoint:
+    path: /happybase.ConnectionPool
+    method: GET
+    data_selector: methods
+    params: {}
+- name: table
+  endpoint:
+    path: /tables
+    method: GET
+    data_selector: tables
+- name: row
+  endpoint:
+    path: /row
+    method: GET
+    data_selector: row
+- name: scan
+  endpoint:
+    path: /scan
+    method: GET
+    data_selector: scan
+- name: table
+  endpoint:
+    path: /table-name
+    method: PUT
+    data_selector: rows
+    params: {}
+- name: Connection
+  endpoint:
+    path: /happybase.Connection
+    method: GET
+    data_selector: records
+- name: Table
+  endpoint:
+    path: /happybase.Table
+    method: GET
+    data_selector: records
+- name: table
+  endpoint:
+    path: /api/table
+    method: GET
+- name: Connection
+  endpoint:
+    path: /api.html#happybase.Connection
+    method: GET
+- name: Table
+  endpoint:
+    path: /api.html#happybase.Table
+    method: GET
+notes:
+- Data must be converted to byte strings before passing to HappyBase.
+- Storing and deleting data for the same row key in a single batch leads to unpredictable
+  results, so don’t do that.
+- A Batch instance keeps all mutations in memory until the batch is sent.
+- HappyBase does not do any automatic string conversion. Data must be converted to
+  byte strings before passing to HappyBase.
+- The batch is automatically applied when the with code block terminates, even in
+  case of errors.
+- The transaction argument to Table.batch() is all you need to obtain transactional
+  behaviour.
+- Generating and installing the HBase Thrift Python modules (using `thrift --gen py`
+  on the `.thrift` file) is not necessary, since HappyBase bundles pregenerated versions
+  of those modules.
+- An application should never counter_get() the current value, modify it in code and
+  then counter_set() the modified value; use the atomic counter_inc() and counter_dec()
+  instead!
+- HappyBase also features a connection pool, which is covered later in this guide.
+- The connection pool does not capture raised exceptions, nor does it automatically
+  retry failed operations. This means that the application still has to handle connection
+  errors.
+- A Batch keeps all mutations in memory until the batch is sent.
+- Applications requiring transactional behaviour should use the transaction argument
+  to Table.batch().
+- The pool is provided by the ConnectionPool class. The size argument to the constructor
+  specifies the number of connections in the pool.
+- HappyBase does not do any automatic string conversion.
+- The HBase shell is often a better alternative for many HBase administration tasks.
+- 'The batch_size acts as a threshold: a Batch instance automatically sends all pending
+  mutations when there are more than batch_size pending operations.'
+- The connection pool does not capture raised exceptions, nor does it automatically
+  retry failed operations.
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: somehost
+  auth:
+    type: none
+source_metadata: null
