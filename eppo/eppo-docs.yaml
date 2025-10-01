@@ -1,0 +1,204 @@
+resources:
+- name: experiments
+  endpoint:
+    path: /api/v1/experiments
+    method: GET
+- name: flag_assignment
+  endpoint:
+    path: /api/flags/assignment
+    method: GET
+    data_selector: assignment
+- name: assignment_logs
+  endpoint:
+    path: /data-management/definitions/assignment-sql/
+    method: GET
+- name: fact_events
+  endpoint:
+    path: /data-management/definitions/fact-sql/
+    method: GET
+- name: properties
+  endpoint:
+    path: /data-management/definitions/property-sql/
+    method: GET
+- name: entry_points
+  endpoint:
+    path: /statistics/sample-size-calculator/setup/#defining-an-entry-point
+    method: GET
+- name: metrics
+  endpoint:
+    path: /metrics
+    method: GET
+    data_selector: data
+    params: {}
+- name: metrics_sync
+  endpoint:
+    path: /api/docs#/Metrics%20Sync/syncMetrics
+    method: POST
+- name: metrics_sync
+  endpoint:
+    path: /api/docs#/Metrics%20Sync/syncMetrics
+    method: POST
+- name: experiment
+  endpoint:
+    path: /api/v1/experiments
+    method: GET
+    data_selector: experiments
+- name: experiment_analysis
+  endpoint:
+    path: /api/experiment_analysis
+    method: POST
+    data_selector: data
+- name: holdout_analysis
+  endpoint:
+    path: /api/holdout_analysis
+    method: POST
+    data_selector: data
+    params: {}
+- name: switchback_assignment
+  endpoint:
+    path: /api/switchback/assignments
+    method: POST
+    data_selector: assignments
+- name: switchback_analysis
+  endpoint:
+    path: /api/switchback/analysis
+    method: POST
+    data_selector: analysis
+- name: holdout_analysis
+  endpoint:
+    path: /holdout/analysis
+    method: GET
+    data_selector: results
+- name: Switchback Assignments
+  endpoint:
+    path: /api/switchback_assignments
+    method: POST
+    data_selector: assignments
+- name: Switchback Analysis
+  endpoint:
+    path: /api/switchback_analysis
+    method: POST
+    data_selector: analysis
+- name: contextual_bandit
+  endpoint:
+    path: /contextual-bandits
+    method: GET
+    data_selector: records
+notes:
+- Uses SDK keys for authentication.
+- Check that you're in the Test environment
+- Uses the Eppo SDK
+- Ensure that the randomization unit for the switchback experiment is included in
+  the subject attributes.
+- Eppo Geolift supports SUM and COUNT metrics with no timeframes specified.
+- Uses API key for authentication
+- Configuration is pulled from Eppo's CDN
+- The SDK is designed to be initialized once when your application server starts up.
+- The SDK begins polling Eppo's API at regular intervals to retrieve flag/experiment
+  configurations.
+- Enhances real-user monitoring data with feature flag information
+- Initialize Eppo's SDK and create an assignment logger that additionally reports
+  feature flag evaluations to Datadog.
+- Only Admins have the permission level to create a Browser Extension Key.
+- Only trusted URLs should be added.
+- Pre-forking is a tricky/advanced optimization technique and it may cause problems
+  if not used carefully.
+- Python and Ruby Eppo SDKs create a native thread that is responsible for fetching
+  and refreshing Eppo configuration.
+- The diagnostics tab for your experiment will alert you if an experiment is missing
+  data.
+- The diagnostics window will contain event volume information if it is available,
+  and SQL snippets for the metric source and the diagnostic query can be copied and
+  executed against your warehouse to help investigate.
+- Eppo never stores your raw data.
+- All data is encrypted in-transit and at-rest, with TLS and AES-256.
+- 'The ''user_email'' field is only available if the flag was updated via the UI.
+  Updates by the API will have ''meta_data'': {}.'
+- Always use a constant-time comparison function (like `crypto.timingSafeEqual`) when
+  comparing signatures to prevent timing attacks.
+- Ensure JSON data types are preserved before stringifying to generate the signature.
+- OAuth2 authentication requires setup of connected app in Eppo.
+- Metrics serve as the foundation for evaluating experiments and determining the effectiveness
+  of different variations.
+- Any metric or fact source created through the metric sync API will have a Certified
+  badge and will not be editable in the UI.
+- Eppo's warehouse native approach makes integration easy, transparent, and secure
+  but it also creates a dependency on the underlying warehouse database structure.
+- By materializing data upstream of Eppo, you can avoid having Eppo perform complex
+  joins and aggregations separately for each experiment.
+- If you opt to pre-aggregate data, make sure you truncate the assignment date to
+  the start of the day to avoid losing data from the day of assignment.
+- If the event timestamp is the partition key, this naturally leads to efficient scans
+  of your data.
+- Eppo's scheduled jobs will run an incremental refresh that only scans recent data.
+- The Run Log provides visibility into how Eppo processes experiment data in your
+  warehouse.
+- The Long Running Tasks view shows how long each pipeline component takes to execute.
+- Eppo doesn't export individual data from your warehouse.
+- We actively minimize what information we store.
+- Checks are run based on when a definition is created or updated and when an experiment
+  updates.
+- Coupled with Slack notifications, source diagnostics alert you to upstream issues
+  with your definitions.
+- Requires OAuth2 authentication setup
+- Uses OAuth2 with refresh token — requires setup of connected app in Eppo
+- Re-assigning users during an experiment can result in statistically invalid metrics.
+- Requires setup of connected app in Eppo
+- Users are assigned (randomized) into an experiment and all events are tracked on
+  the same timeline as assignment.
+- The pre-experiment data diagnostic is only run when CUPED is enabled.
+- Holdouts can be used with Eppo's SDK for an end-to-end managed experiments.
+- Tags allow you to organize your experiments in the Analysis and Insights sections.
+  This makes it easier to filter and see results from relevant experiments.
+- Switchback experiments are currently in closed Beta
+- Ensure logging of exposure to holdout and each variant in Assignment Source
+- If the estimate for Control is close to zero, that ratio becomes unreliable.
+- For any metric where you have elected to use winsorization to handle outliers, the
+  metric totals displayed in the tooltip when hovering over the lift are the winsorized
+  totals, not raw values.
+- Company-wide defaults can be overridden for individual experiments.
+- CUPED can be turned on in the admin panel.
+- Models are updated once a day, but you can manually refresh upon changing the control
+  variant or adding a new metric.
+- Company-wide defaults for experiments can be overridden individually.
+- Eppo's Contextual Bandits implementation is fully data warehouse native.
+- Actions are selected in real-time by the Eppo SDK by evaluating the contextual bandit
+  model locally.
+- Some objects may return nulls in deeply nested fields
+- Real-time decision-making based on provided actions and contexts.
+- Model updating is done once per day.
+- Eppo provides templates to help guide you through setting up the bandit based on
+  the most common pattern.
+- Eppo's Sample Size Calculator operates on top of your data to determine how many
+  subjects you need to detect the effect of interest.
+- Eppo's statistics engine is designed to provide a best-in-class analysis of experiment
+  results.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Traffic imbalance often indicates that the results of an experiment cannot be trusted.
+- Eppo warns of experiment interactions.
+- Statistical tests are used to determine interactions.
+errors:
+- '401 Unauthorized: Check API key validity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- pipeline failures during refresh
+- Long Running Tasks
+- '401 Unauthorized: Check OAuth token or permissions'
+- '404 Not Found: Verify endpoint path and resource availability'
+- '400 Bad Request: Check the request parameters.'
+- '401 Unauthorized: Verify OAuth token.'
+- 'Green Banner: Assignments are independent and no effect interaction.'
+- 'Yellow Banner: Assignments are independent and effect interaction.'
+- 'Red Banner: Assignments are dependent and no effect interaction.'
+auth_info:
+  mentioned_objects:
+  - OAuthToken
+  - AuthProvider
+client:
+  base_url: https://eppo.cloud
+  auth:
+    type: apikey
+    location: header
+    header_name: X-Eppo-Token
+source_metadata: null

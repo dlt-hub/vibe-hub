@@ -1,0 +1,192 @@
+resources:
+- name: land_plot
+  endpoint:
+    path: /api_v1_eudrsupplier_plot
+    method: POST
+    data_selector: data
+    params: {}
+- name: information_request_list
+  endpoint:
+    path: /api_v1_eudrsupplier_inforequest_list
+    method: GET
+    data_selector: data
+    params:
+      page: '1'
+- name: product_batch
+  endpoint:
+    path: /api_v1_eudrsupplier_batch
+    method: POST
+    data_selector: data
+    params: {}
+- name: information_request_response
+  endpoint:
+    path: /api_v1_eudrsupplier_inforequest_response
+    method: POST
+    data_selector: data
+    params: {}
+- name: create_or_update_land_plots
+  endpoint:
+    path: /api_v1_eudrsupplier_plot
+    method: POST
+    data_selector: data
+- name: list_pending_information_requests
+  endpoint:
+    path: /api_v1_eudrsupplier_inforequest_list
+    method: GET
+    data_selector: data
+- name: create_or_update_product_batches
+  endpoint:
+    path: /api_v1_eudrsupplier_batch
+    method: POST
+    data_selector: data
+- name: respond_to_requests
+  endpoint:
+    path: /api_v1_eudrsupplier_inforequest_response
+    method: POST
+    data_selector: data
+- name: create_batch
+  endpoint:
+    path: /api_v1_eudrsupplier_batch
+    method: POST
+    data_selector: records
+- name: respond_to_info_request
+  endpoint:
+    path: /api_v1_eudrsupplier_inforequest_response
+    method: POST
+    data_selector: records
+- name: monitor_info_requests
+  endpoint:
+    path: /api_v1_eudrsupplier_inforequest_list
+    method: GET
+    data_selector: data
+- name: create_land_plots
+  endpoint:
+    path: /api_v1_eudrsupplier_plot
+    method: POST
+    data_selector: records
+- name: questionnaires
+  endpoint:
+    path: /supplier-portal/docs/beantwortung-von-eudr-frageboegen
+    method: GET
+    data_selector: records
+- name: user_management
+  endpoint:
+    path: /api/v1/users
+    method: GET
+    data_selector: users
+    params: {}
+- name: information_requests
+  endpoint:
+    path: /api/v1/information_requests
+    method: GET
+    data_selector: requests
+    params: {}
+- name: organisation_profile
+  endpoint:
+    path: /supplier-portal/organisationsprofil
+    method: GET
+    data_selector: organisationProfileData
+- name: evidence
+  endpoint:
+    path: /supplier-portal/nachweise
+    method: POST
+    data_selector: evidenceData
+- name: user_management
+  endpoint:
+    path: /supplier-portal/nutzerverwaltung
+    method: PUT
+    data_selector: userManagementData
+- name: property_request
+  endpoint:
+    path: /api/v1/property_requests
+    method: GET
+    data_selector: data
+    params: {}
+- name: product_request
+  endpoint:
+    path: /api/v1/product_requests
+    method: GET
+    data_selector: data
+    params: {}
+- name: bestellungen
+  endpoint:
+    path: /anfragen/bestellungen
+    method: GET
+    data_selector: anfragen
+    params: {}
+- name: cbam_emissionsdaten
+  endpoint:
+    path: /anfragen/cbam_emissionsdaten
+    method: GET
+    data_selector: emissionsdaten
+    params: {}
+- name: product_batches
+  endpoint:
+    path: /supplier-portal/products/batches
+    method: POST
+    data_selector: batches
+    params: {}
+- name: products
+  endpoint:
+    path: /products
+    method: GET
+    data_selector: data
+    params: {}
+- name: batches
+  endpoint:
+    path: /batches
+    method: GET
+    data_selector: data
+    params: {}
+- name: land_data
+  endpoint:
+    path: /supplier-portal/eudr/land-data
+    method: POST
+    data_selector: land_records
+    params: {}
+- name: grundstueck
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Grundstück
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Only non-EU suppliers need to submit land plot data.
+- API uses Basic Authentication with API Token and Account ID.
+- Ensure to copy and save the API token securely as it is displayed only once.
+- Land plots must be created before batch creation, and only the plot IDs must be
+  referenced in the batch.
+- User roles can be customized for access management.
+- User management requires permissions setup in the Supplier Portal.
+- Ensure you have filled in your property data on the EUDR page before answering property
+  information requests.
+- You must fill in product and batch data on the PRODUCTS page before answering product
+  information requests.
+- Stellen Sie sicher, dass Sie sich auf der Seite ANFRAGEN auf dem Tab BESTELLUNGEN
+  befinden.
+- Requires upload of batch data via Excel file.
+- Only point coordinates or polygons can be uploaded.
+- Other variants (e.g., lines that do not form a polygon) are not supported.
+errors:
+- '401 Unauthorized: Check your OAuth token.'
+- '403 Forbidden: Insufficient permissions.'
+auth_info:
+  mentioned_objects:
+  - API Token
+  - Account ID
+  - OauthToken
+  - AuthProvider
+client:
+  base_url: https://supplier-portal.osapiens.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.osapiens.com/oauth2/token
+    client_id: '{{ dlt.secrets[''osapiens_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''osapiens_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''osapiens_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

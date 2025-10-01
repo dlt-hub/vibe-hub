@@ -1,0 +1,136 @@
+resources:
+- name: todo
+  endpoint:
+    path: /todo
+    method: GET
+    data_selector: data
+- name: orders
+  endpoint:
+    path: /orders
+    method: GET
+    data_selector: orders
+- name: orders
+  endpoint:
+    path: /orders
+    method: GET
+    data_selector: orders
+- name: user_account_management
+  endpoint:
+    path: /user-account-management
+    method: GET
+- name: API
+  endpoint:
+    path: /api
+    method: POST
+    data_selector: access_token
+    params:
+      audience: https://app.my-company.com/api
+- name: My App - API
+  endpoint:
+    path: /api
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- The user should be logged in at this point
+- No breaking changes except that the early init (oidc-spa/entrypoint) is no longer
+  optional.
+- This release get rid of an unessesary redirect when logging in, this yield a faster
+  login experience.
+- Tokens are now refreshed only when needed
+- User inactivity is tracked locally
+- Tokens are no longer stored in session storage, aligning with modern security best
+  practices.
+- The silent SSO file is no longer needed, so it should be deleted from your project.
+- Full compatibility with any OIDC provider
+- 'Enhanced security: No more token storage in session storage'
+- Eliminated the need for a silent-sso.htm file
+- Improved error messages
+- API refinements
+- Uses OAuth2 for authentication
+- Enforce authentication everywhere in your app.
+- Gracefully handle authentication issues
+- Customizable behavior for handling OIDC initialization errors
+- oidc-spa provides features like support for multiple OIDC clients.
+- Some pages can be accessed without requiring the user to be authenticated.
+- For certain use cases, you may want a mock adapter to simulate user authentication
+  without involving an actual authentication server.
+- When using another authentication server, adapt the queryParameter provided.
+- By default, if you don't have autoLogin enabled, when there is an error with the
+  OIDC initialization your website will load with the user unauthenticated.
+- You can customize this behavior.
+- oidc-spa completely abstracts away the concern of refreshing tokens; you don’t need
+  to handle it yourself.
+- When using Keycloak, user account actions require manual enabling on the Keycloak
+  server.
+- oidc-spa completely abstracts away the concern of refreshing tokens.
+- As of today, to use oidc-spa you need to enable SPA mode
+- Auth0 does not issue refresh tokens by default.
+- Always create a dedicated realm for your organization—never use the master realm.
+- 'Set noIframe: true'
+- 'Set __unsafe_useIdTokenAsAccessToken: true if you need the access token to be a
+  JWT (by default, the issued access token is opaque)'
+- In the Clerk admin, make sure the consent pages are not enabled
+- Auth0 does not issue refresh tokens
+- Access token has a default validity of 24 hours
+- PKCE-based authentication fails unless a client secret is provided
+- Providing the client secret in your frontend code has no security implications
+- Disable client credentials — you do not need to provide a client secret to oidc-spa.
+- Select SPA as the application type.
+- Ensure issuance of a JWT Access Token by configuring a custom scope.
+- Tokens remain in memory only — oidc-spa does not store them in localStorage, sessionStorage,
+  or a backend database.
+- Session cookies do not require GDPR consent and are always enabled in all browsers.
+- 'Set `noIframe: true`'
+- 'Set `__unsafe_useIdTokenAsAccessToken: true` if you need the access token to be
+  a JWT (by default, the issued access token is opaque)'
+- In the Clerk admin, make sure the consent pages are **not** enabled
+- oidc-spa works seamlessly even if auth cookies are blocked
+- To avoid issues, ensure that your OIDC provider shares a common parent domain with
+  your app
+- 'Google''s OAuth implementation has a significant flaw: PKCE-based authentication
+  fails unless a client secret is provided.'
+- Providing the client secret in your frontend code for this specific case has no
+  security implications.
+- By default, applications using oidc-spa will create an iframe pointing to themselves
+  in order to quickly restore the user’s session across reloads and navigations.
+- 'Note: this will slightly increase the initialization time of your application.'
+- No persistent token storage – Tokens are never stored in localStorage or sessionStorage.
+- Session cookies should not be confused with tracking cookies or third-party cookies.
+- Early init setup is mandatory for performance and security.
+- Enabling noIframe mode will slightly increase the initialization time of your application.
+- The access token is meant to be opaque to the client application.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- The early init setup recommended in oidc-spa is designed to mitigate risks.
+- Is early init mandatory? Yes.
+errors:
+- '401 Unauthorized: If the user isn''t logged in we shouldn''t be making request
+  to an API endpoint that requires authentication'
+- 'OidcInitializationError: If the authentication server is likely down, this property
+  will be true.'
+- 'OidcInitializationError: isAuthServerLikelyDown is true if the authentication server
+  is likely down'
+- Can't login now, try again later
+- 'Assertion Error: Call to the TODO API while the user isn''t logged in.'
+- 'OidcInitializationError: Handle potential initialization errors'
+- 'Unauthorized: Check client ID and secret.'
+- '401 Unauthorized: Ensure that the aud claim in the JWT access token matches api://my-app-api'
+- If the access token expires every 20 seconds, your app will be forced to reload
+  every 18 seconds
+auth_info:
+  mentioned_objects:
+  - Oidc
+  - AbstractOidcService
+  - issuerUri
+  - clientId
+  - audience
+  - Application ID URI
+  - JWT Access Token
+client:
+  base_url: https://login.microsoftonline.com
+  auth:
+    type: oauth2
+    flow: authorization_code
+    location: header
+    header_name: Authorization
+source_metadata: null

@@ -1,0 +1,286 @@
+resources:
+- name: installation
+  endpoint:
+    path: /api/installation
+    method: GET
+    data_selector: installations
+- name: chargers
+  endpoint:
+    path: /api/chargers
+    method: GET
+    data_selector: chargers
+- name: charger_state
+  endpoint:
+    path: /api/chargers/{id}/state
+    method: GET
+    data_selector: state
+- name: completed_sessions
+  endpoint:
+    path: /api/chargehistory
+    method: GET
+- name: installation
+  endpoint:
+    path: /api/installation
+    method: GET
+- name: chargers
+  endpoint:
+    path: /api/chargers
+    method: GET
+- name: installation_hierarchy
+  endpoint:
+    path: /api/installation/{id}/hierarchy
+    method: GET
+- name: installation_update
+  endpoint:
+    path: /api/installation/{id}/update
+    method: PUT
+- name: installation
+  endpoint:
+    path: /api/installation
+    method: GET
+    data_selector: ''
+    params: {}
+- name: chargers
+  endpoint:
+    path: /api/chargers
+    method: GET
+    data_selector: ''
+    params: {}
+- name: installation_hierarchy
+  endpoint:
+    path: /api/installation/{id}/hierarchy
+    method: GET
+    data_selector: ''
+    params: {}
+- name: installation_update
+  endpoint:
+    path: /api/installation/{id}/update
+    method: PUT
+    data_selector: ''
+    params: {}
+- name: installation_hierarchy
+  endpoint:
+    path: /installations/{installationId}/hierarchy
+    method: GET
+    data_selector: chargers
+- name: installations_hierarchy
+  endpoint:
+    path: /installations/{installationId}/hierarchy
+    method: GET
+    data_selector: chargers
+- name: installation
+  endpoint:
+    path: /api/installation/{id}/update
+    method: POST
+    data_selector: null
+    params: {}
+- name: installation
+  endpoint:
+    path: /api/installation/{id}/update
+    method: POST
+    data_selector: response
+    params: {}
+- name: messagingConnectionDetails
+  endpoint:
+    path: /api/userGroups/<usergroupId>/messagingConnectionDetails
+    method: GET
+    data_selector: connection details
+- name: StatusNotification
+  endpoint:
+    path: /ocpp/statusnotification
+    method: POST
+    data_selector: payload
+    params: {}
+- name: MeterValues
+  endpoint:
+    path: /ocpp/metervalues
+    method: POST
+    data_selector: payload
+    params: {}
+- name: FreeChargingIdTag
+  endpoint:
+    path: /FreeChargingIdTag
+    method: GET
+    data_selector: idToken
+    params: {}
+- name: FreeCharging
+  endpoint:
+    path: /FreeCharging
+    method: GET
+    data_selector: boolean
+    params: {}
+- name: LockCablePermanently
+  endpoint:
+    path: /LockCablePermanently
+    method: GET
+    data_selector: boolean
+    params: {}
+- name: PowerActiveImportDeltaForEagerMeterValueSample
+  endpoint:
+    path: /PowerActiveImportDeltaForEagerMeterValueSample
+    method: GET
+    data_selector: integer
+    params: {}
+- name: UseAuthorizationKeyWithoutDecoding
+  endpoint:
+    path: /UseAuthorizationKeyWithoutDecoding
+    method: GET
+    data_selector: boolean
+    params: {}
+- name: FreeChargingIdTag
+  endpoint:
+    path: /configuration/FreeChargingIdTag
+    method: GET
+    data_selector: value
+    params: {}
+- name: FreeCharging
+  endpoint:
+    path: /configuration/FreeCharging
+    method: GET
+    data_selector: value
+    params: {}
+- name: LockCablePermanently
+  endpoint:
+    path: /configuration/LockCablePermanently
+    method: GET
+    data_selector: value
+    params: {}
+- name: PowerActiveImportDeltaForEagerMeterValueSample
+  endpoint:
+    path: /configuration/PowerActiveImportDeltaForEagerMeterValueSample
+    method: GET
+    data_selector: value
+    params: {}
+- name: UseAuthorizationKeyWithoutDecoding
+  endpoint:
+    path: /configuration/UseAuthorizationKeyWithoutDecoding
+    method: GET
+    data_selector: value
+    params: {}
+- name: charger_model_compliance
+  endpoint:
+    path: /ocpp/charging_model_compliance
+    method: GET
+    data_selector: models
+    params: {}
+- name: configuration_keys
+  endpoint:
+    path: /zaptec/go2/ocpp/1.6j/configuration_keys
+    method: GET
+    data_selector: keys
+    params: {}
+- name: configuration_keys
+  endpoint:
+    path: /zaptec/go2/ocpp/16j/configuration
+    method: GET
+    data_selector: keys
+    params: {}
+- name: session_start
+  endpoint:
+    path: Session Start URL
+- name: session_end
+  endpoint:
+    path: Session End URL
+notes:
+- Service Bus subscriptions expire after 14 days of inactivity.
+- The /chargers/{id}/state endpoint is not intended for real-time tracking use cases.
+- 'Securely Store Credentials: Never hardcode usernames and passwords directly in
+  your application. Use secure configuration methods or environment variables.'
+- 'Protect Tokens: Treat access_token as sensitive information.'
+- 'Token expiration: 3600 seconds'
+- 'Scope example: offline_access'
+- Users and Integrators are solely responsible for maintaining the confidentiality
+  and security of their Zaptec account credentials and API access tokens.
+- Integrators, developers and/or third parties are recommended to maintain a local
+  state of charger and installation data within their integration, keeping it synchronised
+  using events from the service bus.
+- Ensure you handle tokens securely and refresh them as needed according to the token's
+  expiry time.
+- A peak rate limit of 10 requests per second per account is in place.
+- Users and Integrators must not share their API credentials with unauthorized third
+  parties.
+- Integrators are not allowed to capture, use or store Zaptec users' credentials/passwords.
+- Users don’t get added to an installation. Instead, they grant access to your UserGroup,
+  and all group members inherit the relevant permissions.
+- The consent URL must include installationId for Zaptec Pro installations due to
+  their shared access and multiple charger setups.
+- Webhook Authentication requires configuration of an Authentication URL if OAuth
+  is used.
+- Consent is granted at the installation level, not per charger.
+- This setup ensures seamless integration between Zaptec and external authorization
+  or payment providers, enhancing flexibility and security.
+- Uses OCPP-J 1.6 Core for full session lifecycle management.
+- To avoid repeated switching between one phase and three phases when charging from
+  solar, the switching threshold should be set to a value above the maximum expected
+  solar charging current.
+- If the maximum expected solar charging current is unknown, it is recommended to
+  set this value to 8A.
+- Rate limiting for this tier is applied on a per-user basis.
+- Charger Max phases must be set to 3 in the Zaptec Portal
+- Frequent changes may cause the vehicle to interrupt the charging session
+- 'Observation Subscription Limit: only two service bus subscriptions can receive
+  observation messages simultaneously.'
+- Message subscriptions will be disabled after 14 days without messages being sent
+  or consumed.
+- Connection details will be reset when a subscription is disabled.
+- Message TTL is 5 minutes.
+- Subscriptions are automatically removed after 14 days without use.
+- Message TTL is 5 minutes. Any state observation not consumed within this period
+  will be lost.
+- When the OCPP URL is set at the installation level, it will override the OCPP URL
+  set at the charger level.
+- If 'Authorization required' is disabled, the charging station will not include an
+  ID tag in its OCPP messages.
+- Uses OCPP 1.6J standard format unless legacy behavior is enabled
+- Uses Device ID for basic authentication when legacy behavior is enabled.
+- Local (charger-initiated) power management is disabled in OCPP1.6J mode.
+- Charger authentication for starting and stopping sessions is handled via the OCPP
+  protocol.
+- Membership in this User Group determines who can enable OCPP Native.
+- If you encounter an error, it means that OCPP Native permission has not been applied
+  to the installation.
+- Power management is disabled in OCPP1.6J mode.
+- Charger authentication is handled via the OCPP protocol.
+- This SHOULD only be used by the Charge Point when FreeCharging is enabled.
+- If true, then the UnlockConnectorOnEVSideDisconnect configuration key SHALL be false
+  and read-only.
+- If set to 200 and MeterValueSampleInterval is 3600, and Power.Active.Import was
+  300 during the last sample, then if it becomes > 500 or < 100, it will send a new
+  Sample.Periodic immediately and reset the interval.
+- If false, tries to decode hex-encoded AuthorizationKey and rejects invalid ones.
+- All features coming in upcoming release; will be available for testing upon request
+- Zaptec will handle firmware delivery
+- All keys listed are supported configuration keys for the Zaptec Go2 OCPP 1.6J.
+- The configuration keys include values such as AllowOfflineTxForUnknownId, AuthorizationCacheEnabled,
+  and more.
+- Web hooks enable external systems to authorize charge sessions.
+- 'Two web hooks are configurable: Session Start and Session End.'
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Older versions of the Zaptec app may display a warning that the charging station
+  is in Standalone mode when OCPP native mode is enabled. This warning can be safely
+  ignored.
+- In newer versions of the Zaptec app, charging stations in OCPP native mode will
+  not appear in the Zaptec app dashboard.
+errors:
+- '400 Bad Request: The request was malformed.'
+- '401 Unauthorized: Authentication failed or is required.'
+- '403 Forbidden: You do not have permission to access the resource.'
+- '404 Not Found: The requested resource was not found.'
+- '429 Too Many Requests: You have exceeded the rate limit.'
+- '500 Internal Server Error: An error occurred on the API server.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'HTTP Status Code: 429 Too Many Requests'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.zaptec.com
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+  paginator:
+    default_page_size: 50
+source_metadata: null
