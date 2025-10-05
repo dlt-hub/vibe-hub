@@ -1,0 +1,332 @@
+resources:
+- name: client_profile
+  endpoint:
+    path: /br
+    method: GET
+- name: cards
+  endpoint:
+    path: /cards
+    method: GET
+- name: transactions
+  endpoint:
+    path: /transactions
+    method: GET
+    data_selector: transactions
+    params:
+      currency: EUR
+      fromrecord: '0'
+      recordscount: '6'
+- name: update_email
+  endpoint:
+    path: /email
+    method: PUT
+    data_selector: statusCode
+    params: {}
+- name: create_card
+  endpoint:
+    path: /card
+    method: POST
+    data_selector: status
+    params: {}
+- name: change_card_status
+  endpoint:
+    path: /card-status
+    method: POST
+    data_selector: status
+    params: {}
+- name: unlink_digital_wallet
+  endpoint:
+    path: /card-device-token
+    method: POST
+    data_selector: status
+    params: {}
+- name: set_default_currency
+  endpoint:
+    path: /card-currency
+    method: PUT
+    data_selector: status
+    params: {}
+- name: bank_master_data
+  endpoint:
+    path: /banks
+    method: GET
+    data_selector: banks
+- name: bank_data_by_iban
+  endpoint:
+    path: /banks/iban/{ibanNo}
+    method: GET
+    data_selector: name
+- name: payment_purposes
+  endpoint:
+    path: /payment-purposes
+    method: GET
+    data_selector: purposes
+- name: country_cities
+  endpoint:
+    path: /country-cities
+    method: GET
+    data_selector: countries
+- name: verify_payment
+  endpoint:
+    path: /verify
+    method: GET
+    data_selector: contactId
+- name: iban
+  endpoint:
+    path: /iban/<nftId>
+    method: GET
+    data_selector: iban
+- name: countries
+  endpoint:
+    path: /countries
+    method: GET
+    data_selector: eligibleDomiciles
+- name: forex_rates
+  endpoint:
+    path: /rates
+    method: GET
+    data_selector: ''
+- name: kyc_status
+  endpoint:
+    path: /status-kyc?id=<nftId>
+    method: GET
+    data_selector: ''
+- name: email_availability
+  endpoint:
+    path: /exists?email=<email>
+    method: GET
+    data_selector: data
+- name: developer_nft
+  endpoint:
+    path: /developer/nft
+    method: GET
+    data_selector: nft_data
+- name: debit_card
+  endpoint:
+    path: /debit/card
+    method: GET
+    data_selector: card_data
+- name: cash_tokens
+  endpoint:
+    path: /tokens
+    method: GET
+    data_selector: tokens
+    params: {}
+- name: nft_status
+  endpoint:
+    path: /nft/status
+    method: GET
+    data_selector: status
+    params: {}
+- name: transaction_limit
+  endpoint:
+    path: /transaction/limit
+    method: GET
+    data_selector: limit
+    params: {}
+- name: client_payout
+  endpoint:
+    path: /payout
+    method: POST
+    data_selector: receipt
+    params: {}
+- name: crypto_top_up
+  endpoint:
+    path: /crypto/top-up
+    method: POST
+    data_selector: result
+    params: {}
+- name: money_exchange
+  endpoint:
+    path: /money/exchange
+    method: POST
+    data_selector: result
+    params: {}
+- name: fiat24account
+  endpoint:
+    path: /fiat24/account
+    method: GET
+    data_selector: records
+    params: {}
+- name: usd24
+  endpoint:
+    path: /fiat24/usd24
+    method: GET
+    data_selector: records
+    params: {}
+- name: eur24
+  endpoint:
+    path: /fiat24/eur24
+    method: GET
+    data_selector: records
+    params: {}
+- name: gmx
+  endpoint:
+    path: /fiat24/gmx
+    method: GET
+    data_selector: records
+    params: {}
+- name: client_onboarding
+  endpoint:
+    path: /register
+    method: POST
+- name: tan_signature
+  endpoint:
+    path: /tan-signature
+    method: POST
+- name: nft_reporting
+  endpoint:
+    path: /nft/reporting
+    method: GET
+    data_selector: results
+- name: balance_reporting
+  endpoint:
+    path: /balance/reporting
+    method: GET
+    data_selector: results
+- name: transaction_reporting
+  endpoint:
+    path: /transaction/reporting
+    method: GET
+    data_selector: results
+- name: wallet
+  endpoint:
+    path: /api/v1/wallet
+    method: GET
+    data_selector: data
+    params: {}
+- name: transaction
+  endpoint:
+    path: /api/v1/transaction
+    method: GET
+    data_selector: data
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: successful_deposits
+  endpoint:
+    path: /user/payments/cash-deposit
+    method: GET
+- name: invalid_deposits
+  endpoint:
+    path: /user/payments/cash-deposit
+    method: GET
+- name: fee
+  endpoint:
+    path: /user/payments/cash-deposit
+    method: GET
+- name: payout_account
+  endpoint:
+    path: /user/payments/cash-payout
+    method: GET
+    data_selector: payouts
+    params: {}
+- name: debit_card
+  endpoint:
+    path: /api/v1/debit_card
+    method: GET
+    data_selector: data
+    params: {}
+- name: transactions
+  endpoint:
+    path: /user/transactions/peer-2-peer
+    method: GET
+- name: currency_exchange
+  endpoint:
+    path: /user/transactions/money-exchange
+    method: GET
+- name: top_up
+  endpoint:
+    path: /user/transactions/crypto-top-up
+    method: POST
+- name: fiat24_nft
+  endpoint:
+    path: /nft
+    method: GET
+    data_selector: nfts
+    params: {}
+notes:
+- All secured requests need to have a header with signed information by the NFT address.
+- The fields sign, hash and deadline can be calculated as described in the documentation.
+- Open API, without header required
+- Deposit of 5,000 USDC must be paid in advance for debit card design
+- Uses OAuth2 with refresh token — requires setup of connected app in Fiat24
+- Requires setup of connected app in api
+- Replace the parameter wallet_provider to your address holding the wallet NFT.
+- Requires setup of connected app in Fiat24
+- Ensure compliance with API rate limits
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Each individual account has a monthly transaction limit.
+- Users must upgrade their accounts in person, inside Fiat24 dApp.
+- Users must close their accounts in person, inside Fiat24 dApp.
+- To finalise the verification, the controlling person will be asked to have a face-to-face
+  meeting, either by coming to our office in Zurich or having a online video call.
+- We aim to open your Business Account within 2 - 3 weeks of receiving all the required
+  documents.
+- The fixed application fee to review your application for a Capital Payment Account
+  is 1'000 CHF.
+- 'The payment instruction is: SR Saphirstein AG, Bellerivestrasse 245, 8008 Zurich,
+  Switzerland. IBAN: CH91 8305 1000 0000 0000 0. Bank: SR Saphirstein AG (BIC SAHHCHZ2).
+  Payment purpose / Memo: Capital Payment Application - Your entity name.'
+- Successful deposits will be processed within 1 - 2 business days.
+- Invalid deposits will be returned with a penalty charge of 10 EUR or 10 CHF.
+- Minimal payout amount is 10 EUR or 10 CHF.
+- All payouts made after 15:00 CET, on weekends or public holidays will be executed
+  on the next business day.
+- 'Card is issued in multiple currencies: EUR, USD, CHF, RMB'
+- Virtual card only without PIN
+- All Fiat24 verified user are eligible for P2P transfer, and not in blocked or closed
+  status, monthly transaction limit not reached.
+- No fee, it's free.
+- All Fiat24 verified users are eligible for crypto top-up.
+- In certain jurisdictions where cryptocurrency is prohibited, the cryptocurrency
+  top-up function is not offered.
+- 'All accounts have various statuses: Tourist, Live, Hard Blocked, Soft Blocked,
+  and Closed.'
+- The account number will be perpetually locked and will never be recycled after closing.
+- You must have WeChat installed on your phone.
+- If you’re using a desktop computer, you’ll need a mobile phone to scan the QR code
+  for verification.
+- If it times out, simply follow the on-screen instructions to generate a new verification
+  code QR.
+- This function is in beta, user may not find this in your Fiat24 Dapp.
+- 'Effective from: 14 February 2023'
+errors:
+- '500: NOK, if the card is not available'
+- '404: If the user doesn''t own a card'
+- '500: Too many requests - temporarily blocked'
+- Invalid IBAN.
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'INVALID_REQUEST: Check request parameters'
+- 'UNAUTHORIZED: Check API key or OAuth token'
+- 'NOT_FOUND: Resource does not exist'
+- 'APPLICATION_REJECTED: Client profile not matching business focus.'
+- 'ACCOUNT_CLOSED: Account cannot be reopened after closure.'
+- Invalid payouts will be returned.
+- Returned payouts may incur a fee of 10 CHF or 10 EUR.
+- 'Invalid NFT ID: Ensure you are using a valid token ID.'
+- 'Gas fee required: You must have Ether to complete the transaction.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.fiat24.com
+  headers:
+    Content-Type: application/json
+source_metadata: null

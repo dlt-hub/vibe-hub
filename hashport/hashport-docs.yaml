@@ -1,0 +1,154 @@
+resources:
+- name: assets
+  endpoint:
+    path: /api/v1/assets
+    method: GET
+    data_selector: assets
+    params: {}
+- name: asset_reserve_amounts
+  endpoint:
+    path: /api/v1/assets/amounts
+    method: GET
+    data_selector: ''
+- name: validate_porting_steps
+  endpoint:
+    path: /api/v1/bridge/validate
+    method: GET
+    data_selector: message
+    params:
+      sourceNetworkId: required
+      sourceAssetId: required
+      targetNetworkId: required
+      recipient: required
+      amount: optional
+      tokenId: optional
+- name: porting_steps
+  endpoint:
+    path: /api/v1/bridge
+    method: GET
+    data_selector: array
+    params:
+      sourceNetworkId: required
+      sourceAssetId: required
+      targetNetworkId: required
+      recipient: required
+      amount: optional
+      tokenId: optional
+- name: networks
+  endpoint:
+    path: /networks
+    method: GET
+    data_selector: records
+- name: asset
+  endpoint:
+    path: /api/v1/networks/:networkId/assets/:assetId
+    method: GET
+    data_selector: id
+    params:
+      networkId: required
+      assetId: required
+- name: assets_for_specified_network
+  endpoint:
+    path: /networks/:networkId/assets
+    method: GET
+- name: asset_reserve_amount
+  endpoint:
+    path: /networks/:networkId/assets/:assetId/amounts
+    method: GET
+- name: asset_reserve_amount
+  endpoint:
+    path: /networks/:networkId/assets/:assetId/amounts
+    method: GET
+    data_selector: reserveAmount
+    params: {}
+- name: convert_hedera_tx_id
+  endpoint:
+    path: /api/v1/utils/convert-hedera-tx-id/:hederaTxId
+    method: GET
+- name: convert_hedera_tx_id
+  endpoint:
+    path: /utils/convert-hedera-tx-id/:hederaTxId
+    method: GET
+    data_selector: hederaTxId
+    params: {}
+- name: transfers
+  endpoint:
+    path: /transfers
+    method: GET
+    data_selector: items
+    params: {}
+- name: transfers
+  endpoint:
+    path: /transfers
+    method: GET
+    data_selector: items
+    params:
+      page: required
+      pageSize: required
+- name: availability
+  endpoint:
+    path: /availability
+    method: GET
+    data_selector: available
+    params: {}
+- name: fees_nft
+  endpoint:
+    path: /fees/nft
+    method: GET
+- name: availability
+  endpoint:
+    path: /api/v1/availability
+    method: GET
+    data_selector: available
+    params: {}
+- name: convert_evm_hash_to_bridge_tx_id
+  endpoint:
+    path: /utils/convert-evm-hash-to-bridge-tx-id/:evmHash/:chainId
+    method: GET
+    data_selector: bridgeTxId
+    params: {}
+- name: nft_fees
+  endpoint:
+    path: /fees/nft
+    method: GET
+- name: convert_evm_hash_to_bridge_tx_id
+  endpoint:
+    path: /utils/convert-evm-hash-to-bridge-tx-id/:evmHash/:chainId
+    method: GET
+    data_selector: bridgeTxId
+    params: {}
+- name: Deposit transaction
+  endpoint:
+    path: /nfts/porting-hedera-nft
+    method: POST
+    data_selector: response
+    params: {}
+- name: Deposit Transaction
+  endpoint:
+    path: /api/deposit
+    method: POST
+- name: EVM Transaction
+  endpoint:
+    path: /api/evm-transaction
+    method: POST
+notes:
+- hashport currently supports transactions between Hedera and Wrapped Hedera (EVM)
+- If an asset is ported across while the Hedera network is experiencing downtime,
+  the transaction will not be processed by the validator swarm and result in the user's
+  assets to not be wrapped and sent to back to the user.
+- Only a single NFT can be ported at any given time.
+- Features and specifications described in this documentation are in an early stage.
+  Any distributions or codebases that can be deployed are at an early state and is
+  meant for feedback or testing only.
+errors:
+- '200'
+- '500'
+- 500 Internal Server Error
+- 400 Bad Request
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://mainnet.api.hashport.network/api/v1
+  headers:
+    Accept: application/json
+source_metadata: null
