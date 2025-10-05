@@ -1,0 +1,171 @@
+resources:
+- name: tracking
+  endpoint:
+    path: /v1/tracking/search
+    method: POST
+- name: trackers
+  endpoint:
+    path: /v1/trackers
+    method: POST
+- name: tracking_results
+  endpoint:
+    path: /trackers/:trackerId/results
+    method: GET
+- name: trackers
+  endpoint:
+    path: /v1/trackers
+    method: POST
+- name: tracking_results
+  endpoint:
+    path: /trackers/:trackerId/results
+    method: GET
+- name: bulk_trackers
+  endpoint:
+    path: /v1/trackers/bulk
+    method: POST
+- name: create_tracker_and_get_results
+  endpoint:
+    path: /v1/trackers/track
+    method: POST
+- name: tracker
+  endpoint:
+    path: /v1/trackers
+    method: POST
+- name: bulk_trackers
+  endpoint:
+    path: /v1/trackers/bulk
+    method: POST
+- name: get_tracker
+  endpoint:
+    path: /v1/trackers/:trackerId
+    method: GET
+- name: list_trackers
+  endpoint:
+    path: /v1/trackers
+    method: GET
+- name: create_tracker
+  endpoint:
+    path: /v1/trackers
+    method: POST
+- name: bulk_create_trackers
+  endpoint:
+    path: /v1/trackers/bulk
+    method: POST
+- name: create_tracker_and_get_tracking_results
+  endpoint:
+    path: /v1/trackers/track
+    method: POST
+- name: update_tracker
+  endpoint:
+    path: /v1/trackers/:trackerId
+    method: PATCH
+- name: get_tracker
+  endpoint:
+    path: /v1/trackers/:trackerId
+    method: GET
+- name: list_trackers
+  endpoint:
+    path: /v1/trackers
+    method: GET
+- name: get_tracking_results_by_trackerId
+  endpoint:
+    path: /v1/trackers/:trackerId/results
+    method: GET
+- name: get_tracking_results_by_tracking_number
+  endpoint:
+    path: /v1/trackers/search/:trackingNumber/results
+    method: GET
+- name: webhook
+  endpoint:
+    path: /your-endpoint
+    method: HEAD
+    data_selector: null
+    params: {}
+- name: webhook
+  endpoint:
+    path: /your-endpoint
+    method: POST
+    data_selector: null
+    params: {}
+- name: webhook
+  endpoint:
+    path: /your-endpoint
+    method: HEAD
+- name: webhook
+  endpoint:
+    path: /your-endpoint
+    method: POST
+- name: couriers
+  endpoint:
+    path: /couriers
+    method: GET
+- name: couriers
+  endpoint:
+    path: /couriers
+    method: GET
+- name: status
+  endpoint:
+    path: /status/
+    method: GET
+    data_selector: statuses
+    params: {}
+- name: status
+  endpoint:
+    path: /status/
+    method: GET
+    data_selector: statusMilestone
+    params: {}
+notes:
+- Keep your API keys safe and do not post them publicly.
+- Tracking numbers are not unique, provide additional information for unique identification.
+- Your endpoint needs to return a 200 OK to HEAD requests.
+- Recommended to return useful information in POST response body.
+- Webhook messages are not guaranteed to arrive and be processed in order.
+- If Ship24 doesn't receive an HTTP status code in the 2xx range to a webhook request,
+  the request will be retried up to 20 times with an exponential backoff.
+- If your infrastructure or system restricts the reception of requests from public
+  IPs, please allow all the specified IPs.
+- Providing courierCode improves tracking accuracy.
+- Up to 3 couriers can be provided per shipment, totaling a maximum of 9 couriers.
+- Up to 3 couriers can be provided at a time, for a total of 9 couriers maximum per
+  shipment.
+- statusCode and statusCategory may be empty on non-significant events, but statusMilestone
+  will always be provided.
+- Our API has a fixed rate limiter on all endpoints that allows a maximum of 10 requests
+  per second per endpoint.
+- Our server will answer `429 Too Many Requests` after that.
+errors:
+- 'HTTP status code not in the 2xx range: The request will be retried up to 20 times
+  with an exponential backoff.'
+- 'validation_error: One of the fields is not passing validation. Please refer to
+  the details in message.'
+- 'no_active_subscription: No active subscription (free or paid) allows you to access
+  this resource.'
+- 'quota_limit_reached: Your shipments (trackers) or calls usage is above your quota
+  for the billing period.'
+- 'tracker_not_found: The requested Tracker can''t be found. Please make sure it has
+  been created beforehand.'
+- 'tracker_not_updatable: The Tracker can''t be updated. Usually, because the shipment
+  corresponding to this Tracker has already been processed.'
+- 'shipping_date_outdated: Trackers with a shippingDate over 180 days old will be
+  rejected.'
+- 'parcel_not_found: The shipment can''t be found at the moment.'
+- 'request_conflict: The HTTP request conflicts with another request with the same
+  payload or parameter made in parallel.'
+- 'tracker_conflict: A Tracker with similar conflicting parameters already exists.'
+- 'bulk_create_limit_exceeded: The number of Trackers in the bulk creation request
+  exceeds the limit.'
+- 'processing_error: An error occurred while processing the provided data.'
+- 'no_active_subscription: No active subscription (free or paid) allows you to access
+  this resource. Please subscribe to a product allowing the use of this resource.'
+- '429 Too Many Requests: Throttle API calls or reduce frequency'
+- '429 Too Many Requests: Indicates exceeding the rate limit.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.ship24.com
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+source_metadata: null

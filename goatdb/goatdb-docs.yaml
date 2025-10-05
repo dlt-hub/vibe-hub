@@ -1,0 +1,176 @@
+resources:
+- name: task
+  endpoint:
+    path: /data/{user_key}
+    method: POST
+    data_selector: item
+    params: {}
+- name: task
+  endpoint:
+    path: /data/{user_key}
+    method: POST
+    data_selector: task
+    params: {}
+- name: sessions
+  endpoint:
+    path: /sys/sessions
+    method: GET
+- name: users
+  endpoint:
+    path: /sys/users
+    method: GET
+- name: stats
+  endpoint:
+    path: /sys/stats
+    method: GET
+- name: rich_text
+  endpoint:
+    path: /docs/api/classes/manageditem
+    method: GET
+    data_selector: content
+- name: task
+  endpoint:
+    path: /data/tasks/task-123
+    method: POST
+    data_selector: records
+- name: message
+  endpoint:
+    path: /data/messages/message-123
+    method: POST
+    data_selector: records
+- name: project
+  endpoint:
+    path: /data/projects/project-123
+    method: POST
+    data_selector: records
+- name: RichText
+  endpoint:
+    path: /docs/api/classes/manageditem
+    method: GET
+    data_selector: content
+    params: {}
+- name: users
+  endpoint:
+    path: /sys/users
+    method: GET
+    data_selector: results
+- name: tasks
+  endpoint:
+    path: /data/tasks
+    method: GET
+    data_selector: results
+- name: todos
+  endpoint:
+    path: /data/todos
+    method: GET
+    data_selector: results
+- name: items
+  endpoint:
+    path: /items
+    method: GET
+    data_selector: data
+    params: {}
+- name: managed_items
+  endpoint:
+    path: /managed_items
+    method: GET
+    data_selector: data
+    params: {}
+- name: repositories
+  endpoint:
+    path: /repositories
+    method: GET
+    data_selector: data
+    params: {}
+- name: users
+  endpoint:
+    path: /sys/users
+    method: GET
+- name: tasks
+  endpoint:
+    path: /data/tasks
+    method: GET
+- name: todos
+  endpoint:
+    path: /data/todos
+    method: GET
+- name: users
+  endpoint:
+    path: /data/users
+    method: GET
+    data_selector: users
+- name: users
+  endpoint:
+    path: /data/users
+    method: GET
+    data_selector: items
+- name: todos
+  endpoint:
+    path: /todos
+    method: CREATE
+    data_selector: results
+    params: {}
+- name: todos
+  endpoint:
+    path: /todos
+    method: GET
+    data_selector: results
+- name: benchmarks
+  endpoint:
+    path: /docs/api/benchmarks
+    method: GET
+    data_selector: operations
+    params: {}
+notes:
+- Node.js support is currently a work in progress and is not yet ready for production.
+- Users can only access their own data
+- Deployment involves running one binary—everything works without load balancers,
+  database setup, or infrastructure coordination.
+- Deletion in GoatDB is soft-delete by default. Items marked as deleted are not immediately
+  removed but are instead hidden from queries and prepared for future garbage collection.
+- Schemas are TypeScript objects compiled into your application.
+- The useDB hook maintains a single instance of the database throughout your application's
+  lifecycle.
+- During the initial session setup, the client may require a network connection in
+  order to download the initial copy of the history.
+- Repositories in GoatDB are the fundamental unit of data organization, similar to
+  tables in SQL databases or document collections in NoSQL databases.
+- Sessions have a default expiration period of 30 days.
+- Sessions can be manually revoked by editing their expiration time to a past date.
+- Repositories are the fundamental unit of data organization, similar to tables in
+  SQL databases.
+- Each repository is backed by a single .jsonl file that stores a log of commits.
+- Authorization rules are executed very frequently—on every read and write operation.
+- Trusted mode is particularly useful when building high-performance microservices
+  that handle their own access control.
+- Sessions can be manually revoked.
+- GoatDB's synchronization prioritizes consistency over speed.
+- Trusted mode allows you to disable authorization rule evaluation entirely.
+- The partition handling mechanism described above is currently a work in progress
+  and has not yet been fully implemented in the codebase.
+- Order stamps provide a robust solution for maintaining ordered lists in GoatDB.
+- They offer excellent performance characteristics and work well in distributed systems.
+- GoatDB employs a soft real-time synchronization mechanism that captures in-memory
+  states of peers up to three times per second.
+- Typical synchronization latency is 700-1000ms between peers in real-world deployments.
+- GoatDB supports offline mode by design.
+- Conflict resolution is automated and optimized for real-time operations.
+- GoatDB abstracts network and synchronization complexities, providing developers
+  with a synchronous, in-memory data representation.
+- Deployment is simplified through a unified artifact that combines the database,
+  application code, and static assets into a single executable.
+- The append-only signed commit graph acts as a built-in audit log.
+- GoatDB is optimized for lightweight operations on client devices.
+- GoatDB is optimized for read-heavy workloads, where reads significantly outnumber
+  writes.
+- Data deletion involves marking items as deleted, with garbage collection handling
+  eventual removal.
+errors:
+- '401 Unauthorized: Error sending login email. Please try again.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://github.com/goatplatform/goatdb
+source_metadata: null

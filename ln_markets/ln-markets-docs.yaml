@@ -1,0 +1,123 @@
+resources:
+- name: futures
+  endpoint:
+    path: /api/operations/futuresgettrades/
+    method: GET
+    data_selector: trades
+    params: {}
+- name: options
+  endpoint:
+    path: /api/operations/optionsgettrades/
+    method: GET
+    data_selector: trades
+    params: {}
+- name: user
+  endpoint:
+    path: /api/operations/usergetuser/
+    method: GET
+    data_selector: user
+    params: {}
+- name: futures
+  endpoint:
+    path: /api/operations/futuresgettrades/
+    method: GET
+- name: options
+  endpoint:
+    path: /api/operations/optionsgettrades/
+    method: GET
+- name: user
+  endpoint:
+    path: /api/operations/usergetuser/
+    method: GET
+- name: futures
+  endpoint:
+    path: /api/operations/futuresgettrades/
+    method: GET
+    data_selector: trades
+    params: {}
+- name: user
+  endpoint:
+    path: /api/operations/usergetuser/
+    method: GET
+    data_selector: user
+    params: {}
+- name: trades
+  endpoint:
+    path: /api/operations/optionsgettrades/
+    method: GET
+- name: instruments
+  endpoint:
+    path: /api/operations/optionsgetinstruments/
+    method: GET
+- name: volatility
+  endpoint:
+    path: /api/operations/optionsgetvolatilityindex/
+    method: GET
+- name: options_market
+  endpoint:
+    path: /api/operations/optionsgetoptionsmarket/
+    method: GET
+- name: options_trades
+  endpoint:
+    path: /api/operations/optionsgettrades/
+    method: GET
+- name: options_instruments
+  endpoint:
+    path: /api/operations/optionsgetinstruments/
+    method: GET
+- name: options_market
+  endpoint:
+    path: /api/operations/optionsgetoptionsmarket/
+    method: GET
+notes:
+- API key authentication requires each request to be signed.
+- 'Request POST and PUT must have content type ''Content-Type: application/json''
+  and be valid JSON.'
+- LN Markets is an alpha software under active development since Mar 11, 2020
+- Please use with care, LN Markets comes with no guarantees, use it preferably on
+  Testnet or at your own risk.
+- You can only deposit BTC, either on-chain or through a Lightning Network payment.
+- You can withdraw BTC, either on-chain or through a Lightning Network payment.
+- On-chain Bitcoin withdrawals are processed manually.
+- The API supports fetching trades for futures and options.
+- User information can be retrieved through the user endpoint.
+- Trading fees are tier-based, decreasing as your trading volume increases.
+- Options are 24-hour options that expire 1 day after opening the position.
+errors:
+- '400: Bad request. Your request is invalid.'
+- '401: Unauthorized. Your API key is wrong or you don’t have access to the requested
+  resource.'
+- '403: Forbidden. Your API key has the wrong scope.'
+- '404: Not found.'
+- '405: Method Not Allowed. You tried to access a resource with an invalid method.'
+- '429: Too many requests. Your connection is being rate limited.'
+- '500: Internal server error. Something went wrong, please try again or contact us.'
+- '503: Service unavailable. We’re temporarily offline for maintenance.'
+- '418: I’m a teapot.'
+- '503: Service unavailable. We’re temporarily offline for maintenance. Please try
+  again later.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Trading limits in place on the quantity traded.
+- Maximum quantity per trade is USD 500,000.
+- Maximum quantity per account is USD 10,000,000.
+- IP address blocking for US residents is effective on LN Markets.
+- '400 Bad Request: Check your request parameters.'
+- '401 Unauthorized: Check your authentication credentials.'
+- '404 Not Found: The requested resource does not exist.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.lnmarkets.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.lnmarkets.com/oauth/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

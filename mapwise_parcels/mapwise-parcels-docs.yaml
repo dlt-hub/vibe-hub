@@ -1,0 +1,45 @@
+resources:
+- name: parcels
+  endpoint:
+    path: /api_v2/parcels
+    method: GET
+    data_selector: data
+    params:
+      searchCounty: HILLSBOROUGH
+      limit: 10
+      start: 0
+      sortBy: owner_name
+      sortOrder: asc
+- name: test_parcels
+  endpoint:
+    path: /api_v2/parcels/test
+    method: GET
+    data_selector: data
+    params:
+      searchCounty: ALACHUA
+      limit: 1
+notes:
+- 'API keys are subject to rate limiting: 60 requests per minute globally and 180
+  requests per minute per user.'
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '400: Bad Request – missing or malformed parameters'
+- '401: Unauthorized – API key required or invalid'
+- '404: Not Found – no parcels match the search criteria'
+- '429: Too Many Requests – rate limit exceeded'
+- '500: Internal Server Error – unexpected server failure'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://maps.mapwise.com/api_v2/parcels
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Content-Type: application/json
+  paginator:
+    type: page
+    page_size_param: limit
+    default_page_size: 50
+source_metadata: null
