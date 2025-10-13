@@ -1,0 +1,221 @@
+resources:
+- name: Profiles
+  endpoint:
+    path: /api/profiles
+    method: GET
+- name: Permission Sets
+  endpoint:
+    path: /api/permission_sets
+    method: GET
+- name: rollback_request
+  endpoint:
+    path: /services/data/vXX.X/rollbackRequest
+    method: POST
+    data_selector: records
+- name: metadata
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Metadata
+    method: GET
+    data_selector: records
+    params: {}
+- name: DataSource
+  endpoint:
+    path: /services/data/vXX.X/sobjects/DataSource
+    method: GET
+    data_selector: records
+    params: {}
+- name: DataSourceBundleDefinition
+  endpoint:
+    path: /services/data/vXX.X/sobjects/DataSourceBundleDefinition
+    method: GET
+    data_selector: records
+    params: {}
+- name: DataSourceObject
+  endpoint:
+    path: /services/data/vXX.X/sobjects/DataSourceObject
+    method: GET
+    data_selector: records
+    params: {}
+- name: DataSourceTenant
+  endpoint:
+    path: /services/data/vXX.X/sobjects/DataSourceTenant
+    method: GET
+    data_selector: records
+    params: {}
+- name: UiFormatSpecificationSet
+  endpoint:
+    path: /services/data/v62/sobjects/UiFormatSpecificationSet
+    method: GET
+    data_selector: records
+- name: WaveDashboard
+  endpoint:
+    path: /services/data/v62/sobjects/WaveDashboard
+    method: GET
+    data_selector: records
+- name: WorkflowRule
+  endpoint:
+    path: /services/data/v62/sobjects/WorkflowRule
+    method: GET
+    data_selector: records
+- name: login_redirect
+  endpoint:
+    path: /auth/oidc/callback
+    method: GET
+- name: logout_redirect
+  endpoint:
+    path: /auth/oidc/logout
+    method: GET
+- name: initiate_login
+  endpoint:
+    path: /auth/oidc/login
+    method: GET
+- name: Slack Notifications
+  endpoint:
+    path: /settings/notifications/slack
+    method: POST
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: deployment
+  endpoint:
+    path: /deployments/{number}
+    method: GET
+- name: status_checks
+  endpoint:
+    path: /using-the-checks-api
+    method: GET
+- name: upsert_check
+  endpoint:
+    path: /apis/rest/v1/deployments/{deploymentNumber}/checks/{name}
+    method: PUT
+- name: delete_check
+  endpoint:
+    path: /deployments/{deploymentNumber}/checks/{name}
+    method: DELETE
+- name: archive
+  endpoint:
+    path: /archives/{revision}
+    method: GET
+notes:
+- All api calls require an Access Token using the Bearer token method.
+- Blue Canvas polls your Org and looks for changes to tracked metadata.
+- You can have multiple connected orgs in each column.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Blue Canvas polls your Org and looks for changes to tracked metadata automatically.
+- You'll be prompted to go through Salesforce's highly secure OAuth flow.
+- The connection with Salesforce is securely established with OAuth 2.0, and Blue
+  Canvas never reads your Salesforce credentials.
+- Salesforce Source Tracking is the one requirement for Quick Sync to operate.
+- Salesforce Source Tracking 'is available in Developer and Developer Pro Sandboxes
+  only.'
+- Make sure that you have at least two Salesforce orgs connected to Blue Canvas.
+- Deployed edits show up in the target, not the source
+- Rollback must validate normally like any other Deployment Request.
+- It may take some tuning to get the rollback to go through successfully.
+- Merging is an important part of using source control systems.
+- Merging is as easy as pressing a button.
+- We support both Jira Cloud and Jira Server
+- Uses OAuth2 with refresh token — requires setup of connected app in Blue Canvas
+- Some objects may return nulls in deeply nested fields
+- 'When syncing your Blue Canvas to GitLab you will need to use the following format
+  for your URL: https://EMAIL%40DOMAIN:[PASSWORD@git.bluecanvas.io](mailto:PASSWORD@git.bluecanvas.io)/USER_ID/REPO_ID.git'
+- The initial import into Azure DevOps doesn't copy binary files (e.g. Documents,
+  StaticResources) because they are stored in Git LFS.
+- 'Check for conflicting URL prefix: Some versions of Azure DevOps contain an additional
+  prefix in the clone URL that will cause authentication errors in Git LFS.'
+- Email support@bluecanvas.io to include more information in your CSV export
+- Salesforce release (v62)
+- We are currently aiming to disable legacy branch syncs on December 1st, 2024.
+- ExperienceBundle Metadata API doesn't support the template of Aloha1.
+- Require peer reviews in deployment requests when enabled, deployment requests to
+  these branches are blocked until a required number of approving reviews is met.
+- Require that unit tests cover at least 75% of the code when enabled, deployment
+  requests that contain Apex must fulfill the same code coverage requirements that
+  Salesforce enforces for production orgs.
+- Require all status checks in deployment requests to succeed when enabled, deployment
+  requests to these branches are blocked if any external checks have failed or are
+  still in progress.
+- Automatically mark checklists as deployed after approvals when enabled, checklists
+  that target these branches will be marked as 'deployed' automatically after a required
+  number of approving reviews.
+- Requires setup of a new Okta application for Blue Canvas.
+- Follow the instructions to create an Incoming Webhook on Slack and paste the URL
+  into the configuration form.
+- To set up your Microsoft Teams integration, go to Settings > Notifications > Microsoft
+  Teams and click on Enable.
+- To use this integration, you just need a free Webex account and a subscription to
+  Blue Canvas.
+- You can configure which days of the week this branch will sync, and at what time
+  of the day.
+- You can also set the sync interval anywhere from every 90 seconds to every 6 hours.
+- By default, everything available over the API is synced
+- See exactly what's happening behind the scenes with your branch syncs.
+- This can serve as a useful and transparent audit log.
+- After a refresh you will need to wait ~30 minutes after the sandbox refresh completes
+  before reconnecting to Blue Canvas.
+- Hover over the red triangle to see the specific error message for that org. When
+  the message reads `Authentication error with Salesforce`, then you are safe to reconnect
+  the org.
+- To get support on any questions or issues you are experiencing, email support@bluecanvas.io
+- Blue Canvas uses fewer than 6,000 API calls per day.
+- A limiter is in place that will stop using your API calls once you hit 75% of your
+  API limit.
+- Ensure under 'Permitted Users' you have 'All users may self-authorize' selected.
+- Ensure under 'IP Relaxation' you have 'Relax IP Restrictions'.
+- Ensure 'Allow OAuth User-Agent Flows' is 'On'.
+- It's highly recommended you use a user with 'System Administrator' privileges.
+- Ensure 'Modify All Data' is checked.
+- Ensure 'Modify Metadata Through Metadata API Functions' is checked.
+- Ensure 'View Setup and Configuration' is checked.
+- Ensure 'Customize Application' is checked.
+- Ensure 'Download AppExchange Permissions' is checked.
+- Ensure the 'Timeout Value' is 2 hours or longer.
+- Ensure 'Lock sessions to the IP address from which they originated' is unchecked.
+- Ensure 'Lock sessions to the domain in which they were first used' is unchecked.
+- Ensure 'Enforce login IP ranges on every request' is unchecked.
+- The API user must have review permissions in order to use these API calls.
+- Creates or updates the status of a check for a given deployment by its canonical
+  check name.
+- Retrieves a gzipped tarball (.tar.gz) of the file tree for the specified revision.
+- Please make sure you use HTTPS in order to prevent replay attacks or make sure you
+  do not execute duplicate actions.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- 'Unexpected Prepare Error: If you get an unexpected prepare error or don''t understand
+  your error log, please email us at team@bluecanvas.io and we will troubleshoot it
+  for you.'
+- Conflicting changes may need manual resolution.
+- 'INSUFFICIENT_ACCESS: EntityObject can not be initialized with null EntityInfo'
+- 'INSUFFICIENT_ACCESS: Requires Extra Verification'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://bluecanvas.io
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

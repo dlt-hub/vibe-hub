@@ -1,0 +1,112 @@
+resources:
+- name: API Hub - Portal
+  endpoint:
+    path: /settings/apiKey
+    method: GET
+- name: API Hub - Contract Testing (PactFlow)
+  endpoint:
+    path: /settings/api-tokens
+    method: GET
+- name: Test Hub (Reflect)
+  endpoint:
+    path: /settings/account
+    method: GET
+- name: BugSnag
+  endpoint:
+    path: /settings/smartbear-software/my-account/auth-tokens
+    method: GET
+- name: QMetry
+  endpoint:
+    path: /#/integration/open-api
+    method: GET
+- name: reporting_traces
+  endpoint:
+    path: /v1/traces
+    method: POST
+    data_selector: traces
+    params: {}
+- name: users
+  endpoint:
+    path: /admin/users
+    method: GET
+    params:
+      page: '1'
+      size: '10'
+- name: users
+  endpoint:
+    path: /admin/users
+    method: GET
+    params:
+      page: '1'
+      size: '10'
+- name: Users
+  endpoint:
+    path: /scim/Users
+    method: GET
+- name: Groups
+  endpoint:
+    path: /scim/Groups
+    method: GET
+- name: users
+  endpoint:
+    path: /scim/Users
+    method: GET
+- name: teams
+  endpoint:
+    path: /scim/Groups
+    method: GET
+notes:
+- Store your tokens securely. They provide access to sensitive data and should be
+  treated like passwords.
+- You can use any combination of the supported products - tokens for unused products
+  can be omitted.
+- We strongly recommend using pagination when fetching resources with over 100 items,
+  as performance will decline significantly once a large number of items is returned.
+- Pagination parameters are optional, but strongly recommended when fetching resources
+  with over 100 items.
+- Each API request has an associated request identifier. You can find this value in
+  the response headers, under `X-Request-ID`.
+- The API version of the on-premises distribution can be found via the response header
+  `X-Pactflow-Version`.
+- It is recommended to use a PactFlow System Account token for authentication.
+- The system account must be assigned the SCIM role to be able to create or update
+  those resources.
+- Token management - Rotate API tokens regularly and store them securely.
+- Environment isolation - Use separate tokens for development, staging, and production.
+- Audit logging - Monitor API token usage and access patterns.
+- Query specificity - Use specific time ranges and filters to reduce data transfer.
+- Caching awareness - Understand that some data may be cached for performance.
+- Rate limiting - Be aware of API rate limits and implement appropriate delays.
+- Batch operations - Group related queries when possible.
+- Verify your auth tokens are valid.
+- 'Check that environment variables are properly set and match the expected names:
+  BUGSNAG_AUTH_TOKEN for BugSnag, REFLECT_API_TOKEN for Reflect, API_HUB_API_KEY for
+  API Hub, QMETRY_API_KEY for QMetry.'
+- Ensure you have the correct token type (Auth Token vs API Key) for each service.
+errors:
+- '401: When the API does not receive a valid token.'
+- '403: When a valid authorization token is provided, but the calling user has incorrect
+  permissions.'
+- '401: When the API does not receive a valid token'
+- '403: When a valid authorization token is provided, but the calling user has incorrect
+  permissions'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- Codes in the 2xx range indicate success.
+- Codes in the 4xx range indicate an error that failed given the information provided
+  (e.g., a required parameter was omitted, a charge failed, etc.).
+- Codes in the 5xx range indicate an error with PactFlow's servers (these are rare).
+auth_info:
+  mentioned_objects:
+  - API Hub
+  - PactFlow
+  - Reflect
+  - BugSnag
+  - QMetry
+  - PactFlow System Account token
+  - SCIM role
+client:
+  base_url: https://{account}.pactflow.io
+  headers:
+    Accept: application/hal+json
+source_metadata: null

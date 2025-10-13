@@ -1,0 +1,68 @@
+resources:
+- name: GetListings
+  endpoint:
+    path: /listings
+    method: GET
+- name: GetListing
+  endpoint:
+    path: /listings/{listing_id}
+    method: GET
+- name: PrepareListing
+  endpoint:
+    path: /listing
+    method: POST
+- name: VerifyListing
+  endpoint:
+    path: /listing/verify
+    method: POST
+- name: PublishListing
+  endpoint:
+    path: /listing/publish
+    method: POST
+- name: UpdateListing
+  endpoint:
+    path: /listings/{listing_id}
+    method: POST
+- name: ReviseListing
+  endpoint:
+    path: /listing/revise
+    method: POST
+- name: EndListing
+  endpoint:
+    path: /listing/end
+    method: POST
+- name: run_scheduled_tasks
+  endpoint:
+    path: /wp-admin/admin-ajax.php
+    method: GET
+    data_selector: action=wplister_run_scheduled_tasks
+    params: {}
+notes:
+- 'Updating an existing product from a CSV file will be very much like updating the
+  product manually in WooCommerce: Unlocked listings will be marked as changed while
+  locked listings will have their price and inventory updated instantly, resulting
+  a slower import process.'
+- Please keep in mind that your products should have unique SKUs – for variable products,
+  each variation needs to have a SKU as well.
+- Unfortunately not. Item specifics and shipping options are not simple meta field
+  containing only a single value. Instead, they are both tabular data with an unknown
+  number of rows, which is why they are stored as serialized arrays in a single meta
+  field. This data looks rather cryptic, like 'a:2{i:0;a:3:{s:4...', which is not
+  suitable for being imported from a CSV file (or edited in a spreadsheet app).
+- Instead of importing item specifics, we recommend importing normal WooCommerce product
+  attributes, which are sent to eBay as item specifics automatically. Shipping options
+  should rather be define in the listing profile, not on the product level.
+- Use external cron job to ensure tasks are executed without site traffic.
+- No columns for sale prices and dates in an inventory report.
+errors:
+- '400 Bad Request: The request was invalid or missing required parameters.'
+- '401 Unauthorized: Authentication credentials are missing or invalid.'
+- '404 Not Found: The requested resource was not found.'
+- '500 Internal Server Error: An unexpected error occurred on the server.'
+- Required field, UPC, is missing. (21919301)
+- Required field, EAN, is missing. (21919301)
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://your-wordpress-site.com/wp-json/wple/v1/
+source_metadata: null

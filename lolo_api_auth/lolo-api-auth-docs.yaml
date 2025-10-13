@@ -1,0 +1,163 @@
+resources:
+- name: accounts
+  endpoint:
+    path: /accounts
+    method: GET
+- name: Istio
+  endpoint:
+    path: https://istio.io/
+    method: GET
+    data_selector: description
+    params:
+      license: Apache License 2.0
+- name: Apache Kafka
+  endpoint:
+    path: https://kafka.apache.org/
+    method: GET
+    data_selector: description
+    params:
+      license: Apache License 2.0
+- name: Grafana
+  endpoint:
+    path: https://grafana.com/
+    method: GET
+    data_selector: description
+    params:
+      license: Apache License 2.0
+- name: Prometheus
+  endpoint:
+    path: https://prometheus.io/
+    method: GET
+    data_selector: description
+    params:
+      license: Apache License 2.0
+- name: hello_world
+  endpoint:
+    path: /helloworld
+    method: GET
+- name: Websocket Trigger
+  endpoint:
+    path: /:appId/socket
+    method: GET
+    data_selector: connections
+    params: {}
+- name: weather_data
+  endpoint:
+    path: https://api.openweathermap.org/data/2.5/weather
+    method: GET
+    params: {}
+- name: slack_message
+  endpoint:
+    path: URL HERE
+    method: POST
+    params: {}
+- name: slack_webhook
+  endpoint:
+    path: /slack
+    method: POST
+- name: Buffer Events
+  endpoint:
+    path: /lolo/buffer
+    method: POST
+    data_selector: events
+    params:
+      max_buffer_size: specify the max buffer size
+      timeout: optional timeout
+- name: Barrier
+  endpoint:
+    path: /barrier
+    method: POST
+- name: resource
+  endpoint:
+    path: /${resource}s
+    method: GET
+- name: response
+  endpoint:
+    path: /response
+    method: POST
+    data_selector: event
+    params: {}
+- name: ldap_query
+  endpoint:
+    path: /ldap/query
+    method: POST
+    data_selector: ldapRes
+    params: {}
+- name: log_entry
+  endpoint:
+    path: /log
+    method: POST
+    data_selector: entry
+- name: Timer Event
+  endpoint:
+    path: /timer/event
+    method: GET
+    data_selector: value
+    params: {}
+- name: WebSocket Events
+  endpoint:
+    path: /websocket/events
+    method: POST
+    data_selector: events
+    params: {}
+- name: Synchronize
+  endpoint:
+    path: /synchronize
+    method: GET
+notes:
+- Lolo means lo(w) lo(w) code as our aim is to make every data stream, API and network
+  programmable with an awesome developer, deployment and operations experience.
+- The API key must have the role 'Read + Write'.
+- This application requires a Lolo API key for authentication.
+- Anyone with a Lolo API key will be able to access this connection.
+- Add node-cron to your modules in app Settings
+- Add node-fetch@2.0 to your modules in app Settings
+- Requires admin access to a Slack workspace to set up the Slack app
+- To get a Lolo API Key go to the Admin section of your Lolo account and create a
+  new one from there.
+- The barrier waits at most for a duration specified in *Settings -> Parameters* for
+  the tasks to finish.
+- The tokens attatched to the event should be handled carefully. They are credentials
+  that are tied to the app. Anyone that gain access to the tokens may impersonate
+  the app.
+- This function can also be configured to authenticate requests with LoLo Auth, and
+  only authorize certain users.
+- If authentication is turned on in Settings -> Parameters, then a session property
+  is assigned to the event.
+- An event is routed to the out port when a HTTP request is received to the registered
+  route.
+- The listener is deregistered after two minutes.
+- A bind operation is always done as the first operation after a connections is established.
+- All log entries are made at INFO level.
+- authentication credentials are by default sent in plaintext in MQTT. Use a secure
+  transport to protect credentials.
+- Webhook allows Telegram to send incoming messages and events to a specific URL.
+- Trigger an event on a set interval.
+- Correctly configured META App and META Buisness are required to utilise this functions.
+- Correctly configured META App and META Business are required to utilise this function.
+- META enforces restrictions on sending messages to prevent spam.
+- All webhooks must be registered with META before META starts delivering notifications.
+- The app containing this function must be RUNNING while performing the registration
+  process.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+errors:
+- '401 Unauthorized: Recheck API key or permissions'
+- 'Invalid lolo-api-key: The connection will be closed.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - session
+  - ev
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://dev.lolo.company/api/accounts
+  auth:
+    type: Bearer
+    location: header
+    header_name: Authorization
+source_metadata: null

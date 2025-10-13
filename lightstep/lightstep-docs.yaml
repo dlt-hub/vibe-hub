@@ -1,0 +1,194 @@
+resources:
+- name: metrics
+  endpoint:
+    path: /api/v2/metrics
+    method: GET
+    data_selector: data
+    params: {}
+- name: logs
+  endpoint:
+    path: /api/v2/logs
+    method: GET
+    data_selector: data
+    params: {}
+- name: Collector
+  endpoint:
+    path: /otel-cloud-stack
+    method: POST
+    data_selector: collectors
+    params: {}
+- name: Kubernetes Events
+  endpoint:
+    path: /kubernetes/events
+    method: POST
+    data_selector: events
+    params: {}
+- name: Logs
+  endpoint:
+    path: /logs
+    method: POST
+    data_selector: logs
+    params: {}
+- name: metrics
+  endpoint:
+    path: /ingest/metrics
+    method: POST
+    data_selector: data
+- name: http_requests
+  endpoint:
+    path: /metrics/http.requests
+    method: GET
+    data_selector: time_series
+    params: {}
+- name: logs
+  endpoint:
+    path: /logingest.lightstep.com
+    method: POST
+- name: metrics
+  endpoint:
+    path: /metrics
+    method: GET
+- name: traces
+  endpoint:
+    path: /traces
+    method: GET
+- name: alerts
+  endpoint:
+    path: /api/alerts
+    method: GET
+    data_selector: alerts
+    params: {}
+- name: alerts
+  endpoint:
+    path: /alerts
+    method: POST
+    data_selector: alert
+    params: {}
+- name: alerts
+  endpoint:
+    path: /api/v2/alerts
+    method: GET
+    data_selector: alerts
+    params: {}
+- name: logs
+  endpoint:
+    path: /logs
+    method: GET
+    data_selector: logs
+    params: {}
+- name: logs
+  endpoint:
+    path: /logs
+    method: GET
+    data_selector: records
+- name: metrics
+  endpoint:
+    path: /metrics
+    method: GET
+    data_selector: records
+- name: spans
+  endpoint:
+    path: /spans
+    method: GET
+    data_selector: records
+- name: logs
+  endpoint:
+    path: /logs
+    method: GET
+    data_selector: records
+    params: {}
+- name: spans_sample
+  endpoint:
+    path: /spans/sample
+    method: GET
+    data_selector: records
+    params: {}
+- name: assemble
+  endpoint:
+    path: /assemble
+    method: GET
+    data_selector: records
+    params: {}
+- name: trace_filter
+  endpoint:
+    path: /trace/filter
+    method: GET
+    data_selector: records
+    params: {}
+- name: summarize_by
+  endpoint:
+    path: /summarize/by
+    method: GET
+    data_selector: records
+    params: {}
+- name: traces
+  endpoint:
+    path: /v1/traces
+    method: POST
+    data_selector: resourceSpans
+- name: metrics
+  endpoint:
+    path: /metrics/otlp/v0.5
+    method: POST
+    data_selector: resourceMetrics
+- name: traces
+  endpoint:
+    path: /v1/traces
+    method: POST
+    data_selector: resourceSpans
+- name: metrics
+  endpoint:
+    path: /metrics/otlp/v0.5
+    method: POST
+    data_selector: resourceMetrics
+notes:
+- Some objects may return nulls in deeply nested fields
+- Requires setup of Cloud Observability project and access token
+- The default OTLP Exporter from a Collector enables gzip compression and TLS.
+- If you see HTTP/2 401, your request succeeded, but your token was not accepted.
+- Ingest metrics from Amazon
+- Percentiles are not included in CloudWatch Metric Streams.
+- CloudWatch Metric Streams do not include metrics with timestamps older than two
+  hours - for example, metrics that are aggregated on a daily basis.
+- Tags are refreshed at a five-minute interval.
+- Uses API key for authentication.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Cloud Observability offers longer retention periods for logs and traces.
+- Contact your customer success representative for more information.
+- Some endpoints may have rate limits.
+- Uses OAuth2 with refresh token — requires setup of connected app in Cloud Observability
+- Some objects like Contact may return nulls in deeply nested fields
+- By default, regular expressions are case-sensitive
+- Regular expressions must match the entire string
+- Cloud Observability will be supported through March 1st, 2026 or your subscription
+  term end date (whichever is later).
+- Support for Thrift over HTTP will be deprecated.
+- If using OTLP v0.5, upgrade is required as support will be deprecated.
+- Support for Thrift over HTTP will be deprecated!
+- If you are using OTLP v0.5, you must upgrade as Cloud Observability support for
+  v0.5 will be deprecated!
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '401: Validity of your access token.'
+- '401: Ensure proxies are passing through the lightstep-access-token header.'
+- '429 Too Many Requests: Rate limit exceeded.'
+- '400 Bad Request: Issue with access token or payload sent.'
+- 'context deadline exceeded: Verify no proxies or firewalls blocking access.'
+- Incorrect password.
+- '400 Bad Request: Indicates either an issue with the access token in use, or a problem
+  with the payload sent'
+- 'context deadline exceeded: Verify that there are no proxies or firewalls blocking
+  access'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+client:
+  base_url: https://lightstep.com
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+source_metadata: null

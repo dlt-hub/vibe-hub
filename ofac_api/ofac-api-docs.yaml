@@ -1,0 +1,41 @@
+resources:
+- name: search
+  endpoint:
+    path: /search
+    method: GET
+    data_selector: results
+    params:
+      cases: Case[]
+      source: SDN, NONSDN, FINCEN, DPL, UN, FSF, BFS, OFSI, DNSL, SECO, SEMA, DFAT,
+        PEP, HUD, SAM, FHFA, US, EU
+      id: string
+      informalName: boolean
+      format: JSON
+      minScore: integer
+      type: Collection
+      includeAlias: boolean
+- name: status
+  endpoint:
+    path: /status
+    method: GET
+    data_selector: sdnRecordCount
+notes:
+- Each data source below is updated every 10 minutes
+- Default source is SDN
+- Recommended minScore is 95 or above
+- BIS does not include publish date with DPL file
+errors:
+- '400 Bad Request: There is a problem with the search request, for example a required
+  field is missing. errorMessage will contain additional information. Should not be
+  reattempted'
+- '401 Unauthorized: The API account has expired or the accounts rate limit has been
+  exceeded.'
+- '500 Internal Error: The API has encountered an unexpected error. errorMessage will
+  contain additional information that may be used to alert the support team.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.ofac-api.com/v3
+  headers:
+    apiKey: your-api-key
+source_metadata: null
