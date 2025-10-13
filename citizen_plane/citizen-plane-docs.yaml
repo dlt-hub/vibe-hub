@@ -1,0 +1,309 @@
+resources:
+- name: create_booking_request
+  endpoint:
+    path: /v2/requests
+    method: POST
+    data_selector: requests
+- name: create_payment_method
+  endpoint:
+    path: /v1/payment_methods
+    method: POST
+    data_selector: id
+- name: bookings
+  endpoint:
+    path: /v2/bookings
+    method: POST
+    data_selector: bookings
+- name: bookings
+  endpoint:
+    path: /v2/bookings
+    method: GET
+    data_selector: bookings
+    params:
+      cp_reference: string
+- name: patch_pnr
+  endpoint:
+    path: /v2/bookings/{pnr}/pnr
+    method: PATCH
+    data_selector: updated_booking
+    params:
+      pnr: string
+- name: flights
+  endpoint:
+    path: /v2/flights
+    method: GET
+    data_selector: results
+    params: {}
+- name: booking_requests
+  endpoint:
+    path: /v2/requests
+    method: POST
+    data_selector: results
+    params: {}
+- name: bookings
+  endpoint:
+    path: /v2/bookings
+    method: POST
+    data_selector: results
+    params: {}
+- name: retrieve_booking
+  endpoint:
+    path: /v2/bookings
+    method: GET
+    data_selector: results
+    params: {}
+- name: flights
+  endpoint:
+    path: /v3/flights
+    method: GET
+    data_selector: flights
+- name: roundTrips
+  endpoint:
+    path: /v3/roundTrips
+    method: GET
+    data_selector: roundTrips
+- name: verifyPrice
+  endpoint:
+    path: /v3/flights/verify
+    method: POST
+    data_selector: verify
+- name: createBooking
+  endpoint:
+    path: /v3/bookings
+    method: POST
+    data_selector: booking
+- name: flights
+  endpoint:
+    path: /v3/flights
+    method: GET
+    data_selector: flights
+    params: {}
+- name: roundTrips
+  endpoint:
+    path: /v3/roundTrips
+    method: GET
+    data_selector: roundTrips
+    params: {}
+- name: verify
+  endpoint:
+    path: /v3/flights/verify
+    method: POST
+    data_selector: verify
+    params: {}
+- name: booking_requests
+  endpoint:
+    path: /v3/requests
+    method: POST
+    data_selector: booking_requests
+    params: {}
+- name: bookings
+  endpoint:
+    path: /v3/bookings
+    method: POST
+    data_selector: bookings
+    params: {}
+- name: flights
+  endpoint:
+    path: /flights
+    method: GET
+    data_selector: results
+- name: roundTrips
+  endpoint:
+    path: /v3/roundTrips
+    method: GET
+    data_selector: fares
+    params: {}
+- name: verifyFlight
+  endpoint:
+    path: /v3/flights/verify
+    method: POST
+    data_selector: price
+    params: {}
+- name: round_trip_fares
+  endpoint:
+    path: /v3/roundTrips
+    method: GET
+    data_selector: fares
+    params:
+      origin: required
+      destination: required
+      start: optional
+      end: optional
+      returnStart: optional
+      returnEnd: optional
+      customerCode: optional
+      seats: optional
+      next_page_id: optional
+- name: verify_price_and_availability
+  endpoint:
+    path: /v3/flights/verify
+    method: POST
+    data_selector: ''
+    params:
+      flight_id: required
+      customer_code: optional
+      passengers: required
+- name: create_booking_request
+  endpoint:
+    path: /v3/requests
+    method: POST
+    data_selector: requests
+- name: create_payment_method
+  endpoint:
+    path: /v1/payment_methods
+    method: POST
+    data_selector: id
+- name: create_booking_request
+  endpoint:
+    path: /requests
+    method: POST
+    data_selector: requests
+- name: create_payment_method
+  endpoint:
+    path: /payment_methods
+    method: POST
+    data_selector: payment_method
+- name: bookings
+  endpoint:
+    path: /v3/bookings
+    method: POST
+    data_selector: bookings
+- name: bookings
+  endpoint:
+    path: /v3/bookings
+    method: POST
+    data_selector: bookings
+- name: bookings
+  endpoint:
+    path: /v3/bookings
+    method: GET
+    data_selector: bookings
+    params:
+      cp_reference: required
+- name: update_pnr
+  endpoint:
+    path: /v3/bookings/{pnr}/pnr
+    method: PATCH
+    data_selector: id
+    params:
+      pnr: required
+      pnr_airline: required
+- name: bookings
+  endpoint:
+    path: /v3/bookings
+    method: GET
+    data_selector: bookings
+    params:
+      cp_reference: string
+- name: update_pnr
+  endpoint:
+    path: /v3/bookings/{pnr}/pnr
+    method: PATCH
+    data_selector: ''
+    params:
+      pnr: string
+- name: roundTrips
+  endpoint:
+    path: /roundTrips
+    method: GET
+    data_selector: fares
+    params: {}
+- name: bookings
+  endpoint:
+    path: /bookings
+    method: POST
+    data_selector: requests
+    params: {}
+- name: roundTrips
+  endpoint:
+    path: /v3/roundTrips
+    method: GET
+    data_selector: fares
+    params: {}
+- name: bookings
+  endpoint:
+    path: /v2/bookings
+    method: POST
+    data_selector: requests
+    params: {}
+notes:
+- A request only lasts for three minutes. Past that deadline, a new request will have
+  to be created to create a booking.
+- CitizenPlane's API uses Stripe to process credit card payments.
+- This API allows creating and managing bookings.
+- The requests parameter can contain up to three different request_ids.
+- The PNR is not a unique identifier. To manage different travel segments, use specific
+  suffixes.
+- CitizenPlane only supports EUR as its currency.
+- All flights are non-refundable, non-exchangeable and have no flex fares.
+- Must perform two one-way searches for complete flight details.
+- A booking request lasts for three minutes.
+- A request only lasts for three minutes.
+- A successful booking (200 status response) means the ticket is considered as issued.
+- For non-charter flights, the airline PNR may take up to 2 hours to be generated
+  after booking.
+- Ticket issuance may take up to 2 hours for non-charter flights
+- This endpoint is reserved for suppliers only and should not be used by distribution
+  partners.
+- Current booking flow should not change. You can now add a third call to /roundTrips
+  to check for roundtrip fares.
+- The bags field is now required.
+errors:
+- '400: Bad Request - Your request is invalid (e.g payload sent doesn''t match request
+  signature)'
+- '401: Unauthorized - Your API key is wrong'
+- '403: Forbidden - The requested action cannot be permitted (e.g process a booking
+  on a ABORTED request)'
+- '404: Not Found - The specified data could not be found (e.g flight_id doesn''t
+  exist)'
+- '409: Conflict - The request wasn''t processed. Potential reasons are: flight is
+  no longer available or found in our cache, unacceptable price difference between
+  request & booking, flight has already been booked, etc.'
+- '422: Unprocessable Entity - A validation error has occured (these are payment-related
+  errors)'
+- '500: Internal Server Error - Error on CitizenPlane''s end. Try again later and
+  contact us if the issue remain'
+- 'card-declined: If the payment fails for any reason, the associated request will
+  be considered as aborted.'
+- '400 Bad Request: Check body parameters are correct.'
+- '401 Unauthorized: Check your authorization token.'
+- '404 Not Found: Ensure the endpoint is correct.'
+- '401 Unauthorized: Recheck API token.'
+- '400 Bad Request: Check required parameters.'
+- '403: Forbidden - The requested action cannot be permitted'
+- '404: Not Found - The specified data could not be found'
+- '409: Conflict - The request wasn''t processed'
+- '422: Unprocessable Entity - A validation error has occurred'
+- '500: Internal Server Error - Error on CitizenPlane''s end'
+- '400: Bad Request: Your request is invalid (e.g payload sent doesn''t match request
+  signature)'
+- '401: Unauthorized: Your API key is wrong'
+- '403: Forbidden: The requested action cannot be permitted (e.g process a booking
+  on a ABORTED request)'
+- '404: Not Found: The specified data could not be found (e.g flight_id doesn''t exist)'
+- '409: Conflict: The request wasn''t processed. Potential reasons are: flight is
+  no longer available or found in our cache, unacceptable price difference between
+  request & booking, flight has already been booked, etc.'
+- '422: Unprocessable Entity: A validation error has occured (these are payment-related
+  errors)'
+- '500: Internal Server Error: Error on CitizenPlane''s end. Try again later and contact
+  us if the issue remain'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'Payment failed: associated request is considered aborted.'
+- 'card-declined: Payment was declined.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '200: Successful booking'
+- '401 Unauthorized: Recheck API token'
+- '401 Unauthorized: Recheck OAuth token or scopes'
+- '404 Not Found: Check if the booking exists'
+- '400 Bad Request: Check if the required parameters are provided.'
+- '404 Not Found: Ensure the PNR exists.'
+- '401 Unauthorized: Recheck your authentication token.'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://booking-api.citizenplane.com
+  auth:
+    type: Bearer Tokens
+source_metadata: null

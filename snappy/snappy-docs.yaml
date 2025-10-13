@@ -1,0 +1,83 @@
+resources:
+- name: get_api_keys
+  endpoint:
+    path: /public-api/v2/authentication/apiKeys
+    method: GET
+- name: gift_campaign
+  endpoint:
+    path: /tools/call
+    method: POST
+    data_selector: content
+    params:
+      method: tools/call
+      params:
+        name: create-campaign
+        arguments:
+          companyId: comp_789
+          accountId: acc_123
+          collectionId: coll_456
+          name: Q4 Employee Appreciation Campaign
+          maxBudget: 75
+          minBudget: 25
+          recipientsIds:
+          - recipient_1
+          - recipient_2
+- name: Gift
+  endpoint:
+    path: /docs/gift-webhook-events
+    method: GET
+- name: thank_you_note_created
+  endpoint:
+    path: /webhooks/thank-you-note-created
+    method: POST
+    data_selector: eventData
+- name: gift_status_changed
+  endpoint:
+    path: /webhooks/gift-status-changed
+    method: POST
+    data_selector: eventData
+- name: gift_delivery_status_changed
+  endpoint:
+    path: /webhooks/gift-delivery-status-changed
+    method: POST
+    data_selector: eventData
+- name: gift_invoice_sent
+  endpoint:
+    path: /webhooks/gift-invoice-sent
+    method: POST
+    data_selector: eventData
+notes:
+- OAuth-based token authentication allows secure access to Swag’s APIs.
+- Uses user credentials for authentication.
+- Session must be maintained for each request.
+- This integration guide enables external AI systems to seamlessly interact with Snappy's
+  gift campaign management through our MCP server, providing a standardized and secure
+  way to automate personalized gifting workflows.
+- 'API Key must be included in every request in the format: X-Api-Key: YOUR_API_KEY'
+- Requests without these parameters will use the default values.
+- Each gift is associated with a unique key, ensuring that duplicate submissions are
+  automatically detected and rejected.
+- If a duplicate key is detected, the API will return an appropriate error response
+  with errorCode=41008.
+errors:
+- 'AUTH_FAILED: Login failed due to invalid username or password'
+- 'NOT_FOUND: Collection not found with the specified ID'
+- 'NO_PRODUCTS_AVAILABLE: No products available for the specified criteria'
+- '401: Authorization token/key are invalid'
+- '400 Bad Request: Check that the request URL is valid including all query parameters
+  and their values.'
+- '401 Unauthorized: Make sure the authentication header follows the format:  X-API-Key:
+  (your api key)'
+- '403 Access Denied: Make sure you passed the requested resource id correctly'
+- '404 Resource Not Found: Check carefully the entity id you are passing'
+- '500 Internal Server Error: If you continue to receive server errors check the Snappy
+  API availability page'
+- '504 Gateway Timeout: Make sure you have proper error handling for such cases.'
+- '41008: According to the unique key, this gift was detected as a duplicated gift.'
+auth_info:
+  mentioned_objects:
+  - JwtToken
+  - MCPClient
+client:
+  base_url: https://api.snappy.com/public-api/v2/authentication/apiKeys
+source_metadata: null

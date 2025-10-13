@@ -1,0 +1,108 @@
+resources:
+- name: PRD_environment
+  endpoint:
+    path: /latest/installation-guide/hardware-requirements
+    method: GET
+    data_selector: data
+    params: {}
+- name: QA_DEV_environment
+  endpoint:
+    path: /latest/installation-guide/hardware-requirements
+    method: GET
+    data_selector: data
+    params: {}
+- name: Operating system
+  endpoint:
+    path: /latest/installation-guide/software-requirements
+    method: GET
+    data_selector: Required software
+- name: Database
+  endpoint:
+    path: /latest/installation-guide/software-requirements
+    method: GET
+    data_selector: Required software
+- name: Java Runtime Environment
+  endpoint:
+    path: /latest/installation-guide/software-requirements
+    method: GET
+    data_selector: Required software
+- name: Full-text search service
+  endpoint:
+    path: /latest/installation-guide/software-requirements
+    method: GET
+    data_selector: Optional software
+- name: Sync service
+  endpoint:
+    path: /latest/installation-guide/software-requirements
+    method: GET
+    data_selector: Optional software
+- name: Online editing service
+  endpoint:
+    path: /latest/installation-guide/software-requirements
+    method: GET
+    data_selector: Optional software
+- name: Office conversion service
+  endpoint:
+    path: /latest/installation-guide/software-requirements
+    method: GET
+    data_selector: Optional software
+- name: Other software
+  endpoint:
+    path: /latest/installation-guide/software-requirements
+    method: GET
+    data_selector: Optional software
+- name: tessData
+  endpoint:
+    path: /local/tessData
+    method: GET
+    data_selector: tessdata_best-4.1.0
+notes:
+- elDoc REST API authentication is based on the JWT technology. Authentication token
+  to be provided as Authorization header with each request.
+- Light deployment is intended for using BPM- and content-management-functionality
+  mainly as IDP-functionality requires more computing resources and its performance
+  may be affected.
+- Assumes that SELinux is disabled
+- Installation will be performed in the directory /local
+- This component provides full-text search functionality and is optional for deployment
+- This component provides data synchronization capabilities between MongoDB and full-text
+  search service and required to be installed only in case full-text search service
+  was installed.
+- This component is optional and provides online preview and document auto-filling
+  functionality.
+- Installation steps provided below assume that HTTPS-connections are terminated by
+  nginx reverse-proxy and forwarded to coolwsd via HTTP.
+- During first start, container will enable Maintenance Mode for elDoc for initial
+  setup.
+- It is strongly recommended to disable Maintenance Mode after initial system configuration.
+- After switching database from internal to external make sure to remove oplog.timestamp
+  file and Solr core data files to ensure JMC properly updates full-text index.
+- When using external MongoDB server it is highly recommended to disable embedded
+  MongoDB by setting DISABLE_EMBEDDED_MONGODB container environment variable to true.
+- Upgrade can be performed directly to the latest version skipping upgrades to the
+  intermediate versions.
+- On the first launch after upgrade elDoc may need to perform database schema updates.
+- Parameters starting with double-dash ('--') have to follow after the line with the
+  '-jar' parameter, all other parameters have to be present before line with '-jar'
+  parameter in the start script file elDoc-server.sh (or elDoc-server.cmd).
+- The Software may be provided as either a hosted Software-as-a-Service ("SaaS") solution
+  or an on-premises deployment within the Customer's environment.
+- During the Free Trial Period, the User may access and use the SaaS solely for evaluation
+  purposes.
+- The Software is provided to the Customer on an 'AS IS' basis.
+- elDoc may offer Beta functionalities within the Software at no extra charge.
+- elDoc provides Standard Software Support to all Customers purchasing the Software
+- Premium Support is regulated by separate Support and SLA Policy
+- Confidential Information shall survive termination of this Agreement for a period
+  of three (3) years.
+- 'JWT header must contain the following attributes: alg, sub, iat, nbf, exp, aud'
+errors:
+- '401 - Unauthorized: No valid API JWT token provided'
+- elDoc will not be liable for any harm or damage resulting from the use of Beta functionalities.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: /local
+  headers:
+    Accept: application/json
+source_metadata: null

@@ -1,0 +1,237 @@
+resources:
+- name: input_schema
+  endpoint:
+    path: /input_schema
+    method: GET
+- name: availability
+  endpoint:
+    path: /availability
+    method: GET
+- name: start_job
+  endpoint:
+    path: /start_job
+    method: POST
+- name: status
+  endpoint:
+    path: /status
+    method: GET
+- name: provide_input
+  endpoint:
+    path: /provide_input
+    method: POST
+- name: payment_information
+  endpoint:
+    path: /payment-information
+    method: GET
+- name: start_job
+  endpoint:
+    path: /start_job
+    method: POST
+- name: purchase
+  endpoint:
+    path: /purchase
+    method: POST
+- name: check_payment_status
+  endpoint:
+    path: /purchase
+    method: GET
+- name: request_refund
+  endpoint:
+    path: /purchase
+    method: PATCH
+- name: job_status
+  endpoint:
+    path: /status
+    method: GET
+- name: start_job
+  endpoint:
+    path: /start_job
+    method: POST
+- name: check_job_status
+  endpoint:
+    path: /status
+    method: GET
+    params:
+      job_id: string
+- name: check_server_availability
+  endpoint:
+    path: /availability
+    method: GET
+- name: retrieve_input_schema
+  endpoint:
+    path: /input_schema
+    method: GET
+- name: payment-source
+  endpoint:
+    path: /payment-source
+    method: GET
+- name: wallet
+  endpoint:
+    path: /wallet
+    method: GET
+- name: api_key
+  endpoint:
+    path: /api-key
+    method: GET
+    data_selector: data.ApiKeys
+    params:
+      limit: 10
+- name: availability
+  endpoint:
+    path: /availability
+    method: GET
+    data_selector: status
+- name: input_schema
+  endpoint:
+    path: /input_schema
+    method: GET
+    data_selector: input_schema
+- name: start_job
+  endpoint:
+    path: /start_job
+    method: POST
+    data_selector: status
+- name: status
+  endpoint:
+    path: /status
+    method: GET
+    data_selector: status
+- name: start_polling
+  endpoint:
+    path: /start_polling
+    method: POST
+- name: payment_source
+  endpoint:
+    path: /payment-source
+    method: GET
+    data_selector: PaymentSources
+    params: {}
+- name: registry
+  endpoint:
+    path: /registry
+    method: POST
+    data_selector: data
+    params: {}
+- name: registry
+  endpoint:
+    path: /registry
+    method: GET
+    data_selector: data.Assets
+    params: {}
+- name: api_key
+  endpoint:
+    path: /api-key
+    method: GET
+    data_selector: data.apiKeys
+    params:
+      limit: 10
+- name: payment_information
+  endpoint:
+    path: /payment-information/
+    method: GET
+- name: start_job
+  endpoint:
+    path: /start_job
+    method: POST
+- name: purchase
+  endpoint:
+    path: /purchase/
+    method: POST
+- name: status
+  endpoint:
+    path: /status
+    method: GET
+- name: transaction_fees
+  endpoint:
+    path: /api/transaction_fees
+    method: GET
+    data_selector: fees
+    params: {}
+- name: start_job
+  endpoint:
+    path: /start_job
+    method: POST
+- name: check_job_status
+  endpoint:
+    path: /status
+    method: GET
+- name: provide_input
+  endpoint:
+    path: /provide_input
+    method: POST
+- name: check_server_availability
+  endpoint:
+    path: /availability
+    method: GET
+- name: retrieve_input_schema
+  endpoint:
+    path: /input_schema
+    method: GET
+- name: metadata_schema
+  endpoint:
+    path: /mips/_mip-002
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: input_validation_schema
+  endpoint:
+    path: /mips/_mip-003-attachment-01
+    method: GET
+    data_selector: schema
+notes:
+- The ADMIN_KEY must be at least 15 characters long.
+- Make sure to configure the DATABASE_URL variable in the .env file accordingly. It
+  needs to have the same database name and you will need to adjust the username according
+  to your username.
+- Requires setup of Masumi payment service and agent registration.
+- While it is put on-chain, the transaction is not yet finalized by the blockchain,
+  as designed finality is only eventually reached.
+- Currently, our Registry supports the concept of DIDs in order to link Agentic Services
+  and their creators to their respective Identities and Credentials.
+- Agent-to-Agent payments use $USDM stablecoin to ensure price stability and predictable
+  costs for automated systems.
+- Includes security mechanisms for fraud, accountability, and quality.
+- Preprod environment is designed for testing and development, allowing developers
+  and users to experiment before deploying on the Mainnet.
+- Errors or bugs in preprod do not have real-world consequences.
+- Masumi operates natively on the L1 Cardano Blockchain in its first phase.
+- Transaction costs may hinder profitability for small priced Agentic Services.
+- While on 'Preprod' losing your funds in Selling und Purchase Wallet is more an inconvenience
+  than anything else since you can request new funds from the Faucet.
+- It is key to protect your system from unwanted access to the .ENV file and also
+  store your Seed Phrase offline on paper.
+- The request must strictly follow the schema provided by the /input_schema endpoint.
+- Every string type on-chain is either represented by a string or array of strings,
+  as Cardano limits single strings to 63 chars.
+- This proposal introduces a foundational standard for creating deterministic, verifiable
+  hashes for both inputs and outputs within the Masumi network.
+errors:
+- '400 Bad Request: If input_data is missing, invalid, or does not adhere to the schema.'
+- '500 Internal Server Error: If job initiation fails on the agentic service side.'
+- '404 Not Found: If the job_id does not exist.'
+- '500 Internal Server Error: If the status cannot be retrieved.'
+- '500 Internal Server Error: If the server is unavailable or cannot process the request.'
+- '500 Internal Server Error: If the schema cannot be retrieved.'
+- '400'
+- '401'
+- '500'
+- '400 Bad Request: If input_data or identifier_from_purchaser is missing, invalid,
+  or does not adhere to the schema.'
+- '500 Internal Server Error: If job initiation fails on the crew''s side.'
+auth_info:
+  mentioned_objects:
+  - ENCRYPTION_KEY
+  - ADMIN_KEY
+  - BLOCKFROST_API_KEY_PREPROD
+client:
+  base_url: https://docs.masumi.network/./../api/v1
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  paginator:
+    type: cursor
+    cursor_param: cursorToken
+    page_size_param: limit
+    default_page_size: 10
+source_metadata: null
