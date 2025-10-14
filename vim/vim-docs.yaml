@@ -1,0 +1,280 @@
+resources:
+- name: invitations
+  endpoint:
+    path: /invitations
+    method: POST
+    data_selector: userInvitationUrl
+    params: {}
+- name: organizations_by_application_id
+  endpoint:
+    path: /applications/{applicationId}/organizations
+    method: GET
+    data_selector: organizations
+    params: {}
+- name: organization_users
+  endpoint:
+    path: /applications/{applicationId}/organizations/{organizationId}/users
+    method: GET
+    data_selector: users
+    params: {}
+- name: future_appointments
+  endpoint:
+    path: /appointments/{vimOrganizationId}
+    method: GET
+    data_selector: data
+    params:
+      offset: 0
+      limit: 50
+- name: chart_retrieval
+  endpoint:
+    path: /chart-retrieval/download-url/{requestId}
+    method: GET
+    data_selector: fileDownloadURL
+    params: {}
+- name: lab_results
+  endpoint:
+    path: /ehr/labResults
+    method: GET
+    data_selector: records
+- name: vitals
+  endpoint:
+    path: /ehr/vitals
+    method: GET
+    data_selector: records
+- name: medication_list
+  endpoint:
+    path: /ehr/medicationList
+    method: GET
+    data_selector: records
+- name: allergy_list
+  endpoint:
+    path: /ehr/allergyList
+    method: GET
+    data_selector: records
+- name: lab_results
+  endpoint:
+    path: /ehr/labResults
+    method: GET
+    data_selector: results
+- name: vitals
+  endpoint:
+    path: /ehr/vitals
+    method: GET
+    data_selector: vitalSigns
+- name: medication_list
+  endpoint:
+    path: /ehr/medications
+    method: GET
+    data_selector: medications
+- name: allergy_list
+  endpoint:
+    path: /ehr/allergies
+    method: GET
+    data_selector: allergies
+- name: user
+  endpoint:
+    path: /vimOS/sessionContext/user
+    method: GET
+- name: organization
+  endpoint:
+    path: /vimOS/sessionContext/organization
+    method: GET
+- name: user
+  endpoint:
+    path: /vimOS/sessionContext/user
+    method: GET
+- name: organization
+  endpoint:
+    path: /vimOS/sessionContext/organization
+    method: GET
+- name: userinfo
+  endpoint:
+    path: /v1/oauth/userinfo
+    method: GET
+    data_selector: user_profile
+- name: Vim OS UserInfo endpoint
+  endpoint:
+    path: /v1/oauth/userinfo
+    method: GET
+    data_selector: userinfo
+- name: patient
+  endpoint:
+    path: /ehr/patient
+    method: GET
+    data_selector: ehrState.patient
+- name: patient_problem_list
+  endpoint:
+    path: /patient/problem-list
+    method: GET
+- name: patient_medication_list
+  endpoint:
+    path: /patient/medication-list
+    method: GET
+- name: patient_allergy_list
+  endpoint:
+    path: /patient/allergy-list
+    method: GET
+- name: patient_lab_results
+  endpoint:
+    path: /patient/lab-results
+    method: GET
+- name: patient_vitals
+  endpoint:
+    path: /patient/vitals
+    method: GET
+- name: chart_retrieval_request
+  endpoint:
+    path: /encounter/chart-retrieval-request
+    method: PUT
+- name: Create App Launch ID
+  endpoint:
+    path: /os-api/graphql
+    method: POST
+    data_selector: createAppLaunch
+    params: {}
+- name: Launch
+  endpoint:
+    path: /launch
+    method: GET
+    data_selector: ''
+    params:
+      launch_id: '{{launchId}}'
+- name: Vim OS Authorize Endpoint
+  endpoint:
+    path: /authorize
+    method: GET
+    data_selector: ''
+    params: {}
+- name: App Token Endpoint
+  endpoint:
+    path: /auth/token
+    method: POST
+    data_selector: access_token
+    params: {}
+- name: Vim OS UserInfo endpoint
+  endpoint:
+    path: /v1/oauth/userinfo
+    method: GET
+    data_selector: ''
+    params: {}
+- name: referral
+  endpoint:
+    path: /ehr/referral
+    method: GET
+    data_selector: Referral
+- name: orders
+  endpoint:
+    path: /ehr/orders
+    method: GET
+    data_selector: Orders
+- name: claim
+  endpoint:
+    path: /ehr/claim
+    method: GET
+    data_selector: Claim
+- name: referral
+  endpoint:
+    path: /ehr/referral
+    method: GET
+    data_selector: records
+- name: orders
+  endpoint:
+    path: /ehr/orders
+    method: GET
+    data_selector: records
+- name: claim
+  endpoint:
+    path: /ehr/claim
+    method: GET
+    data_selector: records
+- name: invitations
+  endpoint:
+    path: /invitations
+    method: POST
+    data_selector: invitationContexts
+    params: {}
+- name: invitations
+  endpoint:
+    path: /invitations
+    method: POST
+    data_selector: null
+    params: {}
+notes:
+- API is only available for USA server-based instances.
+- 'Rate limit: 10 requests per minute for invitations and organizations, 50 requests
+  per minute for users and appointments.'
+- The ZIP file is password-protected using your applicationId as the password.
+- 'Rate limit: You can send up to 50 requests per minute.'
+- The Vim API is only available for USA server-based instances (White listing IPs
+  is not supported). This means your application server must be hosted within the
+  United States to access Vim's EHR connectivity features.
+- Available only in relevant EHR systems.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Vim OS does not support Refresh tokens.
+- Access tokens are meant for initial session establishment only and can't be refreshed.
+- The Vim API is only available for USA server-based instances (White listing IPs
+  is not supported).
+- Ensure CORS is configured for getvim.com domain
+- Client secrets should be rotated regularly for enhanced security
+- Vim OS does not support Refresh tokens. Access tokens are meant for initial session
+  establishment only and can't be refreshed.
+- This call is to the Vim OS userinfo endpoint. To run this call, accessToken variable
+  needs to be set.
+- Enable CORS for getvim.com domain.
+- Consider mapping localhost to a custom domain to skip consent during development.
+- Your application server must be physically located in the United States for production
+  use.
+- You can send no more than 10 requests per minute per user per app.
+- The launch Id is needed to initiate the authentication flow.
+- It has an expiration time of 1 minute.
+- The Vim API is only available for USA server-based instances (White listing IPs
+  is **not** supported).
+- Your application server must be hosted within the United States to access Vim's
+  EHR connectivity features.
+- You can send no more than 10 update requests per minute per user session.
+- Your application tooltip text will display your application name as set in the manifest.
+- The dynamic app size will remain the same during the active application session.
+- You can receive notifications for changes in your app's open and close state.
+- The EHR update operation may take up to one minute to execute.
+- Your application must declare specific permissions in the Developer Console to use
+  certain features.
+errors:
+- '400 Bad Request: Check request parameters.'
+- '401 Unauthorized: Check access token validity.'
+- '429 Too Many Requests: Rate limit exceeded.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'forbidden_error: Handle authentication and authorization failures.'
+- 'forbidden_error: Specific error handling for authentication failures'
+- '403 Forbidden: You do not have access to this resource.'
+- 'Failed to fetch user profile: {status_code}'
+- 'Failed to fetch user profile: 400'
+- 'Forbidden: You do not have access to this resource.'
+- 'internal_error: Some fields might have successfully updated, but an internal error
+  occurred.'
+- 'validation_error: The payload is invalid; writeback is blocked.'
+- 'authorization_error: The application does not have the necessary permissions; writeback
+  is blocked.'
+- 'rate_limit_error: The rate limit has been exceeded; writeback is blocked.'
+- 'preconditions_error: The business state of the system does not allow writing at
+  this specific moment.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- You must declare the `notificationBadge` permission in the Developer Console to
+  use this call.
+- You must declare the `pushNotification` permission in the Developer Console to use
+  this call.
+- You must declare the `autoPopup` permission in the Developer Console to use this
+  call.
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - VimOS SDK
+  - OAuthToken
+client:
+  base_url: https://api.getvim.com
+  auth:
+    type: http
+    location: header
+    header_name: authorization
+source_metadata: null

@@ -1,0 +1,267 @@
+resources:
+- name: match_enrich
+  endpoint:
+    path: /match-enrich
+    method: POST
+    data_selector: result
+    params: {}
+- name: enriched_profile
+  endpoint:
+    path: /match/v5/companies
+    method: POST
+- name: enriched_profile
+  endpoint:
+    path: /match/v5/companies
+    method: POST
+- name: company_website
+  endpoint:
+    path: /search/company_website
+    method: GET
+    data_selector: records
+- name: company_proximity
+  endpoint:
+    path: /company/proximity
+    method: GET
+    data_selector: results
+    params: {}
+- name: company_postcode
+  endpoint:
+    path: /reference/company-postcode-filter
+    method: GET
+    data_selector: results
+    params: {}
+- name: company_website
+  endpoint:
+    path: /reference/company-website-filter
+    method: GET
+    data_selector: records
+    params: {}
+- name: company_industry
+  endpoint:
+    path: /reference/retrieving-veridion-business-categories-industries
+    method: GET
+    data_selector: industries
+    params: {}
+- name: Company location filter
+  endpoint:
+    path: /reference/company-location-filter
+    method: GET
+    data_selector: ''
+    params: {}
+- name: Veridion Location API
+  endpoint:
+    path: /reference/retrieving-a-list-of-all-veridion-locations
+    method: GET
+    data_selector: ''
+    params: {}
+- name: business_category
+  endpoint:
+    path: /reference/retrieving-veridion-business-categories-industries
+    method: GET
+    data_selector: business_categories
+- name: company_naics_code
+  endpoint:
+    path: /reference/company-naics-code-filter
+    method: GET
+    data_selector: records
+    params: {}
+- name: company_proximity
+  endpoint:
+    path: /company/proximity
+    method: GET
+    data_selector: results
+- name: company_employee_count
+  endpoint:
+    path: /reference/company-employee-count-filter
+    method: GET
+    data_selector: records
+- name: company_postcode
+  endpoint:
+    path: /reference/company-postcode-filter
+    method: GET
+    data_selector: results
+    params: {}
+- name: company_industry
+  endpoint:
+    path: /reference/retrieving-veridion-business-categories-industries
+    method: GET
+    data_selector: industries
+    params: {}
+- name: company_year_founded
+  endpoint:
+    path: /reference/company-year-founded-filter
+    method: GET
+    data_selector: ''
+    params: {}
+- name: business_category
+  endpoint:
+    path: /reference/retrieving-veridion-business-categories-industries
+    method: GET
+    data_selector: categories
+    params: {}
+- name: company_products
+  endpoint:
+    path: /reference/company-products
+    method: GET
+    data_selector: records
+- name: company_naics_code
+  endpoint:
+    path: /reference/company-naics-code-filter
+    method: GET
+    data_selector: records
+    params: {}
+- name: company_employee_count
+  endpoint:
+    path: /reference/company-employee-count-filter
+    method: GET
+    data_selector: profiles
+    params: {}
+- name: company_estimated_revenue
+  endpoint:
+    path: /reference/company-estimated-revenue-filter
+    method: GET
+    data_selector: records
+- name: company_year_founded
+  endpoint:
+    path: /reference/company-year-founded-filter
+    method: GET
+    data_selector: records
+    params: {}
+- name: companies
+  endpoint:
+    path: /search/v4/companies
+    method: POST
+    data_selector: result
+    params:
+      filters: {}
+- name: locations
+  endpoint:
+    path: /locations/v0
+    method: GET
+- name: Company products
+  endpoint:
+    path: /company/products
+    method: GET
+- name: industries
+  endpoint:
+    path: /industries/v0
+    method: GET
+    data_selector: array of objects
+- name: main_topic
+  endpoint:
+    path: /reference/specifying-user-intent
+    method: GET
+- name: companies
+  endpoint:
+    path: /search/v4/companies
+    method: POST
+    data_selector: result
+    params:
+      filters: {}
+- name: locations
+  endpoint:
+    path: /locations/v0
+    method: GET
+    data_selector: array of objects
+- name: industries
+  endpoint:
+    path: /industries/v0
+    method: GET
+notes:
+- For chatbot access, please request an API token.
+- ScoutPro replaces the old, manual sourcing grind—where you’d spend 2–4 hours hunting
+  through Google results and stale spreadsheets—with an AI-powered workflow that delivers
+  fresh, weekly-refreshed, procurement-specific data in under 10 minutes.
+- 'Verify Access & Permissions: If you don’t see Templates or Saved Lists in the sidebar,
+  contact your Veridion administrator or sales rep to confirm your role and usage
+  tier.'
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Veridion utilizes advanced data analytics to provide insurers with precise, accurate
+  business data.
+- The API requires just one company name as input along with the country.
+- HTTPS is required for all requests.
+- Paginated endpoints will return a pagination object in the response.
+- Providing additional information can help with advanced matching and avoid false
+  positive matches.
+- The Search API is not designed for Company matching purposes.
+- The default API rate limit is 1 request per second.
+- Always include a rule field (either 'and' or 'or') at the root of the filters field,
+  even if there is only a single filter being passed.
+- The 'country' is always required, while the 'region' and 'city' are optional.
+- By default, the Company location filter searches only the company's main location.
+- Always include a rule ('and' or 'or') at the root of the filters field, even if
+  there is only a single filter being passed.
+- By default, the Company postcode filter will only search the company's main location.
+- The filter supports searching for both main and secondary locations of a company.
+- The country is always required, while the region and city are optional.
+- The search retrieves companies located within a predefined radius of the specified
+  geographical location.
+- This filter will only return company profiles for which we have recorded employee
+  counts in our database.
+- By default, the Company postcode filter will only search the company's main location
+- The API is designed to discover companies that provide a specific product or service.
+- All search modes support 'wildcard' NAICS code(s) search.
+- 'By default, the API will search for both the company''s primary and secondary NAICS
+  codes (default strictness: 3)'
+- Revenue is expressed in US dollars.
+- The `company_products` filter cannot be enclosed within an `or` wrapper.
+- The placement of the `company_products` filter must always be at the root level
+  of the filters object, positioned directly under the first `and` rule.
+errors:
+- '200 OK: Standard HTTP successful response.'
+- '202 Accepted: The request was acknowledged and processed but no response was available.
+  The caller should retry the request later.'
+- '400 Bad Request: Standard HTTP invalid request response.  The request body does
+  not match the expected schema or invalid parameters were passed. Check the error
+  response message field for additional information.'
+- '401 Unauthorized: Standard HTTP unauthorized access response.  Authentication is
+  invalid. Check if the x-api-key header is passed correctly.'
+- '403 Forbidden: Standard HTTP forbidden access response.  API Quotas were reached
+  or you don''t have enough permissions to access the requested resource. Please contact
+  technical support for more information.'
+- '422 Unprocessable Entity: Standard HTTP response.  Indicates that the server understands
+  the request but cannot process it due to semantic errors. Returned when the request
+  is syntactically correct but contains invalid or logically incorrect data.'
+- '429 Too Many Requests: Standard HTTP response for exceeding rate limits.  Please
+  wait for a few seconds and then retry the request.'
+- '500 Internal Server Error: Standard HTTP response for an unexpected error that
+  occurred on our server.  Please retry the request or contact technical support if
+  the error persists.'
+- '503 Service Unavailable: Standard HTTP service unavailable response, indicating
+  that the server is temporarily unable to handle the request.  Please retry the request
+  or contact technical support if the error persists.'
+- '504 Gateway timeout: Standard HTTP response for server timeout when attempting
+  to complete the request.  Please retry the request or contact technical support
+  if the error persists.'
+- Bad Request
+- At least one of the 'legal_names' or 'commercial_names' non-empty text array fields
+  is required.
+- '400 Bad Request: At least one of the ''legal_names'' or ''commercial_names'' non-empty
+  text array fields is required.'
+- '401 Unauthorized: Missing or invalid authorization key.'
+- '429 Too Many Requests: Token bucket is empty'
+- '429 Too Many Requests: requests will be declined until new tokens are added to
+  the bucket.'
+- '400 Bad Request: If the input lacks any of the required fields'
+- '202 Accepted: If the requested entity does not correspond to any entry in the Veridion
+  database'
+- '400 Bad Request: Rule parameter is not present or has no value.'
+- '400 Bad Request: If the rule parameter is not present or has no value'
+- '400 Bad Request: Missing required fields or structure'
+- '200 OK: Successful response'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck API key'
+- '400 Bad Request: If the input lacks the required fields or structure detailed above.'
+- '200: Result'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://data.veridion.com
+  headers:
+    Content-Type: application/json
+    x-api-key: <your_api_key>
+  paginator:
+    type: cursor
+    page_size_param: page_size
+    default_page_size: 10
+source_metadata: null

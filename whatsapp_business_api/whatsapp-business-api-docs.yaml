@@ -1,0 +1,95 @@
+resources:
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: subscription_tariffs
+  endpoint:
+    path: /docs/our-services/subscription-tariffs
+    method: GET
+    data_selector: tariffs
+    params: {}
+- name: whatsapp_tariffs
+  endpoint:
+    path: /docs/our-products/whatsapp
+    method: GET
+    data_selector: tariffs
+    params: {}
+- name: telegram_tariffs
+  endpoint:
+    path: /docs/our-products/telegram
+    method: GET
+    data_selector: tariffs
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+notes:
+- If the customer number is not in WA, then send a text/email or perform another action
+- Important to know about the message limits per day. After connecting you will have
+  a level of 1 - 1000 unique chats per day.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Default time zone for all users is set to Moscow (GMT+3)
+- 'Since 20.06.22g all new connections have the following temporary limitations in
+  the functionality of the integration: buttons in chatbots are not supported; goods
+  are not supported (if the client sends you a product or cart, the message will not
+  reach the CRM); The maximum size of the in/out files is 37 MB; if the client sends
+  several contact cards from his address book in a message, you won''t see this in
+  the CRM (one contact card can be received); audio messages from the RadistWeb LRC
+  do not reach their recipients, although they are marked as delivered.'
+- Duplicate control is configured separately for each integration.
+- The fields are filled in only when the leade is created for the first time. If the
+  visitor writes to you again, and the lead with them in Kommo already exists, then
+  the fields will not be filled in.
+- In order for the fields in Kommo to be filled in, in the integration settings, the
+  creation of leads must be configured in any status except Incoming Leads.
+- 'Trial period for new clients: A 3-day free trial period is provided on the ''Advanced''
+  tariff.'
+- Discounts are combined with the payment for additional rooms.
+- 'Payments are made in the RadistWeb cabinet in the ''Settings'' - ''Subscriptions''
+  section, more details: [Subscriptions](/docs/our-products/radist-web/subscriptions)'
+- Payment by card in rubles or dollars.
+- Payment for subscription, WABA-numbers, WABA-templates in RadistWeb personal cabinet
+  in rubles or dollars.
+- 'Payments are made in the RadistWeb cabinet in the ''Settings'' - ''Subscriptions''
+  section, more details: Subscriptions'
+- Except PayPal payments.
+- Payment for subscription, WABA-numbers, WABA-dialogs in RadistWeb personal cabinet
+  in rubles or dollars.
+- The default time zone for all users is set to Moscow (GMT+3)
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- No discount for the first number.
+- 20% discount for 2-4 rooms.
+- 30% discount for 5-9 rooms.
+- 40% discount for 10-19 rooms.
+- 50% discount for 20 or more rooms.
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://radist.online
+  auth:
+    type: oauth2
+source_metadata: null
