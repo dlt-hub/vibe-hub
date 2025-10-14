@@ -1,0 +1,108 @@
+resources:
+- name: sampleImage
+  endpoint:
+    path: /double_cuda/sampleImage
+    method: POST
+    data_selector: vis
+- name: sampleProfile
+  endpoint:
+    path: /double_cuda/sampleProfile
+    method: POST
+    data_selector: vis
+- name: chi2Image
+  endpoint:
+    path: /double_cuda/chi2Image
+    method: POST
+    data_selector: chi2
+- name: chi2Profile
+  endpoint:
+    path: /double_cuda/chi2Profile
+    method: POST
+    data_selector: chi2
+- name: uv_table
+  endpoint:
+    path: /uvtable.txt
+    method: GET
+    data_selector: data
+    params: {}
+- name: sample_profile
+  endpoint:
+    path: /sample_profile
+    method: void
+    data_selector: parameters
+- name: sample_image
+  endpoint:
+    path: /sample_image
+    method: void
+    data_selector: parameters
+- name: chi2_profile
+  endpoint:
+    path: /chi2_profile
+    method: void
+    data_selector: parameters
+- name: chi2_image
+  endpoint:
+    path: /chi2_image
+    method: void
+    data_selector: parameters
+- name: init
+  endpoint:
+    path: /init
+    method: void
+    data_selector: parameters
+- name: cleanup
+  endpoint:
+    path: /cleanup
+    method: void
+    data_selector: parameters
+- name: threads
+  endpoint:
+    path: /threads
+    method: void
+    data_selector: parameters
+- name: ngpus
+  endpoint:
+    path: /ngpus
+    method: void
+    data_selector: parameters
+- name: use_gpu
+  endpoint:
+    path: /use_gpu
+    method: void
+    data_selector: parameters
+notes:
+- Due to technical limitations, the conda package does not support GPUs at the moment.
+- Uses conda for installation
+- The conda package does not support GPUs at the moment
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Uses a Bayesian approach with Monte Carlo Markov chains.
+- The CPU version of galario is always compiled, even on a system without a CUDA-enabled
+  GPU.
+- On machines with only one CUDA-capable GPU, it is not necessary to call double_cuda.use_GPU(0)
+  as this is the default behaviour.
+- Setting N_OMP larger than the number of physical cores can lead to performance penalty.
+- If galario is to be used in a code that already uses MPI to parallelize the tasks
+  over multiple processes, setting double.threads(1) might give a better overall performance.
+- Uses GPU Accelerated Library for Analysing Radio Interferometer Observations
+- This is the list of Frequently Asked Questions about galario. The list will be updated
+  regularly to include the questions about recurring issues and relative solutions.
+- 'The translation by (dRA, dDec) and the rotation by PA of the model image are optimized
+  for speed: they are not obtained with extra interpolations of the model image, but
+  rather applied in the Fourier plane.'
+- The offset is achieved by applying a complex phase to the sampled visibilities.
+  To rotation is achieved by internally rotating the (u, v) locations by -PA.
+errors:
+- MemoryError
+- ValueError
+- RuntimeError
+- 'MemoryError: Out of memory on GPU'
+- 'ValueError: Invalid argument (CPU/GPU)'
+- 'RuntimeError: Miscellaneous, including out of memory (CPU/GPU)'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://github.com/mtazzari/galario
+  headers:
+    Accept: application/json
+source_metadata: null

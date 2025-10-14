@@ -1,0 +1,247 @@
+resources:
+- name: campaign_member
+  endpoint:
+    path: /api/campaign_member
+    method: GET
+    data_selector: records
+- name: contact
+  endpoint:
+    path: /api/contact
+    method: GET
+    data_selector: records
+- name: clients
+  endpoint:
+    path: /api/v1/clients
+    method: GET
+    data_selector: clients
+    params: {}
+- name: calls
+  endpoint:
+    path: /api/v1/calls
+    method: POST
+    data_selector: calls
+    params: {}
+- name: actions
+  endpoint:
+    path: /actions
+    method: POST
+    data_selector: actions
+    params: {}
+- name: context_endpoint
+  endpoint:
+    path: /context
+    method: GET
+    data_selector: context
+    params: {}
+- name: conversation_speed
+  endpoint:
+    path: /conversation_speed
+    method: GET
+    data_selector: speed
+    params: {}
+- name: initial_message
+  endpoint:
+    path: /initial_message
+    method: GET
+    data_selector: message
+    params: {}
+- name: initial_message_delay
+  endpoint:
+    path: /initial_message_delay
+    method: GET
+    data_selector: delay
+    params: {}
+- name: ivr_navigation_mode
+  endpoint:
+    path: /ivr_navigation_mode
+    method: GET
+    data_selector: mode
+    params: {}
+- name: language
+  endpoint:
+    path: /language
+    method: GET
+    data_selector: language
+    params: {}
+- name: noise_suppression
+  endpoint:
+    path: /noise_suppression
+    method: GET
+    data_selector: suppression
+    params: {}
+- name: prompt
+  endpoint:
+    path: /prompt
+    method: GET
+    data_selector: prompt
+    params: {}
+- name: voice
+  endpoint:
+    path: /voice
+    method: GET
+    data_selector: voice
+    params: {}
+- name: calls
+  endpoint:
+    path: /api/v1/calls
+    method: POST
+    data_selector: data
+    params: {}
+- name: voice
+  endpoint:
+    path: /voice/configuration
+    method: GET
+    data_selector: voice
+    params: {}
+- name: actions
+  endpoint:
+    path: /api/actions
+    method: POST
+    data_selector: actions
+    params: {}
+- name: context_endpoint
+  endpoint:
+    path: /api/context
+    method: GET
+    data_selector: context
+    params: {}
+- name: conversation_speed
+  endpoint:
+    path: /api/conversation_speed
+    method: GET
+    data_selector: speed
+    params: {}
+- name: initial_message
+  endpoint:
+    path: /api/initial_message
+    method: POST
+    data_selector: message
+    params: {}
+- name: initial_message_delay
+  endpoint:
+    path: /api/initial_message_delay
+    method: POST
+    data_selector: delay
+    params: {}
+- name: interrupt_sensitivity
+  endpoint:
+    path: /api/interrupt_sensitivity
+    method: GET
+    data_selector: sensitivity
+    params: {}
+- name: ivr_navigation_mode
+  endpoint:
+    path: /api/ivr_navigation
+    method: GET
+    data_selector: navigation_mode
+    params: {}
+- name: language
+  endpoint:
+    path: /api/language
+    method: GET
+    data_selector: language
+    params: {}
+- name: noise_suppression
+  endpoint:
+    path: /api/noise_suppression
+    method: POST
+    data_selector: suppression
+    params: {}
+- name: prompt
+  endpoint:
+    path: /api/prompt
+    method: POST
+    data_selector: prompt
+    params: {}
+- name: vector_database
+  endpoint:
+    path: /api/vector_database
+    method: GET
+    data_selector: database
+    params: {}
+- name: voice
+  endpoint:
+    path: /api/voice
+    method: POST
+    data_selector: voice
+    params: {}
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: voice
+  endpoint:
+    path: /voice/configuration
+    method: GET
+    data_selector: voice
+    params: {}
+- name: contacts
+  endpoint:
+    path: /import-contacts
+    method: POST
+    data_selector: results
+    params: {}
+- name: campaigns
+  endpoint:
+    path: /create-campaign
+    method: POST
+    data_selector: results
+    params: {}
+- name: contacts
+  endpoint:
+    path: /contacts/import
+    method: POST
+- name: campaigns
+  endpoint:
+    path: /campaigns
+    method: POST
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in SimpleTalk
+- Supports HIPAA compliance.
+- Supports multiple languages including English, Spanish, and German.
+- Adjusts conversation speed and initial message delay for better user experience.
+- Supports high volume calls
+- HIPAA compliant options available
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Each business is assigned a unique identifier upon onboarding, which is critical
+  for maintaining the integrity of the system.
+- initial_message_delay lets you set how many seconds of a delay before the agent
+  start talking/saying their initial_message
+- Configuring the ivr_navigation_mode to default allows the voice bot to remain silent
+  during hold times and extends the automatic call termination from 30 seconds of
+  silence to 10 minutes
+- Financial aspects covered include the cost per minute for outbound and inbound calls,
+  which varies depending on the user’s plan.
+- An automatic top-up feature is explained, which replenishes the account balance
+  when it drops below a certain threshold.
+- If certain custom fields (e.g., income) are not filled, the AI may skip over or
+  leave those fields blank without causing errors.
+- AI may skip over or leave fields blank without causing errors.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '401 Unauthorized: Check your client ID and secret.'
+- '429 Too Many Requests: Rate limit exceeded.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://simpletalk.ai
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://simpletalk.ai/oauth/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null
