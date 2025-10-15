@@ -1,0 +1,197 @@
+resources:
+- name: embed_text
+  endpoint:
+    path: /v1/embedding/text
+    method: POST
+    data_selector: embeddings
+    params: {}
+- name: query
+  endpoint:
+    path: /v1/query
+    method: POST
+    data_selector: results
+    params: {}
+- name: topk
+  endpoint:
+    path: /v1/query/topk
+    method: POST
+    data_selector: results
+    params: {}
+- name: add_tags
+  endpoint:
+    path: /v1/query/update/tag/ids
+    method: POST
+    data_selector: success
+- name: remove_tags
+  endpoint:
+    path: /v1/query/update/tag/ids
+    method: POST
+    data_selector: success
+- name: upload
+  endpoint:
+    path: /v1/upload
+    method: POST
+    data_selector: files
+    params: {}
+- name: upload
+  endpoint:
+    path: /v1/upload
+    method: POST
+    data_selector: files
+- name: parse_file
+  endpoint:
+    path: /v1/parse
+    method: POST
+    data_selector: task_id
+- name: file_parse
+  endpoint:
+    path: /v1/parse
+    method: POST
+    data_selector: task_id
+- name: file_extract
+  endpoint:
+    path: /v1/extract
+    method: POST
+    data_selector: task_id
+    params: {}
+- name: extract
+  endpoint:
+    path: /v1/extract
+    method: POST
+    data_selector: task_id
+- name: task_status
+  endpoint:
+    path: /v1/task/:task_id
+    method: GET
+    data_selector: status
+    params:
+      task_id: required
+- name: task_status
+  endpoint:
+    path: /v1/task/:task_id
+    method: GET
+    data_selector: status
+    params: {}
+- name: create_api_key
+  endpoint:
+    path: /v1/user/authorization/keys/:organization_id/create
+    method: POST
+    data_selector: key
+    params: {}
+- name: create_api_key
+  endpoint:
+    path: /v1/user/authorization/keys/:organization_id/create
+    method: POST
+    data_selector: key
+    params: {}
+- name: text_embedding
+  endpoint:
+    path: /platform/embeddings-and-retrieval/text-embedding
+    method: POST
+    data_selector: text_output
+- name: image_embedding
+  endpoint:
+    path: /platform/embeddings-and-retrieval/image-embedding
+    method: POST
+    data_selector: image_output
+- name: embeddings
+  endpoint:
+    path: /platform/embeddings-and-retrieval/generate-embeddings
+    method: POST
+    data_selector: output
+- name: text_embeddings
+  endpoint:
+    path: /api/embed/text
+    method: POST
+    data_selector: embeddings
+- name: image_embeddings
+  endpoint:
+    path: /api/embed/image
+    method: POST
+    data_selector: embeddings
+- name: text_embedding
+  endpoint:
+    path: /reference/api/embed-text-v-1-embedding-text-post
+    method: POST
+    data_selector: embedding_results
+    params: {}
+- name: text_embedding
+  endpoint:
+    path: /reference/api/embed-text-v-1-embedding-text-post
+    method: POST
+- name: text_embeddings
+  endpoint:
+    path: /api/embed-text-v-1-embedding-text-post
+    method: POST
+    data_selector: embeddings
+- name: image_embeddings
+  endpoint:
+    path: /api/embed-image-v-1-embedding-image-post
+    method: POST
+    data_selector: embeddings
+- name: text_embeddings
+  endpoint:
+    path: /api/embed-text-v-1-embedding-text-post
+    method: POST
+    data_selector: embeddings
+- name: image_embeddings
+  endpoint:
+    path: /api/embed-image-v-1-embedding-image-post
+    method: POST
+    data_selector: embeddings
+- name: embed_image
+  endpoint:
+    path: /v1/embedding/image
+    method: POST
+    data_selector: embeddings
+- name: embed_image
+  endpoint:
+    path: /v1/embedding/image
+    method: POST
+    data_selector: embeddings
+    params: {}
+notes:
+- To ensure consistent service quality across our growing user base, we implement
+  limits on API usage.
+- We enforce a rate limit of 1200 requests per 5-minute rolling window per IP address
+  for the Embedding Inference API.
+- Use projection_id to specify the dataset
+- k parameter in topk requests specifies the number of results to return
+- Supports PDF files with configurable chunking strategies and optional embedding
+  generation.
+- Atlas uses DuckDB for parsing and processing CSV files.
+- Currently, only one pair of latitude/longitude columns (one latitude column and
+  one longitude column) is supported per dataset.
+- Atlas can natively store embedding vectors, text documents, and images.
+- Audio and video modalities are on their way to Atlas soon.
+- Dataset will automatically generate embeddings and index your data for retrieval
+  and visualization.
+- Atlas uses DuckDB for parsing and processing CSV files, which provides robust automatic
+  type detection capabilities.
+- Atlas stores and transfers data using a subset of the Apache Arrow standard.
+- All fields besides embeddings and the user-specified ID field are nullable.
+- Default organizations are now deprecated.
+- 'Embeddings serve two key purposes: Data Maps and Vector Search.'
+- The task_type defaults to search_document.
+- You can resize the output dimensionality of your Nomic embeddings with Nomic Embed
+  v1.5. This model allows you to specify a dimensionality ranging from 64 to 768 for
+  your embedding size.
+- Local embeddings are free to generate, but generally take longer than remote embeddings,
+  especially on a less capable machine.
+- Multimodality refers to the ability to operate with different data types in an application.
+- Nomic supports multimodality with embedding models that are aligned.
+- Images can be provided either as files (filepaths or raw image bytes) or URLs.
+- The model to use when embedding defaults to nomic-embed-vision-v1.5
+errors:
+- '403: The user is not authorized to perform this action.'
+- '422: Validation Error'
+auth_info:
+  mentioned_objects:
+  - refresh token
+  - JWT bearer tokens
+  - tenant domain
+client:
+  base_url: https://atlas.nomic.ai
+  headers:
+    Accept: application/json
+source_metadata: null

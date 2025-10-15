@@ -1,0 +1,92 @@
+resources:
+- name: profile_detail
+  endpoint:
+    path: /v1/profile/detail
+    method: GET
+    data_selector: results
+    params:
+      user_id: required
+- name: session_list
+  endpoint:
+    path: /v1/session/list
+    method: GET
+    data_selector: results
+    params: {}
+- name: session_detail
+  endpoint:
+    path: /v1/session/detail
+    method: GET
+    data_selector: results
+    params:
+      id: required
+- name: profile_detail
+  endpoint:
+    path: /v1/profile/detail/
+    method: GET
+    data_selector: results
+    params:
+      user_id: required
+- name: session_list
+  endpoint:
+    path: /v1/session/list/
+    method: GET
+    data_selector: results
+    params: {}
+- name: session_detail
+  endpoint:
+    path: /v1/session/detail/
+    method: GET
+    data_selector: results
+    params:
+      id: required
+- name: session
+  endpoint:
+    path: /v1/session/list/
+    method: GET
+    data_selector: results
+- name: session
+  endpoint:
+    path: /v1/session/list/
+    method: GET
+    data_selector: results
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- If you chose the read_from_trackers scope, the user will directly receive a push
+  notification to grant your application access.
+- All URLs must be absolute and use https.
+- The life length of the authorization code is 60 seconds.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+errors:
+- '400: Bad request (something invalid)'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.footbar.com
+  auth:
+    type: oauth2
+    flow: authorization_code
+    location: header
+    header_name: Authorization
+  paginator:
+    type: page
+    page_size_param: pageSize
+source_metadata: null

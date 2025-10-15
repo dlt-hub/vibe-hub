@@ -1,0 +1,169 @@
+resources:
+- name: game
+  endpoint:
+    path: /api/games
+    method: POST
+    data_selector: gameData
+- name: battlesnake
+  endpoint:
+    path: /api/battlesnakes
+    method: POST
+    data_selector: battlesnakeData
+- name: leaderboards
+  endpoint:
+    path: /leaderboards
+    method: GET
+    data_selector: data
+- name: battlesnake_details
+  endpoint:
+    path: /
+    method: GET
+    data_selector: apiversion
+- name: game_started
+  endpoint:
+    path: /start
+    method: POST
+    data_selector: game
+- name: move
+  endpoint:
+    path: /move
+    method: POST
+    data_selector: move
+- name: game_over
+  endpoint:
+    path: /end
+    method: POST
+    data_selector: game
+- name: move
+  endpoint:
+    path: /move
+    method: POST
+    data_selector: move
+    params: {}
+- name: battlesnake_details
+  endpoint:
+    path: /
+    method: GET
+    data_selector: apiversion
+- name: game_started
+  endpoint:
+    path: /start
+    method: POST
+    data_selector: game
+- name: move
+  endpoint:
+    path: /move
+    method: POST
+    data_selector: move
+- name: game_over
+  endpoint:
+    path: /end
+    method: POST
+    data_selector: game
+- name: game
+  endpoint:
+    path: /api/objects/game
+    method: GET
+    data_selector: id
+- name: move
+  endpoint:
+    path: /move
+    method: POST
+- name: ruleset
+  endpoint:
+    path: /api/objects/ruleset
+    method: GET
+    data_selector: ruleset
+    params: {}
+- name: ruleset_settings
+  endpoint:
+    path: /api/objects/ruleset-settings
+    method: GET
+    data_selector: ruleset_settings
+    params: {}
+- name: game
+  endpoint:
+    path: /api/objects/game
+    method: GET
+    data_selector: id
+- name: battlesnake
+  endpoint:
+    path: /api/objects/battlesnake
+    method: GET
+    data_selector: battlesnake
+    params: {}
+- name: ruleset
+  endpoint:
+    path: /api/objects/ruleset
+    method: GET
+    data_selector: ruleset
+    params: {}
+- name: ruleset_settings
+  endpoint:
+    path: /api/objects/ruleset-settings
+    method: GET
+    data_selector: rulesetSettings
+    params: {}
+- name: battlesnake
+  endpoint:
+    path: /api/objects/battlesnake
+    method: GET
+    data_selector: battlesnake
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: board
+  endpoint:
+    path: /api/objects/board
+    method: GET
+    data_selector: height, width, food, hazards, snakes
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+notes:
+- Your Battlesnake can choose any valid hex color code to represent it on the game
+  board.
+- 'If your Battlesnake does not specify a valid color, it will use a default value
+  of #888888.'
+- All responses must be JSON-encoded strings with the Content-Type header set to application/json.
+- Valid responses must return an HTTP 200 OK status code.
+- Requests must be JSON-encoded strings with the Content-Type header set to application/json.
+- All ruleset settings will always be passed, but ruleset-specific settings will only
+  take effect when the associated ruleset is in effect.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+errors:
+- Any invalid responses will be treated as errors by the game engine.
+- An error on the first move of a game will move your Battlesnake up by default.
+- Errors on subsequent turns will repeat your previous move.
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.battlesnake.com
+  headers:
+    Accept: application/json
+source_metadata: null

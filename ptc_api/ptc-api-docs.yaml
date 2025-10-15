@@ -1,0 +1,109 @@
+resources:
+- name: source_files
+  endpoint:
+    path: /api/v1/source_files/bulk
+    method: POST
+- name: source_files
+  endpoint:
+    path: /bulk
+    method: POST
+    data_selector: success
+    params:
+      zip_file: file
+      file_tag_name: string
+      callback_url: string
+- name: source_files_bulk_upload
+  endpoint:
+    path: /api/v1/source_files/bulk
+    method: POST
+    data_selector: success
+    params:
+      zip_file: required
+      file_tag_name: optional
+      callback_url: optional
+- name: source_files_bulk
+  endpoint:
+    path: /source_files/bulk
+    method: POST
+    data_selector: success
+    params:
+      zip_file: required
+      file_tag_name: optional
+      callback_url: optional
+- name: source_files
+  endpoint:
+    path: /bulk
+    method: POST
+- name: supported_extensions
+  endpoint:
+    path: /api/v1/source_files/supported_extensions
+    method: GET
+    data_selector: extensions
+    params: {}
+- name: languages
+  endpoint:
+    path: /api/v1/languages
+    method: GET
+    data_selector: languages
+    params: {}
+- name: supported_extensions
+  endpoint:
+    path: /api/v1/source_files/supported_extensions
+    method: GET
+    data_selector: extensions
+- name: content_translation_status
+  endpoint:
+    path: /api/v1/content_translation/{id}/status
+    method: GET
+    data_selector: ''
+    params: {}
+- name: content_translation_status
+  endpoint:
+    path: /content_translation/{id}/status
+    method: GET
+    data_selector: status
+    params:
+      id: integer
+notes:
+- Authentication is token-based and project-specific.
+- Include the token in the Authorization header of every request using the Bearer
+  format.
+- We do not process sensitive personal information.
+- Some information is collected automatically when you visit, use, or navigate the
+  Services.
+- We may share or transfer your information in connection with any merger, sale of
+  company assets, financing, or acquisition of all or a portion of our business to
+  another company.
+- We use Amazon Web Services (AWS) for hosting servers, managing databases, sending
+  emails, and internal logging and monitoring.
+- We use Stripe to process payments and manage subscriptions.
+- For marketing and analytics, we use third-party tools that may collect data such
+  as IP addresses and interactions, typically through cookies and similar technologies.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- PTC integrates with both GitLab.com and self-hosted GitLab repositories.
+- We recommend using OAuth as your authentication method.
+- PTC uses read access to detect changes in your resource files and write access to
+  deliver translations via pull requests.
+- Translations are delivered to your repository as a merge request. You can review
+  and merge them when ready.
+- If you choose API integration, you’ll receive your API token during setup.
+- Each PTC login is intended for use by a single individual.
+errors:
+- '401 Unauthorized: No valid API token was provided. Check if your token is correct,
+  hasn’t expired, and is included in the Authorization header.'
+- '404 Not Found: Source file not found'
+- '401 Unauthorized: Unauthorized access. Please provide a valid API token.'
+- '403 Forbidden: Access denied. Insufficient permissions.'
+- '422 Unprocessable Entity: Invalid parameters provided.'
+- '422 Unprocessable Entity: File format is invalid'
+- '422 Unprocessable Entity: Failed to process ZIP archive'
+- 404 Not Found
+- '404 Not Found: No content translation exists with the specified ID'
+auth_info:
+  mentioned_objects:
+  - Data Protection Officer
+client:
+  base_url: https://app.ptc.wpml.org
+  headers:
+    Content-Type: multipart/form-data
+source_metadata: null

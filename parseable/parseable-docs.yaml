@@ -1,0 +1,205 @@
+resources:
+- name: metrics
+  endpoint:
+    path: /api/v1/metrics
+    method: GET
+- name: metrics
+  endpoint:
+    path: /api/v1/metrics
+    method: GET
+- name: ingest
+  endpoint:
+    path: /api/v1/ingest
+    method: POST
+    data_selector: '[]'
+- name: Parseable
+  endpoint:
+    path: /
+    method: GET
+    data_selector: logs
+- name: Parseable
+  endpoint:
+    path: /
+    method: GET
+- name: about
+  endpoint:
+    path: /about
+    method: GET
+- name: analytics
+  endpoint:
+    path: /analytics
+    method: GET
+- name: liveness
+  endpoint:
+    path: /liveness
+    method: HEAD
+- name: readiness
+  endpoint:
+    path: /readiness
+    method: HEAD
+- name: cluster_info
+  endpoint:
+    path: /cluster/info
+    method: GET
+- name: cluster_metrics
+  endpoint:
+    path: /cluster/metrics
+    method: GET
+- name: metrics
+  endpoint:
+    path: /metrics
+    method: GET
+- name: role_default
+  endpoint:
+    path: /role/default
+    method: PUT
+- name: user
+  endpoint:
+    path: /user/{username}
+    method: POST
+- name: role
+  endpoint:
+    path: /role/{name}
+    method: GET
+- name: dashboards
+  endpoint:
+    path: /dashboards
+    method: GET
+- name: filters
+  endpoint:
+    path: /filters
+    method: GET
+- name: logstream
+  endpoint:
+    path: /logstream
+    method: GET
+- name: ingest
+  endpoint:
+    path: /ingest
+    method: POST
+- name: query
+  endpoint:
+    path: /query
+    method: POST
+- name: about
+  endpoint:
+    path: /about
+    method: GET
+- name: analytics
+  endpoint:
+    path: /analytics
+    method: GET
+- name: liveness
+  endpoint:
+    path: /liveness
+    method: HEAD
+- name: readiness
+  endpoint:
+    path: /readiness
+    method: HEAD
+- name: cluster_info
+  endpoint:
+    path: /cluster/info
+    method: GET
+- name: cluster_metrics
+  endpoint:
+    path: /cluster/metrics
+    method: GET
+- name: metrics
+  endpoint:
+    path: /metrics
+    method: GET
+- name: role_default
+  endpoint:
+    path: /role/default
+    method: PUT
+- name: role_name
+  endpoint:
+    path: /role/{name}
+    method: PUT
+- name: user
+  endpoint:
+    path: /user/{username}
+    method: POST
+- name: user_roles
+  endpoint:
+    path: /user/{username}/role
+    method: PUT
+- name: dashboard
+  endpoint:
+    path: /dashboards
+    method: GET
+- name: logstream
+  endpoint:
+    path: /logstream/{logstream}
+    method: PUT
+- name: ingest
+  endpoint:
+    path: /ingest
+    method: POST
+- name: query
+  endpoint:
+    path: /query
+    method: POST
+- name: alerts
+  endpoint:
+    path: /alerts
+    method: POST
+    data_selector: alerts
+    params: {}
+- name: alerts
+  endpoint:
+    path: /api/alerts
+    method: POST
+- endpoint:
+    params: {}
+- name: retention
+  endpoint:
+    path: /api/retention
+    method: POST
+    data_selector: logs
+    params: {}
+notes:
+- All API requests require authentication. Include your API key in the Authorization
+  header.
+- All AI features require configuring an LLM provider before they can be used.
+- Ingested data is staged on local disk upon successful return by Parseable API.
+- Data is then asynchronously committed to object store like S3.
+- Each ingestion batch received via API is concurrently appended to the same file
+  within a one-minute window.
+- Zero configuration needed for ingestion, management, and querying OpenTelemetry
+  logs, metrics, or traces.
+- Zero configuration needed for ingesting OpenTelemetry logs, metrics or traces.
+- Requires OIDC setup with identity provider
+- Dataset column names are case sensitive.
+- Only the relevant data is read from the storage, reducing the query time and cost.
+- If you're using Parseable demo server as the backend, use admin, admin as the credentials.
+- Please remember to update the url, basicAuthUser and basicAuthPassword values with
+  your Parseable server instance details.
+- User passwords are hashed and stored in Parseable metadata file.
+- Enterprise features require an Enterprise license.
+- Parseable offers realtime alerting based on contents of incoming events.
+- Each dataset can have several alerts and each alert is evaluated independently.
+- New Parseable cluster requires a fully empty S3 bucket.
+- For optimum performance, please ensure the S3 bucket is in the same region as the
+  compute instances.
+- The encryption key must be a 256-bit key for AES-256 encryption.
+- If you lose the encryption key, you’ll lose access to the log data.
+- Retention works at a dataset level, and each dataset can have a different retention
+  period.
+- You can only set a single dataset per retention period.
+- Enterprise This feature requires an Enterprise license.
+- Forecasting is enabled by default in your Enterprise license.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'Rate limit exceeded: Default rate limit is 100 requests per minute per IP address.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://demo.parseable.com
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+source_metadata: null
