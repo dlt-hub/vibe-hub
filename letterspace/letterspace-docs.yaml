@@ -1,0 +1,65 @@
+resources:
+- name: subscribers
+  endpoint:
+    path: /api/subscribers
+    method: GET
+    data_selector: data
+    params: {}
+- name: subscriber
+  endpoint:
+    path: /api/subscribers/{id}
+    method: GET
+    data_selector: records
+    params: {}
+- name: db
+  endpoint:
+    path: /services/data/vXX.X/sobjects/db
+    method: GET
+    data_selector: records
+    params: {}
+- name: backend
+  endpoint:
+    path: /services/data/vXX.X/sobjects/backend
+    method: GET
+    data_selector: records
+    params: {}
+- name: email_delivery
+  endpoint:
+    path: /email/delivery
+    method: POST
+    data_selector: emails
+    params:
+      rate_limit: 100
+      rate_window: 3600
+      max_retries: 3
+      retry_delay: 300
+      concurrency: 5
+      connection_timeout: 30000
+notes:
+- Replace POSTGRES_USER, POSTGRES_PASSWORD, and JWT_SECRET with your own secure values
+  before running.
+- SMTP server details must be configured before sending newsletters.
+- Placeholders are special tags you can insert into your emails.
+- When you prepare your email, you’ll include these placeholders where you want specific
+  information to appear.
+- If you use a placeholder that isn’t on this list, or if the information for a valid
+  placeholder isn’t available for a specific recipient, the placeholder text itself
+  (e.g., `{{some.key}}`) might appear in the sent email.
+errors:
+- '400 Bad Request: Invalid input data (e.g., missing email, invalid email format,
+  invalid list ID)'
+- '401 Unauthorized: Invalid or missing API key'
+- '500 Server Error: Internal server error'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://letterspace.app
+  auth:
+    type: apikey
+    location: header
+    header_name: x-api-key
+  paginator:
+    type: page
+    page_size_param: perPage
+    default_page_size: 100
+source_metadata: null
