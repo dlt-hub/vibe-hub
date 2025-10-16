@@ -1,0 +1,71 @@
+resources:
+- name: auto_classify
+  endpoint:
+    path: /external/v2/auto-classify
+    method: POST
+    data_selector: data
+    params: {}
+- name: classification_results
+  endpoint:
+    path: /external/v2/auto-classify/results/
+    method: GET
+    data_selector: data
+    params:
+      result_id: required
+- name: email_campaign
+  endpoint:
+    path: /api/v1/email_campaigns
+    method: GET
+    data_selector: records
+    params: {}
+- name: document_classification
+  endpoint:
+    path: /api/document_classification
+    method: POST
+    data_selector: results
+    params: {}
+- name: invoices
+  endpoint:
+    path: /api/invoices
+    method: POST
+    data_selector: data
+- name: payments
+  endpoint:
+    path: /api/payments
+    method: POST
+    data_selector: data
+- name: searchable_pdf
+  endpoint:
+    path: /api/searchable_pdf
+    method: POST
+    data_selector: data
+notes:
+- Supports PDF and common image formats for classification.
+- Asynchronous processing with result polling.
+- Uses OAuth2 with refresh token — requires setup of connected app in Artificio
+- Artificio App Design allows users to create their own unique design IDs or app names,
+  providing a personalized touch to each application.
+- The platform allows users to generate shareable URLs with optional password protection
+  and expiration dates for their AI-driven application forms.
+- Documents processed in isolated, encrypted environments. No permanent storage, automatic
+  deletion, and compliance with GDPR, HIPAA regulations.
+- Artificio automates the document classification process.
+- API supports integration with various accounting systems.
+- AI-powered OCR technology used for converting scanned PDFs into searchable PDFs.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400 Bad Request: Check the input data format.'
+- '500 Internal Server Error: Retry the request.'
+- '400 Bad Request: Check the input data for correctness.'
+- '401 Unauthorized: Ensure valid authentication credentials.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+client:
+  base_url: https://api.artificio.ai
+  auth:
+    type: apikey
+    location: header
+    header_name: x-api-key
+source_metadata: null

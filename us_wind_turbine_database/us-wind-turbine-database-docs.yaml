@@ -1,0 +1,63 @@
+resources:
+- name: turbines
+  endpoint:
+    path: /turbines
+    method: GET
+- name: turbines
+  endpoint:
+    path: /turbines
+    method: GET
+    data_selector: records
+    params: {}
+- name: turbines
+  endpoint:
+    path: /turbines
+    method: GET
+    data_selector: records
+    params: {}
+- name: turbine_information
+  endpoint:
+    path: /turbines
+    method: GET
+    data_selector: turbine_data
+- name: project_information
+  endpoint:
+    path: /projects
+    method: GET
+    data_selector: project_data
+- name: turbine_information
+  endpoint:
+    path: /turbine_information
+    method: GET
+    data_selector: turbines
+    params: {}
+- name: project_site
+  endpoint:
+    path: /project_site
+    method: GET
+    data_selector: projects
+    params: {}
+notes:
+- Retrieval of turbine data from the USWTDB API requires a standard GET request.
+- Additional methods that submit or change USWTDB data require token-based authentication.
+- For public users, the USWTDB API acts as read-only resource and allows standard
+  HTTP GET requests without authentication.
+- Authorized users can authenticate using a JSON Web Token (JWT).
+- Retrieval of turbine data requires a standard GET request.
+- The USWTDB API acts as read-only resource for public users and allows standard HTTP
+  GET (read) requests without authentication.
+- Authorization claims via database roles will be included in the payload of the token.
+- Data is updated quarterly and contains turbines installed as recently as 3 months
+  preceding the update.
+errors:
+- '401 Unauthorized: The server understood the request but is refusing to fulfill
+  it. This error is likely due to authentication not being provided or invalid token.'
+- '401 Unauthorized: Check token and claims.'
+- '401 Unauthorized: Recheck token validity or permissions'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://energy.usgs.gov/api/uswtdb/v1/
+source_metadata: null
