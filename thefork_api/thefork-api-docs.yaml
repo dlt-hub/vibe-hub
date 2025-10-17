@@ -1,0 +1,86 @@
+resources:
+- name: create_pos
+  endpoint:
+    path: /pos/v1/create
+    method: POST
+    data_selector: null
+    params: {}
+- name: orders
+  endpoint:
+    path: receiptOpeningUrl
+    method: POST
+- name: reservations
+  endpoint:
+    path: /reservations
+    method: GET
+- name: customers
+  endpoint:
+    path: /customers
+    method: GET
+- name: customers
+  endpoint:
+    path: /v1/customers
+    method: GET
+    data_selector: data
+    params:
+      groupUuid: required
+      startDate: required
+      endDate: required
+      limit: '100'
+      page: '1'
+- name: putV1PosuuidLogo
+  endpoint:
+    path: /v1/:posUuid/logo
+    method: PUT
+    data_selector: logo
+- name: postV1Create
+  endpoint:
+    path: /v1/create
+    method: POST
+    data_selector: ''
+- name: orders
+  endpoint:
+    path: /v1/orders/:orderUuid
+    method: PUT
+    data_selector: id
+notes:
+- Token expires after 8600 seconds. Repeat the process to get a new token after expiration.
+- Do not request a new token if the previous is not expired as it will overload the
+  system with unused tokens.
+- Always use HTTPS for API requests to protect data during transmission.
+- Be aware of the rate limiting policy and handle rate limit errors gracefully.
+- Get API key for POS API v1 before using our endpoints.
+- Rate limiting is currently enforced at the default level as outlined in your contract.
+- TheFork will include the following authorization header to the request where `{ACCESS_TOKEN}`
+  is the access token previously sent to us
+- This token expires after 8600 seconds. When it does, repeat this process to get
+  a new token.
+- Please do not request a new token if the previous is not expired as it will overload
+  the system with unused tokens.
+- Requires API Key for authentication
+errors:
+- 429 - Rate limit
+- 401 - Invalid API key / Bearer token
+- 500 - Internal server error
+- '400: incorrect payload'
+- '401: no authorization'
+- '500: general error, ex. if you try to create a POS with a name that already exists'
+- '204: If the call is successful, TheFork expects your system to return an empty
+  response with the status code.'
+- 'RESTAURANT_GROUP_NOT_READY: The restaurant group needs to accept TheFork ERB in
+  the tool'
+- 'RATE_LIMIT: You have reached the maximum number of requests per minute'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - oauthClientSecret
+  - CustomerId
+client:
+  base_url: https://api.thefork.io/pos
+  auth:
+    type: apikey
+  headers:
+    Content-Type: application/json
+    Accept: '*/*'
+    X-Api-Key: <API_KEY_VALUE>
+source_metadata: null
