@@ -1,0 +1,184 @@
+resources:
+- name: TradingSessionStatus
+  endpoint:
+    path: /trading/session/status
+    method: GET
+    data_selector: tradingSessionStatus
+- name: Accounts
+  endpoint:
+    path: /accounts
+    method: GET
+    data_selector: accounts
+- name: accounts
+  endpoint:
+    path: /accounts
+    method: GET
+    data_selector: data
+- name: trading
+  endpoint:
+    path: /trading
+    method: POST
+    data_selector: data
+- name: trading
+  endpoint:
+    path: /trading/get_model
+    method: GET
+    data_selector: response
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: trading
+  endpoint:
+    path: /trading/subscribe
+    method: POST
+    data_selector: response
+- name: accounts
+  endpoint:
+    path: /trading/get_model/accounts
+    method: GET
+    data_selector: accounts
+- name: candles
+  endpoint:
+    path: /candles
+    method: GET
+    data_selector: data
+    params: {}
+- name: trades
+  endpoint:
+    path: /trades
+    method: GET
+    data_selector: data
+    params: {}
+- name: candles
+  endpoint:
+    path: /candles
+    method: GET
+    data_selector: candles
+- name: candles
+  endpoint:
+    path: /candles
+    method: GET
+    data_selector: candles
+- name: candle_data
+  endpoint:
+    path: /{periodicity}/{instrument}/{year}/{int of week of year}.csv.gz
+    method: GET
+    data_selector: data
+    params: {}
+- name: candles
+  endpoint:
+    path: /candles
+    method: GET
+    data_selector: candles
+- name: subscribe_symbol
+  endpoint:
+    path: /subscribe_symbol
+    method: GET
+    data_selector: Rates
+- name: orders
+  endpoint:
+    path: /orders/sample.csv.gz
+    method: GET
+    data_selector: data
+    params: {}
+- name: sentiment
+  endpoint:
+    path: /sentiment/{instrument}.csv.gz
+    method: GET
+    data_selector: data
+    params: {}
+- name: volume
+  endpoint:
+    path: /volume/{instrument}.csv.gz
+    method: GET
+    data_selector: data
+    params: {}
+- name: candle_data
+  endpoint:
+    path: /{periodicity}/{instrument}/{year}/{int of week of year}.csv.gz
+    method: GET
+    data_selector: data
+    params: {}
+- name: candle_data
+  endpoint:
+    path: /{periodicity}/{symbol}/{year}/{week_of_year}.csv.gz
+    method: GET
+    data_selector: data
+    params: {}
+- name: orders_data
+  endpoint:
+    path: /orders/sample.csv.gz
+    method: GET
+    data_selector: data
+    params: {}
+- name: sentiment_data
+  endpoint:
+    path: /sentiment/{instrument}.csv.gz
+    method: GET
+    data_selector: data
+    params: {}
+- name: volume_data
+  endpoint:
+    path: /volume/{instrument}.csv.gz
+    method: GET
+    data_selector: data
+    params: {}
+notes:
+- Requires username and password for login
+- Some endpoints may require specific permissions
+- API supports WebSocket connection for real-time data.
+- Access token can be generated from Trading Station web.
+- This is for personal use and abides by our EULA.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- It is recommended to store the API token in a configuration file which allows for
+  re-usability and hides the token on the GUI level.
+- Clients should establish a persistent WebSocket connection using socket.io library.
+- Requires token for authentication
+- Requires setup of connected app in api
+- If using O2G2 namespace, keep in mind that it is currently deprecated as it has
+  not been updated since the beginning of 2015. It may give the users errors or not
+  be compatible in certain cases.
+- FXCM Rest API requires you to keep Socket.IO connection open through the whole time
+  it is used.
+- The files are stored in our public directory and is updated every Monday for minute
+  (m1) and hour (H1) data only.
+- Losses can exceed deposits.
+- Past performance is not indicative of future results.
+- Timestamps are in UTC.
+- Data points are indicative and based on the lowest spreads available exclusively
+  on Active Trader accounts.
+errors:
+- '401 Unauthorized: Check login credentials'
+- '403 Forbidden: Insufficient permissions'
+- '404 Not Found: Check endpoint path'
+- 'ERR noExec: /trading/create_entry_order - Amount should be divisible by 10'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'ERR noExec: /trading/create_entry_order: Amount should be divisible by 10'
+- '401 Unauthorized: Check token validity'
+- '429 Too Many Requests: Rate limit exceeded'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.fxcm.com
+  auth:
+    type: oauth2
+  headers:
+    Accept: application/json
+    Content-Type: application/x-www-form-urlencoded
+source_metadata: null

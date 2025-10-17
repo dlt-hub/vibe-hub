@@ -1,0 +1,189 @@
+resources:
+- name: transcription
+  endpoint:
+    path: /model/infer/whisper
+    method: POST
+    data_selector: transcription
+- name: model
+  endpoint:
+    path: /services/data/v1/models
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: input_features
+  endpoint:
+    data_selector: input_features
+    params: {}
+- name: output_features
+  endpoint:
+    data_selector: output_features
+    params: {}
+- name: quantization
+  endpoint:
+    data_selector: quantization
+    params: {}
+- name: trainer
+  endpoint:
+    data_selector: trainer
+    params: {}
+- name: preprocessing
+  endpoint:
+    data_selector: preprocessing
+    params: {}
+- name: backend
+  endpoint:
+    data_selector: backend
+    params: {}
+- name: whisper
+  endpoint:
+    path: /api-reference/inference/whisper-v3
+    method: GET
+- name: model
+  endpoint:
+    path: /model
+    method: POST
+    data_selector: model_details
+    params: {}
+- name: custom_model
+  endpoint:
+    path: /predict
+    method: POST
+    data_selector: model_output
+- name: deployment
+  endpoint:
+    path: /model-suite/deployments
+    method: POST
+    data_selector: deployment_details
+- name: deployment
+  endpoint:
+    path: /deployments
+    method: POST
+    data_selector: status
+- name: model
+  endpoint:
+    path: /models
+    method: POST
+    data_selector: models
+    params:
+      source: DockerHub
+      registry_path: your_docker_hub_registry_path
+      image_tag: your_image_version_tag
+- name: benchmark
+  endpoint:
+    path: /benchmarking/create
+    method: POST
+    data_selector: benchmarkData
+    params: {}
+- name: datasets
+  endpoint:
+    path: /benchmarking/datasets
+    method: GET
+- name: evaluations
+  endpoint:
+    path: /benchmarking/evaluations
+    method: POST
+- name: dataset_configuration
+  endpoint:
+    path: /benchmarking/dataset
+    method: POST
+    data_selector: dataset
+    params: {}
+- name: llm_configuration
+  endpoint:
+    path: /benchmarking/llm
+    method: POST
+    data_selector: llm
+    params: {}
+- name: evaluation_configuration
+  endpoint:
+    path: /benchmarking/evaluation
+    method: POST
+    data_selector: evaluation
+    params: {}
+- name: whisper_infer
+  endpoint:
+    path: /model/v2/infer/whisper
+    method: POST
+    data_selector: transcription
+- name: image_generation
+  endpoint:
+    path: /model/infer/flux
+    method: POST
+    data_selector: images
+- name: metrics
+  endpoint:
+    path: /get/metrics/{request_id}
+    method: GET
+    data_selector: metrics
+notes:
+- JWT token for authentication required
+- Uses OAuth2 with refresh token — requires setup of connected app in Simplismart
+- Some objects may return nulls in deeply nested fields
+- Diarization is handled by a separate model that relies on transcription results.
+- OpenAI models do not support diarization directly.
+- 'Max Sequence Length (input and output features) : The ‘max_sequence_length’ parameter
+  in the config refers to the maximum tokens in the prompt and response respectively.'
+- If Quantisation of the model is not required (for smaller models like 3B, 2B etc)
+  we can remove the quantization key from the advanced configuration, so that all
+  the parameters are used in full precision which yields better accuracy (however
+  training time would increase).
+- 'Dedicated resources: No sharing of compute resources with other users.'
+- 'Enhanced performance: Improved response times and throughput.'
+- 'Higher reliability: Reduced risk of downtime and performance degradation.'
+- 'Create Images from Text: Generate images based on text descriptions or prompts.'
+- 'Set Generation Parameters: Configure steps, image size, seed, and other parameters
+  to refine the image generation process.'
+- 'Apply Custom Models: Optionally use LoRA weights from the Simplismart Training
+  Suite to customize outputs.'
+- 'Review and Download Results: View the generated images, assess their quality, and
+  export them as needed.'
+- Only instruct-style models are supported in the model compilation step for LLMs.
+- Base models such as meta-llama/Llama-3.2-3B (without the -Instruct suffix) are not
+  supported.
+- Uses custom pipeline for model configuration
+- Select GPU type based on model size and compute requirements
+- Ensure your custom model has been compiled beforehand.
+- For Private Endpoint deployments, choose Simplismart Datacenter-IN.
+- Ensure your Docker Hub credentials have read access to your repositories.
+- 'Monitor Real-Time Status: Pod Info, Throughput & Latency, Success & Failure Rates'
+- 'Resource Monitoring: Various system level metrics can be tracked along with system
+  load information; such as CPU/ GPU usage & request metrics.'
+- The model deployment process typically takes 10-15 minutes to complete.
+- Currently we support only Ultrachat dataset.
+- Maximum tokens the model can generate per response.
+- Controls randomness; lower = more focused, higher = more creative.
+- Nucleus sampling; limits token choices to the top probability mass.
+- Only JSON files are supported for datasets.
+- If the dataset has more than 1000 rows, only the first 1000 datapoints will be used.
+- Please refrain from changing the model configuration in this step.
+- JWT token for authentication
+errors:
+- '400 Bad Request: Check request format and parameters'
+- '401 Unauthorized: Invalid or expired token'
+- '500 Internal Server Error: Check service availability'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Invalid input: Ensure model path is correct'
+- 'Model not found: Check model name and source'
+- 400 Bad Request
+- 401 Unauthorized
+- 500 Internal Server Error
+- '400: Bad Request'
+- '401: Unauthorized'
+- '500: Internal Server Error'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://http.whisper.proxy.prod.s9t.link
+  auth:
+    type: JWT
+    location: header
+    header_name: Authorization
+  headers:
+    Content-Type: application/json
+source_metadata: null

@@ -1,0 +1,203 @@
+resources:
+- name: extract_features
+  endpoint:
+    path: /extract
+    method: GET
+    data_selector: features
+    params:
+      tags: aeroway=runway
+      api_key: demo
+      bbox: -112.162,40.459,-111.791,40.876
+- name: extract
+  endpoint:
+    path: /osm/extract
+    method: GET
+    data_selector: features
+- name: search_tags
+  endpoint:
+    path: /osm/search-tags
+    method: GET
+    data_selector: tags
+- name: extract_in_radius
+  endpoint:
+    path: /extract-in-radius
+    method: GET
+    data_selector: features
+    params:
+      address: 1+Dr+Carlton+B+Goodlett+Pl+San Francisco+CA+94102
+      radius: 1000
+      tags: amenity=restaurant
+- name: extract_within_geometry
+  endpoint:
+    path: /v1/osm/extract
+    method: PUT
+    data_selector: features
+    params:
+      tags: name=New Mexico State Capitol
+      simplify: point
+- name: extract_within_geometry
+  endpoint:
+    path: /v1/osm/extract
+    method: PUT
+    data_selector: features
+    params:
+      tags: name=New Mexico State Capitol
+      api_key: YOUR_API_KEY
+      simplify: point
+- name: count_features
+  endpoint:
+    path: /count
+    method: GET
+    data_selector: feature_count
+    params:
+      tags: name=McDonald's
+      bbox: -118.663330,33.580303,-117.507019,34.311681
+- name: count_features
+  endpoint:
+    path: /count
+    method: GET
+    data_selector: feature_count
+    params:
+      tags: name=McDonald's
+      api_key: demo
+      bbox: -118.663330,33.580303,-117.507019,34.311681
+- name: count_within_geometry
+  endpoint:
+    path: /v1/osm/count
+    method: PUT
+    data_selector: feature_count
+    params:
+      tags: name=New Mexico State Capitol
+- name: count_within_geometry
+  endpoint:
+    path: /v1/osm/count
+    method: PUT
+    data_selector: feature_count
+    params:
+      tags: name=New Mexico State Capitol
+- name: search_tags
+  endpoint:
+    path: /v1/osm/tags
+    method: GET
+    data_selector: tags
+    params:
+      query: required
+      api_key: required
+- name: search_tags
+  endpoint:
+    path: /v1/osm/tags
+    method: GET
+    data_selector: tags
+    params:
+      query: trail head
+      api_key: demo
+- name: population
+  endpoint:
+    path: /census/population
+    method: GET
+    data_selector: population
+    params:
+      radius: '1000.0'
+      api_key: demo
+- name: population
+  endpoint:
+    path: /census/population
+    method: GET
+    data_selector: population
+    params:
+      radius: '1000.0'
+      api_key: demo
+- name: median_income
+  endpoint:
+    path: /income
+    method: GET
+    data_selector: median_income
+    params:
+      center: required
+      radius: required
+      api_key: required
+- name: median_income
+  endpoint:
+    path: /v1/census/income
+    method: GET
+    data_selector: median_income
+    params:
+      center: longitude,latitude
+      radius: '1000'
+      api_key: demo
+- name: neighborhood_description
+  endpoint:
+    path: /v1/poi/neighborhood
+    method: POST
+    data_selector: description
+    params:
+      api_key: YOUR_API_KEY_HERE
+      address: 800 N Alameda St, Los Angeles, CA 90012
+- name: neighborhood_description
+  endpoint:
+    path: /v1/poi/neighborhood
+    method: POST
+    data_selector: ''
+    params: {}
+- name: building_outlines
+  endpoint:
+    path: /select
+    method: GET
+    data_selector: features
+    params:
+      bbox: string
+      api_key: string
+- name: building_outlines
+  endpoint:
+    path: /v1/buildings/select
+    method: GET
+    data_selector: features
+    params:
+      bbox: string
+      api_key: string
+- name: generate_metes
+  endpoint:
+    path: /generate-metes
+    method: POST
+- name: generate_metes
+  endpoint:
+    path: /generate-metes
+    method: POST
+    data_selector: features
+    params: {}
+notes:
+- This API extracts features from the OpenStreetMap database and formats them as GeoJSON.
+- All API requests require an API key that will be generated when you sign up for
+  an account.
+- Providing an address requires the growth plan because it consumes third-party geocoding
+  resources.
+- This endpoint requires the growth plan because it uses thousands of expensive geometric
+  operations.
+- This API serves OpenStreetMap data, which is freely available and is licensed under
+  the Open Data Commons Open Database License (ODbL).
+- This API requires the growth plan because it uses thousands of expensive geometric
+  operations.
+- This API serves data from the US Census Bureau, which is freely available.
+- This API endpoint calculates the median income inside a circle from US Census data.
+- Attribution in your application is required by OpenStreetMap’s ODbL license.
+- This API lets users download building outlines as detected by satellite imagery
+  for regions of the US, Canada, Australia, Uganda, Tanzania, and potentially more
+  countries.
+- Coordinates must be closed (the first must equal the last).
+- Providing at least 6 decimal places is recommended.
+errors:
+- 'error: The error message if the extract request parameters were incorrectly formatted.'
+- '200 OK: Successful request'
+- '5xx: Error response, typically indicating an issue with request parameters'
+- '5xx: Error response from the server, usually with an error message describing the
+  cause.'
+- '5xx: Error response usually indicates a server issue.'
+- '5xx: Error response will be issued if parameters are incorrectly formatted.'
+- '5xx: Error response if the extract request parameters were incorrectly formatted.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://osm.buntinglabs.com/v1/osm
+  headers:
+    Accept: application/json
+source_metadata: null

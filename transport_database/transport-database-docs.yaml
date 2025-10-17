@@ -1,0 +1,231 @@
+resources:
+- name: locations
+  endpoint:
+    path: /locations
+    method: GET
+    data_selector: results
+    params:
+      query: ''
+      fuzzy: true
+      results: 10
+      stops: true
+      addresses: true
+      poi: true
+      linesOfStops: false
+      language: en
+      pretty: true
+- name: stops_reachable_from
+  endpoint:
+    path: /stops/reachable-from
+    method: GET
+    data_selector: duration
+    params:
+      latitude: ''
+      longitude: ''
+      address: ''
+      when: now
+      maxTransfers: 5
+      maxDuration: 9999
+      language: en
+      nationalExpress: true
+      national: true
+      regionalExpress: true
+      regional: true
+      suburban: true
+      bus: true
+      ferry: true
+      subway: true
+      tram: true
+      taxi: true
+      pretty: true
+- name: stops
+  endpoint:
+    path: /stops/:id
+    method: GET
+    data_selector: results
+    params:
+      linesOfStops: false
+      language: en
+      pretty: true
+- name: departures
+  endpoint:
+    path: /stops/:id/departures
+    method: GET
+    data_selector: results
+    params:
+      when: now
+      direction: ''
+      duration: 10
+      results: ''
+      linesOfStops: false
+      remarks: true
+      language: en
+      nationalExpress: true
+      national: true
+      regionalExpress: true
+      regional: true
+      suburban: true
+      bus: true
+      ferry: true
+      subway: true
+      tram: true
+      taxi: true
+      pretty: true
+- name: arrivals
+  endpoint:
+    path: /stops/:id/arrivals
+    method: GET
+    data_selector: results
+    params:
+      when: now
+      direction: ''
+      duration: 10
+      results: ''
+      linesOfStops: false
+      remarks: true
+      language: en
+      nationalExpress: true
+      national: true
+      regionalExpress: true
+      regional: true
+      suburban: true
+      bus: true
+      ferry: true
+      subway: true
+      tram: true
+      taxi: true
+      pretty: true
+- name: journeys
+  endpoint:
+    path: /journeys
+    method: GET
+    data_selector: results
+    params:
+      departure: now
+      arrival: ''
+      earlierThan: ''
+      laterThan: ''
+      results: 3
+      stopovers: false
+      transfers: ''
+      transferTime: 0
+      accessibility: not accessible
+      bike: false
+      startWithWalking: true
+      walkingSpeed: normal
+      tickets: false
+      polylines: false
+      subStops: true
+      entrances: true
+      remarks: true
+      scheduledDays: false
+      language: en
+      loyaltyCard: none
+      firstClass: false
+      age: 18
+      nationalExpress: true
+      national: true
+      regionalExpress: true
+      regional: true
+      suburban: true
+      bus: true
+      ferry: true
+      subway: true
+      tram: true
+      taxi: true
+      pretty: true
+- name: journeys_ref
+  endpoint:
+    path: /journeys/:ref
+    method: GET
+    data_selector: results
+    params:
+      stopovers: false
+      tickets: false
+      polylines: false
+      subStops: true
+      entrances: true
+      remarks: true
+      scheduledDays: false
+      language: en
+      pretty: true
+- name: trips
+  endpoint:
+    path: /trips/:id
+    method: GET
+    data_selector: results
+    params: {}
+- name: stations
+  endpoint:
+    path: /stations
+    method: GET
+    data_selector: records
+    params:
+      query: ''
+      limit: 3
+      fuzzy: false
+      completion: true
+- name: trips
+  endpoint:
+    path: /trips
+    method: GET
+    data_selector: records
+    params:
+      query: '*'
+      when: now
+      fromWhen: now
+      untilWhen: now
+      onlyCurrentlyRunning: true
+      stopovers: true
+      remarks: true
+      subStops: true
+      entrances: true
+      language: en
+      nationalExpress: true
+      national: true
+      regionalExpress: true
+      regional: true
+      suburban: true
+      bus: true
+      ferry: true
+      subway: true
+      tram: true
+      taxi: true
+- name: locations
+  endpoint:
+    path: /locations
+    method: GET
+    data_selector: ''
+    params:
+      poi: 'false'
+      addresses: 'false'
+- name: departures
+  endpoint:
+    path: /stops/{id}/departures
+    method: GET
+    data_selector: ''
+    params:
+      results: '5'
+- name: journeys
+  endpoint:
+    path: /journeys
+    method: GET
+    data_selector: journeys
+    params:
+      from: '{from_id}'
+      to: '{to_id}'
+      departure: '{departure_time}'
+      results: '2'
+notes:
+- The underlying DB HAFAS API is currently not available
+- Different endpoints might remove realtime data like delays and cancellations at
+  different times, i.e. after a journey's arrival.
+errors:
+- Rate limit of 100 requests/minute
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://v6.db.transport.rest
+  headers:
+    Accept: application/json
+source_metadata: null
