@@ -1,0 +1,857 @@
+resources:
+- name: IngestArticles
+  endpoint:
+    path: /data/articles
+    method: POST
+    data_selector: records
+    params:
+      targetDatabase: data-hub-STAGING
+      outputFormat: xml
+      permissions: data-hub-operator,read,data-hub-operator,update
+- name: PubMedMapping
+  endpoint:
+    path: /data/pubmed/
+    method: POST
+    data_selector: records
+    params:
+      targetDatabase: data-hub-FINAL
+      outputFormat: xml
+      permissions: data-hub-operator,read,data-hub-operator,update
+- name: PubMedArticles
+  endpoint:
+    path: /data/articles
+    method: IMPORT
+    data_selector: PubmedArticle
+    params:
+      output_uri_prefix: /data/pubmed/
+      output_uri_suffix: .xml
+      output_collections: IngestArticles
+      output_permissions: data-hub-operator,read,data-hub-operator,update
+      input_compression_codec: gzip
+      input_compressed: true
+- name: MeSH
+  endpoint:
+    path: /data/mesh/mesh.nt
+    method: IMPORT
+    data_selector: Mesh
+    params:
+      output_graph: http://id.nlm.nih.gov/mesh/2020
+      output_permissions: data-hub-operator,read,data-hub-operator,update
+- name: PubmedArticle
+  endpoint:
+    path: /PubmedArticle/MedlineCitation/MeshHeadingList/MeshHeading/DescriptorName
+    method: GET
+    data_selector: triples
+    params: {}
+- name: article
+  endpoint:
+    path: /search
+    method: POST
+    data_selector: results
+    params:
+      limit: 100
+- name: rows
+  endpoint:
+    path: /v1/rows
+    method: POST
+    data_selector: rows
+    params:
+      column-types: header
+- name: IngestArticles
+  endpoint:
+    path: /data/article
+    method: POST
+    data_selector: records
+    params: {}
+- name: PubMedMapping
+  endpoint:
+    path: /data/pubmed
+    method: GET
+    data_selector: records
+    params: {}
+- name: search_articles
+  endpoint:
+    path: /services/data/v1/articles
+    method: GET
+    data_selector: results
+    params:
+      meshDesc: http://id.nlm.nih.gov/mesh/D003920
+      year: 1970
+      wordQuery: research
+      limit: 100
+- name: rows
+  endpoint:
+    path: /v1/rows
+    method: POST
+    data_selector: rows
+    params:
+      column-types: header
+- name: PubMedArticles
+  endpoint:
+    path: data/articles
+    method: IMPORT
+    data_selector: PubmedArticle
+    params:
+      uri_id: PMID
+      output_uri_prefix: /data/pubmed/
+      output_uri_suffix: .xml
+      output_collections: IngestArticles
+      output_permissions: data-hub-operator,read,data-hub-operator,update
+      input_compression_codec: gzip
+      input_compressed: true
+- name: MeSH
+  endpoint:
+    path: data/mesh/mesh.nt
+    method: IMPORT
+    data_selector: null
+    params:
+      output_graph: http://id.nlm.nih.gov/mesh/2020
+      output_permissions: data-hub-operator,read,data-hub-operator,update
+- name: search
+  endpoint:
+    path: /optic
+    method: POST
+    data_selector: results
+    params:
+      year: 1970
+      wordQuery: research
+      limit: 100
+- name: articles
+  endpoint:
+    path: /sparql
+    method: POST
+    data_selector: results.bindings
+    params:
+      query: SELECT ?label ?descriptor ?articleId WHERE { ?descriptor meshv:broaderDescriptor*
+        mesh:D003920 . ?descriptor rdfs:label ?label . ?articleId dct:references ?descriptor
+        }
+- name: rows
+  endpoint:
+    path: /v1/rows
+    method: POST
+    data_selector: rows
+    params:
+      column-types: header
+- name: rows
+  endpoint:
+    path: /v1/rows
+    method: POST
+    data_selector: rows
+    params:
+      column-types: header
+- name: home_insurance
+  endpoint:
+    path: /data/home/home.csv
+    method: POST
+    data_selector: records
+- name: auto_insurance
+  endpoint:
+    path: /data/auto/
+    method: POST
+    data_selector: records
+- name: HubArticle
+  endpoint:
+    path: /
+    method: GET
+    data_selector: records
+- name: home_insurance
+  endpoint:
+    path: /services/data/vXX.X/sobjects/HomeInsurance
+    method: POST
+    data_selector: records
+    params: {}
+- name: auto_insurance
+  endpoint:
+    path: /services/data/vXX.X/sobjects/AutoInsurance
+    method: POST
+    data_selector: records
+    params: {}
+- name: rows
+  endpoint:
+    path: /v1/rows
+    method: POST
+    data_selector: rows
+- name: loadHome
+  endpoint:
+    path: /quickstart-tutorial/data/home/
+    method: POST
+    data_selector: records
+    params: {}
+- name: loadAuto
+  endpoint:
+    path: /quickstart-tutorial/data/auto/
+    method: POST
+    data_selector: records
+    params: {}
+- name: article
+  endpoint:
+    path: /articles
+    method: GET
+    data_selector: records
+- name: mesh
+  endpoint:
+    path: /mesh
+    method: GET
+    data_selector: records
+- name: Customer
+  endpoint:
+    path: /services/data/hub/Customer
+    method: GET
+    data_selector: instance
+    params: {}
+- name: rows
+  endpoint:
+    path: /v1/rows
+    method: POST
+    data_selector: rows
+    params:
+      column-types: header
+- name: home_insurance
+  endpoint:
+    path: /path/to/home_insurance
+    method: POST
+    data_selector: data
+    params: {}
+- name: auto_insurance
+  endpoint:
+    path: /path/to/auto_insurance
+    method: POST
+    data_selector: data
+    params: {}
+- name: loadHome
+  endpoint:
+    path: /quickstart-tutorial/data/home/
+    method: POST
+    data_selector: documents
+    params:
+      source_format: Delimited Text
+      field_separator: ','
+      target_format: JSON
+      target_uri_replacement: ^.*,'/customer/home'
+- name: loadAuto
+  endpoint:
+    path: /quickstart-tutorial/data/auto/
+    method: POST
+    data_selector: documents
+    params:
+      source_format: JSON
+      target_format: JSON
+      target_uri_replacement: ^.*/auto,'/customer/auto'
+- name: Customer
+  endpoint:
+    path: /customer
+    method: GET
+    data_selector: records
+- name: performance_metrics
+  endpoint:
+    path: /api/performance_metrics
+    method: GET
+    data_selector: metrics
+- name: Contributors
+  endpoint:
+    path: /MarkLogic/optic
+    method: GET
+    data_selector: rows
+- name: contributors
+  endpoint:
+    path: /samplestack/contributors
+    method: GET
+    data_selector: records
+- name: QnA
+  endpoint:
+    path: /samplestack/QnA
+    method: GET
+    data_selector: records
+- name: contributors
+  endpoint:
+    path: /samplestack/contributors
+    method: GET
+    data_selector: records
+    params: {}
+- name: qna
+  endpoint:
+    path: /samplestack/qna
+    method: GET
+    data_selector: records
+    params: {}
+- name: qna
+  endpoint:
+    path: /samplestack/qna
+    method: GET
+- name: contributors
+  endpoint:
+    path: /samplestack/contributors
+    method: GET
+- name: contributors
+  endpoint:
+    path: /fromView/samplestack/contributors
+    method: GET
+    data_selector: result
+- name: lexicons
+  endpoint:
+    path: /fromLexicons
+    method: GET
+    data_selector: result
+- name: import
+  endpoint:
+    path: /mlcp/import
+    method: POST
+    data_selector: results
+    params:
+      host: localhost
+      port: 8006
+      username: user
+      password: '*******'
+      input_file_path: /data/latest
+- name: export
+  endpoint:
+    path: /mlcp/export
+    method: POST
+    data_selector: results
+    params:
+      host: localhost
+      port: 8006
+      username: user
+      password: '*******'
+      output_type: archive
+      output_file_path: /out/collections
+      compress: true
+- name: Contributors
+  endpoint:
+    path: /com.marklogic.samplestack.domain.Contributor
+    method: GET
+    data_selector: rows
+    params: {}
+- name: QnA
+  endpoint:
+    path: /owner
+    method: GET
+    data_selector: rows
+    params:
+      directories:
+      - /questions/
+- name: Answers
+  endpoint:
+    path: /answers/id
+    method: GET
+    data_selector: rows
+    params:
+      directories:
+      - /questions/
+- name: QTag
+  endpoint:
+    path: /tags
+    method: GET
+    data_selector: rows
+    params:
+      directories:
+      - /questions/
+- name: Contributors
+  endpoint:
+    path: /v1/Contributors
+    method: GET
+    data_selector: records
+- name: contributors
+  endpoint:
+    path: /samplestack/contributors
+    method: GET
+    data_selector: records
+- name: QnA
+  endpoint:
+    path: /samplestack/QnA
+    method: GET
+    data_selector: records
+- name: contributors
+  endpoint:
+    path: /samplestack/contributors
+    method: GET
+    data_selector: records
+    params: {}
+- name: qna
+  endpoint:
+    path: /samplestack/qna
+    method: GET
+    data_selector: records
+    params: {}
+- name: matches
+  endpoint:
+    path: /tde/dowRowTemplate.json
+    method: POST
+    data_selector: rows
+    params: {}
+- name: qna
+  endpoint:
+    path: /samplestack/qna
+    method: GET
+    data_selector: records
+- name: contributors
+  endpoint:
+    path: /samplestack/contributors
+    method: GET
+    data_selector: records
+- name: match
+  endpoint:
+    path: /soccer/match/{id}
+    method: GET
+    data_selector: match
+    params: {}
+- name: contributors
+  endpoint:
+    path: /MarkLogic/optic/contributors
+    method: GET
+    data_selector: result
+    params: {}
+- name: person
+  endpoint:
+    path: /MarkLogic/optic/person
+    method: GET
+    data_selector: result
+    params: {}
+- name: matches
+  endpoint:
+    path: /soccer/match
+    method: GET
+    data_selector: row
+    params: {}
+- name: matches
+  endpoint:
+    path: /match
+    method: GET
+    data_selector: records
+- name: import
+  endpoint:
+    path: /mlcp/import
+    method: POST
+    data_selector: import
+    params:
+      host: localhost
+      port: '8006'
+      username: user
+      password: '*******'
+      input_file_path: /data/latest
+- name: export
+  endpoint:
+    path: /mlcp/export
+    method: POST
+    data_selector: export
+    params:
+      host: localhost
+      port: '8006'
+      username: user
+      password: '*******'
+      output_type: archive
+      output_file_path: /out/collections
+      compress: 'true'
+- name: triples_template
+  endpoint:
+    path: /test/my-triples-template.xml
+    method: POST
+    data_selector: template
+- name: node_data_extract_json
+  endpoint:
+    path: /soccer/match/{id}.json
+    method: GET
+    data_selector: row
+- name: node_data_extract_xml
+  endpoint:
+    path: /soccer/match/{id}.xml
+    method: GET
+    data_selector: row
+- name: Contributors
+  endpoint:
+    path: /com.marklogic.samplestack.domain.Contributor/sou2932488.json
+    method: GET
+    data_selector: records
+- name: QnA
+  endpoint:
+    path: /questions/soq8790752.json
+    method: GET
+    data_selector: records
+- name: Answers
+  endpoint:
+    path: /answers/id
+    method: GET
+    data_selector: records
+- name: QTag
+  endpoint:
+    path: /tags
+    method: GET
+    data_selector: records
+- name: matches
+  endpoint:
+    path: /tde/dowRowTemplate.json
+    method: POST
+    data_selector: rows
+    params: {}
+- name: matches
+  endpoint:
+    path: /soccer/match/{id}
+    method: GET
+    data_selector: row
+    params:
+      collections: source1
+- name: match
+  endpoint:
+    path: /soccer/match/1234567.json
+    method: POST
+    data_selector: match
+    params: {}
+- name: matches
+  endpoint:
+    path: /soccer/match/{id}.json
+    method: GET
+    data_selector: row
+    params: {}
+- name: matches
+  endpoint:
+    path: /soccer/match/{id}.json
+    method: GET
+    data_selector: row.data
+- name: matches
+  endpoint:
+    path: /match
+    method: GET
+    data_selector: rows
+    params: {}
+- name: myTriplesTemplate
+  endpoint:
+    path: /test/my-triples-template.xml
+    method: POST
+    data_selector: template
+    params: {}
+- name: TDE Extraction
+  endpoint:
+    path: /xdmp/document-get
+    method: GET
+    data_selector: triple
+    params: {}
+- name: my-second-TDE
+  endpoint:
+    path: /test/mySecondTDE.json
+    method: POST
+    data_selector: rows
+    params: {}
+- name: my-second-TDE-xml
+  endpoint:
+    path: /test/my-second-TDE.xml
+    method: POST
+    data_selector: rows
+    params: {}
+- name: myTriplesTemplate
+  endpoint:
+    path: /test/myTriplesTemplate.json
+    method: POST
+    data_selector: triples
+    params: {}
+- name: myTriplesTemplate-xml
+  endpoint:
+    path: /test/my-triples-template.xml
+    method: POST
+    data_selector: triples
+    params: {}
+- name: myTriplesTemplate
+  endpoint:
+    path: /MarkLogic/tde.xqy
+    method: GET
+    data_selector: template
+- name: myTriplesTemplate
+  endpoint:
+    path: /test/myTriplesTemplate.json
+    method: POST
+    data_selector: template
+    params: {}
+- name: template
+  endpoint:
+    path: /tde/Template.xml
+    method: GET
+    data_selector: records
+    params: {}
+- name: optic_api
+  endpoint:
+    path: /optic
+    method: GET
+    data_selector: result
+    params: {}
+- name: Contributors
+  endpoint:
+    path: /samplestack/Contributors
+    method: GET
+    data_selector: records
+- name: QnA
+  endpoint:
+    path: /samplestack/QnA
+    method: GET
+    data_selector: records
+- name: contributors
+  endpoint:
+    path: /samplestack/contributors
+    method: GET
+    data_selector: records
+- name: qna
+  endpoint:
+    path: /samplestack/qna
+    method: GET
+    data_selector: records
+- name: person
+  endpoint:
+    path: /optic/person
+    method: GET
+    data_selector: result
+    params: {}
+- name: match
+  endpoint:
+    path: /soccer/match
+    method: POST
+    data_selector: match
+    params: {}
+- name: Contributors
+  endpoint:
+    path: /com.marklogic.samplestack.domain.Contributor
+    method: GET
+    data_selector: rows
+    params: {}
+- name: QnA
+  endpoint:
+    path: /owner
+    method: GET
+    data_selector: rows
+    params:
+      directories:
+      - /questions/
+- name: Answers
+  endpoint:
+    path: /answers/id
+    method: GET
+    data_selector: rows
+    params:
+      directories:
+      - /questions/
+- name: QTag
+  endpoint:
+    path: /tags
+    method: GET
+    data_selector: rows
+    params:
+      directories:
+      - /questions/
+- name: match_json
+  endpoint:
+    path: /soccer/match/1234567.json
+    method: GET
+    data_selector: row.data
+    params: {}
+- name: match_xml
+  endpoint:
+    path: /soccer/match/1234567.xml
+    method: GET
+    data_selector: row.data
+    params: {}
+- name: mySecondTDE
+  endpoint:
+    path: /test/mySecondTDE.json
+    method: POST
+    data_selector: template
+    params: {}
+- name: my-triples-template
+  endpoint:
+    path: /test/myTriplesTemplate.json
+    method: POST
+    data_selector: template
+    params: {}
+- name: triples_template
+  endpoint:
+    path: /test/my-triples-template.xml
+    method: INSERT
+    data_selector: template
+- name: myTriplesTemplate
+  endpoint:
+    path: /MarkLogic/tde.xqy
+    method: GET
+    data_selector: template
+- name: tde_template
+  endpoint:
+    path: /tde/Template.xml
+    method: POST
+    data_selector: tde:template
+    params: {}
+- name: Contributors
+  endpoint:
+    path: /fromView/Samplestack/Contributors
+    method: GET
+    data_selector: rows
+- name: QnA
+  endpoint:
+    path: /fromView/Samplestack/QnA
+    method: GET
+    data_selector: rows
+- name: contributors
+  endpoint:
+    path: /samplestack/contributors
+    method: GET
+    data_selector: records
+    params: {}
+- name: qna
+  endpoint:
+    path: /samplestack/qna
+    method: GET
+    data_selector: records
+    params: {}
+- name: person
+  endpoint:
+    path: /MarkLogic/optic
+    method: GET
+    data_selector: result
+- name: Contributors
+  endpoint:
+    path: /com.marklogic.samplestack.domain.Contributor/sou2932488.json
+    method: GET
+- name: QnA
+  endpoint:
+    path: /questions/soq8790752.json
+    method: GET
+- name: QTag
+  endpoint:
+    path: /tags
+    method: GET
+- name: Answers
+  endpoint:
+    path: /answers/id
+    method: GET
+notes:
+- Utilizes MLCP for data ingestion
+- Supports harmonization of data into canonical models
+- Supports advanced queries using SPARQL and Optic API.
+- This tutorial was written for MarkLogic Data Hub v5.2.
+- Uses Digest authentication
+- Data can come directly from many different systems.
+- Uses SPARQL for query expansion
+- Support for aggregation and filtering within a single server
+- The mapping step processes home and auto insurance data.
+- Uses Digest authentication with user credentials
+- Requires appropriate content-type header for requests
+- You do not need to be a MarkLogic admin user in order to develop a MarkLogic Data
+  Hub.
+- Search criteria includes publication year and keywords
+- Uses Smart Mastering capabilities to analyze data and automatically match and merge
+  based on logic and the rules configured.
+- Uses Data Hub Central for data integration, curation, and exploration.
+- The staging database is where the raw, uncurated data lands.
+- To use encryption at rest with an external key management system (KMS), you must
+  have an Advanced Security license key.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- The MarkLogic Data Hub is an open-source software interface that works to ingest
+  data from multiple sources.
+- You must obtain a production release version of the Product by contacting MarkLogic
+  to obtain the appropriate license.
+- The QuickStart tool is meant to help accelerate your ability to build out your data
+  hub configuration.
+- Users often find themselves overwhelmed with usernames and passwords when required
+  to submit login credentials each time they use an application.
+- Pluggable fine-grained role-based authentication and authorization
+- Supports the multi-step conversion processes of applications.
+- Uses OAuth2 with refresh token — requires setup of connected app in MarkLogic
+- Sample code is provided on an as-is basis, and is not intended for nor supported
+  in production applications.
+- Older versions can be found for MarkLogic Server.
+- This Developer License Agreement grants a limited, non-transferable, non-exclusive,
+  internal use license to install, access, start and use MarkLogic software.
+- Released January 2025
+- The Developer License provides all MarkLogic features, including Search HA/DR/Replication,
+  Government-grade Security, Alerting, Location Services, Geospatial indexing and
+  search, Semantics, Tiered Storage, and Transactions.
+- This Developer License does not grant to You any title, right, interest or license
+  in and to the Product or any support, modifications, enhancements, new releases
+  or updates to it.
+- You must not use this Developer License for purposes other than for internal use
+  or beyond the scope of use permitted.
+- MarkLogic 11.3 is a Long Term Support (LTS) Release of MarkLogic Server.
+- Field names are case insensitive but will retain the original case in returned results.
+- Uses OAuth2 — requires setup of connected app in MarkLogic.
+- Prior to MarkLogic Server release 9.0-4, converters/filters were bundled and automatically
+  installed with MarkLogic Server. Starting at MarkLogic Server release 9.0-4, converters/filters
+  are offered as a separate package.
+- Uses Optic API for querying data
+- FragmentId can be referenced and used as a column
+- All MarkLogic software products are protected by United States and international
+  copyright, patent and other intellectual property laws.
+- Ensure XDBC server is running on port 8006
+- Use the appropriate credentials for authentication
+- The Optic API allows for powerful NoSQL joins and aggregates across documents.
+- Explore all technical resources related to the Optic API and how it can be used
+  in MarkLogic.
+- Learn about the Optic API, how it works and when to use it.
+- Applies to MarkLogic versions 9+
+- Paging solves the problem of large result sets by requesting successive pages.
+- Column names, when used on the various clauses are case insensitive. But the result
+  will always use character case as specified in the template by default.
+- Triple Index must be on (it’s on by default in MarkLogic 9+).
+- Ensure that your Documents database has its triple index enabled.
+- Uses REST API to fetch match data.
+- Both templates have a context of '/match'.
+- Uses Template Driven Extraction for indexing
+- Ensure to validate templates before insertion
+- See which rows are extracted for given User & QnA documents
+- Should get 1 row per User document and 3 kinds of row views over QnA documents,
+  including some repeating rows
+- Paging solves the problem of large result sets by allowing successive requests for
+  pages.
+- TDE enables you to define a relational lens over your document data.
+- TDE is applied during indexing at ingestion time.
+- Paging solves the problem of large result sets by allowing the caller to request
+  successive pages.
+- Using point-in-time queries ensures consistent results across pages.
+- Template driven extraction allows querying parts of documents using SQL.
+- Ensure Documents database has its triple index enabled.
+- Template is entirely independent of the documents
+- Using templates allows querying parts of a document without modifying it
+- Using Query Console and a few on-disk documents makes small-scale testing and development
+  of TDE extraction and SPARQL queries as quick as edit, save, and run.
+- Uses template variables to hold the prefix while generating triples
+- Requires setup of connected app in MarkLogic
+- This script can also be used to enable disabled templates by changing the enabled
+  element constructor to true
+- 'Required Indexes: range index on ''name'', range index on ''amount'''
+- Optic API supports cts:query objects for advanced searching.
+- Column names are case insensitive in queries but results retain their specified
+  case.
+- We recommend that you never do a `SELECT *` with no restrictions!
+- Should manage triples in collections/named graphs, so every query should include
+  at least a collection/named graph restriction.
+- Make sure that your Documents database has its triple index enabled.
+- Data is available in both JSON and XML formats.
+- Uses Template Driven Extraction for content indexing.
+- To use SPARQL features, a license that includes the Semantics Option is required.
+- Iterates over a sequence of URIs to disable templates
+- 'TDE enables you to generate rows and triples from ingested documents based on predefined
+  templates that describe the following: The input data to match, The data transformations
+  that apply to the matched data, The final data projections that are translated into
+  indexed data.'
+errors:
+- '401 Unauthorized: Recheck user credentials'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck username or password'
+- '401 Unauthorized: Recheck credentials'
+- '400 Bad Request: Check query syntax'
+- '404 Not Found: Verify endpoint URL'
+- '500 Internal Server Error: Contact support'
+- '401 Unauthorized: Recheck authentication credentials'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- You must immediately destroy all complete and partial copies of the Product, including
+  all backup copies, upon termination or expiration of this Agreement.
+- '401 Unauthorized: Check username and password'
+- '500 Internal Server Error: Verify server is running and accessible'
+- '401 Unauthorized: Ensure your authentication details are correct.'
+- 'tde-admin: Required Privilege'
+- 'rest-reader: Required Privilege'
+- 'tde-admin: Required privilege missing'
+- 'rest-reader: Required privilege missing'
+auth_info:
+  mentioned_objects:
+  - demo-user
+  - OauthToken
+client:
+  base_url: https://www.progress.com/marklogic
+  auth:
+    type: oauth2
+source_metadata: null
