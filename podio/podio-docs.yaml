@@ -1,0 +1,226 @@
+resources:
+- name: Applications
+  endpoint:
+    path: /doc/applications
+- name: Comments
+  endpoint:
+    path: /doc/comments
+- name: Contacts
+  endpoint:
+    path: /doc/contacts
+- name: Files
+  endpoint:
+    path: /doc/files
+- name: Hooks
+  endpoint:
+    path: /doc/hooks
+- name: Items
+  endpoint:
+    path: /doc/items
+- name: OAuth authorization
+  endpoint:
+    path: /doc/oauth-authorization
+- name: Status
+  endpoint:
+    path: /doc/status
+- name: Tasks
+  endpoint:
+    path: /doc/tasks
+- name: item
+  endpoint:
+    path: /item
+    method: GET
+- name: status
+  endpoint:
+    path: /status/space
+    method: POST
+- name: webhook
+  endpoint:
+    path: /doc/hooks/create-hook-215056
+    method: POST
+    data_selector: hook
+    params: {}
+- name: webhook
+  endpoint:
+    path: /doc/hooks
+    method: POST
+    data_selector: params
+    params: {}
+- name: item
+  endpoint:
+    path: /doc/items/get-item-22360
+    method: GET
+- name: basic_item
+  endpoint:
+    path: /doc/items/get-basic-item-61768
+    method: GET
+- name: items
+  endpoint:
+    path: /doc/items
+    method: GET
+- name: get_item
+  endpoint:
+    path: /doc/items/get-item-basic-61768
+    method: GET
+- name: items
+  endpoint:
+    path: /items
+    method: GET
+    data_selector: items
+- name: item
+  endpoint:
+    path: /doc/items/get-item-22360
+    method: GET
+    data_selector: item
+- name: basic_item
+  endpoint:
+    path: /doc/items/get-basic-item-61768
+    method: GET
+    data_selector: item
+- name: items
+  endpoint:
+    path: /items
+    method: GET
+- name: item
+  endpoint:
+    path: /item/{item_id}
+    method: DELETE
+- name: task
+  endpoint:
+    path: /doc/tasks
+    method: GET
+    data_selector: tasks
+- name: hook.verify
+  endpoint:
+    path: /doc/hooks/validate-hook-verification-215241
+    method: POST
+- name: item.create
+  endpoint:
+    path: /doc/hooks/create-hook-215056
+    method: POST
+- name: item.update
+  endpoint:
+    path: /doc/hooks/update-hook-215056
+    method: POST
+- name: item.delete
+  endpoint:
+    path: /doc/hooks/delete-hook-215291
+    method: DELETE
+- name: hook.verify
+  endpoint:
+    path: /doc/hooks/validate-hook-verification-215241
+    method: POST
+- name: create hook
+  endpoint:
+    path: /doc/hooks/create-hook-215056
+    method: POST
+- name: delete hook
+  endpoint:
+    path: /doc/hooks/delete-hook-215291
+    method: DELETE
+- name: get hooks
+  endpoint:
+    path: /doc/hooks/get-hooks-215285
+    method: GET
+- name: request hook verification
+  endpoint:
+    path: /doc/hooks/request-hook-verification-215232
+    method: POST
+- name: hooks
+  endpoint:
+    path: /hook/{ref_type}/{ref_id}/
+    method: POST
+    data_selector: hook_id
+- name: hooks
+  endpoint:
+    path: /hook/{ref_type}/{ref_id}/
+    method: POST
+    data_selector: hook_id
+    params: {}
+- name: validate_hook_verification
+  endpoint:
+    path: /hook/{hook_id}/verify/validate
+    method: POST
+    data_selector: code
+    params:
+      hook_id: Required
+- name: validate_hook_verification
+  endpoint:
+    path: /hook/{hook_id}/verify/validate
+    method: POST
+    data_selector: ''
+- name: item
+  endpoint:
+    path: /item/app/{app_id}/
+    method: POST
+- name: item
+  endpoint:
+    path: /item/app/{app_id}/
+    method: POST
+- name: update_item
+  endpoint:
+    path: /item/{item_id}
+    method: PUT
+    data_selector: ''
+    params: {}
+- name: item
+  endpoint:
+    path: /item/{item_id}
+    method: PUT
+- name: delete_item
+  endpoint:
+    path: /item/{item_id}
+    method: DELETE
+    params:
+      item_id: required
+      hook: 'true'
+      silent: 'false'
+- name: delete_item
+  endpoint:
+    path: /item/{item_id}
+    method: DELETE
+notes:
+- The general limit is 1,000 API calls per hour, but if the API call is marked as
+  'Rate limited' the call is deemed resource intensive and a lower rate of 250 calls
+  per hour is enforced.
+- If you hit the rate limits the API will begin returning 420 HTTP error codes for
+  all API calls.
+- Access Token is valid for 8 hours.
+- Refresh Token is valid for 28 days.
+- The Podio API is based on REST requests passing JSON back and forth.
+- If you need only to interact with a single Podio app from your code and you don't
+  want to bother with a full login flow, we recommend using app authentication.
+- Only hooks on port 80 and 443 are supported.
+- Events will only be sent to the endpoint after a completed verification.
+- You can have up to 10 webhooks of each type (create, update, delete etc.) of each
+  item, app, comment etc.
+- Only hooks on port 80 and 443 are supported
+- Uses OAuth2 for authentication.
+- Most operations returning a list of objects support options limiting and sorting
+  the result.
+- Tasks can be used as todo list for yourself and to assign work to be done to other
+  people.
+- Tasks can also be private or public, they can have a due date, they can include
+  one or more files and they can be organized with custom labels.
+- Files can be uploaded to Podio, but they don't stand on their own, they are always
+  attached to another object.
+- The maximum allowed file size is currently 100MB.
+- Whenever you subscribe to a channel you need to provide extra information in the
+  subscribe call for each channel.
+- Hooks needs to be verified before they become active
+- The hook must respond with a 2xx status code
+- The sandbox only handles GET operations for now.
+errors:
+- '420: Rate limit exceeded'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 4xx or 5xx HTTP status code will throw an exception.
+- All unsuccessful responses returned by the API (everything that has a 4xx or 5xx
+  HTTP status code) will throw an exception.
+- '409 Conflict: Check for conflicts with the specified revision.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://company.podio.com
+  auth:
+    type: apikey
+source_metadata: null

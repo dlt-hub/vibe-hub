@@ -1,0 +1,109 @@
+resources:
+- name: single_validation
+  endpoint:
+    path: /
+    method: GET
+    data_selector: results
+- name: single_validation
+  endpoint:
+    path: /
+    method: GET
+    data_selector: results
+    params:
+      email: required
+- name: upload
+  endpoint:
+    path: /upload
+    method: GET
+    data_selector: debounce
+    params:
+      url: string
+- name: upload
+  endpoint:
+    path: /upload
+    method: GET
+    data_selector: debounce
+    params:
+      url: string
+- name: status
+  endpoint:
+    path: /status
+    method: GET
+- name: status
+  endpoint:
+    path: /status
+    method: GET
+- name: account_balance
+  endpoint:
+    path: /v1/balance/
+    method: GET
+    data_selector: balance
+    params: {}
+- name: account_balance
+  endpoint:
+    path: /v1/balance/
+    method: GET
+    data_selector: balance
+- name: API Usage History
+  endpoint:
+    path: /usage/
+    method: GET
+    data_selector: debounce
+    params:
+      start: string
+      end: string
+- name: api_usage_history
+  endpoint:
+    path: /v1/usage/
+    method: GET
+    data_selector: debounce
+    params:
+      start: required
+      end: required
+notes:
+- The real-time lookup API is accessed via the GET method.
+- All requests to our API need authentication.
+- All data is received as JSON.
+- Each response sent from the API contains a success parameter which is of 0/1 type,
+  indicating whether the request was successful or not.
+- To ensure optimal performance and stability for all users, our API has a maximum
+  limit of 5 concurrent calls.
+- If the 'data enrichment' option is enabled, this limitation becomes 2.
+- If you are going to use this API within a sign-up form, you must consider Deliverable,
+  Accept-all and Unknown statuses as valid.
+- You will pay 2 extra credits for each successful data enrichment.
+- We will bill you 0.2 extra credits for each successful profile photo added.
+- When specifying dates, use the YY-MM-DD format.
+- Ensure that the start date is after 20-08-14 and the end date is equal or less than
+  today's date.
+errors:
+- '401 Unauthorized: Wrong API'
+- 'HTTP/ 429 Too Many Requests: Maximum concurrent calls reached'
+- 'HTTP/ 429 Too Many Requests: Authentication Failed - The maximum number of calls
+  per day reached.'
+- '401 Unauthorized: Invalid API token'
+- '402 Payment Required: Validation credits are finished. You need to buy credits
+  to validate more emails.'
+- '403 Forbidden: Request not allowed'
+- '429 Too Many Requests: Rate limit has been exceeded'
+- 'HTTP/1.1 402 Payment Required: Credits Low'
+- 'HTTP/1.1 401 Unauthorized: Wrong API'
+- 'Credits Low: 402 Payment Required'
+- 'Wrong API: 401 Unauthorized'
+- 'Maximum concurrent calls reached: 429 Too Many Requests'
+- 'Authentication Failed - The maximum number of calls per day reached: 429 Too Many
+  Requests'
+- '400 Bad Request: URL parameter is not valid.'
+- '429 Too Many Requests: Maximum concurrent calls reached'
+- '402 Payment Required: You have exhausted your credits, please add additional credits
+  to continue.'
+- 'REQUEST_LIMIT_EXCEEDED: Maximum concurrent calls reached'
+- '200: Successful request'
+- Required parameters not provided correctly may result in error responses.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.debounce.io
+  auth:
+    type: apikey
+source_metadata: null

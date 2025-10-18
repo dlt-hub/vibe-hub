@@ -1,0 +1,201 @@
+resources:
+- name: data_loggers
+  endpoint:
+    path: /api/rest/devices
+    method: GET
+    data_selector: records
+- name: data_loggers_by_location
+  endpoint:
+    path: /api/rest/locations/:location_id/devices
+    method: GET
+    data_selector: records
+- name: annotations_for_data_logger
+  endpoint:
+    path: /api/rest/devices/:token/annotations
+    method: GET
+    data_selector: records
+- name: alerts
+  endpoint:
+    path: /api/rest/alerts
+    method: GET
+    data_selector: records
+    params:
+      search[tokens]: ''
+      search[severity]: excursion
+      search[started_after]: '2024-02-02T13:37:17Z'
+- name: alerts_summary
+  endpoint:
+    path: /api/rest/alerts/summary
+    method: GET
+    data_selector: records
+    params:
+      search[tokens]: ''
+      search[severity]: warning
+      search[started_after]: '2024-02-02T13:37:19Z'
+- name: locations
+  endpoint:
+    path: /api/rest/locations
+    method: GET
+    data_selector: records
+    params:
+      search[name]: ''
+      search[ids]: ''
+- name: registrations
+  endpoint:
+    path: /api/rest/registrations
+    method: GET
+    data_selector: records
+- name: device_registrations
+  endpoint:
+    path: /api/rest/devices/:token/registrations
+    method: POST
+    data_selector: records
+    params:
+      device[name]: My Newly-Registered Logger
+      device[service_name]: test.dicksonone.com
+      device[location_id]: 57
+- name: searches
+  endpoint:
+    path: /api/rest/searches
+    method: GET
+    data_selector: records
+    params:
+      search[query]: ''
+- name: channel_annotations
+  endpoint:
+    path: /api/rest/channels/:channel_id/annotations
+    method: POST
+    data_selector: records
+    params:
+      annotation[content]: Minus commodi sed. Sed nulla rerum. Sed et laborum.
+      annotation[at]: '2024-01-26T16:37:33Z'
+- name: channels
+  endpoint:
+    path: /channels
+    method: GET
+    data_selector: records
+    params: {}
+- name: events
+  endpoint:
+    path: /events
+    method: GET
+    data_selector: records
+    params: {}
+- name: user
+  endpoint:
+    path: /user
+    method: GET
+    data_selector: null
+    params: {}
+- name: account
+  endpoint:
+    path: /account
+    method: GET
+    data_selector: null
+    params: {}
+- name: locations
+  endpoint:
+    path: /locations
+    method: GET
+    data_selector: null
+    params: {}
+- name: devices
+  endpoint:
+    path: /devices
+    method: GET
+    data_selector: null
+    params: {}
+- name: alarm_events
+  endpoint:
+    path: /alarm_events
+    method: GET
+    data_selector: null
+    params: {}
+- name: audit_logs
+  endpoint:
+    path: /audit_logs
+    method: GET
+    data_selector: null
+    params: {}
+- name: data_loggers
+  endpoint:
+    path: /api/rest/devices
+    method: GET
+    data_selector: records
+    params: {}
+- name: data_loggers_by_location
+  endpoint:
+    path: /api/rest/locations/:location_id/devices
+    method: GET
+    data_selector: records
+    params: {}
+- name: annotations_for_data_logger
+  endpoint:
+    path: /api/rest/devices/:token/annotations
+    method: GET
+    data_selector: records
+    params: {}
+- name: alerts
+  endpoint:
+    path: /alerts
+    method: GET
+    params:
+      search[severity]: excursion
+      search[started_after]: '2024-02-02T13:37:17Z'
+- name: alerts_summary
+  endpoint:
+    path: /alerts/summary
+    method: GET
+    params:
+      search[severity]: warning
+      search[started_after]: '2024-02-02T13:37:19Z'
+- name: locations
+  endpoint:
+    path: /locations
+    method: GET
+- name: registrations
+  endpoint:
+    path: /registrations
+    method: GET
+- name: channel_annotations
+  endpoint:
+    path: /channels/:channel_id/annotations
+    method: POST
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in DicksonOne
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- 'Effective Date: September 30, 2024'
+- The V2 API will be deprecated at some point in the future, so we encourage you to
+  move your integration to the new REST API.
+errors:
+- '301: The request was made via HTTP, rather than HTTPS.'
+- '400: The request’s format was invalid.'
+- '401: No API token was supplied, or the supplied API token was invalid.'
+- '403: The user authenticated by the API token is not permitted to perform the requested
+  action.'
+- '404: The requested record wasn’t found.'
+- '409: Your request caused a conflict with existing data.'
+- '422: The requested change was rejected due to validation errors.'
+- '500: A hard-error occurred on DicksonOne’s servers.'
+- '503: DicksonOne is experiencing a service outage.'
+- The requested type (Other) is not supported.
+- '400 Bad Request: The requested type (Other) is not supported.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://www.dicksonone.com
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  paginator:
+    type: page
+    page_size_param: page[size]
+    default_page_size: 25
+source_metadata: null
