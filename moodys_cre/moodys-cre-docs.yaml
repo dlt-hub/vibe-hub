@@ -1,0 +1,51 @@
+resources:
+- name: properties
+  endpoint:
+    path: /api/cfra/search/properties
+    method: GET
+    data_selector: results
+    params:
+      modifiedSince: ''
+      offset: ''
+      maxResults: ''
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- The API supports paging with offset and maxResults parameters
+- Every 45 days, brokers with listings on Moody's CRE are required to verify the accuracy
+  and timeliness of each of their listings.
+- Some parts of this website will not function correctly.
+- Some objects like Contact may return nulls in deeply nested fields
+- Moody’s may change the Website and its features at any time without prior notice.
+- Requires setup of connected app in api
+- Data obtained via the CX API is for immediate display only. You will not retain,
+  pre-fetch, cache, index, aggregate, copy, or otherwise store Data for a period longer
+  than a sixty (60) minute user session.
+errors:
+- 'HTTP 404: Not Found'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://members.moodyscre.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+source_metadata: null

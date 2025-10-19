@@ -1,0 +1,114 @@
+resources:
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: library_management
+  endpoint:
+    path: /library-management
+    method: GET
+    data_selector: libraries
+    params: {}
+- name: user_profiles
+  endpoint:
+    path: /user_profiles
+    method: GET
+    data_selector: profiles
+- name: split_tests
+  endpoint:
+    path: /split_tests
+    method: GET
+    data_selector: tests
+- name: user_profiles
+  endpoint:
+    path: /v1/docs/user-profiles
+    method: GET
+- name: split_tests
+  endpoint:
+    path: /v1/docs/split-tests
+    method: GET
+- name: third_party_performance
+  endpoint:
+    path: /v1/docs/third-party-knowledge-base
+    method: GET
+    data_selector: data
+    params: {}
+- name: third_party_performance
+  endpoint:
+    path: /v1/docs/third-party-knowledge-base
+    method: GET
+    data_selector: data
+- name: Conversion Insights
+  endpoint:
+    path: /docs/conversion-insights-dashboard
+    method: GET
+    data_selector: metrics
+    params: {}
+- name: geo
+  endpoint:
+    path: /geo
+    method: GET
+    data_selector: geoData
+- name: anomaly_dashboard
+  endpoint:
+    path: /dashboards/anomaly
+    method: GET
+    data_selector: anomalies
+    params:
+      timeframe: past_five_days
+notes:
+- Each API request requires a site_key for identification.
+- Obtain a site_key from your Yottaa account administrator.
+- Attain your JWT token from the Yottaa portal.
+- Use HTTPS for secure communication.
+- Keep your JWT key confidential to prevent unauthorized access.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Yottaa ships new releases of its libraries when the libraries have key updates.
+- Ensure to test for quality assurance before making changes live on production site.
+- Uses OAuth2 with refresh token — requires setup of connected app in Yottaa
+- Uses a service worker for caching and prefetching resources.
+- User profiles and split tests are advanced options that are useful for some sites.
+- Data on third parties includes performance impact ratings and various violation
+  metrics.
+- By default, all metrics represent the past 14 days.
+- Anomalies are unusual events in your site's data.
+- Monitor the Anomaly dashboard or set up anomaly detection to stay updated on anomalies
+  and investigate them further.
+- Ongoing anomalies should be given the highest priority.
+- Yottaa Customer Success must previously have turned on the 'Enable Visitor Geo Data'
+  feature for your site in the Yottaa settings.
+- You are responsible for establishing your own conventions for topic names in your
+  application.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.yottaa.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.yottaa.com/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null
