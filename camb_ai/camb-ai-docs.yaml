@@ -1,0 +1,275 @@
+resources:
+- name: create_translation
+  endpoint:
+    path: /translate
+    method: POST
+    data_selector: task_id
+- name: get_translation_task_status
+  endpoint:
+    path: /translate/{task_id}
+    method: GET
+    data_selector: status
+- name: Text-to-Speech
+  endpoint:
+    path: /text-to-speech
+    method: POST
+- name: Translation
+  endpoint:
+    path: /translation
+    method: POST
+- name: Dubbing
+  endpoint:
+    path: /dubbing
+    method: POST
+- name: Stories
+  endpoint:
+    path: /stories
+    method: POST
+- name: Voice Creation
+  endpoint:
+    path: /voice-creation
+    method: POST
+- name: Voice Cloning
+  endpoint:
+    path: /voice-cloning
+    method: POST
+- name: Audio Separation
+  endpoint:
+    path: /audio-separation
+    method: POST
+- name: Transcription
+  endpoint:
+    path: /transcription
+    method: POST
+- name: source_languages
+  endpoint:
+    path: /apis/source-languages
+    method: GET
+- name: target_languages
+  endpoint:
+    path: /apis/target-languages
+    method: GET
+- name: list_voices
+  endpoint:
+    path: /apis/list-voices
+    method: GET
+- name: create_text_to_speech
+  endpoint:
+    path: /tts
+    method: POST
+    data_selector: task_id
+- name: get_text_to_speech_result
+  endpoint:
+    path: /tts/{task_id}
+    method: GET
+    data_selector: status
+- name: fetch_text_to_speech_results
+  endpoint:
+    path: /tts-result/{run_id}
+    method: GET
+- name: end_to_end_dubbing
+  endpoint:
+    path: /dub
+    method: POST
+    data_selector: task_id
+- name: get_dubbing_status
+  endpoint:
+    path: /dub/{task_id}
+    method: GET
+    data_selector: status
+- name: create_story
+  endpoint:
+    path: /story
+    method: POST
+    data_selector: task_id
+- name: get_story_status
+  endpoint:
+    path: /story/{task_id}
+    method: GET
+    data_selector: status
+- name: create_transcription
+  endpoint:
+    path: /transcribe
+    method: POST
+    data_selector: task_id
+- name: get_transcription_task_status
+  endpoint:
+    path: /transcribe/{task-id}
+    method: GET
+    data_selector: ''
+- name: fetch_transcription_results
+  endpoint:
+    path: /fetch-transcriptions-runs-results
+    method: POST
+    data_selector: ''
+- name: create_voice_from_description
+  endpoint:
+    path: /text-to-voice
+    method: POST
+    data_selector: task_id
+- name: get_voice_status
+  endpoint:
+    path: /text-to-voice/{task_id}
+    method: GET
+    data_selector: status
+- name: create_sound_and_music
+  endpoint:
+    path: /text-to-sound
+    method: POST
+    data_selector: task_id
+- name: get_sound_and_music_task_status
+  endpoint:
+    path: /text-to-sound/{task_id}
+    method: GET
+- name: audio_separation
+  endpoint:
+    path: /audio-separation
+    method: POST
+    data_selector: task_id
+    params: {}
+- name: audio_separation_status
+  endpoint:
+    path: /audio-separation/{task_id}
+    method: GET
+    data_selector: status
+    params: {}
+- name: create_translation_stream
+  endpoint:
+    path: /translation/stream
+    method: POST
+    data_selector: stream
+    params: {}
+- name: translation_task_status
+  endpoint:
+    path: /translate/{task_id}
+    method: GET
+    data_selector: status
+    params: {}
+- name: translation_result
+  endpoint:
+    path: /translation-result/{run_id}
+    method: GET
+    data_selector: texts
+- name: translation_result
+  endpoint:
+    path: /translation-result/{run_id}
+    method: GET
+    data_selector: texts
+    params:
+      run_id: required
+- name: translation_results
+  endpoint:
+    path: /translation-results
+    method: POST
+    data_selector: results
+    params: {}
+- name: translation_results
+  endpoint:
+    path: /apis/translation-results
+    method: POST
+    data_selector: results
+    params: {}
+- name: source_languages
+  endpoint:
+    path: /source-languages
+    method: GET
+    data_selector: records
+- name: target_languages
+  endpoint:
+    path: /target-languages
+    method: GET
+    data_selector: ''
+- name: translated_story_result
+  endpoint:
+    path: /translated-story-result/{run_id}/{target_language}
+    method: GET
+    data_selector: ''
+    params: {}
+- name: transcription_results
+  endpoint:
+    path: /transcription-results
+    method: POST
+    data_selector: results
+    params: {}
+- name: transcription_results
+  endpoint:
+    path: /transcription-results
+    method: POST
+    data_selector: DialogueItem
+    params:
+      run_ids: integer[]
+- name: transcription_task_status
+  endpoint:
+    path: /transcribe/{task_id}
+    method: GET
+    data_selector: status
+    params: {}
+- name: get_transcription_result
+  endpoint:
+    path: /transcription-result/{run_id}
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- This endpoint uses an asynchronous workflow for translation tasks.
+- The `x-api-key` is a custom header required for authenticating requests to our API.
+- Ensure your document is well-formatted with proper grammar and punctuation for better
+  narration results.
+- For optimal transcription quality, use high-quality media with clear speech and
+  minimal background noise.
+- Supported media formats include MP3, WAV, AAC, FLAC, MP4, MOV, MXF.
+- Voice descriptions must be at least 18 words (100+ characters) long.
+- Very unusual or contradictory voice descriptions may yield unpredictable results.
+- Maximum duration per request is 10 seconds. The default duration is 8.0 seconds.
+- Music duration parameter is not enforced.
+- For optimal separation quality, use media files with minimal compression and clear
+  distinction between foreground and background elements.
+- Streaming solution is ideal for applications requiring immediate partial results
+  while maintaining full translation context awareness.
+- Use exponential backoff for polling the translation task status.
+- Translation results may be available for a limited time after completion.
+- Must provide between 2 and 5 run_ids per request.
+- Requests with fewer than 2 or more than 5 run_ids will be rejected.
+- Must provide between 2 and 5 run_ids per request
+- Requests outside this range will be rejected with a validation error
+- Include x-api-key in the request header to authenticate.
+- 'Optimized Polling Intervals: Start with 15-second intervals and gradually increase
+  to 60 seconds for long audio files'
+- 'Terminal State Handling: Implement robust error handling for both success and failure
+  scenarios'
+- The x-api-key is a custom header required for authenticating requests to our API.
+errors:
+- '200: Successful response with task ID'
+- '422: Unprocessable entity, check input parameters'
+- '422: Error in request parameters'
+- '422: Unprocessable Entity - Check the input data for required fields'
+- '422: Error due to file upload issues.'
+- '400: Incorrect language specification.'
+- '422: Indicates that the request was well-formed but was unable to be processed
+  due to the validation rules.'
+- '200: Successful Response'
+- '422: Unprocessable Entity'
+- '422: Validation errors, check request parameters'
+- '422: Error in processing the request'
+- 'Invalid run_id: If the provided run_id doesn’t exist or has expired.'
+- 'Expired Results: Translation results may be available for a limited time after
+  completion.'
+- '404: Translation results not found for run_id'
+- '500: Server error occurred'
+- Connection error
+- '422: Validation error if run_ids count is not between 2 and 5.'
+- '422: Validation error if run_ids are not between 2 and 5'
+- '422: Unprocessable Entity - Check the input parameters.'
+- '422: Request Unprocessable Entity'
+auth_info:
+  mentioned_objects:
+  - x-api-key
+client:
+  base_url: https://client.camb.ai/apis
+  auth:
+    type: apikey
+    location: header
+    header_name: x-api-key
+  headers:
+    Content-Type: application/json
+source_metadata: null
