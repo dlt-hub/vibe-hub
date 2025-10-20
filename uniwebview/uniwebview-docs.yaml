@@ -1,0 +1,366 @@
+resources:
+- name: web_view
+  endpoint:
+    path: /guide/using-prefab.html
+    method: GET
+    data_selector: webview_properties
+    params: {}
+- name: web_view
+  endpoint:
+    path: /game.html
+    method: GET
+    data_selector: null
+    params: {}
+- name: game_over
+  endpoint:
+    path: uniwebview://game-over
+    method: GET
+    data_selector: score
+    params: {}
+- name: close_web_view
+  endpoint:
+    path: uniwebview://close
+    method: GET
+    data_selector: ''
+    params: {}
+- name: OAuthClient
+  endpoint:
+    path: /oauth2/v1/token
+    method: POST
+    data_selector: access_token
+- name: web_view
+  endpoint:
+    path: /webview
+    method: GET
+- name: web_view
+  endpoint:
+    path: /load
+    method: GET
+    data_selector: response
+    params: {}
+- name: OnPageStarted
+  endpoint:
+    path: /OnPageStarted
+    method: void
+    data_selector: parameters
+- name: OnPageCommitted
+  endpoint:
+    path: /OnPageCommitted
+    method: void
+    data_selector: parameters
+- name: OnPageFinished
+  endpoint:
+    path: /OnPageFinished
+    method: void
+    data_selector: parameters
+- name: OnPageProgressChanged
+  endpoint:
+    path: /OnPageProgressChanged
+    method: void
+    data_selector: parameters
+- name: OnPageErrorReceived
+  endpoint:
+    path: /OnPageErrorReceived
+    method: void
+    data_selector: parameters
+- name: OnLoadingErrorReceived
+  endpoint:
+    path: /OnLoadingErrorReceived
+    method: void
+    data_selector: parameters
+- name: OnCaptureSnapshotFinished
+  endpoint:
+    path: /OnCaptureSnapshotFinished
+    method: void
+    data_selector: parameters
+- name: OnFileDownloadStarted
+  endpoint:
+    path: /OnFileDownloadStarted
+    method: void
+    data_selector: parameters
+- name: OnFileDownloadFinished
+  endpoint:
+    path: /OnFileDownloadFinished
+    method: void
+    data_selector: parameters
+- name: OnMessageReceived
+  endpoint:
+    path: /OnMessageReceived
+    method: void
+    data_selector: parameters
+- name: OnShouldClose
+  endpoint:
+    path: /OnShouldClose
+    method: void
+    data_selector: parameters
+- name: OnOrientationChanged
+  endpoint:
+    path: /OnOrientationChanged
+    method: void
+    data_selector: parameters
+- name: OnWebContentProcessTerminated
+  endpoint:
+    path: /OnWebContentProcessTerminated
+    method: void
+    data_selector: parameters
+- name: OnMultipleWindowOpened
+  endpoint:
+    path: /OnMultipleWindowOpened
+    method: void
+    data_selector: parameters
+- name: OnMultipleWindowClosed
+  endpoint:
+    path: /OnMultipleWindowClosed
+    method: void
+    data_selector: parameters
+- name: OnKeyCodeReceived
+  endpoint:
+    path: /OnKeyCodeReceived
+    method: void
+    data_selector: parameters
+- name: OnChannelMessageReceived
+  endpoint:
+    path: /OnChannelMessageReceived
+    method: void
+    data_selector: parameters
+- name: web_view
+  endpoint:
+    path: /webview
+    method: GET
+    data_selector: webview_data
+- name: UniWebViewSafeBrowsing
+  endpoint:
+    path: /api/uniwebviewsafebrowsing
+    method: GET
+    data_selector: properties
+- name: GitHubAuthenticationFlow
+  endpoint:
+    path: /api/UniWebViewAuthenticationFlowGitHub
+    method: GET
+- name: media_capture_permission
+  endpoint:
+    path: /api/UniWebViewChannelMethodMediaCapturePermission
+    method: GET
+    data_selector: properties
+    params: {}
+- name: UniWebViewMessage
+  endpoint:
+    path: /api/uniwebviewmessage
+    method: GET
+    data_selector: properties
+    params: {}
+- name: UniWebViewChannelMethodMediaCapturePermission
+  endpoint:
+    path: /api/UniWebViewChannelMethodMediaCapturePermission
+    method: GET
+    data_selector: properties
+    params: {}
+- name: UniWebViewBackForwardList
+  endpoint:
+    path: /api/uniwebviewbackforwardlist
+    method: GET
+    data_selector: AllItems
+    params: {}
+- name: StreamingAssetURLForPath
+  endpoint:
+    path: /api/StreamingAssetURLForPath
+    method: GET
+    data_selector: string
+    params: {}
+- name: PersistentDataURLForPath
+  endpoint:
+    path: /api/PersistentDataURLForPath
+    method: GET
+    data_selector: string
+    params: {}
+- name: UniWebViewTransform
+  endpoint:
+    path: /api/UniWebViewTransform
+    method: GET
+    data_selector: properties
+    params: {}
+notes:
+- Google authentication flow is a bit different from the other standard authentication
+  flows.
+- In some versions of Unity when running on Android, the player view is brought to
+  front when switching back from a pause state, which causes the web view to be invisible
+  when the app is resumed. It requires an additional step to bring the web view to
+  front to make the web view visible. Set RestoreViewHierarchyOnResume to true to
+  apply this workaround.
+- Android did not provide a way to get the HTTP status code until API Level 23 (Android
+  6). The statusCode is not trustable and will be always 200 on Android devices running
+  a system before Android 6.
+- This event is deprecated. Use OnLoadingErrorReceived instead.
+- This method does not affect the ReferenceRectTransform or Unity's transform component.
+- By setting to true, access to file URLs inside the web view will be enabled and
+  you could access sub-resources or make cross origin requests from local HTML files.
+- By setting to false, any load from a file URL file:// for Load method will be rejected.
+- This method only works on iOS and macOS Editor.
+- Most of the OAuth flows now support refresh token.
+- 4.0.0 is a major update of UniWebView. Although most of APIs in UniWebView 4 are
+  compatible with UniWebView 3 and it should be easy enough to migrate, there are
+  still a few breaking changes.
+- The minimum deploy target of UniWebView 6 is iOS 12.0 and Android 5.0 (API Level
+  21).
+- For Unity, we recommend using Unity 2021.3.37 LTS, 2022.3.23 LTS, or any Unity 6
+  (6000.x) version.
+- If Unity reports any error when you play the scene, try to restart your Unity Editor
+  and give it a chance to load the plugin at launch.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Uses URL scheme `uniwebview://` for messaging.
+- Game will restart when an obstacle is hit.
+- Safe Browsing Mode is a simpler and out-of-the-box solution to show the web page
+  as it is in the browser.
+- You can only use the Safe Browsing Mode when the property is true.
+- Frame property will be ignored if you use the method described in 'Using Reference
+  UI Element' (or say, if the ReferenceRectTransform property is not null).
+- If you do not set the Frame again in the OnOrientationChanged event, the web view
+  size will keep what it is initially set and your layout will be broken.
+- When applying rotation and scale, the toolbar height will be still calculated by
+  the original frame size.
+- To manage memory effectively with UniWebView, destroy unused web views promptly,
+  reset references when closed, and clear caches when not needed.
+- Memory is a key limitation on mobile platforms.
+- The Channel Messaging System is available starting from UniWebView v6.
+- A safe length is ~16KB for a URL.
+- Security is a multi-layered approach. Implement appropriate measures based on your
+  application's security requirements and threat model.
+- UniWebView allows adding and executing JavaScript functions on web pages, with options
+  to disable JavaScript for performance or security.
+- Supports OAuth 2.0 for multiple providers, offering customizable flows and secure
+  authentication methods.
+- The system will remember the session for a certain service unless the user logs
+  out.
+- The values here are only for demonstration purpose. In your implementation, replace
+  them to the actual values of your app.
+- Requires setup of OAuth Client ID in Google Cloud Console
+- Some objects like Contact may return nulls in deeply nested fields
+- UniWebView supports file uploads from the disk of your device or from a cloud service
+  to your website.
+- On iOS, if you just want your user upload images from the photo library, it should
+  already work without any effort.
+- File download should work correctly without any additional configuration.
+- On iOS, there is no system-level web view downloading support.
+- UniWebView supports HTML5 video playback with options for auto play and inline play,
+  but does not support Flash-based videos.
+- UniWebView supports HTTP Basic and Digest authentication, prompting users for credentials
+  and storing them permanently.
+- On macOS, the credentials are stored in system Keychain.
+- To get full support for a new window or new tab, we suggest you choose to use the
+  Safe Browsing Mode.
+- UniWebView enables clicking through transparent web pages to interact with Unity
+  scenes behind.
+- UniWebView allows rendering web content as a non-interactive texture in Unity, suitable
+  for 3D integration but with performance and feature limitations.
+- The rendered texture is not interactive. You cannot click any link or button on
+  the texture, or scroll the web view by gesture.
+- Any hardware-accelerated content, such as video or WebGL elements, cannot be rendered.
+- WebRTC is supported from iOS 14.3 and all Android versions.
+- Due to a memory bug under WebKit and Unity, it might crash your macOS Editor when
+  you stop playing with an inspector showing embedded in a web view.
+- UniWebView build errors and runtime crashes can be resolved by adjusting settings
+  in Unity Preferences and performing a clean build.
+- UniWebView 6 focuses on high-performance bidirectional messaging, reliability on
+  new iOS versions, build automation for Android large app scenarios, and modernization
+  of iOS distribution.
+- To migrate from UniWebView 5 to 6, remove old files, install the new version, and
+  explore the new Channel Messaging System for enhanced bidirectional communication.
+- Before you start the migration, we strongly suggest that you should backup your
+  project.
+- Upgrade from UniWebView 5 to 6 requires removal of old files and installation of
+  the new version.
+- Consider upgrading existing URL scheme messaging to Channel Messages for better
+  performance and reliability.
+- The new toolbar works for both iOS and Android, and is more flexible and customizable.
+- UniWebView provides the out-of-box level support for most popular OAuth 2.0 providers.
+- The most noticeable change in UniWebView 5 is the new built-in OAuth 2.0 support.
+- UniWebView follows ToS of Unity Asset Store.
+- UniWebView prioritizes privacy, collecting minimal data, using it only for order
+  processing, and ensuring secure transmission with encryption.
+- On some certain Android customized builds, the manufacturer prefers not containing
+  the web view package in the system or blocks the web view package from being installed.
+- In some versions of Unity when running on Android, the player view is brought to
+  front when switching back from a pause state, which causes the web view is invisible
+  when the app is resumed.
+- In some versions of Unity when running on Android, the player view is brought to
+  front when switching back from a pause state, which causes the web view to be invisible
+  when the app is resumed.
+- You need to call this method as soon as you create a web view, before you call any
+  other methods related to web view layout.
+- By setting this to `false`, any load from a file URL `file://` for `Load` method
+  will be rejected and trigger an `OnLoadingErrorReceived` event.
+- By default, it is `true` and the local file URL loading is allowed.
+- On iOS, this method does nothing because WKWebView fundamentally does not support
+  third party cookies.
+- Starting from iOS 18, the default SameSite cookie attribute changed from 'None'
+  to 'Lax'.
+- You need to set it before creating a web view. Existing web views are not affected.
+- This only works on Android.
+- Deprecated methods should not be used anymore.
+- On iOS and Android, the web view does not support JavaScript (window.print()), you
+  can only initialize a print job from Unity by the Print method.
+- Upgrade from UniWebView 5 to 6 requires minimal effort.
+- Backup your project before migration.
+- Browsing web content in UniWebViewSafeBrowsing is only supported on iOS and Android.
+- Creating and showing a UniWebViewSafeBrowsing on Unity Editor will fall back to
+  open the URL in external browser.
+- On iOS, it uses some "hidden" way by setting `allowFileAccessFromFileURLs` in config
+  preferences for WebKit.
+- On Android, it sets the `WebSettings.setAllowFileAccessFromFileURLs` for the current
+  web view.
+- This method only works for Android. On iOS, this method does nothing because WKWebView
+  fundamentally does not support third party cookies.
+- This requires additional setup in `WKAppBoundDomains` key in the Info.plist file.
+- This method only works on Android.
+- Facebook suggests to use the Facebook SDKs for mobile apps.
+- LINE authentication flow is a bit different from the other standard authentication
+  flows.
+- UniWebView 6 is mostly compatible with UniWebView 5.
+- Setting this value may leak the client secret and cause security issue. Prefer to
+  setting the PKCESupport to `S256` in the option instead.
+- Requires setting Client Id, Client Secret, and Callback Url in the UniWebViewAuthenticationFlowGitHub
+  inspector.
+- Requires setting Client Id, Redirect Uri, and Scope in the inspector.
+- Facebook suggests to use the Facebook SDKs for iOS and Android for mobile apps.
+- Most of the built-in authentication flows in UniWebView are using the same model
+  of this standard token.
+- Usually this session processes an OAuth 2 flow.
+- The client secret should not be stored on the client side.
+- GitHub’s OAuth does not currently support PKCE.
+- Supports customizable authentication flows
+- An authentication flow usually a "code" based OAuth 2.0 flow
+- Whether to start authentication as soon as the script Start.
+- Whether to use private mode to authenticate the user.
+- The default level is Critical, which means the logger only prints errors and exceptions.
+- The default logging level is Critical, which means the logger only prints errors
+  and exceptions.
+errors:
+- Error.
+- 'Download error: '
+- '401 Unauthorized: Check OAuth Client ID and permissions'
+- 'Invalid URL: The url should start with http:// or https:// scheme.'
+- 'SSL_ERROR: This loading will fail since the certification is a self-signed one
+  and not trusted.'
+auth_info:
+  mentioned_objects:
+  - UniWebViewAuthenticationFlowGoogle
+  - UniWebViewAuthenticationPKCE
+  - UniWebViewAuthenticationFlowLine
+  - UniWebViewAuthenticationLineToken
+  - UniWebViewAuthenticationFlowGitHub
+  - OauthToken
+  - UniWebViewAuthenticationTwitterToken
+  - UniWebViewAuthenticationFlowCustomize
+  - UniWebViewAuthenticationStandardToken
+  - IUniWebViewAuthenticationFlow
+  - UniWebViewAuthenticationCommonFlow
+  - UniWebViewAuthenticationSession
+  - UniWebViewChannelMethodMediaCapturePermission
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://uniwebview.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+source_metadata: null

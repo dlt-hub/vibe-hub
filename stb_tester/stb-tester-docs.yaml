@@ -1,0 +1,870 @@
+resources:
+- name: color_diff
+  endpoint:
+    path: /stbt/color_diff
+    method: GET
+    data_selector: binary_image
+    params:
+      threshold: 0.05
+      erode: false
+- name: detect_motion
+  endpoint:
+    path: /stbt/detect_motion
+    method: GET
+    data_selector: motion_result
+    params:
+      timeout_secs: 10
+      noise_threshold: 25
+      mask: Region.ALL
+      region: Region.ALL
+- name: find_regions_by_color
+  endpoint:
+    path: /stbt/find_regions_by_color
+    method: GET
+    data_selector: regions
+    params:
+      threshold: 0.05
+      erode: false
+      mask: Region.ALL
+      min_size: (20, 20)
+- name: find_selection_from_background
+  endpoint:
+    path: /stbt/find_selection_from_background
+    method: GET
+    data_selector: results
+- name: frames
+  endpoint:
+    path: /stbt/frames
+    method: GET
+    data_selector: frames
+- name: get_frame
+  endpoint:
+    path: /get_frame
+    method: GET
+    data_selector: frames
+    params: {}
+- name: get_rms_volume
+  endpoint:
+    path: /get_rms_volume
+    method: GET
+    data_selector: RmsVolumeResult
+    params:
+      duration_secs: 3
+- name: is_screen_black
+  endpoint:
+    path: /is_screen_black
+    method: GET
+    data_selector: _IsScreenBlackResult
+    params: {}
+- name: segment
+  endpoint:
+    path: /stbt/segment
+    method: POST
+    data_selector: list
+    params: {}
+- name: set_global_ocr_corrections
+  endpoint:
+    path: /stbt/set_global_ocr_corrections
+    method: POST
+    data_selector: None
+    params: {}
+- name: stop_job
+  endpoint:
+    path: /stbt/stop_job
+    method: POST
+    data_selector: None
+    params: {}
+- name: wait_for_content_start
+  endpoint:
+    path: /stbt/wait_for_content_start
+    method: POST
+    data_selector: list
+    params:
+      timeout_secs: 30
+- name: Device Configuration
+  endpoint:
+    path: /device-configuration
+    method: GET
+- name: testcases
+  endpoint:
+    path: /tests
+    method: GET
+    data_selector: tests
+    params: {}
+- name: testcase
+  endpoint:
+    path: /tests
+    method: GET
+- name: color_diff
+  endpoint:
+    path: /color_diff
+    method: POST
+    data_selector: result
+- name: detect_motion
+  endpoint:
+    path: /detect_motion
+    method: GET
+    data_selector: motion_results
+    params:
+      timeout_secs: 10
+      noise_threshold: 25
+- name: detect_pages
+  endpoint:
+    path: /detect_pages
+    method: GET
+    data_selector: pages
+- name: find_selection_from_background
+  endpoint:
+    path: /stbt/find_selection_from_background
+    method: POST
+    data_selector: list
+    params: {}
+- name: match_text
+  endpoint:
+    path: /match_text
+    method: POST
+    data_selector: TextMatchResult
+    params: {}
+- name: match_text
+  endpoint:
+    path: /match_text
+    method: GET
+    data_selector: result
+- name: match_parameters
+  endpoint:
+    path: /match_parameters
+    method: GET
+    data_selector: parameters
+- name: press_until_match
+  endpoint:
+    path: /stbt/press_until_match
+    method: POST
+    data_selector: results
+    params:
+      interval_secs: 3
+      max_presses: 10
+- name: Roku
+  endpoint:
+    path: /roku
+    method: GET
+- name: wait_for_match
+  endpoint:
+    path: /wait_for_match
+    method: POST
+- name: wait_for_motion
+  endpoint:
+    path: /wait_for_motion
+    method: POST
+    params:
+      timeout_secs: 10
+- name: wait_for_transition_to_end
+  endpoint:
+    path: /wait_for_transition_to_end
+    method: POST
+    params:
+      timeout_secs: 10
+- name: wait_for_volume_change
+  endpoint:
+    path: /wait_for_volume_change
+    method: POST
+    params:
+      timeout_secs: 10
+      window_size_secs: 0.4
+      threshold_db: 10.0
+      noise_floor_amplitude: 0.0003
+- name: wait_until
+  endpoint:
+    path: /wait_until
+    method: POST
+    params:
+      timeout_secs: 10
+- name: grab_screenshot
+  endpoint:
+    path: /v2/nodes/(*node_id*)/screenshot.png
+    method: GET
+    data_selector: screenshot
+- name: grab_screenshot_thumbnail
+  endpoint:
+    path: /v2/nodes/(*node_id*)/thumbnail.jpg
+    method: GET
+    data_selector: thumbnail
+- name: list_testcases
+  endpoint:
+    path: /v2/test_pack/<test_pack_revision>/test_case_names
+    method: GET
+    data_selector: testcase_names
+- name: run_tests
+  endpoint:
+    path: /v2/run_tests
+    method: POST
+    data_selector: job_uid
+- name: grab_screenshot
+  endpoint:
+    path: /api/v2/nodes/(*node_id*)/screenshot.png
+    method: GET
+    data_selector: null
+    params: {}
+- name: grab_screenshot_thumbnail
+  endpoint:
+    path: /api/v2/nodes/(*node_id*)/thumbnail.jpg
+    method: GET
+    data_selector: null
+    params: {}
+- name: list_testcases
+  endpoint:
+    path: /api/v2/test_pack/<test_pack_revision>/test_case_names
+    method: GET
+    data_selector: null
+    params: {}
+- name: run_tests
+  endpoint:
+    path: /api/v2/run_tests
+    method: POST
+    data_selector: null
+    params: {}
+- name: inspect_test_job
+  endpoint:
+    path: /api/v2/jobs/(*job_uid*)
+    method: GET
+    data_selector: job_uid
+- name: inspect_node_test_job
+  endpoint:
+    path: /api/v2/nodes/(*node_id*)/job
+    method: GET
+    data_selector: job_uid
+- name: wait_for_job_completion
+  endpoint:
+    path: /api/v2/jobs/(*job_uid*)/await_completion
+    method: GET
+    data_selector: job_uid
+- name: wait_for_node_job_completion
+  endpoint:
+    path: /api/v2/nodes/(*node_id*)/job/await_completion
+    method: GET
+    data_selector: job_uid
+- name: stop_job_in_progress
+  endpoint:
+    path: /api/v2/jobs/(*job_uid*)/stop
+    method: PUT
+    data_selector: job_uid
+- name: stop_node_current_job
+  endpoint:
+    path: /api/v2/nodes/(*node_id*)/job/stop
+    method: POST
+    data_selector: job_uid
+- name: get_list_of_test_results
+  endpoint:
+    path: /api/v2/results
+    method: GET
+    data_selector: result_id
+- name: get_list_of_test_results_csv
+  endpoint:
+    path: /api/v2/results.csv
+    method: GET
+- name: get_list_of_test_results_xml
+  endpoint:
+    path: /api/v2/results.xml
+    method: GET
+- name: test_results
+  endpoint:
+    path: /api/v2/results
+    method: GET
+    data_selector: results
+    params: {}
+- name: test_results_csv
+  endpoint:
+    path: /api/v2/results.csv
+    method: GET
+    data_selector: results
+    params: {}
+- name: test_results_xml
+  endpoint:
+    path: /api/v2/results.xml
+    method: GET
+    data_selector: results
+    params: {}
+- name: test_results
+  endpoint:
+    path: /api/v2/results/{result_id}
+    method: GET
+    data_selector: result_id
+- name: test_run_logs
+  endpoint:
+    path: /api/v2/results/{result_id}/stbt.log
+    method: GET
+    data_selector: logs
+- name: screenshot
+  endpoint:
+    path: /api/v2/results/{result_id}/screenshot.png
+    method: GET
+    data_selector: screenshot
+- name: artifacts
+  endpoint:
+    path: /api/v2/results/{result_id}/artifacts/
+    method: GET
+    data_selector: artifacts
+- name: artifact
+  endpoint:
+    path: /api/v2/results/{result_id}/artifacts/{filename}
+    method: GET
+    data_selector: artifact
+- name: test_result
+  endpoint:
+    path: /api/v2/results/{result_id}
+    method: GET
+    data_selector: result_id
+- name: test_log
+  endpoint:
+    path: /api/v2/results/{result_id}/stbt.log
+    method: GET
+    data_selector: log_output
+- name: screenshot
+  endpoint:
+    path: /api/v2/results/{result_id}/screenshot.png
+    method: GET
+    data_selector: screenshot
+- name: artifacts
+  endpoint:
+    path: /api/v2/results/{result_id}/artifacts/
+    method: GET
+    data_selector: artifacts
+- name: artifact
+  endpoint:
+    path: /api/v2/results/{result_id}/artifacts/{filename}
+    method: GET
+    data_selector: artifact
+- name: nodes
+  endpoint:
+    path: /api/v2/nodes
+    method: GET
+    data_selector: nodes
+    params: {}
+- name: node_status
+  endpoint:
+    path: /api/v2/nodes/{node_id}
+    method: GET
+    data_selector: node
+    params: {}
+- name: reservations
+  endpoint:
+    path: /api/v2/reservations
+    method: POST
+    data_selector: reservations
+    params: {}
+- name: extend_reservation
+  endpoint:
+    path: /api/v2/reservations/{reservation_id}/extend
+    method: POST
+    data_selector: reservations
+    params: {}
+- name: end_reservation
+  endpoint:
+    path: /api/v2/reservations/{reservation_id}
+    method: DELETE
+- name: interrupt_reservation
+  endpoint:
+    path: /api/v2/reservations/{reservation_id}/interrupt
+    method: POST
+- name: nodes
+  endpoint:
+    path: /api/v2/nodes
+    method: GET
+    data_selector: records
+- name: node_status
+  endpoint:
+    path: /api/v2/nodes/{node_id}
+    method: GET
+    data_selector: node
+- name: reservations
+  endpoint:
+    path: /api/v2/reservations
+    method: POST
+    data_selector: reservations
+- name: extend_reservation
+  endpoint:
+    path: /api/v2/reservations/{reservation_id}/extend
+    method: POST
+- name: node
+  endpoint:
+    path: /api/v2/nodes
+    method: GET
+    data_selector: nodes
+- name: test_pack
+  endpoint:
+    path: /api/v2/test_pack
+    method: GET
+    data_selector: test_pack
+- name: end_reservation
+  endpoint:
+    path: /api/v2/reservations/{reservation_id}
+    method: DELETE
+    data_selector: null
+    params: {}
+- name: interrupt_reservation
+  endpoint:
+    path: /api/v2/reservations/{reservation_id}/interrupt
+    method: POST
+    data_selector: null
+    params: {}
+- name: results
+  endpoint:
+    path: /api/v2/results/
+    method: GET
+    data_selector: results
+    params: {}
+- name: run_tests
+  endpoint:
+    path: /api/v2/run_tests/
+    method: POST
+    data_selector: results
+    params: {}
+- name: power_distribution_unit
+  endpoint:
+    path: /api/power_distribution_units
+    method: GET
+    data_selector: pdus
+    params: {}
+- name: test_pack
+  endpoint:
+    path: /api/v2/tests
+    method: GET
+    data_selector: records
+    params: {}
+- name: run_tests
+  endpoint:
+    path: /api/v2/run_tests
+    method: POST
+- name: await_completion
+  endpoint:
+    path: /api/v2/jobs/(job_uid)/await_completion
+    method: GET
+- name: results
+  endpoint:
+    path: /api/v2/results.xml
+    method: GET
+    params:
+      filter: job:(job_uid)
+- name: power_outlet
+  endpoint:
+    path: /configuration/power_outlet
+    method: GET
+    data_selector: power_outlets
+    params: {}
+- name: test_runs
+  endpoint:
+    path: /test_runs
+    method: GET
+    data_selector: results
+- name: test_failures
+  endpoint:
+    path: /test_failures
+    method: GET
+    data_selector: failures
+- name: test_errors
+  endpoint:
+    path: /test_errors
+    method: GET
+    data_selector: errors
+- name: run_tests
+  endpoint:
+    path: /api/v2/run_tests
+    method: POST
+- name: await_completion
+  endpoint:
+    path: /api/v2/jobs/(job_uid)/await_completion
+    method: GET
+- name: results
+  endpoint:
+    path: /api/v2/results.xml?filter=job:(job_uid)
+    method: GET
+- name: capture_dut_logs_android
+  endpoint:
+    path: /tests/conftest.py
+    method: POST
+    data_selector: adb.logcat
+    params: {}
+- name: capture_dut_logs_roku
+  endpoint:
+    path: /tests/conftest.py
+    method: POST
+    data_selector: roku.save_logs
+    params: {}
+- name: device_under_test
+  endpoint:
+    path: /configuration/node_specific
+    method: GET
+    data_selector: device_type
+    params: {}
+- name: region
+  endpoint:
+    path: /regions
+    method: GET
+    data_selector: regions
+- name: mask
+  endpoint:
+    path: /masks
+    method: GET
+    data_selector: masks
+- name: segment
+  endpoint:
+    path: /python-api.html#stbt.segment
+    method: GET
+- name: segment
+  endpoint:
+    path: /python-api.html#stbt.segment
+    method: GET
+    data_selector: regions
+    params: {}
+- name: keyboard
+  endpoint:
+    path: /api/v2/keyboard
+    method: GET
+    data_selector: keys
+    params: {}
+- name: testcase
+  endpoint:
+    path: /api/testcases
+    method: GET
+    data_selector: records
+    params: {}
+- name: testresults
+  endpoint:
+    path: /api/testresults
+    method: GET
+    data_selector: records
+    params: {}
+- name: search_keyboard
+  endpoint:
+    path: /keyboard/search
+    method: GET
+    data_selector: keyboard
+- name: keyboard
+  endpoint:
+    path: /keyboard
+    method: GET
+    data_selector: keys
+    params: {}
+- name: device
+  endpoint:
+    path: /detect/adapters
+    method: GET
+    data_selector: devices
+- name: HdmiCecControl
+  endpoint:
+    path: /hdmi-cec/control
+    method: POST
+    data_selector: result
+- name: cec_control
+  endpoint:
+    path: /hdmi-cec
+    method: GET
+    data_selector: commands
+    params: {}
+- name: testcase
+  endpoint:
+    path: /api/v2/testcase
+    method: GET
+    data_selector: records
+    params: {}
+- name: testresult
+  endpoint:
+    path: /api/v2/testresult
+    method: GET
+    data_selector: records
+    params: {}
+- name: grab_screenshot
+  endpoint:
+    path: /api/v2/nodes/(*node_id*)/screenshot.png
+    method: GET
+    data_selector: null
+    params: {}
+- name: grab_screenshot_thumbnail
+  endpoint:
+    path: /api/v2/nodes/(*node_id*)/thumbnail.jpg
+    method: GET
+    data_selector: null
+    params: {}
+- name: list_testcases
+  endpoint:
+    path: /api/v2/test_pack/<test_pack_revision>/test_case_names
+    method: GET
+    data_selector: null
+    params: {}
+- name: run_tests
+  endpoint:
+    path: /api/v2/run_tests
+    method: POST
+    data_selector: null
+    params: {}
+- name: test_results
+  endpoint:
+    path: /api/v2/results
+    method: GET
+    data_selector: results
+    params: {}
+- name: test_results_csv
+  endpoint:
+    path: /api/v2/results.csv
+    method: GET
+    data_selector: results
+    params: {}
+- name: test_results_xml
+  endpoint:
+    path: /api/v2/results.xml
+    method: GET
+    data_selector: results
+    params: {}
+- name: grab_screenshot
+  endpoint:
+    path: /api/v2/nodes/{node_id}/screenshot.png
+    method: GET
+- name: grab_screenshot_thumbnail
+  endpoint:
+    path: /api/v2/nodes/{node_id}/thumbnail.jpg
+    method: GET
+- name: list_testcases
+  endpoint:
+    path: /api/v2/test_pack/<test_pack_revision>/test_case_names
+    method: GET
+- name: run_tests
+  endpoint:
+    path: /api/v2/run_tests
+    method: POST
+- name: job
+  endpoint:
+    path: /api/v2/jobs/{job_uid}
+    method: GET
+    data_selector: job_uid
+- name: results
+  endpoint:
+    path: /api/v2/results
+    method: GET
+    data_selector: results
+- name: results
+  endpoint:
+    path: /api/v2/results/{result_id}
+    method: GET
+    data_selector: result
+    params: {}
+- name: artifacts
+  endpoint:
+    path: /api/v2/results/{result_id}/artifacts/
+    method: GET
+    data_selector: artifacts
+    params: {}
+- name: screenshot
+  endpoint:
+    path: /api/v2/results/{result_id}/screenshot.png
+    method: GET
+    data_selector: screenshot
+    params: {}
+- name: log_output
+  endpoint:
+    path: /api/v2/results/{result_id}/stbt.log
+    method: GET
+    data_selector: log
+    params:
+      tz: UTC
+- name: nodes
+  endpoint:
+    path: /api/v2/nodes
+    method: GET
+    data_selector: records
+- name: node_status
+  endpoint:
+    path: /api/v2/nodes/{node_id}
+    method: GET
+    data_selector: records
+- name: reservations
+  endpoint:
+    path: /api/v2/reservations
+    method: POST
+    data_selector: reservations
+- name: extend_reservation
+  endpoint:
+    path: /api/v2/reservations/{reservation_id}/extend
+    method: POST
+- name: test_result
+  endpoint:
+    path: /api/v2/results/(*result_id*)
+    method: GET
+    data_selector: result
+    params: {}
+- name: test_log
+  endpoint:
+    path: /api/v2/results/(*result_id*)/stbt.log
+    method: GET
+    data_selector: log
+    params: {}
+- name: test_screenshot
+  endpoint:
+    path: /api/v2/results/(*result_id*)/screenshot.png
+    method: GET
+    data_selector: screenshot
+    params: {}
+- name: test_artifacts
+  endpoint:
+    path: /api/v2/results/(*result_id*)/artifacts/
+    method: GET
+    data_selector: artifacts
+    params: {}
+- name: artifact
+  endpoint:
+    path: /api/v2/results/(*result_id*)/artifacts/(*filename*)
+    method: GET
+    data_selector: artifact
+    params: {}
+- name: end_reservation
+  endpoint:
+    path: /api/v2/reservations/{reservation_id}
+    method: DELETE
+- name: interrupt_reservation
+  endpoint:
+    path: /api/v2/reservations/{reservation_id}/interrupt
+    method: POST
+- name: nodes
+  endpoint:
+    path: /api/v2/nodes
+    method: GET
+    data_selector: records
+- name: node_status
+  endpoint:
+    path: /api/v2/nodes/(*node_id*)
+    method: GET
+    data_selector: node
+- name: reservations
+  endpoint:
+    path: /api/v2/reservations
+    method: POST
+    data_selector: reservations
+- name: extend_reservation
+  endpoint:
+    path: /api/v2/reservations/(*reservation_id*)/extend
+    method: POST
+- name: end_a_reservation
+  endpoint:
+    path: /api/v2/reservations/(*reservation_id*)
+    method: DELETE
+- name: interrupt_a_reservation
+  endpoint:
+    path: /api/v2/reservations/(*reservation_id*)/interrupt
+    method: POST
+notes:
+- Currently, the Stb-tester Nodes don’t support ADB over USB. You must enable Network
+  ADB on the device-under-test.
+- 'Added in v33: `mask` accepts anything that can be converted to a Mask using [`load_mask`](#stbt.load_mask)'
+- Increased default navigate_timeout from 20 to 60 seconds.
+- Uses OCR with Tesseract engine
+- Defaults can be overridden in the [.stbt.conf] configuration file
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- This package doesn’t include video-capture infrastructure and other complex dependencies,
+  so it won’t allow you to run your test scripts locally.
+- The Stb-tester Node must be able to access the Stb-tester Portal over the internet
+  using HTTPS port 443.
+- Supports Python-based test cases.
+- Uses stbt library for interaction with devices.
+- Testcases are Python functions stored in the test-pack git repository under tests/*.py
+- Currently, the Stb-tester Nodes don’t support ADB over USB.
+- You must enable Network ADB on the device-under-test.
+- This is the default diffing algorithm for detect_motion, wait_for_motion, press_and_wait,
+  find_selection_from_background, and ocr's text_color.
+- Don’t learn the menu structure for future calls to navigate_1d or navigate_grid.
+- This API allows searching for text in video frames.
+- stbt.ocr_eq compares two strings for equality, ignoring common OCR errors.
+- The `merge_px` parameter was added in v34.
+- 'Changed in v33: mask accepts anything that can be converted to a Mask using load_mask.'
+- 'Changed in v34: The difference-detection algorithm takes color into account.'
+- Node ID is labelled on the physical Stb-tester Node.
+- Setup scripts must return a non-zero exit status if they fail.
+- stbt_rig needs to authenticate to your Stb-tester Portal, so you need to generate
+  an access token.
+- If you have the Python 'keyring' package installed, stbt_rig will save the token
+  in the secure password storage provided by your operating system.
+- The Stb-tester Portal uses GitHub OAuth for single-sign-on.
+- All users must have a GitHub account.
+- The PDU and outlet to use to power-cycle the device-under-test is configured in
+  the stbt.conf configuration file.
+- Node-specific configuration files can override parameters such as outlet or address.
+- The .stbt.conf file specifies the run-time environment in which testcases are executed.
+- Users with Admin access can add, remove, and modify the access level of other users.
+- You need to implement steps 1 & 2 yourself.
+- For more details on the parameters to stbt_rig.py, run ./stbt_rig.py --help.
+- Per-node parameters can be overridden in Node-specific configuration files for each
+  Stb-tester Node.
+- Stb-tester provides a video recording of every test-run
+- You will need to implement steps 1 & 2 yourself. For steps 3-5, we provide a Python
+  script called stbt_rig.py.
+- Stb-tester records a video of each test-run, with frame-accurate synchronisation
+  between the video and the logs from your test script.
+- logcat's own timestamping, to avoid double timestamps.
+- Uses specific version of selenium (4.31.0) for reproducible builds
+- --headless=new is required to start Chromium in environments without a display
+- In Stb-tester v33, using pytest as the test-runner is optional. From Stb-tester
+  v34, pytest is the default (and only) test-runner.
+- Uses Selenium WebDriver with headless option
+- Requires installation of Chromium and Selenium
+- Stb-tester v32 added new APIs that make it much easier to navigate on-screen keyboards
+  from your test scripts.
+- Stb-tester provides a video recording of every test-run so every test failure could
+  be checked by a human.
+- Stb-tester uses the Wilson score confidence interval.
+- 'Page Objects are immutable: An instance reflects the state of the device-under-test
+  at the time of creation.'
+- Some objects may return nulls in deeply nested fields
+- Some objects like Contact may return nulls in deeply nested fields
+- Many on-screen keyboards don’t have modes — there’s just a single uppercase or lowercase
+  keyboard.
+- Some devices may not be detected if they are not on the CEC bus.
+- Uses HDMI-CEC for device control
+- Automated Testing for Set-Top Boxes and OTT devices.
+- Requires connected app setup for OAuth2.
+- Must specify the token in the Authorization HTTP header of every request.
+- Rate-limiting applies to automated scripts that make many requests.
+errors:
+- 'ConfigurationError: An error with your stbt configuration file.'
+- 'NavigationFailed: If we can’t find the target.'
+- 'AssertionError: Raised when an assertion fails in test cases.'
+- 'MatchTimeout: Raised when an image match is not found within a given timeout.'
+- 'MotionTimeout: Raised when no motion is detected in the video stream.'
+- 'subprocess.CalledProcessError: if check is true and the adb process returns a non-zero
+  exit status.'
+- 'subprocess.TimeoutExpired: if timeout is specified and the adb process doesn’t
+  finish within that number of seconds.'
+- '403 Forbidden: Invalid access token'
+- '404 Not Found: Unknown *node_id*'
+- '429 Too Many Requests: Rate limits exceeded'
+- '503 Service Unavailable: Node is offline'
+- '200 OK: Success'
+- '404 Not Found: Unknown *job_uid*'
+- '404 Not Found: Unknown job_uid'
+- '404 Not Found: Unknown result_id'
+- '410 Gone: Result has been deleted'
+- '409 Conflict: One or more of the nodes are already reserved or busy'
+- '204 No Content: Reservations ended'
+- '204 No Content: Reservation already ended'
+- '400 Bad Request: Invalid parameter'
+- '403 Forbidden: This reservation was not made by you'
+- '404 Not Found: Reservation doesn’t exist'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'DEVICE_NOT_FOUND: Ensure the device is connected to the CEC bus.'
+- 'HDMI_CEC_ERROR: Check device connection'
+- 'HDMI_CEC_FATAL_ERROR: Fatal error occurred'
+- '401 Unauthorized: Check credentials.'
+- '400 Bad Request: Invalid filter, sort, or tz parameter.'
+- '404 Not Found: Unknown node_id'
+- '404 Not Found: Unknown *result_id*'
+auth_info:
+  mentioned_objects:
+  - access token
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://company.stb-tester.com
+  auth:
+    type: token
+    location: header
+    header_name: Authorization
+source_metadata: null

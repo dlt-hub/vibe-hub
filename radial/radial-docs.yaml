@@ -1,0 +1,73 @@
+resources:
+- name: Order Service
+  endpoint:
+    path: /api/order/order-api.htm
+    method: GET
+- name: Inventory Service
+  endpoint:
+    path: /api/inventory/inventory-api.htm
+    method: GET
+- name: Address Service
+  endpoint:
+    path: /api/address/address-validation-api.htm
+    method: GET
+- name: Payment Service
+  endpoint:
+    path: /api/payments/payments-apis.htm
+    method: GET
+- name: Returns Service
+  endpoint:
+    path: /api/returns/return-merchandise-authorization.htm
+    method: GET
+- name: Subscription Service
+  endpoint:
+    path: /api/subscription/subscription.htm
+    method: GET
+- name: Fraud Service
+  endpoint:
+    path: /api/fraud/fraud-apis.htm
+    method: GET
+- name: Tax
+  endpoint:
+    path: /api/tax/tax-apis.htm
+    method: GET
+notes:
+- Validate Request Against XSD
+- Use Unique Request ID
+- Use CatalogID as a Prefix to ItemID
+- Log Requests and Responses
+- Design Tests for Future Compatibility
+- If no response is received from the web service layer for an inventory quantity
+  get request or an inventory allocate request, order capture and submission should
+  continue as normal.
+- If no response is received from the web service layer for an address validate request,
+  order capture and submission should continue as normal.
+- If no response is received from the web service layer for a tax quote request, order
+  capture and submission should continue, however no tax should be displayed to the
+  consumer during the remainder of checkout.
+- If no response is received from the web service layer for a credit card authorization
+  request, order capture and submission should continue as normal.
+- If no response is received from the web service layer for a stored-value redemption
+  request, order submission should be aborted.
+- If no response is received from the web service layer for a PayPal authorization
+  request, order submission should be aborted.
+- If no response is received from the web service layer for an order create request,
+  retry attempts should be made to submit the order.
+errors:
+- '400: The request can not be validated as it does not match the required schema.'
+- '401: The request could not be authorized to access the requested service with the
+  API key provided.'
+- '403: The request attempted to access an unauthorized or incorrect version of the
+  API, client channel, store code or URI.'
+- '405: The service request made may have used an insecure HTTP protocol instead of
+  the SSL protected “HTTPS” protocol.'
+- '500: Incorrect Service Call URI.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://apg.radial.com
+  auth:
+    type: apikey
+    location: header
+    header_name: apikey
+source_metadata: null

@@ -1,0 +1,305 @@
+resources:
+- name: gmail_messages
+  endpoint:
+    path: /gmail/v1/users/me/messages
+    method: GET
+    data_selector: messages
+- name: account
+  endpoint:
+    path: /v1/account
+    method: POST
+- name: account
+  endpoint:
+    path: /v1/account
+    method: POST
+    data_selector: null
+    params: {}
+- name: authentication_form
+  endpoint:
+    path: /v1/authentication/form
+    method: POST
+    data_selector: null
+    params: {}
+- name: send_message
+  endpoint:
+    path: /v1/account/{accountId}/send
+    method: POST
+    data_selector: payload
+- name: fetch_headers
+  endpoint:
+    path: /v1/account/{accountId}/message/{messageId}
+    method: GET
+    data_selector: headers
+- name: process_notification
+  endpoint:
+    path: /v1/account/{accountId}/message/{messageId}
+    method: GET
+    data_selector: message
+- name: submit_message
+  endpoint:
+    path: /v1/account/example/submit
+    method: POST
+    data_selector: response
+    params: {}
+- name: message_submission
+  endpoint:
+    path: /v1/account/:id/submit
+    method: POST
+    data_selector: mailMerge
+- name: queue
+  endpoint:
+    path: /v1/queue
+    method: GET
+    data_selector: queueItems
+- name: account
+  endpoint:
+    path: /v1/account
+    method: POST
+    data_selector: account
+    params: {}
+- name: submit_message
+  endpoint:
+    path: /v1/account/:id/submit
+    method: POST
+    data_selector: response
+    params: {}
+- name: submit_email
+  endpoint:
+    path: /v1/account/:id/submit
+    method: POST
+    data_selector: response
+    params: {}
+- name: email_submission
+  endpoint:
+    path: /v1/account/:id/submit
+    method: POST
+    data_selector: null
+    params: {}
+- name: account
+  endpoint:
+    path: /v1/account
+    method: POST
+    data_selector: null
+    params: {}
+- name: account
+  endpoint:
+    path: /v1/account
+    method: POST
+    data_selector: ''
+    params: {}
+- name: authentication_form
+  endpoint:
+    path: /v1/authentication/form
+    method: POST
+    data_selector: url
+- name: account
+  endpoint:
+    path: /v1/accounts/new
+    method: GET
+    data_selector: data
+- name: account
+  endpoint:
+    path: /v1/account
+    method: POST
+    data_selector: null
+    params: {}
+- name: mailbox
+  endpoint:
+    path: /v1/account/accountMailboxes
+    method: GET
+    data_selector: mailboxes
+- name: Get message information
+  endpoint:
+    path: /v1/account/accountMessage/message
+    method: GET
+    data_selector: html
+    params:
+      embedAttachedImages: 'true'
+      preProcessHtml: 'true'
+      textType: '*'
+- name: authentication_form
+  endpoint:
+    path: /v1/authentication/form
+    method: POST
+    data_selector: url
+- name: account
+  endpoint:
+    path: /v1/account
+    method: POST
+    data_selector: account
+    params: {}
+- name: send_email
+  endpoint:
+    path: /v1/account/ekiri/submit
+    method: POST
+    data_selector: response
+    params: {}
+- name: list_sent_emails
+  endpoint:
+    path: /v1/account/ekiri/messages
+    method: GET
+    data_selector: messages
+    params:
+      path: INBOX.Sent
+- name: account
+  endpoint:
+    path: /v1/account
+    method: POST
+    data_selector: account
+    params: {}
+- name: account_status
+  endpoint:
+    path: /v1/account/{account}
+    method: GET
+    data_selector: state
+    params: {}
+- name: message_submission
+  endpoint:
+    path: /v1/account/example/submit
+    method: POST
+    data_selector: message
+    params: {}
+- name: submit_email
+  endpoint:
+    path: /v1/account/{account}/submit
+    method: POST
+    data_selector: response
+- name: submit_email
+  endpoint:
+    path: /v1/account/ekiri/submit
+    method: POST
+    data_selector: response
+- name: list_sent_emails
+  endpoint:
+    path: /v1/account/ekiri/messages
+    method: GET
+    data_selector: messages
+    params:
+      path: INBOX.Sent
+- name: account
+  endpoint:
+    path: /v1/account
+    method: POST
+    data_selector: account
+    params: {}
+- name: account_status
+  endpoint:
+    path: /v1/account/{account}
+    method: GET
+    data_selector: state
+    params: {}
+- name: message_submission
+  endpoint:
+    path: /v1/account/example/submit
+    method: POST
+    data_selector: message
+    params: {}
+- name: email_submission
+  endpoint:
+    path: /v1/account/{account}/submit
+    method: POST
+    data_selector: response
+    params: {}
+notes:
+- Make sure that the Redirect URL matches the value you used in the Authorised Redirect
+  URIs field when setting up the OAuth2 application
+- Enable Gmail API and Cloud Pub/Sub API in Google Cloud Console
+- Service accounts do not need user consent for authentication.
+- Keep the handler tiny. Ideally it writes the payload to an internal queue (Kafka,
+  SQS, Postgres, …) in a few milliseconds and returns `2xx`, leaving the heavy lifting
+  to downstream workers. This keeps EmailEngine’s own Redis memory usage predictable.
+- The provided accessToken must be currently valid and not expired. It is up to your
+  app to ensure that the token is renewed if it is expired.
+- EmailEngine sends webhooks for new emails and can be configured to treat existing
+  emails as new for IMAP accounts.
+- EmailEngine discards completed and failed jobs by default.
+- Always persist the exact messageId string (including angle brackets) in your database.
+- EmailEngine processes email entirely inside your infrastructure; no data leaves
+  your network.
+- Forwards require you to set the 'to' field
+- EmailEngine streams attachments from IMAP to SMTP
+- Drop `to`/`cc`/`bcc` from your payload, add a `mailMerge` array.
+- 'If you use an SMTP port other than 465, set ''secure'': false.'
+- Google will disable password authentication for regular Gmail accounts by September
+  30, 2024.
+- OAuth2 can be used for IMAP and SMTP with the XOAUTH2 SASL authentication method.
+- Password authentication can not be used with APIs, but EmailEngine does not need
+  API access, IMAP and SMTP are password-friendly.
+- If password authentication fails, you might need to unlock your Gmail account.
+- Email routing information is mainly relevant for routing but not so much for processing.
+- PostalMime parses all attachments into ArrayBuffer objects.
+- Wrap every ID in < > or some clients ignore the header.
+- Changing the subject (beyond adding *Re:*) breaks the thread despite perfect headers.
+- Gmail reads only the last 20 References entries. If your sequence is longer, drop
+  the oldest IDs.
+- Wrap every ID in angle brackets < > or some clients may ignore the header.
+- 'Changing the subject beyond adding Re: breaks the thread.'
+- Gmail reads only the last 20 References entries, drop the oldest IDs if longer.
+- Proxying only works for accounts using IMAP authentication.
+- Accounts using the Gmail API or Microsoft Graph API cannot be proxied.
+- Without enabling the OAuth2 API endpoint, you can not use it as it's disabled by
+  default.
+- PII alert! If OpenAI integration is enabled then EmailEngine uploads the text content
+  of incoming emails to the servers of OpenAI.
+- If possible, use an API key of a paid OpenAI account. The API key for a free account
+  has very strict rate limits.
+- GPT4 API access isn't automatically enabled; you'll need to apply for it.
+- If possible, use an API key of a paid OpenAI account. The API key for a free account
+  has very strict rate limits, and if you are processing several emails at a time,
+  then ChatGPT API requests will fail.
+- EmailEngine enables you to interact with shared mailboxes through its API by leveraging
+  OAuth2 authentication.
+- A copy of the sent email is saved in the shared mailbox's 'Sent Items' folder.
+- Another copy is saved in the main account's 'Sent Items' folder.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- EmailEngine encrypts and stores the email account credentials and starts email synchronization.
+- For secondary folders, EmailEngine relies on polling.
+- Some objects like Contact may return nulls in deeply nested fields
+- EmailEngine does not automatically create any folders on its own.
+- EmailEngine uses standard tools like DOMPurify to sanitize the HTML code.
+- Uses built-in authentication form feature in EmailEngine — does not handle passwords
+  or OAuth tokens.
+- EmailEngine requires a valid license key to run.
+- Subscription is managed by Stripe.
+- EmailEngine supports IMAP sub-connections for folder subscriptions.
+- Gmail allows just 15 IMAP connections at a time.
+- Webhook's event type is 'messageBounce' which identifies a bounce.
+- EmailEngine is an email automation platform that makes it possible to access email
+  accounts, both for sending and reading emails, with an HTTP REST API.
+- You need at least 1GB of RAM for EmailEngine to function correctly.
+- Uses document store option for consistent threading across folders
+- Uses OAuth2 with refresh token — requires setup of connected app in EmailEngine
+- ImapFlow library allows to open folders in an IMAP account via two different methods.
+- Mailbox locking prevents command conflicts when using the same IMAP connection.
+- Webhook's event type is 'messageBounce' for bounced emails
+- Make sure that this file is empty. Otherwise, jq will fail to process it if it contains
+  non-JSON data.
+- Uses REST interface to submit emails for delivery.
+- IMAP connection counts are usually limited; realistically, you can't open a separate
+  connection for each folder.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '400 Bad Request: Missing ''to'' on forward'
+- Timeouts on slow SMTP hosts
+- '400 Message Not Accepted: Check message format or recipient address.'
+- 'EPROTOCOL: Check authentication details for SMTP.'
+- '550 No such user here: Ensure the recipient''s email address is valid'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - ServiceAccount
+client:
+  base_url: https://api.emailengine.app
+  auth:
+    type: oauth2
+    flow: authorization_code
+    client_id: '{{ dlt.secrets[''gmail_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''gmail_client_secret''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

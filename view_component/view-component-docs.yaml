@@ -1,0 +1,196 @@
+resources:
+- name: ExampleComponent
+  endpoint:
+    path: /example_component
+    method: GET
+    data_selector: records
+    params: {}
+- name: blog_component
+  endpoint:
+    path: /blog_component
+    method: GET
+    data_selector: records
+- name: navigation_component
+  endpoint:
+    path: /navigation_component
+    method: GET
+    data_selector: records
+- name: slots
+  endpoint:
+    path: /guide/slots
+    method: GET
+    data_selector: content
+    params: {}
+- name: predicates
+  endpoint:
+    path: /guide/predicate_methods
+    method: GET
+    data_selector: content
+    params: {}
+- name: component_slots
+  endpoint:
+    path: /guide/component_slots
+    method: GET
+    data_selector: content
+    params: {}
+- name: referencing_slots
+  endpoint:
+    path: /guide/referencing_slots
+    method: GET
+    data_selector: content
+    params: {}
+- name: lambda_slots
+  endpoint:
+    path: /guide/lambda_slots
+    method: GET
+    data_selector: content
+    params: {}
+- name: rendering_collections
+  endpoint:
+    path: /guide/rendering_collections
+    method: GET
+    data_selector: content
+    params: {}
+- name: with_SLOT_NAME_content
+  endpoint:
+    path: /guide/with_SLOT_NAME_content
+    method: GET
+    data_selector: content
+    params: {}
+- name: with_content
+  endpoint:
+    path: /guide/with_content
+    method: GET
+    data_selector: content
+    params: {}
+- name: polymorphic_slots
+  endpoint:
+    path: /guide/polymorphic_slots
+    method: GET
+    data_selector: content
+    params: {}
+- name: custom_polymorphic_slot_setters
+  endpoint:
+    path: /guide/custom_polymorphic_slot_setters
+    method: GET
+    data_selector: content
+    params: {}
+- name: default_SLOT_NAME
+  endpoint:
+    path: /guide/default_SLOT_NAME
+    method: GET
+    data_selector: content
+    params: {}
+notes:
+- Content passed to a ViewComponent as a block is captured and assigned to the content
+  accessor.
+- Slots allow the rendering of multiple blocks of content.
+- Lambda slots can access state from the parent ViewComponent.
+- Use ViewComponents in place of partials.
+- Prefer using slots for providing markup to components.
+- Content can’t be passed to a component via a block in controllers. Instead, use
+  with_content.
+- Requires non-EOL Rails (>= 7.1.0) and Ruby (>= 3.2.0)
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Run into an issue with this release? Let us know
+- As of version 4, ViewComponent is considered feature-complete.
+- The largest consequence of this change is that we’ll need to deprecate the old setter
+  usage in favor of the new setter API.
+- ViewComponent provides a way to isolate common UI patterns for reuse, helping to
+  improve the quality and consistency of Rails applications.
+- Split the slots API into a getter and setter.
+- New API for setting slots includes `with_#{slot_name}`.
+- Avoid inheritance in ViewComponents to reduce confusion.
+- Prefer ViewComponents over partials and HTML-generating helpers.
+- Some objects like Contact may return nulls in deeply nested fields
+- This Code of Conduct applies within all project spaces, and it also applies when
+  an individual is representing the project or its community in public spaces.
+- Polymorphic slots introduced in v3.0.0
+errors:
+- 'AlreadyDefinedPolymorphicSlotSetterError: A method called ‘SETTER_METHOD_NAME’
+  already exists and would be overwritten by the ‘SETTER_NAME’ polymorphic slot setter.
+  Please choose a different setter name.'
+- 'ContentAlreadySetForPolymorphicSlotError: Content for slot SLOT_NAME has already
+  been provided.'
+- 'ContentSlotNameError: COMPONENT declares a slot named content, which is a reserved
+  word in ViewComponent. Content passed to a ViewComponent as a block is captured
+  and assigned to the content accessor without having to create an explicit slot.
+  To fix this issue, either use the content accessor directly or choose a different
+  slot name.'
+- 'ControllerCalledBeforeRenderError: #controller can’t be used before rendering,
+  as it depends on the view context that only exists once a ViewComponent is passed
+  to the Rails render pipeline. It’s sometimes possible to fix this issue by moving
+  code dependent on #controller to a #before_render method.'
+- 'DuplicateContentError: It looks like a block was provided after calling with_content
+  on COMPONENT, which means that ViewComponent doesn’t know which content to use.
+  To fix this issue, use either with_content or a block.'
+- 'DuplicateSlotContentError: It looks like a block was provided after calling with_content
+  on COMPONENT, which means that ViewComponent doesn’t know which content to use.
+  To fix this issue, use either with_content or a block.'
+- 'HelpersCalledBeforeRenderError: #helpers can’t be used before rendering as it depends
+  on the view context that only exists once a ViewComponent is passed to the Rails
+  render pipeline. It’s sometimes possible to fix this issue by moving code dependent
+  on #helpers to a #before_render method.'
+- 'InvalidCollectionArgumentError: The value of the first argument passed to with_collection
+  isn’t a valid collection. Make sure it responds to to_ary.'
+- 'InvalidSlotDefinitionError: Invalid slot definition. Please pass a class, string,
+  or callable (that is proc, lambda, etc)'
+- 'MissingCollectionArgumentError: The initializer for COMPONENT doesn’t accept the
+  parameter PARAMETER, which is required to render it as a collection. To fix this
+  issue, update the initializer to accept PARAMETER.'
+- 'MissingPreviewTemplateError: A preview template for example EXAMPLE doesn’t exist.
+  To fix this issue, create a template for the example.'
+- 'MissingTemplateError: No templates for COMPONENT match the request DETAIL. To fix
+  this issue, provide a suitable template.'
+- 'MultipleInlineTemplatesError: Inline templates can only be defined once per-component.'
+- 'NilWithContentError: No content provided to #with_content for ViewComponent::NilWithContentError.
+  To fix this issue, pass a value.'
+- 'RedefinedSlotError: COMPONENT declares the SLOT_NAME slot multiple times. To fix
+  this issue, choose a different slot name.'
+- 'ReservedParameterError: COMPONENT initializer can’t accept the parameter PARAMETER,
+  as it will override a public ViewComponent method. To fix this issue, rename the
+  parameter.'
+- 'ReservedPluralSlotNameError: COMPONENT declares a slot named SLOT_NAME, which is
+  a reserved word in the ViewComponent framework. To fix this issue, choose a different
+  name.'
+- 'ReservedSingularSlotNameError: COMPONENT declares a slot named SLOT_NAME, which
+  is a reserved word in the ViewComponent framework. To fix this issue, choose a different
+  name.'
+- 'SlotPredicateNameError: COMPONENT declares a slot named SLOT_NAME, which ends with
+  a question mark. This isn’t allowed because the ViewComponent framework already
+  provides predicate methods ending in ?. To fix this issue, choose a different name.'
+- 'SystemTestControllerNefariousPathError: ViewComponent SystemTest controller attempted
+  to load a file outside of the expected directory.'
+- 'TranslateCalledBeforeRenderError: #translate can’t be used before rendering as
+  it depends on the view context that only exists once a ViewComponent is passed to
+  the Rails render pipeline. It’s sometimes possible to fix this issue by moving code
+  dependent on #translate to a #before_render method.'
+- 'UncountableSlotNameError: COMPONENT declares a slot named SLOT_NAME, which is an
+  uncountable word. To fix this issue, choose a different name.'
+- 'ContentSlotNameError: COMPONENT declares a slot named content, which is a reserved
+  word in ViewComponent. Content passed to a ViewComponent as a block is captured
+  and assigned to the `content` accessor without having to create an explicit slot.
+  To fix this issue, either use the `content` accessor directly or choose a different
+  slot name.'
+- 'DuplicateContentError: It looks like a block was provided after calling `with_content`
+  on COMPONENT, which means that ViewComponent doesn’t know which content to use.
+  To fix this issue, use either `with_content` or a block.'
+- 'DuplicateSlotContentError: It looks like a block was provided after calling `with_content`
+  on COMPONENT, which means that ViewComponent doesn’t know which content to use.
+  To fix this issue, use either `with_content` or a block.'
+- 'InvalidCollectionArgumentError: The value of the first argument passed to `with_collection`
+  isn’t a valid collection. Make sure it responds to `to_ary`.'
+- 'SlotPredicateNameError: COMPONENT declares a slot named SLOT_NAME, which ends with
+  a question mark. This isn’t allowed because the ViewComponent framework already
+  provides predicate methods ending in `?`. To fix this issue, choose a different
+  name.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://github.com/viewcomponent/view_component
+  headers:
+    Accept: application/json
+source_metadata: null
