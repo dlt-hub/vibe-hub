@@ -1,0 +1,65 @@
+resources:
+- name: shipment
+  endpoint:
+    path: /api/v1/shipments
+    method: GET
+    data_selector: shipments
+- name: shipment_status
+  endpoint:
+    path: /api/v1/shipments/status
+    method: GET
+    data_selector: status
+- name: shipments
+  endpoint:
+    path: /api/v1/shipments
+    method: GET
+    data_selector: data
+    params: {}
+- name: dashboard
+  endpoint:
+    path: /api/v1/dashboard
+    method: GET
+    data_selector: data
+    params: {}
+- name: shipments
+  endpoint:
+    path: /api/v1/shipments
+    method: GET
+    data_selector: data
+    params: {}
+- name: stores
+  endpoint:
+    path: /api/v1/stores
+    method: GET
+    data_selector: data
+    params: {}
+- name: analytics
+  endpoint:
+    path: /api/v1/analytics
+    method: GET
+    data_selector: data
+    params: {}
+notes:
+- OAuth2 authentication requires a valid client setup.
+- Uses OAuth2 with refresh token — requires setup of connected app in TrackShip
+errors:
+- '401 Unauthorized: Check your API credentials'
+- '404 Not Found: Verify the endpoint path'
+auth_info:
+  mentioned_objects:
+  - AccessToken
+  - RefreshToken
+client:
+  base_url: https://api.trackship.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.trackship.com/oauth/token
+    client_id: '{{ dlt.secrets[''trackship_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''trackship_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''trackship_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null
