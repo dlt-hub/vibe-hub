@@ -1,0 +1,49 @@
+resources:
+- name: documents
+  endpoint:
+    path: /api/documents
+    method: POST
+    data_selector: data
+    params: {}
+- name: document_data
+  endpoint:
+    path: /api/v1/documents
+    method: POST
+    data_selector: data
+    params: {}
+notes:
+- The core functionality of the SortSpoke API is to upload PDF documents and download
+  JSON output files.
+- AI-powered document processing platform.
+- Rapid deployment with minimal IT involvement, delivering ROI within days not months
+- Seamless integration with existing workflows and systems through flexible APIs
+- Uses OAuth2 with refresh token — requires setup of connected app in SortSpoke
+- Some objects may return nulls in deeply nested fields
+- We don’t sell customer lists.
+- Withdrawing consent may result in your inability to continue using the Website and/or
+  the Services.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400 Bad Request: Check the request parameters.'
+- '401 Unauthorized: Recheck OAuth credentials.'
+- '404 Not Found: The requested URL was not found on this server.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+client:
+  base_url: https://sortspoke.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://sortspoke.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

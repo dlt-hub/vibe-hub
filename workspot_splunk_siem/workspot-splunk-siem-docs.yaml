@@ -1,0 +1,282 @@
+resources:
+- name: events_data
+  endpoint:
+    path: /services/data/v2/request/{requestToken}
+    method: GET
+    data_selector: events
+    params: {}
+- name: pools
+  endpoint:
+    path: /pools
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: vpc
+  endpoint:
+    path: /vpc/docs/create-modify-vpc-networks
+    method: POST
+    data_selector: resources
+    params: {}
+- name: subnets
+  endpoint:
+    path: /vpc/docs/create-modify-vpc-networks
+    method: POST
+    data_selector: resources
+    params: {}
+- name: firewall_rules
+  endpoint:
+    path: /firewall/docs/firewalls
+    method: POST
+    data_selector: resources
+    params: {}
+- name: images
+  endpoint:
+    path: /images
+    method: POST
+    data_selector: resources
+    params: {}
+- name: servers
+  endpoint:
+    path: /servers
+    method: POST
+    data_selector: resources
+    params: {}
+- name: desktop_pool
+  endpoint:
+    path: /services/data/vXX.X/sobjects/DesktopPool
+    method: POST
+    data_selector: records
+    params: {}
+- name: workspaces
+  endpoint:
+    path: /api/v1/workspaces
+    method: GET
+    data_selector: data
+- name: workspaces
+  endpoint:
+    path: /v1/workspaces
+    method: GET
+    data_selector: data
+    params:
+      incremental: updated_at
+- name: users
+  endpoint:
+    path: /v1/users
+    method: GET
+    data_selector: data
+    params: {}
+- name: user
+  endpoint:
+    path: /api/v1/users
+    method: GET
+    data_selector: data
+    params: {}
+- name: desktop_tags
+  endpoint:
+    path: /v1/docs/using-the-workspot-control-api
+    method: GET
+    data_selector: tags
+- name: user
+  endpoint:
+    path: /api/v1/users
+    method: GET
+    data_selector: data
+    params: {}
+- name: user
+  endpoint:
+    path: /api/v1/users
+    method: GET
+    data_selector: data
+    params: {}
+- name: user
+  endpoint:
+    path: /api/v1/users
+    method: GET
+    data_selector: data
+    params: {}
+- name: Domain Controller Configuration
+  endpoint:
+    path: /ad/server/configuration
+    method: POST
+    data_selector: configuration
+    params:
+      domain_name: wspoc.cloud
+- name: Active Directory Groups
+  endpoint:
+    path: /v1/docs/workspot-enterprise-connector
+    method: GET
+    data_selector: groups
+    params: {}
+- name: Control AD Groups
+  endpoint:
+    path: /v1/docs/control-security-policies
+    method: GET
+    data_selector: policies
+    params: {}
+- name: WorkspotCloudDesktops
+  endpoint:
+    path: OU=WorkspotCloudDesktops,DC=example,DC=com
+    method: dsacls.exe
+    data_selector: permissions
+    params:
+      permissions:
+      - Create Computer Objects - This object and all descendant objects
+      - Delete Computer Objects - This object and all descendant objects
+      - Read All Properties - Descendant Computer Objects
+      - Write All Properties - Descendant Computer Objects
+      - Read Permissions - Descendant Computer Objects
+      - Modify Permissions - Descendant Computer Objects
+      - Change Password - Descendant Computer Objects
+      - Reset Password - Descendant Computer Objects
+      - Validated write to DNS host name - Descendant Computer Objects
+      - Validated write to service principal name - Descendant Computer Objects
+- name: Workspot Control Events
+  endpoint:
+    path: /path/to/endpoint
+    method: POST
+    data_selector: events
+- name: request_events
+  endpoint:
+    path: /services/data/v2/request/{requestToken}
+    method: GET
+    data_selector: events
+- name: Workspot Control Events
+  endpoint:
+    path: /api/v1/events
+    method: GET
+    data_selector: records
+notes:
+- Some objects may return nulls in deeply nested fields
+- Control sends data in batches of 1000 events per one request/response.
+- Wait 15 minutes before checking for new data under specific conditions.
+- Uses OAuth2 with refresh token — requires setup of connected app in Workspot
+- Cookies are small text files that can be used by websites to make a user's experience
+  more efficient.
+- This site uses cookies to give you the best experience while browsing.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- MFA can be configured for remote access on Microsoft RD Gateway using RADIUS support.
+- SAML based login to Office365/Azure AD requires a previously set up federated identity
+  management system.
+- Having the ability to filter pools is critical for customers who have large numbers
+  of pools.
+- Requires setup of connected app in Workspot
+- Some API responses may contain nulls in certain fields
+- Some objects like Contact may return nulls in deeply nested fields
+- Necessary cookies help make a website usable by enabling basic functions.
+- Deploy your Gateways in the DMZ subnet.
+- Once the Gateways are created, remember to “Publish” the cluster and “Enable” the
+  gateways to allow end-user connections.
+- Make sure to select the network (VDI/VM Subnet) that ends with “VM” to deploy the
+  pool Virtual Desktops.
+- 'Warning: Once set, you cannot change the Named License Group.'
+- 'Warning: DO NOT use the default “Domain Users” group.'
+- The AD Domain Controller created here is a standalone instance that doesn’t communicate
+  with your production Domain Controller.
+- Advanced configuration such as multi-factor authentication, posture checking, and
+  so on are not configured.
+- The Terraform Destroy command will only delete what was created by Terraform.
+- Uses Active Directory – including Azure Active Directory with Client Authentication
+  for authentication.
+- Desktop pools can be created by Control users with full Administrator access.
+- A suspended desktop is no longer allocated to anyone until reallocated by the Control
+  Administrator.
+- OAuth2 with refresh token required for authentication
+- Some endpoints may have rate limits
+- IMPORTANT - Leave VM powered off while Control is provisioning VMs in a pool.
+- Although you can make changes to the original VM, in a production scenario, it is
+  best to clone the existing VM and make changes to the new VM to be used as a new
+  template in Workspot Control.
+- This website uses cookies to give you the best experience while browsing.
+- Requires OAuth2 authentication.
+- Ensure correct setup in Workspot portal.
+- This API is used for managing desktop tags.
+- Tags are available for persistent desktops only.
+- Tags are displayed as part of the desktop details API command.
+- This site uses different types of cookies.
+- The law states that we can store cookies on your device if they are strictly necessary
+  for the operation of this site.
+- API requires OAuth2 authentication
+- Ensure to manage token expiration correctly
+- Requires OAuth2 authentication for API access
+- Ensure that the API client is set up correctly in the Workspot portal
+- Requires setup of OAuth2 for authentication
+- Rate limits apply to all API calls
+- You must configure your AD Domain Controller before configuring Workspot Gateways,
+  Enterprise Connector, or Templated.
+- The script runs reliably with PowerShell ISE but not with regular PowerShell.
+- For a Pilot deployment, we recommend a temporary domain name like wspoc.cloud instead
+  of your production domain name.
+- Some responses may include null values in certain fields
+- AD Groups and Workspot Groups are not the same.
+- Uses cookies to enhance user experience.
+- Consent required for non-essential cookies.
+- Account status is pulled according to the Sync Interval for Workspot Connector,
+  which defaults to six hours but can be set in the range of 1-24 hours.
+- Create a normal domain user account with a strong password
+- Set the Service Account password to Never Expire
+- The Organizational Units (OUs) that you intend to contain the Workspot Cloud Desktops
+  and the Workspot servers must already be created
+- Data is transferred from Workspot Control to Splunk in JSON format.
+- Wait 15 minutes before checking for new data under certain conditions.
+- Requires setup of connected app in Workspot.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '204 No Content: No more new data from last checkpoint'
+- '202 Accepted: Still preparing data'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- Dynamic Desktop Connection Failed
+- 'Error: Your token credentials were rejected by the Remote Desktop Gateway.'
+- 'Error: SSL: No authority could be contacted for authentication.'
+- 'RATE_LIMIT_EXCEEDED: Reduce frequency of requests'
+- '401 Unauthorized: Check OAuth token validity'
+- '401 Unauthorized: Check your credentials.'
+- '429 Too Many Requests: Reduce API call frequency.'
+- '401 Unauthorized: Check your credentials or token expiration'
+- '404 Not Found: Verify the endpoint path'
+- '400 Bad Request: Check your request parameters'
+- '401 Unauthorized: Verify your authentication credentials'
+- '500 Internal Server Error: Try again later'
+- '401 Unauthorized: Check your access token'
+- '429 Too Many Requests: Rate limit exceeded'
+- '401 Unauthorized: Check your OAuth token and permissions'
+- '403 Forbidden: Ensure you have the right access level'
+- '200 OK: Includes data in response'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration.'
+- '401 Unauthorized: Recheck API key or permissions'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - OAuth2
+  - AccessToken
+  - ClientCredentials
+client:
+  base_url: https://api.workspot.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.workspot.com/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null
