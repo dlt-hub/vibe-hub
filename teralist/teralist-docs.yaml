@@ -1,0 +1,125 @@
+resources:
+- name: liveness_probe
+  endpoint:
+    path: /check/healthz
+    method: GET
+    data_selector: ''
+- name: readiness_probe
+  endpoint:
+    path: /check/readyz
+    method: GET
+    data_selector: ''
+- name: service_discovery
+  endpoint:
+    path: /.well-known/terraform.json
+    method: GET
+    data_selector: ''
+- name: list_all_versions_for_provider
+  endpoint:
+    path: /v1/providers/:namespace/:name/versions
+    method: GET
+    data_selector: ''
+- name: download_provider_version
+  endpoint:
+    path: /v1/providers/:namespace/:name/:version/download/:system/:arch
+    method: GET
+    data_selector: ''
+- name: upload_provider_version
+  endpoint:
+    path: /v1/api/providers/:name/:version/upload
+    method: POST
+    data_selector: ''
+- name: remove_provider
+  endpoint:
+    path: /v1/api/providers/:name/remove
+    method: DELETE
+    data_selector: ''
+- name: remove_provider_version
+  endpoint:
+    path: /v1/api/providers/:name/:version/remove
+    method: DELETE
+    data_selector: ''
+- name: list_all_versions_for_module
+  endpoint:
+    path: /v1/modules/:namespace/:name/:provider/versions
+    method: GET
+    data_selector: ''
+- name: download_module_version
+  endpoint:
+    path: /v1/modules/:namespace/:name/:provider/:version/download
+    method: GET
+    data_selector: ''
+- name: upload_module_version
+  endpoint:
+    path: /v1/api/modules/:name/:provider/:version/upload
+    method: POST
+    data_selector: ''
+- name: upload_module_version_with_local_files
+  endpoint:
+    path: /v1/api/modules/:name/:provider/:version/upload-files
+    method: POST
+    data_selector: ''
+- name: database-backend
+  endpoint:
+    params:
+      default: sqlite
+- name: sqlite-path
+  endpoint:
+    params:
+      default: terralist.db
+- name: modules-storage-resolver
+  endpoint:
+    params:
+      default: s3
+- name: providers-storage-resolver
+  endpoint:
+    params:
+      default: proxy
+- name: s3-bucket-name
+  endpoint:
+    params:
+      default: my-bucket
+- name: s3-bucket-region
+  endpoint:
+    params:
+      default: us-east-1
+- name: session-store
+  endpoint:
+    params:
+      default: cookie
+- name: bucket_policy
+  endpoint:
+    path: /bucket/policy
+    method: PUT
+    data_selector: policy
+    params: {}
+notes:
+- Terralist's only way to operate is private. It requires authentication for any module/provider
+  operation, including fetching them.
+- If you plan to deploy Terralist in an isolated environment, there is also the option
+  of allowing anonymous (unauthenticated) downloads.
+- Uses OAuth2 with GitHub — requires setup of OAuth credentials
+- 'Terralist supports multiple types of configuration: CLI arguments, Environment
+  Variable, Configuration File.'
+- Terralist supports storing artifacts on S3-compatible backends.
+- The RBAC feature enables restrictions of access to Terralist resources.
+- Terralist does not have its own user management system, delegating this job to one
+  (or more) OAuth 2.0 providers.
+- By default, Terralist is listening on the 5758 port.
+errors:
+- 'Authorization: missing'
+- 'X-API-Key: missing'
+- 'requested provider was not found: no provider found with given arguments (provider
+  hashicorp/aws)'
+- not found
+- n/a
+auth_info:
+  mentioned_objects:
+  - OauthToken
+client:
+  base_url: http://localhost:5758
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+source_metadata: null

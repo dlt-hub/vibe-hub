@@ -1,0 +1,232 @@
+resources:
+- name: geocode
+  endpoint:
+    path: /geocoding/v5/mapbox.places
+    method: GET
+    data_selector: results
+- name: reverse_geocode
+  endpoint:
+    path: /geocoding/v5/mapbox.places/reverse
+    method: GET
+    data_selector: results
+- name: tileset_source
+  endpoint:
+    path: /tilesets
+    method: POST
+    data_selector: tileset_source
+- name: tileset_recipe
+  endpoint:
+    path: /tilesets/recipe
+    method: POST
+    data_selector: tileset_recipe
+- name: tileset
+  endpoint:
+    path: /tilesets/{tileset_name}
+    method: POST
+    data_selector: tileset
+- name: directions
+  endpoint:
+    path: /directions/v5/mapbox/{profile}
+    method: GET
+    data_selector: routes
+    params: {}
+- name: isochrones
+  endpoint:
+    path: /isochrone/v1/mapbox/{profile}
+    method: GET
+    data_selector: features
+    params: {}
+- name: matrix
+  endpoint:
+    path: /matrix/v1/mapbox/{profile}
+    method: GET
+    data_selector: rows
+    params: {}
+- name: style
+  endpoint:
+    path: /styles/{style_id}
+    method: GET
+    data_selector: style
+- name: styles
+  endpoint:
+    path: /styles
+    method: GET
+    data_selector: styles
+- name: upload_tiles
+  endpoint:
+    path: /upload_tiles
+    method: POST
+- name: check_upload_status
+  endpoint:
+    path: /check_upload_status
+    method: GET
+    data_selector: ''
+    params:
+      upload_id: ''
+      username: ''
+- name: geocoder
+  endpoint:
+    path: /geocoding/v5/mapbox.places
+    method: GET
+    data_selector: features
+    params:
+      limit: 5
+      min_length: 2
+- name: geocoder_as_xy
+  endpoint:
+    path: /R/search.R
+    method: GET
+    data_selector: coordinates
+    params: {}
+- name: directions
+  endpoint:
+    path: /api/navigation/directions
+    method: GET
+- name: mb_matrix
+  endpoint:
+    path: /navigation
+    method: GET
+    data_selector: matrix
+    params:
+      origins: c(x, y)
+      destinations: null
+      profile: driving
+      fallback_speed: null
+      output: duration
+      duration_output: minutes
+      depart_at: null
+      allow_large_matrix: false
+- name: isochrones
+  endpoint:
+    path: /isochrone
+    method: GET
+    data_selector: features
+- name: mb_optimized_route
+  endpoint:
+    path: /optimized-route
+    method: POST
+- name: get_vector_tiles
+  endpoint:
+    path: /get_vector_tiles
+    method: GET
+- name: query_tiles
+  endpoint:
+    path: /tilesets/{tileset_id}/query
+    method: GET
+    data_selector: features
+    params:
+      location: location
+      tileset_id: tileset_id
+      radius: radius
+      limit: limit
+      dedupe: dedupe
+      geometry: geometry
+      layers: layers
+      access_token: access_token
+- name: addMapboxTiles
+  endpoint:
+    path: /api/maps/static-tiles/
+    method: GET
+    data_selector: tiles
+    params:
+      style_id: light-v9
+      username: mapbox
+- name: get_static_tiles
+  endpoint:
+    path: /static/tiles
+    method: GET
+    data_selector: tiles
+    params:
+      style_id: light-v9
+      username: mapbox
+      scaling_factor: 1x
+      buffer_dist: 5000
+      units: m
+      crop: true
+- name: static_map
+  endpoint:
+    path: /static_mapbox
+    method: GET
+- name: layer_static_mapbox
+  endpoint:
+    path: /static_mapbox
+    method: POST
+    data_selector: null
+    params: {}
+- name: tm_static_mapbox
+  endpoint:
+    path: /tm_static_mapbox
+    method: POST
+    data_selector: null
+    params: {}
+- name: prep_overlay_markers
+  endpoint:
+    path: /prep_overlay_markers
+    method: GET
+    data_selector: markers
+    params: {}
+- name: tileset_source
+  endpoint:
+    path: /mts_create_source
+    method: POST
+    params: {}
+- name: create_tileset
+  endpoint:
+    path: /create-tileset
+    method: POST
+- name: retrieve_recipe
+  endpoint:
+    path: /mts/get_recipe
+    method: GET
+    data_selector: ''
+- name: tileset_sources
+  endpoint:
+    path: /mts_list_sources
+    method: GET
+    params:
+      limit: 100
+- name: tilesets
+  endpoint:
+    path: /mts/list_tilesets
+    method: GET
+    data_selector: data
+    params:
+      limit: 100
+- name: publish_tileset
+  endpoint:
+    path: /mts/publish_tileset
+    method: POST
+    data_selector: response
+- name: update_tileset_recipe
+  endpoint:
+    path: /mts_update_recipe
+    method: POST
+- name: recipe_layer
+  endpoint:
+    path: /recipe_layer
+    method: POST
+    data_selector: recipe_layer
+    params: {}
+notes:
+- The Mapbox access token is required.
+- requires a Mapbox secret access token to be set as an environment variable
+- Using MTS is not free and large tileset processing jobs can incur significant charges.
+- Requests are rate-limited internally to conform with Mapbox API limits.
+- Requires setting a Mapbox secret access token as an environment variable
+- Defaults to driving profile
+- Large matrices (greater than 25x25) may incur unexpected charges
+- Rate limit for most users is 300 calls per minute.
+- A Mapbox secret access token must be set with mb_access_token()
+- Access token with secret scope is required
+errors:
+- '403 Forbidden: Check your access token and permissions'
+- '404 Not Found: Verify the endpoint path and parameters'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.mapbox.com
+  auth:
+    type: apikey
+    location: query
+    header_name: access_token
+source_metadata: null
