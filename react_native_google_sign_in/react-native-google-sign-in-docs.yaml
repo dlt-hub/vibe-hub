@@ -1,0 +1,84 @@
+resources:
+- name: GoogleOneTapSignIn
+  endpoint:
+    path: /google-signin/one-tap
+    method: POST
+    data_selector: userInfo
+    params:
+      webClientId: autoDetect
+- name: config_doctor
+  endpoint:
+    path: /docs/api
+    method: GET
+    data_selector: results
+    params: {}
+- name: expo_without_firebase
+  endpoint:
+    path: /expo/without_firebase
+    method: POST
+    data_selector: plugins
+    params: {}
+- name: expo_with_firebase
+  endpoint:
+    path: /expo/with_firebase
+    method: POST
+    data_selector: plugins
+    params: {}
+notes:
+- Default scopes are ['email', 'profile']
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- If you want to migrate from the public version to the Universal version, follow
+  the migration guide.
+- This API is available on Android, iOS, macOS and web.
+- The web implementation doesn't depend on React Native or React Native Web.
+- One-tap UI may not always be available.
+- App Check helps protect your apps from abuse by preventing unauthorized clients
+  from authenticating using Google Sign-in.
+- Version 13 introduced a new JS API, which changes some method response signatures
+  and makes minor changes to error handling.
+- This library ships with a Jest mock that you can add to the setupFiles array in
+  your Jest config.
+- Calling the methods exposed by this package may involve remote network calls and
+  you should thus take into account that such calls may take a long time to complete
+  (e.g. in case of poor network connection).
+- idToken is not null only if you specify a valid `webClientId`. `webClientId` corresponds
+  to your server clientID on the developers console. It HAS TO BE of type WEB
+- serverAuthCode is not null only if you specify a valid `webClientId` and set `offlineAccess`
+  to true. Once you get the auth code, you can send it to your backend server and
+  exchange the code for an access token. Only with this freshly acquired token can
+  you access user data.
+- This is always a configuration mismatch between your app and the server-side setup
+  in Firebase or Google Cloud console.
+- If you have the APK that gives this error, we recommend to run the Configuration
+  Doctor and follow its instructions.
+- Command-line tool designed to help with Android signing configuration issues
+- Use `npx @react-native-google-signin/config-doctor --package-name com.yourapp.name`
+  for device/emulator
+- Use `npx @react-native-google-signin/config-doctor --apk-path ./app-release.apk`
+  for APK file
+- This package cannot be used in Expo Go because it uses native code.
+- Recommended approach for production apps is to use a development build.
+- The functionality covered in this page is available in the licensed version.
+- If you use Expo, follow this guide instead. This guide applies to vanilla React
+  Native apps only.
+errors:
+- 'ONE_TAP_START_FAILED: Rate limiting occurred.'
+- 'PLAY_SERVICES_NOT_AVAILABLE: Play services not available or outdated.'
+- 'ONE_TAP_START_FAILED: Android-only, you probably have hit rate limiting.'
+- 'PLAY_SERVICES_NOT_AVAILABLE: Android-only: play services not available or outdated.'
+- 'IN_PROGRESS: Trying to invoke another operation when previous one has not yet finished.'
+- 'PLAY_SERVICES_NOT_AVAILABLE: Play services are not available or outdated.'
+- 'ONE_TAP_START_FAILED: Thrown only on Android when the Universal sign in UI cannot
+  be presented.'
+- 'DEVELOPER_ERROR: Configuration mismatch between your app and the server-side setup'
+- 'DEVELOPER_ERROR: Check Google Sign-In configuration'
+- 'GetCredentialProviderConfigurationException: Check the app''s settings'
+- 'PLAY_SERVICES_NOT_AVAILABLE: Triggered when calling functions before the client
+  library is loaded.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://universal-sign-in.com
+  headers:
+    Accept: application/json
+source_metadata: null
