@@ -1,0 +1,127 @@
+resources:
+- name: create_payment
+  endpoint:
+    path: /post_api
+    method: POST
+    data_selector: response
+    params:
+      apikey: YOUR_API_KEY
+      command: create_payment
+      params: '{"amount":1234,"description":"A new PayPro payment for test@paypro.nl","pay_methods":"ideal/ABNANL2A","consumer_email":"test@paypro.nl"}'
+- name: create_product_payment
+  endpoint:
+    path: /post_api
+    method: POST
+    data_selector: response
+    params:
+      apikey: YOUR_API_KEY
+      command: create_product_payment
+      params: '{"product_id":12345}'
+- name: payment_methods
+  endpoint:
+    path: /payment_methods
+    method: GET
+- name: create_product
+  endpoint:
+    path: /create_product
+    method: POST
+    data_selector: response
+    params:
+      product_id: required
+- name: get_product
+  endpoint:
+    path: /get_product
+    method: GET
+    params:
+      product_id: required
+- name: update_product
+  endpoint:
+    path: /update_product
+    method: POST
+    params:
+      product_id: required
+- name: delete_product
+  endpoint:
+    path: /delete_product
+    method: POST
+    params:
+      product_id: required
+- name: create_refund
+  endpoint:
+    path: /post_api
+    method: POST
+    data_selector: successfully_requested
+    params:
+      command: refund
+      sale_id: 12345
+      sequence_no: 1
+      amount: 100
+- name: create_invoice
+  endpoint:
+    path: /post_api
+    method: POST
+    data_selector: sale_id
+    params:
+      command: create_invoice
+      amount: 1234
+      consumer_email: test@paypro.nl
+      consumer_postal: 9711AP
+      consumer_address: Emmaplein 1
+      consumer_country: Nederland
+      consumer_city: Groningen
+      invoicemethod: instant
+- name: pause_subscription
+  endpoint:
+    path: /post_api
+    method: POST
+    data_selector: Paused sale
+    params:
+      command: pause_subscription
+      sale_id: 12345678
+- name: resume_subscription
+  endpoint:
+    path: /post_api
+    method: POST
+    data_selector: successfully_requested
+    params:
+      command: resume_subscription
+      product_id: 12345
+- name: cancel_subscription
+  endpoint:
+    path: /post_api
+    method: POST
+    data_selector: successfully_requested
+    params:
+      command: cancel_subscription
+      product_id: 12345
+- name: get_product_discount_codes
+  endpoint:
+    path: /post_api
+    method: POST
+    data_selector: discount_codes
+    params:
+      command: get_product_discount_codes
+      product_id: 12345
+- name: payment_methods
+  endpoint:
+    path: /post_api
+    method: POST
+    data_selector: data
+    params:
+      command: get_all_pay_methods
+      params: {}
+notes:
+- All API calls should use POST. This is not a REST API, it does not use the HTTP
+  verbs.
+- Some payment methods require additional parameters and / or an associated product.
+errors:
+- 'Invalid API key: Ensure the API key is correct.'
+- 'Invalid command: Check the command parameter.'
+- 'Missing parameters: Ensure all required parameters are included.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://paypro.nl/post_api
+  auth:
+    type: apikey
+source_metadata: null

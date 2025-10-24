@@ -1,0 +1,183 @@
+resources:
+- name: data
+  endpoint:
+    path: /data
+    method: GET
+    data_selector: data
+    params: {}
+- name: metadata
+  endpoint:
+    path: /metadata
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: validate_xml
+  endpoint:
+    path: /validate_xml
+    method: POST
+    data_selector: validation_result
+    params:
+      version: '2.1'
+      max_errors: -1
+- name: compare
+  endpoint:
+    path: /sdmx/compare
+    method: GET
+    data_selector: results
+- name: DataMessage
+  endpoint:
+    path: /sdmx/message/DataMessage
+    method: GET
+    data_selector: data
+- name: MetadataMessage
+  endpoint:
+    path: /sdmx/message/MetadataMessage
+    method: GET
+    data_selector: data
+- name: ErrorMessage
+  endpoint:
+    path: /sdmx/message/ErrorMessage
+    method: GET
+    data_selector: data
+- name: availability
+  endpoint:
+    path: /dataflow
+    method: GET
+    data_selector: dataflows
+- name: data
+  endpoint:
+    path: /data
+    method: GET
+    data_selector: data
+- name: metadata
+  endpoint:
+    path: /metadata
+    method: GET
+    data_selector: metadata
+- name: ABS
+  endpoint:
+    path: /sources/abs
+    method: GET
+    data_selector: data
+    params: {}
+- name: OECD
+  endpoint:
+    path: /sources/oecd
+    method: GET
+    data_selector: data
+    params: {}
+- name: structure_message
+  endpoint:
+    path: /datastructure/UNE_RT_A
+    method: GET
+    data_selector: structure
+    params:
+      references: descendants
+- name: data_message
+  endpoint:
+    path: /data/UNE_RT_A
+    method: GET
+    data_selector: data
+    params:
+      key:
+        geo: EL+ES+IE
+      startPeriod: '2014'
+- name: dataflow
+  endpoint:
+    path: /service/dataflow/ECB/all/latest
+    method: GET
+    data_selector: DataflowDefinition
+- name: EXR
+  endpoint:
+    path: /service/dataflow/ECB/EXR/latest?references=all
+    method: GET
+    data_selector: DataflowDefinition
+- name: FREQ
+  endpoint:
+    path: /dsd/dimensions/FREQ
+    method: GET
+    data_selector: enumerated
+- name: dataflow
+  endpoint:
+    path: /service/dataflow/ECB/all/latest
+    method: GET
+    data_selector: DataflowDefinition
+- name: exchange_rate
+  endpoint:
+    path: /service/dataflow/ECB/EXR/latest
+    method: GET
+    data_selector: DataflowDefinition
+- name: data_attributes
+  endpoint:
+    path: /services/data/v1.0/attributes
+    method: GET
+    data_selector: attributes
+    params: {}
+- name: measures
+  endpoint:
+    path: /services/data/v1.0/measures
+    method: GET
+    data_selector: measures
+    params: {}
+- name: codelist_frequency
+  endpoint:
+    path: /services/data/v1.0/codelist/FREQ
+    method: GET
+    data_selector: codelist
+    params: {}
+- name: exchange_rates
+  endpoint:
+    path: /api/exchange_rates
+    method: GET
+    data_selector: data
+- name: dataflow
+  endpoint:
+    path: /dataflow
+    method: GET
+    data_selector: records
+notes:
+- Mix-in class for objects with a compare() method.
+- SDMX-REST API v1.5.0 corresponds to version 2.1 of the overall SDMX standards.
+- The code in this module does not perform calculations or operations on data using
+  the parsed structure expressions.
+- User code should use the returned information to determine which operations should
+  be performed.
+- Uses SDMX-REST web service for data queries
+- Uses requests library for HTTP connections
+- Supports caching with requests_cache if installed
+- SDMX datasets often require specific query keys for optimal performance.
+- Parsing datetimes may reduce performance for large datasets.
+- sdmx raises only HTTP errors with status code between 400 and 499.
+- Codes >= 500 do not raise an error as the SDMX web services guidelines define special
+  meanings to those codes.
+- 'Changed in version 2.15.0: The base URL of this source changed from https://www.ilo.org/sdmx/rest
+  to https://sdmx.ilo.org/rest.'
+- Each SDMX web service provides a subset of the full SDMX feature set, so the same
+  request made to two different sources may yield different results, or an error message.
+- The web service has some non-standard behaviour; see [#82](https://github.com/khaeru/sdmx/issues/82).
+- 'Changed in version 2.15.0: Sometime before 2024-04-26, the base URL of this source
+  changed from https://www.ilo.org/sdmx/rest to https://sdmx.ilo.org/rest.'
+- The 'SDMX query builder' at the above URL reflects the change, but the documentation
+  still shows the old URL, and there does not appear to have been any public announcement
+  about the new URL, retirement of the old URL, etc.
+- Supports preview_data and series-key based key validation.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some data providers may not fully comply with SDMX standards.
+- Any data source that generates SDMX 2.1 messages is supported.
+- Default directory for local copy of sdmx-test-data is /home/docs/.cache/sdmx/test-data
+- 'Deprecated since version 2.23.0: Use Comparable.compare() or compare() instead.'
+errors:
+- 'FileNotFoundError: if schema_dir (or a subdirectory) does not contain SDMXMessage.xsd'
+- 'NotImplementedError: if msg contains valid XML, but with a root element that is
+  not part of the SDMX-ML standard'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- 'NotImplementedError: Attempt to query an unsupported endpoint.'
+- 'HTTPError: Bad syntax in the request.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://data-api.ecb.europa.eu
+  headers:
+    Accept: application/vnd.sdmx.structure+xml;version=2.1
+source_metadata: null

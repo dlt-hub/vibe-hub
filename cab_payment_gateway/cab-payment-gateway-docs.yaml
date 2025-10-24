@@ -1,0 +1,205 @@
+resources:
+- name: balance
+  endpoint:
+    path: /api/balance
+    method: GET
+- name: transactionstatus
+  endpoint:
+    path: /api/transactionstatus
+    method: POST
+- name: validate
+  endpoint:
+    path: /api/validate
+    method: POST
+- name: cancel
+  endpoint:
+    path: /api/cancel
+    method: POST
+- name: payments
+  endpoint:
+    path: /api/pay
+    method: POST
+    data_selector: transactions
+- name: callback_results
+  endpoint:
+    path: /callback/result
+    method: POST
+    data_selector: results
+- name: transaction_validation
+  endpoint:
+    path: /api/validate
+    method: POST
+    data_selector: transactions
+- name: pay
+  endpoint:
+    path: /api/pay
+    method: POST
+    data_selector: message
+    params: {}
+- name: validate
+  endpoint:
+    path: /api/validate
+    method: POST
+    data_selector: message
+    params: {}
+- name: callback_result
+  endpoint:
+    path: /callback/result
+    method: POST
+    data_selector: results
+    params: {}
+- name: transactions
+  endpoint:
+    path: /api/transactionstatus
+    method: POST
+    data_selector: transactions
+    params: {}
+- name: callback_result
+  endpoint:
+    path: /callback/result
+    method: POST
+    data_selector: transactions
+- name: gateway_key
+  endpoint:
+    path: /api/callback/key
+    method: GET
+- name: api_pay
+  endpoint:
+    path: /api/pay
+    method: POST
+    data_selector: transactions
+- name: transactions
+  endpoint:
+    path: /api/pay
+    method: POST
+    data_selector: transactions
+    params: {}
+- name: recipientBank
+  endpoint:
+    path: /api/pay/recipientBank
+    method: POST
+    data_selector: recipientBank
+    params: {}
+- name: sender
+  endpoint:
+    path: /api/pay/sender
+    method: POST
+    data_selector: sender
+    params: {}
+- name: cancel_payment
+  endpoint:
+    path: /api/cancel
+    method: POST
+    data_selector: response
+    params: {}
+- name: reverse_payment
+  endpoint:
+    path: /api/reverse
+    method: POST
+    data_selector: response
+    params: {}
+- name: transactionstatus
+  endpoint:
+    path: /api/transactionstatus
+    method: GET
+    data_selector: transactions
+- name: pay
+  endpoint:
+    path: /api/pay
+    method: POST
+    data_selector: transactions
+- name: transaction_status
+  endpoint:
+    path: /api/transactionstatus
+    method: POST
+    data_selector: transactions
+    params:
+      clientId: '{{clientId}}'
+      requestId: '{{requestId}}'
+      walletIds:
+      - Swift_GBP
+- name: balance
+  endpoint:
+    path: /api/balance
+    method: GET
+    data_selector: balances
+- name: transaction_history
+  endpoint:
+    path: /transaction/history
+    method: GET
+    data_selector: transactions
+    params: {}
+notes:
+- Requests are sent using HTTPS requests; JSON is the data format for both input and
+  responses.
+- Responses are asynchronous and are sent using HTTPS requests from the payment gateway
+  to the client.
+- Transactions are sent in batches to efficiently support bulk-payment operations.
+- Every API request must contain a valid private key signature.
+- Requests to the API must include a unique client ID and request ID.
+- Final status updates for transactions can be retrieved from the callback endpoint.
+- Configuring the client with a callback URL is recommended for production environments
+  since it prevents transactions from being processed without the client being informed.
+- Keys are required for all clients, whether production or development/test. Keys
+  must be at least 256 bits in length.
+- Requests to the payment gateway are signed using public-key cryptography.
+- Public keys must be encoded in PEM format when uploading to the payment gateway's
+  key management interface.
+- Do not include your private key in the request body!
+- The gateway's current key ID is YvZ4YObUo9A.
+- Payments made using the SWIFT provider have their own field length and character
+  set restrictions.
+- The SWIFT provider will accept at most 2 decimal places for all currencies.
+- Field length restrictions may vary by recipient market.
+- Some ACH schemes use daily payment cycles, resulting in a delay between payment
+  initiation and execution.
+- Other ACH schemes have instant settlement, providing real-time feedback on payment
+  status.
+- Not all endpoints can be used to interact with payments initiated using the ACH
+  provider.
+- Polling schedule recommended for transaction retrieval.
+- startTime parameter needed for FX Settlements.
+- Transaction records include details such as transactionId, transactionType, statusCode,
+  and more.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Transaction not found: Returned if polling for a transaction that hasn''t been
+  processed yet.'
+- 'Request ID must be unique: The gateway will reject a request with a previously-used
+  ID.'
+- 'INVALID_REQUEST: Ensure all required fields are included in the request'
+- '401 Unauthorized: Check authentication credentials'
+- '400 Bad Request: Check the request format and required fields.'
+- '404 Not Found: The requested resource does not exist.'
+- '500 Internal Server Error: An error occurred on the server.'
+- '400 Bad Request: The gateway couldn’t decode the transaction.'
+- '401 Unknown Client ID: The supplied client ID was invalid.'
+- '402 Unauthorized: The client attempted to initiate a transaction for which it didn’t
+  have permission.'
+- '404 Transaction Not Found: The client requested the status of a transaction that
+  isn’t known to the gateway.'
+- '420 Recipient Not Found: The provider doesn’t recognize the requested recipient.'
+- 4301 Target Transaction Not Successful
+- 4302 Transaction Type Not Reversible
+- 4303 Transaction Already Reversed
+- 4304 Reversal Already Requested
+- 4305 Too Late to Reverse Transaction
+- 4306 Transaction Not Holding Funds
+- 440 Wallet Not Found
+- 441 Wallet Cannot Be Used With Requested Provider
+- 500 Internal Error
+- '400 Bad Request: Check request parameters.'
+- '401 Unauthorized: Verify client credentials.'
+- '404 Not Found: Endpoint may be incorrect.'
+auth_info:
+  mentioned_objects:
+  - clientId
+  - requestId
+  - walletIds
+client:
+  base_url: https://payment-api.thesegovia.com
+  headers:
+    API-Version: '1.0'
+source_metadata: null

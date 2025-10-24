@@ -1,0 +1,65 @@
+resources:
+- name: WordPress REST API
+  endpoint:
+    path: /wp-json/wp/v2
+    method: GET
+- name: send_mail
+  endpoint:
+    path: /v1.0/me/sendMail
+    method: POST
+    data_selector: value
+- name: SAML Service Provider Configuration
+  endpoint:
+    path: /sso/saml
+    method: POST
+    data_selector: configuration
+    params: {}
+notes:
+- Authorization header not found may occur due to server settings.
+- The plugin has been tested with PHP 7.4 and WordPress 5.3.x running on WAMP, Linux
+  and Windows.
+- Your WordPress website uses SSL and the website address starts with https.
+- If you plan to allow access to your WordPress website to users from other tenants,
+  you should use this guide to configure the OIDC Hybrid Flow.
+- Use Microsoft Azure AD for Single Sign-on based on OpenID Connect's Authorization
+  Code Flow
+- Ensure SSL is used for the website
+- You must enable the Token service and Check nonce for improved security if using
+  a version before v17.0 of the plugin.
+- Uses app-only permissions — requires new App registration in Azure AD
+- Must assign required permissions as delegated permissions for Microsoft 365 Apps
+- Requires delegated permissions for sending emails.
+- Make sure to grant admin consent for the required permissions in Azure AD.
+- The address https://wpo365.site/saml/ used throughout this guide is an example and
+  in your case the URL will be a different one.
+- Starting with WPO365 v25.0 the recommended approach to configure SAML 2.0 based
+  SSO is an automated one that involves the generation, export and import of metadata
+  XML files.
+- The Intranet scenario does not block access to the media library.
+- To allow access to a specific WordPress REST API endpoint, you must add its path
+  to the plugin's list for Pages freed from authentication.
+- Even though this solution has been tested and reviewed, I would like to make clear
+  that I'm not a security expert. In case of doubt, please have your setup reviewed
+  by an independent security consultant.
+- Website visitors are required to sign in with Microsoft but are not automatically
+  signed in as WordPress users.
+- If you still experience problems with the WPO365 cookie being 'ignored' by your
+  server-side caching solution, then please check if there is a cache-bursting option
+  provided by that solution or by your hoster.
+errors:
+- '401 Unauthorized: Request requires a valid oauth access token.'
+- '403 Forbidden: Request does not have permission to access the resource.'
+- 'AADSTS700025: Client is public so neither ''client_assertion'' nor ''client_secret''
+  should be presented'
+- '401 Unauthorized: Check if the token is valid and has the required permissions.'
+- '403 Forbidden: Ensure that the user has the necessary permissions to send emails.'
+- '400 Bad Request: Check the format of the email payload.'
+auth_info:
+  mentioned_objects:
+  - Azure AD
+  - App registration
+  - ID Token
+  - Microsoft Graph
+client:
+  base_url: https://www.wpo365.com
+source_metadata: null

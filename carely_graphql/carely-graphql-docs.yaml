@@ -1,0 +1,71 @@
+resources:
+- name: currentCustomer
+  endpoint:
+    path: /currentCustomer
+    method: POST
+    data_selector: data.currentCustomer
+- name: customers
+  endpoint:
+    path: /customers
+    method: POST
+    data_selector: data.customers
+- name: departments
+  endpoint:
+    path: /departments
+    method: POST
+    data_selector: data.departments
+- name: workplaces
+  endpoint:
+    path: /graphql
+    method: POST
+    data_selector: data.workplaces
+    params: {}
+- name: groupAnalysis
+  endpoint:
+    path: /graphql
+    method: POST
+    data_selector: data.groupAnalysis
+    params: {}
+- name: upsertCustomer
+  endpoint:
+    path: /graphql
+    method: POST
+    data_selector: data.upsertCustomer
+    params: {}
+- name: overtimes
+  endpoint:
+    path: /overtimes
+    method: GET
+    data_selector: data.overtimes.edges
+    params: {}
+- name: upsertOvertime
+  endpoint:
+    path: /upsertOvertime
+    method: POST
+    data_selector: data.upsertOvertime
+    params: {}
+notes:
+- Uses OAuth2 with authorization code — requires setup of application in Carely
+- Each request for Customers Query can return up to 100 entries.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects may return nulls in deeply nested fields
+- 1リクエストで取得できる件数は100件となります。
+- IPアドレス毎に1秒間に20リクエスト処理されます。
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '429 Too Many Requests: リクエスト数が上限に達しました'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.carely.io/api/graphql
+  auth:
+    type: oauth2
+    flow: authorization_code
+    token_url: https://auth.carely.io/corporate_manager/oauth/token
+    client_id: '{{ dlt.secrets[''client_id''] }}'
+    client_secret: '{{ dlt.secrets[''client_secret''] }}'
+    location: header
+    header_name: Authorization
+source_metadata: null

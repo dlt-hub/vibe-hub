@@ -1,0 +1,195 @@
+resources:
+- name: reset_options
+  endpoint:
+    path: /reset
+    method: POST
+    data_selector: options
+    params: {}
+- name: defaults_function
+  endpoint:
+    path: /defaults
+    method: POST
+    data_selector: data
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: events
+  endpoint:
+    path: /concepts/events
+    method: GET
+    data_selector: events
+    params: {}
+- name: login
+  endpoint:
+    path: ?/login
+    method: POST
+    data_selector: loginForm
+    params: {}
+- name: register
+  endpoint:
+    path: ?/register
+    method: POST
+    data_selector: registerForm
+    params: {}
+- name: superForm
+  endpoint:
+    path: /api/superForm
+    method: POST
+    data_selector: form
+- name: loginForm
+  endpoint:
+    path: /api/login
+    method: POST
+    data_selector: data.loginForm
+    params: {}
+- name: registerForm
+  endpoint:
+    path: /api/register
+    method: POST
+    data_selector: data.registerForm
+    params: {}
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+    data_selector: users
+    params: {}
+- name: SuperDebug
+  endpoint:
+    path: /super-debug
+    method: GET
+    data_selector: data
+- name: superValidate
+  endpoint:
+    path: /api/superValidate
+    method: POST
+    data_selector: data
+- name: form
+  endpoint:
+    path: /superforms
+    method: POST
+    data_selector: form
+    params: {}
+- name: Superform
+  endpoint:
+    path: /superform
+    method: POST
+    data_selector: data
+    params: {}
+- name: superValidate
+  endpoint:
+    path: /superValidate
+    method: POST
+    data_selector: data
+    params: {}
+- name: superValidate
+  endpoint:
+    path: /api/superValidate
+    method: POST
+    data_selector: form
+    params: {}
+- name: superValidate
+  endpoint:
+    path: /api/superValidate
+    method: POST
+    data_selector: form
+- name: superValidate
+  endpoint:
+    path: /api/superValidate
+    method: POST
+    data_selector: form
+- name: superForm
+  endpoint:
+    path: /api/superForm
+    method: GET
+    data_selector: form
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- File upload support is now available.
+- Form is reset by default.
+- The default for taintedMessage changed to false.
+- Events are only available when JavaScript is enabled in the browser and the custom
+  use:enhance is added to the form.
+- Because file objects cannot be serialized, you must return the form using fail,
+  message or setError imported from Superforms, not from SvelteKit
+- 'To prevent file uploads, set the { allowFiles: false } option in superValidate'
+- delayMs should be positive and always smaller than or equal to timeoutMs, otherwise
+  the timer behavior will be undefined.
+- Multiple forms on the same page are handled automatically if you are using use:enhance,
+  and the forms have different schema types.
+- If using the same schema for multiple forms, set the id option to ensure that only
+  forms with the matching id react to updates.
+- 'To prevent data loss on form submission, consider setting invalidateAll: false
+  or applyAction: false.'
+- JavaScript is enabled in the browser.
+- The form has the Superforms use:enhance applied.
+- By setting the SPA option to true, the form won’t be sent to the server when submitted.
+- The validation in onUpdate is almost the same as validating in a form action on
+  the server.
+- Superforms is quite forgiving with missing fields in the posted data.
+- You can use strict mode when calling `superValidate`.
+- The use:enhance action takes no arguments and is specific to superForm.
+- Without use:enhance, the form will be static and only constraints will work.
+- Redirecting with a message is a general problem; for example, maybe we’d like to
+  redirect to the newly created user after it’s been created.
+- When `superValidate` encounters a schema field that isn’t optional, and when its
+  supplied data is empty, a default value is returned to the form, to ensure that
+  the type is correct.
+- SuperDebug is a debugging component that gives you colorized and nicely formatted
+  output for any data structure.
+- The most common mistake is to forget the `name` attribute on the input field.
+- 'Use the `resetForm: false` option for `superForm` to prevent the form from being
+  reset after submission.'
+- You must always return an `ActionResult` as a response to a form submission.
+- The library works together with Superforms without any extra configuration
+- The Superforms server API is called `superValidate`.
+- Always return { form } in load functions.
+- Define the schema outside the load function for caching.
+- Return the form object to the client in load functions and form actions.
+- Always return { form } in load functions
+- Returns form object to the client, either directly or through a helper function
+- Ensure to define schema outside load function for caching.
+- Define the schema outside the load function to make caching work.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- E-mail already exists.
+- Not found
+- Database connection error
+- rate_limited
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://superforms-v1.vercel.app
+  headers:
+    Accept: application/json
+source_metadata: null

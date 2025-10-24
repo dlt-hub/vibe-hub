@@ -1,0 +1,159 @@
+resources:
+- name: yjs_document
+  endpoint:
+    path: /
+    method: POST
+    data_selector: document
+    params: {}
+- name: party
+  endpoint:
+    path: /api/v1/party
+    method: GET
+    data_selector: data
+- name: vectorize
+  endpoint:
+    path: /vectorize
+    method: POST
+    data_selector: vectors
+    params: {}
+- name: query
+  endpoint:
+    path: /YOUR_INDEX/query
+    method: POST
+    data_selector: matches
+    params:
+      topK: 3
+      returnValues: true
+      returnMetadata: true
+- name: storage
+  endpoint:
+    path: /storage
+    method: GET
+    data_selector: items
+    params: {}
+- name: messages
+  endpoint:
+    path: /parties/main/{roomId}
+    method: POST
+    data_selector: message
+- name: all_messages
+  endpoint:
+    path: /parties/main/{roomId}
+    method: GET
+    data_selector: messages
+- name: set_alarm
+  endpoint:
+    path: /setAlarm
+    method: POST
+    data_selector: alarmSet
+- name: on_alarm
+  endpoint:
+    path: /onAlarm
+    method: POST
+    data_selector: alarmTriggered
+- name: connections
+  endpoint:
+    path: src/connections.ts
+    method: POST
+    data_selector: connections
+- name: user
+  endpoint:
+    path: src/user.ts
+    method: GET
+    data_selector: user
+- name: Party.Server
+  endpoint:
+    path: /reference/partyserver-api/
+    method: GET
+    data_selector: options
+    params: {}
+- name: crons
+  endpoint:
+    path: /crons
+    method: GET
+    data_selector: crons
+    params: {}
+- name: party_events
+  endpoint:
+    path: /api/v1/party_events
+    method: GET
+    data_selector: data
+    params: {}
+- name: WebSocketServer
+  endpoint:
+    path: /party/my-room
+    method: WebSocket
+    data_selector: messages
+    params: {}
+notes:
+- Persistence can be set to snapshot or history modes.
+- Custom domains will be available in the near future.
+- To run PartyKit, you need to have Node v. 17 or higher installed.
+- Each server runs in a separate Durable Object and is fully isolated from any other
+  process.
+- PartyKit servers are suitable for real-time, latency-sensitive use cases.
+- Requires setup of connected app in PartyKit
+- Uses GitHub account for authentication
+- PartyKit AI is currently in Open Beta and is not recommended for production data
+  and traffic, and limits + access are subject to change.
+- PartyKit AI is currently in Open Beta and is not recommended for production data
+  and traffic, and limits + access are subject to change
+- Each PartyKit server is a TypeScript module that implements the Party.Server interface.
+- You can define an options field to customise the PartyServer behaviour.
+- Runs on a schedule defined in the crons field of the partykit.json file.
+- Useful for running code periodically, such as sending reminders or cleaning up old
+  data.
+- PartySocket is a TypeScript client library for connecting to PartyKit servers via
+  WebSockets.
+- Every PartyKit server accepts WebSocket connections by default.
+- You can implement authentication in your onBeforeConnect and onBeforeRequest handlers.
+- PartyKit utilizes Cloudflare Workers under the hood, so the same debugging techniques
+  apply.
+- You can also set `domain` under `partykit.json`
+- New browser window will open with a device activation page.
+- Once permissions are granted, your app will be deployed to your partykit.dev domain.
+- Incoming and outgoing messages can be either strings or generic raw binary data
+  buffers.
+- Persisting data to disk is optional as PartyKit servers also allow you to keep in-memory
+  state.
+- If you want to guarantee that your party state is not lost between server restarts,
+  you’ll need to save the state somewhere and reload it when your party starts up
+  again.
+- PartyKit is very fast, and can process hundreds of messages per second from a single
+  WebSocket connection, and thousands per second per room.
+- You can prevent scenarios like these by applying rate limiting to your connections.
+- Hibernation allows a single room to handle vastly more active connections than it
+  otherwise would.
+- With Hibernation, the active WebSocket connections no longer count towards your
+  party’s 128MB memory limit.
+- Each PartyKit room can have only one active alarm at a time.
+- Using fetch to communicate between different parties is routed via the Internet.
+- The PARTYKIT_TOKEN will allow anyone to deploy to PartyKit your behalf, so do not
+  share it publicly or commit it to source control.
+- Requires setup of connected app in your auth provider
+- PartyKit allows you to write your own business logic, or use industry-standard open
+  source packages to implement common use cases and workflows.
+- Whether the PartyKit platform should remove the server from memory between HTTP
+  requests and WebSocket messages. The default value is false.
+- Uses OAuth2 with GitHub account for authentication
+- Requires OAuth2 authentication setup.
+- Every PartyKit server accepts WebSocket connections by default
+errors:
+- '401 Unauthorized: Check OAuth token and scopes'
+- '403 Forbidden: Verify permissions for the requested resource'
+- '401 Unauthorized: authentication failed!'
+- 'INVALID_REQUEST: Check your request parameters'
+- 'UNAUTHORIZED: Check your credentials'
+- '401 Unauthorized: Recheck GitHub authentication'
+- '401 Unauthorized: Check your API key.'
+- '429 Too Many Requests: Rate limit exceeded.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+client:
+  base_url: http://localhost:1999
+  paginator:
+    type: cron
+    default_page_size: 1
+source_metadata: null
