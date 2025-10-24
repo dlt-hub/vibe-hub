@@ -1,0 +1,97 @@
+resources:
+- name: products
+  endpoint:
+    path: /getProducts
+    method: POST
+    data_selector: data.products.items
+    params: {}
+- name: test_methods
+  endpoint:
+    path: /testMethods
+    method: POST
+    data_selector: data.testMethods.items
+    params: {}
+- name: clients
+  endpoint:
+    path: /clients
+    method: POST
+    data_selector: data.clients.items
+    params: {}
+- name: upload_results
+  endpoint:
+    path: /v1/upload-results
+    method: POST
+    data_selector: ''
+    params: {}
+- name: Workbook
+  endpoint:
+    path: /workbook
+    method: GET
+    data_selector: records
+- name: test_method
+  endpoint:
+    path: /test_methods
+    method: POST
+    data_selector: data
+    params: {}
+- name: test_method
+  endpoint:
+    path: /api/test_methods
+    method: POST
+    data_selector: test_methods
+    params: {}
+- name: job
+  endpoint:
+    path: /lifecycle/submit/job
+    method: POST
+    data_selector: job_details
+- name: job_submission
+  endpoint:
+    path: /lifecycle/submit_job
+    method: POST
+    data_selector: job_details
+    params: {}
+- name: sample_management
+  endpoint:
+    path: /samples/manage
+    method: POST
+    data_selector: sample_details
+    params: {}
+notes:
+- MFA reduces the risk of unauthorized access, even if login credentials have been
+  compromised.
+- MFA can be enforced for all users in your LabHQ organisation within the administrative
+  settings.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- A file limit of 200MB applies to the imported results data. CSV files over 200MB
+  will be rejected and no data uploaded.
+- 'CSV filenames must not contain spaces (remove them prior to upload). The only permitted
+  characters are alphanumeric and the following special characters: `!` `-` `_` `.`
+  `*` `''` `(` `)`'
+- Imported results data will only be visible within LabHQ’s reporting tools when at
+  least one result with a matching client, product, test method, and test method output
+  has been entered via the lifecycle of LabHQ (i.e. not imported).
+- Only a single CSV file containing results data may be imported. Uploading a CSV
+  results data file into LabHQ will overwrite any previously imported data.
+- Test methods are used to define the requirements for data collecting during the
+  processing of analytical data.
+- LabHQ has a password policy that cannot be changed.
+- The Reset User Authenticator option will only appear if a user has MFA enabled,
+  MFA is set to Authenticator app, and is not performing the action on their own account.
+- A job can contain a maximum of 200 samples.
+- Each sample can contain a maximum of 200 tests.
+errors:
+- '401 Unauthorized: Access denied for schema.'
+- '400 Bad Request: Cannot query field ''id123'' on type ''TestMethodInputType''.'
+- 'INVALID_REQUEST: Signifies the request structure is incorrect.'
+- 'INTERNAL_ERROR: Represents an error that occurred within the server.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.labhqlims.com
+  auth:
+    type: oauth2
+source_metadata: null
