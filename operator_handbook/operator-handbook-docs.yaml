@@ -1,0 +1,623 @@
+resources:
+- name: adb_commands
+  endpoint:
+    path: /commands
+    method: GET
+    data_selector: commands
+    params: {}
+- name: trails
+  endpoint:
+    path: /cloudtrail/describe-trails
+    method: GET
+    data_selector: trails
+    params: {}
+- name: s3_buckets
+  endpoint:
+    path: /s3/ls
+    method: GET
+    data_selector: buckets
+    params: {}
+- name: cloudtrail_event_history
+  endpoint:
+    path: /cloudtrail/download_event_history
+    method: GET
+    data_selector: events
+    params: {}
+- name: cloudwatch_logs
+  endpoint:
+    path: /cloudwatch/download_logs
+    method: GET
+    data_selector: logs
+    params: {}
+- name: BloodHound
+  endpoint:
+    path: /bloodhound
+    method: GET
+- name: Cobalt Strike
+  endpoint:
+    path: /cobaltstrike
+    method: GET
+- name: Cyber Chef
+  endpoint:
+    path: /cyberchef
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: linux_ports
+  endpoint:
+    path: /linux/ports
+    method: GET
+    data_selector: records
+    params: {}
+- name: important_file_locations
+  endpoint:
+    path: /important_file_locations
+    method: GET
+    data_selector: files
+    params: {}
+- name: linux_versions
+  endpoint:
+    path: /linux_versions
+    method: GET
+    data_selector: versions
+    params: {}
+- name: sekurlsa_logonpasswords
+  endpoint:
+    path: sekurlsa::logonpasswords
+    method: GET
+    data_selector: results
+- name: kerberos_list
+  endpoint:
+    path: kerberos::list
+    method: GET
+    data_selector: results
+- name: lsadump_dcsync
+  endpoint:
+    path: lsadump::dcsync
+    method: GET
+    data_selector: results
+- name: people_search
+  endpoint:
+    path: /api/people
+    method: GET
+    data_selector: results
+- name: top_largest_processes
+  endpoint:
+    path: /processes/largest
+    method: GET
+    data_selector: records
+    params:
+      query: select pid, name, uid, resident_size from processes order by resident_size
+        desc limit 10
+- name: most_active_processes
+  endpoint:
+    path: /processes/active
+    method: GET
+    data_selector: records
+    params:
+      query: select count(pid) as total, name from processes group by name order by
+        total desc limit 10
+- name: new_network_listening_processes
+  endpoint:
+    path: /processes/network
+    method: GET
+    data_selector: records
+    params:
+      query: select distinct process.name, listening.port, listening.address, process.pid
+        from processes as process join listening_ports as listening on process.pid
+        = listening.pid
+- name: suspicious_outbound_activity
+  endpoint:
+    path: /processes/outbound
+    method: GET
+    data_selector: records
+    params:
+      query: select s.pid, p.name, local_address, remote_address, family, protocol,
+        local_port, remote_port from process_open_sockets s join processes p on s.pid
+        = p.pid where remote_port not in (80, 443) and family = 2
+- name: deleted_binary_processes
+  endpoint:
+    path: /processes/deleted
+    method: GET
+    data_selector: records
+    params:
+      query: select name, path, pid from processes where on_disk = 0
+- name: info
+  endpoint:
+    path: /info
+    method: GET
+    data_selector: data
+    params: {}
+- name: search
+  endpoint:
+    path: /shodan/host/search
+    method: GET
+    data_selector: matches
+    params: {}
+- name: sql_injection_flaws
+  endpoint:
+    path: /login.php
+    method: GET
+    data_selector: response
+    params: {}
+- name: timeliner
+  endpoint:
+    path: /timeliner
+    method: GET
+    data_selector: records
+    params: {}
+- name: imageinfo
+  endpoint:
+    path: /imageinfo
+    method: GET
+    data_selector: records
+    params: {}
+- name: apihooks
+  endpoint:
+    path: /apihooks
+    method: GET
+    data_selector: records
+    params: {}
+- name: autoruns
+  endpoint:
+    path: /autoruns
+    method: GET
+    data_selector: records
+    params: {}
+- name: adb_commands
+  endpoint:
+    path: /adb/commands
+    method: GET
+    data_selector: commands
+- name: cloudtrail_trails
+  endpoint:
+    path: /cloudtrail/describe-trails
+    method: GET
+    data_selector: trails
+    params: {}
+- name: iam_users
+  endpoint:
+    path: /iam/list-users
+    method: GET
+    data_selector: Users
+    params: {}
+- name: s3_buckets
+  endpoint:
+    path: /s3/list-buckets
+    method: GET
+    data_selector: Buckets
+    params: {}
+- name: cloudtrail_download_event_history
+  endpoint:
+    path: /services/cloudtrail/eventHistory
+    method: GET
+- name: cloudwatch_download_logs
+  endpoint:
+    path: /services/cloudwatch/logs
+    method: GET
+- name: service_ports
+  endpoint:
+    path: /services/data/vXX.X/sobjects/ServicePorts
+    method: GET
+    data_selector: records
+    params: {}
+- name: macos_commands
+  endpoint:
+    path: /macos/commands
+    method: GET
+    data_selector: commands
+    params: {}
+- name: forensics_tools
+  endpoint:
+    path: /macos/forensics/tools
+    method: GET
+    data_selector: tools
+    params: {}
+- name: autostart_locations
+  endpoint:
+    path: /macos/autostart/locations
+    method: GET
+    data_selector: locations
+    params: {}
+- name: system_logs
+  endpoint:
+    path: /macos/system/logs
+    method: GET
+    data_selector: logs
+    params: {}
+- name: user_accounts
+  endpoint:
+    path: /user/accounts
+    method: GET
+    data_selector: accounts
+    params: {}
+- name: device_backups
+  endpoint:
+    path: /device/backups
+    method: GET
+    data_selector: backups
+    params: {}
+- name: recent_items
+  endpoint:
+    path: /recent/items
+    method: GET
+    data_selector: items
+    params: {}
+- name: note
+  endpoint:
+    path: /applenotes/note
+    method: GET
+    data_selector: records
+- name: scan_single_ip
+  endpoint:
+    path: nmap 10.0.0.1
+    method: GET
+    data_selector: results
+    params: {}
+- name: scan_range_of_ips
+  endpoint:
+    path: nmap 10.0.0.1-20
+    method: GET
+    data_selector: results
+    params: {}
+- name: scan_subnet
+  endpoint:
+    path: nmap 10.0.0.0/24
+    method: GET
+    data_selector: results
+    params: {}
+- name: scan_ports
+  endpoint:
+    path: nmap -p 22 10.0.0.1
+    method: GET
+    data_selector: results
+    params: {}
+- name: scan_all_ports
+  endpoint:
+    path: nmap -p- 10.0.0.1
+    method: GET
+    data_selector: results
+    params: {}
+- name: reset_password
+  endpoint:
+    path: /password/reset
+    method: GET
+- name: processes
+  endpoint:
+    path: /processes
+    method: GET
+    data_selector: records
+    params: {}
+- name: listening_ports
+  endpoint:
+    path: /listening_ports
+    method: GET
+    data_selector: records
+    params: {}
+- name: kernel_modules
+  endpoint:
+    path: /kernel_modules
+    method: GET
+    data_selector: records
+    params: {}
+- name: elevator_master_keys
+  endpoint:
+    path: /elevator/master/keys
+    method: GET
+    data_selector: records
+- name: common_keys
+  endpoint:
+    path: /common/keys
+    method: GET
+    data_selector: records
+- name: ports_top1000
+  endpoint:
+    path: /ports/top1000
+    method: GET
+    data_selector: records
+- name: ports_ics_scada
+  endpoint:
+    path: /ports/ics/scada
+    method: GET
+    data_selector: records
+- name: ports_malware_c2
+  endpoint:
+    path: /ports/malware/c2
+    method: GET
+    data_selector: records
+- name: info
+  endpoint:
+    path: /info
+    method: GET
+    data_selector: results
+- name: host
+  endpoint:
+    path: /host/{ip}
+    method: GET
+    data_selector: data
+- name: search
+  endpoint:
+    path: /search
+    method: GET
+    data_selector: matches
+- name: snort_rule
+  endpoint:
+    path: /snort/rules
+    method: GET
+    data_selector: rules
+    params: {}
+- name: Source IP and DNS Query
+  endpoint:
+    path: /tshark/source_ip_dns_query
+    method: GET
+    data_selector: records
+- name: Various Statistics
+  endpoint:
+    path: /tshark/various_statistics
+    method: GET
+    data_selector: records
+- name: Display Top 10 URLs
+  endpoint:
+    path: /tshark/top_10_urls
+    method: GET
+    data_selector: records
+- name: HTTP traffic from a PCAP file
+  endpoint:
+    path: /tshark/http_traffic
+    method: GET
+    data_selector: records
+- name: SSL traffic
+  endpoint:
+    path: /tshark/ssl_traffic
+    method: GET
+    data_selector: records
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: process_creation
+  endpoint:
+    path: /events/process_creation
+    method: GET
+    data_selector: events
+- name: network_connection
+  endpoint:
+    path: /events/network_connection
+    method: GET
+    data_selector: events
+- name: process_terminated
+  endpoint:
+    path: /events/process_terminated
+    method: GET
+    data_selector: events
+- name: AIM Away Messages
+- name: AIM Buddy List
+- name: AIM File Transfers
+- name: AIM Information
+- name: AIM Last User
+- name: AIM Profile Info
+- name: AIM Recent Contacts
+- name: AIM Saved Buddy List
+- name: UserSettings
+  endpoint:
+    path: /registry/UserSettings
+    method: GET
+    data_selector: settings
+    params: {}
+- name: InstalledApplications
+  endpoint:
+    path: /registry/InstalledApplications
+    method: GET
+    data_selector: applications
+    params: {}
+- name: Account_Users
+  endpoint:
+    path: SAM/Domains/Account/Users
+    method: GET
+    data_selector: records
+    params: {}
+- name: Winlogon
+  endpoint:
+    path: SOFTWARE/Microsoft/Windows NT/CurrentVersion/Winlogon
+    method: GET
+    data_selector: records
+    params: {}
+- name: Policies_System
+  endpoint:
+    path: SOFTWARE/Microsoft/Windows/CurrentVersion/Policies/System
+    method: GET
+    data_selector: records
+    params: {}
+- name: Security Audit Policies
+  endpoint:
+    path: /Registry/Windows7/SecurityAuditPolicies
+    method: GET
+- name: Time Zone Information
+  endpoint:
+    path: /Registry/Windows7/TimeZoneInformation
+    method: GET
+- name: User Profile Logon
+  endpoint:
+    path: /Registry/Windows7/UserProfileLogon
+    method: GET
+- name: Winlogon shell
+  endpoint:
+    path: /Registry/Windows7/WinlogonShell
+    method: GET
+- name: Remote Desktop Information
+  endpoint:
+    path: /Registry/Windows7/RemoteDesktopInformation
+    method: GET
+- name: Run Box Recent commands
+  endpoint:
+    path: /Registry/Windows7/RunBoxRecentCommands
+    method: GET
+- name: Screen Saver Settings
+  endpoint:
+    path: /Registry/Windows7/ScreenSaverSettings
+    method: GET
+- name: SCSI Device Information
+  endpoint:
+    path: /Registry/Windows7/SCSIDeviceInformation
+    method: GET
+- name: Shared Folders
+  endpoint:
+    path: /Registry/Windows7/SharedFolders
+    method: GET
+- name: Shell Bags
+  endpoint:
+    path: /Registry/Windows7/ShellBags
+    method: GET
+- name: Shell Execute Hooks
+  endpoint:
+    path: /Registry/Windows7/ShellExecuteHooks
+    method: GET
+- name: Cached IP Data
+  endpoint:
+    path: /api/cached_ip_data
+    method: GET
+- name: Process Name
+  endpoint:
+    path: /api/process_name
+    method: GET
+- name: Update App ID
+  endpoint:
+    path: /api/update_app_id
+    method: GET
+- name: Install Path
+  endpoint:
+    path: /api/install_path
+    method: GET
+- name: Language
+  endpoint:
+    path: /api/language
+    method: GET
+- name: User CID
+  endpoint:
+    path: /api/user_cid
+    method: GET
+- name: User List
+  endpoint:
+    path: /api/user_list
+    method: GET
+- name: User Name
+  endpoint:
+    path: /api/user_name
+    method: GET
+- name: Email
+  endpoint:
+    path: /api/email
+    method: GET
+- name: Version 1
+  endpoint:
+    path: /api/version_1
+    method: GET
+- name: Version 2
+  endpoint:
+    path: /api/version_2
+    method: GET
+- name: best_stories
+  endpoint:
+    path: /best-stories
+    method: GET
+    data_selector: stories
+- name: top_stories
+  endpoint:
+    path: /top-stories
+    method: GET
+    data_selector: stories
+notes:
+- adb is a versatile command-line tool that lets you communicate with a device.
+- List all trails aws cloudtrail describe-trails
+- List all S3 buckets aws s3 ls
+- This module can take a very long time to complete. A rough estimate is about 10000
+  events retrieved per five minutes.
+- BloodHound uses graph theory to reveal relationships within an Active Directory
+  environment.
+- Cobalt Strike is used for Adversary Simulations and Red Team Operations.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Initial setup iptables like chain setup, use ipv4-filter file provided in the source.
+- Rule counters are optional with nftables.
+- 'Managing Puppet Services: service puppetserver start chkconfig puppetserver on
+  service start puppet chkconfig puppet on'
+- default is every 30minutes (1800 seconds)
+- default is "production"
+- default is "puppet"
+- Get your API key from your Shodan account page
+- sqlmap is an open source penetration testing tool that automates the process of
+  detecting and exploiting SQL injection flaws and taking over of database servers.
+- tmux is a terminal multiplexer that lets you switch easily between several programs
+  in one terminal, detach them, and reattach them to a different terminal.
+- Volatility is an open-source memory forensics framework for incident response and
+  malware analysis.
+- ADB facilitates a variety of device actions, such as installing and debugging apps.
+- Limitations include 5000 users, 100 groups, and 250 roles.
+- gcloud CLI manages authentication, local configuration, developer workflow, and
+  interactions with Google Cloud APIs.
+- System profiler can generate a detailed report of the macOS setup.
+- Microsoft disabled lsass clear text storage since Win8.1 / 2012R2+.
+- Nmap is a free and open-source network scanner used to discover hosts and services
+  on a computer network.
+- osquery exposes an operating system as a high-level database.
+- Basic Snort rule header outline provided.
+- Registry paths may vary based on system configuration
+- Some values may not be accessible due to permissions
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '403 Forbidden: Invalid API key'
+- '400 Bad Request: Missing required parameters'
+- 'Invalid URL: Check the target URL format'
+- 'Authentication required: Provide correct credentials'
+- '401 Unauthorized: Recheck API keys or access permissions'
+- '401 Unauthorized: Recheck API keys or permissions'
+- '404 Not Found: Check the endpoint path.'
+- '400 Bad Request: Check your query syntax'
+- '401 Unauthorized: Invalid API key'
+- '404 Not Found: Check the endpoint path'
+- 'Invalid rule: Ensure correct syntax.'
+- 'ACCESS_DENIED: Check permissions for accessing the registry'
+- 'KEY_NOT_FOUND: Ensure the specified registry path exists'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - API key
+  - API Key
+client:
+  base_url: https://aws.amazon.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.aws.com/oauth2/token
+    client_id: '{{ dlt.secrets[''aws_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''aws_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''aws_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

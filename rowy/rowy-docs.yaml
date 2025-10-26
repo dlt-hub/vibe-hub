@@ -1,0 +1,165 @@
+resources:
+- name: service_account
+  endpoint:
+    path: /iam-admin/serviceaccounts
+    method: POST
+    data_selector: serviceAccounts
+    params:
+      service_account_id: rowy-service
+- name: automated_roles
+  endpoint:
+    path: /how-to/access-control
+    method: GET
+    data_selector: roles
+    params: {}
+- name: add_column
+  endpoint:
+    path: /add-column
+    method: POST
+    data_selector: data
+    params: {}
+- name: custom_table_view
+  endpoint:
+    path: /how-to/custom-views
+    method: GET
+    data_selector: data
+- name: import_data
+  endpoint:
+    path: /import/data
+    method: POST
+    data_selector: records
+    params: {}
+- name: extension_logs
+  endpoint:
+    path: /cloud-logs/extensions
+    method: GET
+    data_selector: logs
+- name: webhook_logs
+  endpoint:
+    path: /cloud-logs/webhooks
+    method: GET
+    data_selector: logs
+- name: column_logs
+  endpoint:
+    path: /cloud-logs/columns
+    method: GET
+    data_selector: logs
+- name: audit_logs
+  endpoint:
+    path: /cloud-logs/audit
+    method: GET
+    data_selector: logs
+- name: build_logs
+  endpoint:
+    path: /cloud-logs/builds
+    method: GET
+    data_selector: logs
+- name: function_logs
+  endpoint:
+    path: /cloud-logs/functions
+    method: GET
+    data_selector: logs
+- name: rowy_user
+  endpoint:
+    path: /reference/rowy-user
+    method: GET
+    data_selector: records
+- name: action_status
+  endpoint:
+    path: /reference/action-status
+    method: GET
+    data_selector: records
+- name: buildship_trigger
+  endpoint:
+    path: /path/to/buildship/trigger
+    method: POST
+    data_selector: buildshipConfig
+    params: {}
+- name: AlgoliaIndex
+  endpoint:
+    path: /algoliaIndex
+    method: POST
+    data_selector: fieldsToSync
+    params: {}
+- name: send_email
+  endpoint:
+    path: /v3/mail/send
+    method: POST
+    data_selector: return_object
+- name: twilio_message
+  endpoint:
+    path: /send
+    method: POST
+    data_selector: response
+    params: {}
+- name: slack_message
+  endpoint:
+    path: /api/chat.postMessage
+    method: POST
+    data_selector: message
+- name: DocSync
+  endpoint:
+    path: /extensions/doc-sync
+    method: GET
+    data_selector: fieldsToSync
+- name: discord_message
+  endpoint:
+    path: /webhooks
+    method: POST
+    data_selector: content
+    params: {}
+notes:
+- This setup is for developers wanting to contribute to Rowy open source project
+- This option will not get automatic updates with latest feature.
+- Currently, Rowy supports only Firestore as a data source. PostgreSQL and MySQL will
+  be supported in the future versions.
+- Required roles include App Engine Admin, App Engine Creator, Cloud Datastore User,
+  Cloud Functions Developer, Cloud Run Admin, Cloud Scheduler Admin, Cloud Storage
+  for Firebase Admin, Eventarc Admin, Firebase Admin, Firebase Authentication Admin,
+  Firebase Rules Admin, Project IAM Admin, Pub/Sub Admin, Secret Manager Admin, Service
+  Account Admin, Service Account Token Creator, Service Account User, Service Directory
+  Admin, Service Usage Admin, Storage Admin, Storage Object Admin.
+- Rowy configuration is stored in the _rowy_ collection on Firestore.
+- Users will need read access to this collection and admins will need write access.
+- No Need to update the rules manually
+- You can set default values for fields.
+- You can set fields to be required, which will prevent the row from being written
+  to Firestore if the value is not set.
+- You can validate the user’s input with a character limit and regex on Short Text
+  fields.
+- Default values can be set for any column and will be set whenever a new row is added.
+- By default, the field’s value is undefined. This value is ignored by Firestore,
+  so the field won’t be set at all in the database.
+- Setting the default value as null makes it possible to filter rows by empty fields.
+- Setting a static value will make all new rows have the same value for this field
+  by default.
+- Ensure that you add the secrets in the correct project on the Google Cloud Platform.
+- Utilize logging.log() in your function code for debugging.
+- Rowy supports importing images directly from Airtable and allows you to store them
+  as a native Image field.
+- Your projects must have Firestore and Authentication enabled.
+- You could allow unlimited access to the entire database for testing.
+- Manual install of Rowy Run will not get automatic updates for which we recommend
+  the option above.
+- Rowy run backend uses telemetry information for bug tracking and to improve the
+  product
+- Provides user information including timestamp, displayName, photoURL, email, uid,
+  and emailVerified.
+- Extensions require Rowy Run to be set up.
+- Skipping access to Secret Manager can cause permission errors
+- Trigger your backend API call every time you create, update, or delete a field in
+  your Rowy table.
+- 'You can select from events: Create, Update, Delete.'
+- Integrates with SendGrid to simplify sending emails
+- Return object needs to be compliant with SendGrid V3 request body
+- 'Secret Name: twilio'
+- Secret Value contains accountSid and authToken
+errors:
+- 'ERROR MESSAGE: auth/invalid-api-key: Firebase: Error (auth/invalid-api-key).'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://rowy.io
+  auth:
+    type: oauth2
+source_metadata: null

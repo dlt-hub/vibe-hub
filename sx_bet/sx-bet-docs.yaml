@@ -1,0 +1,222 @@
+resources:
+- name: metadata
+  endpoint:
+    path: /metadata
+    method: GET
+    data_selector: data
+- name: orders_fill
+  endpoint:
+    path: /orders/fill/v2
+    method: POST
+    data_selector: data
+- name: markets
+  endpoint:
+    path: /markets
+    method: GET
+    data_selector: data
+- name: line_changes
+  endpoint:
+    path: /line_changes
+    method: GET
+    data_selector: data
+- name: live_scores
+  endpoint:
+    path: /live_scores
+    method: GET
+    data_selector: data
+- name: recent_trades
+  endpoint:
+    path: /recent_trades
+    method: GET
+    data_selector: data
+- name: recent_trades_consolidated
+  endpoint:
+    path: /recent_trades_consolidated
+    method: GET
+    data_selector: data
+- name: active_orders
+  endpoint:
+    path: /active_orders
+    method: GET
+    data_selector: data
+- name: order_book
+  endpoint:
+    path: /order_book
+    method: GET
+    data_selector: data
+- name: leagues
+  endpoint:
+    path: /leagues
+    method: GET
+    data_selector: data
+    params: {}
+- name: active_leagues
+  endpoint:
+    path: /leagues/active
+    method: GET
+    data_selector: data
+    params: {}
+- name: league_teams
+  endpoint:
+    path: /leagues/teams/{id}
+    method: GET
+    data_selector: data.teams
+    params:
+      id: 'true'
+- name: orders_fill
+  endpoint:
+    path: /orders/fill/v2
+    method: POST
+    data_selector: data
+    params: {}
+- name: sports
+  endpoint:
+    path: /sports
+    method: GET
+    data_selector: data
+- name: fixtures
+  endpoint:
+    path: /fixture/active
+    method: GET
+    data_selector: data
+    params:
+      leagueId: '2'
+- name: live_scores
+  endpoint:
+    path: /live-scores
+    method: GET
+    data_selector: data
+- name: active_markets
+  endpoint:
+    path: /markets/active
+    method: GET
+    data_selector: data.markets
+    params:
+      onlyMainLine: 'true'
+- name: specific_markets
+  endpoint:
+    path: /markets/find
+    method: GET
+    data_selector: data
+- name: popular_markets
+  endpoint:
+    path: /markets/popular
+    method: GET
+    data_selector: data
+- name: active_trades
+  endpoint:
+    path: /trades
+    method: GET
+    data_selector: data.trades
+- name: consolidated_trades
+  endpoint:
+    path: /trades/consolidated
+    method: GET
+    data_selector: data.trades
+- name: trades_by_order_hash
+  endpoint:
+    path: /trades/orders
+    method: GET
+    data_selector: data.trades
+- name: active_orders
+  endpoint:
+    path: /orders
+    method: GET
+    data_selector: data
+- name: best_odds
+  endpoint:
+    path: /orders/odds/best
+    method: GET
+    data_selector: data
+- name: post_order
+  endpoint:
+    path: /orders/new
+    method: POST
+    data_selector: data.orders
+    params: {}
+- name: fill_order
+  endpoint:
+    path: /orders/fill/v2
+    method: POST
+    data_selector: data
+- name: cancel_event_orders
+  endpoint:
+    path: /orders/cancel/event
+    method: POST
+    data_selector: data
+    params: {}
+- name: cancel_individual_orders
+  endpoint:
+    path: /orders/cancel/v2
+    method: POST
+    data_selector: data
+    params: {}
+- name: fill_orders
+  endpoint:
+    path: /orders/fill/v2
+    method: POST
+    data_selector: data
+    params: {}
+- name: cancel_all_orders
+  endpoint:
+    path: /orders/cancel/all
+    method: POST
+    data_selector: data
+    params: {}
+- name: approve_order_fill
+  endpoint:
+    path: /orders/approve
+    method: POST
+    data_selector: data
+    params: {}
+- name: fill_order
+  endpoint:
+    path: /orders/fill/v2
+    method: POST
+    data_selector: data
+    params: {}
+notes:
+- All ETH addresses used in this API are in check-summed format.
+- You must have a valid API key to subscribe to realtime channels.
+- The API Key is required for WebSocket access and other services.
+- This endpoint cancels existing orders on the exchange that you placed as a market
+  maker.
+- If passed orders that do not exist, they simply fail silently while the others will
+  succeed.
+- To fill orders on sx.bet via the API, make sure you first enable betting by following
+  the steps [here](#enabling-betting)
+- Your assets must be on SX Network to place bets.
+errors:
+- '401 Unauthorized: Recheck API key'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck API Key or permissions'
+- '400 Bad Request: Check request parameters and payload'
+- 'INSUFFICIENT_KYC: The taker has not met the minimum kyc level to fill'
+- 'AFTER_ORDER_EXPIRY: One of the orders have expired'
+- 'BASE_TOKENS_NOT_SAME: All orders must be for the same `baseToken`'
+- 'MARKETS_NOT_SAME: All orders must be for the same market'
+- 'DIRECTIONS_NOT_SAME: All orders must be betting on the same side `isMakerBettingOutcomeOne`'
+- 'INVALID_ORDERS: Order is now inactive'
+- 'INVALID_ODDS: Invalid desiredOdds, must be less than 10^20'
+- 'INVALID_ODDS_SLIPPAGE: Invalid oddsSlippage, must be an integer between 0-100'
+- 'MATCH_STATE_INVALID: The fixture for the order is in an invalid state and is not
+  bettable anymore'
+- 'TAKER_SIGNATURE_MISMATCH: The taker signature generated for the request is invalid'
+- 'PROXY_ACCOUNT_INVALID: The proxy account is invalid (only applicable if proxyTaker
+  was specified in request)'
+- 'TAKER_AMOUNT_TOO_LOW: The stakeWei specified is too low for the current token'
+- 'META_TX_RATE_LIMIT_REACHED: Cannot have more than 10 meta transactions at once'
+- 'INSUFFICIENT_SPACE: There is not enough space to fill the matched orders due to
+  other pending fills'
+- 'FILL_ALREADY_SUBMITTED: The fill has already been submitted'
+- 'ODDS_STALE: No orders could not be found for the desiredOdds and oddsSlippage,
+  try again with greater oddsSlippage'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.sx.bet
+  auth:
+    type: apikey
+    location: header
+    header_name: X-Api-Key
+source_metadata: null

@@ -1,0 +1,119 @@
+resources:
+- name: current_user
+  endpoint:
+    path: /v1/me
+    method: GET
+    data_selector: data
+- name: devices
+  endpoint:
+    path: /v1/devices
+    method: GET
+    data_selector: data
+- name: samples
+  endpoint:
+    path: /v1/samples
+    method: GET
+    data_selector: data
+- name: cpu_statuses
+  endpoint:
+    path: /v1/cpu-statuses
+    method: GET
+    data_selector: data
+- name: battery_details
+  endpoint:
+    path: /v1/battery-details
+    method: GET
+    data_selector: data
+- name: network_details
+  endpoint:
+    path: /v1/network-details
+    method: GET
+    data_selector: data
+- name: storage_details
+  endpoint:
+    path: /v1/storage-details
+    method: GET
+    data_selector: data
+- name: settings
+  endpoint:
+    path: /v1/settings
+    method: GET
+    data_selector: data
+- name: samples
+  endpoint:
+    path: /v1/samples/:id
+    method: GET
+    data_selector: data
+    params: {}
+- name: cpu_statuses
+  endpoint:
+    path: /v1/cpu-statuses
+    method: GET
+    data_selector: data
+    params:
+      page: '1'
+      per_page: '10'
+- name: battery_details
+  endpoint:
+    path: /v1/battery-details
+    method: GET
+    data_selector: data
+    params:
+      page: '1'
+      per_page: '10'
+- name: network_details
+  endpoint:
+    path: /v1/network-details
+    method: GET
+    data_selector: data
+    params:
+      page: '1'
+      per_page: '10'
+- name: storage_details
+  endpoint:
+    path: /v1/storage-details
+    method: GET
+    data_selector: data
+    params:
+      page: '1'
+      per_page: '10'
+- name: settings
+  endpoint:
+    path: /v1/settings
+    method: GET
+    data_selector: data
+    params:
+      page: '1'
+      per_page: '10'
+- name: settings
+  endpoint:
+    path: /v1/settings/:id
+    method: GET
+    data_selector: settings
+    params:
+      id: required
+notes:
+- All API requests must be made over HTTPS. Calls made over plain HTTP will fail.
+- API requests without authentication will result in a `401 Unauthorized` response.
+- Rate limiting of the API is primarily on a per-user basis — or more accurately described,
+  per user API token. It allows 60 requests per minute per API token.
+- Maximum value of per_page can be is 100
+- Uses OAuth2 with refresh token — requires setup of connected app in GreenHub
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Please make sure that a correct access token is provided in the
+  request in the appropriate format.'
+- '429: You have exceeded rate limit for using the API.'
+- '401 Unauthorized: Recheck API token'
+- '429: Too Many Requests - Check the Retry-After header for wait time before retrying.'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://farmer.greenhubproject.org/api/
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+source_metadata: null

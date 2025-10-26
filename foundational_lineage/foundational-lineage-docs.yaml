@@ -1,0 +1,156 @@
+resources:
+- name: cost_saving_recommendations
+  endpoint:
+    path: /cost-saving-recommendations
+    method: GET
+    data_selector: recommendations
+- name: Webhook
+  endpoint:
+    path: /api/v1/gitlab_webhook
+    method: POST
+- name: webhook
+  endpoint:
+    path: /api/v1/azure_repos_webhook
+    method: POST
+- name: permissions_script
+  endpoint:
+    path: /connectors/snowflake
+    method: GET
+    data_selector: script
+    params: {}
+- name: metastore
+  endpoint:
+    path: /metastore
+    method: GET
+- name: Foundational Connector Type
+  endpoint:
+    path: /services/data/vXX.X/sobjects/FoundationalConnectorType
+    method: GET
+    data_selector: records
+- name: database_service
+  endpoint:
+    path: <dbName>_low
+    method: CONNECT
+- name: query_results
+  endpoint:
+    path: /athena/query
+    method: POST
+    data_selector: results
+- name: foundational_user
+  endpoint:
+    path: /create_foundational_user.sql
+    method: POST
+    data_selector: user
+    params: {}
+- name: query_history
+  endpoint:
+    path: /system/query/history
+    method: GRANT SELECT
+    data_selector: records
+    params: {}
+- name: External Client App
+  endpoint:
+    path: /services/oauth2/token
+    method: POST
+- name: foundational-io
+  endpoint:
+    path: /mcp
+    method: GET
+notes:
+- You need to have an 'Admin' role in order to add/remove users.
+- Foundational examines query history and pipeline code to create detailed lineage
+  graphs and cost breakdowns.
+- Data contracts support is in Preview, enabled for selected customers.
+- Repository administrators are required to authorize any repository Foundational
+  needs to access.
+- To create the necessary Webhook, a group / project maintainer access is required.
+- The token requires the Developer role and api scope. This is required so that we
+  can comment on your merge requests.
+- Consider setting the token to expire 1 year from now. This is the maximum setting
+  and would ensure smoother operation.
+- Consider setting the token with the longest expiry allowed by your policy, it will
+  minimize future service disruptions.
+- Create a Personal Access Token (PAT) in your Azure account.
+- Set up a reminder to rotate the PAT in 11 months.
+- DB level `OBJECT_VIEWER`, `USAGE_VIEWER` and `GOVERNANCE_VIEWER` are required to
+  extract lineage from your snowflake database.
+- DB level `usage` and table/schema level `references` permissions allow us to extract
+  more detailed schema definitions.
+- Warehouse `operate` and `usage` are needed for us to run queries that extract these
+  pieces of information.
+- You need to be a Google Cloud admin for some parts of this setup.
+- For advanced data monitoring features, such as NULL checks, also assign 'BigQuery
+  Data Viewer' and 'BigQuery Job User' role to the account. This is purely optional.
+- Foundational will only access metadata and does not query data
+- You need to be a Sigma admin for some parts of this setup.
+- Enable Service principals can access read-only admin APIs
+- Add power-bi-foundational-connector-security-group to the Specific security groups
+- Enable Enhance admin APIs responses with detailed metadata
+- Enable Enhance admin APIs responses with DAX and mashup expressions
+- Enable Service principals can use Fabric APIs
+- Foundational accounts do not read your data, just the metadata of the workbooks.
+- Foundational will only access metadata and does not query data.
+- You need to have permissions for creating a service account (`iam.serviceAccounts.create`)
+  and assigning a service account to a project (Project admin)
+- API tokens will have the same access rights as the user for which they were created.
+- Foundational’s user need to be a member of a User Group with the SQL access right
+  and the User Role can be set to Read.
+- The database password you set during these steps is required for the Foundational
+  connection. Store it securely as you cannot retrieve it later.
+- The wallet password you set during the download is required for the Foundational
+  connection. Store it securely as you cannot retrieve it later.
+- Some observability features require access to actual data stored in S3. In such
+  cases, read access to the relevant S3 buckets/folders must be granted in a separate
+  process.
+- You need AWS IAM permissions to create roles and deploy CloudFormation stacks.
+- The stack update might take up to a minute on AWS.
+- You need to be a Greenplum admin for this setup.
+- Make sure to not set a lifetime limit on the token, as if the token expires - Foundational
+  will not be able to ingest the information from Databricks.
+- TDV server must be accessible from Foundational's servers
+- Ensure firewall rules allow connections on the appropriate port
+- SSL/TLS configuration should be properly set up if using HTTPS
+- Only Fivetran Enterprise is supported. If you need support for other Fivetran plans,
+  please contact support@foundational.io.
+- Right now, Foundational supports extracting Fivetran lineage only for customers
+  using Snowflake. If you are using BigQuery, please contact support@foundational.io.
+- Salesforce API must be enabled for the user/app.
+- The configuration for the container is passed through environment variables.
+- Containers support both arm64 and amd64 architectures.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- This workaround is only applicable if your login is not configured with SAML (e.g.
+  Okta).
+- If you didn't get any email within 1 minute, please check your Spam folder.
+- Foundational processes over 10,000 SQL queries from real clients daily
+- Full regression tests are run whenever changes are made to the lineage engine
+- 'Setting up SQLAlchemy schema and lineage extraction is straightforward: simply
+  connect the repositories that include your SQLAlchemy definitions.'
+- Setting up Active Record schema and lineage extraction with Foundational is simple.
+  Just connect your repository containing the Active Record models, and the Code Engine
+  will automatically detect and extract the schema details.
+- Setting up schema and lineage extraction for Liquibase with Foundational is straightforward.
+- TypeORM models define the database schema, any changes made to these models can
+  have a ripple effect across the entire data pipeline.
+- Setting up schema and lineage extraction for EF Core models with Foundational is
+  simple.
+- Foundational does not access customer data, only metadata.
+errors:
+- '401 Unauthorized: Ensure the user has the ''Run Reports'' permission.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'If this didn''t help and you are still experiencing problems, please contact Foundational
+  support by emailing: support@foundational.io'
+auth_info:
+  mentioned_objects:
+  - Foundational
+  - Salesforce User
+  - External Application
+client:
+  base_url: https://app.foundational.io/connectors
+  auth:
+    type: basic
+    location: header
+    header_name: Authorization
+source_metadata: null

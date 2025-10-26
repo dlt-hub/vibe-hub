@@ -1,0 +1,164 @@
+resources:
+- name: connections
+  endpoint:
+    path: /v1/vault/connections
+    method: GET
+    params:
+      identity: user_123
+- name: delete_connection
+  endpoint:
+    path: /v1/vault/connections/{CONNECTION_ID}
+    method: DELETE
+- name: update_connection_tags
+  endpoint:
+    path: /v1/vault/connections/{CONNECTION_ID}
+    method: PATCH
+- name: integrations
+  endpoint:
+    path: /api/integrations
+    method: GET
+    data_selector: integrations
+- name: actions
+  endpoint:
+    path: /api/actions
+    method: GET
+    data_selector: actions
+- name: integration-agent
+  endpoint:
+    path: /mcp
+    method: POST
+- name: automation-agent
+  endpoint:
+    path: /mcp
+    method: POST
+- name: streaming-agent
+  endpoint:
+    path: /mcp
+    method: POST
+- name: analyst-agent
+  endpoint:
+    path: /mcp
+    method: POST
+- name: coordinator
+  endpoint:
+    path: /mcp
+    method: POST
+- name: integration-agent
+  endpoint:
+    path: /api/integration-agent
+    method: POST
+    data_selector: result
+- name: automation-agent
+  endpoint:
+    path: /api/automation-agent
+    method: POST
+    data_selector: result
+- name: email-agent
+  endpoint:
+    path: /api/email-agent
+    method: POST
+    data_selector: result
+- name: integration-agent
+  endpoint:
+    path: /api/integration/agent
+    method: POST
+- name: data-retrieval-agent
+  endpoint:
+    path: /api/data/retrieval
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: available_connectors
+  endpoint:
+    path: /v1/available-connectors
+    method: GET
+    data_selector: rows
+- name: available_actions
+  endpoint:
+    path: /v1/available-actions/{platform}
+    method: GET
+    data_selector: rows
+    params:
+      limit: '20'
+      page: '1'
+- name: create_or_get_user
+  endpoint:
+    path: /internal/v3/users/create-or-get
+    method: POST
+    data_selector: user
+    params: {}
+notes:
+- Built-in authentication — Users connect their accounts through OAuth or API keys
+  directly.
+- Built-in authentication
+- Pica handles all authentication, token refresh, and security.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Improved reliability and performance with a more resilient and scalable architecture.
+- Enhanced enterprise-grade security with enhanced encryption, improved access controls,
+  and comprehensive security auditing across all platform components.
+- The MCP server gives Cursor direct access to Pica’s integration knowledge and request-building
+  capabilities.
+- Handles OAuth flows and API key authentication with automatic token refresh and
+  secure storage
+- Never expose this key in your frontend code.
+- Never expose your API key in frontend code
+- Always serve your application over HTTPS in production
+- Automatic authentication, token management, and compliance built-in—no credential
+  storage in your codebase
+- Requires a Pica account and valid API key
+- Use specific connection keys in production for better performance
+- Enable AuthKit to prompt users to connect missing integrations.
+- Use specific connections in production
+- Set appropriate permissions based on your use case
+- Always filter by identity in multi-user applications
+- Uses Pica's MCP Server for integration access
+- Requires setup of connected app in Pica
+- Use Pica's system prompt for agent instructions
+- Only requires your Pica API key—no need to manage individual platform credentials
+- All requests are authenticated through Pica’s secure proxy
+- Connection keys and secrets are never exposed to the AI
+- The MCP server requires your Pica API key to authenticate requests.
+- Set it as an environment variable.
+- Make sure to keep your API key secure. Never share the config file publicly.
+- Pica handles authentication, token refresh, and secure storage automatically.
+- Some objects like Contact may return nulls in deeply nested fields
+- All testing should be done in the Sandbox environment.
+- If true, filter connectors that are enabled in Authkit
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '401 Unauthorized: Verify Client ID and Client Secret are correct in AuthKit settings'
+- 'Connection not found: Verify the identity matches what was used when creating the
+  token'
+- 'API requests failing with 401: Check connection status with the Get Connection
+  API'
+- '401 Unauthorized: Verify PICA_SECRET_KEY is set correctly'
+- 'No connections available: Check connected integrations in the Pica dashboard'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck API key or connection authentication'
+- '401 or authentication errors: Verify your API key is valid.'
+- '401 Unauthorized: Verify your API key at Settings > API Keys'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects:
+  - AuthKit
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.picaos.com
+  auth:
+    type: oauth2
+    location: header
+    header_name: x-pica-secret
+source_metadata: null
