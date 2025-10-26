@@ -1,0 +1,134 @@
+resources:
+- name: clients
+  endpoint:
+    path: /v1/clients/
+    method: GET
+    data_selector: clients
+- name: employees
+  endpoint:
+    path: /v1/clients/:client_id/employees
+    method: GET
+    data_selector: employees
+- name: payment_runs
+  endpoint:
+    path: /v1/clients/:client_id/payment_runs
+    method: GET
+    data_selector: custom_employee_fields
+- name: payslips
+  endpoint:
+    path: /v1/payment_runs/:payment_run_id/payslips
+    method: GET
+    data_selector: custom_employee_fields
+- name: emp201
+  endpoint:
+    path: /v1/clients/:client_id/submissions/emp201
+    method: GET
+    data_selector: custom_employee_fields
+- name: tax_certificates
+  endpoint:
+    path: /v1/employees/:employee_id/tax_certificates
+    method: GET
+    data_selector: custom_employee_fields
+- name: eti_report
+  endpoint:
+    path: /v1/clients/:client_id/reports/eti
+    method: POST
+    data_selector: custom_employee_fields
+- name: transaction_history_report
+  endpoint:
+    path: /v1/clients/:client_id/reports/transaction_history
+    method: POST
+    data_selector: custom_employee_fields
+- name: tracked_balances
+  endpoint:
+    path: /v1/clients/:client_id/reports/tracked_balances
+    method: POST
+    data_selector: '[]'
+- name: calculations
+  endpoint:
+    path: /v1/calculations/:id
+    method: GET
+    data_selector: '[]'
+- name: service_periods_reinstate
+  endpoint:
+    path: /v1/employees/:employee_id/service_periods/reinstate
+    method: POST
+- name: service_periods_undo_end
+  endpoint:
+    path: /v1/employees/:employee_id/service_periods/undo_end_service
+    method: DELETE
+- name: leave_balances
+  endpoint:
+    path: /v1/employees/:employee_id/leave_balances
+    method: GET
+    params:
+      date: '2022-12-01'
+- name: leave_types
+  endpoint:
+    path: /v1/clients/:client_id/leave_types
+    method: GET
+- name: leave_days
+  endpoint:
+    path: /v1/employees/:employee_id/leave_days
+    method: GET
+- name: leave_days_create_multiple
+  endpoint:
+    path: /v1/employees/:employee_id/leave_days/create_multiple
+    method: POST
+- name: leave_day_update
+  endpoint:
+    path: /v1/leave_days/:leave_day_id
+    method: PATCH
+- name: leave_day_delete
+  endpoint:
+    path: /v1/leave_days/:leave_day_id
+    method: DELETE
+- name: profile_mappings
+  endpoint:
+    path: /v1/employees/:employee_id/profile_mappings
+    method: GET
+- name: custom_employee_fields
+  endpoint:
+    path: /v1/clients/:client_id/custom_employee_fields
+    method: GET
+    data_selector: records
+- name: profile_mappings
+  endpoint:
+    path: /v1/profile_mappings/:profile_mapping_id
+    method: PUT
+    data_selector: records
+notes:
+- The default maximum number of requests per hour is 1000.
+- Rate limit cannot be raised for per-source IP.
+- Rate limits can be raised by contacting Support.
+- Rate limits can be raised by contacting Support with justification.
+- The default limit of 1000 can be raised by contacting Support, along with justification
+  that it is required.
+- We have a per-source IP rate limit which cannot be raised due to system stability
+  concerns.
+- The default limit can be raised by contacting Support.
+errors:
+- 'HTTP 429: Rate limit exceeded. Contact Support.'
+- 'HTTP 429: Contact Support if this error occurs without rate limit headers.'
+- 'HTTP 429: Rate limit exceeded'
+- 'HTTP 401: Unauthorized access'
+- '429 Too Many Requests: Too many reports have already been queued.'
+- '404 Requested Resource Not Found: UUID not found.'
+- 'HTTP 429: Too many requests. Contact Support if this occurs without rate limit
+  headers.'
+- 'HTTP 429: Too Many Requests - advised to contact Support if headers are not present.'
+- API User is not authorized or does not exist.
+- '400: Validation Error'
+- '404: Requested Resource Not Found'
+- '429: Indicates that the request rate limit has been reached.'
+- '500: Indicates that an exception occurred in our code.'
+- '503: Down for maintenance.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.payroll.simplepay.cloud
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+source_metadata: null

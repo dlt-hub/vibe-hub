@@ -1,0 +1,125 @@
+resources:
+- name: user_signup
+  endpoint:
+    path: /user/signup
+    method: POST
+- name: auth_token
+  endpoint:
+    path: /auth/token
+    method: POST
+- name: authenticated_user
+  endpoint:
+    path: /me
+    method: GET
+- name: get_all_planets
+  endpoint:
+    path: /planets
+    method: GET
+- name: homepage
+  endpoint:
+    path: /path/to/homepage
+    method: GET
+    data_selector: homepage
+    params: {}
+- name: workflows
+  endpoint:
+    path: /workflows
+    method: POST
+    data_selector: workflows
+    params: {}
+- name: sendEvent
+  endpoint:
+    path: /api-reference/javascript-sdk/events/sendevent
+    method: POST
+- name: getEvents
+  endpoint:
+    path: /api-reference/javascript-sdk/events/getevents
+    method: GET
+- name: updateEvent
+  endpoint:
+    path: /api-reference/javascript-sdk/events/updateevent
+    method: PUT
+- name: deleteEvent
+  endpoint:
+    path: /api-reference/javascript-sdk/events/deleteevent
+    method: DELETE
+- name: create_block
+  endpoint:
+    path: /api/mutation/create
+    method: POST
+    data_selector: data
+- name: update_block
+  endpoint:
+    path: /api/mutation/update
+    method: PUT
+    data_selector: data
+- name: delete_block
+  endpoint:
+    path: /api/mutation/delete
+    method: DELETE
+    data_selector: data
+- name: posts
+  endpoint:
+    path: /api/posts
+    method: GET
+    data_selector: items
+- name: about
+  endpoint:
+    path: /api/about
+    method: GET
+    data_selector: subtitle
+- name: chapters
+  endpoint:
+    path: /api/chapters
+    method: GET
+    data_selector: items
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects may return nulls in deeply nested fields
+- Unrestricted read access means the token can retrieve all content, metadata, and
+  structure within its assigned repository, including drafts and published content
+  across all collections.
+- Handle the Admin Token with greater care as it includes all Read Token permissions
+  plus write access to the repository.
+- Templates are a great way to optimize repeatable workflows.
+- Under the hood, we use https://genql.dev/
+- <RichText /> will return the HTML for each node of content, without any <div> wrapping
+  everything nor any styles.
+- Indexing happens on commit — make sure to toggle the index block state
+- 'The Event block exposes two different keys: ingestKey for sending data and adminKey
+  for update and read access.'
+- authenticateWebhook handles signature validation and payload type-safety for you.
+- The structure of the result.payload depends on the workflow's trigger.
+- Note that variant sets can only live inside Documents. Because of their unique nature,
+  they cannot be replicated by Components and instances behaviors.
+- Remember to also add this ^ env var in your deployment platform
+- Everything you need to develop with BaseHub.
+- Helpers to integrate BaseHub with your React app.
+- Core method to perform a search query.
+- Helpers to integrate BaseHub with your Next.js app.
+- Due to how dynamic the schema is, we believe the best way to know how it’s structure
+  is to use the explorer and check it out.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 400 Bad Request
+- 401 Unauthorized
+- 403 Forbidden
+- 409 Conflict
+- 422 Unprocessable Entity
+- 'RICH_TEXT_FORMATTING_MISMATCH: Ensure to pass a Rich Text JSON object instead of
+  markdown string.'
+- 'WORKFLOW_VALIDATION_ERRORS: Ensure all referenced block IDs exist and required
+  fields are provided.'
+- 'MISSING_ITEMS_WRAPPER: Ensure the response includes items wrapper'
+- 'MISSING_CONTENT_IN_RICH_TEXT: Check if rich text contains content'
+- 'INCORRECT_VARIANT_PLACEMENT: Ensure variants are on layout blocks'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://basehub.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+source_metadata: null

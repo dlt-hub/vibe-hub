@@ -1,0 +1,186 @@
+resources:
+- name: create_contact
+  endpoint:
+    path: /api/v1/contacts
+    method: POST
+- name: fetch_contact
+  endpoint:
+    path: /api/v1/contacts/:id
+    method: GET
+- name: list_contacts
+  endpoint:
+    path: /api/v1/contacts
+    method: GET
+    params:
+      per_page: 20
+      page: 1
+- name: delete_contact
+  endpoint:
+    path: /api/v1/contacts/:id
+    method: DELETE
+- name: check_domains
+  endpoint:
+    path: /api/v1/domains/check
+    method: POST
+- name: register_domain
+  endpoint:
+    path: /api/v1/domains
+    method: POST
+- name: list_domains
+  endpoint:
+    path: /api/v1/domains
+    method: GET
+- name: fetch_domain
+  endpoint:
+    path: /api/v1/domains/:id
+    method: GET
+- name: update_domain
+  endpoint:
+    path: /api/v1/domains/:id
+    method: POST
+- name: renew_domain
+  endpoint:
+    path: /api/v1/domains/:id/renew
+    method: POST
+- name: dns_zones
+  endpoint:
+    path: /api/v1/zones
+    method: GET
+    data_selector: data
+    params:
+      per_page: 20
+      page: 1
+- name: fetch_dns_zone
+  endpoint:
+    path: /api/v1/zones/:id
+    method: GET
+    data_selector: data
+    params: {}
+- name: fetch_dns_zone_for_domain
+  endpoint:
+    path: /api/v1/domains/:id/zone
+    method: GET
+    data_selector: data
+    params: {}
+- name: list_dns_records
+  endpoint:
+    path: /api/v1/zones/:id/records
+    method: GET
+    data_selector: data
+    params: {}
+- name: fetch_dns_record
+  endpoint:
+    path: /api/v1/zones/:zoneid/records/:recordid
+    method: GET
+    data_selector: data
+    params: {}
+- name: create_dns_record
+  endpoint:
+    path: /api/v1/zones/:id/records
+    method: POST
+    data_selector: data
+    params: {}
+- name: update_dns_record
+  endpoint:
+    path: /api/v1/zones/:zoneid/records/:recordid
+    method: POST
+    data_selector: data
+    params: {}
+- name: delete_dns_record
+  endpoint:
+    path: /api/v1/zones/:zoneid/records/:recordid
+    method: DELETE
+    data_selector: data
+    params: {}
+- name: delete_test_domain
+  endpoint:
+    path: /api/v1/domains/:id/test
+    method: DELETE
+    data_selector: data
+    params: {}
+- name: check_domains
+  endpoint:
+    path: /api/v1/domains/check
+    method: POST
+    data_selector: data
+    params:
+      fees: registration
+- name: list_domains
+  endpoint:
+    path: /api/v1/domains
+    method: GET
+    data_selector: data
+    params:
+      per_page: 20
+      page: 1
+- name: fetch_domain
+  endpoint:
+    path: /api/v1/domains/:id
+    method: GET
+    data_selector: data
+- name: register_domain
+  endpoint:
+    path: /api/v1/domains
+    method: POST
+    data_selector: data
+- name: update_domain
+  endpoint:
+    path: /api/v1/domains/:id
+    method: POST
+    data_selector: data
+- name: renew_domain
+  endpoint:
+    path: /api/v1/domains/:id/renew
+    method: POST
+    data_selector: data
+- name: contacts
+  endpoint:
+    path: /api/v1/contacts
+    method: GET
+    data_selector: data
+    params:
+      per_page: '20'
+      page: '1'
+notes:
+- Set value to `Bearer API_TOKEN` for authorization.
+- The ola.cv API is mostly RESTful and organized by the resources your account own
+  and have access to, with very few exceptions.
+- Your developer account must be active, and your account wallet funded for registration
+  requests.
+- Please see the errors page for likely errors.
+- Your developer account must be active, and your account wallet funded for requests
+  to complete successfully.
+errors:
+- Error fetching contacts
+- Error creating contact
+- Error deleting contact
+- '401: Unauthorized'
+- '401 Unauthenticated: The request was not authorized. This can be triggered by passing
+  an invalid API token in the authorization header or the lack of one.'
+- '403 Forbidden: The request was not allowed. You may receive a 403 error if you
+  passed an API token with inappropriate permission or privilege.'
+- '404 Not Found: Request could not be fulfilled as the request resource does not
+  exist. Check to make sure you have not deleted the specified resource.'
+- '422 Unprocessable Entity: A validation or client side error occurred and the request
+  was not fulfilled.'
+- '429 Too Many Attempts: You have made too many requests in a time frame, and have
+  exceeded the rate limit. Slow down the number of requests, and wait for no less
+  than 60 seconds before the next request.'
+- '500 Server Error: Request could not be fulfilled due to an error on ola.cv''s end.
+  This should not happen so please report as soon as you encounter any instance of
+  this.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck API token or token expiration'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://developer.ola.cv
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+source_metadata: null

@@ -1,0 +1,229 @@
+resources:
+- name: current_balance
+  endpoint:
+    path: /usage/current_balance
+    method: GET
+- name: points_history
+  endpoint:
+    path: /usage/points_history
+    method: GET
+- name: create_bot
+  endpoint:
+    path: /create_bot
+    method: POST
+    data_selector: bot_data
+- name: Server Bot
+  endpoint:
+    path: /create_bot
+    method: POST
+- name: parameter_controls
+  endpoint:
+    path: /docs/server-bots/parameter-controls
+    method: GET
+    data_selector: controls
+    params: {}
+- name: condition
+  endpoint:
+    path: /condition
+    method: GET
+    data_selector: controls
+    params: {}
+- name: aspect_ratio
+  endpoint:
+    path: /aspect_ratio
+    method: GET
+    data_selector: options
+    params: {}
+- name: bot_query_api
+  endpoint:
+    path: /api/bot_response
+    method: POST
+    data_selector: partial
+    params:
+      bot_name: GPT-3.5-Turbo
+      api_key: <api_key>
+- name: settings
+  endpoint:
+    path: /settings
+    method: GET
+    data_selector: allow_attachments, expand_text_attachments, enable_image_comprehension
+    params: {}
+- name: SampleImageResponseBot
+  endpoint:
+    path: /create_bot
+    method: POST
+    data_selector: response
+- name: settings
+  endpoint:
+    path: /set_settings
+    method: POST
+    data_selector: settings
+    params: {}
+- name: bot_settings
+  endpoint:
+    path: /bot/fetch_settings/<botname>/<access_key>
+    method: POST
+    data_selector: response
+    params: {}
+- name: get_weather
+  endpoint:
+    path: /v1/forecast
+    method: GET
+    data_selector: current
+    params: {}
+- name: sendUserMessage
+  endpoint:
+    path: /sendUserMessage
+    method: POST
+    data_selector: success
+    params: {}
+- name: registerHandler
+  endpoint:
+    path: /registerHandler
+    method: POST
+    data_selector: void
+    params: {}
+- name: chat_completions
+  endpoint:
+    path: /chat/completions
+    method: POST
+    data_selector: choices
+    params: {}
+- name: plus
+  endpoint:
+    path: /function/plus
+    method: POST
+- name: get_current_weather
+  endpoint:
+    path: /function/get_current_weather
+    method: POST
+- name: tools
+  endpoint:
+    path: /tools
+    method: GET
+    data_selector: tools
+    params: {}
+- name: current_balance
+  endpoint:
+    path: /usage/current_balance
+    method: GET
+    data_selector: current_point_balance
+- name: points_history
+  endpoint:
+    path: /usage/points_history
+    method: GET
+    data_selector: data
+    params:
+      limit: '20'
+- name: distribution_within_poe
+  endpoint:
+    path: /resources/distribution/within
+    method: GET
+- name: distribution_outside_poe
+  endpoint:
+    path: /resources/distribution/outside
+    method: GET
+- name: official_bot_status
+  endpoint:
+    path: /resources/bot/status
+    method: GET
+notes:
+- Poe handles everything else needed to bring it to a large audience, to operate it
+  at scale, and to build a business.
+- Don't forget to update the Server URL if the endpoint your bot is hosted at changes!
+  Generally, Modal seems to re-use the same URL on each deployment, but if you are
+  having trouble sending messages to your bot, you should verify that the URL is correct.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Uses OAuth2 for authentication.
+- Attachments will be sent as attachment objects with url, content_type, and name.
+- The access_key should be the key associated with the bot sending the response.
+- If you are not using fastapi_poe or you do not provide the access_key and bot_name
+  into make_app(), you will need to manually sync these settings.
+- Only yield one DataResponse per request - if multiple are sent, only the last one
+  is stored
+- Metadata is only visible to the bot that created it - so using this field to pass
+  data between bots will not work.
+- Poe converts images into text prompts using a vision model
+- The initial response to any request must be returned within 5 seconds.
+- The response to any request must be completed within 600 seconds.
+- The total length of a bot response may not exceed 512,000 characters.
+- The total number of events sent in response to a query event may not exceed 10,000.
+- The server should respond with a response code of 200 and content type of application/json.
+- If a settings request fails, the previous settings are used for the bot.
+- These bots are all server bots built on the API.
+- This Monetization API is currently in beta. Please send feedback to developers@poe.com
+- Monetary amounts are specified in milli-cents (thousandths of a cent)
+- Bots can only authorize and capture their own costs, not costs for dependency bots
+  called through the Poe Bot API
+- Parameter Controls allow server bots to add additional input elements to their UI
+  on Poe.
+- Access to an API key is currently limited to Poe subscribers to minimize abuse.
+- Turning on allow_attachments will allow Poe users to send files to your bot.
+- If allow_attachments=True, Poe will parse text files and send their content in the
+  parsed_content field of the attachment object.
+- If enable_image_comprehension=True, the Poe user will only be able to send at most
+  one image per message due to image vision limitations.
+- The access_key should be the key associated with the bot sending the response. It
+  can be found in the edit bot page.
+- A file should not be larger than 50mb.
+- Use introduction_message parameter to set a welcome message for the bot.
+- The settings endpoint provides a way for you to opt in/out of Poe's features.
+- Canvas apps are single-file HTML applications. They cannot run server-side code.
+- Canvas apps do not have an included way to persist data.
+- Light/dark mode always works on Chrome and Firefox.
+- Service workers and Shared workers are not enabled.
+- Only web workers initialized using `blob://` or `data://` urls are enabled.
+- Webcam and microphone access is disabled for canvas apps.
+- Browser local storage APIs are disabled for canvas apps.
+- Canvas apps can write to the clipboard, but cannot read from the clipboard.
+- Canvas apps cannot use the History API.
+- Cross origin links will trigger a 'Do you want to open this url?' confirmation.
+- File download links are enabled.
+- Because the canvas iframe lacks the allow-modals permission, methods like alert(),
+  confirm(), print(), and prompt() will not work.
+- Requests are rate-limited to 500 requests per minute per user.
+- Compute points are deducted directly from the account associated with the API key.
+- Private bots are not currently supported - Only public bots can be accessed through
+  the API
+- Some community bots may have varying response formats or capabilities compared to
+  standard language models
+- Poe API Key is required for access
+- An active Poe subscription is needed to access the models
+- Poe API Key is required for access.
+- Uses a single API key for access
+- Requires an active Poe subscription to access the models
+- Get your API key at poe.com/api_key
+- We maintain a list of investors who have told us they are interested in funding
+  companies building AI products that are integrated into Poe as bots.
+- If you are a company, or if you are an individual developer with a large amount
+  of bot usage, we can also set up a shared Slack channel for easier collaboration.
+errors:
+- 'insufficient_fund: Raise this if the latest user message fails due to not having
+  enough compute points.'
+- 'user_message_too_long: Raise this if the latest user message is too long for the
+  API bot to handle.'
+- 'user_caused_error: Raise this if the latest user message is caused by some other
+  general error.'
+- The protocol does not guarantee that the endpoint will be called for every error.
+- '401 Unauthorized: Ensure valid API key is used.'
+- 'UNKNOWN: Something unexpected happened. This may occur when using an old version
+  of the sdk'
+- 'INVALID_INPUT: When the input was invalid. Check error.message for more info'
+- 'USER_REJECTED_CONFIRMATION: When the action requires user confirmation, and the
+  user rejected it'
+- 'ANOTHER_CONFIRMATION_IS_OPEN: When the action requires user confirmation, but another
+  confirmation is already open.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '400: invalid_request_error - malformed JSON, missing fields'
+- '401: authentication_error - bad/expired key'
+- '429: rate_limit_error - rpm/tpm cap hit'
+- 'Invalid API Key: Verify your API key from poe.com/api_key'
+- 'Rate Limiting: Poe has a 500 requests per minute limit'
+- '401 Unauthorized: Incorrect API key provided. You can find your API key at https://poe.com/api_key.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://poe.com
+  auth:
+    type: oauth2
+source_metadata: null

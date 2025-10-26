@@ -1,0 +1,213 @@
+resources:
+- name: Banks
+  endpoint:
+    path: /v1/Banks
+    method: GET
+    data_selector: records
+    params: {}
+- name: DailyRates
+  endpoint:
+    path: /v1/Banks/{bankId}/DailyRates/Latest
+    method: GET
+    data_selector: records
+    params: {}
+- name: BankHolidays
+  endpoint:
+    path: /v1/BankHolidays
+    method: GET
+    params:
+      bankId: required
+      year: required
+      format: optional
+- name: Convert
+  endpoint:
+    path: /v1/Convert
+    method: GET
+    params: {}
+- name: bank_holiday
+  endpoint:
+    path: /v1/Convert
+    method: GET
+- name: bank_details
+  endpoint:
+    path: /v1/Convert
+    method: GET
+- name: currency_details
+  endpoint:
+    path: /v1/Convert
+    method: GET
+- name: biweekly_rates
+  endpoint:
+    path: /v1/Convert
+    method: GET
+- name: Convert
+  endpoint:
+    path: /v1/Convert
+    method: GET
+    data_selector: rate
+    params:
+      bankId: required
+      startDate: required
+      endDate: required
+- name: exchange_rates
+  endpoint:
+    path: /v1/Convert
+    method: GET
+    params:
+      bankId: required
+      year: required
+      month: required
+      format: required
+- name: DailyRates
+  endpoint:
+    path: /v1/Convert
+    method: GET
+    data_selector: rate
+    params:
+      bankId: required
+      format: required
+- name: Convert
+  endpoint:
+    path: /v1/Convert
+    method: GET
+    data_selector: result
+    params:
+      bankId: required
+      startDate: required
+      endDate: required
+- name: Convert
+  endpoint:
+    path: /v1/Convert
+    method: GET
+    params:
+      bankId: required
+      startDate: required
+      endDate: required
+      format: required
+- name: Convert
+  endpoint:
+    path: /v1/Convert
+    method: GET
+    data_selector: result
+    params:
+      bankId: required
+      date: required
+      format: required
+- name: conversion
+  endpoint:
+    path: /v1/Convert
+    method: GET
+    data_selector: result
+    params:
+      bankId: required
+      format: required
+- name: Convert
+  endpoint:
+    path: /v1/Convert
+    method: GET
+    data_selector: result
+    params:
+      bankId: required
+      startDate: required
+      endDate: required
+      currencies: optional
+      priceType: optional
+      includeObsoleteCurrencies: optional
+      format: required
+- name: exchange_rates
+  endpoint:
+    path: /v1/Convert
+    method: GET
+    data_selector: result
+    params:
+      bankId: string
+      year: integer
+      month: integer
+      format: string
+- name: Convert
+  endpoint:
+    path: /v1/Convert
+    method: GET
+    data_selector: result
+    params:
+      bankId: required
+      format: required
+- name: convert
+  endpoint:
+    path: /v1/Convert
+    method: GET
+    data_selector: result
+    params:
+      bankId: string
+      startDate: date
+      endDate: date
+      format: string
+- name: Convert
+  endpoint:
+    path: /v1/Convert
+    method: GET
+    data_selector: result
+    params:
+      bankId: required
+      year: required
+      month: required
+      format: required
+- name: Convert
+  endpoint:
+    path: /v1/Convert
+    method: GET
+    data_selector: result
+    params: {}
+notes:
+- Each access token is valid only for 5 minutes.
+- Refresh tokens are not supported for service accounts.
+- Respect rate limits. Rate limits are always available in the response headers when
+  you make an API request.
+- If your request exceeds a certain rate limit, you will receive an HTTP 429 Too Many
+  Requests response status code.
+- The minimum supported version is TLS 1.2. For enhanced security and performance,
+  we recommend using TLS 1.3.
+- Fluentax uses Cloudflare as its CDN and security provider, so the Certificate Authority
+  (CA) may be one of those listed by Cloudflare.
+- If your system does not trust these CAs, please update your trust store to include
+  the necessary root certificates.
+- Cloudflare’s IP ranges may change. We recommend subscribing to updates or monitoring
+  IP list changes to avoid service disruption.
+- Ensure your firewall or proxy allows outbound HTTPS traffic (port 443) to Cloudflare
+  IP ranges.
+- When batch processing transactional data, use the Time Series endpoints to retrieve
+  exchange rates for a larger interval and cache these values on the client side for
+  optimal performance. The maximum query interval is 180 days.
+- Avoid repeated calls to access the same data, as this can quickly result in hitting
+  an API rate limit.
+- When updating your local database daily, always check for rates that may have been
+  published by the bank with a delay and thus missed by your previous update.
+- Do not rely solely on the daily bank update times and holidays as they are for reference
+  only. Accuracy may vary by country/bank.
+- Banks or tax authorities that publish monthly rates for a given month on or before
+  the first day of that month may publish amendment rates later if there is a significant
+  change in the exchange rates during the month. You should therefore check regularly
+  for changes to monthly rates.
+- The default API response format is JSON.
+- The Fluentax Exchange Rates API supports several ways to set the requested response
+  format.
+- 'Rate limits: 20 requests per second and 1000 requests per 15 minutes.'
+errors:
+- '401 Unauthorized: Check your access token'
+- 'HTTP 429 Too Many Requests: The Retry-After header indicates how many seconds you
+  must wait before making your next request.'
+- '400: Invalid bankId specified.'
+- '401: Unauthorized'
+- '403: Forbidden'
+- '404: Not Found'
+- '429: Too Many Requests'
+- 400 Invalid bankId specified.
+- 401 Unauthorized
+- 403 Forbidden
+- 404 Not Found
+- 429 Too Many Requests
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://fx-api.fluentax.com/v1/Convert
+source_metadata: null

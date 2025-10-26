@@ -1,0 +1,47 @@
+resources:
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: simple_app
+  endpoint:
+    path: /
+    method: GET
+    data_selector: Hashes
+notes:
+- The multipart boundary is required and must match what is given in the HTTP request.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Finalize this parser, which signals to that we are finished parsing.
+- It does not currently verify that we are in the final state of the parser.
+- If strict_parsing is set to True, an error is raised for fields without equals signs.
+- This package used to be accessed via import multipart. This still works for now
+  (with a warning) as long as the Python package multipart is not also installed.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'DecodeError: raised when there is a decoding error'
+- 'FileError: Exception class for problems with the File class'
+- 'FormParserError: Base error class for our form parser'
+- 'MultipartParseError: raised when the MultipartParser detects an error while parsing'
+- 'ParseError: raised when there is an error while parsing something'
+- 'QuerystringParseError: raised when the QuerystringParser detects an error while
+  parsing'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: http://localhost:8123
+source_metadata: null

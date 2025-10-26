@@ -1,0 +1,64 @@
+resources:
+- name: users
+  endpoint:
+    path: /v1/users
+    method: GET
+    data_selector: ''
+    params:
+      limit: '50'
+      offset: ''
+- name: retrieve_user
+  endpoint:
+    path: /v1/users/{id}
+    method: GET
+    data_selector: ''
+    params: {}
+- name: create_user
+  endpoint:
+    path: /v1/users
+    method: POST
+    data_selector: ''
+    params: {}
+- name: update_user
+  endpoint:
+    path: /v1/users/{id}
+    method: PUT
+    data_selector: ''
+    params: {}
+- name: delete_user
+  endpoint:
+    path: /v1/users/{id}
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: users
+  endpoint:
+    path: /v1/users
+    method: GET
+    data_selector: records
+    params:
+      limit: '100'
+      offset: '300'
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.domo.com
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+  headers:
+    Content-Type: application/json
+    Accept: application/json
+  paginator:
+    type: offset
+    page_size_param: limit
+    default_page_size: 50
+source_metadata: null

@@ -1,0 +1,195 @@
+resources:
+- name: merchant
+  endpoint:
+    path: /cgi-bin/dbs/man_trans.cgi
+    method: POST
+    data_selector: response
+    params: {}
+- name: account
+  endpoint:
+    path: /cgi-bin/dbs/man_trans.cgi
+    method: POST
+    data_selector: response
+    params: {}
+- name: payment_retries
+  endpoint:
+    path: /payment/retries
+    method: POST
+    data_selector: parameters
+- name: payment_refunds
+  endpoint:
+    path: /payment/refunds
+    method: POST
+    data_selector: parameters
+- name: merchant
+  endpoint:
+    path: /merchant
+    method: POST
+- name: account
+  endpoint:
+    path: /account
+    method: POST
+- name: consumer
+  endpoint:
+    path: /consumer
+    method: POST
+- name: payment_retries
+  endpoint:
+    path: /payment_retries
+    method: POST
+- name: payment_refunds
+  endpoint:
+    path: /payment_refunds
+    method: POST
+- name: revoking_transactions
+  endpoint:
+    path: /revoking_transactions
+    method: POST
+- name: recurring_transactions
+  endpoint:
+    path: /recurring_transactions
+    method: POST
+- name: updating_recurring_transactions
+  endpoint:
+    path: /update/recurring-transactions
+    method: POST
+    data_selector: status
+    params:
+      username: required
+      password: required
+      syspass: required
+      action_code: D
+      order_id: required
+      recur_amount: required
+      billing_cycle: required
+      max_num_billing: required
+      next_bill_date: required
+- name: merchant
+  endpoint:
+    path: /merchant
+    method: POST
+    data_selector: response
+    params: {}
+- name: account
+  endpoint:
+    path: /account
+    method: POST
+    data_selector: response
+    params: {}
+- name: consumer
+  endpoint:
+    path: /consumer
+    method: POST
+    data_selector: response
+    params: {}
+- name: transaction
+  endpoint:
+    path: /transaction
+    method: POST
+    data_selector: response
+    params: {}
+- name: transaction
+  endpoint:
+    path: /transaction
+    method: POST
+    params:
+      username: string
+      password: string
+      syspass: string
+      action_code: D
+      order_id: number
+      recur_amount: XX.XX
+      billing_cycle: number
+      max_num_billing: number
+      next_bill_date: DATE MM/DD/YYYY
+- name: transaction_status
+  endpoint:
+    path: /transaction/status
+    method: GET
+    params:
+      username: string
+      password: string
+      action_code: A
+      prev_history_id: string
+      order_id: string
+      type: string
+- name: transaction_file_format
+  endpoint:
+    path: /transaction/file/format
+    method: GET
+    data_selector: records
+- name: kittens
+  endpoint:
+    path: /kittens
+    method: GET
+    data_selector: ''
+    params:
+      include_cats: 'false'
+      available: 'true'
+- name: specific_kitten
+  endpoint:
+    path: /kittens/<ID>
+    method: GET
+    data_selector: ''
+    params: {}
+- name: kitten
+  endpoint:
+    path: /kittens/<ID>
+    method: DELETE
+    params:
+      ID: The ID of the kitten to delete
+notes:
+- Refunds can only be submitted against the transaction status of Check Settlement.
+- If any required parameters are left blank, adjustments will not take place.
+- API requests must be made using POST method only.
+- Content type should be application/x-www-form-urlencoded or multipart/form-data.
+- The file must be a plain text, ASCII file, and all data items may contain only normal
+  ASCII characters (ASCII 32-126).
+- Each transaction must be on its own line after the header record - one line per
+  transaction and one transaction per line - after the header line.
+- To submit an NSF Fee along with the retry, add a second amount to the 'InitialAmount'
+  value delimited with a colon.
+- If the 'BillingCycle' indicates a One-Time Billing, then this should be left blank.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- Order Number Not Found
+- Error
+- Email address is required.
+- First name is required.
+- Last name is required.
+- Address is required.
+- City is required.
+- State is required.
+- Account Number is required.
+- Routing Number is required.
+- Zip Code required.
+- Phone Number is required.
+- Social Security Number is required.
+- Date of Birth month is required.
+- Date of Birth year is required.
+- Date of Birth day is required.
+- '401 Unauthorized: Check your username and password.'
+- '400 Bad Request: Ensure all required parameters are included.'
+- '404 Not Found: The requested resource does not exist.'
+- '400: Bad Request -- Your request is invalid.'
+- '401: Unauthorized -- Your API key is wrong.'
+- '403: Forbidden -- The kitten requested is hidden for administrators only.'
+- '404: Not Found -- The specified kitten could not be found.'
+- '405: Method Not Allowed -- You tried to access a kitten with an invalid method.'
+- '406: Not Acceptable -- You requested a format that isn''t json.'
+- '410: Gone -- The kitten requested has been removed from our servers.'
+- '418: I''m a teapot.'
+- '429: Too Many Requests -- You''re requesting too many kittens! Slow down!'
+- '500: Internal Server Error -- We had a problem with our server. Try again later.'
+- '503: Service Unavailable -- We''re temporarily offline for maintenance. Please
+  try again later.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://join.actumprocessing.com/cgi-bin/dbs/man_trans.cgi
+  headers:
+    Content-Type: application/x---www---form---urlencoded
+  paginator:
+    type: cursor
+source_metadata: null

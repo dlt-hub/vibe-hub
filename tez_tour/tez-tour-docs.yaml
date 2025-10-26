@@ -1,0 +1,182 @@
+resources:
+- name: auth_data
+  endpoint:
+    path: /xmlgate/auth_data.jsp
+    method: GET
+    data_selector: auth_data
+    params: {}
+- name: countries
+  endpoint:
+    path: /xmlgate/list/countries.xml
+    method: GET
+    data_selector: reference
+    params: {}
+- name: regions
+  endpoint:
+    path: /xmlgate/list/regions.xml
+    method: GET
+    data_selector: reference
+    params: {}
+- name: cities
+  endpoint:
+    path: /xmlgate/list/cities.xml
+    method: GET
+    data_selector: item
+    params: {}
+- name: hotels
+  endpoint:
+    path: /xmlgate/list/hotels.xml
+    method: GET
+    data_selector: item
+    params: {}
+- name: tour_search
+  endpoint:
+    path: /tariffsearch/getResult
+    method: GET
+    data_selector: results
+    params:
+      cityId: required
+      countryId: required
+      after: required
+      before: required
+      priceMin: required
+      priceMax: required
+      nightsMin: required
+      nightsMax: required
+      accommodationId: required
+      hotelClassId: required
+      hotelClassBetter: required
+      rAndBId: required
+      rAndBBetter: required
+      tourId: required
+- name: search_result
+  endpoint:
+    path: /searchResult
+    method: GET
+    data_selector: data
+    params: {}
+- name: protectSettings
+  endpoint:
+    path: /tariffsearch/protectSettings
+    method: GET
+    data_selector: settings
+    params:
+      cityId: required
+      countryId: required
+- name: ticket_search
+  endpoint:
+    path: /ticketsearch/search
+    method: GET
+    data_selector: ticket
+    params:
+      departureIataCodeTo: MOW
+      arrivalIataCodeTo: HKT
+      departureDateTo: 20.07.2023
+      adultCount: 1
+      childCount: 0
+      infantCount: 0
+      departureIataCodeFrom: HKT
+      arrivalIataCodeFrom: MOW
+      departureDateFrom: 04.08.2023
+      currencyId: 18864
+- name: searchFlights
+  endpoint:
+    path: /xmlgate/nemo/searchFlights
+    method: GET
+    data_selector: nemoFlightPairs
+    params:
+      toDepCityId: '3746'
+      fromArrCityId: '3746'
+      toArrRegionId: '21301'
+      fromDepRegionId: '21301'
+      toDepDate: 20.08.2025
+      fromDepDate: 27.08.2025
+      adultCount: '2'
+      childCount: '1'
+      infantCount: '0'
+      currencyId: '18864'
+- name: fareFamilies
+  endpoint:
+    path: /xmlgate/nemo/fareFamilies
+    method: GET
+    data_selector: alternateFlights
+    params:
+      flightId: ''
+      currencyId: ''
+      aid: ''
+- name: orderFromOfferId
+  endpoint:
+    path: /xmlgate/order/orderFromOfferId.jsp
+    method: GET
+    data_selector: application/xml
+    params:
+      priceOfferId: required
+      resTariffs: required
+      flyTariffs: required
+      tariffDepCityId: required
+      firstTransferType: required
+      lastTransferType: required
+      spoKindId: required
+- name: calculate
+  endpoint:
+    path: /xmlgate/order/calculate
+    method: POST
+    data_selector: application/xml
+    params: {}
+- name: book
+  endpoint:
+    path: /xmlgate/order/book
+    method: POST
+    data_selector: application/xml
+    params: {}
+- name: view
+  endpoint:
+    path: /xmlgate/order/view
+    method: GET
+    data_selector: application/xml
+    params:
+      orderId: required
+- name: order
+  endpoint:
+    path: /xmlgate/order/list
+    method: GET
+    data_selector: order
+    params:
+      creationDateFrom: ''
+      creationDateTo: ''
+      startDateFrom: ''
+      startDateTo: ''
+      country: ''
+      authorized: ''
+      updatedDateFrom: ''
+notes:
+- Working under the same login in the API Gate and in the Agency's Workplace is not
+  recommended; only three sessions are available for one login at the same time.
+- The lifetime of an inactive session is 30 minutes; after this period, re-authorization
+  is required.
+- Maximum 20 calendar days between preferred departure dates - 'after' and 'before'
+  parameters
+- Maximum 8 nights between preferred amount of nights - 'nightsMax' and 'nightsMin'
+  parameters
+- Maximum 50 search requests per minute from 1 IP-address
+errors:
+- '401: Invalid login credentials'
+- '403: Access denied: IP address blocked or insufficient permissions'
+- '500: Internal server error while retrieving countries list'
+- '403: Access denied: - IP address blocked - Invalid session or insufficient permissions'
+- '500: Internal server error while retrieving cities list'
+- '500: Internal server error while retrieving hotels list'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '400: Invalid request parameters: - Missing or invalid cityId/countryId - Invalid
+  reference IDs'
+- '500: Internal server error while retrieving restrictions'
+- '400: Invalid request parameters'
+- '403: Access denied'
+- '500: Internal server error while retrieving orders list'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://xml.tezapi.eu/
+  auth:
+    type: sessionId
+source_metadata: null

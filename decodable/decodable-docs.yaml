@@ -1,0 +1,767 @@
+resources:
+- name: datagen_envoy_connection
+  endpoint:
+    path: /datagen/envoy
+    method: GET
+- name: envoy_raw
+  endpoint:
+    path: /streams/envoy_raw
+    method: GET
+    data_selector: value
+- name: http_events
+  endpoint:
+    path: /http_events
+    method: INSERT
+    data_selector: output
+    params: {}
+- name: envoy_raw
+  endpoint:
+    path: /envoy_raw
+    method: SELECT
+    data_selector: records
+    params: {}
+- name: http_events_count
+  endpoint:
+    path: /http_events_count
+    method: INSERT
+    data_selector: count
+    params: {}
+- name: kafka_mtls_in
+  endpoint:
+    path: /kafka_mtls_in
+    method: POST
+    data_selector: output
+    params: {}
+- name: kafka_sasl_input_stream
+  endpoint:
+    topic: source_topic
+- name: kafka_tls_in
+  endpoint:
+    path: /source_topic
+    method: GET
+    data_selector: records
+    params: {}
+- name: topic
+  endpoint:
+    path: /persistent/stream/namespace/topic-name
+    method: GET
+    params:
+      topic: persistent://stream/namespace/topic-name
+- name: kinesis_stream
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params:
+      aws.region: '{{ dlt.secrets[''aws_region''] }}'
+      stream: '{{ dlt.secrets[''stream_name''] }}'
+      format: json
+- name: topic
+  endpoint:
+    path: /persistent/stream/namespace/topic-name
+    method: GET
+    data_selector: records
+    params: {}
+- name: subscription
+  endpoint:
+    path: /v1/projects/{project}/subscriptions/{subscription}:pull
+    method: POST
+    data_selector: messages
+    params:
+      max-messages-per-pull: 100
+      per-request-timeout-sec: 15
+      retries: 3
+- name: tables
+  endpoint:
+    path: /tables
+    method: GET
+    data_selector: records
+    params: {}
+- name: topic
+  description: The topic name
+- name: table
+  endpoint:
+    path: /tables
+    method: POST
+    data_selector: table
+    params:
+      table.name: '{{ dlt.secrets[''table.name''] }}'
+      table.type: '{{ dlt.secrets[''table.type''] }}'
+- name: topic
+  endpoint:
+    path: persistent://stream/namespace/topic-name
+    method: POST
+    data_selector: records
+    params: {}
+- name: stream
+  endpoint:
+    path: /
+    method: GET
+    data_selector: records
+    params:
+      stream: stream
+- name: S3 Sink
+  endpoint:
+    path: /path/to/s3
+    method: POST
+    data_selector: records
+    params: {}
+- name: metrics
+  endpoint:
+    path: /api/v1/series
+    method: POST
+    data_selector: series
+    params: {}
+- name: topic
+  endpoint:
+    path: persistent://stream/namespace/topic-name
+    method: POST
+    data_selector: payload
+    params: {}
+- name: s3_bucket
+  endpoint:
+    path: /services/data/vXX.X/s3
+    method: POST
+    data_selector: records
+    params:
+      table-path: s3a://my-bucket/table_name
+      s3.role-arn: arn:aws:iam::111222333444:role/decodable-delta-access
+- name: index
+  endpoint:
+    path: /index
+    method: POST
+    data_selector: records
+- name: messages
+  endpoint:
+    path: /pubsub/projects/{{ project }}/topics/{{ topic }}
+    method: POST
+- name: default_table
+  endpoint:
+    path: /default_table
+    method: POST
+    data_selector: data
+    params: {}
+- name: mongodb_collection
+  endpoint:
+    path: /path/to/your/collection
+    method: POST
+    data_selector: data
+    params:
+      connection-string: mongodb(+srv)://my-cluster.mongodb.net/?retryWrites=true&w=majority
+      database: your_database_name
+      collection: your_collection_name
+- name: sink_table
+  endpoint:
+    method: CREATE
+    data_selector: table
+- name: staging_table
+  endpoint:
+    path: /DECODABLE_STAGING
+    method: GET
+- name: Kafka
+  endpoint:
+    path: /streaming/kafka
+    method: POST
+- name: my-datagen-connection
+  endpoint:
+    path: /
+    method: POST
+    data_selector: ''
+    params: {}
+- name: my-datagen-connection
+  endpoint:
+    path: /connections
+    method: GET
+    data_selector: id
+- name: source_connection
+  endpoint:
+    path: /source/connections
+    method: GET
+    data_selector: source_connections
+- name: sink_connection
+  endpoint:
+    path: /sink/connections
+    method: GET
+    data_selector: sink_connections
+- name: append_stream
+  endpoint:
+    path: /create-append-stream
+    method: POST
+    data_selector: records
+- name: change_stream
+  endpoint:
+    path: /create-change-stream
+    method: POST
+    data_selector: records
+- name: change_stream
+  endpoint:
+    path: /api/change_stream
+    method: GET
+    data_selector: records
+- name: my_stream
+  endpoint:
+    path: /stream/my_stream
+    method: POST
+    data_selector: raw_data
+    params:
+      description: raw data from prod Kafka
+      field: raw_data=STRING
+- name: stream
+  endpoint:
+    path: /streams
+    method: POST
+    data_selector: stream
+    params: {}
+- name: stream
+  endpoint:
+    path: /streams
+    method: POST
+    data_selector: null
+    params: {}
+- name: Custom Pipeline
+  endpoint:
+    path: /pipelines
+    method: POST
+    data_selector: pipeline
+    params: {}
+- name: orders
+  endpoint:
+    path: /orders
+    method: GET
+    data_selector: records
+- name: products
+  endpoint:
+    path: /products
+    method: GET
+    data_selector: records
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+    data_selector: records
+- name: orders
+  endpoint:
+    path: /orders
+    method: GET
+    data_selector: records
+- name: products
+  endpoint:
+    path: /products
+    method: GET
+    data_selector: records
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+    data_selector: records
+- name: orders
+  endpoint:
+    path: /change_streams/orders
+    method: GET
+    data_selector: records
+- name: products
+  endpoint:
+    path: /change_streams/products
+    method: GET
+    data_selector: records
+- name: users
+  endpoint:
+    path: /change_streams/users
+    method: GET
+    data_selector: records
+- name: taxi_fares
+  endpoint:
+    path: /taxi_fares
+    method: GET
+    data_selector: records
+- name: exchange_rates
+  endpoint:
+    path: /exchange_rates
+    method: GET
+    data_selector: records
+- name: converted_fares
+  endpoint:
+    path: /converted_fares
+    method: INSERT
+    data_selector: records
+- name: grok
+  endpoint:
+    path: sql-functions/string.html#grok
+    method: GET
+- name: xpaths
+  endpoint:
+    path: sql-functions/xml.html#xpaths
+    method: GET
+- name: approx_percentile
+  endpoint:
+    path: sql-functions/aggregate.html#approx_percentile
+    method: GET
+- name: ip_country
+  endpoint:
+    path: sql-functions/string.html#ip_country
+    method: GET
+- name: array_agg
+  endpoint:
+    path: sql-functions/collection.html#array_agg
+    method: GET
+- name: element_wise_sum
+  endpoint:
+    path: sql-functions/arithmetic.html#element-wise-sum
+    method: GET
+- name: table_valued_functions
+  endpoint:
+    path: /api/table-valued-functions
+    method: GET
+- name: resources
+  endpoint:
+    path: /query
+    method: GET
+    data_selector: resources
+- name: connection
+  endpoint:
+    path: /connections
+    method: GET
+- name: pipeline
+  endpoint:
+    path: /pipelines
+    method: GET
+- name: Linux (amd64)
+  endpoint:
+    path: https://releases.decodable.co/decodable-cli/linux/amd64/decodable-cli-linux-amd64-1.10.0.tar.gz
+    method: GET
+- name: macOS 10.15 and later (amd64)
+  endpoint:
+    path: https://releases.decodable.co/decodable-cli/darwin/amd64/decodable-cli-darwin-amd64-1.10.0.tar.gz
+    method: GET
+- name: macOS 10.15 and later (arm64 M1)
+  endpoint:
+    path: https://releases.decodable.co/decodable-cli/darwin/arm64/decodable-cli-darwin-arm64-1.10.0.tar.gz
+    method: GET
+- name: http_events
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: http_events
+  endpoint:
+    path: /products/2
+    method: PUT
+    data_selector: records
+    params: {}
+- name: profiles
+  endpoint:
+    path: /config/profiles
+    method: GET
+    data_selector: profiles
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+    data_selector: users
+- name: groups
+  endpoint:
+    path: /groups
+    method: GET
+    data_selector: groups
+- name: roles
+  endpoint:
+    path: /roles
+    method: GET
+    data_selector: roles
+- name: pause_conditions
+  endpoint:
+    path: /pause_conditions
+    method: GET
+    data_selector: conditions
+    params: {}
+- name: resume_conditions
+  endpoint:
+    path: /resume_conditions
+    method: GET
+    data_selector: conditions
+    params: {}
+- name: _events
+  endpoint:
+    path: /_events
+    method: GET
+    data_selector: events
+- name: _metrics
+  endpoint:
+    path: /_metrics
+    method: GET
+    data_selector: metrics
+- name: VPC
+  endpoint:
+    path: /vpc
+    method: GET
+    data_selector: vpc_details
+    params: {}
+- name: EKS
+  endpoint:
+    path: /eks
+    method: GET
+    data_selector: eks_details
+    params: {}
+- name: MSK
+  endpoint:
+    path: /msk
+    method: GET
+    data_selector: msk_details
+    params: {}
+- name: S3
+  endpoint:
+    path: /s3
+    method: GET
+    data_selector: s3_details
+    params: {}
+- name: Secrets Manager
+  endpoint:
+    path: /secrets-manager
+    method: GET
+    data_selector: secrets_manager_details
+    params: {}
+- name: IAM
+  endpoint:
+    path: /iam
+    method: GET
+    data_selector: iam_details
+    params: {}
+- name: tasks_sizes
+  endpoint:
+    path: /tasks/sizes
+    method: get
+    data_selector: sizes
+- name: pipelines
+  endpoint:
+    path: /pipelines
+    method: get
+    data_selector: pipelines
+- name: create_pipeline
+  endpoint:
+    path: /pipelines
+    method: post
+    data_selector: pipeline
+- name: update_pipeline
+  endpoint:
+    path: /pipelines/{id}
+    method: patch
+    data_selector: pipeline
+- name: get_pipeline
+  endpoint:
+    path: /pipelines/{id}
+    method: get
+    data_selector: pipeline
+- name: task_sizes
+  endpoint:
+    path: /tasks/sizes
+    method: GET
+    data_selector: sizes
+    params: {}
+- name: tasks_sizes
+  endpoint:
+    path: /get/tasks/sizes
+    method: GET
+    data_selector: sizes
+- name: user
+  endpoint:
+    path: /get/users
+    method: GET
+    data_selector: sizes
+    params:
+      incremental: user:read:<id>
+- name: group
+  endpoint:
+    path: /get/groups
+    method: GET
+    data_selector: sizes
+    params:
+      incremental: group:read:<name>
+- name: get_tasks_sizes
+  endpoint:
+    path: /get/tasks/sizes
+    method: GET
+    data_selector: sizes
+    params: {}
+- name: task_sizes
+  endpoint:
+    path: /tasks/sizes
+    method: GET
+    data_selector: sizes
+- name: upload_file
+  endpoint:
+    path: /files
+    method: POST
+    data_selector: metadata
+    params: {}
+- name: get_preview
+  endpoint:
+    path: /files
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: S3 inventory access
+  endpoint:
+    path: /services/data/vXX.X/s3/inventory
+    method: PUT
+    data_selector: records
+    params: {}
+notes:
+- Every request to a data plane API endpoint must include a data plane request token
+  that’s signed by the control plane API service.
+- Make sure that you are using the right token endpoint for the data plane request
+  you would like to make.
+- This tutorial assumes that you have already created a Decodable account and have
+  logged in successfully.
+- A single instance of this connector can read from multiple topics.
+- TLS can be used for authentication
+- Kafka broker configuration changes require a rolling restart
+- sasl.password must be supplied as a secret
+- broker_list must use the port that accepts TLS connections
+- cert must be an X.509 certificate in PEM format
+- Your Kafka brokers have a topic source_topic that has data with json value format
+- If you want to send CDC data through this connector, then you must select Debezium
+  (JSON).
+- This is a supported integration which requires manual configuration.
+- Contact Decodable support if you are interested in native support with a Decodable
+  connector.
+- Requires IAM role with access to Kinesis stream
+- For better performance, enable an Amazon SQS (Simple Queue Service) queue so that
+  the connector can receive notifications about when new files are written to the
+  S3 bucket.
+- There is no defined order of ingestion for the files read from S3.
+- By default, scan.startup.mode is latest.
+- Messages are acknowledged to Pub/Sub approximately every 10 seconds. Best practice
+  is to set the subscription’s acknowledgement deadline to be much larger, or else
+  the messages might be processed multiple times.
+- A single instance of this connector can read from multiple tables from a single
+  schema and database.
+- Your MongoDB instance must be accessible from the Decodable network
+- You must have a MongoDB user with privileges changeStream and read
+- Your MongoDB instance must be configured for change stream replication
+- Your MySQL database must be accessible from the Decodable network.
+- Your MySQL instance must be configured to send change records.
+- The Oracle CDC connector can read from multiple tables and schemas in a single database.
+- Log archiving must be enabled.
+- Your Postgres database must have the logical decoding feature enabled.
+- To write events to this connection, encode the plaintext value of this secret in
+  Base64 and use it as a bearer token on POST requests to this REST endpoint’s URL.
+- Records are written atomically to the stream, meaning all records in the POST body
+  are written or none are.
+- This connector supports at least once delivery guarantee.
+- The connector can write to a single topic.
+- Connector supports exactly once delivery guarantee.
+- Single instance can write to all files in a single S3 bucket.
+- A single instance of this connector can write to multiple topics.
+- Datadog will reject data with a timestamp that’s older than one hour, or more than
+  ten minutes in the future.
+- A single instance of this connector can write to a single topic.
+- A single instance of this connector can write to a single Delta Lake table
+- Decodable interacts with resources in AWS on your behalf
+- A GCP service account key that can be used for authentication is required.
+- A GCP subscription with the Pull delivery type is necessary.
+- Sending a Decodable data stream to Imply Enterprise is accomplished in two stages.
+- Sending a Decodable data stream to InfluxDB is accomplished in two stages.
+- Decodable uses the stream name as the name of the table it writes to.
+- A single instance of this connector can write to multiple tables in a single schema
+  and database.
+- The connector only works with non-CDB deployments. Support for container databases
+  (CDB) is forthcoming.
+- A single instance of this connector can write to multiple tables in a single schema
+  and database
+- The Postgres user must have SELECT, UPDATE, DELETE, and INSERT permissions for the
+  tables that you want to send data to.
+- Sending a Decodable data stream to Redis is accomplished in two stages.
+- If you want to send data from both change streams and append streams, then you must
+  create separate Redpanda connections.
+- Sending a Decodable data stream to SingleStore is accomplished in two stages.
+- Uses a Bearer token for authentication
+- Decodable Connectors require network connectivity to resources, like databases,
+  to read or write data.
+- You can convert an append stream to a change stream and vice versa with the to_change()
+  and to_append() functions.
+- Decodable uses the log-based change data capture method.
+- Decodable connectors use Debezium to read and interpret the database changes.
+- Uses append and change streams for data transport.
+- The stream’s schema must match the schema of the connection that it’s attached to.
+- A stream transports records between Decodable components.
+- 'There are two types of streams: append streams and change streams.'
+- Pipelines process data exactly once.
+- Best practices are to use event time when performing joins or aggregations.
+- A preview session continues until 2 minutes have passed or 30 records are sampled,
+  whichever comes first.
+- Defaults to Latest.
+- Role-Based Access Control for Streams isn’t currently supported for Custom Pipelines.
+- Custom Pipelines expose a set of Flink metrics by default.
+- You can expose custom metrics by including a metric group named 'DecodableMetrics'.
+- The schema of the pipeline must match the schema of the sink stream.
+- If you want to start data ingestion from the earliest offset, you must select the
+  discard state option.
+- For a new pipeline, select either the earliest or latest point in the source stream.
+- If the pipeline has previously been run, there are more options to control the starting
+  state.
+- Regular joins can be costly and resource-constrained depending on how large the
+  tables or streams are.
+- Regular joins always output a change stream. The exception is when doing an inner
+  join of two or more append streams.
+- Regular joins produce 'eventually consistent' guarantees.
+- Outputs of a left, right, and full outer join are always a change stream.
+- These pages are based on the official Apache Flink® documentation.
+- Decodable supports Table-Valued Functions that implement a number of windowing strategies
+  including tumble, hop, cumulate, and session.
+- To aggregate using event time, your input stream must have watermarks enabled.
+- Pipelines can be used for various data transformation patterns.
+- Filtering pipelines are common for curating feeds.
+- Snapshots are associated with a single pipeline and are retained for seven days
+  by default.
+- To override the default retention period of seven days, pass the --retention parameter
+  and supply the desired value expressed in seconds.
+- 'Applying a set of resources is idempotent and atomic: if anything goes wrong, no
+  changes are made.'
+- Certain Decodable CLI actions (such as activating a resource and setting values
+  for secrets) require a resource ID so retaining output is recommended.
+- The `query` command outputs a series of resource definitions in YAML format.
+- These are idempotent operations that affect only resources that can be active (connections
+  and pipelines), with no effect on other resources (secrets and streams).
+- To actually restart active resources, use operation restart.
+- Always use the `--export` (or `--no-status`) option when exporting for source control.
+  This option suppresses the `status` section in `query` result resources.
+- 'Never use `--keep-ids` when exporting for source control: IDs can’t be replicated
+  to new resources (after a resource deletion or in a different account, for example),
+  and so break repeatability.'
+- Export resources without the `status` section.
+- You can use this to write it directly to a file, by redirecting `stdout`.
+- The auth file contains sensitive access tokens and must not be shared or committed
+  to version control.
+- A source connection that generates envoy-style logs
+- A stream of records in envoy format
+- Previews run until 30 records are seen or until 2 minutes have passed, whichever
+  comes first.
+- Active connections and pipelines both consume resources while they’re running.
+- You can add as many profiles with unique names as necessary to be able to use the
+  CLI across several Decodable accounts that are accessible to you.
+- Always keep authentication tokens secure! The access token allows the holder to
+  run API operations on behalf of the user that obtained it for the duration of its
+  lifetime (typically 24 hours). The refresh token can be used to obtain new access
+  tokens and is thus even more powerful as it doesn’t expire. Improper handling of
+  these tokens can allow malicious users to capture all data from a Decodable account
+  for which these tokens are valid.
+- It’s recommended that you create a dedicated user within your Decodable account
+  with the permissions required.
+- Users are assigned to one or more groups.
+- Every Decodable account includes an `admins` group and a `new-user` group.
+- MongoDB connections must have a task size of M or larger.
+- You can’t update the task size or count for the REST Connector and the Datagen Connector.
+- Tasks of size S can have a maximum of 1 task.
+- We recommend starting with task size M, unless you know it’s a basic or low-throughput
+  pipeline or connection.
+- If you experience stability issues with task size S, upgrade the task size to M.
+- All task sizes larger than S support task counts > 1.
+- For security purposes, Decodable will never display secret values in plaintext.
+- Tags can be configured on a resource using the web UI or the Decodable CLI.
+- A resource can have up to 20 tags.
+- Updating an actively used stream affects the pipelines and connections that the
+  stream is connected to. Depending on the change you are making to the stream, attached
+  connections and pipelines can break and become incompatible.
+- Best practices are to do this second workflow if you want to change a stream’s primary
+  key.
+- Best practices are to do this third workflow if you are sending medium to large
+  amounts of data to minimize risk and downtime.
+- The feature is currently in Tech Preview. Breaking changes can be made to the feature.
+  It’s not recommended for production use.
+- Any schema changes happening in the upstream database tables - for example new columns
+  added or column data types changed - won’t be automatically picked up.
+- Resetting a connection’s state will cause it to snapshot all existing records in
+  a table, and pick up all changes from that point in time onward.
+- Metrics are reset upon each activation.
+- Stopping and restarting a connection or pipeline resets metrics back to zero.
+- Metrics are also reset if a connection or pipeline enters a retrying state.
+- You don’t have to decide now! You can start off with Decodable as a fully managed
+  service hosted on our infrastructure. If you subsequently decide that you want to
+  use BYOC you can migrate to that.
+- New Decodable accounts are configured to be Fully Managed by default.
+- Today AWS is the only cloud provider supported by Decodable BYOC.
+- Decodable recommends a VPC with subnets in 3 Availability Zones.
+- Decodable expects a dedicated nodegroup with the taint `flink-app:NoSchedule`, which
+  is used to run Flink TaskManagers.
+- Use Kafka 3.5.1 if possible.
+- Decodable uses S3 to store job state, crash data and job logs.
+- Requires appropriate permissions matching resources involved.
+- 'Requires permissions matching: connection:write:default.<name>, stream:read-data:default.<stream-name>
+  on attached streams for sink connections, stream:write-data:default.<stream-name>
+  on attached streams for source connections.'
+- 'Requires permission matching: connection:read:default.<name>.'
+- 'Requires permission matching: `account:read:<name>`.'
+- 'Requires permission matching: user:read:<id> or group:read:<name> for access.'
+- 'Decodable is available in the following AWS regions: af-south-1, ap-southeast-2,
+  eu-central-1, us-east-1, us-west-2.'
+- When selecting a region for your Decodable account, best practices are to choose
+  the same region as the sources and sinks you plan to connect to.
+- The Principal is Decodable’s AWS account, and is a fixed value of arn:aws:iam::671293015970:root.
+- The ExternalId must match your Decodable account name.
+- It’s not possible to see per-stream input metrics in the app, only aggregate metrics.
+- 'Pagination query parameters are ignored in List APIs. For example: GET /pipelines,
+  /streams, /connections.'
+- If you see frequent errors in an active connection, the task size assigned to the
+  connection might be too small. Try restarting the connection and increasing the
+  task size.
+- The REST and Datagen connectors don’t currently expose metrics.
+- If you see frequent errors in an active pipeline, the task size assigned to the
+  pipeline might be too small. Try restarting the pipeline and increasing the task
+  size.
+- When you edit the underlying SQL query for a pipeline, Decodable doesn’t check if
+  the state associated with the new version of the pipeline is compatible with the
+  previous version. If the state isn’t compatible, an error message is shown asking
+  you to discard the state.
+- Previews ignore some errors. If you aren’t receiving preview results, that means
+  there are no results or that the preview failed. To minimize errors and troubleshooting,
+  make sure that there is data actively coming in through the input streams and change
+  the Starting Position to Earliest and run the preview again.
+- Custom stream retention settings aren’t yet user-facing.
+- Multi-typed maps aren’t supported in Avro schemas.
+- Sliding windows, that’s the hop() function, require the size argument to be a multiple
+  of the slide interval.
+- Session windows aren’t currently available.
+- When performing windowed aggregation, you must group by both the generated window_start
+  and window_end fields.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Make sure you’ve allowed connections from Decodable’s IPs.
+- Kafka connections operate in exactly once delivery mode in Decodable.
+- Decodable supports popular serialization formats like JSON, Avro, and Debezium (JSON)
+  schemas.
+- By default, Kafka connections operate in exactly once delivery mode in Decodable.
+- Your Postgres database must be publicly accessible.
+- Your Postgres database user must have sufficient permissions to create Postgres
+  publications.
+errors:
+- 'ORA-12154: TNS:could not resolve the connect identifier specified'
+- 'ORA-28000: the account is locked'
+- '400 Bad Request: Check the format of the data being sent.'
+- '401 Unauthorized: Check your access token'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- 'Permission denied: User lacks the necessary role or group permissions.'
+- Connection will fail when it’s unable to successfully deserialize an input record
+  based on the specified stream mappings and schema.
+- Backward incompatible column type changes have ripple effects to the downstream
+  jobs.
+- Metrics may indicate errors if the pipeline can't keep up with the rate at which
+  messages are being produced.
+- 'default: An error has occurred.'
+- '409 Conflict: Must correspond to a connection configured with the rest connector
+  type.'
+- '401 Unauthorized: Check permissions or authentication credentials.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Network connectivity - Decodable is unable to connect to your brokers.
+- Authentication failures - Make sure you select the correct authentication mechanism.
+auth_info:
+  mentioned_objects:
+  - sasl.username
+  - sasl.password
+  - bearerAuth
+client:
+  base_url: https://app.decodable.co
+  headers:
+    Accept: application/json
+source_metadata: null

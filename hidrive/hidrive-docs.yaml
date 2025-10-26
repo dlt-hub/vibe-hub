@@ -1,0 +1,41 @@
+resources:
+- name: app_me
+  endpoint:
+    path: /2.1/app/me
+    method: GET
+    data_selector: ''
+    params: {}
+- name: authorize
+  endpoint:
+    path: /client/authorize
+    method: GET
+- name: token
+  endpoint:
+    path: /oauth2/token
+    method: POST
+- name: tokeninfo
+  endpoint:
+    path: /oauth2/tokeninfo
+    method: POST
+notes:
+- SSL only! We require all requests to the API to be made over SSL (https:// not http://).
+- 'The access_token must be sent inside the Authorization: Bearer header of your request.'
+errors:
+- '401 Unauthorized: HiDrive refresh tokens have a default validity of 3 months.'
+- '400 Bad Request: Invalid or expired access_token'
+- '400 Bad Request: Bad Request errors return a JSON hash with the following structure:
+  { "error_description":"...",  "error":"invalid_request"  }'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://my.hidrive.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://my.hidrive.com/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+source_metadata: null

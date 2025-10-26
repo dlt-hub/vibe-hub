@@ -1,0 +1,218 @@
+resources:
+- name: InferencePool
+  endpoint:
+    path: /inference.networking.k8s.io/v1/inferencePools
+    method: GET
+    data_selector: items
+    params: {}
+- name: inference_pool
+  endpoint:
+    path: /inferencePool
+    method: DELETE
+- name: inference_objective
+  endpoint:
+    path: /inferenceObjective
+    method: DELETE
+- name: cpu_deployment
+  endpoint:
+    path: /vllm/cpu-deployment
+    method: DELETE
+- name: gpu_deployment
+  endpoint:
+    path: /vllm/gpu-deployment
+    method: DELETE
+- name: sim_deployment
+  endpoint:
+    path: /vllm/sim-deployment
+    method: DELETE
+- name: secret_hf_token
+  endpoint:
+    path: /secret/hf-token
+    method: DELETE
+- name: gateway
+  endpoint:
+    path: /gateway
+    method: DELETE
+- name: istio_namespace
+  endpoint:
+    path: /istio-system
+    method: DELETE
+- name: kgateway
+  endpoint:
+    path: /kgateway
+    method: DELETE
+- name: agentgateway
+  endpoint:
+    path: /agentgateway
+    method: DELETE
+- name: InferencePool
+- name: InferenceObjective
+- name: vLLM
+  endpoint:
+    path: /modelservers/vllm
+    method: GET
+    data_selector: data
+    params: {}
+- name: Triton
+  endpoint:
+    path: /modelservers/triton
+    method: GET
+    data_selector: data
+    params: {}
+- name: SGLang
+  endpoint:
+    path: /modelservers/sglang
+    method: GET
+    data_selector: data
+    params: {}
+- name: inference-gateway
+  endpoint:
+    path: /v1/completions
+    method: POST
+    data_selector: model
+    params: {}
+- name: llm-llama-route
+  endpoint:
+    path: /v1/chat/completions
+    method: POST
+    data_selector: body
+    params: {}
+- name: llm-phi4-route
+  endpoint:
+    path: /v1/chat/completions
+    method: POST
+    data_selector: body
+    params: {}
+- name: vllm-llama3-8b-instruct-adapters
+  endpoint:
+    path: /v1/completions
+    method: POST
+    data_selector: data
+    params: {}
+- name: inference_pool
+  endpoint:
+    path: /v1/inferencePool
+    method: GET
+    data_selector: records
+- name: http_route
+  endpoint:
+    path: /v1/httpRoute
+    method: GET
+    data_selector: records
+- name: InferencePool
+  endpoint:
+    path: /inferencepools.inference.networking.x-k8s.io
+    method: GET
+    data_selector: resources
+- name: InferenceObjective
+  endpoint:
+    path: /inferenceobjectives.inference.networking.x-k8s.io
+    method: GET
+    data_selector: resources
+- name: InferenceObjective
+  endpoint:
+    path: /inference.networking.x-k8s.io/v1alpha2/InferenceObjective
+    method: POST
+    data_selector: metadata.name
+    params: {}
+- name: HTTPRoute
+  endpoint:
+    path: /gateway.networking.k8s.io/v1/HTTPRoute
+    method: POST
+    data_selector: metadata.name
+    params: {}
+- name: InferencePool
+  endpoint:
+    path: /inference/pool
+    method: POST
+    data_selector: spec
+    params: {}
+- name: HTTPRoute
+  endpoint:
+    path: /http/route
+    method: POST
+    data_selector: spec
+    params: {}
+- name: single_workload
+  endpoint:
+    path: ./config/manifests/regression-testing/single-workload-regression.yaml
+    method: GET
+    data_selector: records
+    params: {}
+- name: multi_lora
+  endpoint:
+    path: ./config/manifests/regression-testing/multi-lora-regression.yaml
+    method: GET
+    data_selector: records
+    params: {}
+- name: InferencePoolImport
+  endpoint:
+    path: /inference.networking.x-k8s.io/v1alpha1/InferencePoolImport
+    method: GET
+    data_selector: items
+    params: {}
+- name: InferenceObjective
+  endpoint:
+    path: /inference/networking/x-k8s.io/v1alpha2/inferenceobjectives
+    method: GET
+    data_selector: items
+    params: {}
+- name: InferencePool
+  endpoint:
+    path: /inference/networking/x-k8s.io/v1alpha2/inferencepools
+    method: GET
+    data_selector: items
+    params: {}
+- name: InferencePool
+  endpoint:
+    path: /reference/spec/#inferencepool
+    method: GET
+    data_selector: spec
+    params: {}
+notes:
+- This feature is currently in an experimental phase and is not intended for production
+  use.
+- CPU deployment can be unreliable i.e. the pods may crash/restart because of resource
+  constraints.
+- LoRA affinity feature is not available as the required LoRA metrics haven't been
+  implemented in Triton yet.
+- Set --enable-metrics on the model server.
+- This project is still in an alpha state and breaking changes may occur in the future.
+- Uninstall resources created in the quickstart guide carefully.
+- All commands include --ignore-not-found to prevent errors if resources do not exist.
+- Uses Body-Based Routing to route requests based on model name
+- To have response metrics, ensure the body mode is set to Buffered or Streamed.
+- If you want to include usage metrics for vLLM model server streaming request, send
+  the request with include_usage.
+- This document is intended for platform administrators and networking specialists
+  who are currently using the v1alpha2 version of the Inference Gateway.
+- During the zero-downtime migration, both v1alpha2 and v1 CRDs will be installed
+  on your cluster.
+- Use Helm to install a new v1 InferencePool with a distinct release name.
+- Requires setup of connected app in API
+- Use of InferencePool introduces a new type of backend within the Gateway API resource
+  model
+- Since the EPP (EndPoint Picker) takes the InferencePool name as an environment variable,
+  each conformance test creates a corresponding EPP deployment for each InferencePool
+  it defines.
+- For conformance testing, the EPP is configured with the HeaderBasedTestingFilter.
+- Use NVIDIA H100 GPUs (80 GB) for optimized performance.
+- Update deployments for multi-LoRA support.
+errors:
+- High latency (P99) for model {{ $labels.model_name }}
+- High error rate for model {{ $labels.model_name }}
+- High average queue size for inference pool {{ $labels.name }}
+- High KV cache utilization for inference pool {{ $labels.name }}
+- '400 Bad Request: model not found in request body or prompt not found in request'
+- '404 Not Found: Ensure you have an HTTPRoute resource deployed that specifies the
+  correct host, path, and backendRef to your InferencePool.'
+- '429 Too Many Requests: system saturated, sheddable request dropped'
+- '500 Internal Server Error: fault filter abort'
+- '502 Bad Gateway or 503 Service Unavailable: upstream connect error or disconnect/reset
+  ...'
+- '503 Service Unavailable: no healthy upstream'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://github.com/kubernetes-sigs/gateway-api-inference-extension
+source_metadata: null
