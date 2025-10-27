@@ -1,0 +1,455 @@
+resources:
+- name: create_https_tunnel
+  endpoint:
+    path: /create
+    method: POST
+    data_selector: tunnel
+    params:
+      provider: digitalocean
+      region: lon1
+      access-token-file: $HOME/do-access-token
+      letsencrypt-domain: grafana.example.com
+      letsencrypt-email: webmaster@grafana.example.com
+      letsencrypt-issuer: prod
+- name: create_tcp_tunnel
+  endpoint:
+    path: /create
+    method: POST
+    data_selector: tunnel
+    params:
+      provider: digitalocean
+      access-token-file: $HOME/do-access-token
+      pro: true
+- name: create_https_tunnel
+  endpoint:
+    path: /create
+    method: POST
+    data_selector: tunnel
+    params:
+      provider: digitalocean
+      region: lon1
+      letsencrypt-domain: grafana.example.com
+      letsencrypt-email: webmaster@grafana.example.com
+      letsencrypt-issuer: prod
+- name: create_http_tunnel
+  endpoint:
+    path: /create
+    method: POST
+    data_selector: tunnel
+    params:
+      provider: linode
+      region: eu-west
+- name: create_tcp_tunnel
+  endpoint:
+    path: /create
+    method: POST
+    data_selector: tunnel
+    params:
+      provider: digitalocean
+- name: exit-server
+  endpoint:
+    path: /create
+    method: POST
+    data_selector: exit-server
+    params: {}
+- name: create_exit_server_aws
+  endpoint:
+    path: /create
+    method: POST
+    data_selector: exit_server
+    params: {}
+- name: delete_exit_server_aws
+  endpoint:
+    path: /delete
+    method: DELETE
+    data_selector: exit_server
+    params: {}
+- name: create_exit_server_gce
+  endpoint:
+    path: /create/gce
+    method: POST
+    data_selector: exit_server
+    params: {}
+- name: create_exit_server_azure
+  endpoint:
+    path: /create/azure
+    method: POST
+    data_selector: exit_server
+    params: {}
+- name: create_exit_server_hetzner
+  endpoint:
+    path: /create/hetzner
+    method: POST
+    data_selector: exit_server
+    params: {}
+- name: create_exit_server_linode
+  endpoint:
+    path: /create/linode
+    method: POST
+    data_selector: exit_server
+    params: {}
+- name: create_exit_server_scaleway
+  endpoint:
+    path: /create/scaleway
+    method: POST
+    data_selector: exit_server
+    params: {}
+- name: tunnel_server
+  endpoint:
+    path: /create/tunnel/server
+    method: POST
+- name: tunnel_client
+  endpoint:
+    path: /connect/tunnel/client
+    method: POST
+- name: tunnel_server
+  endpoint:
+    path: /http/server
+    method: POST
+    data_selector: response
+    params:
+      auto_tls: true
+      control_port: 8123
+      letsencrypt_domain:
+      - subdomain1.example.com
+      - subdomain2.example.com
+      letsencrypt_email: contact@example.com
+      letsencrypt_issuer: staging
+      token: $(head -c 32 /dev/urandom | base64 | cut -d "-" -f1)
+- name: fileserver
+  endpoint:
+    path: /fileserver
+    method: POST
+    data_selector: response
+    params:
+      allow_browsing: true
+      webroot: /tmp/share/
+      port: 8080
+- name: http_client
+  endpoint:
+    path: /http/client
+    method: POST
+    data_selector: response
+    params:
+      url: wss://$SERVER_IP:8123
+      token: ''
+      upstream:
+        subdomain1.example.com: http://localhost:8080/
+        subdomain2.example.com: http://localhost:3000/
+- name: tcp_server
+  endpoint:
+    path: /tcp/server
+    method: GET
+    data_selector: server_details
+    params:
+      control-port: '8124'
+      auto-tls-path: /tmp/inlets-pro-tcp/
+- name: tcp_client
+  endpoint:
+    path: /tcp/client
+    method: GET
+    data_selector: client_details
+    params:
+      upstream: 192.168.0.15
+      ports: 2222,5900
+      url: wss://46.101.128.5:8124
+- name: tunnel_server
+  endpoint:
+    path: /create
+    method: POST
+    data_selector: ''
+    params:
+      provider: ''
+      region: ''
+      access-token-file: ''
+- name: tcp_server
+  endpoint:
+    path: /tcp/server
+    method: POST
+    data_selector: server_info
+- name: tcp_client
+  endpoint:
+    path: /tcp/client
+    method: POST
+    data_selector: client_info
+- name: file_server
+  endpoint:
+    path: /
+    method: GET
+    data_selector: records
+- name: tunnel_server
+  endpoint:
+    path: /create
+    method: POST
+    data_selector: output
+    params:
+      provider: digitalocean
+      access-token-file: ~/do-access-token
+      region: lon1
+- name: ssh_access
+  endpoint:
+    path: /ssh/access
+    method: POST
+    data_selector: output
+    params:
+      tcp_ports: '2222'
+      url: wss://206.189.114.179:8123/connect
+      token: 4NXIRZeqsiYdbZPuFeVYLLlYTpzY7ilqSdqhA0HjDld1QjG8wgfKk04JwX4i6c6F
+      license_file: $HOME/LICENSE.txt
+      upstream: localhost
+- name: postgresql
+  endpoint:
+    path: /expose/postgresql
+    method: POST
+    data_selector: response
+    params: {}
+- name: nginx
+  endpoint:
+    path: /kubernetes/expose/nginx-1
+    method: POST
+    data_selector: tunnels
+    params:
+      type: LoadBalancer
+      port: 80
+- name: openfaas-gateway-tunnel
+  endpoint:
+    path: /openfaas-gateway-tunnel.yaml
+    method: GET
+- name: ingress-nginx-tunnel
+  endpoint:
+    path: /ingress-nginx-tunnel.yaml
+    method: GET
+- name: inlets-operator
+  endpoint:
+    path: /install/inlets-operator
+    method: GET
+- name: nginx-ingress
+  endpoint:
+    path: /install/nginx-ingress
+    method: GET
+- name: cert-manager
+  endpoint:
+    path: /install/cert-manager
+    method: GET
+- name: inlets-client
+  endpoint:
+    path: /connect
+    method: TCP
+    data_selector: status
+    params: {}
+- name: istio-ingressgateway
+  endpoint:
+    path: /svc/istio-ingressgateway
+    method: GET
+    data_selector: EXTERNAL-IP
+- name: status
+  endpoint:
+    path: /status
+    method: GET
+    data_selector: clients
+- name: metrics
+  endpoint:
+    path: /metrics
+    method: GET
+    data_selector: metrics
+- name: status
+  endpoint:
+    path: /status
+    method: GET
+    data_selector: clients
+- name: prometheus_metrics
+  endpoint:
+    path: /metrics
+    method: GET
+    data_selector: metrics
+- name: IP filtering
+  endpoint:
+    path: /docs/tutorial/ip-filtering
+    method: GET
+    data_selector: allow list
+    params: {}
+- name: clientRouter
+  endpoint:
+    path: /tunnel
+    method: GET
+    data_selector: clientRouter
+- name: prometheus
+  endpoint:
+    path: /prometheus
+    method: GET
+    data_selector: metrics
+    params: {}
+- name: tunnel
+  endpoint:
+    path: /api/v1alpha1/tunnels
+    method: GET
+    data_selector: items
+- name: tunnel
+  endpoint:
+    path: /tunnels/acmeco
+    method: GET
+    data_selector: tunnel
+    params: {}
+- name: openfaas_tunnel
+  endpoint:
+    path: /tunnels/openfaas
+    method: GET
+    data_selector: tunnels
+    params: {}
+- name: TCP service
+  endpoint:
+    path: /uplink/connect-tunnel-client/
+    method: GET
+- name: HTTP service
+  endpoint:
+    path: /uplink/connect-tunnel-client/
+    method: GET
+- name: grafana-tunnel-ingress
+  endpoint:
+    path: /tunnels/grafana
+    method: GET
+- name: openfaas-tunnel-ingress
+  endpoint:
+    path: /tunnels/openfaas
+    method: GET
+- name: tunnels
+  endpoint:
+    path: /tunnels
+    method: GET
+- name: delete_tunnel
+  endpoint:
+    path: /tunnels/{tunnel_name}
+    method: DELETE
+- name: update_tunnel
+  endpoint:
+    path: /tunnels/{tunnel_name}
+    method: PATCH
+- name: logs_tunnel
+  endpoint:
+    path: /tunnels/{tunnel_name}/logs
+    method: GET
+- name: rotate_secret
+  endpoint:
+    path: /tunnels/{tunnel_name}/rotate_secret
+    method: POST
+- name: tunnel
+  endpoint:
+    path: /v1/tunnels
+    method: GET
+    data_selector: tunnels
+    params: {}
+- name: namespace
+  endpoint:
+    path: /v1/namespace
+    method: GET
+    data_selector: namespaces
+    params: {}
+- name: security_group
+  endpoint:
+    path: /api/security-groups/{GROUP_NAME}
+    method: PATCH
+    data_selector: allow
+    params:
+      project: PROJECT_ID
+- name: tunnel
+  endpoint:
+    path: /tunnels
+    method: GET
+    data_selector: tunnels
+    params: {}
+- name: tunnel
+  endpoint:
+    path: /tunnels.operator.inlets.dev
+    method: GET
+    data_selector: tunnels
+notes:
+- Uses Let's Encrypt for certificates
+- Requires a DigitalOcean access token
+- Uses OAuth2 with refresh token — requires setup of connected app in inlets
+- The client will look for your license in $HOME/.inlets/LICENSE
+- Uses DigitalOcean and Linode as providers for tunnel creation.
+- Requires setup of access tokens for cloud providers.
+- If using auto-tls (the default), check that port 8123 is accessible.
+- You can also check the configuration in /etc/default/inlets-pro, to make sure that
+  an IP address and token are configured.
+- inlets can tunnel either HTTP or TCP traffic
+- A single tunnel can expose multiple websites or hosts, including LoadBalancing and
+  multiple clients to one server
+- An inlets subscription is a pre-requisite.
+- During beta, there is no additional charge or fee for using Inlets Cloud.
+- All traffic sent over an inlets tunnel is encapsulated in a TLS-encrypted websocket,
+  which prevents eavesdropping.
+- The tunnel client is authenticated using an API token which is generated by the
+  tunnel administrator, or by automated tooling.
+- You can create a DNS 'A' record for the IP address of the tunnel server on your
+  domain control panel.
+- The inlets server process will attempt to get a TLS certificate from Let's Encrypt
+  using a HTTP01 Acme challenge.
+- This page applies to inlets-pro 0.10.0 and onwards.
+- OAuth 2.0 flow requires a web-browser
+- Paths prefixed with '/_/oauth' cannot be used by the tunneled service
+- It is advisable to only tunnel TCP services which include their own encryption such
+  as TLS, SSH, RDP, or a Reverse Proxy.
+- Local port forwarding is the opposite use-case of exposing a local service to the
+  Public internet.
+- The inlets tcp and http server command disables local port forwarding by default.
+- To enable it, use the `--client-forwarding` flag.
+- The choice of 'localhost' is suitable when running Postgresql in Docker on the same
+  computer as the inlets Pro client.
+- You can run the command from anywhere since your exit-server has a public IP.
+- A Kubernetes cluster is required
+- Helm is required to install the inlets-operator
+- The inlets-operator creates a VM for each tunnel server in the cloud of your choice.
+- Uses a custom domain for the Kubernetes API Server
+- Requires setup of a tunnel server on a VM
+- The inlets-operator lets you get public LoadBalancers on your local Kubernetes cluster.
+- The token that is set up for the server has to be set in the Authorization header.
+- The server collects metrics for both the data-plane and the control-plane.
+- Prometheus can be set up for metrics collection and alerting.
+- Token that is set up for the server has to be set in the Authorization header.
+- HTTP and TCP tunnels support filtering of incoming requests by IP address through
+  an allow list.
+- Uses Ingress for exposing control-plane
+- Requires an Inlets Uplink subscription
+- The chart artifacts are public and do not require authentication
+- Telemetry data is sent to OpenFaaS Ltd for usage metrics.
+- Create a namespace for the tunnel to avoid conflicts on names.
+- Label the namespace with 'inlets.dev/uplink=1' after creating the tunnel.
+- Uses Let's Encrypt for certificate management.
+- Multiple tunnels can be exposed using a single Ingress resource.
+- The Client Credentials flow is recommended for server-to-server interactions.
+- Verify the client is using a valid auth token for the tunnel.
+- Verify the client is using the same inlets version as the tunnel server.
+- Verify the tunnel exist and is running.
+- Verify the tunnels is reachable through the client-router.
+- You can add IP addresses or CIDR ranges into a Security Group.
+- Use a script to update an existing group by API.
+- An access token is required for the operator to create VMs for inlets Pro servers.
+- Ensure to delete the LoadBalancer service before deleting the cluster.
+errors:
+- 'Connection refused: Check if the service is running'
+- 'Invalid access token: Ensure the token is correct'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '401 Unauthorized: Recheck access token or permissions'
+- '401 Unauthorized: Recheck your token or access permissions.'
+- 'Connection refused: Check if the server is running and accessible'
+- '401 Unauthorized: Check if the token is valid'
+- '401 Unauthorized: Recheck API key or access token'
+- '429 Too Many Requests: Rate limiting by Let''s Encrypt API.'
+auth_info:
+  mentioned_objects:
+  - oauth-client-id
+  - oauth-client-secret
+  - Issuer
+  - Certificate
+  - client-api-token
+  - OAuth
+client:
+  base_url: https://inletsctl.inlets.dev
+  auth:
+    type: token
+    location: header
+    header_name: Authorization
+source_metadata: null

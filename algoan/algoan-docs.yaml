@@ -1,0 +1,103 @@
+resources:
+- name: customers
+  endpoint:
+    path: /v2/customers
+    method: GET
+    data_selector: customers
+- name: analyses
+  endpoint:
+    path: /v2/customers/{id}/analyses
+    method: GET
+    data_selector: analyses
+- name: reports
+  endpoint:
+    path: /v2/customers/{customerId}/reports
+    method: POST
+    data_selector: report
+- name: customers
+  endpoint:
+    path: /v2/customers
+    method: GET
+    data_selector: resources
+    params: {}
+- name: scores
+  endpoint:
+    path: /scores
+    method: GET
+    data_selector: paymentScore
+- name: scores
+  endpoint:
+    path: /scores
+    method: GET
+    data_selector: creditScore
+- name: customer_analysis_sharing_token
+  endpoint:
+    path: /customers/{customerId}/analysis/{analysisId}/sharing-token
+    method: GET
+- name: customer_analysis_update
+  endpoint:
+    path: /customers/{customerId}/analysis/{analysisId}/sharing-token
+    method: PATCH
+- name: me_analysis
+  endpoint:
+    path: /me/analysis
+    method: GET
+    headers:
+      X-Algoan-Token: ''
+- name: customers
+  endpoint:
+    path: /v2/customers
+    method: GET
+    data_selector: records
+- name: analyses
+  endpoint:
+    path: /v2/customers/{id}/analyses
+    method: GET
+    data_selector: records
+- name: reports
+  endpoint:
+    path: /v2/customers/{customerId}/reports
+    method: POST
+    data_selector: records
+- name: webhook_events
+  endpoint:
+    path: /webhooks
+    method: POST
+    data_selector: subscription
+    params: {}
+notes:
+- Request parameters are formatted as snake case.
+- Transaction Data must be used with Credit Insights, Credit Score and/or Payment
+  Score. We do not provide it as a standalone product.
+- You cannot add Transaction Data to the Console in self-service yet.
+- This is the only API where request's parameters are formatted as snake case.
+- Algoan uses webhooks to notify your application when an event occurs during the
+  Open Banking process.
+- 'These release notes track updates on the Algoan''s APIs: major features released
+  and bug fixed related to Algoan''s products.'
+errors:
+- 'MISSING_PARAM: A required param is missing'
+- 'BAD_REQUEST: A param is not respecting the correct format'
+- 'UNAUTHORIZED: The Authorization header is wrong or missing'
+- 'FORBIDDEN: You cannot access the API'
+- 'NOT_FOUND: The called API does not exist'
+- 'UNKNOWN_ENTITY: The provided identifier has not been found'
+- 'ALREADY_EXISTS: The entity you are trying to create already exists'
+- 'INTERNAL_SERVER_ERROR: An internal error occurred. Please contact <support@algoan.com>'
+- 'INTERNAL_SERVER_ERROR: An internal error occurred. Please contact support@algoan.com.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '201: Access token generated successfully'
+- '401: Unauthorized - Check client_id and client_secret'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.algoan.com
+  auth:
+    type: oauth2
+    flow: client_credentials
+    token_url: https://api.algoan.com/v1/oauth/token
+    client_id: '{{ dlt.secrets[''client_id''] }}'
+    client_secret: '{{ dlt.secrets[''client_secret''] }}'
+source_metadata: null

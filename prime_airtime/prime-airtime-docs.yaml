@@ -1,0 +1,282 @@
+resources:
+- name: topup_exec
+  endpoint:
+    path: /api/topup/exec/:msisdn
+    method: POST
+    data_selector: status
+    params: {}
+- name: datatopup_exec
+  endpoint:
+    path: /api/datatopup/exec/:msisdn
+    method: POST
+    data_selector: status
+    params: {}
+- name: topup_log_by_ref
+  endpoint:
+    path: /api/topup/log/byref/:customer_reference
+    method: GET
+    data_selector: status
+    params: {}
+- name: network_validation
+  endpoint:
+    path: /api/topup/info/:msisdn
+    method: GET
+    data_selector: opts
+    params: {}
+- name: bvn_validation
+  endpoint:
+    path: /api/ft/bverify/:bic/:account/:bvn
+    method: GET
+    data_selector: success
+    params: {}
+- name: genuine_number_validation
+  endpoint:
+    path: /api/nv/genuine/:msisdn
+    method: GET
+    data_selector: success
+    params: {}
+- name: active_number_validation
+  endpoint:
+    path: /api/nv/active/:msisdn
+    method: GET
+    data_selector: active
+    params: {}
+- name: otp_number_validation
+  endpoint:
+    path: /api/nv/otp/:msisdn
+    method: GET
+    data_selector: otp
+    params: {}
+- name: Prepare Batch top-up
+  endpoint:
+    path: /topup/info
+    method: POST
+    data_selector: response
+    params: {}
+- name: Perform Batch Topup
+  endpoint:
+    path: /topup/exec
+    method: POST
+    data_selector: results
+    params: {}
+- name: Get AirTime Batch results (list of jobs)
+  endpoint:
+    path: /topup/batch
+    method: GET
+    data_selector: jobs
+    params: {}
+- name: Get AirTime Batch results (single batch job)
+  endpoint:
+    path: /topup/batch/:batchid
+    method: GET
+    data_selector: jobs
+    params: {}
+- name: results
+  endpoint:
+    path: /results
+    method: GET
+    data_selector: results
+- name: jobs
+  endpoint:
+    path: /jobs
+    method: GET
+    data_selector: jobs
+- name: country_list
+  endpoint:
+    path: /
+    method: GET
+    data_selector: countries
+    params: {}
+- name: services_in_country
+  endpoint:
+    path: /country/:iso
+    method: GET
+    data_selector: services
+    params: {}
+- name: products_for_service
+  endpoint:
+    path: /country/:iso/:service_id
+    method: GET
+    data_selector: products
+    params: {}
+- name: electricity_topup
+  endpoint:
+    path: /:meter
+    method: POST
+    data_selector: ''
+    params: {}
+- name: product_options
+  endpoint:
+    path: /:service_id/:product_id
+    method: GET
+    data_selector: products
+    params: {}
+- name: product_option_for_dstv_gotv
+  endpoint:
+    path: /dstvnew/:smart_card
+    method: GET
+    data_selector: ''
+    params: {}
+- name: internet_topup
+  endpoint:
+    path: /:service/:product/:option
+    method: POST
+    data_selector: ''
+    params: {}
+- name: dstv_topup
+  endpoint:
+    path: /api/billpay/dstvnew/:SMART_CARD
+    method: POST
+    data_selector: status
+    params: {}
+- name: showmax_pin
+  endpoint:
+    path: /api/billpay/showmax
+    method: POST
+    data_selector: status
+    params: {}
+- name: send_sms
+  endpoint:
+    path: /sms/:msisdn
+    method: POST
+    data_selector: success
+    params: {}
+- name: account_list
+  endpoint:
+    path: /api/accounts/page/:page_number
+    method: GET
+    data_selector: accounts
+- name: account_view
+  endpoint:
+    path: /api/accounts/:id
+    method: GET
+    data_selector: account
+- name: user_list
+  endpoint:
+    path: /api/accounts/:id/users
+    method: GET
+    data_selector: users
+    params: {}
+- name: user_info
+  endpoint:
+    path: /api/accounts/:id/users/:uid
+    method: GET
+    data_selector: user
+    params: {}
+- name: wallet_list
+  endpoint:
+    path: /api/accounts/:id/wallets
+    method: GET
+    data_selector: wallets
+    params: {}
+- name: transaction_list
+  endpoint:
+    path: /api/accounts/:id/transactions/page/:page
+    method: GET
+    data_selector: docs
+    params: {}
+- name: topup
+  endpoint:
+    path: /topup
+    method: GET
+    data_selector: docs
+    params:
+      incremental: updatedAt
+- name: lottery
+  endpoint:
+    path: /lottery/{product_id}
+    method: POST
+    data_selector: status
+    params:
+      amount: 500
+      product_id: BET9JA
+- name: Get Available Country
+  endpoint:
+    path: /api/global-gift-card/get-available-country
+    method: GET
+- name: Get all product and Rate
+  endpoint:
+    path: /api/global-gift-card/get-all-product-and-rate
+    method: GET
+- name: Get single Product
+  endpoint:
+    path: /api/global-gift-card/get-single-product
+    method: GET
+- name: Get value of Gift Card in USD
+  endpoint:
+    path: /api/global-gift-card/get-value-of-gift-card-in-usd
+    method: GET
+- name: Purchase Giftcard
+  endpoint:
+    path: /api/global-gift-card/purchase-giftcard
+    method: POST
+notes:
+- Operation Successful
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- We do not store credit card details nor do we share customer details with any 3rd
+  parties.
+- Platform uses Username/Password system to issue authorization tokens which are valid
+  for 48 hours from the time of creation.
+- We strongly recommend storing token in the database, and using the separate process
+  to trigger /api/reauth every 24 hours to refresh token.
+- Remember to discard tokens safely as there is no revocation mechanism available
+  for tokens.
+- Tokens are valid for 48 hours from creation.
+- Refresh token every 24 hours using /api/reauth.
+- Validation give you various acess to our security system, it allows you to confirm
+  BVN status, OTP verification, the last time a number was recharged on our system.
+- If validation fails or not supported, system will return HTTP 404 response.
+- Three modes of operation for DSTV topup
+- For Showmax, customer reference is optional
+- Content-Type must be application/json
+- Text of SMS has a maximum length of 140 characters
+- Account List will return only BASIC info, to get full account card use /api/accounts/:id
+- Some objects may return nulls in deeply nested fields
+errors:
+- '409: DUPLICATE_TRANSACTION'
+- '416: UNKOWN_OPERATOR'
+- '415: MSISDN_NOT_PREPAID'
+- '423: MSISDN_BARRED'
+- '427: MSISDN_INVALID'
+- '429: UNSUPPORTED_DENOMINATION'
+- '434: OPERATOR_FAILURE'
+- '434: RECHARGE_FAILED'
+- '444: FRAUD_PREVENTION'
+- 'RECHARGE_COMPLETE: Operation Successful'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '401 Unauthorized: jwt malformed'
+- 'HTTP 404: Not Found'
+- 'HTTP 400: Bad Request'
+- 'RECHARGE_COMPLETE: Indicates a successful recharge operation'
+- '401 Unauthorized: Check access token'
+- '204 gone: method will fail if account has children accounts'
+- '400: Bad Request - Something is not right with body of your request, see response
+  body for details'
+- '401: User not authenticated, you need to login to get access'
+- '402: Payment required, you do not have sufficient funds on your account'
+- '403: Forbidden - You are not authorized to go here'
+- '404: Not found - Object or resource requested is not found'
+- '405: Method Not allowed - You are not allowed to perform action on this resource'
+- '406: Incompatible Currency, We cannot perform currency conversion operation, contact
+  support'
+- '408: Invalid Product ID, check input for errors'
+- '409: Conflict - Resource already exists! (Duplicate Transaction)'
+- '418: Missing Required Information, Please check that you have provided all mandatory
+  information'
+- '427: MSISDN Invalid, Please Check MSISDN for errors'
+- '429: Recipient reached maximum topup amount'
+- '434: General Operator Side Error, Transaction Failed'
+- '444: General Database Failure, Transaction Failed'
+- '5xx: Some server-side errors , general, per http specification'
+- '201: Operation Successful, Recharge created'
+- 'RECHARGE_COMPLETE: Recharge completed'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: /api/billpay
+  headers:
+    Content-Type: application/json
+    Authorization: Bearer $ACCESS_TOKEN
+source_metadata: null

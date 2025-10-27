@@ -1,0 +1,104 @@
+resources:
+- name: coverage_tiles
+  endpoint:
+    path: /maps/vtp/mly1_public/2/{z}/{x}/{y}
+    method: GET
+    data_selector: data
+    params: {}
+- name: computed_coverage_tiles
+  endpoint:
+    path: /maps/vtp/mly1_computed_public/2/{z}/{x}/{y}
+    method: GET
+    data_selector: data
+    params: {}
+- name: map_feature_tiles_points
+  endpoint:
+    path: /maps/vtp/mly_map_feature_point/2/{z}/{x}/{y}
+    method: GET
+    data_selector: data
+    params: {}
+- name: map_feature_tiles_traffic_signs
+  endpoint:
+    path: /maps/vtp/mly_map_feature_traffic_sign/2/{z}/{x}/{y}
+    method: GET
+    data_selector: data
+    params: {}
+- name: image
+  endpoint:
+    path: /images
+    method: GET
+    data_selector: data
+    params: {}
+- name: images
+  endpoint:
+    path: /images
+    method: GET
+    data_selector: data
+- name: scene_classes
+  endpoint:
+    path: /services/data/v1/scenes
+    method: GET
+    data_selector: records
+- name: user_content
+  endpoint:
+    path: /api/v1/user_content
+    method: GET
+    data_selector: content
+    params: {}
+- name: detections
+  endpoint:
+    path: /{image_id}/detections
+    method: GET
+    data_selector: data
+- name: map_features
+  endpoint:
+    path: /map_features
+    method: GET
+    data_selector: data
+- name: image
+  endpoint:
+    path: /{image_id}
+    method: GET
+    data_selector: data
+notes:
+- All requests against https://graph.mapillary.com and https://tiles.mapillary.com
+  must be authorized.
+- Tokens can be sent using a header or a query parameter.
+- Tokens can be sent using ?access_token=XXX query parameters for vector tiles.
+- Using query parameters for user access tokens is STRONGLY discouraged.
+- Paging is currently supported only in combination with creator_username parameter.
+- Mapillary is the platform that makes street-level images and map data available
+  to scale and automate mapping.
+- Introduced a new API version with significant updates.
+- New functionality to submit verification votes on detections via the API
+- Uses OAuth2 with refresh token — requires setup of connected app in Mapillary
+- We use technology designed to blur any faces and license plates our algorithms detect
+  within the imagery to help reduce privacy impact.
+- Image coordinates start at the top left corner of an image.
+- Detection geometry is highly compressed.
+errors:
+- 'user_denied: The user denied the authorization'
+- 'invalid_request: User session is invalid or expired'
+- 'invalid_scope: The requested scopes is out of the app''s scopes'
+- 'server_error: Internal error'
+- 'Application request limit reached: You are hitting rate-limits on the node that
+  you are attempting to fetch. Please wait and try again later.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck access token.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+client:
+  base_url: https://graph.mapillary.com
+  auth:
+    type: oauth2
+    flow: authorization_code
+    token_url: https://graph.mapillary.com/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+source_metadata: null

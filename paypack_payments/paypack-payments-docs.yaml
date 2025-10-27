@@ -1,0 +1,169 @@
+resources:
+- name: cashin
+  endpoint:
+    path: /api/transactions/cashin
+    method: POST
+- name: cashout
+  endpoint:
+    path: /api/transactions/cashout
+    method: POST
+- name: find_transaction
+  endpoint:
+    path: /api/transactions/find/{ref}
+    method: GET
+- name: transactions
+  endpoint:
+    path: /api/events/transactions
+    method: GET
+    data_selector: transactions
+    params: {}
+- name: webhook_event
+  endpoint:
+    path: /webhooks
+    method: POST
+    data_selector: data
+- name: checkout_session
+  endpoint:
+    path: /api/checkouts/initiate
+    method: POST
+    data_selector: ''
+    params: {}
+- name: payment_link
+  endpoint:
+    path: /links
+    method: POST
+    data_selector: link
+    params: {}
+- name: payment_link_transactions
+  endpoint:
+    path: /links/{link_id}/transactions
+    method: GET
+    data_selector: transactions
+    params: {}
+- name: cashin
+  endpoint:
+    path: /cashin
+    method: POST
+    data_selector: response
+- name: cashout
+  endpoint:
+    path: /cashout
+    method: POST
+    data_selector: response
+- name: events
+  endpoint:
+    path: /events
+    method: GET
+    data_selector: response
+- name: account_information
+  endpoint:
+    path: /account
+    method: GET
+    data_selector: response
+- name: cashin
+  endpoint:
+    path: /cashin
+    method: POST
+- name: cashout
+  endpoint:
+    path: /cashout
+    method: POST
+- name: transactions
+  endpoint:
+    path: /transactions
+    method: GET
+    params:
+      offset: 0
+      limit: 100
+- name: events
+  endpoint:
+    path: /events
+    method: GET
+    params:
+      offset: 0
+      limit: 100
+- name: account_information
+  endpoint:
+    path: /me
+    method: GET
+- name: cashin
+  endpoint:
+    path: /cashin
+    method: POST
+    data_selector: amount
+    params: {}
+- name: cashout
+  endpoint:
+    path: /cashout
+    method: POST
+    data_selector: amount
+    params: {}
+- name: transactions
+  endpoint:
+    path: /transactions
+    method: GET
+    data_selector: transactions
+    params:
+      limit: '100'
+      offset: '0'
+- name: events
+  endpoint:
+    path: /events
+    method: GET
+    data_selector: events
+    params:
+      limit: '20'
+      offset: '0'
+- name: account_information
+  endpoint:
+    path: /me
+    method: GET
+    data_selector: profile
+    params: {}
+- name: cashin
+  endpoint:
+    path: /cashin
+    method: POST
+    data_selector: cashin
+- name: cashout
+  endpoint:
+    path: /cashout
+    method: POST
+    data_selector: cashout
+- name: events
+  endpoint:
+    path: /events
+    method: GET
+    data_selector: events
+- name: account_information
+  endpoint:
+    path: /account
+    method: GET
+    data_selector: account
+- name: idempotency_key
+  endpoint:
+    path: /idempotency
+    method: POST
+    data_selector: data
+    params: {}
+notes:
+- Idempotency key is an optional header with unique string of 32 char length.
+- Rate limit is a static 300 requests per minute
+- For security reasons, the client_secret is only displayed once after creation.
+- Webhooks deliver data to publicly available URLs in your app.
+- Ensure that the webhook URL is accessible from the internet.
+- The API supports idempotency to let you safely retry requests without accidentally
+  performing the same operation twice.
+- Idempotency keys can have a maximum length of 255 characters.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Invalid signature: Ensure the X-Paypack-Signature header is valid.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://payments.paypack.rw
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+source_metadata: null

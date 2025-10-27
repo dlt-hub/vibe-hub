@@ -1,0 +1,88 @@
+resources:
+- name: investor_pe
+  endpoint:
+    path: /api/investor/pe
+    method: GET
+    data_selector: records
+- name: investor
+  endpoint:
+    path: /api/investor
+    method: GET
+    data_selector: records
+    params: {}
+- name: investor
+  endpoint:
+    path: /investor
+    method: GET
+    data_selector: records
+    params: {}
+- name: Investor
+  endpoint:
+    path: /investor
+    method: GET
+    data_selector: records
+    params: {}
+- name: investor
+  endpoint:
+    path: /api/investor/pe
+    method: GET
+    data_selector: records
+    params: {}
+- name: investor
+  endpoint:
+    path: /investors
+    method: GET
+    data_selector: data
+    params: {}
+- name: Investor
+  endpoint:
+    path: /investor
+    method: GET
+    data_selector: records
+- name: investor
+  endpoint:
+    path: /api/investor/pd
+    method: GET
+    data_selector: records
+    params:
+      date: string | null
+      removeLineBreaks: boolean
+- name: investor
+  endpoint:
+    path: /api/investor
+    method: GET
+notes:
+- The API returns data in CSV format.
+- 'Recommended Call Time: At 9:00 UTC or later to ensure receiving the latest updates.'
+- Some fields may return null values depending on the investor.
+- 'Firms fund size preference when investing in buyout funds: Small Buyout ≤ $500mn,
+  Mid Buyout $501mn-$1,500mn, Large Buyout $1,501mn-$4.5bn, Mega Buyout > $4.5bn'
+- Firms preference for investment in women-owned firms, minority-owned firms, ESG-compliant
+  firms, Sharia-compliant firms and local investments
+- Uses OAuth2 for authentication
+errors:
+- 400 - Unsupported API version
+- 401 - Unauthorized
+- 429 - Too many requests
+- 400 Bad Request
+- 401 Unauthorized
+- 403 The user does not have permission to access the resource.
+- 429 Rate Limit Reached
+- 500 Internal Server Error
+- '400 Bad Request: Check the request format and parameters.'
+- '404 Not Found: The requested resource does not exist.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://feeds.preqin.com
+  auth:
+    type: oauth2
+    flow: password
+    token_url: https://id.preqin.com/connect/token
+    client_id: '12345'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: text/csv
+source_metadata: null

@@ -1,0 +1,375 @@
+resources:
+- name: System
+  endpoint:
+    path: /cloudreve/data/conf.ini
+    method: GET
+    data_selector: records
+- name: Database
+  endpoint:
+    path: /cloudreve/data/conf.ini
+    method: GET
+    data_selector: records
+- name: Redis
+  endpoint:
+    path: /cloudreve/data/conf.ini
+    method: GET
+    data_selector: records
+- name: 创建订单
+  endpoint:
+    path: /order
+    method: POST
+    data_selector: code
+    params: {}
+- name: 查询订单状态
+  endpoint:
+    path: /order
+    method: GET
+    data_selector: data
+    params:
+      order_no: String
+- name: thumbnail_generator
+  endpoint:
+    path: /zh/api/thumbnails
+    method: GET
+- name: WOPI
+  endpoint:
+    path: /hosting/discovery
+    method: GET
+- name: file_uri
+  endpoint:
+    path: /api/file-uri
+    method: GET
+    data_selector: files
+    params: {}
+- name: System
+  endpoint:
+    path: /System
+    method: GET
+    data_selector: Mode
+    params: {}
+- name: SSL
+  endpoint:
+    path: /SSL
+    method: GET
+    data_selector: Listen
+    params: {}
+- name: Database
+  endpoint:
+    path: /Database
+    method: GET
+    data_selector: Type
+    params: {}
+- name: Redis
+  endpoint:
+    path: /Redis
+    method: GET
+    data_selector: Network
+    params: {}
+- name: create_order
+  endpoint:
+    path: /order
+    method: POST
+    data_selector: code
+    params: {}
+- name: query_order_status
+  endpoint:
+    path: /order
+    method: GET
+    data_selector: code
+    params:
+      order_no: <order number>
+- name: slave_node
+  endpoint:
+    path: /api/v4/site/ping
+    method: POST
+    data_selector: response
+    params: {}
+- name: Native in Storage Policy
+  endpoint:
+    path: /api/thumbnails/native
+    method: GET
+    data_selector: records
+- name: Music Cover
+  endpoint:
+    path: /api/thumbnails/music_cover
+    method: GET
+    data_selector: records
+- name: LibreOffice
+  endpoint:
+    path: /api/thumbnails/libreoffice
+    method: GET
+    data_selector: records
+- name: LibrRaw
+  endpoint:
+    path: /api/thumbnails/librraw
+    method: GET
+    data_selector: records
+- name: VIPS
+  endpoint:
+    path: /api/thumbnails/vips
+    method: GET
+    data_selector: records
+- name: FFmpeg
+  endpoint:
+    path: /api/thumbnails/ffmpeg
+    method: GET
+    data_selector: records
+- name: Cloudreve Built-in
+  endpoint:
+    path: /api/thumbnails/cloudreve
+    method: GET
+    data_selector: records
+- name: embedded_webpage_viewer
+  endpoint:
+    path: /api/v1/embedded_webpage_viewer
+    method: POST
+- name: wopi_protocol_applications
+  endpoint:
+    path: /api/v1/wopi_protocol_applications
+    method: POST
+- name: music_player
+  endpoint:
+    path: /api/v1/music_player
+    method: GET
+- name: epub_reader
+  endpoint:
+    path: /api/v1/epub_reader
+    method: GET
+- name: pdf_reader
+  endpoint:
+    path: /api/v1/pdf_reader
+    method: GET
+- name: video_player
+  endpoint:
+    path: /api/v1/video_player
+    method: GET
+- name: markdown_editor
+  endpoint:
+    path: /api/v1/markdown_editor
+    method: GET
+- name: image_viewer
+  endpoint:
+    path: /api/v1/image_viewer
+    method: GET
+- name: draw_io
+  endpoint:
+    path: /api/v1/draw_io
+    method: GET
+- name: excalidraw
+  endpoint:
+    path: /api/v1/excalidraw
+    method: GET
+- name: text_editor
+  endpoint:
+    path: /api/v1/text_editor
+    method: GET
+- name: photopea
+  endpoint:
+    path: /api/v1/photopea
+    method: GET
+- name: archive_preview
+  endpoint:
+    path: /api/v1/archive_preview
+    method: GET
+- name: WOPI
+  endpoint:
+    path: /hosting/discovery
+    method: GET
+    data_selector: XML response
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Cloudreve 默认会监听 5212 端口。
+- 默认为 false, 指定是否使用当前工作目录来计算相对路径，在 false 时使用可执行文件所在目录
+- V3 版本的自定义支付 API 与 V4 版本不兼容
+- 从机节点需要配置与主机节点相同版本的 Cloudreve 程序
+- 检查节点 URL 是否正确，所使用的端口在防火墙中是否开放
+- Cloudreve 支持使用多种缩略图生成器，为不同类型的文件生成缩略图，包括图像、视频、Office 文档。
+- 使用非原生生成器生成的缩略图文件会被存放到一个缩略图 Blob 中，因此会占用用户容量。
+- Cloudreve 可配合 Aria2 或 qBittorrent 使用
+- 确保 Cloudreve 和下载器共享同一文件系统
+- 使用自定义的静态资源后，在更新 Cloudreve 时，请注意更换新构建的静态资源。
+- Supports client_secret_post for access_token exchange
+- Requires response_type to be code
+- Scope must include openid, email, profile
+- 当你从 V3.x.x 升级到 V4.0.x 时，下列数据会丢失：离线下载和其他后台任务记录；订单记录；举报记录；用户自定义侧边栏；用户绑定的外部验证器；主题色配置；非本机存储策略代理生成的缩略图；其他在
+  V4 中不再支持的配置项。
+- 升级后，V3 的分享链接和直链仍然有效。
+- 在 V4 中，不再支持指定数据表前缀 `TablePrefix` 配置项，所以在这里推荐为 V4 指定一个新的数据库，与 V3 区分开来。
+- Cloudreve 需要有效（可以过期）的离线许可证密钥才能正常启动，但过期后，站点会变为只读状态，无法进行主要修改操作（如文件修改等）。
+- 主密钥是站点安全的关键，请勿泄露给他人，请勿在生产环境使用这种方式认证
+- Default configuration file path is data/conf.ini in the same directory.
+- Configuration is stored in data/conf.ini
+- Debug mode can be enabled by setting Debug to true
+- The custom payment API for version 3 is not compatible with version 4.
+- 'Node communication failed: Check if the node URL you entered is correct and if
+  the port you''re using is open in the firewall.'
+- Cloudreve supports various thumbnail generators for different types of files, including
+  images, videos, and Office documents.
+- You can extend thumbnail generation capabilities to storage policies that don't
+  originally support it through the 'thumbnail proxy' feature.
+- Thumbnail generators may not work properly for various reasons.
+- A known issue is that LibreOffice sometimes fails to start when generating multiple
+  thumbnails simultaneously.
+- If Cloudreve runs in a container and the downloader runs on the host machine, mount
+  the container's `/cloudreve/data` directory to the same directory `/cloudreve/data`
+  on the host.
+- If the downloader runs in a container and Cloudreve runs on the host machine, mount
+  the host downloader's `/cloudreve/data` directory to the same path `/cloudreve/data`
+  on the host.
+- File applications allow users to edit or preview files directly in their browser
+  when accessing Cloudreve sites via the web interface.
+- Cloudreve comes with built-in applications for common file types, and you can freely
+  add more applications.
+- OnlyOffice does not support filtering WOPI request sources. If you have public-facing
+  requirements, please use an external application firewall to check if the wopisrc
+  parameter in preview page requests is from the expected Cloudreve site.
+- Support for using client_secret_post to exchange for an access_token
+- Support for response_type of code
+- Supported scope includes openid, email, profile
+- The steps described in this section only apply to upgrading within V4.x.x versions.
+- 'When upgrading from V3.x.x to V4.0.x, the following data will be lost: Remote download
+  and other background task records; Order records; Report abuse records; User-customized
+  sidebar; User''s hardware authenticators; Theme color configurations; Thumbnails
+  from non-local storage policy generated by thumbnail proxy; Other configuration
+  items no longer supported in V4.'
+- After the upgrade, V3 share links and direct links will remain valid.
+- The V3 to V4 upgrade tool was developed based on Cloudreve V3.8.x. Other older versions
+  have not been tested. It is recommended to upgrade Cloudreve to V3.8.x first before
+  proceeding with the upgrade to V4.
+- In V4, specifying the table prefix `TablePrefix` configuration item is no longer
+  supported, so it is recommended here to specify a new database for V4, separate
+  from V3.
+- If the upgrade process is interrupted abnormally, simply re-run the upgrade tool.
+- After the upgrade is complete, all share links and direct links from V3 will be
+  invalid.
+- If you are using SQLite database, the storage policy settings for user groups will
+  be lost.
+- Cloudreve requires a valid (though it can be expired) Offline License Key to start
+  properly.
+- Once expired, the site will become read-only, preventing major modification operations
+  (such as file modifications).
+- The frontend static assets are not embedded and require the frontend dev server
+  to be started.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '200 OK: 成功的响应固定为 0'
+- '其他错误: 具体成功与否通过响应正文中的 code 字段判断'
+- 'Failed to connect to node: Post "xxx": connect: xxx'
+- 'Successfully connected to slave node, but slave returns: {具体报错}'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401: Not Logged In'
+- '403: No Permission to Access'
+- '404: Resource Not Found'
+- 'code: 0 - A successful response is always 0'
+- 'Successfully connected to slave node, but slave returns: {specific error}'
+- '203: Not Fully Successful'
+- '409: Resource Conflict'
+- '40001: Parameter Error'
+- '40002: Upload Failed'
+- '40003: Folder Creation Failed'
+- '40004: Object Already Exists'
+- '40005: Signature Expired'
+- '40006: Current Storage Policy Not Allowed'
+- '40007: User Group Not Allowed for This Operation'
+- '40008: Admin Privileges Required'
+- '40009: Master Node Not Registered'
+- '40010: Phone Binding Required'
+- '40011: Upload Session Expired'
+- '40012: Invalid Chunk Index'
+- '40013: Invalid Content Length'
+- '40014: Batch Source Size Limit Exceeded'
+- '40015: Maximum Aria2 Task Limit Exceeded'
+- '40016: Parent Directory Does Not Exist'
+- '40017: User Banned'
+- '40018: User Not Activated'
+- '40019: Feature Not Enabled'
+- '40020: Invalid Credentials'
+- '40021: User Not Found'
+- '40022: 2FA Code Error'
+- '40023: Login Session Does Not Exist'
+- '40024: Cannot Initialize WebAuthn'
+- '40025: Invalid WebAuthn Credential'
+- '40026: Captcha Error'
+- '40027: Captcha Refresh Needed'
+- '40028: Failed to Send Email'
+- '40029: Invalid Temporary Link'
+- '40030: Temporary Link Expired'
+- '40031: Email Provider Banned'
+- '40032: Email Already Exists'
+- '40033: Email Has Been Resent'
+- '40034: User Cannot Be Activated'
+- '40035: Storage Policy Does Not Exist'
+- '40036: Cannot Delete Default Storage Policy'
+- '40037: Storage Policy Still Has Files'
+- '40038: Storage Policy Bound to User Groups'
+- '40039: User Group Not Found'
+- '40040: Invalid Action on System Group'
+- '40041: User Group in Use'
+- '40042: Cannot Change Group for Default User'
+- '40043: Invalid Action on Default User'
+- '40044: File Not Found'
+- '40045: Failed to List Files'
+- '40046: Invalid Action on System Node'
+- '40047: Failed to Create File System'
+- '40048: Failed to Create Task'
+- '40049: File Too Large'
+- '40050: File Type Not Allowed'
+- '40051: Insufficient User Capacity'
+- '40052: Illegal Object Name'
+- '40053: Root Directory Protected'
+- '40054: File with Same Name Being Uploaded'
+- '40055: Metadata Mismatch'
+- '40056: Unsupported Archive Type'
+- '40057: Available Storage Policy Changed'
+- '40058: Share Link Not Found'
+- '40059: Cannot Save Own Share'
+- '40060: Slave Cannot Send Callback to Master'
+- '40061: Cloudreve Version Mismatch'
+- '40062: Insufficient Credit'
+- '40063: Group Conflict'
+- '40064: Already in Current User Group'
+- '40065: Invalid Gift Code'
+- '40066: Account Already Bound'
+- '40067: Account Bound to Another User'
+- '40068: Account Not Linked'
+- '40069: Incorrect Password'
+- '40070: Share Preview Disabled'
+- '40071: Invalid Signature'
+- '40072: Admin Cannot Purchase User Group'
+- '40073: Lock Conflict'
+- '40074: Too Many URIs'
+- '40075: Lock Token Expired'
+- '40076: Current Version is Stale'
+- '40077: Entity Does Not Exist'
+- '40078: File is in Recycle Bin'
+- '40079: File Count Limit Reached'
+- '40080: Invalid Password'
+- '40081: Batch Operation Not Fully Completed'
+- '40082: Owner Operation Only'
+- '40083: Purchase Required'
+- '40084: Managed Account Minimum OpenID'
+- '40085: Amount Too Small'
+- '40086: Node Used by Storage Policy'
+- '40087: Domain Not Licensed'
+- '40088: Anonymous User Not Allowed'
+- '50001: Database Operation Failed'
+- '50002: Encryption Failed'
+- '50004: IO Operation Failed'
+- '50005: Internal Setting Parameter Error'
+- '50006: Cache Operation Failed'
+- '50007: Callback Failed'
+- '50008: Failed to Update Backend Settings'
+- '50009: Failed to Add CORS Policy'
+- '50010: Node Offline'
+- '50011: Failed to Query File Metadata'
+auth_info:
+  mentioned_objects:
+  - AccessToken
+  - RefreshToken
+  - UserInfo
+client:
+  base_url: https://cloudreve.org
+  headers:
+    Accept: application/json
+source_metadata: null
