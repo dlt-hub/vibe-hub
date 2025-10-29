@@ -1,0 +1,49 @@
+resources:
+- name: lisan
+  endpoint:
+    path: /docs/full-api-reference
+    method: GET
+    data_selector: methods
+- name: dictionary
+  endpoint:
+    path: /docs/dictionary
+    method: GET
+    data_selector: entries
+- name: loader
+  endpoint:
+    path: /static/{localeName}/dictionaries/{dictionaryName}.js
+    method: GET
+    data_selector: dictionary
+    params: {}
+- name: compile
+  endpoint:
+    path: /lisan/compile
+    method: POST
+    data_selector: results
+    params:
+      inputDir: i18n/translations/
+      outputDir: .lisan_out/dictionaries/
+      exclude:
+      - '**/*skip.json'
+      declaration: false
+      watch: true
+notes:
+- Lisan provides Lisan Locales package which contains production-ready Localization
+  configurations.
+- Lisan Compiler is a javascript library created to improve development experience
+  with Lisan.
+- Translations must be valid JSON5 objects and preferably stored in JSON files.
+- 'Best Practice: Maintain your translations as JSON files.'
+- Dictionaries must be created compatible with the loader.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Configuration object must be valid a JSON5 object and should be stored in the project
+  root directory named as .lisanrc or .lisanrc.json file.
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://unpkg.com/lisan-compiler/dist
+  headers:
+    Content-Type: application/javascript
+source_metadata: null

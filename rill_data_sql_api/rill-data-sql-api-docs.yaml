@@ -1,0 +1,342 @@
+resources:
+- name: custom_api
+  endpoint:
+    path: /runtime/api/my-api
+    method: GET
+    data_selector: results
+- name: bucket
+  endpoint:
+    path: /storage/v1/b
+    method: GET
+    data_selector: items
+- name: bucket
+  endpoint:
+    path: /bucket
+    method: GET
+- name: allow_host_access
+  endpoint:
+    path: /allow_host_access
+    method: GET
+- name: key_id
+  endpoint:
+    path: /key_id
+    method: GET
+- name: secret
+  endpoint:
+    path: /secret
+    method: GET
+- name: salesforce
+  endpoint:
+    path: /services/data/vXX.X/
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: theme
+  endpoint:
+    path: <theme_name>.yaml
+    method: POST
+- name: rill_extensions
+  endpoint:
+    path: /reference/rill-iso-extensions
+    method: GET
+    data_selector: extensions
+    params: {}
+- name: auction_data
+  endpoint:
+    path: gs://rilldata-public/auction_data.parquet
+    method: GET
+    data_selector: records
+- name: metrics_margin_monitoring
+  endpoint:
+    path: /metrics_margin_monitoring.parquet
+    method: GET
+    data_selector: records
+    params: {}
+- name: commits
+  endpoint:
+    path: /rilldata-public/github-analytics/rilldata/rill/commits/commits*.parquet
+    method: GET
+    data_selector: commit_data
+- name: modified_files
+  endpoint:
+    path: /modified_files_source
+    method: GET
+    data_selector: file_changes
+- name: commits
+  endpoint:
+    path: /rilldata/rill/commits/commits*.parquet
+    method: GET
+    data_selector: records
+    params: {}
+- name: modified_files
+  endpoint:
+    path: /rilldata/rill/commits/modified_files*.parquet
+    method: GET
+    data_selector: records
+    params: {}
+- name: modified_files
+  endpoint:
+    path: gs://rilldata-public/github-analytics/Clickhouse/2025/03/modified_files_*.parquet
+- name: commits
+  endpoint:
+    path: gs://rilldata-public/github-analytics/Clickhouse/2025/03/commits_*.parquet
+- name: metrics_view
+  endpoint:
+    path: /reference/project-files/metrics_views
+    method: GET
+    data_selector: metrics_view
+    params: {}
+- name: metrics_view
+  endpoint:
+    path: /reference/project-files/metrics_views
+    method: GET
+    data_selector: metrics
+    params: {}
+- name: explore_dashboard
+  endpoint:
+    path: /reference/project-files/explore-dashboards
+    method: GET
+    data_selector: metrics_view
+    params: {}
+- name: users
+  endpoint:
+    path: /models/users.sql
+    method: SELECT
+    data_selector: SELECT * FROM users
+- name: orders
+  endpoint:
+    path: /models/orders.sql
+    method: SELECT
+    data_selector: SELECT * FROM orders
+- name: model
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: partitions
+  endpoint:
+    path: /build/models/partitioned-models
+    method: GET
+    data_selector: partitions
+    params: {}
+- name: incremental_commits_directory
+  endpoint:
+    path: /model/CH_incremental_commits_directory
+    method: GET
+- name: staging_model
+  endpoint:
+    path: /build/models/staging-models
+    method: GET
+    data_selector: models
+    params: {}
+- name: model
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: custom_api
+  endpoint:
+    path: /runtime/api/my-api
+    method: GET
+    data_selector: results
+- name: mock_users
+  endpoint:
+    path: /mock_users
+    method: GET
+    data_selector: users
+- name: iframe
+  endpoint:
+    path: /v1/organizations/<org-name>/projects/<project-name>/iframe
+    method: POST
+    data_selector: iframeSrc
+    params: {}
+- name: explore_dashboard
+  endpoint:
+    path: /explore/dashboards
+    method: GET
+    data_selector: dashboards
+    params: {}
+- name: metrics_views
+  endpoint:
+    path: /metrics_views
+    method: GET
+    data_selector: records
+    params: {}
+- name: dashboards
+  endpoint:
+    path: /dashboards
+    method: GET
+    data_selector: records
+    params: {}
+- name: metrics_views
+  endpoint:
+    path: /metrics_views
+    method: GET
+    data_selector: metrics_views
+    params: {}
+- name: dashboards
+  endpoint:
+    path: /dashboards
+    method: GET
+    data_selector: dashboards
+    params: {}
+- name: example_model
+  endpoint:
+    path: /build/metrics-view/underlying-model
+    method: GET
+    data_selector: records
+    params: {}
+- name: events
+  endpoint:
+    path: /build/metrics-view/underlying-model
+    method: GET
+    data_selector: records
+    params: {}
+- name: metrics_view
+  endpoint:
+    path: /build/metrics-view
+    method: GET
+    data_selector: data
+    params: {}
+- name: organization_users
+  endpoint:
+    path: /manage/organization-users
+    method: GET
+    data_selector: users
+- name: project_users
+  endpoint:
+    path: /manage/project-users
+    method: GET
+    data_selector: users
+- name: user_groups
+  endpoint:
+    path: /manage/user-groups
+    method: GET
+    data_selector: groups
+- name: user_group_permissions
+  endpoint:
+    path: /manage/usergroup-management
+    method: GET
+    data_selector: permissions
+    params: {}
+notes:
+- Metrics SQL is specifically designed for querying metrics views and may not support
+  all features found in standard SQL.
+- The Metrics SQL feature is currently evolving.
+- Requires Google Cloud Storage service account for authentication
+- Bucket names must be globally unique
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Token for authenticating with the cloud API
+- Rill utilizes GitHub as a means of version control - effectively creating BI-as-code.
+- During the commit process, make sure to uncheck files you do not wish to sync to
+  your cloud repo.
+- Rill Cloud is always on the latest stable version of Rill.
+- Rill automatically detects your data schema
+- Provides a preview of the first 150 rows
+- Starting from v0.49, we have deprecated `rill deploy` in favor of `rill project
+  deploy` and `rill project connect-github`.
+- If you cloned the project via GitHub, you will need to run the command to bring
+  down the environment variables to your local machine.
+- Changes to sources and models will initiate a full refresh of the source, unless
+  otherwise indicated via patch_mode.
+- Working with very large data from the get go, Rill's embedded DuckDB OLAP engine
+  works very well out-of-the-box for datasets up to around 50GB in size.
+- When refreshing a source model, it drops and re-ingests the entire table/file.
+- Partitioned models divide your data into logical segments based on specific criteria,
+  typically time-based columns like dates.
+- Incremental models only process new or changed data since the last refresh.
+- Materializing a model will generally ensure significantly improved performance for
+  downstream dependent models and dashboards.
+- May need at least the `Plus` plan to access connectors
+- Metrics view is a layer to define measures and dimensions.
+- Uses DuckDB for arithmetic functions.
+- Measures are the numeric aggregates of columns from your data model.
+- You may need to reference the metrics view YAML reference guide to figure out the
+  above.
+- By default, the page will contain the basic parameters as seen below.
+- You can add more advanced settings as required for your use case.
+- Data transformations in Rill Developer are powered by DuckDB and its dialect of
+  SQL (DuckDB SQL).
+- Common modeling patterns include lookups for id/name joins, unnesting and merging
+  complex data types, and combining multiple sources with data cleansing or transformation
+  requirements.
+- Rill works best for slicing and dicing data, meaning keeping data closer to raw
+  to retain that granularity for flexible analysis.
+- Be careful with adding pre-aggregated metrics like averages, as that could lead
+  to unintended results like a sum of an average.
+- Models are represented in Rill as SQL files.
+- You can create a model by adding a .sql file in the models directory.
+- Incremental models default to an append strategy and may result in duplicate data.
+- If you have late arriving data, consider a larger time difference and use a merge
+  as your incremental_strategy.
+- Depending on the column name of the partition, you can reference the partition using
+  {{ .partition.<column_name> }} in the model's SQL query.
+- If you try to refresh a partition using the following command on a partitioned but
+  not incremental model, you will experience an error.
+- Incremental refresh only updates modified partitions
+- Full refresh is required for initial ingestion
+- Staging Models are in ongoing development.
+- Uses temporary staging table in S3 to write from Snowflake to S3, then from S3 to
+  ClickHouse.
+- Service account provides admin-level access to your organization and should be handled
+  confidentially.
+- Communication is bidirectional and supports both requests and notifications using
+  window.postMessage.
+- Custom APIs accept both GET and POST requests with a bearer token in the Authorization
+  header.
+- Service tokens are recommended for use cases that integrate Rill into production
+  systems.
+- Only the access key can be set in the dashboard.
+- Explore dashboards are interactive, slice-and-dice interfaces that transform metrics
+  view data into visualizations.
+- Alerts are accessible from any dashboard via the upper-right alarm bell icon.
+- Email is the default notification target for alerts and is automatically enabled.
+- Access Policies assume that the user already has access to the project in Rill Cloud.
+- DEFAULT SECURITY IS FALSE
+- Access policies control who can access data and what they can see.
+- Policies can be defined at project level or specific metrics view/dashboard level.
+- Valid values for first_day_of_week are 1 through 7, where Monday=1 and Sunday=7.
+- Valid values for first_month_of_year are 1 through 12, where January=1 and December=12.
+- Rill Cloud supports both Email and SSO for authentication.
+- Organization members can have direct roles on a project.
+- 'Projects on Rill Cloud are private by default. To make a project''s dashboards
+  publicly accessible without authentication, run: rill project edit --public=true'
+- User groups can only exist within an organization.
+- Adding a user who is not part of the organization to a user group will prompt to
+  add them first.
+errors:
+- '403 Forbidden: Check permissions for the requested resource'
+- '404 Not Found: Verify the bucket name or object path'
+- '401 Unauthorized: Ensure valid OAuth token is used'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Error: can''t refresh partitions on model "model_name" because it is not incremental'
+- '401 Unauthorized: Recheck service token validity'
+- 'Invalid Request: Malformed request'
+- 'Method Not Found: Unknown method'
+- 'Invalid Params: Parameters incorrect'
+- 'Internal Error: Unexpected failure'
+- 'Parse Error: Malformed JSON'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://rill.sh
+source_metadata: null

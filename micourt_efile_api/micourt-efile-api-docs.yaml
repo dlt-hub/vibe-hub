@@ -1,0 +1,69 @@
+resources:
+- name: court
+  endpoint:
+    path: /court-product/v1/courts
+    method: GET
+    data_selector: courtTenants
+    params:
+      limit: 100
+      offset: 0
+- name: court_key
+  endpoint:
+    path: /court-product/v1/courtKeys
+    method: POST
+    data_selector: courtKey
+    params: {}
+- name: case_search
+  endpoint:
+    path: /casesearch-product/v3/{courtKey}/cases
+    method: GET
+    data_selector: cases
+    params: {}
+- name: court_calendar
+  endpoint:
+    path: /calendar-product/v3/{courtKey}/calendar
+    method: GET
+    data_selector: events
+    params:
+      date: '2023-03-20'
+- name: create_case
+  endpoint:
+    path: /efile-product/v3/{courtKey}/cases
+    method: POST
+    data_selector: caseDocketId
+    params: {}
+- name: update_participant_contacts
+  endpoint:
+    path: /efile-product/{courtKey}/cases/{caseDocketId}/participants/{type}/{roleNumber}/contacts
+    method: PATCH
+    data_selector: null
+    params: {}
+notes:
+- Some fields may return null values depending on the case.
+- Authorization header is not required for Starter subscription.
+- JIS and court administration approval is required to subscribe to this package.
+errors:
+- '401 Unauthorized: Recheck OAuth credentials'
+- '400 Bad Request: Check request parameters and body'
+- '404 Not Found: Verify endpoint paths and IDs'
+- '401 Unauthorized: Request requires user authentication.'
+- '403 Forbidden: Request was understood but is being refused.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://micourt-apim-sandbox.azure-api.us
+  auth:
+    type: oauth2
+    flow: client_credentials
+    token_url: https://staging.login.courts.michigan.gov/connect/token
+    client_id: '{{ dlt.secrets[''client_id''] }}'
+    client_secret: '{{ dlt.secrets[''client_secret''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Jis-Apim-Subscription-Key: '{{ dlt.secrets[''subscription_key''] }}'
+  paginator:
+    type: offset
+    page_size_param: limit
+    default_page_size: 10
+source_metadata: null

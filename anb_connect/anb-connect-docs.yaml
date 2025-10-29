@@ -1,0 +1,322 @@
+resources:
+- name: balance
+  endpoint:
+    path: /balance
+    method: GET
+    data_selector: balance
+    params: {}
+- name: general_statement
+  endpoint:
+    path: /general-statement
+    method: GET
+    data_selector: statement
+    params:
+      incremental: from_date,to_date
+- name: end_of_day_statement
+  endpoint:
+    path: /end-of-day-statement
+    method: GET
+    data_selector: eod_statement
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: payment_submission
+  endpoint:
+    path: /api/payments
+    method: POST
+    data_selector: response
+    params: {}
+- name: transaction_inquiry
+  endpoint:
+    path: /api/transaction/inquiry
+    method: GET
+    data_selector: response
+    params: {}
+- name: account_access_consents
+  endpoint:
+    path: /account-access-consents
+    method: POST
+- name: create_profile
+  endpoint:
+    path: /createProfile
+    method: POST
+    data_selector: records
+    params:
+      Sequence_Number: R
+      LangPref: R
+      POI_POINum: R
+      POI_POIType: R
+      NumOfRecs: R
+      CustProfInfo_BillingAcct: O
+      CustProfInfo_BillerId: O
+- name: fee_inquiry
+  endpoint:
+    path: /feeInquiry
+    method: POST
+    data_selector: records
+    params:
+      Sequence_Number: R
+      LangPref: R
+      POI_POINum: R
+      POI_POIType: R
+      ANBAcctNum: R
+      ANBAcctType: R
+      BillerId: R
+      ServiceCode: R
+      BranchCode: R
+- name: bill_inquiry
+  endpoint:
+    path: /billInquiry
+    method: POST
+    data_selector: records
+    params:
+      Sequence_Number: R
+      LangPref: R
+      BillingAcct: R
+      BillerId: R
+      SubscriberNum: R
+- name: invoice_inquiry
+  endpoint:
+    path: /invoice/inquiry
+    method: POST
+    data_selector: records
+    params:
+      RecCtrlIn/MaxRecs: 1
+      RecCtrlIn/Offset: 0
+- name: transaction_inquiry
+  endpoint:
+    path: /transaction/inquiry
+    method: POST
+    data_selector: records
+    params: {}
+- name: bill_pay_advice
+  endpoint:
+    path: /bill/pay/advice
+    method: POST
+    data_selector: records
+    params: {}
+- name: BillPayAdviceInfo
+  endpoint:
+    path: /BillPayAdviceInfo
+    method: POST
+    data_selector: records
+    params: {}
+- name: InvoiceBillPayment
+  endpoint:
+    path: /InvoiceBillPayment
+    method: POST
+    data_selector: records
+    params: {}
+- name: RefundInquiry
+  endpoint:
+    path: /RefundInquiry
+    method: POST
+    data_selector: records
+    params: {}
+- name: RefundStatus
+  endpoint:
+    path: /RefundStatus
+    method: GET
+    data_selector: records
+    params: {}
+- name: pvt_billers
+  endpoint:
+    path: /private/billers
+    method: GET
+    data_selector: records
+- name: gov_billers
+  endpoint:
+    path: /gov/billers
+    method: GET
+    data_selector: records
+- name: payment_inquiry
+  endpoint:
+    path: /apis/api/single-payment/inquiry
+    method: GET
+- name: list_payments
+  endpoint:
+    path: /apis/api/single-payment/list
+    method: GET
+- name: cancel_payment
+  endpoint:
+    path: /apis/api/single-payment/cancel
+    method: POST
+- name: VIBAN Create
+  endpoint:
+    path: /create
+    method: POST
+- name: VIBAN Update
+  endpoint:
+    path: /update
+    method: POST
+- name: VIBAN Inquiry
+  endpoint:
+    path: /inquiry
+    method: GET
+- name: VIBAN Payment
+  endpoint:
+    path: /payment
+    method: POST
+- name: VIBAN Payment Inquiry
+  endpoint:
+    path: /payment/inquiry
+    method: GET
+- name: VIBAN Statement Inquiry
+  endpoint:
+    path: /statement/inquiry
+    method: GET
+- name: VIBAN Status Update
+  endpoint:
+    path: /status/update
+    method: POST
+notes:
+- This service is available only to customers with formal approval from the Saudi
+  Central Bank.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Due to multiple factors related to security, your endpoint might need to be whitelisted
+  at anb system.
+- Bulk payment is a service that enables your system to submit multiple payments at
+  once. Just like single payment service, bulk payment supports all channels.
+- Files must be in CSV format; incorrect formats will result in rejection.
+- The system retries up to three times in case of errors.
+- Rates are updated every 12 hours.
+- Clients must be connected to ANB’s B2B platform to access the Proxy Lookup services.
+- Bulk requests must be submitted in CSV format.
+- Use GroupPayId and SADADTrnNum from MOI Fee Inquiry response for Bill Pay Advice.
+- Sequence number must be unique to assure idempotency.
+- Payments can be canceled only if they are queued.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400: Invalid file format: File is not in accepted CSV format'
+- '400: Too many records: File contains more than 99 records'
+- '401: Unauthorized: Missing or invalid bearer token'
+- '404: Request ID not found: No results found for the provided request ID'
+- '500: Internal Server Error: Unexpected error during processing'
+- 'E650033: File cannot be parsed'
+- 'E620092: Account has Insufficient Funds'
+- 'E620083: Sadad Timeout'
+- 'E620093: Account is Not Valid'
+- 'E6500058: SADAD/MOI http exception'
+- 'E6500057: Sadad not enabled for the account'
+- '401 Unauthorized: statusCode and Message'
+- '500 Internal Server Error: id, sequenceNumber, transactionReferenceNumber, status'
+- 'E650054: Duplicate Account Verification'
+- 'E650055: Account verification validation'
+- '999993: Not Found'
+- 'E650006: PAYMENT_NOT_FOUND'
+- 'E650048: Account verification not found'
+- 'Validation Failure (IBAN): IBAN must be a string and have at least 24 characters
+  long.'
+- 'Validation Failure (National ID): National ID must be a string and at least 10
+  characters long.'
+- 'Validation Failure (BIC): Destination Bank BIC must be a string and at least 8
+  characters long.'
+- '200: OK'
+- '500: Internal Server Error'
+- '400: Bad Request'
+- 'E020051: Language code should be ENGLISH or ARABIC'
+- 'E020358: Associate ID is mandatory for the service 058'
+- 'E620001: The signon information provided in the query in invalid'
+- 'E620002: The date range supplied in invalid'
+- 'E620003: The specified Biller does not exist in system'
+- 'E620004: Bank is not active'
+- 'E620005: Neither Biller ID nor customer ID specified in query'
+- 'E620007: Customer ID is not specified in query'
+- 'E620008: Customer does not exist in system'
+- 'E620010: Access channel is mandatory'
+- 'E620011: Biller ID is mandatory if billing account / bill number is provided'
+- 'E620025: Customer ID is mandatory for customer'
+- 'E620026: Proxy customer ID is mandatory for proxy customer'
+- 'E620051: The specified Biller does not exist in the system'
+- 'E620063: Branch Code is missing'
+- 'E620064: District Code is missing'
+- 'E620065: Payment method is missing'
+- 'E620066: Access Channel is missing'
+- 'E620071: Customer not found'
+- 'E620072: One or more accounts not found'
+- 'E620176: Unable to Get the Payment'
+- 'E620180: Internal Error'
+- 'E620269: Unknow Error, check with NIC'
+- 'E620279: Refund record has an invalid status of Refund Status'
+- 'E620286: Refund ID must start either with the biller?s ID or the Bank?s ID'
+- B00000 -Success
+- 10001 -Date must be Gregorian
+- 12000 -Merchant is deactivated from Sadad
+- 12001 -The specified Biller does not exist in the system
+- 13000 -Account not found
+- 30000 -Overpayment or underpayment is not allowed
+- 30006 -Over payment is not allowed
+- '00000: Success'
+- '10001: Date must be Gregorian'
+- '12000: Merchant is deactivated from Sadad'
+- '12001: The specified Biller does not exist in the system'
+- '13000: Account not found'
+- '13006: Your account has been disabled. Please contact the Administrator'
+- '30000: Overpayment or underpayment is not allowed'
+- '30006: Over payment is not allowed'
+- 'I000000: Successful Operation.'
+- 'E798101: IPS RTP Error.'
+- 'E820002: Beneficiary Data Not Found.'
+- 'E6500084: Exception occurred in RTP Account Verification.'
+- 'E650001: Duplicate payment'
+- 'E650002: Payment not found'
+- 'E650011: Payment validation'
+- 'E650012: Amount zero'
+- 'E650015: Amount NAN'
+- 'E650020: Bic invalid'
+- 'E650021: Sarie not working day'
+- 'E650025: Value date invalid'
+- 'I000000: Successful Operation'
+- 'E501001: Failed'
+- 'E501002: Customer is not registered on TSMS'
+- 'E501003: VA Scheme is not defined on TSMS'
+- 'E501004: No matching Remitter details found on TSMS'
+- 'E501005: Validation failed'
+- 'E501006: Internal Server Error'
+- 'E501007: Service is unavailable or down'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.sadad.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.sadad.com/oauth2/token
+    client_id: '{{ dlt.secrets[''sadad_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''sadad_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''sadad_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

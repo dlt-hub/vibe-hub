@@ -1,0 +1,176 @@
+resources:
+- name: deployments
+  endpoint:
+    path: /usage/deployments/
+    method: GET
+    data_selector: deployments
+- name: virtual_machines
+  endpoint:
+    path: /usage/virtualMachines/
+    method: GET
+    data_selector: records
+- name: host_provisioning
+  endpoint:
+    path: /maintenance/hostProvisioning/
+    method: GET
+    data_selector: steps
+    params: {}
+- name: sys-cluster
+  endpoint:
+    path: /maintenance/installKubernetesCluster
+    method: POST
+    data_selector: cluster
+    params: {}
+- name: cert-manager-issuer
+  endpoint:
+    path: /api/cert-manager.io/v1/clusterissuers/deploy-cluster-issuer
+    method: POST
+    data_selector: certificates
+    params: {}
+- name: wildcard-certificate
+  endpoint:
+    path: /api/cert-manager.io/v1/certificates/deploy-wildcard
+    method: POST
+    data_selector: certificates
+    params: {}
+- name: cert-manager-webhook
+  endpoint:
+    path: /cert-manager-webhook-powerdns
+    method: install
+    data_selector: webhook
+- name: issuer
+  endpoint:
+    path: /deploy-cluster-issuer
+    method: apply
+    data_selector: issuer
+- name: wildcard-certificate
+  endpoint:
+    path: /deploy-wildcard
+    method: apply
+    data_selector: certificate
+- name: fallback-ingress
+  endpoint:
+    path: /fallback-ingress
+    method: apply
+    data_selector: ingress
+- name: metallb
+  endpoint:
+    path: /metallb-native.yaml
+    method: apply
+    data_selector: metallb
+- name: metrics-server
+  endpoint:
+    path: /metrics-server
+    method: install
+    data_selector: metrics
+- name: KubeVirt
+  endpoint:
+    path: /kubevirt
+    method: install
+    data_selector: kubevirt
+- name: NFS-CSI-provisioner
+  endpoint:
+    path: /csi-driver-nfs
+    method: install
+    data_selector: nfs
+- name: storage-classes
+  endpoint:
+    path: /storage-classes
+    method: apply
+    data_selector: storage
+- name: monitoring
+  endpoint:
+    path: /monitoring
+    method: install
+    data_selector: monitoring
+- name: CDI
+  endpoint:
+    path: /cdi
+    method: edit
+    data_selector: cdi
+- name: Velero
+  endpoint:
+    path: /velero
+    method: install
+    data_selector: velero
+- name: datasets
+  endpoint:
+    path: /usage/datasets/
+    method: GET
+- name: add_cluster
+  endpoint:
+    path: /client/api
+    method: POST
+    data_selector: response
+    params:
+      clustername: <hardware model name, eg. Precsion 7920>
+      clustertype: CloudManaged
+      hypervisor: KVM
+      podid: <id>
+      zoneid: <id>
+- name: add_host
+  endpoint:
+    path: /client/api
+    method: POST
+    data_selector: response
+    params:
+      username: cloud
+      password: <host password>
+      hypervisor: KVM
+      zoneid: <id>
+      clusterid: <id>
+      url: http://<machine ip>
+- name: database_deployment
+  endpoint:
+    path: /deploy
+    method: GET
+    data_selector: deployments
+    params: {}
+notes:
+- Virtual machines are the most flexible resource type on kthcloud.
+- You can use them for anything you would do on a physical server.
+- Uses K3s as the Kubernetes distribution.
+- Requires setup of system services, Rancher, and other dependencies.
+- Make sure to set up the PDNS secret before creating the issuer.
+- The cluster issuer is configured to use Let's Encrypt for certificate issuance.
+- Ensure that a DNS record exists for the sys-cluster.
+- Ensure that an internal DNS record exists for the sys-cluster.
+- Ensure that a DNS record exists for the sys-cluster. This record should point to
+  the public IP of the sys-cluster, which in turn points to the MetalLB IP range.
+- Ensure that an internal DNS record exists for the sys-cluster. This record should
+  point to the local IP of the sys-cluster. This is to enable the sys-cluster to issue
+  certificates.
+- Ensure that DNS records exists for any other service that will be hosted in the
+  sys-cluster. Such as for console and go-deploy that are hosted under cloud.cbh.kth.se.
+- Cluster certificates for both k3s and Rancher have an expiration time of one year
+  from their issuance date. After this period, the certificates need to be renewed
+  to avoid any service disruptions.
+- Restarting k3s will cause downtime for kthcloud and any other services on the local
+  cluster, as Kubernetes services will be unavailable during the restart.
+- The secure cluster is completely isolated, we need to self-sign our certificates.
+- Keep in mind the changes might not propagate immediately due to caching, and changes
+  could take up too a day to be seen.
+- If you need the change on your device immediately, you could manually set your DNS
+  server to 130.237.83.246 temporarily.
+- To temporarily disable new user registrations, select the 'deny new users' flow
+  in the advanced settings.
+- Ensure the VM is Stopped when you are done.
+- If using 'Ubuntu 22.04 Cloud template', make sure to run 'prepare-template.sh' before
+  turning it off.
+- DO NOT USE THIS - ONLY FOR REFERENCE - ALREADY AUTOMATED IN HOST SETUP SCRIPTS
+- This guide is aimed mainly for GPU without vGPU-support, as a alternative approach
+  to enable GPU computing inside a virtual machine.
+- kthcloud uses an SSH jump host, so any IP specified for the hosts is a local IP.
+- A cluster must contain hosts with homogeneous hardware.
+- Accessing db deployments from outside the cloud is not possible
+- The scripts inside the `init` directory will only run when the database is empty
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Error message: VNC password is 22 characters long, only 8 permitted'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://cloud.cbh.kth.se
+source_metadata: null
