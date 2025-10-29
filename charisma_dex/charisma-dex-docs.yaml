@@ -1,0 +1,172 @@
+resources:
+- name: quote
+  endpoint:
+    path: /quote
+    method: GET
+- name: orders
+  endpoint:
+    path: /orders
+    method: GET
+- name: orders_new
+  endpoint:
+    path: /orders/new
+    method: POST
+- name: orders_uuid
+  endpoint:
+    path: /orders/{uuid}
+    method: GET
+- name: orders_cancel
+  endpoint:
+    path: /orders/{uuid}/cancel
+    method: PATCH
+- name: orders_execute
+  endpoint:
+    path: /orders/{uuid}/execute
+    method: POST
+- name: execute
+  endpoint:
+    path: /execute
+    method: POST
+- name: multihop_execute
+  endpoint:
+    path: /multihop/execute
+    method: POST
+- name: prices
+  endpoint:
+    path: /api/v1/prices
+    method: GET
+- name: token_price
+  endpoint:
+    path: /api/v1/prices/[tokenId]
+    method: GET
+- name: execute
+  endpoint:
+    path: /execute
+    method: POST
+- name: multihop_execute
+  endpoint:
+    path: /multihop/execute
+    method: POST
+- name: api_keys
+  endpoint:
+    path: /api/v1/api-keys
+    method: POST
+    data_selector: apiKey
+- name: orders
+  endpoint:
+    path: /api/v1/orders
+    method: POST
+    data_selector: data
+- name: quote
+  endpoint:
+    path: /quote
+    method: GET
+- name: orders
+  endpoint:
+    path: /orders
+    method: GET
+- name: orders_new
+  endpoint:
+    path: /orders/new
+    method: POST
+- name: orders_uuid
+  endpoint:
+    path: /orders/{uuid}
+    method: GET
+- name: orders_cancel
+  endpoint:
+    path: /orders/{uuid}/cancel
+    method: PATCH
+- name: orders_execute
+  endpoint:
+    path: /orders/{uuid}/execute
+    method: POST
+- name: quote
+  endpoint:
+    path: /quote
+    method: GET
+    data_selector: data
+    params:
+      tokenIn: string
+      tokenOut: string
+      amount: integer (micro-units)
+- name: orders
+  endpoint:
+    path: /orders
+    method: GET
+    data_selector: data
+    params:
+      owner: string
+- name: create_order
+  endpoint:
+    path: /orders/new
+    method: POST
+- name: cancel_order
+  endpoint:
+    path: /orders/{uuid}/cancel
+    method: PATCH
+- name: execute_order
+  endpoint:
+    path: /orders/{uuid}/execute
+    method: POST
+- name: orders_new
+  endpoint:
+    path: /orders/new
+    method: POST
+    data_selector: data
+- name: order
+  endpoint:
+    path: /orders/{uuid}
+    method: GET
+    data_selector: data
+    params: {}
+- name: cancel_order
+  endpoint:
+    path: /orders/{uuid}/cancel
+    method: PATCH
+    data_selector: ''
+    params: {}
+- name: execute_order
+  endpoint:
+    path: /orders/{uuid}/execute
+    method: POST
+notes:
+- API keys provide a secure way to automate order execution and cancellation without
+  requiring manual wallet signatures for each operation.
+- 'API Keys: Automated trading, bots, scheduled operations'
+- 'Signatures: Manual trading, one-off operations, testing'
+- Orders are returned newest-first.
+- No pagination yet; endpoint is suitable for wallets but not unbounded admin dashboards.
+- API keys provide secure, automated access without requiring wallet signatures for
+  each operation.
+- Signature is always required regardless of authentication method to ensure transaction
+  integrity.
+errors:
+- '400: bad request'
+- '401/403: auth failure'
+- '500: server error'
+- '401: Invalid API key'
+- '401: API key inactive'
+- '403: API key not authorized for this wallet'
+- '429: Rate limit exceeded'
+- '401: auth failure'
+- '403: auth failure'
+- '400: Missing tokenIn parameter'
+- '400: Invalid amount parameter.'
+- '500: Failed to get quote'
+- '500: Failed to fetch orders'
+- '429 Too Many Requests: Respect rate limits imposed by the DEX.'
+- amountIn must be integer numeric string
+- targetPrice must be positive
+- signature verification failed
+- '404: Not found'
+- '400: Order not open'
+- '401/403: Unauthorized'
+- '400: { "error": "Order not open" }'
+- '401/403: { "error": "Unauthorized" }'
+- '500: { "error": "Execution failed" }'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://swap.charisma.rocks/api/v1
+source_metadata: null

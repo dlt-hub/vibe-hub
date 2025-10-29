@@ -1,0 +1,251 @@
+resources:
+- name: identity
+  endpoint:
+    path: /api/v1.0/Identity/{upn}
+    method: GET
+    data_selector: data
+    params:
+      field: activeUser
+- name: verified_non_cern_accounts
+  endpoint:
+    path: /verified/non-cern/accounts
+    method: GET
+- name: permissions_scheme
+  endpoint:
+    path: /permissions/scheme
+    method: GET
+- name: application_permissions
+  endpoint:
+    path: /application/permissions
+    method: GET
+- name: userinfo
+  endpoint:
+    path: /auth/realms/cern/protocol/openid-connect/userinfo
+    method: POST
+    data_selector: userinfo
+    params: {}
+- name: auth-get-sso-cookie
+  endpoint:
+    path: /auth-get-sso-cookie
+    method: GET
+- name: auth-get-sso-token
+  endpoint:
+    path: /auth-get-sso-token
+    method: GET
+- name: auth-get-user-token
+  endpoint:
+    path: /auth-get-user-token
+    method: GET
+- name: add_member
+  endpoint:
+    path: /api/v1.0/Group/GROUPID/members/identities
+    method: POST
+    data_selector: null
+    params: {}
+- name: resource_states
+  endpoint:
+    path: /resource_states
+    method: GET
+    data_selector: states
+- name: website
+  endpoint:
+    path: /website
+    method: GET
+    data_selector: data
+    params: {}
+- name: YourResourceNameHere
+- name: Account
+- name: Group
+- name: Identity
+  endpoint:
+    path: /api/v1.0/Identity
+    method: GET
+- name: Group
+  endpoint:
+    path: /api/v1.0/Group
+    method: POST
+- name: Application
+  endpoint:
+    path: /Application
+    method: POST
+    data_selector: data
+    params: {}
+- name: Identity
+  endpoint:
+    path: /Identity/current
+    method: GET
+    data_selector: data
+    params: {}
+- name: roles
+  endpoint:
+    path: /roles
+    method: GET
+    data_selector: roles
+- name: groups
+  endpoint:
+    path: /groups
+    method: GET
+    data_selector: groups
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+    data_selector: users
+- name: Account
+  endpoint:
+    path: /api/v1.0/Account
+    method: GET
+    data_selector: records
+    params:
+      filter: uniqueIdentifier:mcurie
+      field: personId
+- name: Application
+  endpoint:
+    path: /api/v1.0/Application
+    method: GET
+    data_selector: records
+    params: {}
+- name: Group
+  endpoint:
+    path: /api/v1.0/Group
+    method: GET
+    data_selector: records
+    params: {}
+- name: identity
+  endpoint:
+    path: /api/v1/identity
+    method: GET
+    data_selector: identities
+- name: Identity
+  endpoint:
+    path: /Identity/current
+    method: GET
+    data_selector: data
+- name: Group Memberships
+  endpoint:
+    path: /Group/{group_name}/members/identities
+    method: GET
+    data_selector: identities
+- name: User Information
+  endpoint:
+    path: /Identity/{identity}
+    method: GET
+    data_selector: data
+- name: Attribute Release
+  endpoint:
+    path: /attribute-release
+    method: GET
+- name: Security Requirements
+  endpoint:
+    path: /security-requirements
+    method: GET
+notes:
+- E-groups cannot be managed by the GMS API. Migrate your E-groups to GMS first.
+- For full compatibility with downstream systems ensure that your groups and their
+  administrator groups all have their Synchronisation Type = Master.
+- Single Sign-On service based on Keycloak.
+- Kerberos authentication lets you log in into CERN websites with a single click when
+  you are already logged in in your system.
+- Kerberos works out of the box in Windows computers inside the CERN network managed
+  by NICE Services.
+- Kerberos can be enabled using the inbuilt Ticket Viewer application.
+- Session idle time limit is 10 hours
+- Session max time limit is 12 hours
+- Offline session idle time limit is 30 days
+- Access token validity is 20 minutes
+- Access token validity for implicit flow is 15 minutes
+- Client login timeout is 1 minute
+- User login timeout is 30 minutes
+- Second factor initialization timeout is 10 minutes
+- Password reset link validity for guest accounts is 10 minutes
+- Autologon for individual accounts or browsers is not supported. Autologon is only
+  available on an application basis.
+- Recommended way is to define roles for your application and use role based permission.
+- Roles can define Multi-Factor Authentication (MFA) and Level Of Assurance (LOA)
+  requirements.
+- 'Warning: This document should never be followed as the default way of defining
+  application permissions.'
+- Most applications can be defined with a well defined set of roles, but this approach
+  could be very limited for applications with more fine-grained permissions.
+- Once the request is approved, configure your application to read the `groups` claim
+  or field.
+- 'OpenID Connect: It will be included in the **ID Token** and the UserInfo endpoint
+  in the `groups` claim.'
+- QA uses different databases and it is not synchronized with production, so some
+  information could not match.
+- CERN accounts and their passwords work identically in QA and production.
+- 2FA authentication is currently not supported for auth-get-sso-cookie.
+- The obtained token will be valid for 20 minutes.
+- You will no longer receive all e-groups in your SSO tokens.
+- Define roles for your application that are linked to groups.
+- By default, the email of the Identity's primary account is the communication email
+  for GMS groups used as mailing lists.
+- For professional GMS groups, it is recommended to select 'Purge non-active Users'
+  in the GMS portal.
+- To configure a reserved prefix please contact GMS support.
+- Only the criteria that you are entitled to use will be available for you to configure.
+- Access to sensitive criteria, such as age, is tightly controlled.
+- Only 1000 members can be imported at a time.
+- No header line is expected in the CSV file.
+- Currently, in E-Groups it's possible to create a group with a mixed case name.
+- In GMS, only lowercase characters are allowed.
+- The current version of the API (June 2025) does not yet support all the concepts
+  described here, as Resource Groups and Organizational Units are not implemented.
+- The REST API must return in the `pagination:next` field the relative URL to call
+  to continue the enumeration.
+- CERN Single Sign-On is a core service for CERN.
+- SSO must be available across all CERN networks.
+- ClientID is 'authorization-service-api' for requests.
+- The application identity must belong to the group authorization-service-applications-managers
+- No roles for the API are assigned to guest or social accounts.
+- Not all properties are available to all users. Sensitive data is subject to authorization.
+- Your Home Institute must support the Sirtfi Framework for you to be able to authenticate
+  to CERN with eduGAIN.
+- If your Home Institute doesn't release the required attributes, you will not be
+  able to use CERN services.
+- In order to limit the number of times you need to log in, use one browser consistently
+  for your work and do not close it. Your login will be valid for 12 hours in a browser
+  that remains open.
+- The smartphone TOTP apps are basically pocket calculators. After first initialization
+  they work independently and autonomously calculating your TOTP based on the local
+  time.
+- CERN SSO does not plan to offer password-less authentication.
+- 2FA protection using your smartphone OTP app is now also available for LXPLUS/LXTUNNEL
+  as a pilot.
+- A more comprehensive roll-out to LXPLUS/LXTUNNEL is planned for 2025.
+- Administrators of computing services are still advised to use AIADM (2FA protected).
+- No, we only support CERN obtained Yubikeys or TOTP methods.
+- String matching for client valid redirect URIs now requires case-sensitive matches
+- Added iss parameter to OAuth 2.0/OpenID Connect Authentication Response
+- 'keycloak-js is no longer served by upstream Keycloak. The recommended way is via:
+  npm install keycloak-js.'
+- 'Change in the client-initiated logout: remove the redirect_uri parameter entirely
+  or replace it with the id_token_hint+post_logout_redirect_uri parameters.'
+- GMS is available as a web portal and an API.
+- Support for GMS is available through the Service Desk.
+- For GMS the audience for the API Access Token request must be authorization-service-api.
+- Memberships are returned as a paginated object.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Invalid Client: Ensure that your Metadata includes <md:KeyDescriptor use=''signing''>'
+- Inconsistencies regarding naming due to case sensitivity
+- '204 (No Content): Successfully deleted the resource.'
+- '200: Successfully retrieved the resource.'
+- 'Invalid authenticator code: Ensure phone''s time is set correctly.'
+auth_info:
+  mentioned_objects:
+  - cern_roles
+  - CernRoles
+  - ID Token
+  - Access Token
+  - UserInfo endpoint
+  - SAML
+  - Authorization Service API
+  - Roles Documentation
+client:
+  base_url: https://authorization-service-api.web.cern.ch
+  auth:
+    type: oidc
+  headers:
+    Accept: '*/*'
+source_metadata: null

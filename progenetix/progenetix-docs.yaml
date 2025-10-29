@@ -1,0 +1,202 @@
+resources:
+- name: variant
+  endpoint:
+    path: /api/v2/variant
+    method: GET
+    data_selector: response.resultSets[0].results
+- name: analysis
+  endpoint:
+    path: /api/v2/analysis
+    method: GET
+    data_selector: response.resultSets[0].results
+- name: biosample
+  endpoint:
+    path: /api/v2/biosample
+    method: GET
+    data_selector: response.resultSets[0].results
+- name: individual
+  endpoint:
+    path: /api/v2/individual
+    method: GET
+    data_selector: response.resultSets[0].results
+- name: biosamples
+  endpoint:
+    path: /biosamples
+    method: GET
+    data_selector: results
+- name: variants
+  endpoint:
+    path: /variants
+    method: GET
+    data_selector: results
+- name: biosample
+  endpoint:
+    path: /services/schemas/Biosample
+    method: GET
+    data_selector: records
+- name: biosample
+  endpoint:
+    path: /services/schemas/Biosample/
+    method: GET
+    data_selector: records
+    params: {}
+- name: biosamples
+  endpoint:
+    path: /biosamples
+    method: GET
+    data_selector: records
+    params: {}
+- name: variants
+  endpoint:
+    path: /variants
+    method: GET
+    data_selector: records
+    params: {}
+- name: biosamples
+  endpoint:
+    path: /pgxLoader
+    method: POST
+    data_selector: biosamples
+    params:
+      type: biosamples
+      filters: NCIT:C3512
+- name: individuals
+  endpoint:
+    path: /pgxLoader
+    method: POST
+    data_selector: individuals
+    params:
+      type: individuals
+      filters: NCIT:C3512
+- name: g_variants
+  endpoint:
+    path: /pgxLoader
+    method: POST
+    data_selector: g_variants
+    params:
+      type: g_variants
+      biosample_id:
+      - pgxbs-kftva6du
+      - pgxbs-kftva6dx
+      output: pgxseg
+      save_file: true
+- name: cnv_fraction
+  endpoint:
+    path: /pgxLoader
+    method: POST
+    data_selector: cnv_fraction
+    params:
+      type: cnv_fraction
+      filters: NCIT:C2948
+- name: cnv_frequency
+  endpoint:
+    path: /pgxLoader
+    method: POST
+    data_selector: cnv_frequency
+    params:
+      type: cnv_frequency
+      output: pgxfreq
+      filters:
+      - NCIT:C4038
+      - pgx:icdom-85003
+- name: publications
+  endpoint:
+    path: /services/publications
+    method: GET
+    data_selector: response.results
+- name: cytomapper
+  endpoint:
+    path: /services/cytomapper
+    method: GET
+    data_selector: response.results
+- name: genespans
+  endpoint:
+    path: /services/genespans
+    method: GET
+    data_selector: response.results
+- name: ontologymaps
+  endpoint:
+    path: /services/ontologymaps
+    method: GET
+    data_selector: response.results
+- name: geolocations
+  endpoint:
+    path: /services/geolocations
+    method: GET
+    data_selector: response.results
+- name: geolocations
+  endpoint:
+    path: /services/geolocations
+    method: GET
+    params:
+      output: map
+- name: pgxseg_variants
+  endpoint:
+    path: /services/pgxsegvariants
+    method: GET
+    data_selector: records
+    params: {}
+- name: pgxseg
+  endpoint:
+    path: /services/pgxsegvariants/
+    method: GET
+    data_selector: records
+    params: {}
+- name: pgxfreq
+  endpoint:
+    path: /services/intervalFrequencies/
+    method: GET
+    data_selector: records
+    params: {}
+- name: geolocations
+  endpoint:
+    path: /services/geolocations
+    method: GET
+    data_selector: results
+- name: biosamples
+  endpoint:
+    path: /beacon/biosamples/
+    method: GET
+    data_selector: samples
+notes:
+- The Progenetix Beacon API implements the Beacon framework and Beacon v2 default
+  model.
+- Progenetix runs on the bycon software stack.
+- Uses OAuth2 with refresh token — requires setup of connected app in Progenetix
+- Progenetix resource provides sample-specific cancer genome profiling data and biomedical
+  annotations.
+- The API provides extensive genomic data related to copy number variations.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- API responses are capped through the limit parameter to default 'sensible' values
+  which can be adjusted for systematic data access & retrieval.
+- The server will first query the samples and then perform a handover to the plotting
+  API.
+- This procedure is best suited for limited queries and may lead to a time-out.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://progenetix.org
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.progenetix.org/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+  paginator:
+    type: page
+    page_size_param: limit
+    default_page_size: 100
+source_metadata: null

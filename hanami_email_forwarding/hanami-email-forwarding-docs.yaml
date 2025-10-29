@@ -1,0 +1,139 @@
+resources:
+- name: mails
+  endpoint:
+    path: /mails
+    method: GET
+    data_selector: data
+    params:
+      limit: '20'
+- name: specific_email
+  endpoint:
+    path: /mails/{ID}
+    method: GET
+    data_selector: ''
+    params: {}
+- name: mails
+  endpoint:
+    path: /mails
+    method: GET
+    data_selector: data
+    params:
+      limit: '20'
+- name: aliases
+  endpoint:
+    path: /domains/your-domain-here/aliases
+    method: GET
+    data_selector: data
+    params: {}
+- name: aliases
+  endpoint:
+    path: /aliases
+    method: GET
+    data_selector: records
+    params: {}
+- name: maillog
+  endpoint:
+    path: /maillog
+    method: GET
+    data_selector: records
+    params: {}
+- name: MX records
+  endpoint:
+    path: /api/mx
+    method: GET
+- name: SPF record
+  endpoint:
+    path: /api/spf
+    method: GET
+- name: MX records
+  endpoint:
+    path: /docs/configure_dns#mx
+    method: GET
+    data_selector: records
+- name: SPF records
+  endpoint:
+    path: /docs/configure_dns#spf
+    method: GET
+    data_selector: records
+- name: subdomain configuration
+  endpoint:
+    path: /docs/configure_dns_subdomain
+    method: GET
+    data_selector: records
+- name: url_redirection
+  endpoint:
+    path: /api/url-redirection
+    method: GET
+    data_selector: records
+- name: imap
+  endpoint:
+    path: /
+    method: GET
+    data_selector: emails
+    params: {}
+- name: fetch_mail
+  endpoint:
+    path: /api-fetchmail
+    method: GET
+- name: email_forwarding_log
+  endpoint:
+    path: /api/email_forwarding_log
+    method: GET
+    data_selector: logs
+- name: mails
+  endpoint:
+    path: /v1/mails
+    method: GET
+    data_selector: data
+    params: {}
+- name: webhook
+  endpoint:
+    path: /api/webhook
+    method: POST
+    data_selector: payload
+    params: {}
+notes:
+- We don't store email by default, and we never read your email.
+- We don't track you. This website has no analytic whatsoever.
+- We don't store or log your email. If you EXPLICITLY enable 'Mail Log', then we will
+  store your emails so that you can inspect and debug email flows or webhooks.
+- Uses OAuth2 with refresh token — requires setup of connected app in Mailwip
+- 'SMTP Logging: email sent through our SMTP service are always being logged regardless
+  of your logging setting.'
+- During beta period, the first time an IMAP sync is initiated, only the last 2000
+  emails are returned.
+- We never store your emails unless explicitly requested.
+- Mail logs feature is disabled by default and requires explicit consent to enable.
+- This feature requires Professional or a higher plan.
+- Webhook has a short storage time for emails before posting.
+- Retries sending webhook for 7 days if endpoint fails.
+- 'Rate limit: Cloudflare limits 1200 API calls every 5 minutes and our system uses
+  5-7 API calls on average per domain.'
+errors:
+- '400: Bad Request – Your request is malform, check document to send the right parameters'
+- '401: Unauthorized – Your API key is wrong'
+- '404: Not Found/No Permission – The specified resources could not be found or the
+  API’s account has no access to the resources.'
+- '405: Method Not Allowed – You tried to access a kitten with an invalid method'
+- '422: Invalid/Malform request data – Double check our doc or contact support'
+- '429: Too Many Requests – You’re requesting too many resources! Slow down!'
+- '500: Internal Server Error – We had a problem with our server. Try again later.'
+- '503: Service Unavailable – We’re temporarily offline for maintenance. Please try
+  again later.'
+- '422: Invalid/Malform request data – Double check our doc or contact support@mailwip.com'
+- '503: Service Unavailable – We’re temporarially offline for maintanance. Please
+  try again later.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity.'
+- '401: Unauthorized access if domain is not owned'
+- 'Rate limit exceeded: Please wait before making more requests.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://mailwip.com/api
+source_metadata: null

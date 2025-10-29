@@ -1,0 +1,154 @@
+resources:
+- name: mason-management
+  endpoint:
+    path: /api/mason-management
+    method: GET
+    data_selector: configurations
+- name: mason-fota
+  endpoint:
+    path: /api/mason-fota
+    method: GET
+    data_selector: configurations
+- name: mason-app-updater
+  endpoint:
+    path: /api/mason-app-updater
+    method: GET
+    data_selector: configurations
+- name: configurations
+  endpoint:
+    path: /api/configurations
+    method: GET
+    data_selector: configurations
+    params: {}
+- name: release_history
+  endpoint:
+    path: /mason-os/release-notes/os3
+    method: GET
+    data_selector: release_notes
+- name: MasonHardwareFramework
+  endpoint:
+    path: /api/hardware
+    method: GET
+    data_selector: records
+    params: {}
+- name: put_file
+  endpoint:
+    path: /put-file
+    method: POST
+    data_selector: file
+    params: {}
+- name: uninstall_apk
+  endpoint:
+    path: /uninstall-apk
+    method: POST
+    data_selector: apk
+    params: {}
+- name: groups
+  endpoint:
+    path: /api/fleet/groups
+    method: POST
+    data_selector: data
+    params: {}
+- name: devices
+  endpoint:
+    path: /api/fleet/devices
+    method: GET
+    data_selector: data
+    params: {}
+- name: projects
+  endpoint:
+    path: /api/projects
+    method: POST
+    data_selector: project
+- name: groups
+  endpoint:
+    path: /api/groups
+    method: POST
+    data_selector: group
+- name: broadcast
+  endpoint:
+    path: /v1/default/device/broadcast
+    method: POST
+    data_selector: devices
+    params: {}
+- name: splash_image
+  endpoint:
+    path: /splash/image
+    method: POST
+    data_selector: data
+    params: {}
+- name: project
+  endpoint:
+    path: /project
+    method: POST
+    data_selector: data
+    params: {}
+- name: splash_image
+  endpoint:
+    path: /media/splash
+    method: POST
+    data_selector: splash
+- name: boot_animation
+  endpoint:
+    path: /media/bootanimation
+    method: POST
+    data_selector: bootanimation
+- name: project_builds
+  endpoint:
+    path: /api/deploy/project_builds
+    method: POST
+    data_selector: project_builds
+- name: applications
+  endpoint:
+    path: /api/deploy/applications
+    method: POST
+    data_selector: applications
+- name: mason_os_updates
+  endpoint:
+    path: /api/deploy/mason_os_updates
+    method: POST
+    data_selector: mason_os_updates
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Devices will default to the 'Unassigned' group.
+- Any given device may only belong to one group at a time.
+- Authentication for the platform is done via API keys.
+- All commands in the Mason CLI require a permissioned API key.
+- Mason OS configuration files are defined using the YAML file format - .yml.
+- 'Only two fields are required: name and version.'
+- Devices can now be shutdown remotely using controller command shutdown.
+- Disabling booting to bootloader while pressing both device keys when booting up
+- X-Ray is not supported in this release
+- NFC is disable by default, this is because when enabled the screen flickers.
+- Some Mason OS configurations do not function on A4100.
+- Cannot change date, time, timezone during device setup.
+- Devices must be turned on and connected to Wi-Fi or cellular data.
+- A prompt will appear on the device when you initially establish a connection. This
+  prompt needs to be accepted within 30 seconds.
+- Groups can only be created via Controller or the Mason Platform APIs at this time.
+- Projects are a way to organize a set of configs and deploy them to your fleet of
+  devices.
+- Groups allow you to organize your devices according to your workflows and needs.
+- Refurbishing a device will wipe all data from your Mason device and restore it to
+  its original, pre-provisioned state.
+- Make sure you have physical access to the device prior to a refurbish.
+- Splash images must be in .png format and square.
+- The maximum image width should match the device’s resolution size.
+- Compressing the .zip file can create an extra sub directory.
+- 'Mason supports three types of deployments: project builds, applications, and MasonOS
+  updates.'
+- A properly configured fleet will survive factory resets.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck API key or permissions.'
+- 'DEVICE_NOT_FOUND: Ensure the device is in the specified group.'
+- 'INVALID_API_KEY: Check the API key and its permissions.'
+- '401 Unauthorized: Recheck API key'
+auth_info:
+  mentioned_objects:
+  - api-key
+client:
+  base_url: https://bymason.com
+  auth:
+    type: oauth2
+source_metadata: null

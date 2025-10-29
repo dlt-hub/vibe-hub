@@ -1,0 +1,64 @@
+resources:
+- name: reports
+  endpoint:
+    path: /reports
+    method: GET
+    data_selector: data
+- name: report_configuration
+  endpoint:
+    path: /reports/config/:reportId
+    method: GET
+    data_selector: data
+- name: reports
+  endpoint:
+    path: /reports
+    method: GET
+    data_selector: data
+    params: {}
+- name: report_configuration
+  endpoint:
+    path: /reports/config
+    method: GET
+    data_selector: data
+    params: {}
+- name: bid_request
+  endpoint:
+    path: /rtb
+    method: POST
+- name: bid_response
+  endpoint:
+    path: /rtb
+    method: GET
+notes:
+- All reports are limited to 500,000 rows.
+- You are required to send dimensions, and this list cannot be left empty.
+- If you do not wish to add metrics, you are required to send an empty list as the
+  value of the metrics field.
+- If you do not wish to include any filters, you are required to send an empty list
+  as the filters value.
+errors:
+- 'HTTP 200: Bid Response OK'
+- 'HTTP 204: No Bid'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '400: Bad Request -- Your request is invalid.'
+- '401: Unauthorized -- Your API key is wrong.'
+- '403: Forbidden -- The requested is hidden for administrators only.'
+- '404: Not Found -- The specified resource could not be found.'
+- '405: Method Not Allowed -- You tried to access a report with an invalid method.'
+- '406: Not Acceptable -- You requested a format that isn''t json.'
+- '429: Too Many Requests -- You are making too many requests! Slow down!'
+- '500: Internal Server Error -- We had a problem with our server. Try again later.'
+- '503: Service Unavailable -- We''re temporarily offline for maintenance. Please
+  try again later.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://reports-api.yellowblue.io
+  auth:
+    type: apikey
+    location: header
+    header_name: x-api-key
+  headers:
+    Content-Type: application/json
+source_metadata: null

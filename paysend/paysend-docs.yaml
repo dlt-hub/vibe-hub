@@ -1,0 +1,187 @@
+resources:
+- name: task_status
+  endpoint:
+    path: /processing/task.statusGet
+    method: GET
+- name: processing_status
+  endpoint:
+    path: /processing/status/
+    method: GET
+- name: card.createToken
+  endpoint:
+    path: /processing
+    method: POST
+- name: card_info
+  endpoint:
+    path: /processing
+    method: POST
+    data_selector: payload
+    params: {}
+- name: statement
+  endpoint:
+    path: /processing
+    method: POST
+- name: response
+  endpoint:
+    path: /processing/status
+    method: GET
+    data_selector: result
+    params: {}
+- name: processing
+  endpoint:
+    path: /processing
+    method: POST
+    data_selector: payload
+    params:
+      X-OPP-Signature: header
+- name: pay.toAccount
+  endpoint:
+    path: /processing
+    method: POST
+- name: pay.toCard
+  endpoint:
+    path: /processing
+    method: POST
+- name: request
+  endpoint:
+    path: /processing
+    method: POST
+- name: getBalance
+  endpoint:
+    path: /processing
+    method: POST
+- name: task_status
+  endpoint:
+    path: /processing
+    method: POST
+    data_selector: request
+    params: {}
+- name: processing
+  endpoint:
+    path: /processing
+    method: POST
+- name: status
+  endpoint:
+    path: /processing/status/
+    method: GET
+- name: processing_status
+  endpoint:
+    path: /processing/status/:GlobalId
+    method: GET
+- name: processing_status
+  endpoint:
+    path: /processing/status/
+    method: GET
+- name: status
+  endpoint:
+    path: /processing/status/:GlobalId
+    method: GET
+    data_selector: response
+- name: notification
+  endpoint:
+    path: /processing/status/
+    method: GET
+    data_selector: result
+    params: {}
+- name: task_status
+  endpoint:
+    path: /processing/task.statusGet
+    method: GET
+    data_selector: ''
+    params: {}
+- name: task_status
+  endpoint:
+    path: /processing/status/
+    method: GET
+    data_selector: status
+notes:
+- Asynchronous flow is the main flow to interact with API.
+- Synchronous flow is not available for the Enterprise product.
+- All API requests must include a digital signature in the X-OPP-Signature header.
+- Idempotency is implemented using a unique idempotency key and request timestamp.
+- The Sandbox Mock Service is intended for testing purposes only and does not perform
+  actual payment processing.
+- The service provides consistent, static responses to simplify integration testing.
+- Our system processes payouts asynchronously across multiple services.
+- When your payout request receives an initial 'accepted' status, there is a brief
+  propagation delay while the transaction details are synchronized internally.
+- You must wait at least 3 minutes after receiving the 'accepted' status before using
+  the task.statusGet method.
+errors:
+- '400 – Bad request: This code is returned if there is an issue in the request.'
+- '401 – Unauthorized: That code is returned by system if the Signature or other partner
+  information is incorrect.'
+- '404 – Not found: This code is returned if the system cannot process the request
+  now.'
+- '0: Task is in Accepted status.'
+- '1: Task is in InProgress status.'
+- '2: Task is in Success status.'
+- '3: Task is in Error status.'
+- '5: Task is waiting manual actions but is in Error status.'
+- '400: Bad Request if the Signature or other partner information is incorrect.'
+- '429: Sorry. Can''t accept your request now.'
+- '400: Bad Request'
+- '401: Unauthorized'
+- '404: Not Found'
+- '400: Returned if there is an issue in the request'
+- '401: Returned by system if the Signature or other partner information is incorrect'
+- '404: Returned if the system cannot process the request now'
+- '400: If Signature or other partner information is incorrect'
+- '500: If the system cannot process the request now'
+- '400: Invalid request'
+- '401: Unauthorized access'
+- '404: Not found'
+- '400'
+- '401'
+- '404'
+- Sorry. Can't accept your request now.
+- '3002: Unable to decrypt tokenised card. Please try again with the corrected card
+  token.'
+- '1000: Processing error occurred.'
+- '2000: Validation error: {field_name}, error: {error_text}. Please try again with
+  corrected payload.'
+- '3000: Failed to save card.'
+- '3001: Tokenised card not found. Please try again with the corrected card token.'
+- '3003: Single transaction limit reached.'
+- '3004: Aggregate transaction limit reached.'
+- '3005: Processing error occurred.'
+- '3006: Unable to find requested data. Please check the request parameters and try
+  again.'
+- '3007: Failed to get saved card by token. Please try again later or use other card.'
+- '3008: Wrong Source Transaction Instrument provided (no such account Id)'
+- '3009: Insufficient Balance'
+- '4000: Generic decline. Try again and refer to card issuer if issue persists.'
+- '4002: The issuer is temporarily unavailable or has a system issue.'
+- '4003: Approval amount or frequency limit exceeded. Try again later, send a smaller
+  amount or use another card or account.'
+- '4004: Insufficient funds in the recipient account. Please use a different card.'
+- '4005: Issues with the card information or transaction data.'
+- '4006: Declined due to account restrictions or bank policies. Recipient needs to
+  contact the receiving bank.'
+- '4007: Declined for security or regulatory reasons. Recipient needs to contact the
+  receiving bank.'
+- '4008: Account owner refused incoming money transfer. Please contact the account
+  owner.'
+- '4009: Issues with the account information or transaction data: {error_text}.'
+- '4010: Transaction cancelled.'
+- '4011: Invalid recipient currency'
+- '4012: Transaction amount is greater than maximum allowed for transaction'
+- '4013: Incorrect IFSC or BIC code'
+- '4014: Sender address is incorrect or invalid'
+- '4015: Incorrect branch name or code'
+- '4016: Recipient name does not match the account'
+- '4017: Invalid Recipient bank account number'
+- '4018: IBAN provided is invalid'
+- '4200: Unable to check transaction status.'
+- '9999: Unknown error. Please contact customer support.'
+- '3006: ''Unable to find requested data'': Indicates the data is still in transit
+  within our system.'
+- '3: Task is in Error status. List of error codes can be found here: Processing error
+  codes'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: http://enterprise.sandbox.paysend.com
+  headers:
+    Accept: application/json
+source_metadata: null

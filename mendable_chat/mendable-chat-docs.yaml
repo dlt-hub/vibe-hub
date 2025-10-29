@@ -1,0 +1,182 @@
+resources:
+- name: mendableChat
+  endpoint:
+    path: /v1/mendableChat
+    method: POST
+    data_selector: data
+    params: {}
+- name: newConversation
+  endpoint:
+    path: /v1/newConversation
+    method: POST
+    data_selector: data
+    params: {}
+- name: search_bar
+  endpoint:
+    path: /mendable-api/search
+    method: GET
+    data_selector: results
+- name: floating_button
+  endpoint:
+    path: /mendable-api/floating-button
+    method: GET
+    data_selector: results
+- name: mendable_search
+  endpoint:
+    path: /api/sendSlackMessage
+    method: POST
+- name: SearchBar
+  endpoint:
+    path: /components/search-bar
+    method: GET
+    data_selector: records
+    params: {}
+- name: FloatingButton
+  endpoint:
+    path: /components/floating-button
+    method: GET
+    data_selector: records
+    params: {}
+- name: floating_button_component
+  endpoint:
+    path: /integrations/wordpress#floating-button-component
+    method: GET
+    data_selector: component
+- name: chat_bubble_component
+  endpoint:
+    path: /integrations/wordpress#chat-bubble-component
+    method: GET
+    data_selector: component
+- name: floatingButton
+  endpoint:
+    path: /floating-button
+    method: GET
+    data_selector: component
+    params: {}
+- name: searchBar
+  endpoint:
+    path: /search-bar
+    method: GET
+    data_selector: component
+    params: {}
+- name: inPlace
+  endpoint:
+    path: /in-place
+    method: GET
+    data_selector: component
+    params: {}
+- name: chatBubble
+  endpoint:
+    path: /chat-bubble
+    method: GET
+    data_selector: component
+    params: {}
+- name: MendableSearchBar
+  endpoint:
+    path: /ingestDocuments
+    method: POST
+- name: MendableFloatingButton
+  endpoint:
+    path: /components/floating-button
+    method: GET
+    data_selector: records
+    params: {}
+- name: ingestData
+  endpoint:
+    path: /v1/ingestData
+    method: POST
+    data_selector: task_id
+    params: {}
+- name: ingest_data
+  endpoint:
+    path: /v1/ingestData
+    method: POST
+    data_selector: task_id
+    params: {}
+- name: ingestion_status
+  endpoint:
+    path: /v1/ingestionStatus
+    method: POST
+    data_selector: result
+    params:
+      task_id: string
+- name: get_sources
+  endpoint:
+    path: /v1/getSources
+    method: POST
+- name: delete_source
+  endpoint:
+    path: /v1/deleteSource
+    method: POST
+- name: newConversation
+  endpoint:
+    path: /v1/newConversation
+    method: POST
+    data_selector: conversation_id
+- name: getMessagesByConversationId
+  endpoint:
+    path: /v1/messages/byConversationId
+    method: POST
+    data_selector: messages
+- name: rate_message
+  endpoint:
+    path: /v1/rateMessage
+    method: POST
+    data_selector: null
+    params: {}
+- name: getMessagesData
+  endpoint:
+    path: /v1/getMessagesData
+    method: POST
+    data_selector: response
+    params: {}
+- name: sources
+  endpoint:
+    path: /get_sources
+    method: GET
+    data_selector: sources
+- name: conversation
+  endpoint:
+    path: /start_new_conversation
+    method: POST
+    data_selector: ''
+notes:
+- Must handle Server-Sent Events (SSE) events to capture the streamed tokens.
+- Mendable offers a 'teach the model' functionality where you can correct the AI response
+  and it will learn from it.
+- Like Humans, AI will never be 100% accurate. So we can't assure you that every solution
+  will be correct.
+- Dynamic variables can be used to customize prompts.
+- Tools and Actions is currently in Beta. Expect breaking changes and improvements.
+- If you have whitelists enabled for your project, you need to allow requests from
+  our slack server URL https://slackserver-production.up.railway.app/
+- Create a .env file and add MENDABLE_API_KEY, DISCORD_TOKEN, and BOT_ID.
+- This component is the Mendable Chat only, does not include an activation component
+  or dialog transitions.
+- The component is now is Beta but not all the props from other components are fully
+  available in it yet.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Conversation ID is returned as an integer.
+errors:
+- '401 Unauthorized: Recheck your ANON_KEY or token expiration.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '401 Unauthorized: Recheck API key or token expiration'
+- 'Error: If the `source` parameter is not provided and `delete_all` is set to false,
+  an error will be returned.'
+- '401 Unauthorized: Recheck API key validity'
+- '400: Missing api_key parameter'
+- '400: Invalid API key or project not found'
+- '500: Error updating message rating'
+- '500: Permission denied to rate the message'
+- '400: Missing `api_key` parameter'
+- '400: Export messages not enabled'
+auth_info:
+  mentioned_objects:
+  - api_key
+client:
+  base_url: https://api.mendable.ai
+  headers:
+    Content-Type: application/json
+source_metadata: null

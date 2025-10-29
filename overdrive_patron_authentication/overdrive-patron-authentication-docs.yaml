@@ -1,0 +1,193 @@
+resources:
+- name: Library Account API
+  endpoint:
+    path: /api-docs/discovery-apis/library-account
+    method: GET
+- name: Search API
+  endpoint:
+    path: /api-docs/discovery-apis/search
+    method: GET
+- name: Metadata API
+  endpoint:
+    path: /api-docs/discovery-apis/metadata
+    method: GET
+- name: Library Availability API
+  endpoint:
+    path: /api-docs/discovery-apis/library-availability
+    method: GET
+- name: Magazine Issues API
+  endpoint:
+    path: /api-docs/discovery-apis/magazine-issues
+    method: GET
+- name: Digital Inventory API
+  endpoint:
+    path: /api-docs/discovery-apis/digital-inventory-api
+    method: GET
+- name: Patron Information API
+- name: Checkouts API
+- name: Holds API
+- name: monitoring
+  endpoint:
+    path: /v1/service/status
+    method: GET
+- name: patron_token_refresh
+  endpoint:
+    path: /patrontoken/refresh
+    method: POST
+    data_selector: access_token
+- name: kanopyinfo
+  endpoint:
+    path: /v1/libraries/{Library ID}/kanopyinfo/{Advantage ID}
+    method: GET
+    data_selector: records
+    params: {}
+- name: products
+  endpoint:
+    path: /v1/collections/{collectionToken}/products
+    method: GET
+    data_selector: results
+- name: products
+  endpoint:
+    path: /v1/collections/v1L1BBQ0AAA2_/products
+    method: GET
+    data_selector: products
+- name: products
+  endpoint:
+    path: /v1/collections/{collection_id}/products
+    method: GET
+    data_selector: products
+    params: {}
+- name: bulkmetadata
+  endpoint:
+    path: /v1/collections/{collectionToken}/products/{reserveId}/metadata
+    method: GET
+    data_selector: records
+    params: {}
+- name: metadata
+  endpoint:
+    path: /v1/collections/{collectionId}/products/{productId}/metadata
+    method: GET
+    data_selector: data
+    params: {}
+- name: availability
+  endpoint:
+    path: /collections/{collectionToken}/products/{reserveId}/availability
+    method: GET
+    data_selector: links.self.href
+    params: {}
+- name: issues
+  endpoint:
+    path: /collections/{collectionToken}/products/{reserve or title ID}/issues
+    method: GET
+    data_selector: products
+    params:
+      limit: 25
+- name: digital_inventory
+  endpoint:
+    path: /v1/collections/{collectionToken}/digitalinventory
+    method: GET
+    data_selector: files
+- name: user_information
+  endpoint:
+    path: /v1/patrons/me
+    method: GET
+    data_selector: fields
+- name: user_checkouts
+  endpoint:
+    path: /v1/patrons/me/checkouts
+    method: GET
+    data_selector: checkouts
+- name: checkout_title
+  endpoint:
+    path: /v1/patrons/me/checkouts
+    method: POST
+    data_selector: checkout
+- name: return_title
+  endpoint:
+    path: /v1/patrons/me/checkouts/{checkoutId}
+    method: DELETE
+    data_selector: null
+- name: holds
+  endpoint:
+    path: /v1/patrons/me/holds
+    method: GET
+    data_selector: holds
+- name: checkouts
+  endpoint:
+    path: /v1/checkouts
+    method: GET
+    data_selector: checkouts
+    params:
+      startDateUtc: ''
+      endDateUtc: ''
+      websiteId: ''
+- name: share_link
+  endpoint:
+    path: /find
+    method: GET
+    params: {}
+notes:
+- Patron authorization calls can take up to 20 seconds when waiting for a response
+  from the library or school's authentication system.
+- 'If the specified website ID doesn''t require a PIN/password, then an additional
+  parameter must be added to the request body: password_required=false.'
+- You shall call the OverDrive API to receive updated metadata and other information
+  no less than once every twenty-four (24) hours.
+- OverDrive shall have no liability arising from or related to your access to and/or
+  use of the OverDrive API.
+- Term of API Agreement shall commence upon the Effective Date and for an initial
+  period of two (2) years.
+- Discovery APIs require client authentication.
+- Circulation APIs require patron authentication or QR code authentication.
+- Reporting API requires client authentication and is only available to OverDrive
+  library customers.
+- Title Link API requires client authentication.
+- Many fields are nullable and may not be included in API responses.
+- Fields can be added to responses at any time, so make sure your integration can
+  handle unexpected fields.
+- Don’t rely on every field being present in each API response. Many fields are nullable
+  and may not be included in API responses.
+- Only a standard client token is required, not a patron token.
+- These statuses are cached for one minute, so don't call this endpoint more than
+  once a minute.
+- Uses QR code flow for authentication.
+- The refresh token can be used to obtain new access tokens for up to 30 days.
+- The products link will be in the 'links' section.
+- Curated lists are hand-picked lists of titles that libraries and schools build.
+- A title's print ISBN may be included in a search response.
+- Always search by lastUpdateTime if you want the most up-to-date information.
+- Preorders can't be borrowed, but users can search for and place holds on them.
+- If you plan to hide both expired and weeded titles from your product, you can filter
+  based on the isOwnedByCollections field.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Results are returned as a paginated JSON response based on the query parameters
+  you provide.
+- The download file is updated once per day at midnight EST.
+- Calling the Digital Inventory API more than once a day will not yield different
+  results.
+- User collectionTokens should be refreshed each session.
+- Requires setup of OAuth patron access token
+- OverDrive schedules a maintenance window on the first Thursday of every month, from
+  6:00AM - 8:00AM EST.
+- Checkout data is only available for the library associated with the API credentials.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration.'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '400 BadRequest: Invalid identifier at index: 0'
+- '400 Bad Request: Check request parameters'
+- '401 Unauthorized: Recheck OAuth access token'
+- '404 Not Found: Verify collectionToken and product ID'
+- '400 BadRequest: CannotEarlyReturnWhenFulfilledOnKindle'
+- '204 NoContent: Successfully processed the request'
+- '400: Requests made outside of assigned time windows.'
+- '429: Rate limit exceeded, try again after a short time.'
+- Title or ISBN is required.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.overdrive.com
+  auth:
+    type: oauth2
+source_metadata: null

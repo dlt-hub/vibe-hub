@@ -1,0 +1,187 @@
+resources:
+- name: HTTP Request
+  endpoint:
+    path: ''
+    method: GET
+    data_selector: ''
+    params: {}
+- name: scope example
+  endpoint:
+    path: post
+    method: post
+    data_selector: ''
+    params: {}
+- name: timeframes
+  endpoint:
+    path: /data-sources
+    method: GET
+    data_selector: timeframes
+    params: {}
+- name: data_streams
+  endpoint:
+    path: /api/data_streams
+    method: GET
+    data_selector: data
+- name: relay_agent
+  endpoint:
+    path: /api/hybridconnection
+    method: GET
+    data_selector: ApiKeys
+    params: {}
+- name: data_stream
+  endpoint:
+    path: /advanced-features/custom-data-streams
+    method: GET
+    data_selector: data_streams
+    params: {}
+- name: customEvents
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CustomEvents
+    method: GET
+    data_selector: records
+    params: {}
+- name: kpiDatabaseAvailability
+  endpoint:
+    path: /services/data/vXX.X/sobjects/KPIDatabaseAvailability
+    method: GET
+    data_selector: records
+    params: {}
+- name: projectIssuesAll
+  endpoint:
+    path: /rest/api/3/search
+    method: GET
+    data_selector: issues
+    params:
+      jql: project={{key}}&updatedDate>='{{timeframe.startTime}}'
+- name: account-cost
+  endpoint:
+    path: /
+    method: GET
+    data_selector: ResultsByTime
+    params: {}
+- name: customLogAnalyticsQuery
+  endpoint:
+    path: /logAnalyticsQuery
+    method: POST
+    data_selector: data
+    params:
+      query: Heartbeat | where TimeGenerated > ago(1d)
+      includeWorkspaceName: true
+- name: customMetric
+  endpoint:
+    path: /metric
+    method: POST
+    data_selector: data
+    params:
+      metricNames: Network Out Total
+      rowPath:
+      - value
+      - timeseries
+      - data
+- name: customQuery
+  endpoint:
+    path: /api/v1/metrics?from=0
+    method: GET
+    data_selector: hits.hits
+    params: {}
+- name: customApiCall
+  endpoint:
+    method: POST
+    rowPath:
+    - hits
+    - hits
+    metadata: []
+- name: exampleScopedBigQuery
+  endpoint:
+    query: SELECT project.name, service.description FROM `<project_id>.<data_set_name>.<table_name>`
+      WHERE project.id in ('{{sourceId}}') GROUP BY 1,2 ORDER BY 1,2;
+    rowPath: []
+    matches:
+      sourceType.0:
+        type: oneOf
+        values:
+        - GCP Project
+    metadata:
+    - name: name
+      displayName: Project
+      shape: string
+      role: label
+    - name: description
+      displayName: Service
+      shape: string
+- name: prometheuscpu
+  endpoint:
+    dataSourceConfig:
+      query: instance:node_cpu:rate:sum{instance="{{name}}"}
+    rowPath:
+    - results
+    matches:
+      sourceType:
+        type: equals
+        value: compute#instance
+- name: scope example
+  endpoint:
+    path: post
+    method: post
+notes:
+- Supports timeframe mustache parameters
+- Optionally, add any query arguments to be used.
+- Dashboards refresh once a minute
+- Shared dashboards do not consume a user license
+- Uses OAuth2 — requires setup of connected app in SquaredUp
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- The tile editor is the interface that lets you retrieve, filter, shape and visualize
+  your data.
+- Using gmail.com or outlook.com is not secure as it would allow anyone with this
+  kind of email address to view dashboards.
+- 'No edit permissions required: You can freely explore data for dashboards, as the
+  data explorer functions in a self-contained environment.'
+- 'No more dashboard sprawl: You no longer have to create new dashboards or tiles
+  just to experiment with data, meaning your workspaces can be kept clean and have
+  to create yet another dashboard - no more dashboard sprawl!'
+- 'Completely self-service: There''s no need for back and forth with the workspace
+  owner as you can easily explore data from any tile and then save it to your personal
+  dashboard.'
+- User access is controlled per workspace.
+- Users in the Everyone group have full control by default.
+- Usage limits apply and are determined by your plan
+- Repeat notifications allow you to receive alerts at custom intervals if a monitor
+  remains in an error or warning state.
+- Requires Pro or Enterprise plan
+- Access control allows you to set up permissions for users and groups on the platform
+  and to determine which content and spaces they have access to.
+- The API key will only be displayed to you once.
+- Agents need to be deployed in the data center that has access to the on-prem data
+  source will use.
+- If you want to use just one agent you can do that, but you still need to put it
+  into a group and set your data source to use that group.
+- The API key will only be displayed to you once. If you lose this API key, you need
+  to generate a new one.
+- Make a note of the `ServiceName` for the next step.
+- The `backup` folder is created in case you need to roll-back.
+- This feature is currently only available upon request. Contact SquaredUp support
+  about activation.
+- This feature is available with an Enterprise plan
+- This feature is currently only available upon request
+- Leave parameters empty at first and get all the raw data with your new data stream
+  once.
+- This will give you an overview about all columns and their content and help you
+  decide which columns you need and what their shapes and roles should be.
+- If you have multiple groups, remember to set the data source to use the correct
+  group, i.e. the group that contains agents with access to the on-prem data source.
+- Uses OAuth2 with refresh token — requires setup of connected app in SquaredUp
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.'
+- Check that the API key is correct.
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://squaredup.com/
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+source_metadata: null

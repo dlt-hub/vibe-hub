@@ -1,0 +1,246 @@
+resources:
+- name: user
+  endpoint:
+    path: /api/user
+    method: GET
+    data_selector: data
+- name: organization
+  endpoint:
+    path: /api/organization
+    method: GET
+    data_selector: data
+- name: SAML Connection
+  endpoint:
+    path: /docs/backend-api-reference/api-reference/organizations/update-organization
+    method: POST
+    data_selector: organizations
+    params: {}
+- name: organizations
+  endpoint:
+    path: /backend-api-reference/api-reference/organizations/update-organization
+    method: POST
+- name: OIDC Configuration
+  endpoint:
+    path: /organizations/{organization_id}/authentication
+    method: POST
+    data_selector: oidc_settings
+    params:
+      allowed_domain: your_allowed_domain
+- name: audit_log
+  endpoint:
+    path: /audit-logs
+    method: POST
+    data_selector: events
+- name: organizations
+  endpoint:
+    path: /api/v1/organizations
+    method: GET
+- name: users
+  endpoint:
+    path: /api/v1/users
+    method: GET
+- name: user_settings
+  endpoint:
+    path: /user-settings
+    method: GET
+- name: passkey_configuration
+  endpoint:
+    path: /passkey-configuration
+    method: GET
+- name: authenticator_app_configuration
+  endpoint:
+    path: /authenticator-app-configuration
+    method: GET
+- name: SCIM
+  endpoint:
+    path: /docs/concepts/scim-api-keys
+    method: GET
+- name: sync.organization
+  endpoint:
+    path: /sync/organization
+    method: POST
+    data_selector: ''
+    params: {}
+- name: sync.user
+  endpoint:
+    path: /sync/user
+    method: POST
+    data_selector: ''
+    params: {}
+- name: custom_email.verify_email
+  endpoint:
+    path: /docs/features/custom-emails#custom_emailverify_email
+    method: GET
+    data_selector: webhook_event_format
+    params: {}
+- name: custom_email.password_reset
+  endpoint:
+    path: /docs/features/custom-emails#custom_emailpassword_reset
+    method: GET
+    data_selector: webhook_event_format
+    params: {}
+- name: custom_email.user_invite
+  endpoint:
+    path: /docs/features/custom-emails#custom_emailuser_invite
+    method: GET
+    data_selector: webhook_event_format
+    params: {}
+- name: CreateAuditLogEvent
+  endpoint:
+    path: /tesseral_backend_api/CreateAuditLogEvent
+    method: POST
+    data_selector: auditLogEvent
+    params: {}
+- name: tesseral-api
+  endpoint:
+    path: /api/backend
+    method: GET
+- name: configapi
+  endpoint:
+    path: /api/config-api
+    method: GET
+- name: projects
+  endpoint:
+    path: /projects
+    method: GET
+    data_selector: projects
+- name: projects
+  endpoint:
+    path: /api/projects
+    method: GET
+    data_selector: projects
+- name: users
+  endpoint:
+    path: /v1/users
+    method: GET
+    data_selector: records
+- name: organizations
+  endpoint:
+    path: /api/v1/organizations
+    method: GET
+    data_selector: data
+    params: {}
+- name: users
+  endpoint:
+    path: /api/v1/users
+    method: GET
+    data_selector: users
+- name: passkey
+  endpoint:
+    path: /docs/concepts/passkeys
+    method: GET
+    data_selector: properties
+- name: SAML Connections
+  endpoint:
+    path: /docs/concepts/saml-connections
+    method: GET
+    data_selector: saml_connections
+    params: {}
+- name: OIDC Connection
+  endpoint:
+    path: /docs/concepts/oidc-connections
+    method: GET
+    data_selector: records
+    params: {}
+- name: scim_api_key
+  endpoint:
+    path: /scim/api/keys
+    method: GET
+- name: user_invite
+  endpoint:
+    path: /docs/concepts/user-invites
+    method: GET
+    data_selector: top-level properties
+    params: {}
+- name: userinfo
+  endpoint:
+    path: /v1/userinfo
+    method: GET
+    data_selector: ''
+    params: {}
+notes:
+- All requests to the Backend API require a Backend API Key, which are secret and
+  must not be put into clientside code.
+- Tesseral is an open source, developer-first user management platform built specifically
+  for B2B SaaS.
+- Uses OAuth2 with refresh token — requires setup of connected app in tesseral
+- Use publishable keys for your production Project, instead of the publishable keys
+  for your sandbox Project.
+- Requires setup of connected app in Tesseral Console.
+- 'Use await auth({ or: ''throw'' }) for handling authentication.'
+- Users can use an authenticator app like Google Authenticator or Authy to generate
+  time-based one-time passwords (TOTP).
+- Users can use passkeys for passwordless authentication.
+- SAML requires configuration on your customer’s end.
+- You can configure SAML on your customer’s behalf with IDP Entity ID, IDP Redirect
+  URL, and IDP Certificate.
+- SCIM API Key Secret Token is sensitive. Share it with your customer only over a
+  secure channel.
+- API Keys feature is not enabled by default, but can be configured.
+- Customers can have self-service access to create and manage their own API keys.
+- All significant actions taken by users will be logged once Audit Logs is enabled.
+- B2B tenant isolation is around organizations, and users live inside organizations.
+- Custom Roles are not enabled by default because some customers may find them confusing
+- You must enable Custom Roles on an Organization to add this functionality
+- Your customer can configure authentication settings.
+- Your customer can enable (or disable) primary factors like passwords.
+- Your customer can require (or elect not to require) multifactor authentication (MFA).
+- Tesseral supports multifactor authentication (MFA).
+- 'Currently, Tesseral supports two secondary authentication factors: Authenticator
+  apps and Passkeys.'
+- Tesseral comes with SAML SSO out of the box.
+- Every customer’s use of SAML SSO requires one-time configuration of a SAML Connection.
+- Tesseral supports enterprise single sign-on for all major identity providers (IDPs)
+- OIDC protocol is common for many cloud software single sign-on.
+- Tesseral handles authentication-related emails on your behalf.
+- Emails require specific DNS records for reliable delivery.
+- Your endpoint must respond to events with a 200 HTTP response code after successfully
+  processing a webhook event.
+- Other status codes will be treated as an error, and Tesseral may retry sending you
+  the event.
+- Managed API Keys require use of the Tesseral Backend API under the hood.
+- Tesseral handles automatically collecting audit logs for activity like logins, logouts,
+  inviting other users, modifying login settings, and more.
+- Audit logs are only supported from server-side code.
+- Tesseral is an open-source project that you can self-host on your own infrastructure.
+- Projects correspond to a unique deployment of an application.
+- Backend API Keys authenticate your server-side code to Tesseral’s backend API
+- A Publishable Key is a globally unique identifier that Tesseral uses to identify
+  Projects in its client-side SDKs.
+- A Publishable Key is not a secret and does not authenticate your application to
+  Tesseral.
+- Organizations are first-class tenants in Tesseral.
+- Tesseral uses a B2B multitenancy model.
+- Passkeys are secondary authentication factors used in conjunction with a primary
+  authentication method.
+- Each Organization will have either zero SAML Connections or one SAML Connection.
+- OIDC SSO is complex and unfamiliar to most developers.
+- Each customer that wants to use OIDC SSO will require its own one-time configuration.
+- SCIM provisioning requires a pre-configured trust relationship with a given Organization’s
+  identity provider (IDP).
+- Do not confuse SCIM API Keys with Backend API Keys.
+- Each User Invite represents an invitation for someone to join an Organization.
+- Once accepted, the invite will result in the creation of a User within that Organization.
+- Never give out an OAuth code parameter to others. You must keep code secret.
+- Never give out an OAuth access_token parameter to others. You must keep access_token
+  secret.
+- Google's OAuth Client ID typically ends in apps.googleusercontent.com.
+- Google's OAuth Client secret typically starts in GOCSPX.
+errors:
+- 'Unauthorized: Recheck API Key or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '404 Not Found: If the Organization or User was deleted, you will receive a 404
+  from GetOrganization or GetUser.'
+- 'Unauthorized: Check your authentication credentials.'
+- 'Invalid SCIM API Key: Check that the SCIM API Key is correct and not revoked.'
+- 'invalid_client: Check your client_id and client_secret.'
+- 'invalid_grant: Ensure the code has not been redeemed already.'
+auth_info:
+  mentioned_objects:
+  - AuthError
+  - AccessDeniedError
+client:
+  base_url: https://console.tesseral.com
+source_metadata: null

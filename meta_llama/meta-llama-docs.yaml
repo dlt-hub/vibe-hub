@@ -1,0 +1,157 @@
+resources:
+- name: chat_completion
+  endpoint:
+    path: /v1/chat/completions
+    method: POST
+    data_selector: completion_message.content.text
+- name: Llama-4-Maverick-17B-128E-Instruct-FP8
+  endpoint:
+    path: /models/Llama-4-Maverick-17B-128E-Instruct-FP8
+    method: GET
+    data_selector: model_details
+    params: {}
+- name: Llama-4-Scout-17B-16E-Instruct-FP8
+  endpoint:
+    path: /models/Llama-4-Scout-17B-16E-Instruct-FP8
+    method: GET
+    data_selector: model_details
+    params: {}
+- name: Llama-3.3-70B-Instruct
+  endpoint:
+    path: /models/Llama-3.3-70B-Instruct
+    method: GET
+    data_selector: model_details
+    params: {}
+- name: Llama-3.3-8B-Instruct
+  endpoint:
+    path: /models/Llama-3.3-8B-Instruct
+    method: GET
+    data_selector: model_details
+    params: {}
+- name: chat_completion
+  endpoint:
+    path: /v1/chat/completions
+    method: POST
+    data_selector: response
+    params: {}
+- name: list_models
+  endpoint:
+    path: /compat/v1/models
+    method: GET
+- name: retrieve_model
+  endpoint:
+    path: /compat/v1/models/{model}
+    method: GET
+- name: create_chat_completion
+  endpoint:
+    path: /compat/v1/chat/completions
+    method: POST
+- name: create_moderation
+  endpoint:
+    path: /compat/v1/moderations
+    method: POST
+- name: moderations
+  endpoint:
+    path: /docs/api/moderations
+    method: POST
+    data_selector: ''
+    params: {}
+- name: chat completion
+  endpoint:
+    path: /docs/api/chat
+    method: POST
+    data_selector: ''
+    params: {}
+- name: chat_completion
+  endpoint:
+    path: /chat/completions
+    method: POST
+    data_selector: completion_message
+    params:
+      model: Llama-3.3-8B-Instruct
+      messages: []
+      max_tokens: 256
+      stream: false
+- name: available_models
+  endpoint:
+    path: /models
+    method: GET
+    data_selector: data
+    params: {}
+- name: moderations
+  endpoint:
+    path: /moderations
+    method: POST
+    data_selector: results
+    params: {}
+- name: chat_completions
+  endpoint:
+    path: /chat/completions
+    method: POST
+    data_selector: completion_message
+- name: models
+  endpoint:
+    path: /models
+    method: GET
+    data_selector: models
+- name: model_details
+  endpoint:
+    path: /models/{model}
+    method: GET
+    data_selector: model
+- name: moderations
+  endpoint:
+    path: /v1/moderations
+    method: POST
+    data_selector: results
+- name: list_models
+  endpoint:
+    path: /compat/v1/models
+    method: GET
+- name: retrieve_model
+  endpoint:
+    path: /compat/v1/models/{model}
+    method: GET
+- name: chat_completions
+  endpoint:
+    path: /compat/v1/chat/completions
+    method: POST
+- name: moderations
+  endpoint:
+    path: /compat/v1/moderations
+    method: POST
+notes:
+- Uses API key as bearer token for authentication.
+- API keys are bearer keys and should be sent using the 'Bearer' authorization scheme.
+- Keys should be stored safely in production environments.
+- Llama API is currently available as a preview release, and rate limits are still
+  being defined.
+- Rate limits apply to the number of requests per minute (RPM) and the number of tokens
+  per minute (TPM).
+- 'Max file size per image: 25MB'
+- 'Max number of images per request: 9'
+- 'Supported MIME types: image/jpeg, image/jpg, image/png, image/gif, image/x-icon'
+- Structured output provides consistent format for API responses
+- Some features of the OpenAI client libraries are not supported on Llama API.
+- A valid Llama API key is required
+- Moderations endpoint should check both user input and model output.
+- Llama API offers safeguard models based on LlamaGuard that you can use to moderate
+  user input and model output for problematic content.
+errors:
+- Rate limits may be exceeded if API keys are misused.
+- 'HTTP 429: Too many requests have been made.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'HTTP 400 Bad Request: Some parameters will result in a error for unsupported features.'
+- '401 Unauthorized: Check API key'
+- 'HTTP 400 Bad Request: Some parameters will result in an error for unsupported features.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.llama.com/v1
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Content-Type: application/json
+source_metadata: null

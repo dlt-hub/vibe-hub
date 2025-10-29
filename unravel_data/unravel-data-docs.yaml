@@ -1,0 +1,2286 @@
+resources:
+- name: applications
+  endpoint:
+    path: /common/app/{app_id}/recommendation
+    method: GET
+- name: clusters
+  endpoint:
+    path: /clusters
+    method: GET
+- name: query_history
+  endpoint:
+    path: /services/data/vXX.X/query_history
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: warehouse_metrics
+  endpoint:
+    path: /services/data/vXX.X/warehouse_metrics
+    method: GET
+    data_selector: records
+    params: {}
+- name: Snowflake Metadata
+  endpoint:
+    path: /services/data/vXX.X/snowflake/metadata
+    method: GET
+    data_selector: records
+    params:
+      database: Snowflake
+      schema: Account_Usage
+      warehouse: XS
+      look_back: 7
+- name: snowsql_download_data
+  endpoint:
+    path: /opt/script/snowsql_download_data.sql
+    method: EXECUTE
+    data_selector: metadata
+    params: {}
+- name: snowsql_show_warehouses
+  endpoint:
+    path: /opt/script/snowsql_show_warehouses.sql
+    method: EXECUTE
+    data_selector: warehouses
+    params: {}
+- name: snowflake_query
+  endpoint:
+    path: /opt/script/snowflake_query.py
+    method: EXECUTE
+    data_selector: warehouse_parameters
+    params: {}
+- name: snowsql_upload_data
+  endpoint:
+    path: /opt/script/snowsql_upload_data.sql
+    method: EXECUTE
+    data_selector: upload_metadata
+    params: {}
+- name: download_snowflake_metadata
+  endpoint:
+    path: /opt/script/snowsql_download_data.sql
+    method: EXECUTE
+    data_selector: metadata
+    params: {}
+- name: show_warehouses
+  endpoint:
+    path: /opt/script/snowsql_show_wareshouses.sql
+    method: EXECUTE
+    data_selector: warehouses
+    params: {}
+- name: query_warehouse_parameters
+  endpoint:
+    path: /opt/script/snowflake_query.py
+    method: EXECUTE
+    data_selector: warehouse_parameters
+    params: {}
+- name: upload_snowflake_metadata
+  endpoint:
+    path: /opt/script/snowsql_upload_data.sql
+    method: EXECUTE
+    data_selector: upload_metadata
+    params: {}
+- name: snowsql_download_data
+  endpoint:
+    path: /opt/script/snowsql_download_data.sql
+    method: EXECUTE
+    data_selector: metadata
+- name: snowsql_show_warehouses
+  endpoint:
+    path: /opt/script/snowsql_show_wareshouses.sql
+    method: EXECUTE
+    data_selector: warehouses
+- name: snowflake_query
+  endpoint:
+    path: /opt/script/snowflake_query.py
+    method: EXECUTE
+    data_selector: warehouse_parameters
+- name: snowsql_upload_data
+  endpoint:
+    path: /opt/script/snowsql_upload_data.sql
+    method: EXECUTE
+    data_selector: upload_metadata
+- name: snowsql_download_data
+  endpoint:
+    path: /opt/script/snowsql_download_data.sql
+    method: EXECUTE
+    data_selector: records
+    params:
+      db: ${db}
+      schema: ${schema}
+      role: ${role}
+      account: ${account}
+      user: ${user}
+      warehouse: ${warehouse}
+      log_file: /opt/script/snowsql_download_data.log
+      path: $(local/path/to store/downloaded metadata)
+      stage_name: unravel_stage_name
+      file_format: unravel_file_format
+- name: snowsql_show_warehouses
+  endpoint:
+    path: /opt/script/snowsql_show_wareshouses.sql
+    method: EXECUTE
+    data_selector: records
+    params:
+      db: ${db}
+      schema: ${schema}
+      role: ${role}
+      account: ${account}
+      user: ${user}
+      warehouse: ${warehouse}
+      output_format: csv
+      output_file: ${path}/warehouses.csv
+      variable_substitution: 'true'
+- name: snowflake_query
+  endpoint:
+    path: /opt/script/snowflake_query.py
+    method: EXECUTE
+    data_selector: records
+    params:
+      user: ${user}
+      password: ${password}
+      account: ${account}
+      warehouse: ${warehouse}
+      database: ${db}
+      schema: ${schema}
+      out: /opt/unravel
+      role: ${role}
+- name: snowsql_upload_data
+  endpoint:
+    path: /opt/script/snowsql_upload_data.sql
+    method: EXECUTE
+    data_selector: records
+    params:
+      db: ${db}
+      schema: ${schema}
+      role: ${role}
+      account: ${account}
+      user: ${user}
+      warehouse: ${warehouse}
+      log_file: /opt/script/snowsql_upload_data.log
+      path: ${path}
+      stage_name: unravel_stage_upload
+      file_format: unravel_file_format_upload
+- name: snowsql_download_data
+  endpoint:
+    path: /opt/script/snowsql_download_data.sql
+    method: EXECUTE
+    data_selector: records
+    params:
+      database: ${db}
+      schema: ${schema}
+      role: ${role}
+      account: ${account}
+      user: ${user}
+      warehouse: ${warehouse}
+      log_file: ${script output file path/filename}
+      path: $(local/path/to store/downloaded metadata)
+      stage_name: unravel_stage_name
+      file_format: unravel_file_format
+- name: snowsql_show_warehouses
+  endpoint:
+    path: /opt/script/snowsql_show_warehouses.sql
+    method: EXECUTE
+    data_selector: records
+    params:
+      database: ${db}
+      schema: ${schema}
+      role: ${role}
+      account: ${account}
+      user: ${user}
+      warehouse: ${warehouse}
+      output_format: csv
+      output_file: ${path}/warehouses.csv
+      variable_substitution: 'true'
+- name: snowflake_query
+  endpoint:
+    path: /opt/script/snowflake_query.py
+    method: EXECUTE
+    data_selector: records
+    params:
+      user: ${user}
+      password: ${password}
+      account: ${account}
+      warehouse: ${warehouse}
+      database: ${db}
+      schema: ${schema}
+      out: /opt/unravel
+      role: ${role}
+- name: snowsql_upload_data
+  endpoint:
+    path: /opt/script/snowsql_upload_data.sql
+    method: EXECUTE
+    data_selector: records
+    params:
+      database: ${db}
+      schema: ${schema}
+      role: ${role}
+      account: ${account}
+      user: ${user}
+      warehouse: ${warehouse}
+      log_file: /opt/script/snowsql_upload_data.log
+      path: ${path}
+      stage_name: unravel_stage_upload
+      file_format: unravel_file_format_upload
+- name: snowsql_download_data
+  endpoint:
+    path: /opt/script/snowsql_download_data.sql
+    method: EXECUTE
+    params:
+      incremental: date
+- name: snowsql_show_warehouses
+  endpoint:
+    path: /opt/script/snowsql_show_warehouses.sql
+    method: EXECUTE
+    params: {}
+- name: snowflake_query
+  endpoint:
+    path: /opt/script/snowflake_query.py
+    method: EXECUTE
+    params: {}
+- name: snowsql_upload_data
+  endpoint:
+    path: /opt/script/snowsql_upload_data.sql
+    method: EXECUTE
+    params: {}
+- name: snowsql_download_data
+  endpoint:
+    path: /opt/script/snowsql_download_data.sql
+    method: EXECUTE
+    data_selector: ''
+    params: {}
+- name: snowsql_show_wareshouses
+  endpoint:
+    path: /opt/script/snowsql_show_wareshouses.sql
+    method: EXECUTE
+    data_selector: ''
+    params: {}
+- name: snowflake_query
+  endpoint:
+    path: /opt/script/snowflake_query.py
+    method: EXECUTE
+    data_selector: ''
+    params: {}
+- name: snowsql_upload_data
+  endpoint:
+    path: /opt/script/snowsql_upload_data.sql
+    method: EXECUTE
+    data_selector: ''
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: metrics_analyzer
+  endpoint:
+    path: /unravel/data/conf/unravel.yaml
+    method: EDIT
+    data_selector: services.metrics_analyzer.instance_count
+    params:
+      instance_count: 4
+- name: MySQL
+  endpoint:
+    path: /integrate/database/mysql
+    method: GET
+    data_selector: records
+- name: MariaDB
+  endpoint:
+    path: /integrate/database/mariadb
+    method: GET
+    data_selector: records
+- name: PostgreSQL
+  endpoint:
+    path: /integrate/database/postgresql
+    method: GET
+    data_selector: records
+- name: applications
+  endpoint:
+    path: /common/app/{app_id}/recommendation
+    method: GET
+- name: reports
+  endpoint:
+    path: /reports/data/diskusage/get_latest_reports
+    method: GET
+- name: clusters
+  endpoint:
+    path: /clusters
+    method: GET
+- name: user
+  endpoint:
+    path: /unravel/manager/support/users/add
+    method: POST
+    data_selector: user
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: Custom ports
+  endpoint:
+    path: /configure-custom-ports
+    method: GET
+    data_selector: configuration
+    params: {}
+- name: metastore_types
+  endpoint:
+    path: /unravel/manager/config
+    method: SET
+    data_selector: properties
+    params:
+      metastore_types: hive,bigquery
+- name: clusters
+  endpoint:
+    path: /unravel/manager/config
+    method: SET
+    data_selector: properties
+    params:
+      cluster_names: <cluster-names>
+- name: workspaces
+  endpoint:
+    path: /unravel/manager/config
+    method: SET
+    data_selector: properties
+    params:
+      workspace_names: <workspace-names>
+- name: email_alerts
+  endpoint:
+    path: /unravel/manager/config/email
+    method: POST
+    data_selector: email_properties
+    params: {}
+- name: database
+  endpoint:
+    path: /unravel/data/conf/unravel.yaml
+    method: GET
+    data_selector: database
+    params: {}
+- name: roles
+  endpoint:
+    path: /unravel/manager/config/roles
+    method: GET
+    data_selector: roles
+    params: {}
+- name: role1
+  endpoint:
+    path: /unraveldata/rbac/role1
+    method: GET
+    data_selector: roles
+    params: {}
+- name: role2
+  endpoint:
+    path: /unraveldata/rbac/role2
+    method: GET
+    data_selector: roles
+    params: {}
+- name: ldap_authentication
+  endpoint:
+    path: /unravel/manager/config
+    method: POST
+    data_selector: properties
+    params:
+      com.unraveldata.login.mode: ldap
+      com.unraveldata.ldap.url: ldap://ariel.unraveldata.com
+      com.unraveldata.ldap.base.dn: DC=unraveldata,DC=com
+      com.unraveldata.login.groupFilter: seth-test-group,seth-test-admingroup
+      com.unraveldata.rbac.role.admin.groups: seth-test-admingroup
+- name: applications
+  endpoint:
+    path: /common/applications
+    method: GET
+- name: workflows
+  endpoint:
+    path: /common/workflows
+    method: GET
+- name: chargeback_reports
+  endpoint:
+    path: /chargeback/reports
+    method: GET
+- name: tagging_script
+  endpoint:
+    path: /usr/local/unravel/etc/tag_app.py
+    method: GET
+    data_selector: script
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: cost
+  endpoint:
+    path: /snowflake/cost
+    method: GET
+    data_selector: costData
+- name: warehouse_tags
+  endpoint:
+    path: /snowflake/warehouse/tags
+    method: GET
+    data_selector: tagsData
+- name: Cost 360
+  endpoint:
+    path: /snowflake-viewing-cost-breaksown-overview.html
+    method: GET
+    data_selector: cost_data
+- name: Compute Costs
+  endpoint:
+    path: /snowflake-viewing-compute-cost-trends.html
+    method: GET
+    data_selector: compute_costs
+- name: Virtual Warehouses Costs
+  endpoint:
+    path: /snowflake-viewing-virtual-warehouse-costs.html
+    method: GET
+    data_selector: warehouse_costs
+- name: Users and Queries
+  endpoint:
+    path: /snowflake-viewing-users-queries-cost-trends.html
+    method: GET
+    data_selector: users_queries_costs
+- name: Tags
+  endpoint:
+    path: /snowflake-viewing-tags-cost-trends.html
+    method: GET
+    data_selector: tags_costs
+- name: Compute Costs
+  endpoint:
+    path: /unravel-v4825x/en/current.html
+    method: GET
+    data_selector: compute_costs
+    params: {}
+- name: virtual_warehouses
+  endpoint:
+    path: /snowflake/viewing-virtual-warehouse-costs
+    method: GET
+    data_selector: expenses
+- name: cost
+  endpoint:
+    path: /snowflake/viewing-cost-breaksown-overview
+    method: GET
+    data_selector: records
+    params: {}
+- name: warehouse_tags
+  endpoint:
+    path: /snowflake/viewing-tags-cost-trends
+    method: GET
+    data_selector: records
+    params: {}
+- name: warehouses
+  endpoint:
+    path: /warehouses
+    method: GET
+- name: queries
+  endpoint:
+    path: /queries
+    method: GET
+- name: cost
+  endpoint:
+    path: /cost
+    method: GET
+- name: cost_and_warehouse_load_detail
+  endpoint:
+    path: /apms-warehouse-detail.html
+    method: GET
+- name: tables
+  endpoint:
+    path: /unravel/v4825x/tables
+    method: GET
+    data_selector: tables
+    params: {}
+- name: warehouses
+  endpoint:
+    path: /warehouses
+    method: GET
+    data_selector: metadata
+- name: metering
+  endpoint:
+    path: /metering
+    method: GET
+    data_selector: metadata
+- name: queries
+  endpoint:
+    path: /queries
+    method: GET
+    data_selector: metadata
+- name: storage
+  endpoint:
+    path: /storage
+    method: GET
+    data_selector: metadata
+- name: app
+  endpoint:
+    path: /common/app/{app_id}/recommendation
+    method: GET
+- name: report
+  endpoint:
+    path: /reports/data/diskusage/get_latest_reports?task_name=topx_report
+    method: GET
+- name: queue_analysis
+  endpoint:
+    path: /reports/queueanalysis/get_latest_report_by_queue_name
+    method: GET
+- name: HIVE_ON_TEZ
+  endpoint:
+    path: /opt/unravel/data/clusterinsights/{provider}/{cluster}/ClusterFromTemplate/service/HIVE_ON_TEZ/role/HIVESERVER2host/{cluster}/
+    method: GET
+    data_selector: service_role_metrics
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: notification_channel
+  endpoint:
+    path: /unravel/notification/channels
+    method: GET
+    data_selector: channels
+    params: {}
+- name: users
+  endpoint:
+    path: /create-users
+    method: POST
+    data_selector: users
+    params: {}
+- name: signIn
+  endpoint:
+    path: /signIn
+    method: POST
+    data_selector: message
+    params: {}
+- name: app_recommendation
+  endpoint:
+    path: /common/app/{app_id}/recommendation
+    method: GET
+- name: app_summary
+  endpoint:
+    path: /common/app/{app_id}/appsummary
+    method: GET
+- name: extended_summary
+  endpoint:
+    path: /common/app/{app_id}/extendedsummary
+    method: GET
+- name: app_errors
+  endpoint:
+    path: /common/app/{app_id}/errors?apiMode=true
+    method: GET
+- name: app_logs
+  endpoint:
+    path: /common/app/{app_id}/logs
+    method: GET
+- name: app_details
+  endpoint:
+    path: /common/app/details
+    method: GET
+- name: app_status
+  endpoint:
+    path: /common/app/{app_id}/status
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: recommendation
+  endpoint:
+    path: /common/app/{app_id}/recommendation
+    method: GET
+- name: recommendation
+  endpoint:
+    path: /common/app/{app_id}/recommendation
+    method: GET
+    data_selector: ''
+- name: analysis
+  endpoint:
+    path: /spark/{clusterUid}/{app_id}/analysis
+    method: GET
+    data_selector: ''
+- name: appsummary
+  endpoint:
+    path: /common/app/{app_id}/appsummary
+    method: GET
+- name: app_summary
+  endpoint:
+    path: /spark/{clusterUid}/{app_id}/appsummary
+    method: GET
+    data_selector: annotation
+    params: {}
+- name: extendedsummary
+  endpoint:
+    path: /common/app/{app_id}/extendedsummary
+    method: GET
+- name: errors
+  endpoint:
+    path: /common/app/{app_id}/errors?apiMode=true
+    method: GET
+- name: logs
+  endpoint:
+    path: /common/app/{app_id}/logs
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: executor_driver_log
+  endpoint:
+    path: /spark/{clusterUid}/{app_id}/{attempt_id}/executor/driver/log
+    method: GET
+- name: executor_log
+  endpoint:
+    path: /spark/{clusterUid}/{app_id}/{attempt_id}/executor/{executor_id}/log
+    method: GET
+- name: executor_driver_log
+  endpoint:
+    path: /api/v1/spark/{clusterUid}/{app_id}/{attempt_id}/executor/driver/log
+    method: GET
+    data_selector: meta
+    params:
+      compress: 'true'
+- name: executor_log
+  endpoint:
+    path: /spark/{clusterUid}/{app_id}/{attempt_id}/executor/{executor_id}/log?compress
+    method: GET
+- name: details
+  endpoint:
+    path: /common/app/details
+    method: GET
+- name: app_details
+  endpoint:
+    path: /common/app/details
+    method: GET
+    data_selector: ''
+    params:
+      from: '2022-03-23T16:08:56.000Z'
+      to: '2022-03-30T16:08:56.000Z'
+      appTypes: spark
+      appStatus: S
+      page: 1
+      clusterUid: default
+- name: status
+  endpoint:
+    path: /common/app/{app_id}/status
+    method: GET
+- name: app_status
+  endpoint:
+    path: /common/app/{app_id}/status
+    method: GET
+    data_selector: status
+    params:
+      clusterUid: clusterUid
+- name: latest_reports
+  endpoint:
+    path: /reports/data/diskusage/get_latest_reports
+    method: GET
+    params:
+      task_name: topx_report
+- name: latest_success_reports
+  endpoint:
+    path: /reports/data/diskusage/get_latest_success_reports
+    method: GET
+    params:
+      task_name: topx_report
+- name: celeryreports_metadata
+  endpoint:
+    path: /reports/celeryreports/metadata
+    method: GET
+- name: celeryreports
+  endpoint:
+    path: /reports/celeryreports
+    method: GET
+- name: latest_reports
+  endpoint:
+    path: /reports/data/diskusage/get_latest_reports
+    method: GET
+    params:
+      task_name: topx_report
+- name: latest_success_reports
+  endpoint:
+    path: /reports/data/diskusage/get_latest_success_reports
+    method: GET
+    params:
+      task_name: topx_report
+- name: metadata_reports
+  endpoint:
+    path: /reports/celeryreports/metadata
+    method: GET
+- name: celery_reports
+  endpoint:
+    path: /reports/celeryreports
+    method: GET
+- name: latest_and_success_metadata
+  endpoint:
+    path: /ondemand_reports/latest_and_success_metadata
+    method: GET
+    data_selector: ''
+    params:
+      report_key: topx_report
+- name: get_latest_success_reports
+  endpoint:
+    path: /reports/data/diskusage/get_latest_success_reports
+    method: GET
+    params:
+      task_name: topx_report
+- name: latest_and_success_metadata
+  endpoint:
+    path: /ondemand_reports/latest_and_success_metadata
+    method: GET
+    data_selector: report_latest_status
+    params:
+      report_key: topx_report
+- name: celeryreports_metadata
+  endpoint:
+    path: /reports/celeryreports/metadata
+    method: GET
+- name: celeryreports
+  endpoint:
+    path: /reports/celeryreports
+    method: GET
+- name: celeryreports_metadata
+  endpoint:
+    path: /reports/celeryreports/metadata
+    method: GET
+- name: report_details_by_id
+  endpoint:
+    path: /ondemand_reports/report_details_by_id
+    method: GET
+    data_selector: output_json
+    params:
+      highlighted: ''
+      report_key: ''
+      entity_id: ''
+- name: analyze_queue_data
+  endpoint:
+    path: /celery/analyze-queue-data
+    method: GET
+- name: latest_success_reports
+  endpoint:
+    path: /reports/data/diskusage/get_latest_success_reports
+    method: GET
+    params:
+      task_name: queue_analysis_task
+- name: latest_report_by_queue_name
+  endpoint:
+    path: /reports/queueanalysis/get_latest_report_by_queue_name
+    method: GET
+- name: latest_report_queue_names
+  endpoint:
+    path: /reports/queueanalysis/get_latest_report_queue_names
+    method: GET
+- name: analyze_queue_data
+  endpoint:
+    path: /celery/analyze-queue-data
+    method: GET
+- name: latest_success_reports
+  endpoint:
+    path: /reports/data/diskusage/get_latest_success_reports
+    method: GET
+    params:
+      task_name: queue_analysis_task
+- name: get_latest_report_by_queue_name
+  endpoint:
+    path: /reports/queueanalysis/get_latest_report_by_queue_name
+    method: GET
+- name: latest_report_queue_names
+  endpoint:
+    path: /reports/queueanalysis/get_latest_report_queue_names
+    method: GET
+- name: appt
+  endpoint:
+    path: /chargeback/cb/appt
+    method: GET
+- name: appt_queue
+  endpoint:
+    path: /chargeback/cb/appt/queue
+    method: GET
+- name: appt_user
+  endpoint:
+    path: /chargeback/cb/appt/user
+    method: GET
+- name: chargeback_appt
+  endpoint:
+    path: /chargeback/cb/appt
+    method: GET
+- name: chargeback_appt_queue
+  endpoint:
+    path: /chargeback/cb/appt/queue
+    method: GET
+- name: user
+  endpoint:
+    path: /chargeback/cb/appt/user
+    method: GET
+- name: clusters
+  endpoint:
+    path: /clusters
+    method: GET
+- name: cluster_nodes
+  endpoint:
+    path: /clusters/nodes
+    method: GET
+- name: cpu_allocated
+  endpoint:
+    path: /clusters/resources/cpu/allocated
+    method: GET
+- name: memory_allocated
+  endpoint:
+    path: /clusters/resources/memory/allocated
+    method: GET
+- name: cpu_total
+  endpoint:
+    path: /clusters/resources/cpu/total
+    method: GET
+- name: memory_total
+  endpoint:
+    path: /clusters/resources/memory/total
+    method: GET
+- name: cpu_allocated_by_cluster
+  endpoint:
+    path: /clusters/{clusterName}/resources/cpu/allocated
+    method: GET
+- name: memory_allocated_by_cluster
+  endpoint:
+    path: /clusters/{clusterName}/resources/memory/allocated
+    method: GET
+- name: cpu_total_by_cluster
+  endpoint:
+    path: /clusters/{clusterName}/resources/cpu/total
+    method: GET
+- name: memory_total_by_cluster
+  endpoint:
+    path: /clusters/{clusterName}/resources/memory/total
+    method: GET
+- name: nodes_by_cluster
+  endpoint:
+    path: /clusters/{clusterName}/nodes
+    method: GET
+- name: clusters
+  endpoint:
+    path: /clusters
+    method: GET
+- name: clusters
+  endpoint:
+    path: /clusters
+    method: GET
+    data_selector: '[]'
+    params: {}
+- name: nodes
+  endpoint:
+    path: /clusters/nodes
+    method: GET
+- name: clusters_nodes
+  endpoint:
+    path: /clusters/nodes
+    method: GET
+    data_selector: total
+    params: {}
+- name: cpu_allocated
+  endpoint:
+    path: /clusters/resources/cpu/allocated
+    method: GET
+- name: allocated_memory
+  endpoint:
+    path: /clusters/resources/memory/allocated
+    method: GET
+- name: cpu_total
+  endpoint:
+    path: /clusters/resources/cpu/total
+    method: GET
+- name: memory_total
+  endpoint:
+    path: /clusters/resources/memory/total
+    method: GET
+- name: memory_total
+  endpoint:
+    path: /clusters/resources/memory/total
+    method: GET
+    data_selector: response
+    params:
+      start_time: string
+      end_time: string
+      interval: string
+      pointInterval: string
+- name: cpu_allocated
+  endpoint:
+    path: /clusters/{clusterName}/resources/cpu/allocated
+    method: GET
+- name: cpu_allocated
+  endpoint:
+    path: /clusters/{clusterName}/resources/cpu/allocated
+    method: GET
+    data_selector: avg
+    params:
+      start_time: string
+      end_time: string
+      interval: string
+      pointInterval: string
+- name: memory_allocated
+  endpoint:
+    path: /clusters/{clusterName}/resources/memory/allocated
+    method: GET
+- name: memory_allocated
+  endpoint:
+    path: /clusters/{clusterName}/resources/memory/allocated
+    method: GET
+    data_selector: avg
+    params:
+      start_time: string
+      end_time: string
+      interval: string
+      pointInterval: string
+- name: cpu_total
+  endpoint:
+    path: /clusters/{clusterName}/resources/cpu/total
+    method: GET
+- name: cpu_total
+  endpoint:
+    path: /api/v1/clusters/{cluster_name}/resources/cpu/total
+    method: GET
+    data_selector: response
+    params:
+      start_time: yyyy-mm-ddThh:mm:ss
+      end_time: yyyy-mm-ddThh:mm:ss
+      interval: string
+      pointInterval: string
+- name: memory_total
+  endpoint:
+    path: /clusters/{clusterName}/resources/memory/total
+    method: GET
+- name: nodes
+  endpoint:
+    path: /clusters/{clusterName}/nodes
+    method: GET
+- name: search_apps
+  endpoint:
+    path: /apps/search
+    method: POST
+    data_selector: null
+    params: {}
+- name: inefficient_apps
+  endpoint:
+    path: /apps/events/inefficient_apps
+    method: GET
+    data_selector: null
+    params: {}
+- name: finished_apps
+  endpoint:
+    path: /apps/status/finished
+    method: GET
+    data_selector: null
+    params: {}
+- name: running_apps
+  endpoint:
+    path: /apps/status/running
+    method: GET
+    data_selector: null
+    params: {}
+- name: allocated_cpu_resources
+  endpoint:
+    path: /apps/resources/cpu/allocated
+    method: GET
+    data_selector: null
+    params: {}
+- name: allocated_memory_resources
+  endpoint:
+    path: /apps/resources/memory/allocated
+    method: GET
+    data_selector: null
+    params: {}
+- name: resource_usage
+  endpoint:
+    path: /apps/{app_id}/resource_usage
+    method: GET
+    data_selector: null
+    params: {}
+- name: app_tags
+  endpoint:
+    path: /apps/{app_id}/tags
+    method: GET
+    data_selector: null
+    params: {}
+- name: kill_app
+  endpoint:
+    path: /yarn_rm/kill_app
+    method: GET
+    data_selector: null
+    params: {}
+- name: move_app
+  endpoint:
+    path: /yarn_rm/move_app
+    method: GET
+    data_selector: null
+    params: {}
+- name: apps_search
+  endpoint:
+    path: /apps/search
+    method: POST
+- name: apps_search
+  endpoint:
+    path: /apps/search
+    method: POST
+    data_selector: results
+    params:
+      highlighted: true
+      from: 0
+- name: inefficient_apps
+  endpoint:
+    path: /apps/events/inefficient_apps
+    method: GET
+- name: inefficient_apps
+  endpoint:
+    path: /apps/events/inefficient_apps
+    method: GET
+    data_selector: records
+    params:
+      highlighted: ''
+      start_time: yyyy-mm-ddThh:mm:ss.SSS+offset value
+      end_time: yyyy-mm-ddThh:mm:ss.SSS+offset value
+      entity_type: integer
+- name: finished_apps
+  endpoint:
+    path: /apps/status/finished
+    method: GET
+- name: apps_status_running
+  endpoint:
+    path: /apps/status/running
+    method: GET
+    data_selector: appsRunning
+    params: {}
+- name: allocated_cpu
+  endpoint:
+    path: /apps/resources/cpu/allocated
+    method: GET
+- name: allocated_memory
+  endpoint:
+    path: /apps/resources/memory/allocated
+    method: GET
+- name: resource_usage
+  endpoint:
+    path: /apps/{app_id}/resource_usage
+    method: GET
+- name: tags
+  endpoint:
+    path: /apps/{app_id}/tags
+    method: GET
+- name: kill_app
+  endpoint:
+    path: /yarn_rm/kill_app
+    method: GET
+- name: kill_app
+  endpoint:
+    path: /yarn_rm/kill_app/{clusterUid}/{app_id}
+    method: GET
+    data_selector: ''
+    params: {}
+- name: move_app
+  endpoint:
+    path: /yarn_rm/move_app
+    method: GET
+- name: move_app
+  endpoint:
+    path: /yarn_rm/move_app/{clusterUid}/{app_id}
+    method: GET
+    params: {}
+- name: detect_anomalies_cost_databricks
+  endpoint:
+    path: /api/detect/anomalies/in/cost/of/databricks
+    method: GET
+- name: detect_anomalies_time_series
+  endpoint:
+    path: /api/detect/anomalies/on/time/series
+    method: GET
+- name: anomaly_detector
+  endpoint:
+    path: /api/anomaly-detector
+    method: GET
+- name: detect_anomalies_time_series
+  endpoint:
+    path: /api/v1/app_store/api/v1/anomalies/time-series
+    method: POST
+    data_selector: anomalous_data
+- name: anomalies
+  endpoint:
+    path: /api/anomalies
+    method: POST
+    data_selector: anomalies
+- name: running_pipelines
+  endpoint:
+    path: /api/pipeline/listing
+    method: GET
+- name: pipeline_summary
+  endpoint:
+    path: /api/pipeline/summary
+    method: GET
+- name: running_pipelines
+  endpoint:
+    path: /api/pipeline/running
+    method: GET
+    data_selector: pipelines
+- name: pipelines
+  endpoint:
+    path: /api/v1/pipelines/list
+    method: POST
+    data_selector: instances
+    params: {}
+- name: pipeline_summary
+  endpoint:
+    path: /api/pipeline-summary
+    method: GET
+    data_selector: summary
+- name: running_pipelines
+  endpoint:
+    path: /api/pipeline-listing
+    method: GET
+    data_selector: pipelines
+- name: auto_action
+  endpoint:
+    path: /auto_action
+    method: GET
+    data_selector: records
+- name: bigquery_worker_M_N
+  endpoint:
+    path: /bigquery_worker
+    method: GET
+    data_selector: records
+- name: datastore
+  endpoint:
+    path: /datastore
+    method: GET
+    data_selector: records
+- name: elasticsearch
+  endpoint:
+    path: /elasticsearch
+    method: GET
+    data_selector: records
+- name: event_worker_M_N
+  endpoint:
+    path: /event_worker
+    method: GET
+    data_selector: records
+- name: healthcheck
+  endpoint:
+    path: /healthcheck
+    method: GET
+    data_selector: records
+- name: hitdoc_loader
+  endpoint:
+    path: /hitdoc_loader
+    method: GET
+    data_selector: records
+- name: hive_worker
+  endpoint:
+    path: /hive_worker
+    method: GET
+    data_selector: records
+- name: host_monitor
+  endpoint:
+    path: /host_monitor
+    method: GET
+    data_selector: records
+- name: impala_worker_M_N
+  endpoint:
+    path: /impala_worker
+    method: GET
+    data_selector: records
+- name: insights_worker_M_N
+  endpoint:
+    path: /insights_worker
+    method: GET
+    data_selector: records
+- name: kafka
+  endpoint:
+    path: /kafka
+    method: GET
+    data_selector: records
+- name: kafka_monitor
+  endpoint:
+    path: /kafka_monitor
+    method: GET
+    data_selector: records
+- name: log_receiver
+  endpoint:
+    path: /log_receiver
+    method: GET
+    data_selector: records
+- name: log_rotate
+  endpoint:
+    path: /log_rotate
+    method: GET
+    data_selector: records
+- name: metric_analyzer_M_N
+  endpoint:
+    path: /metric_analyzer
+    method: GET
+    data_selector: records
+- name: mysql
+  endpoint:
+    path: /mysql
+    method: GET
+    data_selector: records
+- name: ngui
+  endpoint:
+    path: /ngui
+    method: GET
+    data_selector: records
+- name: oozie_sensor
+  endpoint:
+    path: /oozie_sensor
+    method: GET
+    data_selector: records
+- name: spark_worker_M_N
+  endpoint:
+    path: /spark_worker
+    method: GET
+    data_selector: records
+- name: table_worker
+  endpoint:
+    path: /table_worker
+    method: GET
+    data_selector: records
+- name: task_worker_M_N
+  endpoint:
+    path: /task_worker
+    method: GET
+    data_selector: records
+- name: tidydir
+  endpoint:
+    path: /tidydir
+    method: GET
+    data_selector: records
+- name: unravel_ca
+  endpoint:
+    path: /unravel_ca
+    method: GET
+    data_selector: records
+- name: unravel_db
+  endpoint:
+    path: /unravel_db
+    method: GET
+    data_selector: records
+- name: unravel_es
+  endpoint:
+    path: /unravel_es
+    method: GET
+    data_selector: records
+- name: unravel_ja
+  endpoint:
+    path: /unravel_ja
+    method: GET
+    data_selector: records
+- name: unravel_jcse2
+  endpoint:
+    path: /unravel_jcse2
+    method: GET
+    data_selector: records
+- name: unravel_sensor_M_N
+  endpoint:
+    path: /unravel_sensor
+    method: GET
+    data_selector: records
+- name: yarn_jc_sensor
+  endpoint:
+    path: /yarn_jc_sensor
+    method: GET
+    data_selector: records
+- name: yarn_jc_worker_M_N
+  endpoint:
+    path: /yarn_jc_worker
+    method: GET
+    data_selector: records
+- name: zookeeper
+  endpoint:
+    path: /zookeeper
+    method: GET
+    data_selector: records
+- name: supported_cluster_metrics
+  endpoint:
+    path: /api/supported_cluster_metrics
+    method: GET
+    data_selector: metrics
+    params: {}
+- name: auto_actions_demos
+  endpoint:
+    path: /auto-actions-demos
+    method: GET
+    data_selector: demos
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: unravel_properties
+  endpoint:
+    path: <Unravel_installation_directory>/unravel/data/conf/unravel.properties
+    method: GET
+    data_selector: file
+    params: {}
+- name: unravel_yaml
+  endpoint:
+    path: Unravel_installation_directory/unravel/data/conf/unravel.yaml
+    method: GET
+    data_selector: file
+    params: {}
+- name: unravel_effective_yaml
+  endpoint:
+    path: <Unravel_installation_directory>/unravel/data/conf/unravel.effective.yaml
+    method: GET
+    data_selector: file
+    params: {}
+- name: conf_archives
+  endpoint:
+    path: <Unravel installation directory>/unravel/data/conf_archives
+    method: GET
+    data_selector: file
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: healthcheck
+  endpoint:
+    path: /unravel/appstore/apps/healthcheck
+    method: GET
+    data_selector: interval.seconds
+    params:
+      default: 60
+- name: resource_usage_refresh
+  endpoint:
+    path: /unravel/appstore/apps/resource/usage/refresh
+    method: GET
+    data_selector: rate.seconds
+    params:
+      default: 60
+- name: executor_logs
+  endpoint:
+    path: /executor/logs
+    method: GET
+- name: event_logs
+  endpoint:
+    path: /event/logs
+    method: GET
+- name: hdfs_logs
+  endpoint:
+    path: /hdfs/logs
+    method: GET
+- name: AutoAction
+  endpoint:
+    path: /unraveldata/autoaction
+    method: GET
+- name: AutoAction daemon
+  endpoint:
+    path: /unraveldata/autoaction/daemon
+    method: GET
+- name: AutoAction command line interface
+  endpoint:
+    path: /unraveldata/autoaction/cli
+    method: GET
+- name: AutoAction support for EMR cluster
+  endpoint:
+    path: /unraveldata/autoaction/emr
+    method: GET
+- name: AutoAction email notifications to LDAP users
+  endpoint:
+    path: /unraveldata/autoaction/ldap
+    method: GET
+- name: Notification for SSL certifications and Kerberos keytabs expiry
+  endpoint:
+    path: /unraveldata/autoaction/notifications
+    method: GET
+- name: cluster
+  endpoint:
+    path: /clusters
+    method: GET
+    data_selector: clusters
+- name: applications
+  endpoint:
+    path: /common/app/{app_id}/recommendation
+    method: GET
+- name: reports
+  endpoint:
+    path: /reports/data/diskusage/get_latest_reports?task_name=topx_report
+    method: GET
+- name: clusters
+  endpoint:
+    path: /clusters
+    method: GET
+- name: app
+  endpoint:
+    path: /common/app/{app_id}/recommendation
+    method: GET
+- name: reports
+  endpoint:
+    path: /reports/data/diskusage/get_latest_reports
+    method: GET
+- name: clusters
+  endpoint:
+    path: /clusters
+    method: GET
+- name: applications
+  endpoint:
+    path: /common/app
+    method: GET
+- name: reports
+  endpoint:
+    path: /reports
+    method: GET
+- name: clusters
+  endpoint:
+    path: /clusters
+    method: GET
+- name: hive_metastore
+  endpoint:
+    path: /hive/metastore
+    method: GET
+    data_selector: records
+- name: Hive Metastore
+  endpoint:
+    path: /services/data/vXX.X/sobjects/HiveMetastore
+    method: GET
+    data_selector: records
+    params: {}
+- name: metrics
+  endpoint:
+    path: /metrics
+    method: GET
+    data_selector: metrics
+    params: {}
+- name: general
+  endpoint:
+    params:
+      com.unraveldata.min.job.duration.for.attempt.log: 0
+      com.unraveldata.min.failed.job.duration.for.attempt.log: 0
+      com.unraveldata.logs.max.containers.persisted: 4
+      com.unraveldata.logs.max.containers.processed: 100
+- name: impala
+  endpoint:
+    params:
+      com.unraveldata.impala.scheduled.thread.pool.size: 5
+      com.unraveldata.impala.thread.initial.delay.secs: 5
+      com.unraveldata.impala.cm.queries.polling.interval.secs: 60
+      com.unraveldata.impala.cm.metrics.polling.interval.secs: 60
+      com.unraveldata.impala.kafka.retry.millis: 1000
+- name: Profile
+  endpoint:
+    path: /unravel-v4825x/en/current.html
+    method: GET
+    data_selector: properties
+    params: {}
+- name: s3_profile_config
+  endpoint:
+    path: /usr/local/unravel/etc/s3ro.properties
+    method: GET
+    data_selector: profiles
+    params: {}
+- name: profilesToBuckets
+  endpoint:
+    path: com.unraveldata.spark.s3.profileToBuckets
+    method: GET
+    data_selector: bucket_mappings
+    params: {}
+- name: BTrace
+  endpoint:
+    path: /btrace
+    method: GET
+- name: Cluster Access
+  endpoint:
+    path: /cluster_access
+    method: GET
+- name: Data Store
+  endpoint:
+    path: /datastore
+    method: GET
+- name: Document Storage
+  endpoint:
+    path: /document_storage
+    method: GET
+- name: Hive Hook
+  endpoint:
+    path: /hive_hook
+    method: GET
+- name: Live Log Receiver
+  endpoint:
+    path: /live_log_receiver
+    method: GET
+- name: Server
+  endpoint:
+    path: /server
+    method: GET
+- name: tagging
+  endpoint:
+    path: /tagging
+    method: GET
+    data_selector: records
+    params: {}
+- name: oozie_workflow
+  endpoint:
+    path: /services/oozie/workflows
+    method: GET
+    data_selector: workflows
+- name: resource_metrics
+  endpoint:
+    path: /resource/metrics
+    method: GET
+    data_selector: metrics
+    params: {}
+- name: clusters
+  endpoint:
+    path: /clusters
+    method: GET
+- name: jobs
+  endpoint:
+    path: /jobs
+    method: GET
+- name: System Environment
+  endpoint:
+    path: /system/environment
+    method: GET
+    data_selector: records
+- name: JAVA
+  endpoint:
+    path: /java
+    method: GET
+    data_selector: records
+- name: Applications
+  endpoint:
+    path: /applications
+    method: GET
+    data_selector: records
+- name: Storage type
+  endpoint:
+    path: /storage/type
+    method: GET
+    data_selector: records
+- name: Browsers
+  endpoint:
+    path: /browsers
+    method: GET
+    data_selector: records
+- name: Unravel UI Authentication
+  endpoint:
+    path: /unravel/ui/authentication
+    method: GET
+    data_selector: records
+- name: Unravel DB
+  endpoint:
+    path: /unravel/db
+    method: GET
+    data_selector: records
+- name: Unravel supported external DB
+  endpoint:
+    path: /unravel/external/db
+    method: GET
+    data_selector: records
+- name: RPM installation
+  endpoint:
+    path: /unravel/RPM/4.8.2/unravel-4.8.2.4.rpm
+    method: GET
+    data_selector: file
+    params: {}
+- name: Standalone Interactive Precheck installation
+  endpoint:
+    path: /unravel/RPM/4.8.2/unravel-healthcheck-release_4.8.2.4.tar.gz
+    method: GET
+    data_selector: file
+    params: {}
+- name: applications
+  endpoint:
+    path: /common/applications
+    method: GET
+    data_selector: records
+    params: {}
+- name: reports
+  endpoint:
+    path: /reports
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: applications
+  endpoint:
+    path: /common/applications
+    method: GET
+    data_selector: records
+- name: jobs
+  endpoint:
+    path: /common/jobs
+    method: GET
+    data_selector: records
+- name: applications
+  endpoint:
+    path: /api/applications
+    method: GET
+    data_selector: records
+    params: {}
+- name: jobs
+  endpoint:
+    path: /api/jobs
+    method: GET
+    data_selector: records
+    params: {}
+- name: billing_data
+  endpoint:
+    path: /aws/billing/data
+    method: GET
+    data_selector: records
+    params:
+      lookback_days: '30'
+- name: incident
+  endpoint:
+    path: /api/now/v1/table/incident
+    method: POST
+- name: applications
+  endpoint:
+    path: /common/applications
+    method: GET
+    data_selector: records
+- name: chargeback
+  endpoint:
+    path: /chargeback/cb/appt
+    method: GET
+    data_selector: records
+- name: SAML Login
+  endpoint:
+    path: /saml/consume
+    method: POST
+- name: applications
+  endpoint:
+    path: /common/applications
+    method: GET
+    data_selector: records
+- name: jobs
+  endpoint:
+    path: /common/jobs
+    method: GET
+    data_selector: records
+- name: applications
+  endpoint:
+    path: /common/applications
+    method: GET
+    data_selector: applications
+- name: applications
+  endpoint:
+    path: /api/cdh/applications
+    method: GET
+    data_selector: records
+    params: {}
+- name: jobs
+  endpoint:
+    path: /api/cdh/jobs
+    method: GET
+    data_selector: records
+    params: {}
+- name: application
+  endpoint:
+    path: /common/applications
+    method: GET
+    data_selector: records
+    params: {}
+- name: report
+  endpoint:
+    path: /reports
+    method: GET
+    data_selector: records
+    params: {}
+- name: workflow_tags
+  endpoint:
+    path: /tagging/workflows
+    method: POST
+    data_selector: tags
+    params: {}
+- name: tagging_workflows
+  endpoint:
+    path: /usr/local/unravel/etc/unravel.properties
+    method: GET
+    data_selector: properties
+    params: {}
+- name: applications
+  endpoint:
+    path: /common/applications
+    method: GET
+    data_selector: records
+    params: {}
+- name: chargeback
+  endpoint:
+    path: /chargeback/cb/appt
+    method: GET
+    data_selector: records
+    params: {}
+- name: appstore_beats
+  endpoint:
+    path: /unravel/appstore_beats
+    method: GET
+- name: appstore_flask
+  endpoint:
+    path: /unravel/appstore_flask
+    method: GET
+- name: appstore_tasks
+  endpoint:
+    path: /unravel/appstore_tasks
+    method: GET
+- name: auto_action
+  endpoint:
+    path: /unravel/auto_action
+    method: GET
+- name: config_service
+  endpoint:
+    path: /unravel/config_service
+    method: GET
+- name: datastore
+  endpoint:
+    path: /unravel/datastore
+    method: GET
+- name: dbx_worker
+  endpoint:
+    path: /unravel/dbx_worker
+    method: GET
+- name: elasticsearch
+  endpoint:
+    path: /unravel/elasticsearch
+    method: GET
+- name: event_worker
+  endpoint:
+    path: /unravel/event_worker
+    method: GET
+- name: hitdoc_loader
+  endpoint:
+    path: /unravel/hitdoc_loader
+    method: GET
+- name: insights_worker
+  endpoint:
+    path: /unravel/insights_worker
+    method: GET
+- name: kafka
+  endpoint:
+    path: /unravel/kafka
+    method: GET
+- name: key_value_store
+  endpoint:
+    path: /unravel/key_value_store
+    method: GET
+- name: log_receiver
+  endpoint:
+    path: /unravel/log_receiver
+    method: GET
+- name: log_rotate
+  endpoint:
+    path: /unravel/log_rotate
+    method: GET
+- name: metrics_analyzer
+  endpoint:
+    path: /unravel/metrics_analyzer
+    method: GET
+- name: nginx
+  endpoint:
+    path: /unravel/nginx
+    method: GET
+- name: ngui
+  endpoint:
+    path: /unravel/ngui
+    method: GET
+- name: opensearch
+  endpoint:
+    path: /unravel/opensearch
+    method: GET
+- name: opensearch_dashboards
+  endpoint:
+    path: /unravel/opensearch_dashboards
+    method: GET
+- name: pgsql
+  endpoint:
+    path: /unravel/pgsql
+    method: GET
+- name: spark_worker
+  endpoint:
+    path: /unravel/spark_worker
+    method: GET
+- name: table_worker
+  endpoint:
+    path: /unravel/table_worker
+    method: GET
+- name: task_worker
+  endpoint:
+    path: /unravel/task_worker
+    method: GET
+- name: tidydir
+  endpoint:
+    path: /unravel/tidydir
+    method: GET
+- name: unravel_monitor
+  endpoint:
+    path: /unravel/unravel_monitor
+    method: GET
+- name: unravel_sensor
+  endpoint:
+    path: /unravel/unravel_sensor
+    method: GET
+- name: zookeeper
+  endpoint:
+    path: /unravel/zookeeper
+    method: GET
+- name: applications
+  endpoint:
+    path: /common/applications
+    method: GET
+    data_selector: records
+- name: jobs
+  endpoint:
+    path: /common/jobs
+    method: GET
+    data_selector: records
+- name: apps
+  endpoint:
+    path: /apps
+    method: GET
+    data_selector: records
+    params: {}
+- name: clusters
+  endpoint:
+    path: /clusters
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Welcome to Unravel SaaS. Learn how to use Unravel and connect to your data.
+- Unravel only collects metadata from jobs and pipelines run against your data lake
+  and other databases as read-only.
+- Longer retention increases storage use and will reduce dashboard performance.
+- Higher values increase storage needs and initial setup time.
+- For Snowflake Standard (Free) account, the look back is pre-set to 7 days.
+- Check requirements
+- Check requirements for CPU and memory.
+- Unravel users can access the configured disk locations.
+- 'Healthcheck report bundle: /tmp/healthcheck-20210405155130-xyz.unraveldata.com.tar.gz'
+- Ensure to install SnowSQL and Python3 before starting to download Snowflake metadata.
+- The look-back period for metadata processing can be set to a maximum of 180 days.
+- You must provide the certificate and key in PEM format.
+- Ensure to backup data before deleting the Unravel installation directory. There
+  can be a loss of data when you delete this directory.
+- A bug can prevent you from setting the number of workers for the metrics_analyzer
+  daemon. Only in such a case, stop Unravel and manually increase the number of workers
+  from <Unravel installation directory>/unravel/data/conf/unravel.yaml file.
+- Ensure to apply the changes and restart Unravel.
+- GCC compiler version 4.9.3 must be installed.
+- Ensure to install from the Software Collections (SCL) repository.
+- The minimum requirement is devtoolset-8.
+- 'The following packages must be installed for fulfilling the OS level requirements
+  for MariaDB: numactl-libs (for libnuma.so), libaio (for libaio.so)'
+- Appstore is not supported for PostgreSQL over SSL.
+- Unravel seamlessly integrates into your existing workflows to improve your data
+  operations.
+- Unravel CI/CD integration allows for early detection and prevention of performance
+  issues.
+- Developers can proactively address bottlenecks, anomalies, and failures before they
+  impact users.
+- Teams can meet financial and performance goals by analyzing critical metrics during
+  development.
+- Bottlenecks are identified and resolved promptly, reducing cycle times.
+- Real-time visibility helps in making data-driven decisions.
+- Auto-configuration is usually run during Unravel installation.
+- Stop Unravel before running auto-configuration.
+- A user with the read-onlyAdmin role is created.
+- You can set the timeout period to automatically sign off users who are idle on Unravel.
+- Before you configure automatic start/stop through init.d, ensure to stop Unravel.
+- After you add the unravel service, Unravel can be started and stopped automatically
+  by the system without any user interaction.
+- After Unravel is started by the system, you cannot start/stop Unravel using the
+  Unravel manager utility. service must be used.
+- In a multi-cluster environment, you must run the following step on the core node.
+- 'The command accepts the following file formats and relies on the extension to identify
+  the format: PEM (.pem), JKS (.jks), PKCS12 (pkcs12, .p12, .pfx)'
+- 'In a multi-cluster environment, do the following to avoid connectivity issues between
+  the core and edge node due to port remapping: 1. Remap the ports on the core node.
+  2. Manually apply the same port mappings on the edge nodes for those ports that
+  refer to the core node.'
+- If your cluster type is not GCP, you can either set both the BigQuery and Hive (for
+  Dataproc) or set only BigQuery or only Hive (for Dataproc) metastore types available
+  for filtering on the Data page.
+- Due to restrictions for accessing an Oracle database you need to create synonyms
+  and select access for the Unravel user.
+- Complete the following steps to allow access for a read-only user.
+- Substitute your hive database owner ID for HIVEUSER and the user id that unravel
+  is using for unravelhive database.
+- You can set the polling time to refresh the Data page using the com.unraveldata.data.poll.interval.mins
+  property.
+- By default, the polling interval time is 1440 minutes (24 hours).
+- Enables email alerts by configuring email properties.
+- Ensure to specify the retention period in weeks.
+- Warnings in the Healthcheck report are considered errors if you choose email alerts
+  with error-only option.
+- In a multi-cluster deployment, you must configure the `jre` directory both on the
+  edge node and the core node.
+- If you do not provide the license filename, the manager config license set command
+  prompts for the license information.
+- You can encrypt or decrypt a password using the Manager tool.
+- Moreover, you can generate a random encrypted password.
+- By default, RBAC is disabled, and every user has assumed a readonlyAdmin role.
+- When RBAC is enabled, every user assumes a user role.
+- RBAC configuration examples provided.
+- By default, Unravel polls data from the Resource Manager (RM) at a regular interval
+  of 0 to 90 seconds.
+- During the initial polling, Unravel fetches data for the last 1 day by default.
+- Subsequent polls bring in data from the last 90 secs.
+- To poll data for a different initial poll time period, set the com.unraveldata.rm.lookback.days
+  property and restart Unravel.
+- In a multi-cluster setup, you must apply the com.unraveldata.rm.lookback.days property
+  individually for each cluster.
+- Configuring HTTPS for Unravel (Transport Layer Security, TLS)
+- Enabling SAML Authentication for Unravel User
+- Enabling LDAP authentication for Unravel UI
+- The API tokens and the login tokens in Unravel are JSON web tokens (JWT).
+- The JWT secret, which is used to sign the JWT token should be periodically rotated
+  to increase security.
+- Unravel recommends rotating the JWT secret every six months.
+- 'You must have the following files handy. Ensure that these files are available
+  on Unravel server: Server certificate, Key for the server certificate and its password,
+  if it is encrypted, Any intermediate certificate that is required to complete the
+  trust chain.'
+- 'The following certificate formats are supported: PEM (.pem), JKS (.jks), PKCS12
+  (pkcs12, .p12, .pfx)'
+- com.unraveldata.rbac.role.admin.groups is a subset of com.unraveldata.ldap.groupFilter,
+  i.e., a group defined in com.unraveldata.rbac.role.admin.groups must also be defined
+  in com.unraveldata.ldap.groupFilter.
+- This configuration does not work if objects in the directory do not have the expected
+  UPN format.
+- Does not include bindDn and password, which older implementations used.
+- LDAP base DN; use your rootDN value if a custom LDAP query is applied. Needed for
+  Open LDAP.
+- Whether LDAP search attribute sAMAccountName will be used in users search filter
+  or not
+- Unravel currently captures tags for warehouses and tables.
+- Queries are not part of the Snowflake object hierarchy of persistent account objects.
+- Application and workflow tags allow filtering and grouping of applications.
+- You can define tags for groups of applications using a python script.
+- Unravel retrieves the script from the property com.unraveldata.app.tagging.script.path
+  so you must define all your application tags in that file.
+- You can not associate an application with more than one *value* per *key*.
+- Application tags are immutable and once created they cannot be changed.
+- You can add two Unravel tags (<key, value> pairs) to mark queries and jobs that
+  belong to a particular workflow.
+- The recommended format for workflow name is TenantName-ProjectName-WorkflowName.
+- A timestamp in yyyyMMddThhmmssZ format represents the logical time of a run of the
+  workflow in UTC/ISO format.
+- For Spark jobs, you must prefix the Unravel tags with "spark.".
+- The following properties must be set in /usr/local/unravel/etc/unravel.properties.
+- Advanced instrumentation options available for monitoring individual Hive queries
+  and Spark apps.
+- The Unravel JVM sensor is a prepackaged distribution of JVM agent which enables
+  the collection of additional information, including resource usage metrics.
+- unravel-host is your Unravel gateway server. Port 4043 is where Unravel LR server
+  is running.
+- Spark 3.0 version is supported from Unravel version v4.6.1.6 onwards.
+- '`unravel-host` must be a fully qualified domain name or IP address.'
+- If spark-submit is used from multiple client nodes, copy the sensor .zip file to
+  HDFS instead of copying it to every client node.
+- Please keep the original unravel-agent-pack-bin.zip file inside unzipped-archive-dest
+- Setting the number of verticles higher than the number of CPU cores on the machine
+  where LR is running would be an illogical configuration.
+- The default value of logreceiver.verticles_count is Math.min(CpuCoreSensor.availableProcessors(),
+  12);
+- You should use a unique logger ID in the configuration.
+- Use to install and manage apps. Generate reports of executive KPIs (cluster usage
+  KPIs, including for YARN and Impala).
+- Ensure the correct API version is used for optimal performance.
+- Serverless feature costs managed globally, are not covered in this section.
+- Requires setup of connected app in api
+- The Compare Queries page displays the differences because the Show differences toggle
+  is turned on by default.
+- 'You can compare the following aspects of the jobs: Query details, Warehouse, Insights,
+  Input tables, Output tables, Metrics.'
+- Ensure that the required configurations are set to get data to the Data page.
+- All the Unravel alerts are disabled by default.
+- Unravel uses the telemetry data available from your cluster to provide valuable
+  views and insights through Plotly dash apps.
+- Ensure setup of connected app for authentication
+- Some API responses may contain null values
+- API tokens get deleted after you restart Unravel. To maintain the token permanently,
+  you must set properties to store persistent API Tokens.
+- Enables sending messages through email addresses, Chime, custom webhooks, Slack,
+  etc.
+- 'The password must not include the # character.'
+- Any user or role validation against OpenSearch is case-sensitive.
+- For Unravel services, the intermediate certificate should be configured with config
+  tls set.
+- For other services, if they are not serving the trust chain, you must trust any
+  missing intermediate or root certificates.
+- Ensure that you have taken a backup of the data directory and the external database
+  (if using).
+- 'To address this issue, there are two possible solutions: 1. Increase Quota through
+  GCP Cloud Console. 2. Wait for Throttle Reset.'
+- Healthcheck Email Troubleshooting
+- By default, the healthcheck email alerts include the healthcheck bundle. However,
+  some email servers can block archives sent as an attachment causing the email alerts
+  not to be delivered.
+- 'Do not attach the bundle (`attach_bundle: false`). Add the following configuration
+  in the `unravel.yaml` file to encode the archive with `base64`.'
+- JSON is used for the query format that is made with POST requests.
+- For Hive and MR you must specify at least one status type.
+- Authorization requires a JWT token.
+- Detect anomalies in the cost of Databricks job runs
+- 'Alternatively, you can specify the date without a timestamp in the request, for
+  example, --d ''{ "2022-02-22": 50.33}''.'
+- Ensure the API is properly authenticated before accessing endpoints
+- Request produces an application/json payload.
+- Missing AutoAction policy violation on Unravel UI
+- Alerting on running apps
+- Running duration versus final duration inconsistency
+- Missing AutoAction violation badge
+- Unsupported
+- AutoActions properties
+- Monitoring is performed on most live running apps allowing users to take proactive
+  actions when violations are detected.
+- Monitoring is only performed on MapReduce AM metrics when the user defines an AutoAction
+  rule requiring polling/aggregation of a MapReduce AM metric.
+- Submits to “root.sla” queue.
+- Submits to “root.adhoc” queue.
+- The default value is set to half of the system memory of the Unravel core node.
+- Default is calculated based on the number of cores of Unravel core node.
+- The interval at which the Health check process is run for the apps is recommended
+  not to set a low value if there are a large number of apps running.
+- Resource limit violation checks are also part of this Health-check process.
+- You must set this if airflow.server.url = https.
+- Uses LDAP for login.
+- Users automatically signed out if they remain idle beyond the specified time.
+- Set to false to avoid event log loading when Unravel cannot access event logs.
+- AutoAction containing a kill or move action is never snoozed.
+- Make sure the cluster type is set correctly, the default is CDH.
+- Specifies the timeout period for different APIs used by UI to fetch data.
+- Modify the batch size for polling the table metadata based on the number of tables
+  available in your Hive metastore.
+- Modify the batch size for polling partitions metadata based on the number of partitions
+  available in your Hive metastore.
+- Set the polling interval value in minutes to refresh the Data page faster (for BigQuery
+  or Hive Metastore catalog).
+- Ensure to follow the API rate limits specified in the documentation.
+- Enables email alerts.
+- Default email domain used to send email alerts to the owner of the app is localhost.local.
+- Used for email 'from' and 'reply-to' headers is unravel.noreply@unraveldata.com.
+- SMTP mail port is 25.
+- SMTP authentication is false.
+- Use start-TLS is false.
+- Use SSL right from the start is false.
+- Host for SMTP server is localhost.
+- A domain name for the apparent sender is localhost.local.
+- Enable debug mode is false.
+- Enables read-only access to retrieve data from HiveMetastore with simple JDBC calls.
+- When set to KERBEROS you must also set kerberos.service.name=hive.
+- Some properties are optional and have default values.
+- The retention period, in hours, for messages stored in the DocStorage by the log
+  receiver should align with the Kafka retention time for AWS, Spark, and JC topics.
+- Requires setup of connected app in Unravel
+- The credit-to-dollar conversion for the Snowflake current account is set to 3.
+- The currency for conversion of the credits is set to $.
+- The conversion rate for credits to USD for the current Snowflake account is set
+  to Credits.
+- Enable or disable Snowflake data processing.
+- Default maximum limit for the number of joins in Snowflake queries is 3
+- Default maximum limit for the number of rows allowed for a specific query in Snowflake
+  is 100000
+- Default number of days of data to consider for generating warehouse and compute
+  insights is 15
+- Default interval, in seconds, to capture the count of suspended warehouses is 60
+- Default interval to measure the warehouse suspend events within a specified duration
+  is 60000
+- Default feature to suspend the schedule on the test environment during weekends
+  is disabled
+- Default time intervals during which the schedule on the test environment should
+  be suspended on workdays is 20:00-08:00
+- Default average queued-to-running ratio to assess warehouse load is 0.2
+- Default threshold for marking a query as expensive is 10
+- Default number of days to look back when analyzing warehouse cost data is 30
+- Some objects may return nulls in deeply nested fields
+- The following properties can be customized for Profile in Snowflake.
+- Specifies the Snowflake user who polls the data.
+- Specifies the Snowflake password.
+- Specifies the Snowflake account information to log in to the Snowflake account.
+- Enable SSL for all clients to ensure secure connections.
+- Trust store password must be managed carefully.
+- Enables tagging functionality.
+- Specifies tagging script path to use when enabled=true.
+- The following properties defaults shouldn't need to be changed.
+- TopX reports are enabled by default.
+- The Oozie server URL is mandatory for monitoring.
+- The vmRss metric values can underestimate the memory footprint of objects that are
+  not directly managed by the JVM.
+- More accurate metric values can be obtained by adding the property -Dcom.unraveldata.metrics.proctree.enable=true
+  to spark.driver.extraJavaOptions and spark.executor.extraJavaOptions.
+- Multi-Account support
+- Enhanced RBAC support
+- Query Analyzer app
+- Snowflake Tags in Unravel
+- New storage policies for better control of data retention and recovery
+- To obtain the username and password, contact Unravel Support.
+- To obtain the username and password, contact Unravel Support
+- SaaS is supported via SAML2.0 and OAuth.
+- Custom authentication is supported. The user credentials are stored in the database
+  in hashed form.
+- Unravel supports setting role-based access controls.
+- Uses OAuth2 with refresh token — requires setup of connected app in Unravel
+- Some endpoints may have rate limits
+- Unravel sensors send data using TLS v1.2 encryption.
+- The Databricks free standard account comes with data retention of 7 days.
+- These field names match for Pay-as-you-go accounts only. The field names could be
+  different for enterprise accounts or different schema versions.
+- Unravel supports cross-account access to S3 buckets using role-based access control
+  (RBAC).
+- Databricks system table is mandatory in your Databricks environment to enable AWS
+  billing integration.
+- You must configure and enable a Databricks workspace with system table and provide
+  its JDBC URL and workspace ID in Unravel.
+- Tokens generated by the OAuth server are time-limited and need to be refreshed periodically.
+- Unravel captures information about validation failures only.
+- Most configurations are set by the auto-configuration method when you install Unravel.
+- Manual configuration must be performed for some configurations.
+- Uses OAuth2 with JWT — requires setup of connected app in Unravel
+- You must have the following files handy. Ensure that these files are available on
+  Unravel server.
+- Currently, this support can be enabled only for Databricks.
+- If you enable the authentication before you restart the clusters, the sensors cannot
+  publish data to the LR service because it will require credentials.
+- com.unraveldata.rbac.role.admin.groups is a subset of com.unraveldata.ldap.groupFilter.
+- Uses SAML for authentication — requires setup of Entra ID application
+- You must specify the absolute path to the saml.json file. The relative path causes
+  an exception.
+- With User.Read.All permission, you can configure login and RBAC using User Group
+  IDs only.
+- With Directory.Read.All permission, you can configure login and RBAC using User
+  Group Display Name.
+- You can not associate an application with more than one value per key.
+- For Spark jobs, you must prefix the Unravel tags with 'spark.'.
+- You can create tagged workflows for Tez apps in four ways.
+- Only the absolute hdfs path with hostname and port works in EMR or any other setup
+  where unravel is installed in a separate machine.
+- This is an advanced configuration that must be done in collaboration with Unravel
+  support team only.
+- Each Unravel service has a dedicated log4j2.properties file.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Invalid SMTP configuration: Check server and port settings.'
+- '400 Bad Request: Check the request parameters for validity.'
+- '403 Forbidden: Ensure you have the necessary permissions.'
+- '500 Internal Server Error: Retry the request after some time.'
+- 'curl: (51) Unable to communicate securely with peer: requested domain name does
+  not match the server''s certificate.'
+- 'curl: (52) Empty reply from server'
+- 'curl: (60) Peer''s Certificate issuer is not recognized.'
+- 'Error: Error when reading or editing Project Service <gcp-project-id>/recommender.googleapis.com:
+  googleapi: Error 429: Quota exceeded for quota metric ''Read requests'' and limit
+  ''Read requests per minute'' of service ''cloudresourcemanager.googleapis.com''
+  for consumer ''project_number:xxxxxxxxxx''.'
+- 'LIC01121: License expired after `<date time>`.'
+- 'LIC01110: Failed to verify the license: The signature is not authentic.'
+- 'LIC01120: The license will be valid from `<date time>`.'
+- 'LIC01020: Can''t read license: [Errno 2] No such file or directory: ''/opt/unravel/data/conf/unravel.license''***
+  WARNING: License is not valid!-- Error'
+- '401 Unauthorized: Check your API token'
+- '404 Not Found: Verify the endpoint path'
+- '500 Internal Server Error: Check server logs for details.'
+- '404 Not Found: Verify the endpoint URL.'
+- 'SSL_ERROR: Check SSL certificate settings.'
+- 'CONNECTION_TIMEOUT: Verify network settings.'
+- 'AUTHENTICATION_FAILED: Ensure correct credentials.'
+- '400 Bad Request: Check the Oozie server URL format.'
+- Container killed by YARN for exceeding memory limits.
+- 'java.io.IOException: Connection reset by peer'
+- java.lang.OutOfMemoryError
+- org.apache.hadoop.mapred.InvalidInputException
+- 'org.apache.spark.SparkException: Kryo serialization failed: Buffer overflow.'
+- org.apache.spark.sql.catalyst.errors.package$TreeNodeException
+- '401 Unauthorized: Recheck token validity'
+- '403 Forbidden: Insufficient permissions for the service principal'
+- '401 Unauthorized: Recheck permissions or access keys'
+- '[20, 0, ''unable to get local issuer certificate'']'
+- '[19, 2, ''self signed certificate in certificate chain'']'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - LDAP
+  - SAML
+  - Azure Active Directory (AAD)
+  - local user accounts
+client:
+  base_url: https://unraveldata.com
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+source_metadata: null
