@@ -1,0 +1,189 @@
+resources:
+- name: SalaryChangeReason
+  endpoint:
+    path: /salaryChangeReason
+    method: GET
+    data_selector: records
+- name: account
+  endpoint:
+    path: /account
+    method: GET
+- name: contact
+  endpoint:
+    path: /contact
+    method: GET
+- name: custom_field
+  endpoint:
+    path: /customfield
+    method: POST
+    data_selector: custom_fields
+    params: {}
+- name: client
+  endpoint:
+    path: /client
+    method: POST
+    data_selector: clients
+    params: {}
+- name: activity
+  endpoint:
+    path: /activity
+    method: GET
+- name: activity
+  endpoint:
+    path: /activity/{activity_id}
+    method: PUT
+- name: activity
+  endpoint:
+    path: /activity/{activity_id}
+    method: PATCH
+- name: activity
+  endpoint:
+    path: /activity/{activity_id}
+    method: POST
+- name: account
+  endpoint:
+    path: /account/batch
+    method: POST
+- name: job
+  endpoint:
+    path: /job/{job_id}
+    method: GET
+- name: activity
+  endpoint:
+    path: /activity/{activity_id}
+    method: DELETE
+- name: activity
+  endpoint:
+    path: /activity
+    method: GET
+    data_selector: records
+    params:
+      fields: '*'
+- name: activity
+  endpoint:
+    path: /activity
+    method: GET
+    data_selector: records
+    params:
+      where: isActive=true
+- name: account
+  endpoint:
+    path: /account
+    method: GET
+    data_selector: records
+    params:
+      where: Type='2'
+- name: timeentry
+  endpoint:
+    path: /timeentry
+    method: GET
+    data_selector: records
+    params:
+      where: date >= '2019-06-29' AND date <= '2019-07-30'
+- name: activity
+  endpoint:
+    path: /activities
+    method: GET
+    data_selector: records
+- name: activity
+  endpoint:
+    path: /activity
+    method: GET
+    params:
+      page: '[page number], [number of records per page]'
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- CORE APIs use the OAuth 2.0 protocol.
+- CORE APIs support refresh tokens.
+- CORE APIs use the OAuth 2.0 protocol to securely authenticate and authorize your
+  apps.
+- Redirect URIs must match those defined in the developer portal.
+- Ensure the redirect URI matches the one set in the Developer Portal
+- Use the provided callback URLs for quick setup
+- Webhook events are sent as HTTP POST requests with a JSON body.
+- A total of 5 attempts are made with an interval of 30 seconds between each retry.
+- Listen for limited event types to avoid strain on the server.
+- Delivery attempts and retry logic should be handled by the endpoint.
+- Webhook endpoints can receive duplicate events; process them idempotently.
+- Order of events is not guaranteed.
+- Validate events using the X-BQECore-Signature header.
+- Use an HTTPS server for secure event receipt.
+- Refresh Tokens must be stored securely by an application.
+- Access to the CORE company terminates when the current refresh_token expires.
+- The HTTP Authorization request header contains the credentials to authenticate a
+  user agent with a server. This header is required for all the requests
+- Custom fields can be assigned to modules.
+- Uses OAuth2 with access token
+- Use HTTP GET method to retrieve existing record or records
+- Use HTTP POST method to add a new record
+- Use the HTTP POST BATCH method to save multiple resources in the database
+- Use HTTP PUT method to edit an existing record by sending a complete object
+- Use HTTP PATCH method to edit an existing record by sending a partial object
+- Use HTTP DELETE method to remove an existing record
+- Parameters allow you to specify further action on the resources.
+- By default, the list endpoints only return flat models in the response body and
+  any nested resources are not retrieved. You can use the expand parameter to retrieve
+  the nested resources.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '429: Too Many Requests'
+- 'access_denied: The user did not authorize the request.'
+- 'invalid_scope: An invalid scope string was sent in the request.'
+- '401 Unauthorized: Check OAuth scopes or token expiration'
+- '4XX: Endpoint did not accept the event for some reason.'
+- '408: Request Timeout - response is expected to change.'
+- '429: Too Many Requests - response is expected to change.'
+- 'invalid_grant: Use the refresh token returned in the last access token response'
+- 'invalid_grant: Current refresh_token is invalid or expired.'
+- 'invalid_request: Required parameters were not sent in the request.'
+- 'invalid_client: Application credentials are not valid.'
+- '429: Too Many Requests: API calls exceed limit, wait for Retry-After header'
+- 400 Bad request
+- 401 Unauthorized
+- 403 Forbidden
+- 404 Resource not found
+- 500 Internal server error
+- '400: Bad Request'
+- '401: Unauthorized'
+- '403: Forbidden'
+- '404: Resource not found'
+- '405: Method Not Allowed'
+- '406: Not Accepted'
+- '407: Proxy Authentication Required'
+- '408: Request Timeout'
+- '409: Conflict'
+- '410: Resource removed'
+- '411: Length Required'
+- '412: Precondition Failed'
+- '413: Request Entity Too Large'
+- '414: Request-URI Too Long'
+- '415: Unsupported Media Type'
+- '416: Requested Range Not Satisfiable'
+- '417: Expectation Failed'
+- '500: Internal Server Error'
+- '501: Not Implemented'
+- '502: Bad Gateway'
+- '503: Service Unavailable'
+- '504: Gateway Timeout'
+- '505: HTTP Version Not Supported'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity.'
+auth_info:
+  mentioned_objects:
+  - OAuth 2.0
+  - OpenID Connect
+  - Client Id
+  - Client Secret
+  - JWT
+  - Opaque Tokens
+client:
+  base_url: https://base_url
+  auth:
+    type: oauth2
+    location: header
+    header_name: authorization
+  headers:
+    Accept: application/json
+source_metadata: null

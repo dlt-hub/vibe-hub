@@ -1,0 +1,51 @@
+resources:
+- name: authorize
+  endpoint:
+    path: /Authorize
+    method: GET
+- name: token
+  endpoint:
+    path: /Token
+    method: POST
+- name: providers
+  endpoint:
+    path: /Providers
+    method: GET
+- name: accounts
+  endpoint:
+    path: /Accounts
+    method: GET
+- name: providers
+  endpoint:
+    path: /api/v1/providers
+    method: GET
+    data_selector: array of objects
+- name: registration_status
+  endpoint:
+    path: /api/v1/recipients/providers/requests
+    method: GET
+    data_selector: objects
+- name: customers
+  endpoint:
+    path: /api/fdx/v1/customers/current
+    method: GET
+    data_selector: customerId
+notes:
+- Each access_token has an expiry date that's defined in the expires_in of the response.
+- For the request to be successful, the state string must be validated.
+errors:
+- '400: Invalid access_token'
+- 'access_denied: The user denied the access'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://ob.flinksapp.com/api/v1/providers
+  auth:
+    type: oauth2
+    flow: client_credentials
+    client_id: '{partner client_id}'
+    client_secret: '{partner client_secret}'
+    scope: client:admin
+  headers:
+    Accept: application/json
+source_metadata: null

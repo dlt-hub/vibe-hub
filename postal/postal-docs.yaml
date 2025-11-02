@@ -1,0 +1,147 @@
+resources:
+- name: message
+  endpoint:
+    path: /api/v1/messages/message
+    method: GET
+    data_selector: data
+    params: {}
+- name: A Records
+  endpoint:
+    path: /getting-started/dns-configuration#a-records
+    method: GET
+    data_selector: records
+- name: SPF Record
+  endpoint:
+    path: /getting-started/dns-configuration#spf-record
+    method: GET
+    data_selector: records
+- name: Return Path
+  endpoint:
+    path: /getting-started/dns-configuration#return-path
+    method: GET
+    data_selector: records
+- name: Route domain
+  endpoint:
+    path: /getting-started/dns-configuration#route-domain
+    method: GET
+    data_selector: records
+- name: Click and Open Tracking
+  endpoint:
+    path: /getting-started/dns-configuration#click-and-open-tracking
+    method: GET
+    data_selector: records
+- name: health_metrics
+  endpoint:
+    path: /health
+    method: GET
+    data_selector: OK
+- name: metrics
+  endpoint:
+    path: /metrics
+    method: GET
+    data_selector: metrics
+- name: smtp_tls
+  endpoint:
+    path: /features/smtp-tls
+    method: GET
+    data_selector: tls_enabled
+- name: spamd
+  endpoint:
+    path: /spamd
+    method: POST
+    data_selector: enabled
+    params: {}
+- name: message
+  endpoint:
+    path: /api/v1/messages/message
+    method: GET
+    data_selector: data
+    params: {}
+- name: incoming_message
+  endpoint:
+    path: /developer/http-payloads
+    method: POST
+    data_selector: payload
+- name: message_status_events
+  endpoint:
+    path: /developer/webhooks#message-status-events
+    method: GET
+    data_selector: status
+    params: {}
+- name: message_bounces
+  endpoint:
+    path: /developer/webhooks#message-bounces
+    method: GET
+    data_selector: original_message
+    params: {}
+- name: message_click_event
+  endpoint:
+    path: /developer/webhooks#message-click-event
+    method: GET
+    data_selector: url
+    params: {}
+- name: message_loaded_opened_event
+  endpoint:
+    path: /developer/webhooks#message-loadedopened-event
+    method: GET
+    data_selector: ip_address
+    params: {}
+- name: dns_error_event
+  endpoint:
+    path: /developer/webhooks#dns-error-event
+    method: GET
+    data_selector: domain
+    params: {}
+notes:
+- Ensure your provider does not block port 25 outbound.
+- We do not support using MySQL in place of MariaDB.
+- docker setup mounts /opt/postal/config as /config so any full directory paths mentioned
+  in postal.yml will likely need to start with /config and not /opt/postal/config
+- This is not a zero downtime upgrade so it is recommended to do this at a time when
+  traffic will be low and you have scheduled the maintenance as appropriate.
+- If you change any configuration, you should be sure to restart Postal
+- You'll need to configure a number of DNS records for your Postal installation.
+- You may wish to replace '~all' with '-all' to make the SPF record stricter.
+- No need to use RabbitMQ.
+- No need to run cron or requeuer processes.
+- Improved logging.
+- Improve configuration management (including the ability to configure with environment
+  variables or a config file).
+- Performing this upgrade will mean that your Postal services will be unavailable
+  for a short period of time.
+- If you have referenced files in other parts of your operating system (such as in
+  /etc), you must ensure these are now within the /opt/postal/config directory otherwise
+  they won't be available within the container that Postal runs within.
+- By default, IP pools are disabled and all email is sent from any IP address on the
+  host running the workers.
+- It's very important to make sure that the IP addresses you add in the web interface
+  are actually configured on your Postal servers.
+- All Postal processes log to STDOUT and STDERR which means their logs are managed
+  by whatever engine is used to run the container.
+- The quickest way to achieve log redirection to the host system's syslog is to use
+  a docker compose override file.
+- Users cannot change their local password when associated with an OIDC identity.
+- Existing users that currently have a password will continue to be able to use that
+  password until it is linked with an OIDC identity.
+- When sending outgoing email through the SMTP server, it is important that the From
+  header contains a domain that is owned by the server or its organization.
+- Postal has the option to authenticate clients based on their IP address.
+- TLS is not enabled by default and requires a valid certificate.
+- You need to run `postal restart` after changing configuration.
+- Spam & Virus Checking functionality is disabled by default.
+- To enable spam checking, add configurations to `postal.yml` and restart Postal.
+- Your server should accept Postal's incoming request and reply within 5 seconds.
+- Messages will be tried up to 18 times with an exponential back-off until a successful
+  response is seen.
+- The image expects all configuration to be mounted at /config
+- At a minimum, this directory must contain a postal.yml and a signing.key
+errors:
+- 530 From/Sender name is not valid
+- '401 Unauthorized: Recheck API key'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: /opt/postal/config
+  headers:
+    Accept: application/json
+source_metadata: null

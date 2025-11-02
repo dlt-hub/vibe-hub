@@ -1,0 +1,361 @@
+resources:
+- name: plan_manager
+  endpoint:
+    path: /planmanagers/{planManagerKey}
+    method: GET
+- name: add_member
+  endpoint:
+    path: /planmanagers/{planManagerKey}/members
+    method: POST
+    data_selector: membershipNumber
+    params: {}
+- name: get_member
+  endpoint:
+    path: /planmanagers/{planManagerKey}/members/{membershipNumber}
+    method: GET
+    data_selector: membershipNumber
+    params:
+      programCode: ndis
+- name: add_registered_biller
+  endpoint:
+    path: /affiliates/{affiliateKey}/billers
+    method: POST
+    data_selector: affiliateBillerNumber
+    params: {}
+- name: get_biller
+  endpoint:
+    path: /billers/{billerKey}
+    method: GET
+    data_selector: billerKey
+    params: {}
+- name: get_plan
+  endpoint:
+    path: /plans/{planKey}
+    method: GET
+    data_selector: _links
+    params: {}
+- name: get_plan_invoice_history
+  endpoint:
+    path: /plans/{planKey}/invoices
+    method: GET
+    data_selector: _embedded
+    params:
+      fromDate: ''
+      toDate: ''
+- name: get_plan_statement
+  endpoint:
+    path: /plans/{planKey}/statement/{statementKey}
+    method: GET
+    data_selector: _links
+    params: {}
+- name: search_claimable_items
+  endpoint:
+    path: /plans/{planKey}/items
+    method: GET
+    data_selector: _links
+    params:
+      query: ''
+      page: ''
+- name: get_member_most_used_items
+  endpoint:
+    path: /members/{memberKey}/itemusages
+    method: GET
+    data_selector: _embedded
+    params: {}
+- name: Create Payee Invoice
+  endpoint:
+    path: /planmanagers/{planManagerKey}/members/{memberKey}/invoices
+    method: POST
+- name: Submit Payee Invoice
+  endpoint:
+    path: /invoices/{invoiceKey}/submit
+    method: POST
+- name: Get an Invoice
+  endpoint:
+    path: /invoices/{invoiceKey}
+    method: GET
+    data_selector: invoice
+    params: {}
+- name: Authorize an Invoice
+  endpoint:
+    path: /invoices/{invoiceKey}/authorize
+    method: POST
+    data_selector: claims
+    params: {}
+- name: cancelled_invoice
+  endpoint:
+    path: /invoices/{invoice_id}
+    method: GET
+    data_selector: data
+- name: Get a List of Payments
+  endpoint:
+    path: /payments
+    method: GET
+    data_selector: payments
+    params:
+      directEntryFileUKey: UUID
+- name: root
+  endpoint:
+    path: /
+    method: GET
+    data_selector: _links
+- name: invoice
+  endpoint:
+    path: /billers/{billerId}/invoice
+    method: POST
+- name: claims
+  endpoint:
+    path: /claims
+    method: POST
+    data_selector: claims
+    params: {}
+- name: invoices
+  endpoint:
+    path: /invoices/{invoiceId}/cancel
+    method: POST
+    data_selector: data
+    params: {}
+- name: invoiceClaimingStatusUpdated
+  endpoint:
+    path: '{onInvoiceClaimingStatusUpdated}'
+    method: WEBHOOK
+    data_selector: data
+    params: {}
+- name: invoicePaymentStatusUpdated
+  endpoint:
+    path: '{onInvoicePaymentStatusUpdated}'
+    method: WEBHOOK
+    data_selector: data
+    params: {}
+- name: Submit Predetermination
+  endpoint:
+    path: /billers/{billerId}/predetermination
+    method: POST
+- name: Member Verification
+  endpoint:
+    path: /members/verify
+    method: POST
+- name: Item Search
+  endpoint:
+    path: /items/search
+    method: POST
+- name: Get Biller Details
+  endpoint:
+    path: /billers/{billerId}
+    method: GET
+    data_selector: merchantId
+    params: {}
+- name: Get Terminals
+  endpoint:
+    path: /billers/{billerId}/terminals
+    method: GET
+    data_selector: terminals
+    params: {}
+- name: Get Terminal Details
+  endpoint:
+    path: /billers/{billerId}/terminals/{terminalId}
+    method: GET
+    data_selector: terminalId
+    params: {}
+- name: Submit Terminal Test
+  endpoint:
+    path: /billers/{billerId}/terminals/{terminalId}/test
+    method: POST
+    data_selector: terminalProcessId
+    params: {}
+- name: Submit Sale
+  endpoint:
+    path: /billers/{billerId}/terminals/{terminalId}/sales
+    method: POST
+    data_selector: terminalProcessId
+    params: {}
+- name: Submit Refund
+  endpoint:
+    path: /billers/{billerId}/terminals/{terminalId}/refunds
+    method: POST
+    data_selector: terminalProcessId
+    params: {}
+- name: retrieve_plan_type
+  endpoint:
+    path: /billers/{billerId}/members/{memberNumber}/plan/type/retrieve
+    method: POST
+    data_selector: data
+    params: {}
+- name: retrieve_plan
+  endpoint:
+    path: /billers/{billerId}/members/{memberNumber}/plans/retrieve
+    method: POST
+    data_selector: data
+    params: {}
+- name: budgets
+  endpoint:
+    path: /billers/{billerId}/members/{memberNumber}/budgets/retrieve
+    method: POST
+    data_selector: data
+    params:
+      surname: Rogers
+      dateOfBirth: '2000-01-21'
+- name: budget_type_level_details
+  endpoint:
+    path: /api/budget_type_level_details
+    method: GET
+    data_selector: budgetTypeLevelDetails
+- name: create_service_booking
+  endpoint:
+    path: /billers/{billerId}/members/{memberNumber}/serviceBookings
+    method: POST
+    data_selector: data
+    params: {}
+- name: edit_service_booking
+  endpoint:
+    path: /billers/{billerId}/members/{memberNumber}/serviceBookings/{serviceBookingNumber}
+    method: PATCH
+    data_selector: data
+    params: {}
+- name: extend_service_booking
+  endpoint:
+    path: /billers/{billerId}/members/{memberNumber}/serviceBookings/{serviceBookingNumber}/extenddate
+    method: PATCH
+    data_selector: data
+    params: {}
+- name: delete_service_booking
+  endpoint:
+    path: /billers/{billerId}/members/{memberNumber}/serviceBookings/{serviceBookingNumber}
+    method: DEL
+    data_selector: data
+    params: {}
+- name: retrieve_service_booking
+  endpoint:
+    path: /billers/{billerId}/members/{memberNumber}/serviceBookings/{serviceBookingNumber}/retrieve
+    method: POST
+    data_selector: data
+    params: {}
+- name: retrieve_service_bookings
+  endpoint:
+    path: /billers/{billerId}/members/{memberNumber}/serviceBookings/retrieve
+    method: POST
+    data_selector: data
+    params: {}
+- name: service_booking_updated
+  endpoint:
+    path: /ndis/member/serviceBookings/updated
+    method: POST
+    data_selector: data.serviceBooking
+    params: {}
+- name: subscribe_to_member
+  endpoint:
+    path: /billers/{billerId}/members/{memberNumber}/subscribe
+    method: POST
+- name: unsubscribe_from_member
+  endpoint:
+    path: /billers/{billerId}/members/{memberNumber}/unsubscribe
+    method: POST
+- name: request_subscribed_members
+  endpoint:
+    path: /billers/{billerId}/memberSubscriptions
+    method: POST
+- name: root
+  endpoint:
+    path: /
+    method: GET
+- name: invoice
+  endpoint:
+    path: /invoices
+    method: POST
+    data_selector: data
+    params: {}
+- name: invoice_submitted
+  endpoint:
+    path: /webhooks/invoice-submitted
+    method: POST
+    data_selector: data
+    params: {}
+- name: invoice_cancellation_requested
+  endpoint:
+    path: /webhooks/invoice-cancellation-requested
+    method: POST
+    data_selector: data
+    params: {}
+- name: invoice_status_updated
+  endpoint:
+    path: /invoices/status-updated
+    method: POST
+    data_selector: programInvoiceId
+    params: {}
+- name: Predetermination Submitted
+  endpoint:
+    path: /onPredeterminationSubmitted
+    method: WEBHOOK
+    data_selector: data
+    params: {}
+- name: Predetermination Status Updated
+  endpoint:
+    path: /predeterminationResponse
+    method: POST
+    data_selector: ''
+    params: {}
+- name: Member Validation Requested
+  endpoint:
+    path: /onMemberValidationRequested
+    method: WEBHOOK
+    data_selector: data
+    params: {}
+- name: Member Status Updated
+  endpoint:
+    path: /memberStatusUpdated
+    method: POST
+    data_selector: ''
+    params: {}
+- name: payment_invoices
+  endpoint:
+    path: /payments/{paymentId}/invoices
+    method: GET
+    data_selector: invoices
+    params:
+      paymentId: UUID
+- name: held_invoices
+  endpoint:
+    path: /payments/{paymentId}/invoices
+    method: GET
+    data_selector: invoices
+    params:
+      paymentId: UUID
+notes:
+- Each Plan Manager is considered a unique user of the API and will have their own
+  API credentials which should not be shared.
+- Webhook support for member creation and updates.
+- Asynchronous processes for member and biller registration.
+- The API provides data related to cancelled invoices.
+- Uses OAuth2 with authorization_code flow — requires setup of callback URL
+- The access_token lasts 60 minutes in production and sandbox.
+- Retrieve a new access_token at least 5 mins before it expires.
+- The provider can request a cancellation of an invoice at any time.
+- Webhook triggers for invoice updates may occur multiple times depending on the situation.
+- Not all programs support predeterminations, so any predeterminations sent for certain
+  programs will be ignored.
+- There will be different budget structures at Budget Type level
+- CORE will always be under flexible budget type
+- Capital & Capacity Building will always be under Stated budget type
+- Budget will be displayed as installment of Plan duration 3 Years
+- Webhook triggers whenever a service booking has been updated.
+- All connections to HICAPS APIs must be using TLS v1.2 or higher.
+- The invoice contains a collection of claims, which represent the line items on the
+  invoice.
+- The API supports various parameters for different services, such as medical, pharmacy,
+  ambulance, etc.
+errors:
+- 'HTTP 202: Request accepted for processing.'
+- 'HTTP 400: Bad request due to missing mandatory fields.'
+- 'HTTP 404: Resource not found.'
+- '200 OK: Response payload should include the requested data.'
+- '202 Accepted: HICAPS has accepted the request and will action.'
+- '4xx Client Error: The request has failed client input validation.'
+- '5xx Server Error: HICAPS is experiencing technical issues.'
+- Webhook needs to be replayed by HICAPS if errors occur.
+- '4xx Client Error: The request has failed client input validation'
+- '5xx Server Error: HICAPS is experiencing technical issues'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.sandbox.lanternpay.com
+source_metadata: null

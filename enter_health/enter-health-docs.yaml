@@ -1,0 +1,81 @@
+resources:
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: patient_demographics
+  endpoint:
+    path: /api/patient/demographics
+    method: GET
+    data_selector: data
+- name: claim_status
+  endpoint:
+    path: /api/claims/status
+    method: GET
+    data_selector: data
+- name: billing_data
+  endpoint:
+    path: /services/data/vXX.X/sobjects/BillingData
+    method: GET
+    data_selector: records
+- name: patient
+  endpoint:
+    path: /fhir/Patient
+    method: GET
+    data_selector: entry
+    params: {}
+- name: billing
+  endpoint:
+    path: /fhir/Billing
+    method: GET
+    data_selector: entry
+    params: {}
+- name: patient
+  endpoint:
+    path: /api/patient
+    method: GET
+    data_selector: records
+notes:
+- API is designed to meet the highest security and compliance standards, including
+  HIPAA, GDPR, and HITECH.
+- ENTER is HIPAA compliant and SOC 2 Type 2 certified.
+- Fees must be paid in advance, payment obligations are non-cancelable once incurred.
+- Service charge of 1.5% per month on past due balances.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Ensure HIPAA compliance during integration.
+- Real-time data flow between Epic and Enter.Health.
+- Uses OAuth2 with refresh token — requires setup of connected app in Enter.Health
+- FHIR APIs simplify integration through standardized, API-first frameworks.
+- Some objects may return nulls in deeply nested fields
+errors:
+- 'Payment Method verification failed: Ensure your Payment Method is valid.'
+- 'Unauthorized: Check your authentication credentials.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '401 Unauthorized: Check OAuth token.'
+- '500 Internal Server Error: Contact support.'
+- '400 Bad Request: Check request format and parameters.'
+- '404 Not Found: Verify endpoint and resource availability.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://app.enter.health
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+source_metadata: null

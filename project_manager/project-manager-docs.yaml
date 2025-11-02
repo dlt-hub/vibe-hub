@@ -1,0 +1,170 @@
+resources:
+- name: tasks
+  endpoint:
+    path: /api/data/tasks
+    method: GET
+    data_selector: data
+    params:
+      $top: integer
+      $skip: integer
+      $filter: string
+      $orderby: string
+      $expand: string
+- name: Task
+  endpoint:
+    path: /tasks
+    method: GET
+- name: Project
+  endpoint:
+    path: /api/data/projects
+    method: GET
+    data_selector: records
+- name: Task
+  endpoint:
+    path: /api/data/tasks
+    method: GET
+    data_selector: records
+- name: Discussion.LikeAComment
+  endpoint:
+    path: /api/data/comments/{commentId}/like
+    method: POST
+- name: Discussion.RemovesAThumbsupFromAComment
+  endpoint:
+    path: /api/data/comments/{commentId}/like
+    method: DELETE
+- name: Discussion.RemoveAComment
+  endpoint:
+    path: /api/data/comments/{commentId}
+    method: DELETE
+- name: TaskTodo.GetTodosForATask
+  endpoint:
+    path: /api/data/tasks/{taskId}/todos
+    method: GET
+- name: TaskTodo.CreateATodoForATask
+  endpoint:
+    path: /api/data/tasks/{taskId}/todos
+    method: POST
+- name: TaskTodo.UpdateATodo
+  endpoint:
+    path: /api/data/tasks/todos/{todoId}
+    method: PUT
+- name: TaskTodo.DeleteATodo
+  endpoint:
+    path: /api/data/tasks/todos/{todoId}
+    method: DELETE
+- name: project
+  endpoint:
+    path: /api/data/projects
+    method: POST
+    data_selector: data
+    params: {}
+- name: create_task_comment
+  endpoint:
+    path: /api/data/tasks/:taskId/comments
+    method: POST
+- name: update_task_field_value
+  endpoint:
+    path: /api/data/tasks/:taskId/fields/:fieldId/values
+    method: PUT
+    data_selector: data
+    params: {}
+- name: api_keys
+  endpoint:
+    path: /api/data/api-keys
+    method: GET
+    data_selector: data
+- name: api_key
+  endpoint:
+    path: /api/data/api-keys
+    method: POST
+    data_selector: data
+    params:
+      tokenName: string
+- name: revoke_all_api_keys
+  endpoint:
+    path: /api/data/api-keys/revoke-all
+    method: DELETE
+- name: tag
+  endpoint:
+    path: /api/data/tags/:tagId
+    method: PUT
+- name: tags
+  endpoint:
+    path: /api/data/tags
+    method: GET
+- name: risk_file
+  endpoint:
+    path: /api/data/risks/:riskId/files
+    method: POST
+    data_selector: data
+- name: tag
+  endpoint:
+    path: /api/data/tags
+    method: POST
+    data_selector: data
+    params: {}
+- name: task
+  endpoint:
+    path: /api/data/tasks/:taskId
+    method: GET
+    data_selector: data
+- name: task
+  endpoint:
+    path: /api/data/tasks/:taskId
+    method: PUT
+    data_selector: data
+- name: task
+  endpoint:
+    path: /api/data/tasks/:taskId
+    method: DELETE
+notes:
+- API keys are tied to workspaces, and are available to users with admin or global
+  admin roles only.
+- Users with more limited roles will not be able to create API keys.
+- Uses API Key for authentication.
+- Uses OAuth2 with refresh token — requires setup of connected app in Project Manager
+- Some endpoints may have rate limits
+- The ProjectManager API provides customized data models for each type of API.
+- The ProjectManager team monitors status of the application and API on https://status.projectmanager.com/
+- ProjectManager maintains information about its security certifications and policies
+  on https://trust.projectmanager.com/
+- Bearer authentication of the form `Bearer <token>`, where token is your auth token.
+- Bearer authentication of the form `Bearer <token>`
+- An API key is valid for a two-year period after it is created.
+- An API key is tied to the workspace that created it.
+- An API key is valid for a two year period after it is created.
+- Bearer authentication of the form 'Bearer <token>', where token is your auth token.
+- Bearer authentication of the form Bearer <token>, where token is your auth token.
+- 'AuthorizationBearer: Bearer authentication of the form `Bearer <token>`'
+- This API returns an error if your Update call includes too many changes in a single
+  API call. Please restrict usage to one change per API request.
+- This API will be deprecated and replaced with an improved API call in a future release.
+errors:
+- '401 Unauthorized: Recheck Bearer token'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400 Bad Request: Validation errors'
+- '401 Unauthorized: Invalid token'
+- '404 Not Found: Task or field not found'
+- '400 Bad Request: Check the API key creation parameters'
+- 200 Deleted
+- 'hasError: true'
+- 'statusCode: Continue'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '400 Bad Request: If the request is malformed or contains invalid data.'
+- '400: Bad Request'
+- '401: Unauthorized'
+- '404: Not Found'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.projectmanager.com
+  auth:
+    type: Bearer
+  headers:
+    x-integration-name: string
+  paginator:
+    type: offset
+    page_size_param: $top
+    default_page_size: 50
+source_metadata: null
