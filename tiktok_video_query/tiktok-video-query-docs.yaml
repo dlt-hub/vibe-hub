@@ -1,0 +1,335 @@
+resources:
+- name: query_videos
+  endpoint:
+    path: /v2/research/video/query/
+    method: POST
+    data_selector: ''
+    params:
+      fields: id,video_description,create_time,region_code,share_count,view_count,like_count,comment_count,music_id,hashtag_names,username,effect_ids,playlist_id,voice_to_text,is_stem_verified,favourites_count,video_duration,hashtag_info_list,sticker_info_list,effect_info_list,video_mention_list,video_label,video_tag
+- name: videos
+  endpoint:
+    path: /videos
+    method: GET
+    data_selector: data.videos
+    params:
+      start_date: '20210102'
+      end_date: '20210123'
+- name: events
+  endpoint:
+    path: /events
+    method: GET
+    data_selector: data
+    params: {}
+- name: user_info
+  endpoint:
+    path: /user/info
+    method: GET
+    data_selector: data
+- name: share
+  endpoint:
+    path: /share
+    method: POST
+- name: shareRequest
+  endpoint:
+    path: /share/request
+    method: POST
+    data_selector: response
+    params:
+      localIdentifiers: List of media
+      mediaType: .video
+      redirectURI: https://www.example.com/path
+      shareFormat: .greenScreen
+- name: share_request
+  endpoint:
+    path: /share/request
+    method: POST
+    data_selector: response
+    params:
+      shareFormat: .greenScreen
+- name: user_info
+  endpoint:
+    path: /v2/user/info/
+    method: GET
+    data_selector: data.user
+- name: video_list
+  endpoint:
+    path: /v2/video/list/
+    method: POST
+    data_selector: data.videos
+- name: video_list
+  endpoint:
+    path: /v2/video/list/
+    method: POST
+- name: video_query
+  endpoint:
+    path: /v2/video/query/
+    method: POST
+    params:
+      fields: id,cover_image_url,embed_link
+- name: creator_info
+  endpoint:
+    path: /v2/post/publish/creator_info/query/
+    method: POST
+    data_selector: data
+- name: video_upload
+  endpoint:
+    path: /v2/post/publish/video/init/
+    method: POST
+- name: photo_upload
+  endpoint:
+    path: /v2/post/publish/content/init/
+    method: POST
+- name: video_query
+  endpoint:
+    path: /v2/research/video/query/
+    method: POST
+    data_selector: data.videos
+    params:
+      start_date: start_date
+      end_date: end_date
+      max_count: max_count
+- name: user_info
+  endpoint:
+    path: /v2/research/user/info/
+    method: POST
+    data_selector: data
+    params:
+      fields: display_name,bio_description,avatar_url,is_verified,follower_count,following_count,likes_count,video_count
+- name: user_info
+  endpoint:
+    path: /v2/user/info/
+    method: GET
+    data_selector: data.user
+    params:
+      fields: open_id,union_id,avatar_url,display_name
+- name: video_list
+  endpoint:
+    path: /v2/video/list/
+    method: POST
+    data_selector: data.videos
+    params:
+      fields: id,title,video_description,duration,cover_image_url,embed_link
+      max_count: 20
+- name: video_query
+  endpoint:
+    path: /v2/video/query/
+    method: POST
+    data_selector: data.videos
+    params:
+      fields: id,cover_image_url,embed_link
+- name: embed
+  endpoint:
+    path: /oembed
+    method: GET
+    data_selector: embed_code
+    params:
+      url: ''
+- name: oembed
+  endpoint:
+    path: /oembed
+    method: GET
+    data_selector: version
+- name: user_info
+  endpoint:
+    path: /user/info/
+    method: POST
+    data_selector: data.user
+    params:
+      access_token: act.example12345Example12345Example
+      fields:
+      - open_id
+      - avatar_url
+- name: video_list
+  endpoint:
+    path: /video/list/
+    method: POST
+    data_selector: data.video_list
+    params:
+      access_token: act.example12345Example12345Example
+      fields:
+      - embed_link
+      max_count: 10
+- name: video
+  endpoint:
+    path: /video/list
+    method: GET
+    data_selector: video_list
+- name: query_videos
+  endpoint:
+    path: /video/query/
+    method: POST
+    data_selector: data.videos
+    params:
+      scope: video.list
+- name: initialize_post
+  endpoint:
+    path: /v2/post/publish/video/init/
+    method: POST
+    data_selector: post_info
+    params: {}
+- name: fetch_status
+  endpoint:
+    path: /v2/post/publish/status/fetch/
+    method: POST
+    data_selector: data
+    params: {}
+- name: video_upload
+  endpoint:
+    path: /v2/post/publish/inbox/video/init/
+    method: POST
+- name: video_upload
+  endpoint:
+    path: /share/video/upload/
+    method: POST
+    data_selector: data
+    params: {}
+- name: video_upload
+  endpoint:
+    path: /share/video/upload
+    method: POST
+notes:
+- The end_date must be no more than 30 days after the start_date.
+- Some objects may return nulls in deeply nested fields
+- Access to additional user data requires approval from TikTok for Developers website.
+- The aspect ratio of images or videos should be between 1/2.2 and 2.2.
+- A maximum of 35 images can be shared.
+- A maximum of 12 videos can be shared.
+- You must be authorized to use any TikTok brand logos and watermarks.
+- This only applies to single video or image sharing. If multiple videos or images
+  are shared, this field is ignored.
+- For videos, an extra step is presented to users to trim the shared video if needed
+  before the recording.
+- If TikTok fails to apply the Green Screen effect, we'll present a dialog for users
+  to continue with regular sharing.
+- Requires granted user.info.basic and video.list scopes for the app
+- Schedule background jobs to keep the access token up-to-date using Refresh Token
+- All content posted by unaudited clients will be restricted to private viewing mode.
+- Your API client must undergo an audit to lift the restrictions on content visibility.
+- Use /v2/post/publish/content/init/ to upload photos instead of /v2/post/publish/inbox/video/init/
+- The max count of TikTok videos in response defaults to 10 and has a maximum of 100.
+- Username is not required.
+- The cover_image_url will expire after some time
+- Some browsers in CN will forbid the use of TikTok's custom player and show the default
+  player provided by the browser.
+- Callback URL should be registered in the client application on TikTok Developer
+  Portal.
+- Webhook endpoints might receive the same event more than once.
+- Needs relevant scopes to be authorized by the TikTok user through the authorization
+  flow.
+- The maximum number of videos that will be returned from each page is 20.
+- The cover image link has a TTL of 6 hours.
+- Number of video ids should not be larger than 20 at a time.
+- Users must click on inbox notifications to continue the editing flow in TikTok and
+  complete the post.
+- The upload_url is valid for one hour after issuance. The upload must be completed
+  in this time range.
+- This Share Video API is now deprecated and will sunset on September 10th, 2023.
+- Sharing developer accounts and login credentials is discouraged.
+- Do not create your own organization for research projects; one will be created automatically
+  upon approval.
+errors:
+- '400 Bad Request: Check the request parameters.'
+- '429 Too Many Requests: Throttle API calls.'
+- '401 Unauthorized: Verify OAuth token.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '0: Shared success.'
+- '-1: Common error type e.g. network error.'
+- '-2: User Canceled share in TikTok.'
+- '-3: User publish content failed.'
+- '-4: Share denied.'
+- '-5: Unsupported.'
+- 'noError: Share succeeded!'
+- 'Share Failed! Error Code: {errorCode} Error Message: {errorMessage} Share State:
+  {shareState}'
+- 'ok: Success response'
+- '200 OK: Successful request'
+- '401 Unauthorized: Invalid or expired authorization token'
+- If a 200 HTTP status code is not returned, TikTok assumes that the delivery was
+  unsuccessful.
+- TikTok retries the delivery of event notification for up to 72 hours using exponential
+  backoff.
+- 'error: Object'
+- 'REQUEST_LIMIT_EXCEEDED: Each user access_token is limited to 6 requests per minute.'
+- 'invalid_param: Check error message for details.'
+- 'spam_risk_too_many_posts: The daily post cap from the API is reached for the current
+  user.'
+- 'spam_risk_user_banned_from_posting: The user is banned from making new posts.'
+- 'reached_active_user_cap: The daily quota for active publishing users from your
+  client is reached.'
+- 'unaudited_client_can_only_post_to_private_accounts: Unaudited clients can only
+  post to a private account.'
+- 'url_ownership_unverified: To use PULL_FROM_URL as the video transfer method, the
+  developer must verify the ownership of the URL prefix or domain.'
+- 'privacy_level_option_mismatch: privacy_level is not specified or not among the
+  options from the privacy_level_options returned in /publish/creator_info/query/
+  API.'
+- 'access_token_invalid: The access_token is invalid or has expired.'
+- 'scope_not_authorized: The access_token does not bear user''s grant on video.publish
+  scope'
+- 'rate_limit_exceeded: Your request is blocked due to exceeding the API rate limit.'
+- '400: invalid_publish_id'
+- '400: token_not_authorized_for_specified_publish_id'
+- '401: access_token_invalid'
+- '429: rate_limit_exceeded'
+- '5xx: internal_error'
+- 'file_format_check_failed: Unsupported media format. See [Video Restrictions](/doc/content-posting-api-media-transfer-guide#)
+  and [Photo Restrictions.](/doc/content-posting-api-media-transfer-guide#image_restrictions)'
+- 'duration_check_failed: Video does not meet our duration restrictions. See [Video
+  Restrictions](/doc/content-posting-api-media-transfer-guide#).'
+- 'frame_rate_check_failed: Unsupported frame rate. See [Video Restrictions](/doc/content-posting-api-media-transfer-guide#).'
+- 'picture_size_check_failed: Upsupported picture size. See [Video Restrictions](/doc/content-posting-api-media-transfer-guide#)
+  and Photo Restrictions.'
+- 'internal: Some parts of the TikTok server may currently be unavailable. This is
+  a retryable error.'
+- 'video_pull_failed: The TikTok server encountered a connection error while downloading
+  the specified video resource, or the download is terminated since it can not be
+  completed within the one-hour timeout. Check if the supplied URL is publicly accessible
+  or bandwidth-limited. If developers are certain that the URL is valid, a retry is
+  recommended.'
+- 'photo_pull_failed: The TikTok server encountered a connection error while downloading
+  the specified photo resource, or the download is terminated since it can not be
+  completed within the one-hour timeout. Check if the supplied URL is publicly accessible
+  or bandwidth-limited. If developers are certain that the URL is valid, a retry is
+  recommended.'
+- 'publish_cancelled: Developers can cancel an ongoing download. After a successful
+  cancellation, developers will receive a webhook containing this error reason.'
+- 'auth_removed: This TikTok creator has removed the developer''s access while the
+  download/uploading is being processed, so the publishing effort must be terminated.
+  Retry should not be done.'
+- 'spam_risk_too_many_posts: This TikTok creator has created too many posts within
+  the last 24 hours via OpenAPI. Try to post the videos from the TikTok Mobile App.'
+- 'spam_risk_user_banned_from_posting: TikTok TnS team has banned the creator from
+  making new posts. Retry should not be done.'
+- 'spam_risk_text: TikTok TnS team determines that the description text has risky
+  or spammy contents, so the publishing attempt is terminated. Retry should not be
+  done.'
+- 'spam_risk: TikTok TnS team determines the publishing request is risky, so the publishing
+  attempt is terminated. Retry should not be done.'
+- '400: invalid_param: Check error message for details.'
+- '403: spam_risk_too_many_pending_share: The daily upload cap from the API is reached
+  for the current user. To reduce spamming, TikTok limits the number of videos that
+  can be uploaded via API that are not pending approval and posting by the creator.
+  There may be at most 5 pending shares within any 24-hour period.'
+- '403: spam_risk_user_banned_from_posting: The user is banned from making new posts.'
+- '401: access_token_invalid: The access_token for the TikTok user is invalid or has
+  expired.'
+- '429: rate_limit_exceeded: Your request is blocked due to exceeding the API rate
+  limit.'
+- 'error_code: Error code returned in the response'
+- 'error_msg: Error description returned in the response'
+- '20002: The user did not authorize the scope required for completing this request.'
+- Limit on the number of invitations administrators can send.
+- An organization may only have up to 10 members by default.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://open.tiktokapis.com
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+  headers:
+    Content-Type: application/json
+source_metadata: null

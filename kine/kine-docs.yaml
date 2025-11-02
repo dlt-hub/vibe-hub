@@ -1,0 +1,78 @@
+resources:
+- name: account_balances
+  endpoint:
+    path: /account/api/account-balances
+    method: POST
+    data_selector: data
+- name: leverage_adjustment
+  endpoint:
+    path: /account/api/update-leverage
+    method: POST
+    data_selector: data
+- name: isolated_transfer
+  endpoint:
+    path: /account/api/isolated-transfer
+    method: POST
+    data_selector: data
+    params: {}
+- name: max_isolated_transfer_out
+  endpoint:
+    path: /account/api/max-isolated-transfer-out
+    method: GET
+    data_selector: data
+    params: {}
+- name: account_history
+  endpoint:
+    path: /account/api/account-history
+    method: POST
+    data_selector: data
+    params: {}
+notes:
+- Rate limit is 5 requests per second
+- Required permission for all endpoints is 'Trade'
+errors:
+- '31102: Max OI exceeded'
+- '31103: Less than min OI'
+- '31104: Invalid symbol'
+- '31105: Quantity precision error'
+- '31106: Price precision error'
+- '31107: No position for one-click liquidation'
+- '31108: Invalid parameter'
+- '31109: Max OI per trade exceeded'
+- '31110: Max OI per user exceeded'
+- '31111: System max OI per symbol exceeded'
+- '31112: Max OI by risk rate exceeded'
+- '31113: Symbol not enabled'
+- '31201: Can''t place order when settlement'
+- '31202: Invalid amount'
+- '31203: Invalid direction'
+- '31204: Illegal client order ID'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck API key or signature'
+- '400: Bad Request -- Your request is invalid.'
+- '401: Unauthorized -- Your API key is wrong.'
+- '403: Forbidden -- The requested is hidden for administrators only.'
+- '404: Not Found -- The specified endpoint could not be found.'
+- '405: Method Not Allowed -- You tried to access a endpoint with an invalid method.'
+- '406: Not Acceptable -- You requested a format that isn''t json.'
+- '418: I''m a teapot.'
+- '429: Too Many Requests -- Your requests exceeded the rate limit.'
+- '500: Internal Server Error -- We had a problem with our server. Try again later.'
+- '503: Service Unavailable -- We''re temporarily offline for maintenance. Please
+  try again later.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.kine.exchange
+  auth:
+    type: signature
+    location: header
+    header_name: KINE-API-ACCESS-KEY
+  headers:
+    KINE-API-ACCESS-KEY: your_api_key
+    KINE-API-TS: timestamp
+    KINE-API-SIGNATURE: your_signature
+  paginator:
+    type: offset
+    default_page_size: 200
+source_metadata: null

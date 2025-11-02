@@ -1,0 +1,401 @@
+resources:
+- name: chat_completion
+  endpoint:
+    path: /v1/chat/completions
+    method: POST
+    data_selector: choices
+    params: {}
+- name: volume
+  endpoint:
+    path: /volumes
+    method: GET
+    data_selector: volumes
+- name: attach_volume
+  endpoint:
+    path: /attach_volume
+    method: POST
+    data_selector: attachment_info
+- name: detach_volume
+  endpoint:
+    path: /detach_volume
+    method: POST
+    data_selector: detachment_info
+- name: instance
+  endpoint:
+    path: /instance-management
+    method: GET
+    data_selector: instances
+    params: {}
+- name: snapshot
+  endpoint:
+    path: /create/snapshot
+    method: POST
+    data_selector: image
+    params: {}
+- name: instance
+  endpoint:
+    path: /create/instance
+    method: POST
+    data_selector: instance
+    params: {}
+- name: gpu_instances
+  endpoint:
+    path: /api/gpu_instances
+    method: GET
+    data_selector: instances
+    params: {}
+- name: gpu_flavors
+  endpoint:
+    path: /api/gpu_flavors
+    method: GET
+    data_selector: flavors
+    params: {}
+- name: Jetstream2 (CPU only)
+- name: Jetstream2 Large Memory
+- name: Jetstream2 GPU
+- name: Jetstream2 Storage
+- name: CPU Instances
+  endpoint:
+    path: /jetstream2/cpu_instances
+    method: GET
+    data_selector: instances
+    params: {}
+- name: Large Memory Instances
+  endpoint:
+    path: /jetstream2/large_memory_instances
+    method: GET
+    data_selector: instances
+    params: {}
+- name: trial_allocation
+  endpoint:
+    path: /trial/allocation
+    method: GET
+    data_selector: allocations
+    params: {}
+- name: ACCESS allocations
+  endpoint:
+    path: /allocations
+    method: GET
+    data_selector: allocations
+    params: {}
+- name: allocations_overview
+  endpoint:
+    path: /allocations/overview
+    method: GET
+    data_selector: records
+- name: usage_estimation_calculator
+  endpoint:
+    path: /estimator
+    method: GET
+    data_selector: records
+- name: supplement_request
+  endpoint:
+    path: /manage_allocations
+    method: GET
+    data_selector: supplement_resources
+    params: {}
+- name: Volumes
+  endpoint:
+    path: /volumes
+    method: GET
+    data_selector: records
+- name: Manila Shares
+  endpoint:
+    path: /manila
+    method: GET
+    data_selector: records
+- name: Object Store
+  endpoint:
+    path: /objectstore
+    method: GET
+    data_selector: records
+- name: Volumes
+  endpoint:
+    path: /volumes
+    method: GET
+- name: manila_share
+  endpoint:
+    path: /manila/shares
+    method: GET
+    data_selector: shares
+    params: {}
+- name: add_user_to_vm
+  endpoint:
+    path: /add_user
+    method: POST
+    data_selector: user_creation
+    params: {}
+- name: Web Desktop
+  endpoint:
+    path: /create_instance
+    method: GET
+    data_selector: session
+    params: {}
+- name: Remote SSH
+  endpoint:
+    path: /ssh_instance
+    method: GET
+    data_selector: session
+    params: {}
+- name: Jupyter Web Desktop
+  endpoint:
+    path: /jupyter/web/desktop
+    method: GET
+- name: Jupyter Remote
+  endpoint:
+    path: /jupyter/remote
+    method: GET
+- name: software
+  endpoint:
+    path: /software
+    method: GET
+    data_selector: records
+    params: {}
+- name: subnet
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Subnet
+    method: GET
+    data_selector: records
+    params: {}
+- name: terraform_subnet1
+  endpoint:
+    path: /openstack/networking/subnet/v2/terraform_subnet1
+    method: POST
+    data_selector: resource
+    params:
+      cidr: 192.168.0.0/24
+      enable_dhcp: true
+      ip_version: 4
+      name: terraform_subnet1
+      no_gateway: false
+- name: load_balancer
+  endpoint:
+    path: /LoadBalancers
+    method: POST
+    data_selector: load_balancer
+    params:
+      subnet: auto_allocated_network
+      admin_state_up: 'Yes'
+- name: listener
+  endpoint:
+    path: /Listeners
+    method: POST
+    data_selector: listener
+    params:
+      protocol: HTTP
+      port: 80
+- name: pool
+  endpoint:
+    path: /Pools
+    method: POST
+    data_selector: pool
+    params:
+      algorithm: ROUND_ROBIN
+- name: health_monitor
+  endpoint:
+    path: /HealthMonitors
+    method: POST
+    data_selector: health_monitor
+    params:
+      type: HTTP
+      delay: 5
+      timeout: 3
+      max_retries: 3
+      http_method: GET
+      url_path: /
+- name: llama_cpp_server
+  endpoint:
+    path: /llama-cpp/server
+    method: POST
+    data_selector: model
+    params: {}
+- name: open_webui
+  endpoint:
+    path: /open-webui/serve
+    method: POST
+    data_selector: service
+    params: {}
+- name: llama_service
+  endpoint:
+    path: /v1
+    method: POST
+    data_selector: response
+    params: {}
+- name: chat_completions
+  endpoint:
+    path: /chat/completions
+    method: POST
+- name: llama_4_scout_completions
+  endpoint:
+    path: /llama-4-scout/v1/completions
+    method: GET
+notes:
+- Access is restricted to Jetstream2 or IU Research Cloud networks and instances,
+  but can be tunneled through from external computers.
+- The service runs on an NVIDIA Grace Hopper server with an H100 GPU, supporting up
+  to 4 simultaneous requests.
+- Uses OAuth2 with refresh token — requires setup of connected app in Jetstream2
+- Jetstream2 maintains a system status and announcement site at https://jetstream.status.io
+- In order to participate, you must first have an active allocation on Jetstream2.
+- Leave as default (20 GB)
+- Leave this at 1
+- Select Yes to enable the Web Desktop.
+- Leave as None for now.
+- Web Shell is a command line interface (CLI).
+- The web desktop will not be available if you did not select to enable web desktop
+  during instance creation.
+- You can attach multiple volumes to the same instance, but each volume can only attach
+  to one instance at a time.
+- You can create a snapshot in the same instance action menu where you shelved your
+  instance.
+- If the ‘Create Instance’ option is greyed out that means the image hasn’t finished
+  building yet.
+- Jetstream2 is meant primarily for interactive research, small scale processing on
+  demand, or as the backend to science gateways to send research jobs to other HPC
+  or HTC resources.
+- Allocations will only be awarded on the primary cloud by default.
+- Connections from commercial/commodity internet may not be as fast as those from
+  Internet2 sites.
+- Some GUI interfaces release IPs by default when a VM is deleted.
+- Uses BGP for routing and delivery of packets across the cluster network
+- No bridging or explicitly-defined shared subnets between connected switches
+- Use ACCESS CI credentials if you’re having trouble authenticating
+- It can take up to four hours for users added to an allocation to become active.
+- Supplements only add SUs. If you need more time, you need an extension or renewal
+  (preferred).
+- You must explicitly have access to the Jetstream2-GPU resource to access GPUs.
+- Multi-GPU flavors grant you access to the combined resources of the cards, all of
+  which launch on a single node.
+- There is a known issue with suspending GPU instances with the version of libvirt
+  Jetstream2 is using for virtualization. DO NOT SUSPEND GPU instances.
+- Instances will not reboot, but they will apply any update marked as a security update.
+- Always run updates before taking snapshots so your new instances will have the latest
+  patches in place.
+- It is possible to configure automatic DNS hostnames for instances in the projects.jetstream-cloud.org
+  subdomain.
+- Second level “designer” domains like “myresearchproject.org” or “ourcoolproject.info”
+  would need to be purchased from an ICANN-accredited registrar.
+- Storage defaults to 1 TB.
+- There are no restrictions on runtime for the Jetstream2 CPU resource.
+- Jetstream2 GPU and Jetstream2 Large Memory may have runtime restriction placed at
+  a future date.
+- SUSPENDED instances will be charged .75 of their normal SU value. (75%)
+- STOPPED instances will be charged 0.50 of their normal SU value. (50%)
+- SHELVED instances will not be charged SUs. (0%)
+- Usage reporting is not in real time. There may be a delay of 12-24 hours for usage
+  reporting.
+- The three instance types are all separate ACCESS resources.
+- m3.3xl are not available by default. This flavor is available by submitting a request
+  to help@jetstream-cloud.org with proper justification.
+- Jetstream2 instance types, flavors, and associated policies are subject to change
+  in the future.
+- If you are using a partial-GPU flavor, and the remainder of the underlying physical
+  GPU is idle, your instance may provide higher compute performance than the flavor
+  strictly allots.
+- Jetstream2 quotas are currently under review as we determine how to make them best
+  work with the new allocation types.
+- Default Storage is 1TB (1000 GB) of Jetstream2 Storage quota.
+- Jetstream2 does not provide application-specific featured images.
+- These featured images will evolve over time.
+- Microsoft Windows is not officially supported on Jetstream2.
+- You will need to bring your own license.
+- RDP requires your instance to have a public (Floating) IP associated with it.
+- 'Access to Jetstream2 is available solely through Advanced Cyberinfrastructure Coordination
+  Ecosystem: Services & Support (ACCESS) allocations.'
+- You must be on a valid allocation or the PI of a valid allocation to have access
+  to Jetstream2.
+- 90 days of usage on the main Jetstream2 cloud at Indiana University
+- 1 m3.tiny (single core) or 1 m3.small (2-core) virtual machine instance
+- 1 virtual machine backup snapshot per instance
+- 10 GB disk external storage volume
+- Limits are intrinsic to the allocation and cannot be adjusted
+- Trial allocation will expire after 90 days and resources will be deleted 10 days
+  after expiration
+- It can take up to four hours for allocations or users to become active AFTER your
+  receive the email notification.
+- Allow 1-2 business days for your application to go through the approval process.
+- It can take up to 4 hours for any users added to an allocation to become active.
+- Supplements only add SUs/storage. If you need more time on your allocation, you
+  need to pursue a renewal or extension.
+- Extensions only add time. If you need more or different resources, you need to pursue
+  a supplement or use additional ACCESS credits.
+- A renewal is ALWAYS preferred over an extension.
+- Only the PI is automatically added to resources like Jetstream2 resources.
+- Under-budgeting and running out of SUs is not the end of the world!
+- 'If you intend to work on your instance for a quarter of an 8-hour work day, but
+  not on the weekends, then you might plug the following into the Usage Estimation
+  Calculator to budget for the year: 2 hours/day, 5 days/week, and 52 total weeks.'
+- Jetstream2 storage is an ACCESS-allocated resource.
+- Volumes can only be attached to a single instance at a time.
+- Manila Shares can be mounted on many instances at once.
+- Volumes can only be detached if they are not in active use by a process on the instance
+- Users should regularly backup any critical data contained on Volumes as no automated
+  backup functions are currently provided by Jetstream
+- If not using a Jetstream2 Featured image, ensure 'ceph-commons' and 'ceph-fuse'
+  packages are installed.
+- The object store is only available via Horizon and the CLI presently.
+- Firewalls are not enabled by default on Jetstream2 instances.
+- We encourage keeping your instances patched, rebooting as needed for any kernel
+  or glibc patches, limiting access to all services as much as possible.
+- All steps to be run as root or using sudo.
+- Requires enabling the Web Desktop when creating the instance.
+- Use Remote method for terminal access without Web Desktop.
+- Open the port in the firewall (one-time setup)
+- If 8888 is in use, Jupyter will auto-increment (8889, 8890, …)
+- The Jetstream2 Software Collection is an ongoing effort, and the list of available
+  modules is subject to change over time as the Jetstream2 team deems fit.
+- Uses Lmod to load and unload software
+- Requires setup of '/etc/fstab' for software collection mount
+- Jetstream2 instances created through Exosphere may be deployed with a Web Desktop.
+- Software licenses are generally the responsibility of the user to obtain, coordinate,
+  implement, and maintain.
+- Some licenses may require users to coordinate with Jetstream staff to allow for
+  proper configuration.
+- If you need licenses for any other software that is not provided through the Jetstream2
+  shared software store then you will have to provide your own license.
+- Limited access to licensed software. Jetstream license servers restrict access to
+  only valid Jetstream IP addresses.
+- It is also the responsibility of the PI and those placed on each allocation to ensure
+  that they are complying with the terms of any software license they are using on
+  Jetstream2.
+- Some countries have some heightened control over certain types of research and technology.
+- Jetstream2 will not be accessible to IP ranges from certain countries.
+- Keep directories as small as possible - breaking up data into chunks in multiple
+  directories when possible.
+- Don’t do expensive operations like *stat* or other file metadata operations on large
+  directories if you don’t need to.
+- Use symlinks instead of hard links.
+- Jetstream2 supports Docker and Apptainer/Singularity.
+- NVIDIA Docker2 container environment is included for GPU usage.
+- Requires setup of openrc file for authentication
+- Some resources may require additional configuration
+- It’s an unlimited-use API that we provide at no cost to our communities.
+- Written in early 2025, may contain errors.
+- LLMs can be described in terms that apply to human behavior, which is a convenient
+  shorthand.
+- Uses Open Web UI for chat interface.
+- Currently, this may result in an error or no results found, as DuckDuckGo rate-limits
+  our web search API calls.
+errors:
+- '401 Unauthorized: Recheck API key or permissions'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'I’m getting an error trying to log into Exosphere or Horizon: To use Jetstream2,
+  your account must belong to an ACCESS allocation that is active on a Jetstream2
+  resource.'
+- Jetstream2 regularly exhausts its capacity to create instances of the largest flavors
+  of each resource type. If you plan to use these, check the availability dashboard
+  to ensure there is space.
+- '401 Unauthorized: Check OAuth credentials or token expiration'
+- '401 Unauthorized: Recheck API token or access method'
+auth_info:
+  mentioned_objects:
+  - openrc
+  - OAuthToken
+  - AuthProvider
+client:
+  base_url: https://allocations.access-ci.org
+  auth:
+    type: oauth2
+source_metadata: null

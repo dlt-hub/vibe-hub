@@ -1,0 +1,150 @@
+resources:
+- name: verify_email
+  endpoint:
+    path: /v1.1/email/verify
+    method: GET
+    data_selector: email
+    params:
+      email: required
+      timeout: 10
+- name: credits
+  endpoint:
+    path: /v1.1/credits
+    method: GET
+    data_selector: credits
+- name: verify_email
+  endpoint:
+    path: /v1.1/email/verify
+    method: GET
+    data_selector: ''
+    params: {}
+- name: email_verification
+  endpoint:
+    path: /verify/email
+    method: POST
+    data_selector: result
+    params: {}
+- name: create_batch_request
+  endpoint:
+    path: /v1.1/email/verify/batch
+    method: POST
+    data_selector: null
+    params: {}
+- name: check_status
+  endpoint:
+    path: /v1.1/email/verify/batch/{ID}
+    method: GET
+    data_selector: null
+    params: {}
+- name: download_results
+  endpoint:
+    path: /v1.1/email/verify/batch/{ID}/download?download=all
+    method: GET
+    data_selector: null
+    params: {}
+- name: check_status
+  endpoint:
+    path: /v1.1/email/verify/batch/{batchId}
+    method: GET
+- name: delete_request
+  endpoint:
+    path: /v1.1/email/verify/batch/{batchId}
+    method: DELETE
+- name: finish_batch
+  endpoint:
+    path: /v1.1/email/verify/batch/{batchId}/finish
+    method: POST
+    data_selector: status
+- name: get_results
+  endpoint:
+    path: /v1.1/email/verify/batch/{batchId}/download
+    method: GET
+    data_selector: records
+- name: batch_sync
+  endpoint:
+    path: /v1.1/email/verify/batch/sync
+    method: POST
+    data_selector: results
+- name: toxicity_list_job
+  endpoint:
+    path: /v1/toxicity/list
+    method: POST
+    data_selector: id
+    params: {}
+- name: toxicity_list_job_status
+  endpoint:
+    path: /v1/toxicity/list/{id}
+    method: GET
+    data_selector: id
+    params: {}
+- name: delete_toxicity_list_job
+  endpoint:
+    path: /v1/toxicity/list/{id}
+    method: DELETE
+    data_selector: '{}'
+    params: {}
+- name: toxicity_list_results
+  endpoint:
+    path: /v1/toxicity/list/{id}/data
+    method: GET
+    data_selector: records
+- name: verify_domain
+  endpoint:
+    path: /v1.1/domain
+    method: GET
+    data_selector: domain
+    params:
+      domain: required
+notes:
+- Real-Time Email Verification API is limited to 1000 requests per minute by default.
+- Higher limit can be configured in special cases.
+- Limit of 10 requests per minute is available.
+- All calls made to the Bouncer API have to be made using HTTPS.
+- batches are processed sequentially, so when batch with 100000 emails is sent next
+  batch with 1000 emails will have to wait
+- Statuses include deliverable, undeliverable, risky, or unknown.
+- Default settings allow verification of 100-200k email addresses per hour.
+- Single batch can process up to 100,000 emails; recommended size is between 1000-10000
+  emails.
+- Batch can also be created using txt file, with one email per file.
+- Default settings allow our customers to verify 100k email addresses per hour
+- Requests should be sent sequentially with delay between requests of 5sec to 10min
+- Results are kept up to 24h in Bouncer
+- API allows creating of 10 lists per minute.
+- One credit will be charged for each domain verification.
+errors:
+- '200: OK'
+- 'Rate limit exceeded: Throttle requests to stay within 1000 requests per minute.'
+- '401 Unauthorized: Recheck API key'
+- '429: Rate limit exceeded'
+- 200 Success
+- 400 Bad Request
+- 401 Unauthorized
+- 402 Payment Required
+- 403 Forbidden
+- 404 Not Found
+- 429 Too Many Requests
+- 503 Service Unavailable
+- '402: Payment Required'
+- '400 Bad Request: batch has to be running to finish'
+- '404: Not Found'
+- '405: Method Not Allowed'
+- '400 Bad Request: Check request parameters'
+- '402 Payment Required: Insufficient credits'
+- '429 Too Many Requests: Rate limit exceeded'
+- '429: Too Many Requests'
+- '200 - application/json: OK'
+- '200'
+- '404'
+- '402: Insufficient credits'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.usebouncer.com
+  auth:
+    type: apikey
+    location: header
+    header_name: x-api-key
+  paginator:
+    type: none
+source_metadata: null

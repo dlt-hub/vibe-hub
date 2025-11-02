@@ -1,0 +1,163 @@
+resources:
+- name: devices
+  endpoint:
+    path: /devices
+    method: GET
+    data_selector: records
+- name: subscriptions
+  endpoint:
+    path: /subscriptions
+    method: POST
+    data_selector: subscriptionId
+- name: device_enrolment
+  endpoint:
+    path: /devices
+    method: POST
+    data_selector: ''
+    params: {}
+- name: device_unenrolment
+  endpoint:
+    path: /devices/A81758FFFE0311EF
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: messages
+  endpoint:
+    path: /devices/393435376A377906/messages
+    method: GET
+    data_selector: messages
+- name: readings
+  endpoint:
+    path: /devices/393435376A377906/readings
+    method: GET
+    data_selector: readings
+- name: export_readings
+  endpoint:
+    path: /devices/393435376A377906/readings/export
+    method: GET
+    data_selector: readings
+- name: subscriptions
+  endpoint:
+    path: /subscriptions
+    method: POST
+    data_selector: ''
+    params:
+      pushInterval: 10
+- name: pending_subscriptions
+  endpoint:
+    path: /subscriptions/{subscriptionId}/pending
+    method: GET
+    data_selector: ''
+    params: {}
+- name: deliveries
+  endpoint:
+    path: /subscriptions/{subscriptionId}/deliveries
+    method: GET
+    data_selector: ''
+    params: {}
+- name: device_search
+  endpoint:
+    path: /devices/search
+    method: POST
+    data_selector: '[]'
+- name: custom_lora_parser
+  endpoint:
+    path: /custom/lora/parser
+    method: POST
+    data_selector: parserDetails
+- name: base_station_metadata
+  endpoint:
+    path: /register-base-station
+    method: POST
+    data_selector: baseStation
+    params:
+      ntag: 1
+      ntag-location: Location-ID
+- name: n-tag
+  endpoint:
+    path: /n-tag
+    method: POST
+    data_selector: active
+    params:
+      n-tag: active
+- name: sku_configuration
+  endpoint:
+    path: /sku-configuration
+    method: POST
+    data_selector: sku
+    params:
+      SKU: some-value
+- name: n-tag_deregister
+  endpoint:
+    path: /n-tag-deregister
+    method: POST
+    data_selector: deregister
+    params:
+      n-tag-deregister-after: 4
+- name: uplinks
+  endpoint:
+    path: /tags/incoming
+    method: HTTP
+    params:
+      filter_on_device_type: nanothingsStatic
+notes:
+- N2N DL ingests, transforms, enriches and is able to push information from a multitude
+  of devices and networks.
+- API key is needed for access.
+- LoRaWAN device enrollment requires access to 1 or more master groups.
+- Your account must be enabled for device enrolment otherwise an HTTP error 400 will
+  be returned.
+- Class B devices cannot be enrolled through APIs yet.
+- Delivery queue has a fixed maximum length of 50k items and is autorotating.
+- You are currently limited to customMeta objects with maximum 50 keys but this is
+  a soft limit that can be increased if necessary.
+- N2N DL supports a MQTT connection option to send and receive messages from LoRaWAN
+  devices using a permanent MQTT Connection
+- 'IMPORTANT: You can download certificate and its private key only once on this page
+  for a newly created certificate.'
+- If you lost the certificate, you will need to create a new one. You cannot restore
+  the lost certificate.
+- Payloads can have a variable number of channels from reading to reading.
+- Multiple readings from multiple devices can be ingested at once up to a 100kb limit
+  per single HTTP request.
+- Timestamps are specified in milliseconds past Epoch (1/1/1970).
+- Historical data can be ingested with a timestamp greater than 1262217600000 only.
+- Data can be ingested out of order and will be automatically merged and deduped.
+- Data cannot be deleted once ingested at this stage but can be overwritten.
+- Every requests to ingest data either succeeds completely or fails. No partial data
+  ingestion can occur.
+- Custom LoraParser takes precedence over built-in decoders.
+- N-tag application may take around 5 minutes to create/change the N-tag locations
+  after changes in base station metadata.
+- It is better to treat ntag-location values as string IDs.
+- It will take around 5 minutes for the application to react on the new changes.
+- If an N-tag stops sending uplinks, there is a chance that it left the location.
+- The nature of LoRaWAN assumes that some number of uplinks may be missed due to LoRaWAN
+  network conditions.
+- Requires API access to N2N DL on the root enterprise level nnn with admin permissions.
+- A base64 encoded N2N DL API key and ‘any’ username for basic authentication must
+  be provided.
+errors:
+- 'HTTP Error 429: Issuing more calls than the TPS and TPD limits allow'
+- 'HTTP Error 400: Invalid request: Current user/apiKey doesn''t have access to enterprise
+  ''nnn.hello'''
+- 'HTTP Error 429: Issuing more calls that the TPS and TPD limits allow'
+- '404 Not Found: Check the endpoint or resource ID.'
+- '400: Bad Request - Returned if account is not enabled for device enrolment.'
+- '404 Not Found: Check endpoint URL or subscription ID.'
+- '401 Unauthorized: Recheck API credentials.'
+- DEVICE_NOT_FOUND
+- ACCESS_DENIED
+- FAILED_DELIVER_TO_NETWORK_SERVER
+- SYSTEM_DELIVERY_ERROR
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://www.nnnco.io/v3/api/core
+  auth:
+    type: oauth2
+  paginator:
+    type: offset
+    page_size_param: limit
+    default_page_size: 200
+source_metadata: null

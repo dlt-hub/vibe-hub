@@ -1,0 +1,81 @@
+resources:
+- name: tests
+  endpoint:
+    path: /tests
+    method: GET
+    data_selector: '[]'
+- name: assessments
+  endpoint:
+    path: /assessments
+    method: POST
+    data_selector: '{}'
+- name: tests
+  endpoint:
+    path: /tests
+    method: GET
+    data_selector: tests
+- name: assessments
+  endpoint:
+    path: /assessments
+    method: POST
+    data_selector: AssessmentId
+- name: locations
+  endpoint:
+    path: /v2/public/{subdomain}/locations
+    method: GET
+    data_selector: response
+    params: {}
+- name: jobs
+  endpoint:
+    path: /v2/public/{subdomain}/jobs
+    method: GET
+    data_selector: Results
+    params:
+      page: 1
+      perPage: 20
+      details: false
+- name: departments
+  endpoint:
+    path: /departments
+    method: GET
+    data_selector: any[]
+    params: {}
+notes:
+- All requests must be sent using HTTPS with TLS 1.2 or higher.
+- All API calls are limited to 600 requests every 10 minutes.
+- TalentLyft API uses Bearer token for authorization. This means you need to include
+  the token in format Bearer <Access Token>.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Assessment providers should respond with a 201 status and an identifier for the
+  created assessment.
+- Assessment status can be Pending, Completed, Rejected, Declined, or Expired.
+- If response status code is >= 300, the event will be retried 5 times.
+errors:
+- 'Rate limit exceeded: Limit of 600 requests every 10 minutes'
+- '400: Bad Request - Your request included invalid JSON'
+- '401: Unauthorized - You have not been authenticated'
+- '403: Forbidden - You have been authenticated, but you don''t have a permission
+  for the requested resource'
+- '404: Not Found - The resource you requested could not be found'
+- '409: Conflict'
+- '422: Unprocessable Entity - used for validation errors'
+- '429: Too many requests'
+- '500: Server errors - something went wrong with TalentLyft''s servers.'
+- '502: Server errors - something went wrong with TalentLyft''s servers.'
+- '503: These responses are most likely momentary operational errors (e.g. temporary
+  unavailability), and, as a result, requests should be retried once.'
+- '504: These responses are most likely momentary operational errors (e.g. temporary
+  unavailability), and, as a result, requests should be retried once.'
+- '300 or greater: Event will be discarded after 5 attempts.'
+- 401 Unauthorized
+- 403 Forbidden
+- 500 Server Error
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: /v2/public/{subdomain}/locations
+  auth:
+    type: Bearer
+    location: header
+    header_name: Authorization
+source_metadata: null

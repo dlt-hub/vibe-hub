@@ -1,0 +1,46 @@
+resources:
+- name: chat_completions
+  endpoint:
+    path: /v1/chat/completions
+    method: POST
+    data_selector: response
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- API is exclusively available to users on our paid plan
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Tiny Talk only supports subdomains (e.g. chat.example.com), not the naked domain
+  (like example.com).
+- Certain plans come with 1 free custom domain. Others require purchasing custom domains
+  add-on separately.
+- Be cautious when using the Delete Bot feature, as it cannot be undone.
+- You may contact us by email at support at tinytalk.ai
+- The Services are provided on an AS-IS and AS-AVAILABLE basis.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://dashboard.tinytalk.ai
+  headers:
+    Accept: application/json
+source_metadata: null

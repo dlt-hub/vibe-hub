@@ -1,0 +1,101 @@
+resources:
+- name: message_send
+  endpoint:
+    path: /message/send
+    method: POST
+    data_selector: response.tokens
+    params:
+      session: The GUID representation of a logged-in user.
+      contacts: The string representation of a phone number.
+      body: The message to be sent. The message body can be a maximum of 250 bytes.
+- name: send_message
+  endpoint:
+    path: /message/send
+    method: POST
+    data_selector: response.tokens
+    params:
+      session: '[sessionKey]'
+      contacts: ''
+      body: ''
+- name: install_webhook
+  endpoint:
+    path: /webhook/add
+    method: POST
+    data_selector: response
+    params:
+      session: '[sessionKey]'
+      type: message
+      event: ''
+      url: ''
+- name: list_webhooks
+  endpoint:
+    path: /webhook/list
+    method: GET
+    data_selector: response
+    params:
+      session: '[sessionKey]'
+- name: update_webhook
+  endpoint:
+    path: /webhook/update
+    method: POST
+    data_selector: response
+    params:
+      session: '[sessionKey]'
+      webhookId: ''
+      url: ''
+      method: ''
+- name: delete_webhook
+  endpoint:
+    path: /webhook/delete
+    method: POST
+    data_selector: response
+    params:
+      session: '[sessionKey]'
+      webhookId: ''
+- name: retrieve_mms_content
+  endpoint:
+    path: /messageAttachment/list
+    method: GET
+    data_selector: response
+    params:
+      session: '[sessionKey]'
+      messageId: ''
+- name: retrieve_hosted_content
+  endpoint:
+    path: /hostedContent/get
+    method: GET
+    data_selector: response
+    params:
+      session: '[sessionKey]'
+      storageKey: ''
+notes:
+- The OAuth 2.0 Authentication Management API is more secure than the typical user
+  name and password paradigm as the credentials are not stored on the mobile device.
+- You can have 15 individual contacts as parameters.
+- AT&T Landline Texting supports TLS V1.0 and greater.
+- Users must sign up for access.
+- An App Key and App Secret are application account credentials that are required
+  to obtain an OAuth access token. All of the RESTful APIs offered by AT&T require
+  an OAuth access token to be passed to the AT&T API Platform in the request for authorization.
+- The current implementation of this API sets the default value for the expires_in
+  parameter to 172800 seconds, which signifies that the time-to-live for the OAuth
+  access token is 2 days.
+- The time-to-live for the OAuth refresh token is set to 7776000 seconds, which signifies
+  that the time-to-live for the OAuth refresh token is 90 days.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '-703: Bad arguments'
+- '-855: Internal Error'
+- '-801: Spam Protection'
+- '-394: Invalid Parameter Length'
+- Non-200 level status codes indicate message delivery failure.
+- If server response takes longer than 7 seconds, message delivery fails.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api-landlinetexting.att.com
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+source_metadata: null

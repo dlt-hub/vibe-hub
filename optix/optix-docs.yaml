@@ -1,0 +1,252 @@
+resources:
+- name: bookingsDraft
+  endpoint:
+    path: /graphql
+    method: POST
+    data_selector: data.bookingsDraft
+    params: {}
+- name: bookingsCommit
+  endpoint:
+    path: /graphql
+    method: POST
+    data_selector: data.bookingsCommit
+    params: {}
+- name: bookings
+  endpoint:
+    path: /bookings
+    method: GET
+    data_selector: bookings
+    params: {}
+- name: webhooks
+  endpoint:
+    path: /using-webhooks/
+    method: POST
+- name: app_install
+  endpoint:
+    path: /webhooks/app_install
+    method: POST
+    data_selector: organization_token
+- name: app_uninstall
+  endpoint:
+    path: /webhooks/app_uninstall
+    method: POST
+    data_selector: client_id
+- name: assignment_ended
+  endpoint:
+    path: /webhooks/assignment_ended
+    method: POST
+    data_selector: assignment_id
+- name: assignment_started
+  endpoint:
+    path: /webhooks/assignment_started
+    method: POST
+    data_selector: assignment_id
+- name: cancel_checkin
+  endpoint:
+    path: /webhooks/cancel_checkin
+    method: POST
+    data_selector: checkin_id
+- name: cancel_plan_subscription
+  endpoint:
+    path: /webhooks/cancel_plan_subscription
+    method: POST
+    data_selector: plan_template_id
+- name: invoice_paid
+  endpoint:
+    path: /webhooks/invoice_paid
+    method: POST
+    data_selector: invoice_id
+- name: invoice_updated
+  endpoint:
+    path: /webhooks/invoice_updated
+    method: POST
+    data_selector: invoice_id
+- name: member_booking_cancelled
+  endpoint:
+    path: /webhooks/member_booking_cancelled
+    method: POST
+    data_selector: booking_id
+- name: member_booking_updated
+  endpoint:
+    path: /webhooks/member_booking_updated
+    method: POST
+    data_selector: booking_id
+- name: member_updated
+  endpoint:
+    path: /webhooks/member_updated
+    method: POST
+    data_selector: member_id
+- name: new_checkin
+  endpoint:
+    path: /webhooks/new_checkin
+    method: POST
+    data_selector: checkin_id
+- name: new_issue
+  endpoint:
+    path: /webhooks/new_issue
+    method: POST
+    data_selector: issue_id
+- name: new_lead
+  endpoint:
+    path: /webhooks/new_lead
+    method: POST
+    data_selector: member_id
+- name: new_member
+  endpoint:
+    path: /webhooks/new_member
+    method: POST
+    data_selector: member_id
+- name: member_deleted
+  endpoint:
+    path: /webhooks/member_deleted
+    method: POST
+    data_selector: member_id
+- name: new_member_booking
+  endpoint:
+    path: /webhooks/new_member_booking
+    method: POST
+    data_selector: booking_id
+- name: new_plan_subscription
+  endpoint:
+    path: /webhooks/new_plan_subscription
+    method: POST
+    data_selector: plan_template_id
+- name: new_sale
+  endpoint:
+    path: /webhooks/new_sale
+    method: POST
+    data_selector: product_sale_id
+- name: new_team_member
+  endpoint:
+    path: /webhooks/new_team_member
+    method: POST
+    data_selector: team_id
+- name: organization_token_updated
+  endpoint:
+    path: /webhooks/organization_token_updated
+    method: POST
+    data_selector: organization_token
+- name: plan_ending_soon
+  endpoint:
+    path: /webhooks/plan_ending_soon
+    method: POST
+    data_selector: plan_template_id
+- name: plan_subscription_changed
+  endpoint:
+    path: /webhooks/plan_subscription_changed
+    method: POST
+    data_selector: plan_template_id
+- name: team_member_deleted
+  endpoint:
+    path: /team_member_deleted
+    method: POST
+    data_selector: event
+    params: {}
+- name: team_updated
+  endpoint:
+    path: /team_updated
+    method: POST
+    data_selector: event
+    params: {}
+- name: webhook_debugger
+  endpoint:
+    path: /webhooks/debugger
+    method: GET
+- name: mobile_home_primary
+  endpoint:
+    path: /canvas-placeholder
+    method: GET
+    data_selector: canvases
+- name: mobile_home_section
+  endpoint:
+    path: /canvas-placeholder
+    method: GET
+    data_selector: canvases
+- name: mobile_tab_bar_item
+  endpoint:
+    path: /canvas-placeholder
+    method: GET
+    data_selector: canvases
+- name: mobile_more_screen
+  endpoint:
+    path: /canvas-placeholder
+    method: GET
+    data_selector: canvases
+- name: admin_app_settings
+  endpoint:
+    path: /canvas-placeholder
+    method: GET
+    data_selector: canvases
+- name: admin_main_menu
+  endpoint:
+    path: /canvas-placeholder
+    method: GET
+    data_selector: canvases
+- name: admin_modal_invoices_menu
+  endpoint:
+    path: /canvas-placeholder
+    method: GET
+    data_selector: canvases
+notes:
+- Canvases are designed to load fast, so avoid embedding a lot of external resources.
+- Avoid compiling UI kit with your app (using webpack or any other package manager).
+  They are cached at the browser side, and this cache is shared between all canvases
+  when loaded from our servers.
+- Canvas resources are usually cached on the client, and the only way to clean the
+  cache is by setting a short expiration time HTTP header on your server or changing
+  the name of the file.
+- Keep it simple; don’t create external .JS files if you are not planning to reuse
+  those files.
+- Feel free to use arrow functions or anything else from ES2015 (ES6). We do not support
+  IE 11.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Personal tokens can change at any moment, so you should never store them in your
+  app.
+- Tokens are authentication keys and are always associated with an app.
+- All tokens will expire from time to time. You should subscribe to the webhook 'organization_token_updated'
+  and update the token when you receive that webhook.
+- Our API throttling is based on tokens. A single token can make no more than 60 requests
+  per minute.
+- The GraphQL API supports batch queries, but be aware that the request may be rejected
+  based on the complexity (any request that could affect the performance of the server
+  could be rejected).
+- Every request will be replied to with request counters (remaining count, time for
+  count reset) via HTTP response headers.
+- Will be returned only if the token is valid and not expired
+- Will be returned only if the user is an admin or if its an organization token
+- Will be returned only if the token has permissions to handle bookings
+- Will be returned only if the token has permissions to handle check-ins
+- Will be returned only if the token has permissions to handle invoices
+- 'Making a new booking or modifying the existing one is a two-step process: first
+  draft, then commit.'
+- The API requires the booking session ID in all subsequent requests related to that
+  booking set.
+- Uses OAuth2 for authentication.
+- We strongly recommend supplementing the use of webhooks with a query to the public
+  API to retrieve the complete and most up-to-date dataset.
+- Learn more about subscribing to webhooks
+- This tool only shows webhooks triggered at the Optix Organization where the app
+  was created.
+- Always use HTTPS in your services. The usage of HTTP is insecure and can lead to
+  identity spoofing.
+- The maximum height is 400 (the unit is ‘dp,’ you can consider them to be pixels
+  relative to a 1x resolution screen).
+- You must specify at least one (and a maximum of six) MOBILE_HOME_SECTION_ITEM for
+  a MOBILE_HOME_SECTION.
+- Optix may alter, suspend, or discontinue the Developer Platform at any time and
+  for any reason or no reason, without prior notice.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '400 Bad Request: Check your input parameters or query syntax.'
+- '401 Unauthorized: Ensure you have valid authentication tokens.'
+- 410 response will force the webhook subscription to be removed
+- Any request that takes more time will be considered failed
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://developer.optixapp.com
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+source_metadata: null

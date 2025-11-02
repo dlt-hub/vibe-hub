@@ -1,0 +1,186 @@
+resources:
+- name: leads
+  endpoint:
+    path: /lists/{list_id}/leads
+    method: GET
+    data_selector: leads
+    params:
+      per_page: 50
+      page: 1
+- name: lead_statistics
+  endpoint:
+    path: /lists/{list_id}/stats
+    method: GET
+    data_selector: stats
+    params: {}
+- name: create_lead
+  endpoint:
+    path: /lists/{list_id}/leads
+    method: POST
+    data_selector: lead
+    params: {}
+- name: update_lead
+  endpoint:
+    path: /leads/{lead_id}
+    method: PATCH
+    data_selector: lead
+    params: {}
+- name: find_leads
+  endpoint:
+    path: /lists/{list_id}/leads/find
+    method: GET
+    data_selector: leads
+    params: {}
+- name: search_leads
+  endpoint:
+    path: /leads/search
+    method: GET
+    data_selector: leads
+    params: {}
+- name: email_outreach
+  endpoint:
+    path: /api/v1/email/outreach
+    method: POST
+    data_selector: response
+    params: {}
+- name: sms_outreach
+  endpoint:
+    path: /api/v1/sms/outreach
+    method: POST
+    data_selector: response
+    params: {}
+- name: leads
+  endpoint:
+    path: /api/leads
+    method: GET
+    data_selector: records
+- name: campaigns
+  endpoint:
+    path: /api/campaigns
+    method: GET
+    data_selector: records
+- name: leads
+  endpoint:
+    path: /api/leads
+    method: GET
+    data_selector: records
+- name: leads
+  endpoint:
+    path: /api/leads
+    method: GET
+    data_selector: records
+- name: leads
+  endpoint:
+    path: /api/leads
+    method: GET
+    data_selector: records
+- name: reports
+  endpoint:
+    path: /api/reports
+    method: GET
+    data_selector: records
+- name: leads
+  endpoint:
+    path: /api/leads
+    method: GET
+    data_selector: data
+    params:
+      incremental: updated_at
+- name: leads
+  endpoint:
+    path: /api/v1/leads
+    method: GET
+    data_selector: data
+    params: {}
+- name: campaigns
+  endpoint:
+    path: /api/v1/campaigns
+    method: GET
+    data_selector: data
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- API key is required for authentication and should be kept secret.
+- The 'detected_duplicates' and 'ignored_duplicates' keys returned for a lead hold
+  arrays of integers of lead ids.
+- After uploading an entire new list, this information might not be updated for up
+  to an hour.
+- Uses OAuth2 with refresh token — requires setup of connected app in Myphoner
+- Myphoner integrates email and SMS outreach functionalities.
+- Requires setup of connected app for OAuth2 authentication.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Myphoner provides easy integration of more than 3,000 services and tools through
+  Zapier.
+- Myphoner specializes in providing a focused, advanced solution for lead prioritization.
+- Lead recycling process automates the removal of unresponsive leads and re-engages
+  them later.
+- Data is transported over encrypted lines and stored in encrypted databases
+- Offers a free 14-day trial on all plans.
+- Supports dynamic scaling of sales efforts based on college schedules.
+- Streamlined calling productivity with a user-friendly platform
+- Efficient team management promotes performance optimization
+- Requires setup of connected app in Myphoner
+- Requires setup of API keys and OAuth2 authentication.
+- Myphoner offers both monthly & yearly contracts; the choice is yours.
+- Myphoner is designed to help you achieve this by giving you real-time analytics
+  on your campaigns.
+- Myphoner offers a pay-as-you-go model with lower subscription cost.
+- Myphoner is a dedicated cold calling platform, that automatically queues the leads
+  and provides transparency and efficiency in reporting.
+- Some objects like Contact may return nulls in deeply nested fields
+- Myphoner does not use any other type of Cookies.
+- Myphoner has its IT Landscape configured and monitored under the strictest Security
+  market standards.
+- Myphoner operates in compliance with the European Union (EU) General Data Protection
+  Regulation (the GDPR)
+- Myphoner reserves the right to randomly monitor the use of this site to determine
+  compliance with these Terms of Service
+- Both Parties commit to implement and maintain appropriate technical and organizational
+  measures that ensure the Security, Integrity and Confidentiality of Personal Data
+  Treatment while fully aligned with GDPR requirements.
+- Both Parties declare having undergone a proper and suitable internal assessment
+  towards their Personal Data Treatment operations as per defined and ruled under
+  GDPR Article 35.
+errors:
+- '429 Too Many Requests: Throttle API calls or implement exponential backoff'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck API key or permissions'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400 Bad Request: Check the request parameters.'
+- '401 Unauthorized: Ensure API credentials are correct.'
+- 'RATE_LIMIT_EXCEEDED: Reduce request frequency.'
+- 'INVALID_TOKEN: Reauthenticate using OAuth2.'
+- '401 Unauthorized: Check your API keys and permissions.'
+- '404 Not Found: Verify the endpoint URL.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://get.myphoner.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.myphoner.com/oauth/token
+    client_id: '{{ dlt.secrets[''myphoner_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''myphoner_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''myphoner_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null
