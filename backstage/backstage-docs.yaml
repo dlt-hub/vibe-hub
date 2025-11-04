@@ -1,0 +1,100 @@
+resources:
+- name: Component
+  endpoint:
+    path: /api/catalog/entities
+    method: GET
+    data_selector: entities
+    params: {}
+- name: status
+  endpoint:
+    path: /status
+    method: GET
+    data_selector: items
+- name: component
+  endpoint:
+    path: /components
+    method: GET
+    data_selector: components
+- name: artists
+  endpoint:
+    path: /artists
+    method: GET
+- name: my-component-db
+  endpoint:
+    path: /projects/prj/instances/my-component-db/databases/my-db
+    method: GET
+- name: v1beta3-demo
+  endpoint:
+    path: /template
+    method: GET
+    data_selector: records
+- name: template
+  endpoint:
+    path: /api/templates
+    method: GET
+    data_selector: templates
+- name: template
+  endpoint:
+    path: /docs/next/features/software-templates/writing-templates
+    method: GET
+    data_selector: records
+- name: OwnerPicker
+  endpoint:
+    path: /docs/next/features/software-templates/ui-options-examples#ownerpicker
+    method: GET
+- name: catalogFilter
+  endpoint:
+    path: /docs/next/features/software-catalog/software-catalog-api#filtering
+    method: GET
+- name: Component
+  endpoint:
+    path: /docs/architecture-decisions/adrs-adr002
+    method: GET
+    data_selector: records
+    params: {}
+- name: Module Export Structure
+  endpoint:
+    path: /docs/architecture-decisions/adrs-adr004
+    method: GET
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Uses OAuth2 with refresh token — requires setup of connected app in Backstage
+- The private key should be stored in the PKCS#8 format.
+- The public key should be stored in the SPKI format.
+- We will stop using default exports except when absolutely necessary.
+- We will actively work to remove them from our codebases, being as explicit as possible.
+- We will actively work to rework the export structure in our codebase, prioritizing
+  the library packages such as @backstage/core-components and @backstage/backend-common.
+- To keep our codebase up to date, we have decided that React.FC and React.SFC should
+  be avoided in our codebase when adding new code.
+- We will gradually remove the current usage of React.FC and React.SFC from our codebase.
+- A little more code to write
+- Gradually will replace the codebase with msw
+- The catalog file should be named catalog-info.yaml
+- This name is a default, not a requirement.
+- We will need to audit the current places Date/Times are being displayed in the UI
+  and update them to follow this ADR.
+- We will need to keep in mind for reviewing PRs going forward to follow this ADR,
+  or find/create a linting rule to automate this in the review process.
+- Using multiple HTTP packages for data fetching increases the complexity and the
+  support burden of keeping said package up to date.
+- We will gradually transition away from third party packages such as `axios`, `got`
+  and others.
+- All code that is executed in Node.js (including backend and CLIs) should use the
+  native `fetch` for HTTP data fetching
+- Isomorphic packages should have a dependency on the `cross-fetch` package for mocking
+  and type definitions.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Certain tests may need to be rewritten to use `msw` 2.x or newer instead, which
+  uses a newer version of the interceptors.
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: http://artist.spotify.net/v1
+  headers:
+    Accept: application/json
+source_metadata: null
