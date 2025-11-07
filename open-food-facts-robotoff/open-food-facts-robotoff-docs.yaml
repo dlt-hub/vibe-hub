@@ -1,0 +1,245 @@
+resources:
+- name: get_questions_for_product
+  endpoint:
+    path: /getGetQuestionsForProduct
+    method: GET
+- name: fetch_questions
+  endpoint:
+    path: /getFetchQuestions
+    method: GET
+- name: get_unanswered_question_counts
+  endpoint:
+    path: /getGetUnansweredQuestionCounts
+    method: GET
+- name: list_insights
+  endpoint:
+    path: /getListInsights
+    method: GET
+- name: get_specific_insight
+  endpoint:
+    path: /getGetASpecificInsight
+    method: GET
+- name: submit_annotation
+  endpoint:
+    path: /postSubmitAnAnnotation
+    method: POST
+- name: generate_csv_dump
+  endpoint:
+    path: /getGenerateACSVDump
+    method: GET
+- name: get_predictions
+  endpoint:
+    path: /getGetPredictions
+    method: GET
+- name: crop_image
+  endpoint:
+    path: /getCropAnImage
+    method: GET
+- name: predict_on_images
+  endpoint:
+    path: /getPredictOnImages
+    method: GET
+- name: get_images
+  endpoint:
+    path: /getGetImages
+    method: GET
+- name: image_predictions
+  endpoint:
+    path: /batch/import
+    method: POST
+    data_selector: status
+    params: {}
+- name: logo_management
+  endpoint:
+    path: /batch/import
+    method: POST
+    data_selector: status
+    params: {}
+- name: ann_search
+  endpoint:
+    path: /batch/import
+    method: POST
+    data_selector: status
+    params: {}
+- name: predict
+  endpoint:
+    path: /batch/import
+    method: POST
+    data_selector: status
+    params: {}
+- name: import_batch_job_results
+  endpoint:
+    path: /batch/import
+    method: POST
+    data_selector: status
+    params:
+      job_type: ingredients_spellcheck
+      batch_dir: gs://bucket/path/to/batch/results
+- name: get_user_statistics
+  endpoint:
+    path: /user/statistics
+    method: GET
+    data_selector: status
+    params:
+      username: contributor
+- name: nutrition_extraction
+  endpoint:
+    path: /predict/nutrition
+    method: GET
+    data_selector: predictions
+- name: questions
+  endpoint:
+    path: /api/v1/questions/{barcode}
+    method: GET
+    data_selector: questions
+    params:
+      lang: en
+      count: 3
+- name: annotate_insight
+  endpoint:
+    path: /api/v1/insights/annotate
+    method: POST
+    data_selector: status
+    params:
+      insight_id: (insight_id)
+      annotation: (1,0,-1)
+      update: 1
+- name: nearest_neighbors_search
+  endpoint:
+    path: /ann/search/{id}
+    method: GET
+    data_selector: neighbors
+- name: product
+  endpoint:
+    path: /products
+    method: GET
+    data_selector: products
+- name: taxonomy
+  endpoint:
+    path: /taxonomy
+    method: GET
+    data_selector: taxonomy
+- name: image_prediction
+  endpoint:
+    path: /api/v1/insights/annotate
+    method: POST
+    data_selector: entities
+    params: {}
+- name: nearest_neighbors_search
+  endpoint:
+    path: /ann/search/{id}
+    method: GET
+    data_selector: neighbors
+- name: product_updates
+  endpoint:
+    path: /product_updates_off
+    method: POST
+    data_selector: events
+    params: {}
+- name: products
+  endpoint:
+    path: /products
+    method: GET
+    data_selector: records
+    params: {}
+- name: prediction
+  endpoint:
+    path: /predictions
+    method: GET
+    data_selector: predictions
+- name: insight
+  endpoint:
+    path: /insights
+    method: GET
+    data_selector: insights
+- name: image_prediction
+  endpoint:
+    path: /api/v1/insights/annotate
+    method: POST
+    data_selector: data
+    params: {}
+- name: model_management
+  endpoint:
+    path: /models/triton
+    method: GET
+    data_selector: models
+- name: product_updates
+  endpoint:
+    path: /product_updates_off
+    method: POST
+    data_selector: event
+    params: {}
+- name: taxonomies
+  endpoint:
+    path: /data/taxonomies/categories.full.json
+    method: GET
+    data_selector: categories
+    params: {}
+- name: products
+  endpoint:
+    path: /data/openfoodfacts-products.jsonl.gz
+    method: GET
+    data_selector: products
+    params: {}
+- name: prediction
+  endpoint:
+    path: /predictions
+    method: GET
+    data_selector: predictions
+    params: {}
+- name: product_insight
+  endpoint:
+    path: /product_insights
+    method: GET
+    data_selector: insights
+    params: {}
+- name: models
+  endpoint:
+    path: /models
+    method: GET
+notes:
+- Cookie auth available for tools hosted on *.openfoodfacts.org. Please reach out
+  to the Robotoff team if needed.
+- beware not to commit your local changes to .env file!
+- The database is huge, it may take several hours to run depending on your hardware.
+- Questions should be visible to users even if they are not logged in.
+- If your development instance is not connected to a product-opener instance, you
+  won't have a MongoDB instance.
+- Set ENABLE_MONGODB_ACCESS=0 in your .env to disable MongoDB access feature.
+- Each batch job has its own method to import, or not, the results of the batch job.
+- beware not to commit your local changes to .env file
+- Uses Bearer Authentication with BATCH_JOB_KEY for secure endpoint.
+- Robotoff interacts directly with Product Opener API to update/delete products and
+  images.
+- Robotoff has a direct access to MongoDB for product data.
+- The model uses the IOB format for entity classes.
+- The model was fine-tuned from xlm-roberta-large model.
+- Triton uses explicit model management mode.
+- Models are exported in ONNX format or SavedModel for TensorFlow.
+- Redis loads all the embeddings in RAM when loading the index, which accounts for
+  more than 20 GB of RAM used by it.
+- Triton expects the models to be in a specific directory structure, with the model
+  files in a subdirectory named after the model.
+- Using explicit model management mode allows models to be loaded and unloaded without
+  restarting the server.
+- The RAM used is below 5 GB.
+- All Robotoff services are running on one of the two Docker instances (OVH 200 VM
+  for staging and OVH 201 VM for production). You should use the proxy servers (ovh1.openfoodfacts.org
+  or ovh2.openfoofacts.org) to reach these instances.
+errors:
+- '400: An HTTP 400 is returned if the authentification key is invalid or if the job_type
+  is not supported.'
+- '400: An HTTP 400 is returned if the authentification key is invalid or if the job_type
+  is not supported'
+- Netherland (europe-west4) has GPUs (A100, L4)
+- Add custom storage capacity to host the heavy docker image (~24GB) by adding BootDisk
+- Don't forget to enable Batch & Storage API if used without gcloud.
+auth_info:
+  mentioned_objects:
+  - robotoff.workers.tasks.import_image.run_logo_object_detection
+  - models.universal-logo-detector
+  - robotoff.workers.tasks.import_image.save_logo_embeddings
+  - robotoff.app.api.ANNResource
+client:
+  base_url: https://robotoff.openfoodfacts.org/api/v1
+source_metadata: null

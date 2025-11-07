@@ -1,0 +1,713 @@
+resources:
+- name: screening
+  endpoint:
+    path: /screening
+    method: POST
+    data_selector: results
+- name: ongoing_screening
+  endpoint:
+    path: /ongoing_screening
+    method: GET
+    data_selector: results
+- name: watchlist_screening
+  endpoint:
+    path: /watchlist_screening
+    method: POST
+    data_selector: results
+- name: screening
+  endpoint:
+    path: /api/screening
+    method: POST
+    data_selector: results
+- name: ongoing_screening
+  endpoint:
+    path: /api/ongoing_screening
+    method: GET
+    data_selector: results
+- name: data
+  endpoint:
+    path: /data
+    method: GET
+    data_selector: records
+- name: FundamentalAndReference
+  endpoint:
+    path: /content/dam/devportal/api-families/lseg-workspace/lseg-com-library-for-workspace/downloads/fundamentalandreference.zip
+    method: GET
+- name: HistoricalPricing
+  endpoint:
+    path: /content/dam/devportal/api-families/lseg-workspace/lseg-com-library-for-workspace/downloads/historicalpricing.zip
+    method: GET
+- name: RDPSearch
+  endpoint:
+    path: /content/dam/devportal/api-families/lseg-workspace/lseg-com-library-for-workspace/downloads/search.zip
+    method: GET
+- name: MarketPrice
+  endpoint:
+    path: /content/dam/devportal/api-families/lseg-workspace/lseg-com-library-for-workspace/downloads/marketprice.zip
+    method: GET
+- name: Speed Guide Tool
+  endpoint:
+    path: /api/speedguide
+    method: GET
+    data_selector: data
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: synchronous_screening
+  endpoint:
+    path: /screening/synchronous
+    method: POST
+    data_selector: results
+- name: onboarding_screening
+  endpoint:
+    path: /screening/onboarding
+    method: POST
+    data_selector: results
+- name: ESG Data
+  endpoint:
+    path: /esg/data
+    method: GET
+    data_selector: data
+    params: {}
+- name: Carbon Pricing Data
+  endpoint:
+    path: /esg/carbon-pricing
+    method: GET
+    data_selector: data
+    params: {}
+- name: sanctions_data
+  endpoint:
+    path: /v1/sanctions
+    method: GET
+    data_selector: records
+- name: ESG Data
+  endpoint:
+    path: /esg/data
+    method: GET
+    data_selector: records
+- name: Carbon Pricing Data
+  endpoint:
+    path: /esg/carbon-pricing
+    method: GET
+    data_selector: records
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: data_endpoint
+  endpoint:
+    path: /data/endpoint
+    method: GET
+    data_selector: data
+    params:
+      incremental: updated_at
+- name: screening
+  endpoint:
+    path: /v1/screening
+    method: POST
+    data_selector: data
+- name: search_definition
+  endpoint:
+    path: /search/definition
+    method: POST
+    data_selector: data
+    params:
+      view: search.Views.GOV_CORP_INSTRUMENTS
+      query: Santander bonds
+      top: 100
+      select: MaturityDate, IssueDate, CouponRate, FaceOutstanding, FaceIssuedTotal,
+        RCSCouponTypeLeaf
+      filter: IsPerpetualSecurity ne true and IsActive eq true and not(AssetStatus
+        in ('MAT' 'DC')) and RCSIssuerCountryLeaf xeq 'United States'
+      order_by: MaturityDate
+- name: search_definition
+  endpoint:
+    path: /search
+    method: POST
+    data_selector: data
+    params:
+      view: GOV_CORP_INSTRUMENTS
+      query: Santander bonds
+      top: 100
+      select: MaturityDate, IssueDate, CouponRate, FaceOutstanding, FaceIssuedTotal,
+        RCSCouponTypeLeaf
+      filter: IsPerpetualSecurity ne true and IsActive eq true and not(AssetStatus
+        in ('MAT' 'DC')) and RCSIssuerCountryLeaf xeq 'United States'
+      order_by: MaturityDate
+- name: target_companies
+  endpoint:
+    path: /data/target-companies
+    method: GET
+    data_selector: records
+    params: {}
+- name: non_target_companies
+  endpoint:
+    path: /data/non-target-companies
+    method: GET
+    data_selector: records
+    params: {}
+- name: M&A Targets
+  endpoint:
+    path: /data/ma-targets
+    method: GET
+    data_selector: targets
+    params: {}
+- name: M&A data
+  endpoint:
+    path: /search
+    method: GET
+- name: financial variables
+  endpoint:
+    path: /get_data
+    method: GET
+- name: peer companies
+  endpoint:
+    path: /peer_screen
+    method: GET
+- name: M&A Data
+  endpoint:
+    path: /services/data/v1/MnA
+    method: GET
+    data_selector: records
+    params:
+      filter: ((AcquirerCompanyName ne 'Creditors' and AcquirerCompanyName ne 'Shareholder')
+        and (TargetCountry eq 'US' or TargetCountry eq 'UK') and TransactionValueIncludingNetDebtOfTarget
+        ge 100 and TargetPublicStatus eq 'Public' and (TransactionStatus eq 'Completed'
+        or TransactionStatus eq 'Pending' or TransactionStatus eq 'Withdrawn') and
+        (FormOfTransactionName xeq 'Merger' or FormOfTransactionName xeq 'Acquisition')
+        and (TransactionAnnouncementDate le 2021-11-15 and TransactionAnnouncementDate
+        ge 2020-09-15))
+      select: TransactionAnnouncementDate, TargetCompanyName, TargetRIC
+      order_by: TransactionAnnouncementDate desc
+- name: MnA
+  endpoint:
+    path: /search
+    method: GET
+    data_selector: records
+    params:
+      filter: ((AcquirerCompanyName ne 'Creditors' and AcquirerCompanyName ne 'Shareholder')
+        and (TargetCountry eq 'US' or TargetCountry eq 'UK') and TransactionValueIncludingNetDebtOfTarget
+        ge 100 and TargetPublicStatus eq 'Public' and (TransactionStatus eq 'Completed'
+        or TransactionStatus eq 'Pending' or TransactionStatus eq 'Withdrawn') and
+        (FormOfTransactionName xeq 'Merger' or FormOfTransactionName xeq 'Acquisition')
+        and (TransactionAnnouncementDate le 2021-11-15 and TransactionAnnouncementDate
+        ge 2020-09-15))
+      select: TransactionAnnouncementDate, TargetCompanyName, TargetRIC
+      order_by: TransactionAnnouncementDate desc
+      top: 10000
+- name: peer_group
+  endpoint:
+    path: /data/peers
+    method: GET
+    data_selector: peer_group
+    params: {}
+- name: peer_group
+  endpoint:
+    path: /legacy/get_data
+    method: GET
+    data_selector: peer_group
+    params:
+      SDate: date
+- name: financial_data
+  endpoint:
+    path: /financial_data
+    method: GET
+    data_selector: records
+- name: financial_data
+  endpoint:
+    path: /financial_data
+    method: GET
+    data_selector: data
+    params:
+      targets: len(all_data.loc[all_data['Label'] == 1])
+      non_targets: len(all_data.loc[all_data['Label'] == 0])
+- name: get_news_headlines
+  endpoint:
+    path: /get_news_headlines
+    method: GET
+    data_selector: headlines
+    params:
+      query: Instrument and Language:LEN
+      date_from: AD-30
+      date_to: AD-5
+      count: 5000
+- name: news_headlines
+  endpoint:
+    path: /get_news_headlines
+    method: GET
+    data_selector: headlines
+    params:
+      count: 5000
+- name: sentiment_data
+  endpoint:
+    path: /data/sentiment_data/Sentences_50Agree.txt
+    method: GET
+    data_selector: records
+    params: {}
+- name: BERT_RNA_Input
+  endpoint:
+    path: /BERT_RNA_Input.csv
+    method: POST
+    data_selector: records
+    params: {}
+- name: sentiment_data
+  endpoint:
+    path: /data/sentiment_data/Sentences_50Agree.txt
+    method: GET
+    data_selector: sentences
+    params: {}
+- name: BERT_RNA_Input
+  endpoint:
+    path: /BERT_RNA_Input.csv
+    method: POST
+    data_selector: input
+    params: {}
+- name: sentiment_analysis
+  endpoint:
+    path: /sentiment_analysis
+    method: POST
+    data_selector: results
+- name: sentiment_analysis
+  endpoint:
+    path: /sentiment_analysis
+    method: GET
+    data_selector: sentiments
+    params: {}
+- name: logistic_regression
+  endpoint:
+    path: /logistic_regression
+    method: POST
+    data_selector: results
+    params: {}
+- name: random_forest
+  endpoint:
+    path: /random_forest
+    method: POST
+    data_selector: results
+    params: {}
+- name: model_outputs
+  endpoint:
+    path: /xgboost/model/outputs
+    method: POST
+    data_selector: results
+- name: active_bonds
+  endpoint:
+    path: /bonds/active
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: bonds
+  endpoint:
+    path: /search
+    method: GET
+    data_selector: results
+    params:
+      filter: IsPerpetualSecurity ne true and IsActive eq true and not(AssetStatus
+        in ('MAT' 'DC'))
+- name: GovCorpInstruments
+  endpoint:
+    path: /services/data/vXX.X/search
+    method: GET
+    data_selector: results
+    params: {}
+- name: Enterprise Message API
+  endpoint:
+    path: /api/enterprise-message
+    method: GET
+    data_selector: data
+    params: {}
+- name: Enterprise Transport API
+  endpoint:
+    path: /api/enterprise-transport
+    method: GET
+    data_selector: data
+    params: {}
+- name: Enterprise Transport API
+  endpoint:
+    path: /api/eta
+    method: GET
+- name: Enterprise Message API
+  endpoint:
+    path: /api/ema
+    method: GET
+- name: feedback
+  endpoint:
+    path: /feedback
+    method: POST
+    data_selector: messages
+- name: schedule
+  endpoint:
+    path: /RestApi/v1/Extractions/ScheduleGetByName(ScheduleName='DailySchedule')
+    method: GET
+    data_selector: ScheduleId
+- name: schedules
+  endpoint:
+    path: /RestApi/v1/Extractions/Schedules
+    method: GET
+    data_selector: schedules
+- name: schedule
+  endpoint:
+    path: /RestApi/v1/Extractions/ScheduleGetByName(ScheduleName='DailySchedule')
+    method: GET
+    data_selector: ScheduleId
+- name: schedules
+  endpoint:
+    path: /RestApi/v1/Extractions/Schedules
+    method: GET
+    data_selector: schedules
+- name: completed_report_extractions
+  endpoint:
+    path: /RestApi/v1/Extractions/ReportExtractionGetCompletedByScheduleId(ScheduleId='0x07b1b9370a7d1892')
+    method: GET
+    data_selector: value
+    params: {}
+- name: last_completed_report_extraction
+  endpoint:
+    path: /RestApi/v1/Extractions/Schedules('0x07b1b9370a7d1892')/LastExtraction
+    method: GET
+    data_selector: value
+    params: {}
+- name: files_in_report_extraction
+  endpoint:
+    path: /RestApi/v1/Extractions/ReportExtractions('548722918')/Files
+    method: GET
+    data_selector: value
+    params: {}
+- name: ric_maintenance_report_file
+  endpoint:
+    path: /RestApi/v1/Extractions/ReportExtractions('548722918')/RicMaintenanceFile
+    method: GET
+    data_selector: value
+    params: {}
+- name: extraction_notes_file
+  endpoint:
+    path: /RestApi/v1/Extractions/ReportExtractions('548722918')/NotesFile
+    method: GET
+    data_selector: value
+    params: {}
+- name: full_extraction_result_file
+  endpoint:
+    path: /RestApi/v1/Extractions/ReportExtractions('548722918')/FullFile
+    method: GET
+    data_selector: value
+    params: {}
+- name: download_file
+  endpoint:
+    path: /RestApi/v1/Extractions/ExtractedFiles('VjF8fDkwMjQzODM5NQ')/$value
+    method: GET
+    data_selector: value
+    params: {}
+- name: report_extraction_completed
+  endpoint:
+    path: /RestApi/v1/Extractions/ReportExtractionGetCompletedByScheduleId(ScheduleId='0x07b1b9370a7d1892')
+    method: GET
+    data_selector: value
+    params: {}
+- name: last_extraction
+  endpoint:
+    path: /RestApi/v1/Extractions/Schedules('0x07b1b9370a7d1892')/LastExtraction
+    method: GET
+    data_selector: value
+    params: {}
+- name: files_in_report_extraction
+  endpoint:
+    path: /RestApi/v1/Extractions/ReportExtractions('548722918')/Files
+    method: GET
+    data_selector: value
+    params: {}
+- name: ric_maintenance_file
+  endpoint:
+    path: /RestApi/v1/Extractions/ReportExtractions('548722918')/RicMaintenanceFile
+    method: GET
+    data_selector: value
+    params: {}
+- name: extraction_notes_file
+  endpoint:
+    path: /RestApi/v1/Extractions/ReportExtractions('548722918')/NotesFile
+    method: GET
+    data_selector: value
+    params: {}
+- name: full_extraction_result_file
+  endpoint:
+    path: /RestApi/v1/Extractions/ReportExtractions('548722918')/FullFile
+    method: GET
+    data_selector: value
+    params: {}
+- name: download_file
+  endpoint:
+    path: /RestApi/v1/Extractions/ExtractedFiles('VjF8fDkwMjQzODM5NQ')/$value
+    method: GET
+    data_selector: value
+    params: {}
+- name: ExtractionRequest
+  endpoint:
+    path: /RestApi/v1/EvaluationConnect/ChallengeCreate
+    method: POST
+- name: EOD Pricing Extraction
+  endpoint:
+    path: /RestApi/v1/ExtractionRequests/EndOfDayPricingExtractionRequest
+    method: POST
+    data_selector: Contents
+    params:
+      LimitReportToTodaysData: true
+- name: EndOfDayPricingExtraction
+  endpoint:
+    path: /RestApi/v1/ExtractionRequests/EndOfDayPricingExtractionRequest
+    method: POST
+    data_selector: Contents
+- name: Create Schedule Extraction
+  endpoint:
+    path: /RestApi/v1/Extractions/Schedules
+    method: POST
+    data_selector: ''
+    params: {}
+- name: Get Instrument Trigger Details
+  endpoint:
+    path: /RestApi/v1/Extractions/ScheduleGetInstrumentTriggerDetails
+    method: GET
+    data_selector: ''
+    params: {}
+- name: Create Schedule Extraction
+  endpoint:
+    path: /RestApi/v1/Extractions/Schedules
+    method: POST
+    data_selector: Name
+    params: {}
+- name: Get Instrument Trigger Details
+  endpoint:
+    path: /RestApi/v1/Extractions/ScheduleGetInstrumentTriggerDetails(Id='<schedule
+      Id> ')
+    method: GET
+    data_selector: '@odata.context'
+    params: {}
+- name: EOD Pricing Extraction
+  endpoint:
+    path: /RestApi/v1/Extractions/Schedules
+    method: POST
+    data_selector: Contents
+    params:
+      LimitReportToTodaysData: true
+- name: InstrumentTriggerDetails
+  endpoint:
+    path: /GetInstrumentTriggerDetails
+    method: GET
+    data_selector: m
+    params: {}
+- name: instruments
+  endpoint:
+    path: /instruments
+    method: GET
+    data_selector: records
+- name: EOD Pricing Extraction
+  endpoint:
+    path: /RestApi/v1/Extractions/Schedules
+    method: POST
+- name: Get Instrument Trigger Details
+  endpoint:
+    path: /RestApi/v1/Extractions/ScheduleGetInstrumentTriggerDetails
+    method: GET
+- name: instrument_trigger_details
+  endpoint:
+    path: /GetInstrumentTriggerDetails
+    method: GET
+    data_selector: m
+    params: {}
+- name: instruments
+  endpoint:
+    path: /instruments
+    method: GET
+    data_selector: instruments
+notes:
+- The LSEG DataScope Select APIs offer programmatic access to LSEG content in a more
+  flexible way than the browser- and FTP-based data access solutions.
+- The API provides the ability to screen entity names, with or without secondary fields
+  such as date of birth for individuals.
+- Synchronous or asynchronous screening API requests are supported.
+- Synchronous or asynchronous screening API requests.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- The APIs are designed to provide consistent access through multiple access channels.
+- Email verification successfully done! You will typically receive your email confirmation
+  within 20 mins with further instructions on how to proceed with access to Developer
+  Community.
+- Provides consistent access through multiple access channels.
+- APIs designed for both Professional Developers and Financial Coders.
+- The API provides consistent access through multiple access channels.
+- Email verification successfully done! Thank you for registering. You will typically
+  receive your email confirmation within 20 mins with further instructions on how
+  to proceed with access to Developer Community.
+- The LSEG COM Library for Workspace is a Desktop Data API designed to work with the
+  LSEG Workspace desktop application.
+- The Speed Guide tool registers for Snapshot only data content (i.e, non-streaming).
+- Please sign in to explore content on this page.
+- 'Workspace will not ship with the following legacy API components: 32-bit based
+  COM APIs for use in Microsoft Office and Eikon 4 Desktop Data API (.NET)'
+- Legacy APIs will be sunset in June 2025
+- Users need to check for legacy components in workflows
+- The Speed Guide utility allows users and developers who do not have access to the
+  LSEG Workspace Desktop application to browse streaming content available from Delivery/Data
+  Platform.
+- Workspace will not ship with legacy API components such as 32-bit based COM APIs
+  for use in Microsoft Office.
+- Some objects like Contact may return nulls in deeply nested fields
+- Manage country risk ranking, digital identity verification, document proofing and
+  screening via one API.
+- The Qual-ID API is a stateless web service based on RESTful architecture. The production
+  endpoint is supported solely on HTTPS.
+- The API uses built-in HTTP features, such as HTTP authentication, errors and verbs
+  which are understood by standard HTTP clients.
+- The API supports synchronous and asynchronous screening requests.
+- Response data is in JSON format.
+- Provides access to standardized ESG data points and analytics.
+- Data is available via multiple mechanisms depending on use case.
+- Requires setup of connected app in World Check API
+- Ensure to handle nulls in nested fields
+- Uses OAuth2 with client credentials — requires setup of connected app in api
+- Requires setup of connected app in API.
+- Some fields may return nulls in nested structures.
+- Help us personalise your experience by completing your profile.
+- Access trusted data, on-demand to approve transactions and onboard customers without
+  unnecessary risk or delay.
+- Email verification successfully done!
+- Thank you for registering. You will typically receive your email confirmation within
+  20 mins with further instructions on how to proceed with access to Developer Community
+- The Data Library provides a powerful set of interfaces for uniform access to LSEG
+  data universe.
+- The LSEG Data and Analytics ecosystem provides a rich data universe for AI projects.
+- The API utilizes Refinitiv Data Platform for accessing the required data.
+- Incorporates NLP based news sentiment variable for predictive modeling.
+- In addition to the desktop session, I open the RDP platform session to be able to
+  access news data on RDP.
+- I am not opening only platform session because eikon legacy functions (such as rdp.legacy.get_data)
+  raise the attribute error below on the platform session. This is going to be solved
+  in upcoming API versions.
+- Includes only public companies classified as targets.
+- Excludes acquisitions of majority or partial interest.
+- Excludes very small deals with transaction values less than USD 100 mln.
+- Data retrieval takes a relatively long time.
+- The dataset may contain duplicates as many target companies have the same peers.
+- Data retrieval takes a relatively long time, store in an excel file once code is
+  executed.
+- The dataset consists of 182 target and 3648 non-target companies totaling 3849 companies.
+- Consider selecting up to the seven closest peers per target company to maintain
+  a similar distribution.
+- Dataset contains 1339 rows and 16 columns
+- Requests news headlines for the specified period.
+- Focuses on headline text to reduce API call overhead.
+- Daily API call limit of 10,000 requests
+- BERT RNA is trained with max sentence length set as 512 tokens.
+- Average length of our text input is 127.0.
+- BERT RNA expects a CSV structure with a single column for the text.
+- Uses multiple ML techniques for predictive modeling
+- Sample size for target companies is very small for robust predictive results
+- ROC_AUC score is the main accuracy metric for models.
+- Reported evaluation metrics are in line with the one from the random forest model.
+- The dataset wasn't large enough to claim the robustness of the model's predictive
+  power.
+- Uses balanced scale_pos_weight parameter considering the imbalanced nature of the
+  dataset.
+- The ROC_AUC score is used as the main accuracy metric.
+- The SearchBrowser module is designed to run within the Refinitiv Workspace/Eikon
+  CodeBook environment.
+- The SearchBrowser interface supports basic query expressions
+- Applications written to WebSocket API protocol specification can connect to Real-Time
+  Distributions System (RTDS) version 3.2.1 (and higher) where this transport is enabled.
+- 'IMPORTANT Technical Change Announcement: Starting with version RTSDK 2.2.1.L1 (EMA/ETA
+  3.8.2.L1), Enterprise Message API (EMA) C++ and Java will be extended to throw OmmInvalidUsageException
+  when decoding BLANK array in either a FieldEntry or ElementEntry.'
+- 'IMPORTANT Rebranding Announcement: Starting with version RTSDK 2.0.0.L1 (same as
+  EMA/ETA 3.6.0.L1), there are namespace changes and library name changes.'
+- Starting with version RTSDK 2.2.1.L1, Enterprise Message API (EMA) C++ and Java
+  will be extended to throw OmmInvalidUsageException when decoding BLANK array in
+  either a FieldEntry or ElementEntry.
+- Starting with version RTSDK 2.0.0.L1, there are namespace changes and library name
+  changes.
+- 'This SDK encompasses the open source Real-Time APIs: Enterprise Message API (EMA)
+  and Enterprise Transport API (ETA).'
+- ETA is utilized for optimal distribution of OMM/RWF data.
+- 'This SDK encompasses open source Real-Time APIs: Enterprise Message API (EMA) and
+  Enterprise Transport API (ETA).'
+- The Transport API is used for optimal distribution of OMM/RWF data.
+- Email verification successfully done! Thank you for registering. You will typically
+  receive your email confirmation within 20 mins with further instructions on how
+  to proceed with access to Developer Community
+- By submitting this form, you agree to your personal data being shared within the
+  London Stock Exchange Group of companies (LSEG) for the purpose of receiving communications
+  via post, phone and electronic means from LSEG about events, resources, products,
+  and/or services.
+- Email verification successfully done! You will typically receive your email confirmation
+  within 20 mins with further instructions on how to proceed with access to Developer
+  Community
+- The Qual-ID API requires authentication for access control, using appropriate credentials.
+- You will typically receive your email confirmation within 20 mins with further instructions
+  on how to proceed with access to Developer Community
+- The network domain for the DSS and LSEG Tick History products will change from Reuters
+  to Refinitiv.
+- The OData namespace will change from ThomsonReuters.Dss.Api to DataScope.Select.Api.
+- All the reports which contain the reference to Thomson Reuters or TRPS in the field
+  name will now have to be renamed to Refinitiv and Evaluated Pricing respectively.
+- Refer to the PCN Guide for step by step screen-shots of how to edit the report templates
+  and fields.
+- Retrieve the most recent validated prices or analytics, regardless of when the instruments
+  were priced (default).
+- Data Availability trigger option executes extraction upon release of today's prices.
+- Ensure instruments are regionally based and of the same asset type for optimal delivery.
+- EOD Pricing reports provide initial and validated end of day prices for all exchange‐traded
+  instruments from the real‐time network.
+- RICs should be in the same regions for optimization purpose.
+- End of Day prices are generated at a time after market closed.
+- Extraction will execute upon the release of today’s prices or analytics.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '400 Bad Request: Check your input data format.'
+- '401 Unauthorized: Verify your authentication credentials.'
+- '500 Internal Server Error: Try again later or contact support.'
+- 'AttributeError: ''PlatformSession'' object has no attribute ''_get_udf_url'''
+- API request errors may occur, handle with try/except.
+- Model not robust enough for actual prediction and trading
+- There is some problem with the request sent.
+- '404 Not Found: Schedule not available on the DSS server'
+- Columns suppressed due to trade date other than today.
+- '403 ERROR: The request could not be satisfied'
+- Request blocked. We can't connect to the server for this app or website at this
+  time. There might be too much traffic or a configuration error.
+- Request blocked. We can't connect to the server for this app or website at this
+  time.
+- Request blocked. We can't connect to the server for this app or website at this
+  time. There might be too much traffic or a configuration error. Try again later,
+  or contact the app or website owner.
+- '403 ERROR: The request could not be satisfied. Request blocked. We can''t connect
+  to the server for this app or website at this time. There might be too much traffic
+  or a configuration error.'
+- '403 ERROR: The request could not be satisfied. Request blocked. We can''t connect
+  to the server for this app or website at this time. There might be too much traffic
+  or a configuration error. Try again later, or contact the app or website owner.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://selectapi.datascope.refinitiv.com
+  auth:
+    type: oauth2
+source_metadata: null

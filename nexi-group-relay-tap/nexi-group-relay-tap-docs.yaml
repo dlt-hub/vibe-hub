@@ -1,0 +1,252 @@
+resources:
+- name: add_merchant
+  endpoint:
+    path: /ms/naa/admin/customer/v1/merchant
+    method: POST
+    data_selector: id
+    params: {}
+- name: add_agreement
+  endpoint:
+    path: /ms/map/identifier/create
+    method: POST
+    data_selector: response
+- name: transaction_initialize
+  endpoint:
+    path: /ms/aapay/v2/transaction/purchase/initialize
+    method: POST
+- name: retrieve_transaction_details
+  endpoint:
+    path: /ms/aapay/v2/transaction/{id}/status
+    method: GET
+- name: SWISH
+  endpoint:
+    method: GET
+    data_selector: payment_options
+    params:
+      AgreementId: SWISH_ID
+- name: Klarna
+  endpoint:
+    method: GET
+    data_selector: payment_options
+    params:
+      AgreementId: KLARNA_MERCHANT_ID
+      Password: KLARNA_PASSWORD
+- name: Santander
+  endpoint:
+    method: GET
+    data_selector: payment_options
+    params:
+      AgreementId: SANTANDER_MERCHANT_ID
+- name: merchant
+  endpoint:
+    path: /ms/naa/admin/customer/v1/merchant
+    method: POST
+    data_selector: id
+    params: {}
+- name: merchant_update
+  endpoint:
+    path: /ms/naa/admin/customer/v1/merchant/{merchantId}
+    method: PUT
+    data_selector: id
+    params: {}
+- name: merchant_delete
+  endpoint:
+    path: /ms/naa/admin/customer/v1/merchant/{merchantId}
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: merchant
+  endpoint:
+    path: /merchant/{merchantId}
+    method: DELETE
+- name: merchant
+  endpoint:
+    path: /merchant/{merchantId}
+    method: DELETE
+- name: payment_methods
+  endpoint:
+    path: /ms/naa/terminal/method/list/{baxId}/{terminalId}
+    method: GET
+    params:
+      baxId: string
+      terminalId: string
+      exclude: string
+      caller: string
+      lang: string
+- name: merchRcptReq
+  endpoint:
+    path: /merchRcptReq
+    method: GET
+    data_selector: merchRcptReq
+    params: {}
+- name: delete_agreement_mapping
+  endpoint:
+    path: /ms/map/identifier/delete/from/{fromType}/{fromId}/to/{toType}
+    method: DELETE
+- name: create_edit_agreement_mapping
+  endpoint:
+    path: /ms/map/identifier/create
+    method: POST
+- name: agreement
+  endpoint:
+    path: /lookup/service
+    method: POST
+    data_selector: agreementLineDto
+    params:
+      userId: string
+- name: agreement
+  endpoint:
+    path: /lookup/service
+    method: POST
+    data_selector: agreementLineDto
+    params: {}
+- name: initialize_transaction
+  endpoint:
+    path: /ms/aapay/v2/transaction/{type}/initialize
+    method: POST
+    data_selector: transaction
+    params:
+      Authorization: string required
+      type: string required
+- name: transaction
+  endpoint:
+    path: /transaction
+    method: POST
+    data_selector: response
+    params: {}
+- name: transaction
+  endpoint:
+    path: /transactions
+    method: GET
+    data_selector: response.transaction
+    params: {}
+- name: channel
+  endpoint:
+    path: /channels
+    method: GET
+    data_selector: response.channel
+    params: {}
+- name: additionalProperties
+  endpoint:
+    path: /additionalProperties
+    method: GET
+    data_selector: response.additionalProperties
+    params: {}
+- name: transaction
+  endpoint:
+    path: /api/transaction
+    method: POST
+    data_selector: response
+    params: {}
+- name: transaction
+  endpoint:
+    path: /transaction
+    method: POST
+- name: response
+  endpoint:
+    path: /response
+    method: GET
+    data_selector: response
+    params: {}
+- name: transaction_status
+  endpoint:
+    path: /transaction/{id}/status
+    method: GET
+    params:
+      id: string
+- name: initialize_transaction
+  endpoint:
+    path: /transaction/{type}/initializeWithIdempotency
+    method: POST
+    params:
+      type: string
+- name: transaction
+  endpoint:
+    path: /payment/transaction
+    method: POST
+    data_selector: response
+    params: {}
+- name: transaction
+  endpoint:
+    path: /transaction
+    method: POST
+    data_selector: response
+    params: {}
+- name: transaction
+  endpoint:
+    path: /transaction
+    method: GET
+    data_selector: response.transaction
+    params: {}
+- name: merchant
+  endpoint:
+    path: /merchant
+    method: GET
+    data_selector: response.transaction.merchant
+    params: {}
+- name: consumer
+  endpoint:
+    path: /consumer
+    method: GET
+    data_selector: response.transaction.consumer
+    params: {}
+- name: transaction
+  endpoint:
+    path: /transaction
+    method: POST
+    data_selector: response
+    params: {}
+- name: transaction
+  endpoint:
+    path: /transaction
+    method: POST
+- name: transaction
+  endpoint:
+    path: /transaction
+    method: GET
+    data_selector: response.transaction
+- name: naa2Ecr
+  endpoint:
+    path: /naa2Ecr
+    method: GET
+    data_selector: response.naa2Ecr
+- name: transaction_status
+  endpoint:
+    path: /transaction/{id}/status
+    method: GET
+    params:
+      id: stringrequired
+      method: stringoptional
+notes:
+- Includes access token in header for all requests
+- The Retrieve transaction details call should be sent at least 2 seconds after the
+  Initialize a transaction call to get a valid response.
+- Payment Services facilitates payments, refunds OR reversals for the supported alternate
+  payment schemes.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Valid response structure includes transaction details and merchant information.
+- 'Authorization format: Bearer Base64(consumer-key:consumer-secret)'
+- Type of transaction can be payment, refund, or reversal
+errors:
+- '400: The server did not understand or could not validate the input parameters.'
+- '404: The merchant was not found.'
+- '500: The server experienced a runtime exception while processing the request. Try
+  again later or contact customer support.'
+- '404: The merchant was not found'
+- '409: Entry is marked for deletion.'
+- '500: The server experienced a runtime exception while processing the request. Try
+  again later.'
+- 401 Operation not allowed
+- 500 The server experienced a runtime exception while processing the request. Try
+  again later or contact our customer support.
+- 401 Operation not allowed.
+- 500 The server experienced a runtime exception while processing the request.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: /ms/aapay/v2/transaction
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+source_metadata: null
