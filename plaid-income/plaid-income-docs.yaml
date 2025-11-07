@@ -1,0 +1,155 @@
+resources:
+- name: user_create
+  endpoint:
+    path: /user/create
+    method: POST
+    data_selector: records
+- name: link_token_create
+  endpoint:
+    path: /link/token/create
+    method: POST
+    data_selector: records
+- name: session_finished
+  endpoint:
+    path: /link/session_finished
+    method: POST
+    data_selector: records
+- name: item_add_result
+  endpoint:
+    path: /link/item_add_result
+    method: POST
+    data_selector: records
+- name: link_token_get
+  endpoint:
+    path: /link/token/get
+    method: POST
+    data_selector: records
+- name: Embedded Institution Search
+  endpoint:
+    path: /link/token/create
+    method: POST
+    data_selector: token
+    params: {}
+- name: payroll_income_get
+  endpoint:
+    path: /credit/payroll_income/get
+    method: POST
+- name: employment_get
+  endpoint:
+    path: /credit/employment/get
+    method: POST
+- name: bank_income
+  endpoint:
+    path: /credit/bank_income/get
+    method: GET
+    data_selector: results
+    params: {}
+- name: bank_income_refresh
+  endpoint:
+    path: /credit/bank_income/refresh
+    method: POST
+    data_selector: results
+    params: {}
+- name: user_create
+  endpoint:
+    path: /user/create
+    method: POST
+- name: link_token_create
+  endpoint:
+    path: /link/token/create
+    method: POST
+- name: credit_payroll_income_risk_signals_get
+  endpoint:
+    path: /credit/payroll_income/risk_signals/get
+    method: GET
+- name: credit_payroll_income_get
+  endpoint:
+    path: /credit/payroll_income/get
+    method: GET
+- name: credit_bank_statements_uploads_get
+  endpoint:
+    path: /credit/bank_statements/uploads/get
+    method: GET
+- name: credit_sessions_get
+  endpoint:
+    path: /credit/sessions/get
+    method: GET
+- name: payroll_income
+  endpoint:
+    path: /credit/payroll_income/get
+    method: GET
+- name: employment
+  endpoint:
+    path: /credit/employment/get
+    method: GET
+- name: user_create
+  endpoint:
+    path: /user/create
+    method: POST
+    data_selector: data
+    params: {}
+- name: credit_payroll_income_get
+  endpoint:
+    path: /credit/payroll_income/get
+    method: GET
+    data_selector: data
+    params: {}
+- name: link_token_create_for_payroll_income
+  endpoint:
+    path: /link/token/create
+    method: POST
+    data_selector: data
+    params: {}
+- name: link_token_create_for_bank_income
+  endpoint:
+    path: /link/token/create
+    method: POST
+    data_selector: data
+    params: {}
+- name: bank_income
+  endpoint:
+    path: /credit/bank_income/get
+    method: POST
+    data_selector: data.bank_income
+    params: {}
+notes:
+- Multi-Item Link allows end users to add multiple Items in the same Link session.
+- Multi-Item Link is compatible with Auth, Transfer, Transactions, Liabilities, Investments,
+  Bank Income, Assets, and Plaid Check Consumer Reports.
+- Embedded Institution Search cannot be used in update mode.
+- Embedded Institution Search sessions will not be reported in Link Analytics.
+- Database Auth does not verify that the user has access to the bank account and does
+  also not fully guarantee that the account exists.
+- Database Auth is available for Auth flows in the United States.
+- Users are more likely to select 'Pay by bank' if they understand that it will be
+  a secure, open banking-powered experience.
+- To support both populations, enable Database Auth for low-to-medium-risk scenarios.
+- Payroll Income supports approximately 80% of the US workforce, including gig income
+  workers.
+- Payroll Income does not currently support the use of custom Sandbox data; only the
+  default `user_good` user is compatible with Sandbox Payroll Income.
+- Bank Income allows you to instantly retrieve net income information from a user-connected
+  bank account.
+- Document Income allows retrieval of gross and/or net income information via user-uploaded
+  documents.
+- Fraud Risk detection is an optional feature using AI-powered analysis.
+- Uses OAuth2 with refresh token — requires setup of connected app in Plaid
+errors:
+- Invalid client_id or secret.
+- Invalid user_token.
+- SESSION_FINISHED webhook may not contain public tokens if the session did not complete
+  successfully.
+- 'Invalid Link Token: Ensure the token is valid and not expired.'
+- 'INCOME_VERIFICATION_REFRESH_RECONNECT_NEEDED: Send the user through update mode
+  to resolve this failure state.'
+- 'INCOME_VERIFICATION_REFRESH_RECONNECT_NEEDED: To resolve this failure state, send
+  the user through update mode.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.plaid.com
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+source_metadata: null

@@ -1,0 +1,4862 @@
+resources:
+- name: annotations
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Annotations
+    method: GET
+    data_selector: records
+    params: {}
+- name: data_services
+  endpoint:
+    path: /services/data/vXX.X/sobjects/DataServices
+    method: GET
+    data_selector: records
+    params: {}
+- name: workspaces
+  endpoint:
+    path: /api/v1/orgs/ea-tlt/workspaces
+    method: GET
+- name: datasets
+  endpoint:
+    path: /api/v1/orgs/ea-tlt/datasets
+    method: GET
+- name: experiments
+  endpoint:
+    path: /api/v1/orgs/ea-tlt/experiments
+    method: GET
+- name: datasets
+  endpoint:
+    path: /orgs/ea-tlt/datasets
+    method: POST
+    data_selector: id
+- name: experiments
+  endpoint:
+    path: /orgs/ea-tlt/experiments
+    method: POST
+    data_selector: id
+- name: train_jobs
+  endpoint:
+    path: /orgs/ea-tlt/experiments/{experiment_id}/jobs
+    method: POST
+    data_selector: ''
+- name: evaluation_jobs
+  endpoint:
+    path: /orgs/ea-tlt/experiments/{experiment_id}/jobs
+    method: POST
+    data_selector: ''
+- name: inference_jobs
+  endpoint:
+    path: /orgs/ea-tlt/experiments/{experiment_id}/jobs
+    method: POST
+    data_selector: ''
+- name: export_jobs
+  endpoint:
+    path: /orgs/ea-tlt/experiments/{experiment_id}/jobs
+    method: POST
+    data_selector: ''
+- name: gen_trt_engine_jobs
+  endpoint:
+    path: /orgs/ea-tlt/experiments/{experiment_id}/jobs
+    method: POST
+    data_selector: ''
+- name: PyTorch
+  endpoint:
+    path: /model/<network>/train
+    method: POST
+    params:
+      results_dir: $RESULTS_DIR
+      encryption_key: $KEY
+      train.num_gpus: 2
+      train.num_epochs: 2
+- name: TF2
+  endpoint:
+    path: /model/<network>/train
+    method: POST
+    params:
+      num_gpus: 1
+      gpu_ids: '[0]'
+      train.num_epochs: 2
+- name: Data-Services
+  endpoint:
+    path: /dataset/augmentation/generate
+    method: POST
+    params:
+      results_dir: $RESULTS_DIR
+      num_gpus: 2
+      data.image_dir: $IMAGE_DIR
+- name: Deploy
+  endpoint:
+    path: /deploy/<network>/gen_trt_engine
+    method: POST
+    params:
+      results_dir: $RESULTS_DIR
+      encryption_key: $KEY
+      gen_trt_engine.gpu_id: 1
+      gen_trt_engine.onnx_file: $ONNX_FILE
+      gen_trt_engine.trt_engine: $ENGINE_PATH
+- name: task_group
+  endpoint:
+    path: /task_group
+    method: GET
+- name: model
+  endpoint:
+    path: /model
+    method: GET
+- name: dataset
+  endpoint:
+    path: /dataset
+    method: GET
+- name: deploy
+  endpoint:
+    path: /deploy
+    method: GET
+- name: TAO for CV
+  endpoint:
+    path: /tao-toolkit
+    method: GET
+- name: TAO for ConvAI
+  endpoint:
+    path: /tao-toolkit-pyt
+    method: GET
+- name: TAO for Language model
+  endpoint:
+    path: /tao-toolkit-lm
+    method: GET
+- name: classification
+  endpoint:
+    path: /export
+    method: POST
+    data_selector: model_export
+    params:
+      data_type: int8
+- name: detectnet_v2
+  endpoint:
+    path: /export
+    method: POST
+    data_selector: model_export
+    params:
+      data_type: int8
+- name: efficientdet
+  endpoint:
+    path: /export
+    method: POST
+    data_selector: model_export
+    params:
+      data_type: int8
+- name: ssd
+  endpoint:
+    path: /export
+    method: POST
+    data_selector: model_export
+    params:
+      data_type: int8
+- name: unet
+  endpoint:
+    path: /export
+    method: POST
+    data_selector: model_export
+    params:
+      data_type: int8
+- name: yolo_v3
+  endpoint:
+    path: /export
+    method: POST
+    data_selector: model_export
+    params:
+      data_type: int8
+- name: Job API
+  endpoint:
+    path: /api/jobs
+    method: POST
+    data_selector: jobs
+- name: function
+  endpoint:
+    path: /v3/functions
+    method: POST
+    data_selector: function
+    params: {}
+- name: pretrained_models
+  endpoint:
+    path: /nvidia/tao/pretrained_models
+    method: GET
+- name: docker_images
+  endpoint:
+    path: /docker/images
+    method: POST
+- name: airgapped_deployment
+  endpoint:
+    path: /airgapped/deployment
+    method: POST
+- name: experiments
+  endpoint:
+    path: /experiments:load_airgapped
+    method: POST
+    data_selector: response
+    params: {}
+- name: air_gapped_environment
+  endpoint:
+    path: /air-gapped/environment
+    method: GET
+    data_selector: assets
+    params: {}
+- name: experiments
+  endpoint:
+    path: /experiments:load_airgapped
+    method: POST
+    data_selector: response
+- name: models
+  endpoint:
+    path: /s3://tao-storage/shared-storage/ptm/airgapped-models/
+    method: PUT
+    data_selector: models
+- name: datasets
+  endpoint:
+    path: /s3://tao-storage/data/
+    method: PUT
+    data_selector: datasets
+- name: experiments
+  endpoint:
+    path: /experiments:load_airgapped
+    method: POST
+    data_selector: response
+    params:
+      workspace_id: workspace_id
+- name: airgapped
+  endpoint:
+    path: /airgapped
+    method: GET
+- name: cloud_workspace
+  endpoint:
+    path: /api/v1/orgs/{ngc_org_name}/workspaces
+    method: POST
+    data_selector: id
+- name: load_experiments
+  endpoint:
+    path: /api/v1/orgs/{ngc_org_name}/experiments:load_airgapped
+    method: POST
+    data_selector: id
+- name: workspace
+  endpoint:
+    path: /dino/workspace-create
+    method: POST
+    data_selector: WORKSPACE_ID
+    params:
+      name: AWS Public
+      cloud_type: aws
+      cloud_details: '{"cloud_region": "us-west-1", "cloud_bucket_name": "bucket_name",
+        "access_key": "access_key", "secret_key": "secret_key"}'
+- name: train_dataset
+  endpoint:
+    path: /dino/dataset-create
+    method: POST
+    data_selector: TRAIN_DATASET_ID
+    params:
+      dataset_type: object_detection
+      dataset_format: coco
+      url: https://tao-detection-synthetic-dataset-dev.s3.us-west-2.amazonaws.com/data/object_detection_train/
+      use_for: '["training"]'
+- name: eval_dataset
+  endpoint:
+    path: /dino/dataset-create
+    method: POST
+    data_selector: EVAL_DATASET_ID
+    params:
+      dataset_type: object_detection
+      dataset_format: coco
+      url: https://tao-detection-synthetic-dataset-dev.s3.us-west-2.amazonaws.com/data/object_detection_val/
+      use_for: '["evaluation"]'
+- name: base_experiment
+  endpoint:
+    path: /dino/list-base-experiments
+    method: GET
+    data_selector: BASE_EXP_RESPONSE
+    params:
+      filter_params: '{"network_arch": "dino"}'
+- name: experiment
+  endpoint:
+    path: /experiment
+    method: POST
+- name: action_status
+  endpoint:
+    path: /get-action-status
+    method: GET
+- name: Start Inference Microservice
+  endpoint:
+    path: /orgs/{org}/experiments/{experiment_id}/inference_microservice/start
+    method: POST
+    data_selector: job_id
+    params:
+      parent_id: train_job_id
+- name: Run Inference
+  endpoint:
+    path: /orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/inference
+    method: POST
+    data_selector: status
+    params: {}
+- name: Check Status
+  endpoint:
+    path: /orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/status
+    method: GET
+    data_selector: status
+    params: {}
+- name: Stop Inference Microservice
+  endpoint:
+    path: /orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/stop
+    method: POST
+    data_selector: status
+    params: {}
+- name: Start Inference Microservice
+  endpoint:
+    path: /orgs/{org}/experiments/{experiment_id}/inference_microservice/start
+    method: POST
+    data_selector: job_id
+    params:
+      parent_id: train_job_id
+- name: Run Inference
+  endpoint:
+    path: /orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/inference
+    method: POST
+    data_selector: status
+    params: {}
+- name: Check Status
+  endpoint:
+    path: /orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/status
+    method: GET
+    data_selector: status
+    params: {}
+- name: Stop Inference Microservice
+  endpoint:
+    path: /orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/stop
+    method: POST
+    data_selector: job_id
+    params: {}
+- name: start_inference_microservice
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/inference_microservice/start
+    method: POST
+    data_selector: ''
+    params:
+      parent_id: train_job_id
+- name: run_inference
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/inference
+    method: POST
+    data_selector: ''
+    params: {}
+- name: check_status
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/status
+    method: GET
+    data_selector: ''
+    params: {}
+- name: stop_service
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/stop
+    method: POST
+    data_selector: ''
+    params: {}
+- name: inference_microservice_status
+  endpoint:
+    path: /orgs/$NGC_ORG/experiments/$EXPERIMENT_ID/jobs/$INFERENCE_MS_JOB_ID/inference_microservice/status
+    method: GET
+    data_selector: status
+    params: {}
+- name: inference_request
+  endpoint:
+    path: /orgs/$NGC_ORG/experiments/$EXPERIMENT_ID/jobs/$INFERENCE_MS_JOB_ID/inference_microservice/inference
+    method: POST
+    data_selector: result
+    params: {}
+- name: start_inference_microservice
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/inference_microservice/start
+    method: POST
+    data_selector: job_id
+    params:
+      parent_id: train_job_id
+- name: run_inference
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/inference
+    method: POST
+    data_selector: results
+    params: {}
+- name: check_status
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/status
+    method: GET
+    data_selector: status
+    params: {}
+- name: stop_service
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/stop
+    method: POST
+    data_selector: status
+    params: {}
+- name: inference_microservice
+  endpoint:
+    path: /orgs/$NGC_ORG/experiments/$EXPERIMENT_ID/inference_microservice/start
+    method: POST
+    data_selector: job_id
+- name: start_inference_microservice
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/inference_microservice/start
+    method: POST
+    data_selector: job_id
+    params:
+      parent_id: train_job_id
+- name: run_inference
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/inference
+    method: POST
+    data_selector: results
+    params: {}
+- name: check_status
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/status
+    method: GET
+    data_selector: status
+    params: {}
+- name: stop_service
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/stop
+    method: POST
+    data_selector: status
+    params: {}
+- name: inference_status
+  endpoint:
+    path: /orgs/$NGC_ORG/experiments/$EXPERIMENT_ID/jobs/$INFERENCE_MS_JOB_ID/inference_microservice/status
+    method: GET
+    data_selector: status
+    params: {}
+- name: run_inference
+  endpoint:
+    path: /orgs/$NGC_ORG/experiments/$EXPERIMENT_ID/jobs/$INFERENCE_MS_JOB_ID/inference_microservice/inference
+    method: POST
+    data_selector: result
+    params: {}
+- name: Start Inference Microservice
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/inference_microservice/start
+    method: POST
+    data_selector: null
+    params:
+      parent_id: train_job_id
+- name: Run Inference
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/inference
+    method: POST
+    data_selector: null
+    params: {}
+- name: Check Status
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/status
+    method: GET
+    data_selector: null
+    params: {}
+- name: Stop Service
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/stop
+    method: POST
+    data_selector: null
+    params: {}
+- name: inference_status
+  endpoint:
+    path: /orgs/$NGC_ORG/experiments/$EXPERIMENT_ID/jobs/$INFERENCE_MS_JOB_ID/inference_microservice/status
+    method: GET
+    data_selector: model_loaded
+    params: {}
+- name: inference_request
+  endpoint:
+    path: /orgs/$NGC_ORG/experiments/$EXPERIMENT_ID/jobs/$INFERENCE_MS_JOB_ID/inference_microservice/inference
+    method: POST
+    data_selector: RESULT
+    params: {}
+- name: start_inference_microservice
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/inference_microservice/start
+    method: POST
+    data_selector: job_id
+    params:
+      parent_id: train_job_id
+- name: run_inference
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/inference
+    method: POST
+    data_selector: status
+    params: {}
+- name: check_status
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/status
+    method: GET
+    data_selector: status
+    params: {}
+- name: stop_service
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/stop
+    method: POST
+    data_selector: status
+    params: {}
+- name: start_inference
+  endpoint:
+    path: /orgs/$NGC_ORG/experiments/$EXPERIMENT_ID/inference_microservice/start
+    method: POST
+- name: check_model_status
+  endpoint:
+    path: /orgs/$NGC_ORG/experiments/$EXPERIMENT_ID/jobs/$INFERENCE_MS_JOB_ID/inference_microservice/status
+    method: GET
+- name: run_inference
+  endpoint:
+    path: /orgs/$NGC_ORG/experiments/$EXPERIMENT_ID/jobs/$INFERENCE_MS_JOB_ID/inference_microservice/inference
+    method: POST
+- name: start_inference_microservice
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/inference_microservice/start
+    method: POST
+    data_selector: job_id
+    params:
+      parent_id: train_job_id
+- name: run_inference
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/inference
+    method: POST
+    data_selector: results
+    params: {}
+- name: check_status
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/status
+    method: GET
+    data_selector: status
+    params: {}
+- name: stop_service
+  endpoint:
+    path: /api/v1/orgs/{org}/experiments/{experiment_id}/jobs/{job_id}/inference_microservice/stop
+    method: POST
+    data_selector: status
+    params: {}
+- name: inference_microservice
+  endpoint:
+    path: /orgs/$NGC_ORG/experiments/$EXPERIMENT_ID/jobs/$INFERENCE_MS_JOB_ID/inference_microservice/inference
+    method: POST
+    data_selector: RESULT
+    params: {}
+- name: automl_experiment
+  endpoint:
+    path: /automl/experiment
+    method: POST
+    data_selector: experiment_results
+- name: tao_model_list
+  endpoint:
+    path: /tao/model/list
+    method: GET
+    data_selector: processes
+    params: {}
+- name: tao_stop
+  endpoint:
+    path: /tao/stop
+    method: POST
+    data_selector: status
+    params: {}
+- name: tao_info
+  endpoint:
+    path: /tao/info
+    method: GET
+    data_selector: info
+    params: {}
+- name: classification_tf2
+  endpoint:
+    path: /nvidia/tao/tao-toolkit:6.0.0-tf2
+    method: GET
+    data_selector: tasks
+    params: {}
+- name: classification_tf1
+  endpoint:
+    path: /nvidia/tao/tao-toolkit:6.0.0-deploy
+    method: GET
+    data_selector: tasks
+    params: {}
+- name: grounding_dino
+  endpoint:
+    path: /nvidia/tao/tao-toolkit:6.0.0-pyt
+    method: GET
+    data_selector: tasks
+    params: {}
+- name: nvidia_tao_pytorch
+  endpoint:
+    path: /tao/tao-toolkit:6.0.0-pytorch
+    method: GET
+    data_selector: networks_supported
+- name: nvidia_tao_deploy
+  endpoint:
+    path: /tao/tao-toolkit:6.0.0-deploy
+    method: GET
+    data_selector: networks_supported
+- name: tao_pt
+  endpoint:
+    path: /scripts/envsetup.sh
+    method: GET
+    data_selector: output
+    params: {}
+- name: models
+  endpoint:
+    path: /models
+    method: GET
+    data_selector: models
+- name: model_list
+  endpoint:
+    path: /models
+    method: GET
+    data_selector: models
+- name: image_classification
+  endpoint:
+    path: /image_classification
+    method: GET
+    data_selector: models
+    params: {}
+- name: object_detection
+  endpoint:
+    path: /object_detection
+    method: GET
+    data_selector: models
+    params: {}
+- name: segmentation
+  endpoint:
+    path: /segmentation
+    method: GET
+    data_selector: models
+    params: {}
+- name: pose_estimation
+  endpoint:
+    path: /pose_estimation
+    method: GET
+    data_selector: models
+    params: {}
+- name: visual_change_detection
+  endpoint:
+    path: /visual_change_detection
+    method: GET
+    data_selector: models
+    params: {}
+- name: image_classification
+  endpoint:
+    path: /image_classification
+    method: POST
+    data_selector: models
+    params: {}
+- name: object_detection
+  endpoint:
+    path: /object_detection
+    method: POST
+    data_selector: models
+    params: {}
+- name: semantic_segmentation
+  endpoint:
+    path: /semantic_segmentation
+    method: POST
+    data_selector: models
+    params: {}
+- name: change_detection
+  endpoint:
+    path: /change_detection
+    method: POST
+    data_selector: models
+    params: {}
+- name: coco_format
+  endpoint:
+    path: /coco/format
+    method: GET
+    data_selector: annotations
+    params: {}
+- name: odvg_format
+  endpoint:
+    path: /odvg/format
+    method: GET
+    data_selector: detection
+    params: {}
+- name: gesture_recognition
+  endpoint:
+    path: /gesture/recognition
+    method: GET
+    data_selector: gestures
+    params: {}
+- name: heart_rate_estimation
+  endpoint:
+    path: /heart_rate/estimation
+    method: GET
+    data_selector: heart_rates
+    params: {}
+- name: annotations
+  endpoint:
+    path: /annotations
+    method: GET
+    data_selector: annotations
+- name: metadata
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: infos
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: annotations
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Annotation
+    method: GET
+    data_selector: records
+    params: {}
+- name: data_analytics
+  endpoint:
+    path: /services/data/vXX.X/sobjects/DataAnalytics
+    method: GET
+    data_selector: records
+    params: {}
+- name: annotation_conversion
+  endpoint:
+    path: /annotations/convert
+    method: POST
+    data_selector: data
+- name: annotation_slicing
+  endpoint:
+    path: /annotations/slice
+    method: POST
+    data_selector: data
+- name: annotation_merging
+  endpoint:
+    path: /annotations/merge
+    method: POST
+    data_selector: data
+- name: augmentation_spec
+  endpoint:
+    path: /augmentation/get-spec
+    method: GET
+    data_selector: data
+    params: {}
+- name: Auto-Label
+  endpoint:
+    path: /auto-label/generate
+    method: POST
+    data_selector: ''
+    params: {}
+- name: knowledge_distillation
+  endpoint:
+    path: /knowledge_distillation
+    method: GET
+    data_selector: records
+- name: automatic_mixed_precision
+  endpoint:
+    path: /automatic_mixed_precision
+    method: GET
+    data_selector: records
+- name: model_pruning
+  endpoint:
+    path: /model_pruning
+    method: GET
+    data_selector: records
+- name: quantization_aware_training
+  endpoint:
+    path: /quantization_aware_training
+    method: GET
+    data_selector: records
+- name: quantize
+  endpoint:
+    path: /path/to/quantized_output
+    method: POST
+    data_selector: results
+    params:
+      model_path: /path/to/trained_rtdetr.ckpt
+      backend: torchao
+      mode: weight_only_ptq
+      default_layer_dtype: native
+      default_activation_dtype: native
+      layers:
+      - module_name: Linear
+        weights:
+          dtype: int8
+- name: quantize
+  endpoint:
+    path: /path/to/quantized_output
+    method: POST
+    data_selector: results_dir
+    params: {}
+- name: train_dataset
+  endpoint:
+    path: /path/to/img_dir
+    method: GET
+    data_selector: records
+    params: {}
+- name: test_dataset
+  endpoint:
+    path: ???
+    method: GET
+    data_selector: records
+    params: {}
+- name: model
+  endpoint:
+    path: /model/nvdinov2
+    method: POST
+    data_selector: records
+    params: {}
+- name: experiment
+  endpoint:
+    path: /experiment/nvdinov2
+    method: POST
+    data_selector: records
+    params: {}
+- name: dataset
+  endpoint:
+    path: /data/train/
+    method: GET
+    data_selector: records
+- name: train
+  endpoint:
+    path: /train
+    method: POST
+    data_selector: records
+- name: evaluate
+  endpoint:
+    path: /path/to/model.pth
+    method: POST
+    data_selector: evaluate
+    params:
+      checkpoint: /path/to/model.pth
+      num_gpus: 1
+      gpu_ids:
+      - 0
+      results_dir: /path/to/results
+- name: inference
+  endpoint:
+    path: /path/to/model.pth
+    method: POST
+    data_selector: inference
+    params:
+      checkpoint: /path/to/model.pth
+      num_gpus: 1
+      gpu_ids:
+      - 0
+      results_dir: /path/to/results
+- name: export
+  endpoint:
+    path: /path/to/model.pth
+    method: POST
+    data_selector: export
+    params:
+      checkpoint: /path/to/model.pth
+      onnx_file: /path/to/model.onnx
+      on_cpu: false
+      opset_version: 12
+      input_channel: 3
+      input_width: 960
+      input_height: 544
+      batch_size: -1
+- name: dataset_convert
+  endpoint:
+    path: /path/to/dataset_convert
+    method: POST
+    data_selector: results
+    params: {}
+- name: experiment_spec
+  endpoint:
+    path: /path/to/experiment_spec
+    method: POST
+    data_selector: results
+    params: {}
+- name: train_dataset
+  endpoint:
+    path: /dataset/hyperkvasir_16/hyperkvasir_16_class.zip
+    method: GET
+    data_selector: images_dir
+    params: {}
+- name: validation_dataset
+  endpoint:
+    path: /dataset/hyperkvasir_16/hyperkvasir_16_class.zip
+    method: GET
+    data_selector: images_dir
+    params: {}
+- name: test_dataset
+  endpoint:
+    path: /dataset/hyperkvasir_16/hyperkvasir_16_class.zip
+    method: GET
+    data_selector: images_dir
+    params: {}
+- name: infer_dataset
+  endpoint:
+    path: /dataset/hyperkvasir_16/hyperkvasir_16_class.zip
+    method: GET
+    data_selector: start_seed
+    params: {}
+- name: dataset
+  endpoint:
+    path: /path/to/dataset
+    method: GET
+    data_selector: records
+    params: {}
+- name: training
+  endpoint:
+    path: /mlrecog/experiment-run-action
+    method: POST
+    data_selector: TRAIN_JOB_ID
+- name: evaluation
+  endpoint:
+    path: /mlrecog/experiment-run-action
+    method: POST
+    data_selector: EVAL_JOB_ID
+- name: inference
+  endpoint:
+    path: /mlrecog/experiment-run-action
+    method: POST
+    data_selector: INFERENCE_JOB_ID
+- name: export
+  endpoint:
+    path: /export
+    method: GET
+    data_selector: results
+    params: {}
+- name: dataset
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: dataset
+  endpoint:
+    path: /path/to/coco/train2017/
+    method: GET
+    data_selector: records
+- name: model
+  endpoint:
+    path: /path/to/your-gdino-pretrained-model
+    method: GET
+    data_selector: records
+- name: inference
+  endpoint:
+    path: /path/to/model.pth
+    method: POST
+    data_selector: results
+    params:
+      checkpoint: /path/to/model.pth
+      visualization_threshold: 0.3
+      principle_point_x: 300.7
+      principle_point_y: 392.8
+      focal_length_x: 615.0
+      focal_length_y: 615.0
+      skew: 0.0
+      use_pnp: true
+      save_json: true
+      save_visualization: true
+      opencv: true
+- name: export
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: results
+    params:
+      gpu_id: 0
+      checkpoint: /path/to/model.pth
+      onnx_file: /path/to/model.onnx
+      input_channel: 3
+      input_width: 512
+      input_height: 512
+      opset_version: 16
+      do_constant_folding: true
+- name: dataset_convert
+  endpoint:
+    path: /dataset_convert
+    method: POST
+    data_selector: ''
+    params: {}
+- name: train
+  endpoint:
+    path: /train
+    method: POST
+    data_selector: ''
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /evaluate
+    method: POST
+    data_selector: ''
+    params: {}
+- name: prune
+  endpoint:
+    path: /prune
+    method: POST
+    data_selector: ''
+    params: {}
+- name: inference
+  endpoint:
+    path: /inference
+    method: POST
+    data_selector: ''
+    params: {}
+- name: export
+  endpoint:
+    path: /export
+    method: POST
+    data_selector: ''
+    params: {}
+- name: train
+  endpoint:
+    path: /ocrnet/train
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec_file: <experiment_spec_file>
+- name: evaluate
+  endpoint:
+    path: /ocrnet/evaluate
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec_file: <experiment_spec_file>
+      evaluate.checkpoint: <model to be evaluated>
+- name: prune
+  endpoint:
+    path: /ocrnet/prune
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec_file: <experiment_spec_file>
+- name: inference
+  endpoint:
+    path: /ocrnet/inference
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec_file: <experiment_spec_file>
+- name: export
+  endpoint:
+    path: /ocrnet/export
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec_file: <experiment_spec_file>
+- name: dataset
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: training
+  endpoint:
+    path: /visual_changenet/train
+    method: POST
+    data_selector: results
+    params: {}
+- name: evaluation
+  endpoint:
+    path: /visual_changenet/evaluate
+    method: POST
+    data_selector: results
+    params: {}
+- name: inference
+  endpoint:
+    path: /visual_changenet/inference
+    method: POST
+    data_selector: results
+    params: {}
+- name: export
+  endpoint:
+    path: /visual_changenet/export
+    method: POST
+    data_selector: results
+    params: {}
+- name: train
+  endpoint:
+    path: /path/to/train
+    method: POST
+    data_selector: train
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /path/to/evaluate
+    method: POST
+    data_selector: evaluate
+    params: {}
+- name: inference
+  endpoint:
+    path: /path/to/inference
+    method: POST
+    data_selector: inference
+    params: {}
+- name: export
+  endpoint:
+    path: /path/to/export
+    method: POST
+    data_selector: export
+    params: {}
+- name: dataset
+  endpoint:
+    path: /path/to/tao-experiments/data/pointpillars
+    method: GET
+    data_selector: records
+- name: PointPillar
+  endpoint:
+    path: /pointpillars
+    method: POST
+- name: evaluate
+  endpoint:
+    path: /evaluate
+    method: POST
+    data_selector: results
+    params: {}
+- name: inference
+  endpoint:
+    path: /inference
+    method: POST
+    data_selector: results
+    params: {}
+- name: prune
+  endpoint:
+    path: /prune
+    method: POST
+    data_selector: results
+    params: {}
+- name: export
+  endpoint:
+    path: /export
+    method: POST
+    data_selector: results
+    params: {}
+- name: model
+  endpoint:
+    path: /path/to/model
+    method: POST
+    data_selector: model
+    params: {}
+- name: train
+  endpoint:
+    path: /path/to/train
+    method: POST
+    data_selector: train
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /path/to/evaluate
+    method: POST
+    data_selector: evaluate
+    params: {}
+- name: inference
+  endpoint:
+    path: /path/to/inference
+    method: POST
+    data_selector: inference
+    params: {}
+- name: export
+  endpoint:
+    path: /model/re_identification/export
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: experiment_spec
+      results_dir: results_dir
+      export.checkpoint: tlt_checkpoint
+- name: training_experiment
+  endpoint:
+    path: /optical_inspection/train
+    method: POST
+    data_selector: results
+    params: {}
+- name: evaluation_experiment
+  endpoint:
+    path: /optical_inspection/evaluate
+    method: POST
+    data_selector: results
+    params: {}
+- name: inference_experiment
+  endpoint:
+    path: /optical_inspection/inference
+    method: POST
+    data_selector: results
+    params: {}
+- name: export_experiment
+  endpoint:
+    path: /optical_inspection/export
+    method: POST
+    data_selector: results
+    params: {}
+- name: pose_classification
+  endpoint:
+    path: /pose_classification
+    method: GET
+- name: PoseClassificationNet
+  endpoint:
+    path: /pose_classification
+    method: POST
+- name: model
+  endpoint:
+    path: /path/to/model
+    method: POST
+    data_selector: model
+    params: {}
+- name: dataset
+  endpoint:
+    path: /path/to/dataset
+    method: POST
+    data_selector: dataset
+    params: {}
+- name: train
+  endpoint:
+    path: /path/to/train
+    method: POST
+    data_selector: train
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /path/to/evaluate
+    method: POST
+    data_selector: evaluate
+    params: {}
+- name: inference
+  endpoint:
+    path: /model/pose_classification/inference
+    method: POST
+    data_selector: output
+    params: {}
+- name: export
+  endpoint:
+    path: /model/pose_classification/export
+    method: POST
+    data_selector: output
+    params: {}
+- name: dataset_convert
+  endpoint:
+    path: /model/pose_classification/dataset_convert
+    method: POST
+    data_selector: output
+    params: {}
+- name: dataset
+  endpoint:
+    path: /path/to/coco/train2017/
+    method: GET
+    data_selector: train_data_sources
+    params: {}
+- name: train
+  endpoint:
+    path: /train
+    method: POST
+    data_selector: train_data
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /evaluate
+    method: POST
+    data_selector: evaluation_data
+    params: {}
+- name: inference
+  endpoint:
+    path: /path/to/model.pth
+    method: POST
+- name: export
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+- name: dataset
+  endpoint:
+    path: /path/to/dataset
+    method: GET
+    data_selector: dataset
+    params: {}
+- name: experiment
+  endpoint:
+    path: /path/to/experiment
+    method: GET
+    data_selector: experiment
+    params: {}
+- name: model
+  endpoint:
+    path: /model
+    method: POST
+    data_selector: results
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /evaluate
+    method: POST
+    data_selector: results
+    params: {}
+- name: inference
+  endpoint:
+    path: /inference
+    method: POST
+    data_selector: results
+    params: {}
+- name: export
+  endpoint:
+    path: /export
+    method: POST
+    data_selector: results
+    params: {}
+- name: dataset_convert
+  endpoint:
+    path: /deformable_detr/dataset-run-action
+    method: POST
+    data_selector: ''
+    params: {}
+- name: train_experiment
+  endpoint:
+    path: /deformable_detr/get-spec
+    method: GET
+    data_selector: ''
+    params: {}
+- name: dataset
+  endpoint:
+    path: /path/to/dataset
+    method: GET
+    data_selector: dataset
+    params: {}
+- name: model
+  endpoint:
+    path: /path/to/model
+    method: GET
+    data_selector: model
+    params: {}
+- name: train
+  endpoint:
+    path: /path/to/train
+    method: GET
+    data_selector: train
+    params: {}
+- name: experiment_spec
+  endpoint:
+    path: /path/to/experiment_spec
+    method: GET
+    data_selector: spec
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /model/re_identification/evaluate
+    method: POST
+    data_selector: results
+    params: {}
+- name: inference
+  endpoint:
+    path: /model/re_identification/inference
+    method: POST
+    data_selector: results
+    params: {}
+- name: export
+  endpoint:
+    path: /model/re_identification/export
+    method: POST
+    data_selector: results
+    params: {}
+- name: experiment
+  endpoint:
+    path: /action_recognition/get-spec
+    method: GET
+    data_selector: spec
+    params: {}
+- name: evaluate
+  endpoint:
+    path: tao/model/action_recognition/evaluate
+    method: POST
+    data_selector: evaluate
+    params:
+      experiment_spec_file: <experiment_spec_file>
+      checkpoint: <model to be evaluated>
+      batch_size: '1'
+      video_eval_mode: center
+      video_num_segments: '10'
+      results_dir: /results/evaluate
+- name: inference
+  endpoint:
+    path: tao/model/action_recognition/inference
+    method: POST
+    data_selector: inference
+    params:
+      experiment_spec: <experiment_spec>
+      checkpoint: <inference model>
+      inference_dataset_dir: <path to dataset to be inferenced>
+      batch_size: '1'
+      video_inf_mode: center
+      results_dir: /results/inference
+- name: export
+  endpoint:
+    path: tao/model/action_recognition/export
+    method: POST
+    data_selector: export
+    params:
+      experiment_spec: <experiment_spec>
+      checkpoint: <tlt checkpoint to be exported>
+      onnx_file: <path to exported file>
+- name: dataset
+  endpoint:
+    path: /data/kitti_person_infos_train.pkl
+    method: GET
+    data_selector: records
+    params: {}
+- name: model
+  endpoint:
+    path: /model/config
+    method: GET
+    data_selector: model
+    params: {}
+- name: model
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Model
+    method: GET
+    data_selector: records
+    params: {}
+- name: dataset
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Dataset
+    method: GET
+    data_selector: records
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /evaluate
+    method: POST
+    data_selector: results
+    params:
+      checkpoint: /path/to/model.pth
+- name: inference
+  endpoint:
+    path: /inference
+    method: POST
+    data_selector: results
+    params:
+      checkpoint: /path/to/model.pth
+- name: export
+  endpoint:
+    path: /export
+    method: POST
+    data_selector: results
+    params:
+      checkpoint: /path/to/model.pth
+      onnx_file: /path/to/model.onnx
+      opset_version: 12
+      input_channel: 3
+      input_width: 224
+      input_height: 224
+- name: model
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Model
+    method: GET
+    data_selector: records
+- name: dataset
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Dataset
+    method: GET
+    data_selector: records
+- name: train_dataset
+  endpoint:
+    path: /train/dataset
+    method: GET
+    data_selector: records
+- name: val_dataset
+  endpoint:
+    path: /val/dataset
+    method: GET
+    data_selector: records
+- name: test_dataset
+  endpoint:
+    path: /test/dataset
+    method: GET
+    data_selector: records
+- name: train
+  endpoint:
+    path: /train
+    method: POST
+    data_selector: results
+    params:
+      num_epochs: 50
+      batch_size: 32
+- name: evaluate
+  endpoint:
+    path: /evaluate
+    method: POST
+    data_selector: results
+    params:
+      checkpoint: ${results_dir}/train/segformer_model_latest.pth
+      vis_after_n_batches: 1
+- name: inference
+  endpoint:
+    path: /inference
+    method: POST
+    data_selector: results
+    params:
+      checkpoint: ${results_dir}/train/segformer_model_latest.pth
+      vis_after_n_batches: 1
+- name: export
+  endpoint:
+    path: /export
+    method: POST
+    data_selector: results
+    params:
+      results_dir: ${results_dir}/export
+      gpu_id: 0
+      checkpoint: ${results_dir}/train/segformer_model_latest.pth
+      onnx_file: ${export.results_dir}/segformer.onnx
+      input_width: 224
+      input_height: 224
+      batch_size: -1
+- name: monocular_depth_estimation
+  endpoint:
+    path: /monocular_depth_estimation.html
+    method: GET
+    data_selector: details
+- name: stereo_depth_estimation
+  endpoint:
+    path: /stereo_depth_estimation.html
+    method: GET
+    data_selector: details
+- name: MetricDepthAnything
+  endpoint:
+    path: /depth_net_mono/metric
+    method: GET
+    data_selector: results
+    params: {}
+- name: RelativeDepthAnything
+  endpoint:
+    path: /depth_net_mono/relative
+    method: GET
+    data_selector: results
+    params: {}
+- name: train_dataset
+  endpoint:
+    path: /data/splits/nyu_depth_v2_splits/train_files_with_gt.txt
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: val_dataset
+  endpoint:
+    path: /data/splits/nyu_depth_v2_splits/test_files_with_gt.txt
+    method: GET
+    data_selector: records
+    params: {}
+- name: test_dataset
+  endpoint:
+    path: /data/splits/nyu_depth_v2_splits/test_files_with_gt.txt
+    method: GET
+    data_selector: records
+    params: {}
+- name: training_output
+  endpoint:
+    path: /train/output
+    method: GET
+    data_selector: results
+    params: {}
+- name: evaluation_metrics
+  endpoint:
+    path: /evaluate/metrics
+    method: GET
+    data_selector: metrics
+    params: {}
+- name: inference_output
+  endpoint:
+    path: /inference/output
+    method: GET
+    data_selector: results
+    params: {}
+- name: export_model
+  endpoint:
+    path: /export/model
+    method: POST
+    data_selector: export
+    params: {}
+- name: generate_trt_engine
+  endpoint:
+    path: /generate/trt_engine
+    method: POST
+    data_selector: engine
+    params: {}
+- name: FoundationStereo
+  endpoint:
+    path: /depth_net_stereo
+    method: GET
+    data_selector: specifications
+    params: {}
+- name: optimizer
+  endpoint:
+    path: /optimizer
+    method: GET
+    data_selector: records
+    params: {}
+- name: evaluation
+  endpoint:
+    path: /evaluation
+    method: GET
+    data_selector: records
+    params: {}
+- name: inference
+  endpoint:
+    path: /inference
+    method: GET
+    data_selector: records
+    params: {}
+- name: export
+  endpoint:
+    path: /export
+    method: GET
+    data_selector: records
+    params: {}
+- name: tensorrt_engine
+  endpoint:
+    path: /tensorrt_engine
+    method: GET
+    data_selector: records
+    params: {}
+- name: augmentation
+  endpoint:
+    path: /augmentation
+    method: GET
+    data_selector: records
+    params: {}
+- name: stereo_depth_estimation
+  endpoint:
+    path: /stereo/depth/estimation
+    method: GET
+    data_selector: results
+    params: {}
+- name: train_spec
+  endpoint:
+    path: /depth_net_stereo/get-spec
+    method: GET
+    data_selector: spec
+    params:
+      action: train
+      job_type: experiment
+      id: $EXPERIMENT_ID
+- name: experiment_run_action
+  endpoint:
+    path: /depth_net_stereo/experiment-run-action
+    method: POST
+    data_selector: job_id
+    params:
+      action: train
+      id: $EXPERIMENT_ID
+      specs: $TRAIN_SPECS
+- name: model_train
+  endpoint:
+    path: /model/depth_net/train
+    method: POST
+    data_selector: job_id
+    params:
+      e: /path/to/experiment_spec.yaml
+      k: $KEY
+      results_dir: /path/to/results
+- name: training_output
+  endpoint:
+    path: /train/output
+    method: GET
+    data_selector: results
+    params: {}
+- name: evaluation_metrics
+  endpoint:
+    path: /evaluate/metrics
+    method: GET
+    data_selector: metrics
+    params: {}
+- name: inference_output
+  endpoint:
+    path: /inference/output
+    method: GET
+    data_selector: results
+    params: {}
+- name: exported_model
+  endpoint:
+    path: /export/model
+    method: GET
+    data_selector: model
+    params: {}
+- name: tensorrt_engine
+  endpoint:
+    path: /tensorrt/engine
+    method: GET
+    data_selector: engine
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: dataset
+  endpoint:
+    path: /sparse4d/dataset
+    method: GET
+- name: train
+  endpoint:
+    path: /sparse4d/train
+    method: POST
+- name: evaluate
+  endpoint:
+    path: /sparse4d/evaluate
+    method: POST
+- name: inference
+  endpoint:
+    path: /sparse4d/inference
+    method: POST
+- name: export
+  endpoint:
+    path: /sparse4d/export
+    method: POST
+- name: backbone
+  endpoint:
+    path: /model/backbone
+    method: GET
+- name: head
+  endpoint:
+    path: /model/head
+    method: GET
+- name: depth_branch
+  endpoint:
+    path: /model/depth_branch
+    method: GET
+    data_selector: depth_branch_config
+    params: {}
+- name: experiment_spec_file
+  endpoint:
+    path: /tao-client/classification_tf2/experiment_spec
+    method: GET
+    data_selector: results
+    params: {}
+- name: train
+  endpoint:
+    path: /tao/model/classification_tf2/train
+    method: POST
+    data_selector: ''
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /tao/model/classification_tf2/evaluate
+    method: POST
+    data_selector: ''
+    params: {}
+- name: inference
+  endpoint:
+    path: /tao/model/classification_tf2/inference
+    method: POST
+    data_selector: ''
+    params: {}
+- name: prune
+  endpoint:
+    path: /tao/model/classification_tf2/prune
+    method: POST
+    data_selector: ''
+    params: {}
+- name: export
+  endpoint:
+    path: /tao/model/classification_tf2/export
+    method: POST
+    data_selector: ''
+    params: {}
+- name: dataset_convert
+  endpoint:
+    path: /dataset_convert
+    method: POST
+    data_selector: records
+    params: {}
+- name: train
+  endpoint:
+    path: /train
+    method: POST
+    data_selector: records
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /evaluate
+    method: POST
+    data_selector: records
+    params: {}
+- name: prune
+  endpoint:
+    path: /prune
+    method: POST
+    data_selector: records
+    params: {}
+- name: inference
+  endpoint:
+    path: /inference
+    method: POST
+    data_selector: records
+    params: {}
+- name: export
+  endpoint:
+    path: /export
+    method: POST
+    data_selector: records
+    params: {}
+- name: train
+  endpoint:
+    path: /tao/model/efficientdet_tf2/train
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: <experiment_spec>
+      num_gpus: '1'
+- name: evaluate
+  endpoint:
+    path: /tao/model/efficientdet_tf2/evaluate
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: <experiment_spec>
+      evaluate.checkpoint: <model to be evaluated>
+- name: inference
+  endpoint:
+    path: /tao/model/efficientdet_tf2/inference
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: <experiment_spec>
+      inference.checkpoint: <model to be inferenced>
+- name: prune
+  endpoint:
+    path: /tao/model/efficientdet_tf2/prune
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: <experiment_spec>
+      prune.checkpoint: <model to be pruned>
+- name: export
+  endpoint:
+    path: /tao/model/efficientdet_tf2/export
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: <experiment_spec>
+      export.checkpoint: <model to export>
+      export.onnx_file: <onnx path>
+- name: dataset_convert
+  endpoint:
+    path: /dataset_convert
+    method: POST
+    data_selector: dataset
+    params:
+      root_directory_path: /workspace/tao-experiments/bpnet/data
+- name: train
+  endpoint:
+    path: /train
+    method: POST
+    data_selector: train_data
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /evaluate
+    method: POST
+    data_selector: test_data
+    params: {}
+- name: dataloader
+  endpoint:
+    path: /dataloader
+    method: POST
+    data_selector: records
+    params: {}
+- name: export
+  endpoint:
+    path: /export
+    method: POST
+    data_selector: model
+    params: {}
+- name: annotations
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Annotations
+    method: GET
+    data_selector: records
+    params: {}
+- name: data_services
+  endpoint:
+    path: /services/data/vXX.X/sobjects/DataServices
+    method: GET
+    data_selector: records
+    params: {}
+- name: dataset_convert
+  endpoint:
+    path: /model/bpnet/dataset_convert
+    method: POST
+    data_selector: results
+    params: {}
+- name: train
+  endpoint:
+    path: /model/bpnet/train
+    method: POST
+    data_selector: results
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /model/bpnet/evaluate
+    method: POST
+    data_selector: results
+    params: {}
+- name: inference
+  endpoint:
+    path: /model/bpnet/inference
+    method: POST
+    data_selector: results
+    params: {}
+- name: model_path
+  endpoint:
+    path: /path/to/model
+    method: GET
+    data_selector: records
+- name: train_spec
+  endpoint:
+    path: /path/to/train_spec
+    method: GET
+    data_selector: records
+- name: inference_spec
+  endpoint:
+    path: /path/to/inference_spec
+    method: GET
+    data_selector: records
+- name: bpnet_export_int8
+  endpoint:
+    path: /workspace/tao-experiments/bpnet/models/exp_m1_retrain/bpnet_model.tlt
+    method: EXPORT
+    data_selector: export
+    params:
+      data_type: int8
+      batch_size: 1
+      batches: 5000
+      max_batch_size: 1
+      data_format: channels_last
+      engine_file: /workspace/tao-experiments/bpnet/models/exp_m1_final/bpnet_model.$IN_HEIGHT.$IN_WIDTH.int8.engine
+- name: bpnet_export_fp16
+  endpoint:
+    path: /workspace/tao-experiments/bpnet/models/exp_m1_retrain/bpnet_model.tlt
+    method: EXPORT
+    data_selector: export
+    params:
+      data_type: fp16
+      batch_size: 1
+      max_batch_size: 1
+      data_format: channels_last
+      engine_file: /workspace/tao-experiments/bpnet/models/exp_m1_final/bpnet_model.$IN_HEIGHT.$IN_WIDTH.fp16.engine
+- name: dataset_converter
+  endpoint:
+    path: /dataset_convert
+    method: POST
+    data_selector: sets
+    params: {}
+- name: trainer
+  endpoint:
+    path: /trainer
+    method: POST
+    data_selector: trainer_config
+    params: {}
+- name: experiment_spec
+  endpoint:
+    path: /services/data/vXX.X/sobjects/ExperimentSpec
+    method: GET
+    data_selector: records
+    params: {}
+- name: instance_segmentation
+  endpoint:
+    path: /services/data/vXX.X/sobjects/InstanceSegmentation
+    method: GET
+    data_selector: records
+    params: {}
+- name: model_config
+  endpoint:
+    path: /path/to/your/train/data
+    method: GET
+    data_selector: records
+    params: {}
+- name: train_config
+  endpoint:
+    path: /path/to/your/val/data
+    method: GET
+    data_selector: records
+    params: {}
+- name: model_config
+  endpoint:
+    path: /path/to/model/config
+    method: GET
+    data_selector: model_config
+    params: {}
+- name: train_config
+  endpoint:
+    path: /path/to/train/config
+    method: GET
+    data_selector: train_config
+    params: {}
+- name: eval_config
+  endpoint:
+    path: /path/to/eval/config
+    method: GET
+    data_selector: eval_config
+    params: {}
+- name: model_config
+  endpoint:
+    path: /model/config
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: eval_config
+  endpoint:
+    path: /eval/config
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: training_config
+  endpoint:
+    path: /training/config
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: inference
+  endpoint:
+    path: /tao/model/classification_tf1/inference
+    method: POST
+    data_selector: results
+    params: {}
+- name: prune
+  endpoint:
+    path: /tao/model/classification_tf1/prune
+    method: POST
+    data_selector: results
+    params: {}
+- name: export
+  endpoint:
+    path: /tao/model/classification_tf1/export
+    method: POST
+    data_selector: results
+    params: {}
+- name: Multitask Image Classification
+  endpoint:
+    path: /api/multitask/image_classification
+    method: GET
+- name: train
+  endpoint:
+    path: /data/train.csv
+    method: POST
+    data_selector: records
+- name: val
+  endpoint:
+    path: /data/val.csv
+    method: POST
+    data_selector: records
+- name: export_model
+  endpoint:
+    path: /model/export
+    method: POST
+    data_selector: model
+    params: {}
+- name: dataset_convert
+  endpoint:
+    path: /dataset_convert
+    method: POST
+    data_selector: results
+- name: train
+  endpoint:
+    path: /train
+    method: POST
+    data_selector: results
+- name: evaluate
+  endpoint:
+    path: /evaluate
+    method: POST
+    data_selector: results
+- name: inference
+  endpoint:
+    path: /inference
+    method: POST
+    data_selector: results
+- name: dataset_convert
+  endpoint:
+    path: /model/detectnet_v2/dataset_convert
+    method: POST
+    data_selector: output
+    params: {}
+- name: train
+  endpoint:
+    path: /model/detectnet_v2/train
+    method: POST
+    data_selector: output
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /model/detectnet_v2/evaluate
+    method: POST
+    data_selector: output
+    params: {}
+- name: inference
+  endpoint:
+    path: /model/detectnet_v2/inference
+    method: POST
+    data_selector: output
+    params: {}
+- name: parameter_settings
+  endpoint:
+    path: /api/v1/parameters
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: dataset_convert
+  endpoint:
+    path: /model/detectnet_v2/dataset_convert
+    method: POST
+    data_selector: data
+    params: {}
+- name: dataset_convert
+  endpoint:
+    path: /model/detectnet_v2/dataset_convert
+    method: POST
+- name: cost_function_config
+  target_classes:
+  - name: car
+    class_weight: 1.0
+    coverage_foreground_weight: 0.05
+    objectives:
+    - name: cov
+      initial_weight: 1.0
+      weight_target: 1.0
+    - name: bbox
+      initial_weight: 10.0
+      weight_target: 10.0
+  - name: cyclist
+    class_weight: 1.0
+    coverage_foreground_weight: 0.05
+    objectives:
+    - name: cov
+      initial_weight: 1.0
+      weight_target: 1.0
+    - name: bbox
+      initial_weight: 10.0
+      weight_target: 1.0
+  - name: pedestrian
+    class_weight: 1.0
+    coverage_foreground_weight: 0.05
+    objectives:
+    - name: cov
+      initial_weight: 1.0
+      weight_target: 1.0
+    - name: bbox
+      initial_weight: 10.0
+      weight_target: 10.0
+  enable_autoweighting: true
+  max_objective_weight: 0.9999
+  min_objective_weight: 0.0001
+- name: augmentation_config
+  endpoint:
+    path: /augmentation_config
+    method: GET
+    data_selector: records
+    params: {}
+- name: dataset_config
+  endpoint:
+    path: <path to training tfrecords root>/<tfrecords_name*>
+    method: GET
+    data_selector: records
+    params: {}
+- name: inference_spec
+  endpoint:
+    path: /inference/spec
+    method: GET
+    data_selector: records
+    params: {}
+- name: calibration_tensorfile
+  endpoint:
+    path: /calibration/tensorfile
+    method: POST
+    data_selector: records
+    params: {}
+- name: export_model
+  endpoint:
+    path: /export/model
+    method: POST
+    data_selector: records
+    params: {}
+- name: dataset_convert
+  endpoint:
+    path: /model/faster_rcnn/dataset_convert
+    method: POST
+    data_selector: args_per_subtask
+    params:
+      dataset_spec: <dataset_spec>
+      output_filename: <output_tfrecords_file>
+      gpu_index: <gpu_index>
+- name: train
+  endpoint:
+    path: /model/faster_rcnn/train
+    method: POST
+- name: evaluate
+  endpoint:
+    path: /model/faster_rcnn/evaluate
+    method: POST
+- name: inference
+  endpoint:
+    path: /model/faster_rcnn/inference
+    method: POST
+- name: prune
+  endpoint:
+    path: /model/faster_rcnn/prune
+    method: POST
+- name: export
+  endpoint:
+    path: /model/faster_rcnn/export
+    method: POST
+- name: export_model
+  endpoint:
+    path: /api/model/export
+    method: POST
+    data_selector: model_export
+    params:
+      model: <path to the .tlt model file>
+      key: <key>
+      experiment_spec: <path to experiment spec file>
+- name: dataset_convert
+  endpoint:
+    path: /dataset_convert
+    method: POST
+    data_selector: records
+    params:
+      dataset_spec: <dataset_spec>
+      output_filename: <output_tfrecords_file>
+      gpu_index: <gpu_index>
+- name: yolov3_config
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: dataset_convert
+  endpoint:
+    path: /model/yolo_v4/dataset_convert
+    method: POST
+    data_selector: records
+    params:
+      dataset_spec: <dataset_spec>
+      output_filename: <output_tfrecords_file>
+- name: dataset_config
+  endpoint:
+    path: /dataset_config
+    method: POST
+    data_selector: dataset_config
+    params: {}
+- name: dataset_convert
+  endpoint:
+    path: /model/yolo_v4_tiny/dataset_convert
+    method: POST
+    data_selector: ''
+    params:
+      dataset_spec: <dataset_spec>
+      output_filename: <output_tfrecords_file>
+      gpu_index: <gpu_index>
+- name: dataset_config
+  endpoint:
+    path: /dataset/config
+    method: POST
+    data_selector: config
+    params: {}
+- name: export_model
+  endpoint:
+    path: /model/export
+    method: POST
+    data_selector: model
+    params: {}
+- name: prune_model
+  endpoint:
+    path: /model/prune
+    method: POST
+    data_selector: model
+    params: {}
+- name: dataset_convert
+  endpoint:
+    path: /dataset_convert
+    method: POST
+    data_selector: results
+- name: dataset_convert
+  endpoint:
+    path: /model/ssd/dataset-convert
+    method: POST
+    data_selector: records
+    params: {}
+- name: training_config
+  endpoint:
+    path: /path/to/train/images
+    method: GET
+    data_selector: records
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /tao/model/ssd/evaluate
+    method: POST
+- name: inference
+  endpoint:
+    path: /tao/model/ssd/inference
+    method: POST
+- name: prune
+  endpoint:
+    path: /tao/model/ssd/prune
+    method: POST
+- name: export
+  endpoint:
+    path: /tao/model/ssd/export
+    method: POST
+- name: model
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Model
+    method: GET
+    data_selector: records
+    params: {}
+- name: dataset_convert
+  endpoint:
+    path: /model/dssd/dataset_convert
+    method: POST
+    data_selector: records
+    params: {}
+- name: training_config
+  endpoint:
+    path: /path/to/train/images
+    method: GET
+    data_selector: records
+- name: evaluate_model
+  endpoint:
+    path: /model/dssd/evaluate
+    method: POST
+- name: run_inference
+  endpoint:
+    path: /model/dssd/inference
+    method: POST
+- name: prune_model
+  endpoint:
+    path: /model/dssd/prune
+    method: POST
+- name: export_model
+  endpoint:
+    path: /model/dssd/export
+    method: POST
+- name: dataset_convert
+  endpoint:
+    path: /model/retinanet/dataset-convert
+    method: POST
+    data_selector: ''
+    params: {}
+- name: config
+  endpoint:
+    path: /retinanet/config
+    method: GET
+- name: model_export
+  endpoint:
+    path: /model/retinanet/export
+    method: POST
+    data_selector: exported_model
+    params:
+      model: path to the .tlt model file
+      key: key used to save the .tlt model file
+      experiment_spec: path to experiment spec file
+- name: dataset_convert
+  endpoint:
+    path: /dataset_convert
+    method: POST
+    data_selector: records
+    params:
+      image_directory: <image_directory>
+      annotation_json_file: <annotation_json_file>
+      tfrecords_output_directory: <tfrecords_output_directory>
+      tag: <tag>
+      num_shards: 256
+      include_mask: false
+- name: dataset_convert
+  endpoint:
+    path: /model/efficientdet_tf1/dataset_convert
+    method: POST
+    data_selector: records
+    params: {}
+- name: model
+  endpoint:
+    path: /path/to/model
+    method: GET
+- name: experiment_spec
+  endpoint:
+    path: /path/to/experiment_spec
+    method: GET
+- name: model_config
+  endpoint:
+    path: /model/config
+    method: GET
+    data_selector: model
+    params: {}
+- name: model_config
+  endpoint:
+    path: /model_config
+    method: POST
+    data_selector: model
+    params: {}
+- name: dataset_config
+  endpoint:
+    path: /dataset/config
+    method: POST
+    data_selector: config
+    params: {}
+- name: training_config
+  endpoint:
+    path: /training/config
+    method: POST
+    data_selector: config
+    params: {}
+- name: dataset_convert
+  endpoint:
+    path: /dataset/convert
+    method: POST
+    data_selector: convert
+    params: {}
+- name: model_train
+  endpoint:
+    path: /model/train
+    method: POST
+    data_selector: train
+    params: {}
+- name: model_prune
+  endpoint:
+    path: /model/prune
+    method: POST
+    data_selector: prune
+    params: {}
+- name: quantization
+  endpoint:
+    path: /quantization
+    method: GET
+- name: TorchAO
+  endpoint:
+    path: /path/to/quantized_output
+    method: POST
+    data_selector: results_dir
+    params:
+      backend: torchao
+      mode: weight_only_ptq
+      default_layer_dtype: int8
+      default_activation_dtype: native
+      layers:
+      - module_name: Linear
+        weights:
+          dtype: int8
+- name: ModelOpt
+  endpoint:
+    path: /path/to/quantized_output
+    method: POST
+    data_selector: results_dir
+    params:
+      backend: modelopt
+      mode: static_ptq
+      algorithm: minmax
+      default_layer_dtype: int8
+      default_activation_dtype: int8
+      layers:
+      - module_name: Linear
+        weights:
+          dtype: int8
+        activations:
+          dtype: int8
+- name: quantization
+  endpoint:
+    path: /quantization
+    method: POST
+    data_selector: results
+    params: {}
+- name: quantize
+  endpoint:
+    path: quantize
+    method: POST
+    data_selector: ''
+    params: {}
+- name: quantize
+  endpoint:
+    path: /modelopt/quantize
+    method: POST
+    data_selector: results
+    params: {}
+- name: quantize
+  endpoint:
+    path: /quantize
+    method: POST
+    data_selector: backend
+- name: inference
+  endpoint:
+    path: /inference
+    method: POST
+    data_selector: inference
+    params: {}
+- name: inference
+  endpoint:
+    path: /inference
+    method: POST
+    data_selector: results
+- name: wandb
+  endpoint:
+    path: /create-experiment
+    method: POST
+    data_selector: ''
+    params: {}
+- name: wandb_training_specs
+  endpoint:
+    path: /create-training-with-specs
+    method: POST
+    data_selector: ''
+    params: {}
+- name: clearml
+  endpoint:
+    path: /api/clearml
+    method: POST
+    data_selector: data
+- name: create_experiment
+  endpoint:
+    path: /create_experiment
+    method: POST
+    data_selector: ''
+    params: {}
+- name: TAO Converter Support Matrix for x86
+  endpoint:
+    path: /tao/converter/support/matrix/x86
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: TAO Converter Support Matrix for Jetson
+  endpoint:
+    path: /tao/converter/support/matrix/jetson
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: tao-converter
+  endpoint:
+    path: /tao-converter
+    method: GET
+    data_selector: records
+    params: {}
+- name: tao-converter
+  endpoint:
+    path: /tao-converter
+    method: POST
+    data_selector: output
+    params: {}
+- name: tao-converter
+  endpoint:
+    path: /tao-converter
+    method: GET
+    data_selector: records
+- name: tao-converter
+  endpoint:
+    path: /tao/converter
+    method: POST
+    data_selector: output
+- name: tao-converter
+  endpoint:
+    path: /tao-converter
+    method: GET
+    data_selector: records
+    params: {}
+- name: tao-converter
+  endpoint:
+    path: /tao-converter
+    method: GET
+    data_selector: records
+- name: tao-converter
+  endpoint:
+    path: /tao-converter
+    method: POST
+    data_selector: results
+- name: tao-converter
+  endpoint:
+    path: /tao-converter
+    method: POST
+    data_selector: results
+- name: ActionRecognitionNet
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      maxShapes: input_rgb:16x3x96x224x224
+      minShapes: input_rgb:1x3x96x224x224
+      optShapes: input_rgb:4x3x96x224x224
+      fp16: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: 3D RGB Model
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      maxShapes: input_rgb:16x3x32x224x224
+      minShapes: input_rgb:1x3x32x224x224
+      optShapes: input_rgb:4x3x32x224x224
+      fp16: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: 2D Optical Flow Model
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      maxShapes: input_of:16x3x64x224x224
+      minShapes: input_of:1x3x64x224x224
+      optShapes: input_of:4x3x64x224x224
+      fp16: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: 3D Optical Flow Model
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      maxShapes: input_of:16x2x32x224x224
+      minShapes: input_of:1x2x32x224x224
+      optShapes: input_of:4x2x32x224x224
+      fp16: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: BodyPoseNet
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      maxShapes: input_1:0:16x288x384x3
+      minShapes: input_1:0:1x288x384x3
+      optShapes: input_1:0:8x288x384x3
+      calib: /path/to/int8/calib.txt
+      fp16: true
+      int8: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: CenterPose
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      maxShapes: inputs:16x3x512x512
+      minShapes: inputs:1x3x512x512
+      optShapes: inputs:8x3x512x512
+      calib: /path/to/int8/calib.txt
+      fp16: true
+      int8: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: classification_model
+  endpoint:
+    path: /path/to/model.onnx
+    method: GET
+    data_selector: onnx
+    params: {}
+- name: D-DETR Model
+  endpoint:
+    path: /path/to/model.onnx
+    method: GET
+    data_selector: model details
+    params: {}
+- name: DetectNet_v2
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      maxShapes: input_1:0:16x3x544x960
+      minShapes: input_1:0:1x3x544x960
+      optShapes: input_1:0:8x3x544x960
+      calib: /path/to/int8/calib.txt
+      fp16: true
+      int8: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: DINO Model
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      maxShapes: inputs:16x3x544x960
+      minShapes: inputs:1x3x544x960
+      optShapes: inputs:8x3x544x960
+      calib: /path/to/int8/calib.txt
+      fp16: true
+      int8: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: EfficientDet Model
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: trtexec
+    params:
+      maxShapes: '"input":16x512x512x3'
+      minShapes: '"input":1x512x512x3'
+      optShapes: '"input":8x512x512x3'
+      calib: /path/to/int8/calib.txt
+      fp16: true
+      int8: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: facial_landmarks_estimation
+  endpoint:
+    path: /path/to/model.onnx
+    method: GET
+    data_selector: model
+    params: {}
+- name: faster_rcnn_model
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      maxShapes: input_image:16x3x544x960
+      minShapes: input_image:1x3x544x960
+      optShapes: input_image:8x3x544x960
+      calib: /path/to/int8/calib.txt
+      fp16: true
+      int8: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: Grounding DINO
+  endpoint:
+    path: /TRTEXEC/with/Grounding/DINO
+    method: GET
+- name: Grounding DINO
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      onnx: /path/to/model.onnx
+      minShapes: inputs:1x3x544x960,input_ids:1x256,attention_mask:1x256,position_ids:1x256,token_type_ids:1x256,text_token_mask:1x256x256
+      optShapes: inputs:8x3x544x960,input_ids:8x256,attention_mask:8x256,position_ids:8x256,token_type_ids:8x256,text_token_mask:8x256x256
+      maxShapes: inputs:16x3x544x960,input_ids:16x256,attention_mask:16x256,position_ids:16x256,token_type_ids:16x256,text_token_mask:16x256x256
+      fp16: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: LPRNet
+  endpoint:
+    path: /trtexec/lprnet
+    method: GET
+- name: LPRNet
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      maxShapes: image_input:1x3x48x96
+      minShapes: image_input:4x3x48x96
+      optShapes: image_input:16x3x48x96
+      calib: /path/to/int8/calib.txt
+      fp16: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: model_generation
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      maxShapes: inputs:16x3x544x960
+      minShapes: inputs:1x3x544x960
+      optShapes: inputs:8x3x544x960
+      calib: /path/to/int8/calib.txt
+      fp16: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: Metric Learning Recognition
+  endpoint:
+    path: /trtexec/metric_learning_recognition
+    method: GET
+- name: metric_learning_recognition
+  endpoint:
+    path: /cv_finetuning/pytorch/metric_learning_recognition/metric_learning_recognition.html#mlrecognet
+    method: GET
+- name: tao_deploy
+  endpoint:
+    path: /tao_deploy/metric_learning_recognition.html#id1
+    method: GET
+- name: MaskRCNN
+  endpoint:
+    path: /trtexec/mask_rcnn
+    method: GET
+- name: trtexec_command
+  endpoint:
+    path: /trtexec/command
+    method: GET
+    data_selector: commands
+- name: OCDNet
+  endpoint:
+    path: /trtexec/ocdnet
+    method: POST
+    data_selector: results
+- name: OCDNet
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: onnx
+    params:
+      maxShapes: input:16x3x736x1280
+      minShapes: input:1x3x736x1280
+      optShapes: input:8x3x736x1280
+      calib: /path/to/int8/calib.txt
+      fp16: true
+      int8: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: OCRNet
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      maxShapes: input:16x1x32x100
+      minShapes: input:1x1x32x100
+      optShapes: input:8x1x32x100
+      calib: /path/to/int8/calib.txt
+      fp16: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: PointPillars
+  endpoint:
+    path: /trtexec/pointpillars
+    method: GET
+- name: PointPillars Model
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      maxShapes: points:1x204800x4,num_points:1
+      minShapes: points:1x204800x4,num_points:1
+      optShapes: points:1x204800x4,num_points:1
+      fp16: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: PoseClassificationNet
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      maxShapes: input:16x3x300x34x1
+      minShapes: input:1x3x300x34x1
+      optShapes: input:4x3x300x34x1
+      fp16: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: ReIdentificationNet
+  endpoint:
+    path: /path/to/model.onnx
+    method: GET
+    data_selector: model
+    params: {}
+- name: ReIdentificationNet Transformer
+  endpoint:
+    path: /cv_finetuning/pytorch/re_identification_transformer/re_identification_transformer.html
+    method: GET
+- name: ReIdentificationNet Transformer
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      maxShapes: input:16x3x384x128
+      minShapes: input:1x3x384x128
+      optShapes: input:4x3x384x128
+      fp16: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: trtexec_command
+  endpoint:
+    path: /trtexec
+    method: POST
+    data_selector: command
+- name: Segformer
+  endpoint:
+    path: /trtexec/segformer
+    method: GET
+- name: Segformer
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: ''
+    params: {}
+- name: SiameseOI
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: onnx
+    params:
+      maxShapes: input_1:16x3x400x100,input_2:16x3x400x100
+      minShapes: input_1:1x3x400x100,input_2:1x3x400x100
+      optShapes: input_1:8x3x400x100,input_2:8x3x400x100
+      fp16: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: unet_model
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      maxShapes: input_1:0:16x3x572x572
+      minShapes: input_1:0:1x3x572x572
+      optShapes: input_1:0:8x3x572x572
+      calib: /path/to/int8/calib.txt
+      fp16: true
+      int8: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: yolo_v3
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      maxShapes: Input:16x3x384x1248
+      minShapes: Input:1x3x384x1248
+      optShapes: Input:8x3x384x1248
+      calib: /path/to/int8/calib.txt
+      fp16: true
+      int8: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: trtexec_command
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: trtexec
+    params:
+      maxShapes: Input:16x3x384x1248
+      minShapes: Input:1x3x384x1248
+      optShapes: Input:8x3x384x1248
+      calib: /path/to/int8/calib.txt
+      fp16: true
+      int8: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: yolo_v4_tiny
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: model
+    params:
+      maxShapes: Input:16x3x384x1248
+      minShapes: Input:1x3x384x1248
+      optShapes: Input:8x3x384x1248
+      calib: /path/to/int8/calib.txt
+      fp16: true
+      int8: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: VisualChangeNet Model
+  endpoint:
+    path: /path/to/model.onnx
+    method: POST
+    data_selector: onnx
+    params:
+      maxShapes: input_1:16x3x400x100,input_2:16x3x400x100
+      minShapes: input_1:1x3x400x100,input_2:1x3x400x100
+      optShapes: input_1:8x3x400x100,input_2:8x3x400x100
+      fp16: true
+      saveEngine: /path/to/save/trt/model.engine
+- name: Mask Grounding DINO
+  endpoint:
+    path: /trtexec/mask_grounding_dino
+    method: GET
+- name: License Plate Detection and Recognition
+  endpoint:
+    path: /models/lpdnet
+    method: GET
+    data_selector: models
+    params: {}
+- name: PeopleNet
+  endpoint:
+    path: /v2/models/nvidia/tao/peoplenet
+    method: GET
+    data_selector: models
+    params: {}
+- name: TrafficCamNet
+  endpoint:
+    path: /v2/models/nvidia/tao/trafficcamnet
+    method: GET
+    data_selector: models
+    params: {}
+- name: DashCamNet
+  endpoint:
+    path: /v2/models/nvidia/tao/dashcamnet
+    method: GET
+    data_selector: models
+    params: {}
+- name: FaceDetectIR
+  endpoint:
+    path: /v2/models/nvidia/tao/facedetectir
+    method: GET
+    data_selector: models
+    params: {}
+- name: PeopleSegNet
+  endpoint:
+    path: /v2/models/nvidia/tao/peoplesegnet
+    method: GET
+    data_selector: models
+    params: {}
+- name: PeopleSemSegNet
+  endpoint:
+    path: /v2/models/nvidia/tao/peoplesemsegnet
+    method: GET
+    data_selector: models
+    params: {}
+- name: DetectNet_v2
+  endpoint:
+    path: /detectnet_v2_ds
+    method: GET
+- name: Deformable_DETR
+  endpoint:
+    path: /deformable_detr_ds
+    method: GET
+- name: DINO
+  endpoint:
+    path: /dino_ds
+    method: GET
+- name: DSSD
+  endpoint:
+    path: /dssd_ds
+    method: GET
+- name: EfficientDet
+  endpoint:
+    path: /efficientdet_ds
+    method: GET
+- name: FasterRCNN
+  endpoint:
+    path: /frcnn_ds
+    method: GET
+- name: RetinaNet
+  endpoint:
+    path: /retinanet_ds
+    method: GET
+- name: SSD
+  endpoint:
+    path: /ssd_ds
+    method: GET
+- name: YOLOv3
+  endpoint:
+    path: /yolo_v3_ds
+    method: GET
+- name: YOLOv4
+  endpoint:
+    path: /yolo_v4_ds
+    method: GET
+- name: YOLOv4-tiny
+  endpoint:
+    path: /yolo_v4_tiny_ds
+    method: GET
+- name: MaskRCNN
+  endpoint:
+    path: /mrcnn_ds
+    method: GET
+- name: UNet
+  endpoint:
+    path: /unet_ds
+    method: GET
+- name: Segformer
+  endpoint:
+    path: /segformer_ds
+    method: GET
+- name: nvOCDR
+  endpoint:
+    path: /nvocdr_ds
+    method: GET
+- name: model_integration
+  endpoint:
+    path: /integrate_model
+    method: POST
+    data_selector: integration_result
+    params: {}
+- name: configuration_files
+  endpoint:
+    path: /configuration_files
+    method: GET
+    data_selector: files
+    params: {}
+- name: multitask_classification
+  endpoint:
+    path: /path/to/multitask_classification
+    method: POST
+    data_selector: model_output
+    params: {}
+- name: model_paths
+  endpoint:
+    path: /model_paths
+    method: GET
+    data_selector: model_paths
+- name: Deformable DETR
+  endpoint:
+    path: /deploying_to_deepstream/deformable_detr
+    method: GET
+- name: deformable_detr
+  endpoint:
+    path: /deformable_detr
+    method: GET
+    data_selector: models
+    params: {}
+- name: DINO Model
+  endpoint:
+    path: /path/to/dino/model
+    method: GET
+    data_selector: model_data
+- name: efficientdet
+  endpoint:
+    path: /model/efficientdet
+    method: POST
+    data_selector: model
+    params: {}
+- name: TensorRT OSS on x86
+  endpoint:
+    path: /tensorrt_oss_x86
+    method: GET
+    data_selector: instructions
+    params: {}
+- name: TensorRT OSS on Jetson
+  endpoint:
+    path: /tensorrt_oss_jetson
+    method: GET
+    data_selector: instructions
+    params: {}
+- name: TensorRT OSS
+  endpoint:
+    path: /tensorrt/oss
+    method: GET
+    data_selector: plugins
+    params: {}
+- name: Label File
+  endpoint:
+    path: /ssd_labels.txt
+    method: GET
+    data_selector: labels
+    params: {}
+- name: DeepStream Configuration File
+  endpoint:
+    path: /config_infer_primary.txt
+    method: GET
+    data_selector: config
+    params: {}
+- name: YOLOv3
+  endpoint:
+    path: /tao_converter/tao_converter_yolo_v3.html
+    method: GET
+- name: YOLOv4
+  endpoint:
+    path: /tao_converter/tao_converter_yolo_v4.html
+    method: GET
+- name: YOLOv4-tiny
+  endpoint:
+    path: /tao_converter/tao_converter_yolo_v4_tiny.html
+    method: GET
+- name: YOLOv3
+  endpoint:
+    path: /integrate/yolov3
+    method: POST
+    data_selector: model_integration
+    params: {}
+- name: YOLOv4_Model
+  endpoint:
+    path: /integrating-yolov4-model
+    method: GET
+    data_selector: model_integration
+    params: {}
+- name: class-attrs-all
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params:
+      pre-cluster-threshold: 0.3
+      roi-top-offset: 0
+      roi-bottom-offset: 0
+      detected-min-w: 0
+      detected-min-h: 0
+      detected-max-w: 0
+      detected-max-h: 0
+- name: YOLOv4-tiny
+  endpoint:
+    path: /tao/deploy/yolov4-tiny
+    method: GET
+- name: TensorRT OSS
+  endpoint:
+    path: /tensorrt-oss
+    method: GET
+    data_selector: plugins
+    params: {}
+- name: network_config
+  endpoint:
+    path: /network/config
+    method: GET
+    data_selector: config
+    params: {}
+- name: class_attrs
+  endpoint:
+    path: /class/attrs
+    method: GET
+    data_selector: attrs
+    params: {}
+- name: MaskRCNN
+  endpoint:
+    path: /path/to/deepstream
+    method: POST
+    data_selector: model
+    params: {}
+- name: unet_model
+  endpoint:
+    path: /path/to/tensorrt/engine
+    method: POST
+    data_selector: model
+- name: model_configuration
+  endpoint:
+    path: /configs/citysemsegformer_tao/pgie_citysemsegformer_tao_config.txt
+    method: GET
+    data_selector: model-config
+    params: {}
+- name: Deploying to DeepStream for Classification TF1/TF2/PyTorch
+  endpoint:
+    path: classification_ds.html
+    method: GET
+    data_selector: records
+- name: Deploying to DeepStream for Multitask Classification
+  endpoint:
+    path: multitask_classification_ds.html
+    method: GET
+    data_selector: records
+- name: Deploying to DeepStream for DetectNet_v2
+  endpoint:
+    path: detectnet_v2_ds.html
+    method: GET
+    data_selector: records
+- name: Deploying to DeepStream for Deformable DETR
+  endpoint:
+    path: deformable_detr_ds.html
+    method: GET
+    data_selector: records
+- name: Deploying to DeepStream for DINO
+  endpoint:
+    path: dino_ds.html
+    method: GET
+    data_selector: records
+- name: Deploying to DeepStream for DSSD
+  endpoint:
+    path: dssd_ds.html
+    method: GET
+    data_selector: records
+- name: Deploying to DeepStream for EfficientDet
+  endpoint:
+    path: efficientdet_ds.html
+    method: GET
+    data_selector: records
+- name: Deploying to DeepStream for FasterRCNN
+  endpoint:
+    path: frcnn_ds.html
+    method: GET
+    data_selector: records
+- name: Deploying to DeepStream for RetinaNet
+  endpoint:
+    path: retinanet_ds.html
+    method: GET
+    data_selector: records
+- name: Deploying to DeepStream for SSD
+  endpoint:
+    path: ssd_ds.html
+    method: GET
+    data_selector: records
+- name: Deploying to DeepStream for YOLOv3
+  endpoint:
+    path: yolo_v3_ds.html
+    method: GET
+    data_selector: records
+- name: Deploying to DeepStream for YOLOv4
+  endpoint:
+    path: yolo_v4_ds.html
+    method: GET
+    data_selector: records
+- name: Deploying to DeepStream for YOLOv4-tiny
+  endpoint:
+    path: yolo_v4_tiny_ds.html
+    method: GET
+    data_selector: records
+- name: Deploying to DeepStream for MaskRCNN
+  endpoint:
+    path: mrcnn_ds.html
+    method: GET
+    data_selector: records
+- name: Deploying to Deepstream for UNet
+  endpoint:
+    path: unet_ds.html
+    method: GET
+    data_selector: records
+- name: Deploying to Deepstream for Segformer
+  endpoint:
+    path: segformer_ds.html
+    method: GET
+    data_selector: records
+- name: spec
+  endpoint:
+    path: /opt/nvocdr/ocdr/triton/models/nvOCDR/spec.json
+    method: GET
+- name: detectnet_v2
+  endpoint:
+    path: /deploy/detectnet_v2
+    method: GET
+    data_selector: tasks
+- name: gen_trt_engine
+  endpoint:
+    path: /tao/deploy/centerpose/gen_trt_engine
+    method: POST
+    data_selector: ''
+    params:
+      onnx_file: /path/to/onnx_file
+      trt_engine: /path/to/trt_engine
+      input_channel: 3
+      input_width: 512
+      input_height: 512
+      tensorrt:
+        data_type: fp32
+        workspace_size: 1024
+        min_batch_size: 1
+        opt_batch_size: 2
+        max_batch_size: 4
+        calibration:
+          cal_image_dir: /path/to/cal/images
+          cal_cache_file: /path/to/cal.bin
+          cal_batch_size: 10
+          cal_batches: 1000
+- name: evaluate
+  endpoint:
+    path: /tao/deploy/centerpose/evaluate
+    method: POST
+    data_selector: ''
+    params:
+      trt_engine: /path/to/engine/file
+      opencv: false
+      eval_num_symmetry: 1
+      results_dir: /path/to/save/results
+      dataset:
+        test_data: /path/to/testing/images/and/json/files
+        batch_size: 2
+        workers: 4
+- name: inference
+  endpoint:
+    path: /tao/deploy/centerpose/inference
+    method: POST
+    data_selector: ''
+    params:
+      trt_engine: /path/to/engine/file
+      visualization_threshold: 0.3
+      principle_point_x: 298.3
+      principle_point_y: 392.1
+      focal_length_x: 651.2
+      focal_length_y: 651.2
+      skew: 0.0
+      axis_size: 0.5
+      use_pnp: true
+      save_json: true
+      save_visualization: true
+      opencv: true
+      dataset:
+        inference_data: /path/to/inference/files
+        batch_size: 1
+        workers: 4
+- name: gen_trt_engine
+  endpoint:
+    path: /path/to/gen_trt_engine
+    method: POST
+    data_selector: results
+    params:
+      onnx_file: /path/to/onnx_file
+      trt_engine: /path/to/trt_engine
+      input_channel: 3
+      input_width: 224
+      input_height: 224
+      tensorrt:
+        data_type: fp16
+        workspace_size: 1024
+        min_batch_size: 1
+        opt_batch_size: 16
+        max_batch_size: 16
+- name: evaluate
+  endpoint:
+    path: /path/to/evaluate
+    method: POST
+    data_selector: results
+    params:
+      trt_engine: /path/to/engine/file
+      topk: 1
+      dataset:
+        data:
+          samples_per_gpu: 16
+          test:
+            data_prefix: /raid/ImageNet2012/ImageNet2012/val
+            classes: /raid/ImageNet2012/classnames.txt
+- name: inference
+  endpoint:
+    path: /path/to/inference
+    method: POST
+    data_selector: results
+    params:
+      trt_engine: /path/to/engine/file
+      dataset:
+        data:
+          samples_per_gpu: 16
+          test:
+            data_prefix: /raid/ImageNet2012/ImageNet2012/val
+            classes: /raid/ImageNet2012/classnames.txt
+- name: gen_trt_engine
+  endpoint:
+    path: /gen_trt_engine
+    method: POST
+    data_selector: ''
+    params:
+      model_path: ''
+      experiment_spec: ''
+      results_dir: ''
+      data_type: fp32
+      batch_size: 1
+      batches: 10
+      max_batch_size: 1
+      min_batch_size: 1
+      opt_batch_size: 1
+      max_workspace_size: 2
+- name: evaluate
+  endpoint:
+    path: /evaluate
+    method: POST
+    data_selector: ''
+    params:
+      experiment_spec: ''
+      model_path: ''
+      results_dir: ''
+      image_dir: ''
+      batch_size: 256
+- name: inference
+  endpoint:
+    path: /inference
+    method: POST
+    data_selector: ''
+    params:
+      experiment_spec: ''
+      model_path: ''
+      results_dir: ''
+      image_dir: ''
+      batch_size: 1
+- name: evaluate
+  endpoint:
+    path: /deformable_detr/evaluate
+    method: POST
+    data_selector: evaluate
+    params: {}
+- name: inference
+  endpoint:
+    path: /deformable_detr/inference
+    method: POST
+    data_selector: inference
+    params: {}
+- name: gen_trt_engine
+  endpoint:
+    path: /deploy/dino/gen_trt_engine
+    method: POST
+    data_selector: results
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /deploy/dino/evaluate
+    method: POST
+    data_selector: results
+    params: {}
+- name: inference
+  endpoint:
+    path: /deploy/dino/inference
+    method: POST
+    data_selector: results
+    params: {}
+- name: gen_trt_engine
+  endpoint:
+    path: /grounding_dino/gen_trt_engine
+    method: GET
+    data_selector: trt_engine
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /grounding_dino/evaluate
+    method: GET
+    data_selector: evaluation
+    params: {}
+- name: inference
+  endpoint:
+    path: /grounding_dino/inference
+    method: GET
+    data_selector: inference_results
+    params: {}
+- name: engine_generation
+  endpoint:
+    path: /deploy/detectnet_v2/gen_trt_engine
+    method: POST
+    data_selector: results
+    params:
+      model_path: MODEL_PATH
+      experiment_spec: EXPERIMENT_SPEC
+      results_dir: RESULTS_DIR
+      data_type: fp32
+      batch_size: 1
+      batches: 10
+      cal_cache_file: ./cal.bin
+      engine_file: ENGINE_FILE
+- name: evaluation
+  endpoint:
+    path: /deploy/detectnet_v2/evaluate
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: EXPERIMENT_SPEC
+      model_path: MODEL_PATH
+      results_dir: RESULTS_DIR
+- name: inference
+  endpoint:
+    path: /deploy/detectnet_v2/inference
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: EXPERIMENT_SPEC
+      model_path: MODEL_PATH
+      results_dir: RESULTS_DIR
+- name: DSSD Engine Generation
+  endpoint:
+    path: gen_trt_engine
+    method: POST
+    data_selector: results
+    params:
+      model_path: MODEL_PATH
+      experiment_spec: EXPERIMENT_SPEC
+      results_dir: RESULTS_DIR
+- name: DSSD Evaluation
+  endpoint:
+    path: evaluate
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: EXPERIMENT_SPEC
+      model_path: MODEL_PATH
+      results_dir: RESULTS_DIR
+- name: DSSD Inference
+  endpoint:
+    path: inference
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: EXPERIMENT_SPEC
+      model_path: MODEL_PATH
+      results_dir: RESULTS_DIR
+- name: gen_trt_engine
+  endpoint:
+    path: gen_trt_engine
+    method: POST
+    data_selector: results
+    params:
+      model_path: MODEL_PATH
+      results_dir: RESULTS_DIR
+- name: evaluate
+  endpoint:
+    path: evaluate
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: EXPERIMENT_SPEC
+      model_path: MODEL_PATH
+      results_dir: RESULTS_DIR
+- name: inference
+  endpoint:
+    path: inference
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: EXPERIMENT_SPEC
+      model_path: MODEL_PATH
+      results_dir: RESULTS_DIR
+- name: gen_trt_engine
+  endpoint:
+    path: /tao/deploy/efficientdet_tf2/gen_trt_engine
+    method: POST
+    data_selector: results
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /tao/deploy/efficientdet_tf2/evaluate
+    method: POST
+    data_selector: results
+    params: {}
+- name: inference
+  endpoint:
+    path: /tao/deploy/efficientdet_tf2/inference
+    method: POST
+    data_selector: results
+    params: {}
+- name: model_conversion
+  endpoint:
+    path: /deploy/faster_rcnn/gen_trt_engine
+    method: POST
+    data_selector: results
+    params:
+      model_path: required
+      experiment_spec: required
+      results_dir: required
+- name: evaluation
+  endpoint:
+    path: /deploy/faster_rcnn/evaluate
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: required
+      model_path: required
+      results_dir: required
+- name: inference
+  endpoint:
+    path: /deploy/faster_rcnn/inference
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: required
+      model_path: required
+      results_dir: required
+- name: tensorRT_engine
+  endpoint:
+    path: /lprnet/gen_trt_engine
+    method: POST
+    data_selector: ''
+    params:
+      model_path: ''
+      experiment_spec: ''
+      results_dir: ''
+- name: evaluation
+  endpoint:
+    path: /lprnet/evaluate
+    method: POST
+    data_selector: ''
+    params:
+      experiment_spec: ''
+      model_path: ''
+      results_dir: ''
+- name: inference
+  endpoint:
+    path: /lprnet/inference
+    method: POST
+    data_selector: ''
+    params:
+      experiment_spec: ''
+      model_path: ''
+      results_dir: ''
+- name: gen_trt_engine
+  endpoint:
+    path: /path/to/gen_trt_engine
+    method: POST
+    data_selector: records
+    params: {}
+- name: Mask RCNN
+  endpoint:
+    path: /tao_toolkit/api/MaskRCNN
+    method: GET
+- name: model
+  endpoint:
+    path: /deploy/mask_rcnn/gen_trt_engine
+    method: POST
+    data_selector: results_dir
+    params:
+      model_path: MODEL_PATH
+      experiment_spec: EXPERIMENT_SPEC
+      results_dir: RESULTS_DIR
+- name: evaluation
+  endpoint:
+    path: /deploy/mask_rcnn/evaluate
+    method: POST
+    data_selector: results
+    params: {}
+- name: engine_generation
+  endpoint:
+    path: /deploy/mask_rcnn/gen_trt_engine
+    method: POST
+    data_selector: results
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /evaluate
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: experiment_spec
+      model_path: model_path
+      results_dir: results_dir
+- name: inference
+  endpoint:
+    path: /inference
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: experiment_spec
+      model_path: model_path
+      results_dir: results_dir
+      image_dir: image_dir
+      batch_size: batch_size
+- name: gen_trt_engine
+  endpoint:
+    path: /path/to/onnx_file
+    method: POST
+    data_selector: trt_engine
+    params:
+      onnx_file: /path/to/onnx_file
+      trt_engine: /path/to/trt_engine
+      input_channel: 3
+      input_width: 960
+      input_height: 544
+      tensorrt:
+        data_type: fp16
+        workspace_size: 1024
+        min_batch_size: 1
+        opt_batch_size: 10
+        max_batch_size: 10
+        calibration:
+          cal_image_dir:
+          - /path/to/cal/images
+          cal_cache_file: /path/to/cal.bin
+          cal_batch_size: 10
+          cal_batches: 1000
+- name: evaluate
+  endpoint:
+    path: /path/to/engine/file
+    method: POST
+    data_selector: evaluate
+    params:
+      trt_engine: /path/to/engine/file
+      data:
+        type: coco_panoptic
+        val:
+          name: coco_2017_val_panoptic
+          panoptic_json: /datasets/coco/annotations/panoptic_val2017.json
+          img_dir: /datasets/coco/val2017
+          panoptic_dir: /datasets/coco/panoptic_val2017
+          batch_size: 1
+          num_workers: 2
+- name: inference
+  endpoint:
+    path: /path/to/engine/file
+    method: POST
+    data_selector: inference
+    params:
+      trt_engine: /path/to/engine/file
+      color_map: /path/to/colors.yaml
+      label_map: /path/to/labels.csv
+      data:
+        type: coco_panoptic
+        test:
+          img_dir: /path/to/test_images/
+          batch_size: 1
+- name: inference
+  endpoint:
+    path: /api/v1/inference
+    method: POST
+    data_selector: results
+- name: trt_config
+  endpoint:
+    path: /path/to/generated/trt_engine
+    method: POST
+    data_selector: results
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /path/to/generated/trt_engine
+    method: POST
+    data_selector: results
+    params: {}
+- name: inference
+  endpoint:
+    path: /ml_recog/inference
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: /path/to/spec.yaml
+      inference.trt_engine: /path/to/engine/file
+      results_dir: /path/to/outputs
+- name: gen_trt_engine
+  endpoint:
+    path: /depth_net/gen_trt_engine
+    method: POST
+    data_selector: results
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /depth_net/evaluate
+    method: POST
+    data_selector: results
+    params: {}
+- name: inference
+  endpoint:
+    path: /depth_net/inference
+    method: POST
+    data_selector: results
+    params: {}
+- name: multitask_classification
+  endpoint:
+    path: /tao-deploy/multitask_classification
+    method: POST
+    data_selector: results
+    params: {}
+- name: gen_trt_engine
+  endpoint:
+    path: /gen_trt_engine
+    method: POST
+    data_selector: gen_trt_engine
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /evaluate
+    method: POST
+    data_selector: evaluate
+    params: {}
+- name: inference
+  endpoint:
+    path: /inference
+    method: POST
+    data_selector: inference
+    params: {}
+- name: gen_trt_engine
+  endpoint:
+    path: /gen_trt_engine
+    method: POST
+    data_selector: status
+    params:
+      model_path: MODEL_PATH
+      experiment_spec: EXPERIMENT_SPEC
+      results_dir: RESULTS_DIR
+      key: KEY
+      data_type: fp32
+      engine_file: ENGINE_FILE
+      cal_image_dir: CAL_IMAGE_DIR
+      cal_data_file: CAL_DATA_FILE
+      cal_cache_file: CAL_CACHE_FILE
+      cal_json_file: CAL_JSON_FILE
+      max_batch_size: MAX_BATCH_SIZE
+      batch_size: BATCH_SIZE
+      batches: BATCHES
+      max_workspace_size: MAX_WORKSPACE_SIZE
+      strict_type_constraints: STRICT_TYPE_CONSTRAINTS
+      force_ptq: FORCE_PTQ
+      gpu_index: GPU_INDEX
+      log_file: LOG_FILE
+- name: evaluate
+  endpoint:
+    path: /evaluate
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: EXPERIMENT_SPEC
+      model_path: MODEL_PATH
+      results_dir: RESULTS_DIR
+      image_dir: IMAGE_DIR
+      label_dir: LABEL_DIR
+      batch_size: BATCH_SIZE
+- name: inference
+  endpoint:
+    path: /inference
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: EXPERIMENT_SPEC
+      model_path: MODEL_PATH
+      results_dir: RESULTS_DIR
+      image_dir: IMAGE_DIR
+      batch_size: BATCH_SIZE
+- name: gen_trt_engine
+  endpoint:
+    path: /gen_trt_engine
+    method: POST
+    data_selector: results
+    params:
+      onnx_file: /path/to/onnx_file
+      trt_engine: /path/to/trt_engine
+      input_channel: 3
+      input_width: 640
+      input_height: 640
+      tensorrt:
+        data_type: int8
+        workspace_size: 1024
+        min_batch_size: 1
+        opt_batch_size: 10
+        max_batch_size: 10
+        calibration:
+          cal_image_dir:
+          - /path/to/cal/images
+          cal_cache_file: /path/to/cal.bin
+          cal_batch_size: 10
+          cal_batches: 1000
+- name: evaluate
+  endpoint:
+    path: /evaluate
+    method: POST
+    data_selector: results
+    params:
+      trt_engine: /path/to/engine/file
+      conf_threshold: 0.0
+      input_width: 640
+      input_height: 640
+      dataset:
+        test_data_sources:
+          image_dir: /data/raw-data/val2017/
+          json_file: /data/raw-data/annotations/instances_val2017.json
+        num_classes: 80
+        batch_size: 8
+- name: inference
+  endpoint:
+    path: /inference
+    method: POST
+    data_selector: results
+    params:
+      conf_threshold: 0.5
+      input_width: 640
+      input_height: 640
+      trt_engine: /path/to/engine/file
+      color_map:
+        person: green
+        car: red
+        cat: blue
+      dataset:
+        infer_data_sources:
+          image_dir:
+          - /data/raw-data/val2017/
+          classmap: /path/to/coco/annotations/coco_classmap.txt
+        num_classes: 80
+        batch_size: 8
+- name: gen_trt_engine
+  endpoint:
+    path: /ssd/gen_trt_engine
+    method: POST
+    data_selector: status_log
+    params:
+      model_path: /workspace/ssd_resnet18_epoch_100_int8.onnx
+      experiment_spec: /workspace/ssd_retrain_resnet18_kitti.txt
+      results_dir: /export/
+      cal_image_dir: /workspace/data/training/image_2
+      data_type: int8
+      batch_size: 8
+      batches: 10
+      cal_cache_file: /export/cal.bin
+      cal_data_file: /export/cal.tensorfile
+      engine_file: /export/int8.engine
+- name: evaluate
+  endpoint:
+    path: /ssd/evaluate
+    method: POST
+    data_selector: evaluation_results
+    params:
+      experiment_spec: /workspace/ssd_retrain_resnet18_kitti.txt
+      model_path: /export/int8.engine
+      results_dir: /workspace/tao-experiments/evaluate
+      image_dir: /workspace/tao-experiments/data/val/images
+      label_dir: /workspace/tao-experiments/data/val/labels
+      batch_size: 8
+- name: inference
+  endpoint:
+    path: /ssd/inference
+    method: POST
+    data_selector: inference_results
+    params:
+      experiment_spec: /workspace/ssd_retrain_resnet18_kitti.txt
+      model_path: /export/int8.engine
+      results_dir: /workspace/tao-experiments/inference
+      image_dir: /workspace/tao-experiments/data/val/images
+      batch_size: 8
+- name: gen_trt_engine
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: evaluate
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: inference
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: generate_tensorRT_engine
+  endpoint:
+    path: /deploy/unet/gen_trt_engine
+    method: POST
+    data_selector: status
+    params: {}
+- name: evaluate_tensorRT_engine
+  endpoint:
+    path: /deploy/unet/evaluate
+    method: POST
+    data_selector: results
+    params: {}
+- name: inference_tensorRT_engine
+  endpoint:
+    path: /deploy/unet/inference
+    method: POST
+    data_selector: inference_results
+    params: {}
+- name: gen_trt_engine
+  endpoint:
+    path: yolo_v3 gen_trt_engine
+    method: POST
+    data_selector: results
+    params:
+      model_path: MODEL_PATH
+      experiment_spec: EXPERIMENT_SPEC
+      results_dir: RESULTS_DIR
+      data_type: fp32
+      batch_size: BATCH_SIZE
+      batches: BATCHES
+- name: evaluate
+  endpoint:
+    path: yolo_v3 evaluate
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: EXPERIMENT_SPEC
+      model_path: MODEL_PATH
+      results_dir: RESULTS_DIR
+- name: inference
+  endpoint:
+    path: yolo_v3 inference
+    method: POST
+    data_selector: results
+    params:
+      experiment_spec: EXPERIMENT_SPEC
+      model_path: MODEL_PATH
+      results_dir: RESULTS_DIR
+- name: generate_tensorRT_engine
+  endpoint:
+    path: /gen_trt_engine
+    method: POST
+    data_selector: status_log
+    params:
+      model_path: -m MODEL_PATH
+      experiment_spec: -e EXPERIMENT_SPEC
+      results_dir: -r RESULTS_DIR
+- name: evaluate_tensorRT_engine
+  endpoint:
+    path: /evaluate
+    method: POST
+    data_selector: evaluation_results
+    params:
+      experiment_spec: -e EXPERIMENT_SPEC
+      model_path: -m MODEL_PATH
+      results_dir: -r RESULTS_DIR
+- name: inference_tensorRT_engine
+  endpoint:
+    path: /inference
+    method: POST
+    data_selector: inference_results
+    params:
+      experiment_spec: -e EXPERIMENT_SPEC
+      model_path: -m MODEL_PATH
+      results_dir: -r RESULTS_DIR
+- name: TensorRT Engine Generation
+  endpoint:
+    path: gen_trt_engine
+    method: POST
+    data_selector: status
+    params:
+      model_path: -m
+      experiment_spec: -e
+      results_dir: -r
+- name: Evaluation
+  endpoint:
+    path: evaluate
+    method: POST
+    data_selector: evaluation_results
+    params:
+      experiment_spec: -e
+      model_path: -m
+      results_dir: -r
+- name: Inference
+  endpoint:
+    path: inference
+    method: POST
+    data_selector: inference_results
+    params:
+      experiment_spec: -e
+      model_path: -m
+      results_dir: -r
+- name: gen_trt_engine
+  endpoint:
+    path: /gen_trt_engine
+    method: POST
+    data_selector: results
+    params: {}
+- name: evaluate
+  endpoint:
+    path: /evaluate
+    method: POST
+    data_selector: results
+    params: {}
+- name: inference
+  endpoint:
+    path: /inference
+    method: POST
+    data_selector: results
+    params: {}
+- name: gen_trt_engine
+  endpoint:
+    path: /optical_inspection/gen_trt_engine
+    method: POST
+    data_selector: results
+    params: {}
+- name: inference
+  endpoint:
+    path: /optical_inspection/inference
+    method: POST
+    data_selector: results
+    params: {}
+- name: gen_trt_engine
+  endpoint:
+    path: /path/to/gen_trt_engine
+    method: POST
+    data_selector: results
+    params:
+      onnx_file: /path/to/onnx_file
+      trt_engine: /path/to/trt_engine
+      batch_size: -1
+      tensorrt:
+        data_type: fp16
+        workspace_size: 1024
+        min_batch_size: 1
+        opt_batch_size: 2
+        max_batch_size: 4
+- name: evaluate
+  endpoint:
+    path: /path/to/evaluate
+    method: POST
+    data_selector: results
+    params:
+      trt_engine: /path/to/engine/file
+      input_width: 736
+      input_height: 320
+      dataset:
+        dataset_name: StereoDataset
+        test_dataset:
+          data_sources:
+          - dataset_name: GenericDataset
+            data_file: /data/depth_net/annotations_test.txt
+          batch_size: 4
+          workers: 4
+- name: inference
+  endpoint:
+    path: /path/to/inference
+    method: POST
+    data_selector: results
+    params:
+      input_width: 736
+      input_height: 320
+      trt_engine: /path/to/engine/file
+      dataset:
+        dataset_name: StereoDataset
+        infer_dataset:
+          data_sources:
+          - dataset_name: GenericDataset
+            data_file: /data/depth_net/annotations_test.txt
+          workers: 4
+          batch_size: 4
+- name: gen_trt_engine
+  endpoint:
+    path: gen_trt_engine
+    method: PATCH
+    data_selector: results_dir
+    params:
+      task: classify
+      gen_trt_engine:
+        results_dir: ${results_dir}/gen_trt_engine
+        onnx_file: ${results_dir}/export/changenet_model.onnx
+        trt_engine: ${results_dir}/gen_trt_engine/changenet.trt
+        input_channel: 3
+        input_width: 128
+        input_height: 512
+        tensorrt:
+          data_type: fp32
+          workspace_size: 1024
+          min_batch_size: 1
+          opt_batch_size: 1
+          max_batch_size: 1
+- name: inference
+  endpoint:
+    path: inference
+    method: POST
+    data_selector: results_dir
+    params:
+      task: classify
+      model:
+        classify:
+          eval_margin: 0.5
+      dataset:
+        classify:
+          infer_dataset:
+            csv_path: /path/to/infer.csv
+            images_dir: /path/to/img_dir
+          image_ext: .jpg
+          batch_size: 16
+          workers: 2
+          num_input: 4
+          input_map:
+            LowAngleLight: 0
+            SolderLight: 1
+            UniformLight: 2
+            WhiteLight: 3
+          concat_type: linear
+          grid_map:
+            x: 2
+            y: 2
+          output_shape:
+          - 128
+          - 128
+          augmentation_config:
+            rgb_input_mean:
+            - 0.485
+            - 0.456
+            - 0.406
+            rgb_input_std:
+            - 0.229
+            - 0.224
+            - 0.225
+          num_classes: 2
+      inference:
+        gpu_id: 0
+        trt_engine: /path/to/engine/file
+        results_dir: ${results_dir}/inference
+- name: evaluate
+  endpoint:
+    path: evaluate
+    method: POST
+    data_selector: results_dir
+    params:
+      task: classify
+      model:
+        classify:
+          eval_margin: 0.5
+      dataset:
+        classify:
+          infer_dataset:
+            csv_path: /path/to/infer.csv
+            images_dir: /path/to/img_dir
+          image_ext: .jpg
+          batch_size: 16
+          workers: 2
+          num_input: 4
+          input_map:
+            LowAngleLight: 0
+            SolderLight: 1
+            UniformLight: 2
+            WhiteLight: 3
+          concat_type: linear
+          grid_map:
+            x: 2
+            y: 2
+          output_shape:
+          - 128
+          - 128
+          augmentation_config:
+            rgb_input_mean:
+            - 0.485
+            - 0.456
+            - 0.406
+            rgb_input_std:
+            - 0.229
+            - 0.224
+            - 0.225
+          num_classes: 2
+      evaluate:
+        gpu_id: 0
+        trt_engine: /path/to/engine/file
+        results_dir: ${results_dir}/inference
+- name: gen_trt_engine
+  endpoint:
+    path: visual_changenet gen_trt_engine
+    method: POST
+    data_selector: results_dir
+    params:
+      onnx_file: ${results_dir}/export/changenet_model.onnx
+      trt_engine: ${results_dir}/gen_trt_engine/changenet.trt
+      input_channel: 3
+      input_width: 128
+      input_height: 512
+      tensorrt:
+        data_type: fp32
+        workspace_size: 1024
+        min_batch_size: 1
+        opt_batch_size: 1
+        max_batch_size: 1
+- name: inference
+  endpoint:
+    path: visual_changenet inference
+    method: POST
+    data_selector: results_dir
+    params:
+      gpu_id: 0
+      trt_engine: /path/to/engine/file
+      results_dir: ${results_dir}/inference
+- name: evaluate
+  endpoint:
+    path: visual_changenet evaluate
+    method: POST
+    data_selector: results_dir
+    params:
+      gpu_id: 0
+      trt_engine: /path/to/engine/file
+      results_dir: ${results_dir}/inference
+- name: grounding_dino
+  endpoint:
+    path: /cv_finetuning/pytorch/object_detection/grounding_dino.html
+    method: GET
+    data_selector: records
+- name: gen_trt_engine
+  endpoint:
+    path: /path/to/gen_trt_engine
+    method: POST
+    data_selector: ''
+    params:
+      onnx_file: /path/to/onnx_file
+      trt_engine: /path/to/trt_engine
+      input_channel: 3
+      input_width: 960
+      input_height: 544
+      tensorrt:
+        data_type: fp16
+        workspace_size: 1024
+        min_batch_size: 1
+        opt_batch_size: 10
+        max_batch_size: 10
+- name: evaluate
+  endpoint:
+    path: /path/to/evaluate
+    method: POST
+    data_selector: ''
+    params:
+      trt_engine: /path/to/engine/file
+      conf_threshold: 0.0
+      input_width: 960
+      input_height: 544
+      dataset:
+        test_data_sources:
+          image_dir: /data/raw-data/val2017/
+          json_file: /data/raw-data/annotations/instances_val2017.json
+        max_labels: 80
+        batch_size: 8
+- name: inference
+  endpoint:
+    path: /path/to/inference
+    method: POST
+    data_selector: ''
+    params:
+      conf_threshold: 0.5
+      input_width: 960
+      input_height: 544
+      trt_engine: /path/to/engine/file
+      color_map:
+        black cat: green
+        car: red
+        person: blue
+      dataset:
+        infer_data_sources:
+          image_dir: /path/to/coco/images/val2017/
+          captions:
+          - black cat
+          - car
+          - person
+        max_labels: 80
+        batch_size: 8
+- name: gen_trt_engine
+  endpoint:
+    path: tao deploy pointpillars gen_trt_engine
+    method: POST
+    data_selector: results_dir
+    params:
+      experiment_spec: gen_trt_engine.yaml
+- name: evaluate
+  endpoint:
+    path: tao deploy pointpillars evaluate
+    method: POST
+    data_selector: results_dir
+    params:
+      experiment_spec: evaluate.yaml
+- name: inference
+  endpoint:
+    path: tao deploy pointpillars inference
+    method: POST
+    data_selector: results_dir
+    params:
+      experiment_spec: inference.yaml
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- The API Base URL can be retrieved after the cluster is setup.
+- For experiments, you must provide cloud storage with read and write access.
+- Only AWS and Azure are supported for creating experiments and storing training artifacts,
+  including checkpoints and logs.
+- Unified Resource Scoping with org_name instead of user_id
+- NGC personal keys are required for authentication instead of NGC API keys.
+- The dataset upload endpoint has a limit of 250 MB. Anything greater has to be uploaded
+  in cloud and provided as a http link in the pull argument of dataset create endpoint.
+- The task_group dataset includes tasks for generating labels, inspecting datasets,
+  converting formats, and enhancing datasets.
+- TAO 4.0 has disaggregated the hybrid training-deployment container.
+- If you are training directly from the containers, then you will need to separately
+  pull the tao-deploy container.
+- When migrating from TLT 3.0 to TAO, if you have a previously installed nvidia-tlt
+  package in your virtualenv, you need to uninstall this package before installing
+  the nvidia-tao CLI package.
+- Ensure the protection of sensitive information by implementing robust platform access
+  controls, including storage encryption, VPC, and firewall setups on both CSPs and
+  local (bare-metal) deployments.
+- Limit infrastructure access to a select few, such as AWS account access and NVIDIA
+  NVCF Admin access.
+- It is recommended to use Vault for securing secrets on CSPs or local deployments;
+  otherwise, platform access control remains the sole protection layer.
+- The responsibility for access logs, platform usage, and cost monitoring lies with
+  the platform deployment user.
+- FTMS Deployment is completed when all pods are in the Running state. This may take
+  10-15 minutes.
+- 'Common issues are: GPU Operator pods not in Ready or Completed states, Invalid
+  values.yaml file, Missing or invalid imagepullsecret, Missing or invalid ngc_api_key,
+  Missing or invalid ptmApiKey.'
+- Docker Compose currently does not support multi node deployments.
+- The pretrained model service downloads pretrained models from NGC and makes them
+  available to the FTMS API.
+- Deployment in air-gapped environments requires disabling NVIDIA user authentication.
+- Access control to air-gapped deployment must be managed by the user.
+- Deployment in air-gapped environments requires disabling NVIDIA user authentication.
+  Access control to air-gapped deployment must be managed by the user.
+- This method enables direct data transfer from an Internet-connected machine to the
+  SeaweedFS instance without requiring an intermediate transfer to the host machine.
+- This is particularly efficient for large datasets.
+- Ensure that the airgapped-models/ directory with ptm_metadatas.json is uploaded.
+- 'Check pods: `kubectl get pods -l app.kubernetes.io/name=seaweedfs`'
+- User authentication is based on the NGC Personal Key.
+- The server starts immediately but may not be ready for inference requests. Use the
+  status endpoint to check when the model is loaded and ready.
+- Server starts immediately but may not be ready for inference requests. Use the status
+  endpoint to check when the model is loaded and ready.
+- Server starts immediately but may not be ready for inference requests.
+- Check cloud storage credentials in workspace configuration.
+- Verify network connectivity to cloud storage.
+- 'Check Kubernetes pod logs: `kubectl logs <pod-name>`.'
+- Ensure sufficient bandwidth for model file downloads.
+- Uses OAuth2 with refresh token — requires setup of connected app in TAO API
+- Running multiple AutoML notebooks simultaneously may lead to extended execution
+  times
+- 'These numbers are profiled with the default AutoML specific parameters: max_recommendation=20
+  for Bayesian and R=27, nu=3 for Hyperband.'
+- For some network models (efficientdet, mask_rcnn, multitask_classification), the
+  default automl parameter is adjusted by the Hyperband Parameter Auto-adjustment
+  Mechanism to be R=9, nu=3 for Hyperband.
+- All experiments are executed on a single GPU (Tesla V100) with Intel Xeon CPU E5-2698
+  v4.
+- When using multi-GPU mode, the time taken is expected to scale accordingly; similarly,
+  using more powerful GPUs will reduce the execution time.
+- Uses an API key for authentication.
+- The NGC CLI is required to pull models and interact with resources.
+- The interactive command uses the ~/.tao_mounts.json file to configure the launcher
+  and mount paths in the host file system to the docker.
+- The TAO Launcher watches certain environment variables to override configurable
+  parameters.
+- TAO supports multi-node training for all models in PyTorch.
+- For multi-node training, add the train.num_nodes and train.num_gpus arguments.
+- NVIDIA strongly encourages developers to use this execution model.
+- Each repository walks through the process of building, interacting, and even upgrading
+  the base containers if needed.
+- Direct KITTI to ODVG or ODVG to KITTI conversion is not supported, but you can use
+  COCO as an intermediate format to bridge KITTI and ODVG.
+- Offline Data Augmentation is currently only designed for object-detection datasets
+  using KITTI or COCO format.
+- The Auto-Label service supports generating pseudo-labels based on the input bounding
+  boxes.
+- Data Analytics is currently only designed for object-detection datasets using KITTI
+  or COCO format.
+- When using a downstream model as the teacher, make sure to set num_classes to 0
+  and mode to spatial in the distill config.
+- AMP is only supported on GPUs with Volta architecture or above.
+- To enable QAT during training, set the enable_qat parameter to true in the training_config
+  field of the corresponding spec file.
+- Enabling tensorboard during training requires adding visualizer element to training_config.
+- No labels required for training on large, unlabeled image datasets.
+- Requires setup of connected app in API
+- Some parameters may vary based on model configuration
+- Some objects like Contact may return nulls in deeply nested fields
+- StyleGAN-XL requires square, fixed-resolution images for training.
+- Zipping datasets simplifies transferring them between file servers.
+- Uses images_dir for dataset paths
+- The dataset must be structured in ImageNet format.
+- Training requires the experiment specification file as input.
+- Evaluation requires a checkpoint path and dataset reference paths.
+- The MLRecogNet ONNX file generated from export is taken as input to TAO Deploy to
+  generate an optimized TensorRT engine.
+- The spec format is YAML for TAO Launcher and JSON for FTMS Client.
+- 'For training, evaluation, and inference, we expose 2 variables for each respective
+  task: num_gpus and gpu_ids, which default to 1 and [0], respectively.'
+- If both are passed, but inconsistent, for example num_gpus = 1, gpu_ids = [0, 1],
+  then they are modified to follow the setting with more GPUs.
+- In some cases, you may encounter an issue with multi-GPU training resulting in a
+  segmentation fault. You may circumvent this by setting the OMP_NUM_THREADS enviroment
+  variable to 1.
+- Set dataset.augmentation.fixed_padding to True to help stabilize the CPU memory
+  usage.
+- Uses TAO Launcher for training, evaluation, and inference
+- Unlike other instance segmentation models in TAO, start the category_id from your
+  COCO JSON file for Mask Grounding DINO from 0 and every category id must be contiguous.
+- The train dataset and evaluation dataset for OCRNet is in LMDB format.
+- The original dataset should be organized with images and ground truth files.
+- Make sure to set task=segment in SPECS for all task specs.
+- Requires 'experiment_spec_file' for training, evaluation, and inference.
+- Make sure to set task=classify in SPECS for all task specs.
+- Each .bin file should comply with the format described above.
+- Each .txt label file should comply to the KITTI format.
+- The evaluation metric in TAO PointPillars is different from that in official metric
+  of KITTI.
+- Export can only run on a single GPU.
+- File-related parameters, such as dataset paths or pretrained model paths, are required
+  only for TAO Launcher and not for FTMS Client.
+- Pre-trained models are not designed to be re-trained with input data of varying
+  dimensions.
+- Multi-GPU inference is currently not supported for Pose Classification.
+- The category_id from your COCO JSON file should start from 0 and every category
+  id must be contiguous.
+- Training requires strong GPUs with at least 15GB of VRAM.
+- Set 'train.precision' to 'bf16' to enable automatic mixed precision training.
+- Multi-GPU evaluation is not supported for Re-Identification.
+- Multi-GPU inference is currently not supported for Re-Identification.
+- The preprocess tool is released on Github under the MIT license.
+- For a 3D model, the input layout is NCDHW.
+- For a 2D model, the input layout is N[CxD]HW.
+- Multi-GPU evaluation is currently not supported for Action Recognition.
+- Multi-GPU inference is currently not supported for Action Recognition.
+- Uses PyTorch-based image-classification model
+- Requires specific dataset structure for training.
+- Some parameters are set in json format.
+- Depth estimation technology enables automated systems and devices to perceive object
+  geometry and spatial relationships.
+- Requires paired RGB images and depth ground truth.
+- Dataset should be organized with image and depth pairs.
+- Monocular depth estimation requires paired RGB images and depth ground truth.
+- To train a monocular depth estimation model.
+- Requires stereo image pairs with disparity ground truth.
+- Images must be rectified and temporally synchronized.
+- Uses AutoReduce Scheduler
+- Some objects may return nulls in deeply nested fields
+- Sparse4D supports training, evaluation, inference, and export tasks.
+- The top level structure of the spec file includes dataset, model, train, evaluate,
+  inference, prune, export.
+- Required arguments include --id for the unique identifier of the experiment.
+- Classification input images do not need to be manually resized. The input dataloader
+  automatically resizes images to `input size`.
+- Dataset must be in COCO format.
+- TFRecords must be created before training.
+- Support for these models have been deprecated.
+- You may still continue to use them by falling back to TAO 5.3.0 or by building the
+  Docker container from source.
+- The dataset_convert tool requires a configuration file in JSON format.
+- The height and width should be a multiple of 8. Preferably, a multiple of 16/32/64.
+- Height and width should be a multiple of 8. Preferably, a multiple of 16/32/64
+- This evaluation is mainly used as a sanity check for the exported TRT (INT8/FP16)
+  models.
+- The FPENet app requires the data to be in a specific json format to be converted
+  to TFRecords.
+- Label the keypoints in the correct order as accurately as possible.
+- Input images of size (80, 80, 1)
+- Output keypoint locations are of shape (N, 2) and confidence (N, 1)
+- Refer to the TAO Deploy documentation for detailed information
+- Input images should be in JPG, JPEG, or PNG format.
+- The inference tool requires a cluster_params.json file to configure the post processing
+  block.
+- A classmap is required for both single image and directory modes.
+- Currently, multitask image classification only supports RGB training.
+- The trained model will always have 3 input channels.
+- A classmap (-cm) is required, which should be a by product (class_mapping.json)
+  of your training process.
+- The dataset_convert tool converts the class names in the KITTI-formatted data files
+  to lowercase characters.
+- For templates with shortcut connections, this parameter defines whether or not all
+  shortcuts should be instantiated with 1x1 projection layers.
+- The architecture of the backbone feature extractor to be used for training.
+- Probability for drop out.
+- A flag to determine whether to load the graph from the pretrained model file, or
+  just the weights.
+- Uses DBSCAN for clustering raw detections.
+- Supports HYBRID mode which requires both DBSCAN and NMS parameters.
+- If the output image height and output image width of the preprocessing block doesn’t
+  match with the dimensions of the input image, the dataloader either pads with zeros
+  or crops to fit to the output resolution. It does not resize the input images and
+  labels to fit.
+- The class names key in the target_class_mapping must be identical to the one shown
+  in the dataset converter log.
+- The tool generates bbox rendered images and requires a key to load the model.
+- The dataset structure of FasterRCNN is identical to that of DetectNet_v2.
+- When exporting a model trained with QAT enabled, the tensor scale factors to calibrate
+  the activations are peeled out of the model and serialized to a JSON file defined
+  by the cal_json_file argument.
+- The command can only run on a single GPU.
+- Each sub_task can be invoked from the TAO Launcher using the command line convention.
+- The class names key in the target_class_mapping must be identical to the one shown
+  in the KITTI labels so that the correct classes are picked up for training.
+- Exporting the model decouples the training process from inference and allows conversion
+  to TensorRT engines outside the TAO environment.
+- TensorRT engines can be generated in INT8 mode to improve performance, but require
+  a calibration cache at engine creation-time.
+- Uses TFRecords format for training efficiency
+- Ensure class names in target_class_mapping match KITTI labels
+- After pruning, the model needs to be retrained.
+- The exported model format is referred to as .etlt.
+- The object detection apps in TAO expect data in KITTI format for training and evaluation.
+- The `dataset_convert` tool requires a configuration file as input.
+- SSD does not support loading a pruned non-QAT model and retraining it with QAT enabled,
+  or vice versa.
+- DSSD does not support loading a pruned non-QAT model and retraining it with QAT
+  enabled, or vice versa.
+- To get a pruned QAT model, perform the initial training with QAT enabled or `enable_qat=True`.
+- Exporting the model decouples the training process from inference.
+- A log file named <tag>_warnings.json will be generated in the output_dir if the
+  bounding box of an object is out of bounds.
+- A log file named <tag>_warnings.json will be generated in the output_dir if the
+  bounding box of an object is out of bounds with respect to the image frame or if
+  an object mask is out of bounds with respect to its bounding box.
+- Due to the complexity of larger EfficientDet models, the pruning process will take
+  significantly longer to finish. For example, pruning the EfficientDet-D5 model may
+  take at least 25 minutes on a V100 server.
+- 'The vanilla_unet model was originally proposed in the paper: U-Net: Convolutional
+  Networks for Biomedical Image Segmentation.'
+- Dice loss is currently supported only for binary segmentation.
+- Set the regularizer weight to zero in the training_config for UNet to recover the
+  accuracy when retraining a pruned model.
+- Quantization converts high-precision numbers (FP32) in your model to lower precision
+  (INT8/FP8) to make inference faster and smaller in memory.
+- Trade-offs depend on the approach you choose.
+- Quantization is configured under the quantize section of your experiment specification.
+- Dtype strings may be written as fp8_* or float8_* (aliases map to the same values
+  in backends that accept FP8).
+- 'Weight-only: activations are not quantized.'
+- No calibration loop.
+- Speedups depend on runtime kernel support and are model-dependent.
+- In PyTorch runtime, ModelOpt inserts fake-quant operations; speedups may be limited
+  but the exported checkpoint includes calibrated scales.
+- Limitations and current status are discussed in the documentation.
+- VLM fine-tuning is currently available only through the TAO Toolkit API and tao-client
+  interfaces.
+- There is no launcher-based interface for VLM models.
+- Training automatically resumes from the latest checkpoint if train.resume is set
+  to TRUE.
+- AutoML optimization is supported.
+- Protection of intellectual properties on external MLOps is the responsibility of
+  the account owner. Please follow MLOps security recommendations.
+- Enabling MLOPS integration does not require you to install tensorboard.
+- Weights and biases requires access to the /config directory in the container.
+- Each user can have a maximum of 10 Tensorboard enabled experiments.
+- Tensorboard sessions are publicly accessible by default.
+- The Tensorboard session may not be immediately available after you create the workflow,
+  so please be patient while metrics and charts are being generated.
+- Make sure to follow the output node names as mentioned in the Exporting the Model
+  section of the respective model.
+- Make sure to follow the output node names as mentioned in `Exporting the Model`
+  section of the respective model.
+- Due to the complexity of EfficientDet models, the conversion process will take some
+  time to finish.
+- Make sure to follow the output node names as mentioned in Exporting the Model section
+  of the respective model.
+- To use the default tao-converter available in the TAO package, append tao to the
+  sample usage of the tao_converter as mentioned here.
+- The default TAO package includes the tao-converter built for TensorRT 8.2.5.1 with
+  CUDA 11.4 and CUDNN 8.2.
+- TAO Converter is required for deploying to Jetson devices.
+- To run trtexec on other platforms, refer to the official TensorRT documentation.
+- To run `trtexec` on other platforms, refer to the official TensorRT documentation.
+- LPRNet currently does not support INT8 calibration.
+- To generate a .uff file for Mask RCNN, refer to the Mask RCNN documentation.
+- You can also refer to the Mask RCNN TAO-Deploy documentation for instructions on
+  generating an INT8 calibration file.
+- To run `trtexec` on other platforms, such as Jetson devices, or with versions of
+  TensorRT that are not used by default in the TAO containers, you can follow the
+  official TensorRT documentation.
+- PointPillars currently does not support INT8 calibration.
+- PoseClassificationNet currently does not support INT8 calibration.
+- ReIdentificationNet currently does not support INT8 calibration.
+- ReIdentificationNet Transformer currently does not support INT8 calibration.
+- 'The channel dimensions are mentioned in NxCxHxW order where N: batch size, C: Number
+  of channels in the input tensor, H: Height of the input tensor, W: Width of the
+  input tensor.'
+- TRTEXEC with Segformer
+- Segformer currently does not support INT8 calibration.
+- The trtexec tool is a command-line wrapper included as part of the TensorRT samples.
+- To run trtexec on other platforms, such as Jetson devices, follow the official TensorRT
+  documentation.
+- The Mask Grounding DINO TensorRT engine only supports a batch size of 1.
+- Uses TensorRT engine for model inference
+- Ensure compatibility between TAO and DeepStream versions
+- The .etlt file is deprecated from TAO 5.0.0.
+- Machine-specific optimizations are necessary for each environment and hardware.
+- Requires integration of exported ONNX model or TensorRT engine.
+- .etlt is deprecated from TAO 5.0.0
+- MultiscaleDeformableAttnPlugin_TRT is required for Deformable DETR.
+- Custom bounding-box parsers are required for Deformable DETR.
+- Requires installation of TensorRT OSS for DINO models.
+- DINO requires the MultiscaleDeformableAttnPlugin_TRT plugin.
+- DSSD requires batchTilePlugin and NMS_TR_T. This plugin is available in the TensorRT
+  open source repo.
+- DSSD requires custom bounding box parsers that are not built-in inside the DeepStream
+  SDK.
+- TensorRT OSS requires cmake >= v3.13
+- EfficientDet requires ResizeNearest_TRT and EfficientNMS_TRT plugins
+- Uses TensorRT OSS for FasterRCNN models.
+- RetinaNet requires batchTilePlugin and NMS_TR_T.
+- TensorRT OSS requires cmake >= v3.13.
+- TensorRT OSS build is required for SSD models.
+- The `tlt-encoded-model` parameter points to the exported model (.etlt) from TLT.
+- Integrating TAO Models into DeepStream
+- YOLOv3 requires custom bounding box parsers that are not built into the DeepStream
+  SDK.
+- TensorRT OSS requires cmake >= v3.13, while the default cmake on Jetson/Ubuntu 18.04
+  is cmake 3.10.2.
+- YOLOv4 requires batchTilePlugin, resizeNearestPlugin, and batchedNMSPlugin.
+- The order of classes in the label file must match the order in which the model predicts
+  the output.
+- YOLOv4-tiny requires batchTilePlugin, resizeNearestPlugin, and batchedNMSPlugin
+- Uses custom library for bounding box parsing
+- Network mode and class attributes must be configured correctly
+- 'MaskRCNN requires plugins: generateDetectionPlugin, multilevelCropAndResizePlugin,
+  resizeNearestPlugin, multilevelProposeROI'
+- If the TensorRT or CUDA libraries are updated, new engines need to be generated.
+- .etlt is deprecated. Convert the .onnx engine to .trt using tao deploy.
+- Refer to NGC to set up your environment to run ngc commands.
+- A character_list.txt file is included with the pretrained OCRNet ONNX model.
+- high resolution image inference only supports a batch size of 1.
+- Currently, TAO Deploy only supports computer vision models.
+- Each TensorRT engine generated by tao deploy is specific to the GPU that it is generated
+  on.
+- Currently there is an accuracy regression with TAO Classification with LogisticRegressionHead
+  in TAO Deploy TRT evaluation compared to TAO PyTorch evaluation.
+- Uses TAO Deploy for engine generation and evaluation
+- The input channel size is only supported as 3.
+- The input width must be greater than 0.
+- The input height must be greater than 0.
+- Use the tao-client grounding_dino commands to interact with the API.
+- The .etlt file generated from tao model export is taken as an input to tao deploy
+  to generate optimized TensorRT engine.
+- Ensure that the directory mentioned in --cal_image_dir has at least batch_size *
+  batches number of images in it.
+- The model_path must be a valid .onnx or .etlt file.
+- The results_dir must be a valid directory path.
+- Uses TensorRT engine generation commands
+- Model path must point to a .onnx or .etlt file
+- TensorRT engine generation command requires model path, experiment spec, and results
+  directory.
+- Uses OAuth2 with refresh token
+- Uses TensorRT engine for model evaluation.
+- The JSON format results will be stored under $RESULTS_DIR/trt_inference.
+- Uses TensorRT for engine generation and evaluation
+- Requires ONNX file for conversion to TensorRT engine
+- TensorRT engine generation requires specific image directory and calibration files.
+- We do not support Int8 precision for Segformer.
+- The TensorRT engine file is hardware specific and cannot be generalized across GPUs.
+- Uses TensorRT engine generation with specific model and experiment spec requirements.
+- The engine file is hardware specific and cannot be generalized across GPUs.
+- The specification format is YAML for TAO Launcher and JSON for FTMS Client.
+- File-related parameters are required only for TAO Launcher and not for FTMS Client.
+- Use the command 'tao deploy optical_inspection gen_trt_engine -e /path/to/spec.yaml'
+  to generate TensorRT engine.
+- Use the command 'tao deploy optical_inspection inference -e /path/to/spec.yaml'
+  to run inference.
+- Multi-GPU training on machines with RTX-5080 GPUs may encounter NCCL errors. If
+  you experience such issues, please use single GPU training or machines with different
+  GPU models.
+- Models quantized using TAO Quant may not be compatible for TensorRT ONNX export
+  and deployment. Please refer to the TAO Quant documentation for more details.
+- Hugging Face model downloads for Cosmos-RL VLM may occasionally fail due to rate
+  limiting when multiple jobs from the same IP address are triggered in succession.
+- Visual Changenet and Foundation model finetuning is not supported via TAO API
+- Foundation model finetuning requires GPUs with atleast 24GB VRAM.
+- Wandb integration requires that containers be instantiated by the root user.
+- The NLP Question Answering task doesn’t support egatron-based models for TAO workflows.
+- Transfer Learning is not supported on pruned models across all applications.
+- When training with multiple GPUs, you might need to scale down the batch_size and/or
+  scale up the learning rate to get the same accuracy seen in single GPU training.
+- When training DetectNet_v2 for object detection use-cases with more than 10 classes,
+  you may need to either update the cost_weight parameter in the cost_function_config,
+  or balance the number of samples per class in the dataset for better training.
+- When training a DetectNet_v2 network for datasets with less than 20,000 images,
+  please use smaller batch-sizes (1, 2 or 4) to get better accuracy.
+- The infer subtask of DetectNet_v2 doesn’t output confidence and generates 0. as
+  value. You may ignore these values and only consider the bbox and class labels as
+  valid outputs.
+- ResNet101 pre-trained weights from NGC is not supported on YOLOv3, YOLOv4, YOLOv4-tiny,
+  SSD, DSSD and RetinaNet.
+- When generating int8 engine with tao-converter, please use -s if there is TensorRT
+  error message saying weights are outside of fp16 range.
+- When running convAI models on a cloud VM, users should have root access to the VM.
+- TAO Conv AI models cannot generate intermediate model.tlt files.
+- Ensure to set your python to python3 when running the launcher.
+- We strongly recommend using a Python virtual environment to keep dependencies isolated.
+- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+- This Source Code Form is subject to the terms of the Mozilla Public License, v.
+  2.0.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck API key or user permissions'
+- '400 Bad Request: Check your request parameters or body.'
+- '403 Forbidden: Verify your access permissions.'
+- 'Failed to download JSON file from cloud storage: Ensure that the SeaweedFS upload
+  path matches `LOCAL_MODEL_REGISTRY`.'
+- '401 Unauthorized: Recheck NGC API Key or organization name.'
+- '200 OK: Request successful, model is ready and inference completed'
+- '202 Accepted: Request received, but service is still initializing or model is loading;
+  retry after a short wait'
+- '503 Service Unavailable: Service is not ready (initialization/loading failed) or
+  encountered an error'
+- '404 Not Found: Job ID not found or service not started'
+- 'CUDA out of memory: GPU memory is insufficient for the model.'
+- 'Model file not found: Model checkpoint is missing.'
+- 'Invalid model format: Model checkpoint is corrupted.'
+- 'Initialization error: $INIT_ERROR'
+- 'Model load error: $LOAD_ERROR'
+- '401 Unauthorized: Check your API key and permissions.'
+- 'OutOfMemoryError: Try reducing batch size or optimizing GPU memory usage.'
+- 'OUT_OF_MEMORY: Reduce batch size or input resolution'
+- 'TRAINING_INSTABILITY: Reduce learning rate or enable gradient clipping'
+- 'INFERENCE_SPEED_ISSUES: Use TensorRT engine instead of PyTorch model'
+- 'Out of Memory: Reduce `train_batch_per_replica`, enable FP8 precision, or use gradient
+  checkpointing.'
+- 'Dataset Format Errors: Ensure annotations follow LLaVA format exactly.'
+- 'Training Convergence: Adjust learning rates, use warmup epochs, or enable AutoML
+  optimization.'
+- 'Inference Errors: Verify model checkpoints and input formats.'
+- 'Slow Data Loading: Increase `dataloader_num_workers` and `dataloader_prefetch_factor`.'
+- 'Incompatible model version: Ensure that the model is compatible with the current
+  DeepStream version'
+- Unsupported TensorRT version will cause unknown behavior.
+- TensorRT or CUDA libraries of the inference environment are updated, new engines
+  need to be generated.
+- 'INVALID_MODE: Check network mode configuration'
+- 'CLASS_COUNT_MISMATCH: Ensure number of detected classes matches model'
+- 'Invalid model path: Ensure the model path is correct.'
+- 'Unsupported file format: Only .jpg images are supported.'
+- TensorRT OSS requires cmake >= v3.13
+- 'Invalid input: Supported image formats include ‘.jpg’, ‘.jpeg’, ‘.png’.'
+- 'Invalid Input: Check that input dimensions are correct.'
+- 'Job Failed: Verify that paths for onnx_file and trt_engine are valid.'
+- 'Invalid ONNX file path: Ensure the .onnx file exists and is accessible.'
+- 'Engine generation failed: Check input parameters for correctness.'
+- '429 Too Many Requests: Throttle API calls or reduce frequency'
+- 'INVALID_INPUT: Check the input parameters or file paths'
+- 'ENGINE_BUILD_FAIL: Ensure all required files are accessible'
+- 'EVALUATION_FAIL: Validate the evaluation dataset and parameters'
+- 'Invalid onnx_file path: Check the path and try again.'
+- 'Invalid results_dir: Ensure the directory exists.'
+- 'Unsupported data_type: Use one of fp32, fp16, or int8.'
+- 'tao-client: command not found: Check if the path to the installed binary is in
+  your system’s PATH environment variable.'
+- IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://developer.nvidia.com/tensorrt
+  headers:
+    Accept: application/json
+source_metadata: null

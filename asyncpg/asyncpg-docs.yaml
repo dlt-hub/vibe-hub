@@ -1,0 +1,52 @@
+resources:
+- name: users
+  endpoint:
+    path: /users
+    method: POST
+    data_selector: records
+    params: {}
+- name: pool
+  endpoint:
+    path: /create_pool
+    method: POST
+    data_selector: None
+    params:
+      min_size: 10
+      max_size: 10
+      max_queries: 50000
+      max_inactive_connection_lifetime: 300.0
+- name: Record
+  endpoint:
+    path: /record
+    method: GET
+    data_selector: records
+- name: ConnectionSettings
+  endpoint:
+    path: /connection_settings
+    method: GET
+    data_selector: settings
+notes:
+- Added in version 0.11.0.
+- 'Changed in version 0.24.0: The `records` argument may be an asynchronous iterable.'
+- 'Added in version 0.29.0: Added the *where* parameter.'
+- Added in version 0.30.0.
+- Uses asyncpg for PostgreSQL interactions
+- DB-API is a synchronous API, while asyncpg is based around an asynchronous I/O model.
+- Cursors created by a call to Connection.cursor() cannot be used outside of a transaction.
+- Record objects currently cannot be created from Python code.
+- asyncpg is a database interface library designed specifically for PostgreSQL and
+  Python/asyncio.
+- Cursors created by a call to Connection.cursor() or PreparedStatement.cursor() cannot
+  be used outside of a transaction.
+errors:
+- 'InterfaceError: Cursors cannot be used outside of a transaction'
+- 'prepared statement does not exist: Most likely not connecting directly to the PostgreSQL
+  server'
+- 'InterfaceError: Cannot use cursor outside of a transaction'
+- 'prepared statement does not exist: If you are getting intermittent prepared statement
+  errors, you are most likely not connecting to the PostgreSQL server directly.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: postgresql://postgres@localhost/test
+source_metadata: null

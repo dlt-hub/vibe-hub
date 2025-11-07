@@ -1,0 +1,4096 @@
+resources:
+- name: helm_release
+  endpoint:
+    path: /api/v2/releases
+    method: GET
+    data_selector: data
+    params: {}
+- name: HelmRelease
+  endpoint:
+    path: /helmreleases
+    method: GET
+    data_selector: items
+- name: HelmReleaseSpec
+  endpoint:
+    path: /helm/releases
+    method: GET
+    data_selector: releases
+    params: {}
+- name: HelmReleaseStatus
+  endpoint:
+    path: /helm/releases/status
+    method: GET
+    data_selector: status
+    params: {}
+- name: FluxCD Azure DevOps OIDC Authentication
+  endpoint:
+    path: /fluxcd/azure-devops-oidc-authentication
+    method: GET
+    data_selector: article
+    params: {}
+- name: Flux Beyond Git
+  endpoint:
+    path: /flux-beyond-git
+    method: GET
+    data_selector: video
+    params: {}
+- name: GitOps Days 2022
+  endpoint:
+    path: /gitops-days-2022
+    method: GET
+    data_selector: video
+    params: {}
+- name: GitRepository
+  endpoint:
+    path: /flux/components/source/gitrepositories/
+    method: GET
+- name: OCIRepository
+  endpoint:
+    path: /flux/components/source/ocirepositories/
+    method: GET
+- name: HelmRepository
+  endpoint:
+    path: /flux/components/source/helmrepositories/
+    method: GET
+- name: Bucket
+  endpoint:
+    path: /flux/components/source/buckets/
+    method: GET
+- name: Flux CLI
+  endpoint:
+    path: /flux/install
+    method: GET
+    data_selector: installation
+    params: {}
+- name: Flux controllers
+  endpoint:
+    path: /flux/controllers
+    method: GET
+    data_selector: controllers
+    params: {}
+- name: flux_system_secret
+  endpoint:
+    path: /flux-system
+    method: POST
+    data_selector: secret
+    params:
+      url: ssh://git@<host>/<org>/<repository>
+      private-key-file: <path/to/private.key>
+      password: <key-passphrase>
+- name: bootstrap
+  endpoint:
+    path: /flux/bootstrap/github
+    method: POST
+    data_selector: response
+    params: {}
+- name: flux_bootstrap
+  endpoint:
+    path: /flux/cmd/flux_bootstrap_gitlab/
+    method: POST
+- name: repository
+  endpoint:
+    path: /repositories/{owner}/{repository}
+    method: GET
+    data_selector: repository
+    params: {}
+- name: kustomization
+  endpoint:
+    path: /flux/components/kustomize/kustomizations
+    method: POST
+    data_selector: rules
+    params: {}
+- name: helmRelease
+  endpoint:
+    path: /flux/components/helm/helmreleases
+    method: POST
+    data_selector: rules
+    params: {}
+- name: AWS IAM roles for service accounts
+  endpoint:
+    path: /flux/installation/configuration/bootstrap-customization/
+    method: PATCH
+    data_selector: patches
+    params: {}
+- name: Azure Workload Identity
+  endpoint:
+    path: /flux/installation/configuration/bootstrap-customization/
+    method: PATCH
+    data_selector: patches
+    params: {}
+- name: GCP Workload Identity
+  endpoint:
+    path: /flux/installation/configuration/bootstrap-customization/
+    method: PATCH
+    data_selector: patches
+    params: {}
+- name: bootstrap_git
+  endpoint:
+    path: /flux/bootstrap/git
+    method: POST
+    data_selector: none
+    params:
+      registry: registry.internal/fluxcd
+      url: ssh://git@<host>/<org>/<repository>
+      branch: <my-branch>
+      private_key_file: <path/to/private.key>
+      password: <key-passphrase>
+      path: clusters/my-cluster
+- name: bootstrap_git_with_registry_creds
+  endpoint:
+    path: /flux/bootstrap/git
+    method: POST
+    data_selector: none
+    params:
+      registry_creds: username:password
+      image_pull_secret: regcred
+      registry: registry.internal/fluxcd
+      url: ssh://git@<host>/<org>/<repository>
+      branch: <my-branch>
+      private_key_file: <path/to/private.key>
+      password: <key-passphrase>
+      path: clusters/my-cluster
+- name: create_secret
+  endpoint:
+    path: /flux/create/secret/oci/regcred
+    method: POST
+    data_selector: none
+    params:
+      username: username
+      password: password
+- name: flux-operator
+  endpoint:
+    path: /operators.coreos.com/v1alpha1/Subscription
+    method: POST
+    data_selector: spec
+    params:
+      channel: stable
+      name: flux-operator
+      source: operatorhubio-catalog
+      sourceNamespace: olm
+      config:
+        env:
+        - name: DEFAULT_SERVICE_ACCOUNT
+          value: flux-operator
+- name: flux-instance
+  endpoint:
+    path: /fluxcd.controlplane.io/v1/FluxInstance
+    method: POST
+    data_selector: spec
+    params:
+      cluster:
+        type: openshift
+        multitenant: true
+        networkPolicy: true
+        domain: cluster.local
+      sync:
+        kind: GitRepository
+        url: https://my-git-server.com/my-org/my-fleet.git
+        ref: refs/heads/main
+        path: clusters/my-cluster
+        pullSecret: flux-system
+- name: HTTP/S proxy
+  endpoint:
+    path: /flux/installation/configuration/bootstrap-customization/
+    method: PATCH
+    data_selector: spec.template.spec.containers
+    params: {}
+- name: SOCKS5 proxy
+  endpoint:
+    path: /flux/installation/configuration/bootstrap-customization/
+    method: PATCH
+    data_selector: spec.template.spec.containers
+    params: {}
+- name: upgrade_procedure
+  endpoint:
+    path: /flux/installation/bootstrap/
+    method: GET
+    data_selector: upgrade
+    params: {}
+- name: git_upgrade
+  endpoint:
+    path: /flux/installation/
+    method: GET
+    data_selector: git_upgrade
+    params: {}
+- name: terraform_upgrade
+  endpoint:
+    path: /flux/installation/
+    method: GET
+    data_selector: terraform_upgrade
+    params: {}
+- name: kubectl_upgrade
+  endpoint:
+    path: /flux/installation/
+    method: GET
+    data_selector: kubectl_upgrade
+    params: {}
+- name: app
+  endpoint:
+    path: /source.toolkit.fluxcd.io/v1/GitRepository
+    method: GET
+    data_selector: spec
+    params:
+      url: https://<host>/<org>/app
+      ref:
+        semver: 1.x
+- name: app
+  endpoint:
+    path: /kustomize.toolkit.fluxcd.io/v1/Kustomization
+    method: GET
+    data_selector: spec
+    params:
+      sourceRef:
+        kind: GitRepository
+        name: app
+      path: ./deploy/manifests
+- name: apps
+  endpoint:
+    path: /source.toolkit.fluxcd.io/v1/HelmRepository
+    method: GET
+    data_selector: spec
+    params:
+      url: https://<host>/<org>/charts
+- name: app
+  endpoint:
+    path: /helm.toolkit.fluxcd.io/v2/HelmRelease
+    method: GET
+    data_selector: spec
+    params:
+      chart:
+        spec:
+          chart: app
+          version: 1.x
+          sourceRef:
+            kind: HelmRepository
+            name: apps
+      values:
+        replicas: 2
+- name: podinfo
+  endpoint:
+    path: /
+    method: GET
+    data_selector: index
+    params:
+      interval: 1m
+- name: git_repository
+  endpoint:
+    path: https://github.com/stefanprodan/podinfo
+    method: GET
+    data_selector: contents
+    params:
+      interval: 1m
+      ref: master
+- name: HelmRepository
+  endpoint:
+    path: /flux/components/source/helmrepositories/
+    method: GET
+    data_selector: artifacts
+    params:
+      interval: 1m
+- name: GitRepository
+  endpoint:
+    path: /flux/components/source/gitrepositories/
+    method: GET
+    data_selector: artifacts
+    params:
+      interval: 1m
+- name: podinfo
+  endpoint:
+    path: /charts/podinfo
+    method: GET
+    data_selector: content
+    params:
+      interval: 5m0s
+- name: webapp
+  endpoint:
+    path: /hook/bed6d00b5555b1603e1f59b94d7fdbca58089cb5663633fb83f2815dc626d92b
+    method: POST
+    data_selector: payload
+    params:
+      event: push
+- name: my-secrets
+  endpoint:
+    path: /flux/create/source/git/my-secrets
+    method: CREATE
+    data_selector: repositories
+    params:
+      url: https://github.com/my-org/my-secrets
+      branch: main
+- name: sops-gpg
+  endpoint:
+    path: /kubectl/create/secret/generic/sops-gpg
+    method: CREATE
+    data_selector: secrets
+    params:
+      namespace: flux-system
+- name: basic-auth
+  endpoint:
+    path: /kubectl/create/secret/generic/basic-auth
+    method: CREATE
+    data_selector: secrets
+    params:
+      namespace: default
+- name: sops-age
+  endpoint:
+    path: /kubectl/create/secret/generic/sops-age
+    method: CREATE
+    data_selector: secrets
+    params:
+      namespace: flux-system
+- name: sops-hcvault
+  endpoint:
+    path: /kubectl/create/secret/generic/sops-hcvault
+    method: CREATE
+    data_selector: secrets
+    params:
+      namespace: flux-system
+- name: sealed-secrets
+  endpoint:
+    path: /sealed-secrets
+    method: GET
+    data_selector: secrets
+    params:
+      interval: 1h
+- name: podinfo
+  endpoint:
+    path: /flux-image-updates
+    method: POST
+    data_selector: image
+    params: {}
+- name: podinfo
+  endpoint:
+    path: /flux/components/image/imagerepositories/
+    method: GET
+    data_selector: spec
+    params: {}
+- name: image_repo_policy
+  endpoint:
+    path: /image/toolkit/fluxcd.io/v1
+    method: GET
+    data_selector: spec
+    params: {}
+- name: OCIRepository
+  endpoint:
+    path: /flux/components/source/ocirepositories/
+    method: GET
+- name: ImageRepository
+  endpoint:
+    path: /flux/components/image/imagerepositories/
+    method: GET
+- name: ImagePolicy
+  endpoint:
+    path: /flux/components/image/imagepolicies/
+    method: GET
+- name: Bucket
+  endpoint:
+    path: /flux/components/source/buckets/
+    method: GET
+- name: Kustomization
+  endpoint:
+    path: /flux/components/kustomize/kustomizations/
+    method: GET
+- name: HelmRelease
+  endpoint:
+    path: /flux/components/helm/helmreleases/
+    method: GET
+- name: GetClusterUserCredentials
+  endpoint:
+    path: /Get
+    method: GET
+- name: ListClusterUserCredentials
+  endpoint:
+    path: /ListClusterUserCredentials
+    method: GET
+- name: slack-bot
+  endpoint:
+    path: /api/chat.postMessage
+    method: POST
+    data_selector: response
+    params: {}
+- name: grafana
+  endpoint:
+    path: /api/annotations
+    method: POST
+    data_selector: response
+    params: {}
+- name: controller_metrics
+  endpoint:
+    path: /metrics
+    method: GET
+    data_selector: metrics
+- name: flux_custom_resources_metrics
+  endpoint:
+    path: /kube-state-metrics
+    method: GET
+    data_selector: metrics
+- name: gotk_resource_info
+  endpoint:
+    path: /metrics
+    method: GET
+    data_selector: gotk_resource_info
+    params: {}
+- name: gotk_helmrelease_version_info
+  endpoint:
+    path: /metrics
+    method: GET
+    data_selector: gotk_helmrelease_version_info
+    params: {}
+- name: event
+  endpoint:
+    path: /events
+    method: GET
+    data_selector: events
+    params: {}
+- name: app-pre-deploy
+  endpoint:
+    path: ./flux/pre-deploy.yaml
+    method: Kustomization
+    data_selector: spec
+    params:
+      interval: 60m
+      timeout: 5m
+      prune: true
+      wait: true
+      force: true
+- name: app-deploy
+  endpoint:
+    path: ./flux/deploy.yaml
+    method: Kustomization
+    data_selector: spec
+    params:
+      dependsOn:
+      - app-pre-deploy
+      interval: 60m
+      timeout: 5m
+      prune: true
+      wait: true
+- name: app-post-deploy
+  endpoint:
+    path: ./flux/post-deploy.yaml
+    method: Kustomization
+    data_selector: spec
+    params:
+      dependsOn:
+      - app-deploy
+      interval: 60m
+      timeout: 5m
+      prune: true
+      wait: true
+      force: true
+- name: HelmRepository
+  endpoint:
+    path: /flux/installation/
+    method: POST
+    data_selector: helmrepositories
+    params: {}
+- name: HelmRelease
+  endpoint:
+    path: /flux/installation/
+    method: POST
+    data_selector: helmreleases
+    params: {}
+- name: PropagationPolicy
+  endpoint:
+    path: /flux/installation/
+    method: POST
+    data_selector: propagationpolicies
+    params: {}
+- name: OverridePolicy
+  endpoint:
+    path: /flux/installation/
+    method: POST
+    data_selector: overridepolicies
+    params: {}
+- name: HelmRepository
+  endpoint:
+    path: /flux/boot/traefik/helmrepo.yaml
+    method: GET
+    data_selector: spec
+    params: {}
+- name: HelmRelease
+  endpoint:
+    path: /flux/boot/traefik/helmrelease.yaml
+    method: GET
+    data_selector: spec
+    params: {}
+- name: demo-promotion
+  endpoint:
+    path: .github/workflows/demo-promotion.yaml
+    method: POST
+    data_selector: jobs.promote
+    params: {}
+- name: docker_build
+  endpoint:
+    path: /actions/workflows/docker-build.yml
+    method: POST
+    data_selector: workflow_run
+    params: {}
+- name: docker_build
+  endpoint:
+    path: /docker-build.yml
+    method: POST
+    data_selector: workflow
+    params: {}
+- name: docker_build
+  endpoint:
+    path: /docker-build
+    method: POST
+- name: docker_build
+  endpoint:
+    path: /docker-build
+    method: POST
+    data_selector: results
+- name: docker_build
+  endpoint:
+    path: /docker-build
+    method: POST
+    data_selector: outputs
+    params: {}
+- name: GitRepository
+  endpoint:
+    path: /api/v1/gitrepositories
+    method: GET
+    data_selector: items
+    params:
+      branch: deploy
+- name: Kustomization
+  endpoint:
+    path: /api/v1/kustomizations
+    method: GET
+    data_selector: items
+    params: {}
+- name: kustomization
+  endpoint:
+    path: /kustomizations
+    method: POST
+    data_selector: kustomization
+    params: {}
+- name: gitrepository
+  endpoint:
+    path: /gitrepositories
+    method: POST
+    data_selector: gitrepository
+    params: {}
+- name: manifest_generation
+  endpoint:
+    path: /flux/use-cases/gh-actions-manifest-generation
+    method: GET
+    data_selector: examples
+    params: {}
+- name: version_configmap
+  endpoint:
+    path: manifests/example.jsonnet
+    method: GET
+    data_selector: version_configmap
+- name: flux_gitrepository
+  endpoint:
+    path: manifests/example.jsonnet
+    method: GET
+    data_selector: flux_gitrepository
+- name: manifest_generation
+  endpoint:
+    path: /.github/workflows/01-manifest-generate.yaml
+    method: GET
+    data_selector: jobs.run.steps
+    params: {}
+- name: docker_build
+  endpoint:
+    path: /.github/workflows/02-docker-build.yaml
+    method: GET
+    data_selector: jobs.docker.steps
+    params: {}
+- name: jsonnet_push
+  endpoint:
+    path: /.github/workflows/03-release-manifests.yaml
+    method: GET
+    data_selector: jobs.run.steps
+    params: {}
+- name: production
+  endpoint:
+    path: manifests/example.jsonnet
+    method: GET
+    data_selector: flux_config
+    params: {}
+- name: tenant
+  endpoint:
+    path: /examples/tenant.yaml
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: sops_image_pull_secret
+  endpoint:
+    path: /examples/sops-image-pull-secret.yaml
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: GitRepository
+  endpoint:
+    path: /api/v1/gitrepositories
+    method: GET
+    data_selector: items
+    params: {}
+- name: Kustomization
+  endpoint:
+    path: /api/v1/kustomizations
+    method: GET
+    data_selector: items
+    params: {}
+- name: flux_config
+  endpoint:
+    path: /manifests/example.jsonnet
+    method: GET
+    data_selector: flux_config
+    params: {}
+- name: tenant
+  endpoint:
+    path: /examples/tenant.yaml
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: sops-image-pull-secret
+  endpoint:
+    path: /examples/sops-image-pull-secret.yaml
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: Push directory to another repository
+  endpoint:
+    path: /actions/push-directory-to-another-repository
+    method: POST
+    data_selector: outputs
+    params:
+      source-directory: flux-config
+      destination-github-username: kingdonb
+      destination-repository-name: fleet-infra
+      target-branch: deploy
+      user-email: kingdon+bot@weave.works
+      commit-message: '[ci skip] deploy from ${{ steps.prep.outputs.VERSION }}'
+- name: ImageUpdateAutomation
+  endpoint:
+    path: /flux/guides/image-update/
+    method: POST
+    data_selector: automations
+    params: {}
+- name: podinfo
+  endpoint:
+    path: /podinfo
+    method: GET
+    data_selector: artifact
+    params:
+      interval: 5m0s
+- name: podinfo
+  endpoint:
+    path: https://github.com/stefanprodan/podinfo
+    method: GET
+    data_selector: ''
+    params:
+      interval: 5m0s
+- name: metadata
+  endpoint:
+    path: /spec/ref
+    method: GET
+- name: conditions
+  endpoint:
+    path: /status/conditions
+    method: GET
+    data_selector: conditions
+- name: podinfo
+  endpoint:
+    path: /podinfo
+    method: GET
+    data_selector: artifact
+    params:
+      interval: 5m0s
+- name: podinfo
+  endpoint:
+    path: /podinfo
+    method: GET
+- name: podinfo
+  endpoint:
+    path: /podinfo
+    method: GET
+    data_selector: Artifact
+    params: {}
+- name: podinfo
+  endpoint:
+    path: /
+    method: GET
+- name: podinfo
+  endpoint:
+    path: /github.com/stefanprodan/podinfo
+    method: GET
+    data_selector: artifact
+    params:
+      interval: 5m0s
+- name: podinfo
+  endpoint:
+    path: /
+    method: GET
+- name: GitRepository
+  endpoint:
+    path: /gitrepository/<repository-name>
+    method: GET
+    data_selector: status
+    params: {}
+- name: podinfo
+  endpoint:
+    path: oci://ghcr.io/stefanprodan/manifests/podinfo
+    method: GET
+    data_selector: artifact
+    params: {}
+- name: podinfo
+  endpoint:
+    path: /ocirepository/default/podinfo
+    method: GET
+    data_selector: artifact
+    params:
+      interval: 5m0s
+- name: conditions
+  endpoint:
+    path: /status/conditions
+    method: GET
+    data_selector: conditions
+- name: podinfo
+  endpoint:
+    path: /ocirepository/oci/podinfo
+    method: GET
+    data_selector: artifact
+    params:
+      interval: 5m0s
+- name: podinfo
+  endpoint:
+    path: /ghcr.io/stefanprodan/manifests/podinfo
+    method: GET
+    data_selector: artifact
+    params:
+      interval: 5m0s
+- name: podinfo
+  endpoint:
+    path: /ocirepository/default/podinfo
+    method: GET
+    data_selector: artifact
+    params:
+      interval: 5m0s
+- name: artifact
+  endpoint:
+    path: /ocirepository/default/podinfo/latest.tar.gz
+    method: GET
+    data_selector: status.artifact
+    params: {}
+- name: minio-bucket
+  endpoint:
+    path: /bucket/default/minio-bucket
+    method: GET
+- name: aws
+  endpoint:
+    path: /bucket/default/aws
+    method: GET
+- name: azure-public
+  endpoint:
+    path: /bucket/default/azure-public
+    method: GET
+- name: minio-bucket
+  endpoint:
+    path: /
+    method: GET
+    data_selector: records
+    params:
+      interval: 5m0s
+- name: bucket
+  endpoint:
+    path: /<bucket-name>
+    method: GET
+    data_selector: records
+    params: {}
+- name: artifact
+  endpoint:
+    path: .status.artifact.url
+    method: GET
+    data_selector: artifact
+    params: {}
+- name: minio-bucket
+  endpoint:
+    path: /
+    method: GET
+    data_selector: ''
+    params: {}
+- name: aws
+  endpoint:
+    path: /
+    method: GET
+    data_selector: ''
+    params: {}
+- name: azure-public
+  endpoint:
+    path: /
+    method: GET
+    data_selector: ''
+    params: {}
+- name: azure-service-principal-secret
+  endpoint:
+    path: /
+    method: GET
+    data_selector: ''
+    params: {}
+- name: azure-managed-identity
+  endpoint:
+    path: /
+    method: GET
+    data_selector: ''
+    params: {}
+- name: bucket
+  endpoint:
+    path: /<bucket-name>
+    method: GET
+- name: suspend_image_policy
+  endpoint:
+    path: /flux/cmd/flux_suspend_image_policy/
+    method: GET
+- name: suspend_image_repository
+  endpoint:
+    path: /flux/cmd/flux_suspend_image_repository/
+    method: GET
+- name: suspend_image_update
+  endpoint:
+    path: /flux/cmd/flux_suspend_image_update/
+    method: GET
+- name: suspend_kustomization
+  endpoint:
+    path: /flux/cmd/flux_suspend_kustomization/
+    method: GET
+- name: suspend_receiver
+  endpoint:
+    path: /flux/cmd/flux_suspend_receiver/
+    method: GET
+- name: suspend_source
+  endpoint:
+    path: /flux/cmd/flux_suspend_source/
+    method: GET
+- name: suspend_source_bucket
+  endpoint:
+    path: /flux/cmd/flux_suspend_source_bucket/
+    method: GET
+- name: suspend_source_chart
+  endpoint:
+    path: /flux/cmd/flux_suspend_source_chart/
+    method: GET
+- name: suspend_source_git
+  endpoint:
+    path: /flux/cmd/flux_suspend_source_git/
+    method: GET
+- name: suspend_source_helm
+  endpoint:
+    path: /flux/cmd/flux_suspend_source_helm/
+    method: GET
+- name: suspend_source_oci
+  endpoint:
+    path: /flux/cmd/flux_suspend_source_oci/
+    method: GET
+- name: tag
+  endpoint:
+    path: /flux/cmd/flux_tag/
+    method: GET
+- name: tag_artifact
+  endpoint:
+    path: /flux/cmd/flux_tag_artifact/
+    method: GET
+- name: trace
+  endpoint:
+    path: /flux/cmd/flux_trace/
+    method: GET
+- name: tree
+  endpoint:
+    path: /flux/cmd/flux_tree/
+    method: GET
+- name: tree_artifact
+  endpoint:
+    path: /flux/cmd/flux_tree_artifact/
+    method: GET
+- name: tree_artifact_generator
+  endpoint:
+    path: /flux/cmd/flux_tree_artifact_generator/
+    method: GET
+- name: tree_kustomization
+  endpoint:
+    path: /flux/cmd/flux_tree_kustomization/
+    method: GET
+- name: uninstall
+  endpoint:
+    path: /flux/cmd/flux_uninstall/
+    method: GET
+- name: version
+  endpoint:
+    path: /flux/cmd/flux_version/
+    method: GET
+- name: minio-bucket
+  endpoint:
+    path: /bucket/default/minio-bucket
+    method: GET
+- name: aws
+  endpoint:
+    path: /bucket/default/aws
+    method: GET
+- name: azure-public
+  endpoint:
+    path: /bucket/default/azure-public
+    method: GET
+- name: azure-sas-token
+  endpoint:
+    path: /<bucket-name>
+    method: GET
+- name: bucket
+  endpoint:
+    path: /bucket/default/minio-bucket/latest.tar.gz
+    method: GET
+    data_selector: artifact
+    params: {}
+- name: podinfo
+  endpoint:
+    path: /services/data/vXX.X/sobjects/HelmRepository
+    method: GET
+    data_selector: records
+    params: {}
+- name: podinfo
+  endpoint:
+    path: /helmrepository/default/podinfo
+    method: GET
+    data_selector: index.yaml
+    params: {}
+- name: podinfo
+  endpoint:
+    path: /helmrepository/default/podinfo
+    method: GET
+    data_selector: status.artifact
+    params: {}
+- name: podinfo
+  endpoint:
+    path: /helmchart/default/podinfo
+    method: GET
+    data_selector: artifact
+    params: {}
+- name: podinfo
+  endpoint:
+    path: /source.toolkit.fluxcd.io/v1/HelmChart
+    method: GET
+    data_selector: spec
+    params: {}
+- name: artifact
+  endpoint:
+    path: /status/artifact
+    method: GET
+    data_selector: artifact
+    params: {}
+- name: conditions
+  endpoint:
+    path: /status/conditions
+    method: GET
+    data_selector: conditions
+    params: {}
+- name: my-app-composite
+  endpoint:
+    path: /my-app
+    method: POST
+    data_selector: artifacts
+    params: {}
+- name: podinfo-composite
+  endpoint:
+    path: /podinfo
+    method: POST
+    data_selector: artifacts
+    params: {}
+- name: frontend
+  endpoint:
+    path: /frontend
+    method: POST
+    data_selector: artifacts
+    params: {}
+- name: backend
+  endpoint:
+    path: /backend
+    method: POST
+    data_selector: artifacts
+    params: {}
+- name: Bucket
+  endpoint:
+    path: /v1/buckets
+    method: GET
+    data_selector: items
+    params: {}
+- name: GitRepository
+  endpoint:
+    path: /v1/gitrepositories
+    method: GET
+    data_selector: items
+    params: {}
+- name: HelmChart
+  endpoint:
+    path: /v1/helmcharts
+    method: GET
+    data_selector: items
+    params: {}
+- name: HelmRepository
+  endpoint:
+    path: /v1/helmrepositories
+    method: GET
+    data_selector: items
+    params: {}
+- name: OCIRepository
+  endpoint:
+    path: /v1/ocirepositories
+    method: GET
+    data_selector: items
+    params: {}
+- name: podinfo
+  endpoint:
+    path: /api/v1/podinfo
+    method: GET
+- name: podinfo
+  endpoint:
+    path: ./kustomize
+    method: GET
+    data_selector: records
+- name: app-backend
+  endpoint:
+    path: /apps/app-backend
+    method: GET
+- name: app-frontend
+  endpoint:
+    path: /apps/app-frontend
+    method: GET
+- name: podinfo
+  endpoint:
+    path: /
+    method: GET
+    data_selector: records
+    params: {}
+- name: podinfo
+  endpoint:
+    path: /kustomizations/podinfo
+    method: GET
+- name: webapp
+  endpoint:
+    path: /kustomizations/webapp
+    method: GET
+- name: app-backend
+  endpoint:
+    path: /kustomize.toolkit.fluxcd.io/v1/apps/app-backend
+    method: GET
+- name: app-frontend
+  endpoint:
+    path: /kustomize.toolkit.fluxcd.io/v1/apps/app-frontend
+    method: GET
+- name: podinfo
+  endpoint:
+    path: /kustomize.toolkit.fluxcd.io/v1/podinfo
+    method: GET
+- name: sops-keys-and-credentials
+  endpoint:
+    path: /sops-keys-and-credentials
+    method: GET
+- name: sops-keys
+  endpoint:
+    path: /sops-keys
+    method: GET
+- name: podinfo
+  endpoint:
+    path: ./kustomize
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: app-backend
+  endpoint:
+    path: /kustomization/app-backend
+    method: GET
+- name: app-frontend
+  endpoint:
+    path: /kustomization/app-frontend
+    method: GET
+- name: podinfo
+  endpoint:
+    path: /kustomization/podinfo
+    method: GET
+- name: sops-encrypted
+  endpoint:
+    path: /kustomization/sops-encrypted
+    method: GET
+- name: sops-keys
+  endpoint:
+    path: /sops-keys
+    method: GET
+    data_selector: data
+    params: {}
+- name: GitRepository
+  endpoint:
+    path: /podinfo
+    method: GET
+- name: podinfo
+  endpoint:
+    path: /kustomizations/podinfo
+    method: GET
+- name: webapp
+  endpoint:
+    path: /kustomizations/webapp
+    method: GET
+- name: app-backend
+  endpoint:
+    path: /apps/app-backend
+    method: GET
+- name: app-frontend
+  endpoint:
+    path: /apps/app-frontend
+    method: GET
+- name: podinfo
+  endpoint:
+    path: /flux-system/podinfo
+    method: GET
+- name: sops-encrypted
+  endpoint:
+    path: /default/sops-encrypted
+    method: GET
+- name: sops-keys-and-credentials
+  endpoint:
+    path: /v1/sops-keys-and-credentials
+    method: GET
+    data_selector: data
+    params: {}
+- name: sops-keys
+  endpoint:
+    path: /v1/sops-keys
+    method: GET
+    data_selector: data
+    params: {}
+- name: GitRepository
+  endpoint:
+    path: /api/v1/gitrepositories
+    method: GET
+    data_selector: items
+    params: {}
+- name: Kustomization
+  endpoint:
+    path: /api/v1/kustomizations
+    method: GET
+    data_selector: items
+    params: {}
+- name: webapp
+  endpoint:
+    path: ./deploy/production
+    method: GET
+- name: podinfo
+  endpoint:
+    path: ./deploy/
+    method: GET
+- name: podinfo
+  endpoint:
+    path: /services/data/vXX.X/sobjects/podinfo
+    method: GET
+    data_selector: records
+    params: {}
+- name: webapp
+  endpoint:
+    path: /services/data/vXX.X/sobjects/webapp
+    method: GET
+    data_selector: records
+    params: {}
+- name: app-backend
+  endpoint:
+    path: /kustomization/app-backend
+    method: GET
+- name: app-frontend
+  endpoint:
+    path: /kustomization/app-frontend
+    method: GET
+- name: podinfo
+  endpoint:
+    path: /kustomization/podinfo
+    method: GET
+- name: sops-encrypted
+  endpoint:
+    path: /kustomization/sops-encrypted
+    method: GET
+- name: sops-keys
+  endpoint:
+    path: /v1/sops-keys
+    method: GET
+    data_selector: data
+- name: ghcr-auth
+  endpoint:
+    path: /ghcr-auth
+    method: POST
+    data_selector: files
+    params: {}
+- name: Kustomization
+  endpoint:
+    path: /kustomizations
+    method: GET
+    data_selector: items
+    params: {}
+- name: HelmRelease
+  endpoint:
+    path: /flux/components/helmreleases/
+    method: GET
+    data_selector: releases
+    params: {}
+- name: HelmChart
+  endpoint:
+    path: /flux/components/helmcharts/
+    method: GET
+    data_selector: charts
+    params: {}
+- name: podinfo
+  endpoint:
+    path: /podinfo
+    method: GET
+    data_selector: records
+    params: {}
+- name: history
+  endpoint:
+    path: /status/history
+    method: GET
+    data_selector: history
+    params: {}
+- name: install
+  endpoint:
+    path: /spec/install
+    method: POST
+    data_selector: install
+    params: {}
+- name: upgrade
+  endpoint:
+    path: /spec/upgrade
+    method: POST
+    data_selector: upgrade
+    params: {}
+- name: rollback
+  endpoint:
+    path: /spec/rollback
+    method: POST
+    data_selector: rollback
+    params: {}
+- name: uninstall
+  endpoint:
+    path: /spec/uninstall
+    method: POST
+    data_selector: uninstall
+    params: {}
+- name: driftDetection
+  endpoint:
+    path: /spec/driftDetection
+    method: GET
+    data_selector: driftDetection
+    params: {}
+- name: commonMetadata
+  endpoint:
+    path: /spec/commonMetadata
+    method: GET
+    data_selector: commonMetadata
+    params: {}
+- name: postRenderers
+  endpoint:
+    path: /spec/postRenderers
+    method: GET
+    data_selector: postRenderers
+    params: {}
+- name: kubeConfig
+  endpoint:
+    path: .spec.kubeConfig
+    method: GET
+    data_selector: kubeConfig
+    params: {}
+- name: flux_suspend_image
+  endpoint:
+    path: /flux/cmd/flux_suspend_image/
+    method: POST
+- name: flux_suspend_image_policy
+  endpoint:
+    path: /flux/cmd/flux_suspend_image_policy/
+    method: POST
+- name: flux_suspend_image_repository
+  endpoint:
+    path: /flux/cmd/flux_suspend_image_repository/
+    method: POST
+- name: flux_suspend_image_update
+  endpoint:
+    path: /flux/cmd/flux_suspend_image_update/
+    method: POST
+- name: flux_suspend_kustomization
+  endpoint:
+    path: /flux/cmd/flux_suspend_kustomization/
+    method: POST
+- name: flux_suspend_receiver
+  endpoint:
+    path: /flux/cmd/flux_suspend_receiver/
+    method: POST
+- name: flux_suspend_source
+  endpoint:
+    path: /flux/cmd/flux_suspend_source/
+    method: POST
+- name: flux_suspend_source_bucket
+  endpoint:
+    path: /flux/cmd/flux_suspend_source_bucket/
+    method: POST
+- name: flux_suspend_source_chart
+  endpoint:
+    path: /flux/cmd/flux_suspend_source_chart/
+    method: POST
+- name: flux_suspend_source_git
+  endpoint:
+    path: /flux/cmd/flux_suspend_source_git/
+    method: POST
+- name: flux_suspend_source_helm
+  endpoint:
+    path: /flux/cmd/flux_suspend_source_helm/
+    method: POST
+- name: flux_suspend_source_oci
+  endpoint:
+    path: /flux/cmd/flux_suspend_source_oci/
+    method: POST
+- name: flux_tag
+  endpoint:
+    path: /flux/cmd/flux_tag/
+    method: POST
+- name: flux_tag_artifact
+  endpoint:
+    path: /flux/cmd/flux_tag_artifact/
+    method: POST
+- name: flux_trace
+  endpoint:
+    path: /flux/cmd/flux_trace/
+    method: POST
+- name: flux_tree
+  endpoint:
+    path: /flux/cmd/flux_tree/
+    method: POST
+- name: flux_tree_artifact
+  endpoint:
+    path: /flux/cmd/flux_tree_artifact/
+    method: POST
+- name: flux_tree_artifact_generator
+  endpoint:
+    path: /flux/cmd/flux_tree_artifact_generator/
+    method: POST
+- name: flux_tree_kustomization
+  endpoint:
+    path: /flux/cmd/flux_tree_kustomization/
+    method: POST
+- name: flux_uninstall
+  endpoint:
+    path: /flux/cmd/flux_uninstall/
+    method: POST
+- name: flux_version
+  endpoint:
+    path: /flux/cmd/flux_version/
+    method: GET
+- name: podinfo
+  endpoint:
+    path: /services/data/vXX.X/sobjects/HelmRelease
+    method: GET
+    data_selector: records
+    params: {}
+- name: kubeconfig
+  endpoint:
+    path: /api/v1/namespaces/apps/configmaps/kubeconfig
+    method: GET
+- name: webapp
+  endpoint:
+    path: /api/v1/namespaces/apps/helmreleases/webapp
+    method: GET
+    data_selector: status.history
+    params:
+      interval: 30m
+- name: podinfo
+  endpoint:
+    path: /api/v1/namespaces/default/helmreleases/podinfo
+    method: GET
+    data_selector: spec
+    params: {}
+- name: prod-env-values
+  endpoint:
+    kind: ConfigMap
+    valuesKey: values-prod.yaml
+- name: prod-tls-values
+  endpoint:
+    kind: Secret
+    valuesKey: crt
+    targetPath: tls.crt
+    optional: true
+- name: webapp-chart
+  endpoint:
+    path: /oci://ghcr.io/org/charts/webapp
+    method: GET
+    data_selector: layers
+    params:
+      interval: 5m
+- name: webapp
+  endpoint:
+    path: /helm/releases/webapp
+    method: GET
+    data_selector: release
+    params:
+      interval: 30m
+- name: podinfo
+  endpoint:
+    path: /api/v1/namespaces/default/helmreleases/podinfo
+    method: GET
+    data_selector: spec.values
+    params: {}
+- name: valuesFrom
+  endpoint:
+    path: .spec.valuesFrom
+    method: GET
+    data_selector: values
+    params: {}
+- name: inlineValues
+  endpoint:
+    path: .spec.values
+    method: GET
+    data_selector: values
+    params: {}
+- name: installConfiguration
+  endpoint:
+    path: .spec.install
+    method: GET
+    data_selector: install
+    params: {}
+- name: upgradeConfiguration
+  endpoint:
+    path: .spec.upgrade
+    method: GET
+    data_selector: upgrade
+    params: {}
+- name: rollbackConfiguration
+  endpoint:
+    path: .spec.rollback
+    method: GET
+    data_selector: rollback
+    params: {}
+- name: uninstallConfiguration
+  endpoint:
+    path: .spec.uninstall
+    method: GET
+    data_selector: uninstall
+    params: {}
+- name: driftDetection
+  endpoint:
+    path: .spec.driftDetection
+    method: GET
+    data_selector: driftDetection
+    params: {}
+- name: commonMetadata
+  endpoint:
+    path: .spec.commonMetadata
+    method: GET
+    data_selector: commonMetadata
+    params: {}
+- name: postRenderers
+  endpoint:
+    path: .spec.postRenderers
+    method: GET
+    data_selector: postRenderers
+    params: {}
+- name: kube-prometheus-stack
+  endpoint:
+    path: /services/data/vXX.X/sobjects/KubePrometheusStack
+    method: GET
+    data_selector: records
+- name: helmrelease
+  endpoint:
+    path: /helmrelease
+    method: GET
+    data_selector: history
+    params: {}
+- name: podinfo
+  endpoint:
+    path: /services/data/vXX.X/sobjects/HelmRelease
+    method: GET
+    data_selector: records
+    params: {}
+- name: kube-prometheus-stack
+  endpoint:
+    path: /kube-prometheus-stack
+    method: GET
+- name: HelmRelease
+  endpoint:
+    path: /
+    method: GET
+    data_selector: status
+    params: {}
+- name: Provider
+  endpoint:
+    path: /notification.toolkit.fluxcd.io/v1beta3/Provider
+    method: POST
+    data_selector: spec
+    params: {}
+- name: Alert
+  endpoint:
+    path: /notification.toolkit.fluxcd.io/v1beta3/Alert
+    method: POST
+    data_selector: spec
+    params: {}
+- name: github-receiver
+  endpoint:
+    path: /hook/bed6d00b5555b1603e1f59b94d7fdbca58089cb5663633fb83f2815dc626d92b
+    method: GET
+    data_selector: status
+    params: {}
+- name: webapp
+  endpoint:
+    path: .status.webhookPath
+    method: POST
+    data_selector: payload
+    params: {}
+- apiVersion: image.toolkit.fluxcd.io/v1
+  kind: ImageRepository
+  name: '*'
+  matchLabels:
+    registry: gar
+- name: github-receiver
+  endpoint:
+    path: /hook/bed6d00b5555b1603e1f59b94d7fdbca58089cb5663633fb83f2815dc626d92b
+    method: POST
+    data_selector: payload
+    params: {}
+- name: generic-receiver
+  endpoint:
+    path: /webhook
+    method: POST
+    data_selector: payload
+    params: {}
+- name: gitlab-receiver
+  endpoint:
+    path: /webhook
+    method: POST
+    data_selector: payload
+    params: {}
+- name: bitbucket-receiver
+  endpoint:
+    path: /webhook
+    method: POST
+    data_selector: payload
+    params: {}
+- kind: ImageRepository
+  name: webapp
+- name: receiver_status
+  endpoint:
+    path: /status/receiver
+    method: GET
+    data_selector: conditions
+    params: {}
+- name: slack-bot
+  endpoint:
+    path: /api/chat.postMessage
+    method: POST
+    data_selector: summary
+    params: {}
+- name: slack-alert
+  endpoint:
+    path: /api/chat.postMessage
+    method: POST
+    data_selector: summary
+    params: {}
+- name: generic_webhook
+  endpoint:
+    path: /
+    method: POST
+    data_selector: ''
+    params: {}
+- name: generic_webhook_hmac
+  endpoint:
+    path: /
+    method: POST
+    data_selector: ''
+    params: {}
+- name: datadog
+  endpoint:
+    path: https://api.datadoghq.com
+    method: POST
+    data_selector: ''
+    params: {}
+- name: slack
+  endpoint:
+    path: https://slack.com/api/chat.postMessage
+    method: POST
+    data_selector: ''
+    params: {}
+- name: msteams
+  endpoint:
+    path: ''
+    method: POST
+    data_selector: ''
+    params: {}
+- name: telegram
+  endpoint:
+    path: https://api.telegram.org
+    method: POST
+    data_selector: ''
+    params: {}
+- name: discord
+  endpoint:
+    path: ''
+    method: POST
+    data_selector: ''
+    params: {}
+- name: matrix
+  endpoint:
+    path: https://matrix.org
+    method: POST
+    data_selector: ''
+    params: {}
+- name: sentry
+  endpoint:
+    path: ''
+    method: POST
+    data_selector: ''
+    params: {}
+- name: lark
+  endpoint:
+    path: ''
+    method: POST
+    data_selector: ''
+    params: {}
+- name: rocket
+  endpoint:
+    path: /services/data/v1/rocket
+    method: POST
+    data_selector: payload
+- name: google
+  endpoint:
+    path: /services/data/v1/googlechat
+    method: POST
+    data_selector: payload
+- name: googlepubsub-provider
+  endpoint:
+    path: /services/data/v1/googlepubsub
+    method: POST
+    data_selector: payload
+- name: googlepubsub-tenant-a
+  endpoint:
+    path: <GCP Project ID>
+    method: GET
+    data_selector: records
+    params: {}
+- name: slack-bot
+  endpoint:
+    path: /api/chat.postMessage
+    method: POST
+    data_selector: message
+    params: {}
+- name: sentry
+  endpoint:
+    path: /api/v1/sentry
+    method: POST
+- name: telegram
+  endpoint:
+    path: /bot<telegram-bot-token>/sendMessage
+    method: POST
+- name: matrix
+  endpoint:
+    path: /_matrix/client/r0/rooms/<room-id>/send/m.room.message
+    method: POST
+- name: lark
+  endpoint:
+    path: /open-apis/bot/v2/hook/<webhook-id>
+    method: POST
+- name: rocket
+  endpoint:
+    path: /hooks/<rocket-webhook-id>
+    method: POST
+- name: googlechat
+  endpoint:
+    path: /v1/spaces/<space-id>/messages
+    method: POST
+- name: googlepubsub
+  endpoint:
+    path: /v1/projects/<project-id>/topics/<topic-id>:publish
+    method: POST
+- name: opsgenie
+  endpoint:
+    path: /v2/alerts
+    method: POST
+- name: pagerduty
+  endpoint:
+    path: /api/v2/enqueue
+    method: POST
+- name: alertmanager
+  endpoint:
+    path: /api/v2/alerts
+    method: POST
+- name: webex
+  endpoint:
+    path: /v1/messages
+    method: POST
+- name: nats
+  endpoint:
+    path: /nats
+    method: POST
+- name: nats-provider
+  endpoint:
+    path: <NATS Server URL>
+    method: POST
+    data_selector: messages
+    params:
+      channel: <Subject>
+- name: zulip
+  endpoint:
+    path: https://my-org.zulipchat.com/api/v1/messages
+    method: POST
+    data_selector: messages
+    params:
+      channel: my-channel/my-topic
+- name: otel
+  endpoint:
+    path: <Server-URL>
+    method: POST
+    data_selector: spans
+    params: {}
+- name: azure
+  endpoint:
+    path: /
+    method: POST
+    data_selector: ''
+    params: {}
+- name: slack-bot
+  endpoint:
+    path: /api/chat.postMessage
+    method: POST
+    data_selector: message
+    params: {}
+- name: msteams
+  endpoint:
+    path: /webhook
+    method: POST
+    data_selector: message
+    params: {}
+- name: datadog
+  endpoint:
+    path: /api/v1/events
+    method: POST
+    data_selector: event
+    params: {}
+- name: discord
+  endpoint:
+    path: /api/webhooks/
+    method: POST
+    data_selector: message
+    params: {}
+- name: sentry
+  endpoint:
+    path: /api/store/
+    method: POST
+    data_selector: event
+    params: {}
+- name: sentry
+  endpoint:
+    path: /providers/sentry
+    method: POST
+    data_selector: spec
+    params: {}
+- name: telegram
+  endpoint:
+    path: /providers/telegram
+    method: POST
+    data_selector: spec
+    params: {}
+- name: matrix
+  endpoint:
+    path: /providers/matrix
+    method: POST
+    data_selector: spec
+    params: {}
+- name: lark
+  endpoint:
+    path: /providers/lark
+    method: POST
+    data_selector: spec
+    params: {}
+- name: rocket
+  endpoint:
+    path: /providers/rocket
+    method: POST
+    data_selector: spec
+    params: {}
+- name: googlechat
+  endpoint:
+    path: /providers/googlechat
+    method: POST
+    data_selector: spec
+    params: {}
+- name: googlepubsub
+  endpoint:
+    path: /providers/googlepubsub
+    method: POST
+    data_selector: spec
+    params: {}
+- name: opsgenie
+  endpoint:
+    path: /providers/opsgenie
+    method: POST
+    data_selector: spec
+    params: {}
+- name: pagerduty
+  endpoint:
+    path: /providers/pagerduty
+    method: POST
+    data_selector: spec
+    params: {}
+- name: alertmanager
+  endpoint:
+    path: /providers/alertmanager
+    method: POST
+    data_selector: spec
+    params: {}
+- name: webex
+  endpoint:
+    path: /providers/webex
+    method: POST
+    data_selector: spec
+    params: {}
+- name: nats
+  endpoint:
+    path: /providers/nats
+    method: POST
+    data_selector: spec
+    params: {}
+- name: zulip
+  endpoint:
+    address: https://my-org.zulipchat.com
+    channel: my-channel/my-topic
+    secretRef:
+      name: zulip-basic-auth
+- name: otel
+  endpoint:
+    address: <Server-URL>
+    secretRef:
+      name: otel-provider-creds
+- name: github-dispatch
+  endpoint:
+    address: https://github.com/stefanprodan/podinfo
+    secretRef:
+      name: auth-secret
+- name: azure_event_hub
+  endpoint:
+    path: /eventhubs
+    method: POST
+    data_selector: events
+    params: {}
+- name: Receiver
+  endpoint:
+    path: /v1/Receiver
+    method: GET
+    data_selector: items
+    params: {}
+- name: alert
+  endpoint:
+    path: /notification.toolkit.fluxcd.io/v1beta3/alert
+    method: GET
+    data_selector: ''
+    params: {}
+- name: provider
+  endpoint:
+    path: /notification.toolkit.fluxcd.io/v1beta3/provider
+    method: GET
+    data_selector: ''
+    params: {}
+- name: ImagePolicy
+  endpoint:
+    path: /api/v1/imagepolicies
+    method: GET
+    data_selector: items
+    params: {}
+- name: ImageRepository
+  endpoint:
+    path: /api/v1/imagerepositories
+    method: POST
+    data_selector: status
+    params: {}
+- name: ImageRepository
+  endpoint:
+    path: /suspend
+    method: PATCH
+    data_selector: spec
+    params:
+      suspend: true
+- name: podinfo
+  endpoint:
+    path: /imagerepositories/podinfo
+    method: GET
+    data_selector: status
+    params: {}
+- name: example-mtls
+  endpoint:
+    path: /imagerepositories/example-mtls
+    method: GET
+    data_selector: status
+    params: {}
+- name: example-ca
+  endpoint:
+    path: /imagerepositories/example-ca
+    method: GET
+    data_selector: status
+    params: {}
+- name: example
+  endpoint:
+    path: /imagerepositories/example
+    method: GET
+    data_selector: status
+    params: {}
+- name: ImageRepository
+  endpoint:
+    path: /imagerepositories
+    method: GET
+    data_selector: status
+    params: {}
+- name: imagepolicy
+  endpoint:
+    path: /imagepolicies
+    method: GET
+    data_selector: items
+    params: {}
+- name: imagerepository
+  endpoint:
+    path: /imagerepositories
+    method: GET
+    data_selector: items
+    params: {}
+- name: ImageUpdateAutomation
+  endpoint:
+    path: /api/v1/imageupdateautomation
+    method: POST
+    data_selector: spec
+    params: {}
+- name: ImageUpdateAutomation
+  endpoint:
+    path: /imageupdateautomation
+    method: GET
+- name: podinfo-update
+  endpoint:
+    path: /imageupdateautomation/podinfo-update
+    method: GET
+    data_selector: status
+    params: {}
+- name: observedPolicies
+  endpoint:
+    data_selector: status.observedPolicies
+- name: observedSourceRevision
+  endpoint:
+    data_selector: status.observedSourceRevision
+- name: lastAutomationRunTime
+  endpoint:
+    data_selector: status.lastAutomationRunTime
+- name: lastPushCommit
+  endpoint:
+    data_selector: status.lastPushCommit
+- name: lastPushTime
+  endpoint:
+    data_selector: status.lastPushTime
+- name: conditions
+  endpoint:
+    data_selector: status.conditions
+- name: observedGeneration
+  endpoint:
+    data_selector: status.observedGeneration
+- name: lastHandledReconcileAt
+  endpoint:
+    data_selector: status.lastHandledReconcileAt
+- name: HelmRepository
+  endpoint:
+    path: /flux/components/source/helmrepositories/
+    method: GET
+    data_selector: records
+    params: {}
+- name: HelmRelease
+  endpoint:
+    path: /flux/components/helm/helmreleases/
+    method: GET
+    data_selector: records
+    params: {}
+- name: Receiver
+  endpoint:
+    path: /flux/components/notification/receivers/
+    method: GET
+    data_selector: records
+    params: {}
+- name: Provider
+  endpoint:
+    path: /flux/components/notification/providers/
+    method: GET
+    data_selector: records
+    params: {}
+- name: Alert
+  endpoint:
+    path: /flux/components/notification/alerts/
+    method: GET
+    data_selector: records
+    params: {}
+- name: ImageRepository
+  endpoint:
+    path: /flux/components/image/imagerepositories/
+    method: GET
+    data_selector: records
+    params: {}
+- name: ImagePolicy
+  endpoint:
+    path: /flux/components/image/imagepolicies/
+    method: GET
+    data_selector: records
+    params: {}
+- name: ImageUpdateAutomation
+  endpoint:
+    path: /flux/components/image/imageupdateautomations/
+    method: GET
+    data_selector: records
+    params: {}
+- name: GitRepository
+  endpoint:
+    path: /flux/components/source/gitrepositories/
+    method: GET
+    data_selector: GitRepository
+    params: {}
+- name: flux
+  endpoint:
+    path: /flux
+    method: GET
+- name: flux_bootstrap
+  endpoint:
+    path: /flux/bootstrap
+    method: POST
+- name: bootstrap
+  endpoint:
+    path: /flux/bootstrap/bitbucket-server
+    method: POST
+- name: bootstrap
+  endpoint:
+    path: /flux/bootstrap/bitbucket-server
+    method: POST
+- name: repository
+  endpoint:
+    path: /repositories/{owner}/{repository}
+    method: GET
+- name: bootstrap_git
+  endpoint:
+    path: /bootstrap/git
+    method: POST
+    data_selector: result
+    params: {}
+- name: bootstrap_git
+  endpoint:
+    path: /flux/bootstrap/git
+    method: POST
+- name: bootstrap
+  endpoint:
+    path: /bootstrap/gitea
+    method: POST
+- name: gitea_repository
+  endpoint:
+    path: /flux/bootstrap/gitea
+    method: POST
+- name: bootstrap_github
+  endpoint:
+    path: /flux/bootstrap/github
+    method: POST
+- name: github_repository
+  endpoint:
+    path: /repos/{owner}/{repository}
+    method: POST
+    data_selector: repository
+- name: sync
+  endpoint:
+    path: /sync
+    method: GET
+    data_selector: records
+    params: {}
+- name: bootstrap
+  endpoint:
+    path: /flux/bootstrap/gitlab
+    method: POST
+- name: repository
+  endpoint:
+    path: /api/v4/projects
+    method: POST
+    data_selector: repository
+    params:
+      visibility: public
+- name: build_artifact
+  endpoint:
+    path: /build/artifact
+    method: POST
+    data_selector: artifacts
+    params: {}
+- name: kustomization
+  endpoint:
+    path: /flux/build/kustomization
+    method: GET
+    data_selector: kustomization
+    params: {}
+- name: kustomization
+  endpoint:
+    path: /build/kustomization
+    method: GET
+    data_selector: kustomizations
+    params: {}
+- name: completion
+  endpoint:
+    path: /flux/completion/powershell
+    method: GET
+    data_selector: scripts
+    params: {}
+- name: alert
+  endpoint:
+    path: /flux/create/alert
+    method: POST
+    data_selector: resource
+    params: {}
+- name: provider
+  endpoint:
+    path: /create/alert-provider
+    method: POST
+    data_selector: provider
+    params:
+      type: slack
+      channel: general
+      address: https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK
+      secret-ref: webhook-url
+- name: slack
+  endpoint:
+    path: /create/alert-provider/slack
+    method: POST
+    data_selector: provider
+    params:
+      type: slack
+      channel: general
+      address: https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK
+      secret_ref: webhook-url
+- name: github
+  endpoint:
+    path: /create/alert-provider/github-podinfo
+    method: POST
+    data_selector: provider
+    params:
+      type: github
+      address: https://github.com/stefanprodan/podinfo
+      secret_ref: github-token
+- name: provider
+  endpoint:
+    path: /create-provider
+    method: POST
+- name: podinfo
+  endpoint:
+    path: /create/hr/podinfo
+    method: POST
+    data_selector: HelmRelease
+    params:
+      interval: 10m
+      source: HelmRepository/podinfo
+      chart: podinfo
+- name: helmrelease
+  endpoint:
+    path: /helmrelease
+    method: POST
+    data_selector: resource
+    params: {}
+- name: image_policy
+  endpoint:
+    path: /image/policy
+    method: POST
+    data_selector: status
+    params:
+      image-ref: podinfo
+      select-semver: '>=1.0.0'
+- name: image_policy
+  endpoint:
+    path: /image-policy
+    method: POST
+    data_selector: status
+    params: {}
+- name: image_policy
+  endpoint:
+    path: /create/image_policy
+    method: POST
+    data_selector: policy
+- name: image_repository
+  endpoint:
+    path: /create/image/repository
+    method: POST
+- name: ImageRepository
+  endpoint:
+    path: /flux/create/image/repository
+    method: POST
+    data_selector: resources
+    params:
+      interval: 20m
+- name: ImageUpdateAutomation
+  endpoint:
+    path: /create/image/update
+    method: POST
+    data_selector: resource
+    params:
+      git_repo_ref: flux-system
+      git_repo_path: ./clusters/my-cluster
+      checkout_branch: main
+      author_name: flux
+      author_email: flux@example.com
+      commit_template: '{{range .Updated.Images}}{{println .}}{{end}}'
+- name: image_update_automation
+  endpoint:
+    path: /create/image/update
+    method: POST
+- name: kustomization
+  endpoint:
+    path: /flux/create/kustomization
+    method: POST
+    data_selector: resource
+    params: {}
+- name: Receiver
+  endpoint:
+    path: /flux/create/receiver
+    method: POST
+    data_selector: resources
+    params: {}
+- name: receiver
+  endpoint:
+    params:
+      resource: null
+      secret-ref: null
+      type: null
+- name: git_secret
+  endpoint:
+    path: /create/secret/git
+    method: POST
+    data_selector: credentials
+- name: git_secret
+  endpoint:
+    path: /create/secret/git
+    method: POST
+    data_selector: secretDetails
+    params: {}
+- name: githubapp_secret
+  endpoint:
+    path: /create/secret/githubapp
+    method: POST
+    data_selector: secret
+    params:
+      app-id: '1'
+      app-installation-id: '2'
+      app-private-key: ./private-key-file.pem
+- name: helm_secret
+  endpoint:
+    path: /flux/create/secret/helm
+    method: POST
+    data_selector: credentials
+    params:
+      namespace: my-namespace
+      username: my-username
+      password: my-password
+- name: proxy_secret
+  endpoint:
+    path: /create/secret/proxy
+    method: POST
+    data_selector: proxy
+    params:
+      namespace: my-namespace
+      address: https://my-proxy.com
+      username: my-username
+      password: my-password
+- name: podinfo
+  endpoint:
+    path: /
+    method: GET
+- name: bucket_source
+  endpoint:
+    path: /flux/create/source/bucket
+    method: POST
+    data_selector: bucket
+    params:
+      bucket_name: podinfo
+      endpoint: minio.minio.svc.cluster.local:9000
+      insecure: 'true'
+      access_key: myaccesskey
+      secret_key: mysecretkey
+      interval: 10m
+- name: s3_bucket_source
+  endpoint:
+    path: /flux/create/source/bucket
+    method: POST
+    data_selector: bucket
+    params:
+      bucket_name: podinfo
+      provider: aws
+      endpoint: s3.amazonaws.com
+      region: us-east-1
+      interval: 10m
+- name: bucket
+  endpoint:
+    path: /bucket-name
+    method: GET
+- name: podinfo
+  endpoint:
+    path: /source/chart/podinfo
+    method: CREATE
+    data_selector: chart
+    params:
+      source: HelmRepository/podinfo
+      chart: podinfo
+      chart-version: 6.x
+- name: podinfo_git
+  endpoint:
+    path: /source/chart/podinfo
+    method: CREATE
+    data_selector: chart
+    params:
+      source: GitRepository/podinfo
+      chart: ./charts/podinfo
+- name: podinfo_s3
+  endpoint:
+    path: /source/chart/podinfo
+    method: CREATE
+    data_selector: chart
+    params:
+      source: Bucket/podinfo
+      chart: ./charts/podinfo
+- name: GitRepository
+  endpoint:
+    path: /create/source/git
+    method: POST
+    data_selector: resource
+    params: {}
+- name: GitRepository
+  endpoint:
+    path: /flux/create/source/git
+    method: POST
+- name: podinfo
+  endpoint:
+    path: /
+    method: GET
+- name: HelmRepository
+  endpoint:
+    path: /create/source/helm
+    method: POST
+    data_selector: repository
+    params: {}
+- name: OCIRepository
+  endpoint:
+    path: /oci/repositories
+    method: POST
+    data_selector: resource
+    params:
+      url: oci://ghcr.io/stefanprodan/manifests/podinfo
+      tag: 6.6.2
+      interval: 10m
+- name: tenant
+  endpoint:
+    path: /flux/create/tenant
+    method: POST
+    data_selector: ''
+    params: {}
+- name: tenant_role_binding
+  endpoint:
+    path: /api/v1/namespaces/{namespace}/tenant-role-bindings
+    method: POST
+    data_selector: items
+- name: alert
+  endpoint:
+    path: /alerts/delete
+    method: DELETE
+- name: image_policy
+  endpoint:
+    path: /flux/delete/image/policy
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: ImageRepository
+  endpoint:
+    path: /flux/delete/image/repository
+    method: DELETE
+- name: image_update_automation
+  endpoint:
+    path: /flux/delete/image/update
+    method: DELETE
+    data_selector: records
+    params: {}
+- name: kustomization
+  endpoint:
+    path: /kustomizations
+    method: DELETE
+- name: GitRepository
+  endpoint:
+    path: /delete/source/git
+    method: DELETE
+    data_selector: null
+    params: {}
+- name: diff_artifact
+  endpoint:
+    path: /flux/diff/artifact
+    method: GET
+    data_selector: diff
+    params: {}
+- name: flux_diff_kustomization
+  endpoint:
+    path: /flux/diff/kustomization
+    method: GET
+    data_selector: diffs
+    params: {}
+- name: flux_events
+  endpoint:
+    path: /events
+    method: GET
+    data_selector: events
+    params: {}
+- name: alert
+  endpoint:
+    path: /export/alert
+    method: GET
+    data_selector: resources
+    params:
+      name: all
+- name: Provider
+  endpoint:
+    path: /export/alert-provider
+    method: GET
+    data_selector: resources
+    params: {}
+- name: artifact
+  endpoint:
+    path: /export/artifact
+    method: GET
+    data_selector: artifacts
+    params: {}
+- name: artifact_generator
+  endpoint:
+    path: /flux/export/artifact/generator
+    method: GET
+    data_selector: resources
+    params: {}
+- name: helmrelease
+  endpoint:
+    path: /export/helmrelease
+    method: GET
+    data_selector: resources
+    params: {}
+- name: helmrelease
+  endpoint:
+    path: /export/helmrelease
+    method: GET
+    data_selector: resources
+    params: {}
+- name: image
+  endpoint:
+    path: /flux/export/image
+    method: GET
+    data_selector: automation_objects
+    params: {}
+- name: image_policy
+  endpoint:
+    path: /flux/export/image/policy
+    method: GET
+    data_selector: resources
+    params:
+      all: true
+- name: image_policy
+  endpoint:
+    path: /flux/export/image/policy
+    method: GET
+- name: ImageRepository
+  endpoint:
+    path: /flux/export/image/repository
+    method: GET
+    data_selector: resources
+    params:
+      all: true
+- name: ImageRepository
+  endpoint:
+    path: /flux/export/image/repository
+    method: GET
+    data_selector: resources
+    params: {}
+- name: ImageUpdateAutomation
+  endpoint:
+    path: /export/image/update
+    method: GET
+    data_selector: resources
+- name: ImageUpdateAutomation
+  endpoint:
+    path: /flux/export/image/update
+    method: GET
+    data_selector: resources
+    params: {}
+- name: kustomization
+  endpoint:
+    path: /export/kustomization
+    method: GET
+    data_selector: resources
+    params:
+      all: true
+- name: kustomization
+  endpoint:
+    path: /flux/export/kustomization
+    method: GET
+    data_selector: resources
+    params: {}
+- name: bucket
+  endpoint:
+    path: /export/source/bucket
+    method: GET
+- name: GitRepository
+  endpoint:
+    path: /flux/export/source/git
+    method: GET
+    data_selector: sources
+    params: {}
+- name: all_resources
+  endpoint:
+    path: /flux/get/all
+    method: GET
+- name: alert_providers
+  endpoint:
+    path: /get/alert-providers
+    method: GET
+    data_selector: statuses
+    params: {}
+- name: alerts
+  endpoint:
+    path: /get/alerts
+    method: GET
+    data_selector: statuses
+    params: {}
+- name: alert_status
+  endpoint:
+    path: /flux/get/alerts
+    method: GET
+    data_selector: statuses
+    params: {}
+- name: all_resources
+  endpoint:
+    path: /flux/get/all
+    method: GET
+    data_selector: statuses
+    params:
+      namespace: flux-system
+- name: all_resources
+  endpoint:
+    path: /flux/get/all
+    method: GET
+    data_selector: statuses
+    params:
+      namespace: flux-system
+- name: artifacts
+  endpoint:
+    path: /flux/get/artifacts
+    method: GET
+- name: artifact_generators
+  endpoint:
+    path: /artifacts/generators
+    method: GET
+    data_selector: statuses
+    params: {}
+- name: artifact_generators
+  endpoint:
+    path: /get/artifacts/generators
+    method: GET
+    data_selector: statuses
+- name: helmreleases
+  endpoint:
+    path: /get/helmreleases
+    method: GET
+    data_selector: statuses
+    params: {}
+- name: helmreleases
+  endpoint:
+    path: /helmreleases
+    method: GET
+    data_selector: statuses
+    params: {}
+- name: helmreleases
+  endpoint:
+    path: /helmreleases
+    method: GET
+- name: images
+  endpoint:
+    path: /get/images/all
+    method: GET
+    data_selector: statuses
+    params:
+      namespace: flux-system
+- name: image_status
+  endpoint:
+    path: /get/images/all
+    method: GET
+    data_selector: statuses
+    params:
+      namespace: flux-system
+- name: image_policy
+  endpoint:
+    path: /get/images/policy
+    method: GET
+- name: image_policy
+  endpoint:
+    path: /api/v1/policies/images
+    method: GET
+    data_selector: policies
+    params:
+      namespace: flux-system
+- name: image_repository
+  endpoint:
+    path: /images/repository
+    method: GET
+    data_selector: status
+    params: {}
+- name: image_repository
+  endpoint:
+    path: /flux/get/images/repository
+    method: GET
+    data_selector: status
+    params: {}
+- name: image_repositories
+  endpoint:
+    path: /api/v1/namespaces/{namespace}/images
+    method: GET
+    data_selector: items
+    params:
+      namespace: flux-system
+- name: image_update_automation
+  endpoint:
+    path: /get/images/update
+    method: GET
+    data_selector: status
+    params: {}
+- name: image_update_automation_status
+  endpoint:
+    path: /flux/get/images/update
+    method: GET
+    data_selector: status
+    params: {}
+- name: kustomization
+  endpoint:
+    path: /get/kustomizations
+    method: GET
+    data_selector: statuses
+    params: {}
+- name: kustomization_status
+  endpoint:
+    path: /kustomizations/status
+    method: GET
+    data_selector: statuses
+    params: {}
+- name: receivers
+  endpoint:
+    path: /flux/get/receivers
+    method: GET
+    data_selector: statuses
+    params: {}
+- name: receiver_status
+  endpoint:
+    path: /flux/get/receivers
+    method: GET
+    data_selector: statuses
+    params: {}
+- name: bucket_source_status
+  endpoint:
+    path: /flux/get/sources/bucket
+    method: GET
+- name: helm_chart_status
+  endpoint:
+    path: /sources/chart
+    method: GET
+    data_selector: status
+    params: {}
+- name: helm_chart_status
+  endpoint:
+    path: /flux/get/sources/chart
+    method: GET
+    data_selector: statuses
+    params: {}
+- name: helm_charts
+  endpoint:
+    path: /api/v1/helm/charts
+    method: GET
+- name: git_repository
+  endpoint:
+    path: /sources/git
+    method: GET
+    data_selector: status
+    params: {}
+- name: git_repository
+  endpoint:
+    path: /get/sources/git
+    method: GET
+    data_selector: status
+    params: {}
+- name: helm_repositories
+  endpoint:
+    path: /get/sources/helm
+    method: GET
+    data_selector: status
+    params: {}
+- name: HelmRepository
+  endpoint:
+    path: /flux/get/sources/helm
+    method: GET
+- name: install
+  endpoint:
+    path: /install
+    method: POST
+    data_selector: response
+    params:
+      namespace: flux-system
+- name: artifacts
+  endpoint:
+    path: /list/artifacts
+    method: GET
+    data_selector: artifacts
+- name: artifacts
+  endpoint:
+    path: /cmd/flux_list_artifacts
+    method: GET
+    data_selector: tags
+    params: {}
+- name: flux_logs
+  endpoint:
+    path: /flux/logs
+    method: GET
+    data_selector: logs
+    params: {}
+- name: migrate
+  endpoint:
+    path: /flux/migrate
+    method: POST
+- name: flux_custom_resources
+  endpoint:
+    path: /migrate
+    method: POST
+    data_selector: results
+    params: {}
+- name: pull_artifacts
+  endpoint:
+    path: /pull/artifacts
+    method: GET
+- name: artifact
+  endpoint:
+    path: /pull/artifact
+    method: GET
+    data_selector: ''
+    params: {}
+- name: artifact
+  endpoint:
+    path: /pull/artifact
+    method: GET
+    data_selector: artifacts
+    params: {}
+- name: push_artifacts
+  endpoint:
+    path: /flux/push
+    method: POST
+- name: artifact
+  endpoint:
+    path: /push/artifact
+    method: POST
+- name: helmrelease
+  endpoint:
+    path: /flux/reconcile/helmrelease
+    method: POST
+    data_selector: resource
+    params: {}
+- name: helmrelease
+  endpoint:
+    path: /flux/reconcile/helmrelease
+    method: POST
+    data_selector: resources
+    params: {}
+- name: image_policy
+  endpoint:
+    path: /flux/reconcile/image/policy
+    method: POST
+    data_selector: result
+    params: {}
+- name: image_update_automation
+  endpoint:
+    path: /flux/reconcile/image/update
+    method: POST
+    data_selector: status
+    params: {}
+- name: kustomization
+  endpoint:
+    path: /flux/reconcile/kustomization
+    method: POST
+    data_selector: result
+    params: {}
+- name: bucket
+  endpoint:
+    path: /flux/reconcile/source/bucket
+    method: POST
+    data_selector: resource
+    params: {}
+- name: helm_chart
+  endpoint:
+    path: /flux/reconcile/source/chart
+    method: POST
+- name: helmchart
+  endpoint:
+    path: /flux/reconcile/source/chart
+    method: POST
+    data_selector: results
+    params: {}
+- name: alert
+  endpoint:
+    path: /flux/alert
+    method: POST
+    data_selector: status
+    params: {}
+- name: resume_alert
+  endpoint:
+    path: /flux/cmd/flux_resume_alert/
+    method: POST
+    data_selector: ''
+    params: {}
+- name: alert-provider
+  endpoint:
+    path: /flux/resume/alert-provider
+    method: POST
+- name: helmrelease
+  endpoint:
+    path: /flux/resume/helmrelease
+    method: POST
+    data_selector: status
+    params: {}
+- name: helmrelease
+  endpoint:
+    path: /helmrelease
+    method: POST
+    data_selector: reconciliation
+    params: {}
+- name: image_policy
+  endpoint:
+    path: /flux/resume/image/policy
+    method: POST
+    data_selector: policy
+    params: {}
+- name: image_policy
+  endpoint:
+    path: /flux/resume/image/policy
+    method: POST
+    data_selector: policy_resume
+    params: {}
+- name: image_repository
+  endpoint:
+    path: /flux/resume/image/repository
+    method: POST
+    data_selector: status
+    params: {}
+- name: image_repository
+  endpoint:
+    path: /flux/resume/image/repository
+    method: POST
+    data_selector: ''
+    params: {}
+- name: bucket
+  endpoint:
+    path: /source/bucket
+    method: POST
+- name: HelmChart
+  endpoint:
+    path: /flux/helmchart
+    method: POST
+    data_selector: status
+    params: {}
+- name: helmrepository
+  endpoint:
+    path: /helmrepositories
+    method: POST
+- name: flux_custom_resources
+  endpoint:
+    path: /flux/stats
+    method: GET
+    data_selector: report
+    params: {}
+- name: suspend_alert
+  endpoint:
+    path: /flux/suspend/alert
+    method: POST
+    data_selector: alert
+    params: {}
+- name: helmrelease
+  endpoint:
+    path: /flux/suspend/helmrelease
+    method: POST
+- name: suspend
+  endpoint:
+    path: /flux/suspend/image
+    method: POST
+    data_selector: response
+    params: {}
+- name: suspend_image_policy
+  endpoint:
+    path: /flux/suspend/image/policy
+    method: POST
+    data_selector: result
+    params:
+      namespace: flux-system
+- name: image_repository
+  endpoint:
+    path: /flux/suspend/image/repository
+    method: POST
+    data_selector: resource
+    params:
+      name: alpine
+- name: ImageUpdateAutomation
+  endpoint:
+    path: /flux/suspend/image/update
+    method: POST
+    data_selector: resource
+    params:
+      name: latest-images
+- name: ImageUpdateAutomation
+  endpoint:
+    path: /suspend/image/update
+    method: POST
+    data_selector: status
+    params: {}
+- name: suspend_image_automation
+  endpoint:
+    path: /flux/suspend/image
+    method: POST
+- name: kustomization
+  endpoint:
+    path: /suspend
+    method: POST
+    data_selector: result
+    params: {}
+- name: bucket
+  endpoint:
+    path: /flux/suspend/source/bucket
+    method: POST
+    data_selector: result
+    params:
+      name: podinfo
+- name: bucket
+  endpoint:
+    path: /suspend/source/bucket
+    method: POST
+    data_selector: status
+    params: {}
+- name: git_repository
+  endpoint:
+    path: /suspend/source/git
+    method: POST
+    data_selector: null
+    params: {}
+- name: HelmRepository
+  endpoint:
+    path: /suspend
+    method: POST
+    data_selector: resource
+    params: {}
+- name: OCIRepository
+  endpoint:
+    path: /suspend/source/oci
+    method: POST
+- name: tag_artifact
+  endpoint:
+    path: /cmd/flux_tag_artifact
+    method: POST
+    data_selector: tags
+    params: {}
+- name: uninstall
+  endpoint:
+    path: /flux/uninstall
+    method: POST
+    data_selector: results
+    params:
+      namespace: flux-system
+- name: flux_uninstall
+  endpoint:
+    path: /flux/uninstall
+    method: POST
+    data_selector: results
+    params:
+      namespace: flux-system
+- name: flux_version
+  endpoint:
+    path: /flux/version
+    method: GET
+    data_selector: version_info
+    params: {}
+- name: CephCluster
+  endpoint:
+    path: /api/ceph.rook.io/v1/CephCluster
+    method: GET
+    data_selector: healthCheckExprs
+    params: {}
+- name: Cluster
+  endpoint:
+    path: /api/cluster.x-k8s.io/v1beta1/Cluster
+    method: GET
+    data_selector: healthCheckExprs
+    params: {}
+- name: ClusterIssuer
+  endpoint:
+    path: /api/cert-manager.io/v1/ClusterIssuer
+    method: GET
+    data_selector: healthCheckExprs
+    params: {}
+- name: ClusterSecretStore
+  endpoint:
+    path: /api/external-secrets.io/v1beta1/ClusterSecretStore
+    method: GET
+    data_selector: healthCheckExprs
+    params: {}
+- name: Crossplane
+  endpoint:
+    path: /api/pkg.crossplane.io/v1/Provider
+    method: GET
+    data_selector: healthCheckExprs
+    params: {}
+- name: ScaledObject
+  endpoint:
+    path: /api/keda.sh/v1alpha1/ScaledObject
+    method: GET
+    data_selector: healthCheckExprs
+    params: {}
+- name: SealedSecret
+  endpoint:
+    path: /api/bitnami.com/v1alpha1/SealedSecret
+    method: GET
+    data_selector: healthCheckExprs
+    params: {}
+- name: podinfo
+  endpoint:
+    path: /flux/components/source/ocirepositories/
+    method: GET
+    data_selector: artifacts
+    params: {}
+- name: OCIRepository
+  endpoint:
+    path: /flux/components/source/ocirepositories/
+    method: GET
+- name: HelmRelease
+  endpoint:
+    path: /flux/components/source/helmrepositories/
+    method: GET
+- name: podinfo
+  endpoint:
+    path: /
+    method: GET
+    data_selector: status.artifact.metadata
+    params: {}
+- name: flux2
+  endpoint:
+    path: /repos/fluxcd/flux2/releases
+    method: GET
+    data_selector: assets
+    params: {}
+- name: provenance_verification
+  endpoint:
+    path: /slsa-verifier/verify-artifact
+    method: POST
+    data_selector: verification_result
+    params: {}
+- name: gitrepository
+  endpoint:
+    path: /api/v1/namespaces/default/gitrepositories/my-app
+    method: GET
+    data_selector: spec
+    params:
+      interval: 5m
+      url: https://github.com/my-org/my-app
+      ref:
+        branch: main
+- name: kustomization
+  endpoint:
+    path: /api/v1/namespaces/default/kustomizations/my-app
+    method: GET
+    data_selector: spec
+    params:
+      interval: 15m
+      path: ./deploy/prod
+      prune: true
+      sourceRef:
+        kind: GitRepository
+        name: my-app
+- name: gitrepository
+  endpoint:
+    path: /source.toolkit.fluxcd.io/v1/GitRepository
+    method: GET
+    data_selector: items
+    params:
+      interval: 5m
+- name: kustomization
+  endpoint:
+    path: /kustomize.toolkit.fluxcd.io/v1/Kustomization
+    method: GET
+    data_selector: items
+    params:
+      interval: 15m
+- name: GitRepository
+  endpoint:
+    path: /api/v1/gitrepositories
+    method: GET
+    data_selector: items
+    params:
+      interval: 5m
+      url: https://github.com/my-org/my-app
+      ref:
+        branch: main
+- name: Kustomization
+  endpoint:
+    path: /api/v1/kustomizations
+    method: GET
+    data_selector: items
+    params:
+      interval: 15m
+      path: ./deploy/prod
+      prune: true
+      sourceRef:
+        kind: GitRepository
+        name: my-app
+- name: OCIRepository
+  endpoint:
+    path: /api/v1/namespaces/monitoring/ocirepositories
+    method: POST
+    data_selector: spec
+    params: {}
+- name: HelmRelease
+  endpoint:
+    path: /api/v2/namespaces/monitoring/helmreleases
+    method: POST
+    data_selector: spec
+    params: {}
+- name: update-flux
+  endpoint:
+    path: /actions/workflows/update-flux
+    method: POST
+- name: push-artifact-staging
+  endpoint:
+    path: /actions/workflows/push-artifact-staging
+    method: POST
+- name: push-sign-artifact
+  endpoint:
+    path: /actions/workflows/push-sign-artifact
+    method: POST
+- name: e2e
+  endpoint:
+    path: /actions/workflows/e2e
+    method: POST
+- name: flux_suspend_image
+  endpoint:
+    path: /flux/cmd/flux_suspend_image/
+    method: GET
+- name: flux_suspend_image_policy
+  endpoint:
+    path: /flux/cmd/flux_suspend_image_policy/
+    method: GET
+- name: flux_suspend_image_repository
+  endpoint:
+    path: /flux/cmd/flux_suspend_image_repository/
+    method: GET
+- name: flux_suspend_image_update
+  endpoint:
+    path: /flux/cmd/flux_suspend_image_update/
+    method: GET
+- name: flux_suspend_kustomization
+  endpoint:
+    path: /flux/cmd/flux_suspend_kustomization/
+    method: GET
+- name: flux_suspend_receiver
+  endpoint:
+    path: /flux/cmd/flux_suspend_receiver/
+    method: GET
+- name: flux_suspend_source
+  endpoint:
+    path: /flux/cmd/flux_suspend_source/
+    method: GET
+- name: flux_suspend_source_bucket
+  endpoint:
+    path: /flux/cmd/flux_suspend_source_bucket/
+    method: GET
+- name: flux_suspend_source_chart
+  endpoint:
+    path: /flux/cmd/flux_suspend_source_chart/
+    method: GET
+- name: flux_suspend_source_git
+  endpoint:
+    path: /flux/cmd/flux_suspend_source_git/
+    method: GET
+- name: flux_suspend_source_helm
+  endpoint:
+    path: /flux/cmd/flux_suspend_source_helm/
+    method: GET
+- name: flux_suspend_source_oci
+  endpoint:
+    path: /flux/cmd/flux_suspend_source_oci/
+    method: GET
+- name: flux_tag
+  endpoint:
+    path: /flux/cmd/flux_tag/
+    method: GET
+- name: flux_tag_artifact
+  endpoint:
+    path: /flux/cmd/flux_tag_artifact/
+    method: GET
+- name: flux_trace
+  endpoint:
+    path: /flux/cmd/flux_trace/
+    method: GET
+- name: flux_tree
+  endpoint:
+    path: /flux/cmd/flux_tree/
+    method: GET
+- name: flux_tree_artifact
+  endpoint:
+    path: /flux/cmd/flux_tree_artifact/
+    method: GET
+- name: flux_tree_artifact_generator
+  endpoint:
+    path: /flux/cmd/flux_tree_artifact_generator/
+    method: GET
+- name: flux_tree_kustomization
+  endpoint:
+    path: /flux/cmd/flux_tree_kustomization/
+    method: GET
+- name: flux_uninstall
+  endpoint:
+    path: /flux/cmd/flux_uninstall/
+    method: GET
+- name: flux_version
+  endpoint:
+    path: /flux/cmd/flux_version/
+    method: GET
+- name: GitRepository
+  endpoint:
+    path: /flux/api/gitrepositories
+    method: GET
+    data_selector: items
+- name: Kustomization
+  endpoint:
+    path: /flux/api/kustomizations
+    method: GET
+    data_selector: items
+- name: GitRepository
+  endpoint:
+    path: /flux/components/source/gitrepositories/
+    method: GET
+- name: Bucket
+  endpoint:
+    path: /flux/components/source/buckets/
+    method: GET
+- name: HelmRepository
+  endpoint:
+    path: /flux/components/source/helmrepositories/
+    method: GET
+- name: HelmChart
+  endpoint:
+    path: /flux/components/source/helmcharts/
+    method: GET
+- name: GitRepository
+  endpoint:
+    path: /flux/components/source/
+    method: GET
+    data_selector: resources
+    params: {}
+- name: Kustomization
+  endpoint:
+    path: /flux/components/kustomize/
+    method: GET
+    data_selector: resources
+    params: {}
+- name: HelmRelease
+  endpoint:
+    path: /flux/components/helm/
+    method: GET
+    data_selector: resources
+    params: {}
+- name: ImageRepository
+  endpoint:
+    path: /flux/components/image/
+    method: GET
+    data_selector: resources
+    params: {}
+- name: my-chart-git-repo
+  endpoint:
+    path: /flux/components/source/gitrepositories/
+    method: GET
+- name: alerts
+  endpoint:
+    path: /flux/components/notification/alert/
+    method: GET
+    data_selector: events
+    params: {}
+- name: events
+  endpoint:
+    path: /flux/components/notification/event/
+    method: GET
+    data_selector: notifications
+    params: {}
+- name: app
+  endpoint:
+    path: /create/kustomization
+    method: POST
+    data_selector: kustomization
+    params:
+      interval: 10m
+      prune: true
+notes:
+- GitOps provides a low-risk self-deployment model
+- Significant time savings with automated cluster lifecycle management
+- Robust and secure platform with built-in auditability
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Flux is designed with security in mind
+- Flux works with your existing tools
+- Support for Flux users and community is mostly provided by volunteers, who are all
+  on equal footing as peers in the Flux community.
+- Daylight Savings Time changes can vary across regions, which can cause some confusion.
+- The Flux project roadmap is divided into milestones representing minor releases,
+  each with a set of goals and tasks.
+- The milestones marked as provisional are subject to change based on the project’s
+  priorities and the community’s feedback.
+- For production use, it is recommended to have a dedicated GitHub account for Flux
+  and use fine-grained access tokens with the minimum required permissions.
+- Edit this template to create your new page.
+- The private key is stored in the cluster as a Kubernetes secret named `flux-system`
+  inside the `flux-system` namespace.
+- When using the SSH Agent, the bootstrap command will generate a new SSH private
+  key for the cluster.
+- Gitea PAT is required for accessing the Gitea API.
+- Gitea PAT can be exported as an environment variable.
+- Requires cluster admin rights for Kubernetes and owner/admin rights for GitHub repository
+- GitHub PAT is stored in the cluster as a Kubernetes Secret named `flux-system`
+- Requires GitLab personal access token (PAT) with complete read/write access.
+- Requires Bitbucket HTTP Access Token with administration permissions.
+- 'The token can be exported as an environment variable: export BITBUCKET_TOKEN=<bb-token>.'
+- The Azure DevOps PAT is stored in the cluster as a Kubernetes Secret named `flux-system`
+  inside the `flux-system` namespace.
+- Azure DevOps PAT have an expiry date.
+- The SSH private key and the known hosts keys are stored in the cluster as a Kubernetes
+  secret named `flux-system` inside the `flux-system` namespace.
+- The Oracle VBS PAT is stored in the cluster as a Kubernetes Secret named flux-system
+  inside the flux-system namespace.
+- Oracle VBS PAT may have an expiry date if it was configured to have one.
+- By default, both flux bootstrap and flux install commands do not include any extra
+  components.
+- While not recommend, you can deploy the Flux components without network policies
+  using the --network-policy flag.
+- To customize the Flux controllers during bootstrap, create a Git repository and
+  clone it locally.
+- Make changes to all controllers using a single patch or target a specific controller.
+- When increasing the number of concurrent reconciliations, it is advised to use tmpfs
+  for the /tmp filesystem to speed up the Flux kustomize build operations.
+- tmpfs will count against the controller’s pod memory usage, so it is advised to
+  make use of the GitRepository ignore feature to exclude non-YAML files when Flux
+  syncs app repos.
+- When helm-cache-max-size is reached, an error is logged and the index is instead
+  read from file. Cache hits are exposed via the gotk_cache_events_total Prometheus
+  metrics. Use this data to fine-tune the configuration flags.
+- To assign a group of Flux resources to a particular shard, label them with sharding.fluxcd.io/key.
+- Denies cross-namespace access to Flux custom resources
+- Denies accesses to Kustomize remote bases
+- Tenants have to specify a service account in their Flux resources to deploy workloads
+- You must generate a SSH private key and set the public key as the deploy key on
+  your Git server in advance.
+- If your cluster uses an HTTP proxy to reach GitHub or other external services, you
+  must set `NO_PROXY=.cluster.local.,.cluster.local,.svc` to allow the Flux controllers
+  to talk to each other.
+- The token used to generate the key has expired.
+- The key has been compromised.
+- You want to change the scope of the key, e.g. to allow write access using the --read-write-key
+  flag to flux bootstrap.
+- While you can run flux bootstrap repeatedly, be aware that the flux-system Kubernetes
+  Secret is never overwritten.
+- You need to manually rotate the key as described here.
+- Enable OOM watch feature
+- Threshold at which to trigger a graceful shutdown (optional, default 95%)
+- Interval at which to check memory usage (optional, default 500ms)
+- By default, the helm-controller will not perform DNS lookups when rendering Helm
+  templates in clusters because of potential security implications.
+- To enable DNS lookups during bootstrap add the following patches to the flux-system
+  kustomization.yaml
+- Upgrade with Git does not require direct access to the Kubernetes cluster.
+- Automated upgrades can be implemented using GitHub Actions.
+- Uninstalling Flux by any other means e.g. deleting the deployments and namespace
+  with kubectl is not supported.
+- Helm repositories are recommended for retrieving Helm charts.
+- Authentication for private repositories can be done via HTTP/S basic and TLS.
+- The interval defines at which interval the repository index is fetched, and should
+  be at least 1m.
+- The interval defines the interval at which the OCI repository contents are fetched.
+- Webhook receiver needs to be exposed on a public address
+- Ensure the LoadBalancer is correctly set up to route to the receiver
+- Encrypting secrets using OpenPGP, Age, HashiCorp Vault, or various cloud providers.
+- At startup, the sealed-secrets controller generates a 4096-bit RSA key pair and
+  persists the private and public keys as Kubernetes secrets in the `flux-system`
+  namespace.
+- Requires a GitHub account and a personal access token with repo permissions.
+- Uses automated authentication for cloud providers or secret-based authentication
+- Recommended GitOps way to use the latest tag is by pinning the image digest
+- 'Use ''pattern: [a-f0-9]+-(?P<ts>[0-9]+)'' if you copied the workflow example using
+  github.run_number'
+- If you don’t care about the branch, that part can be a wildcard in the pattern
+- AWS IAM has more features than the ones described here.
+- KMS does not support identity-based policies by default.
+- Always prefer secret-less over secret-based authentication if the alternative is
+  available.
+- Pod Identity is an EKS-only feature specifically targeting pods.
+- Workload Identity Federation is a GCP feature that allows external identities to
+  authenticate with GCP services without the need for a per-identity static credential.
+- Flux also supports Microsoft Teams webhooks, but Microsoft Teams webhooks do not
+  support Microsoft Entra ID.
+- Only for AKS clusters targeting Azure resources object-level workload identity is
+  currently unstable.
+- Object-level workload identity is currently unstable.
+- Node level authentication may work for other integrations as well, but Flux only
+  has continuous integration tests for the ACR integration in order to support the
+  specific use case described above.
+- Flux supports Microsoft Teams webhooks, but they do not support Microsoft Entra
+  ID.
+- Only for AKS clusters targeting Azure resources, object-level workload identity
+  is currently unstable.
+- Node level authentication may work for other integrations as well, but Flux only
+  has continuous integration tests for the ACR integration.
+- Secret-based authentication is supported across all combinations, but should be
+  avoided in favor of secret-less authentication when available.
+- This ability to customize the Issuer URL and JWKS URI enables users to host static
+  discovery documents on public URLs.
+- GCP Workload Identity Federation allows you to directly upload the JWKS document.
+- Requires a Kubernetes cluster with Flux installed
+- Events are stored by the git provider
+- Default installation of Flux controllers export Prometheus metrics at port 8080
+  in the standard /metrics path.
+- KSM runs in custom-resource-state-only mode.
+- The default installation of Flux controllers write logs to stderr in JSON format
+  at the info log level.
+- The patch configuration in the example only applies to a few targeted controllers.
+- Events are emitted during the reconciliation operation to provide information about
+  the object being reconciled.
+- Events can be queried using `kubectl events` or `flux events` CLI commands.
+- To be able to update a Kubernetes Job, the Job has to be recreated by first being
+  removed and then reapplied to the cluster.
+- Setting spec.force to true will make Flux recreate the Job when any immutable field
+  is changed, forcing the Job to run every time the container image tag changes.
+- Setting spec.wait to true makes Flux wait for the Job to complete before it is considered
+  ready.
+- This guide is not for doing GitOps, but for managing Helm releases for applications
+  among multiple clusters.
+- Flux must be installed on each cluster to manage Helm releases across your fleet
+  of clusters.
+- Flux Helm Controller allows YAML values overrides on the HelmRelease CRD.
+- Ensure the promotion happens only after tests have been successfully run.
+- This document is under review and may be declared out of scope for Flux.
+- Note that this guide needs further review in consideration of Flux v2.0.0.
+- This build workflow does everything that Flux needs.
+- Use immutable tags for best practices.
+- This guide shows how to configure GitHub Actions to build an image for each new
+  commit pushed on a branch, for PRs, or for tags in the most basic way.
+- Drop the example workflow into .github/workflows/docker-build.yml to use.
+- Flux’s deploy automation is designed to be scalable and fast.
+- Requires setup of secrets for DockerHub credentials.
+- This guide does not cover or implement Image Provenance or any cryptographic signature,
+  but Flux does provide examples of those workflows as they are implemented in Flux’s
+  own controllers!
+- Requires GitHub Actions setup with appropriate secrets for DockerHub
+- Flux v2 does not support calling arbitrary binaries with InitContainer
+- Each Kustomization deploys manifests from one branch or tag only
+- The guide no longer describes the recommended way to handle manifest generation
+  in Flux.
+- This guide no longer describes the recommended way to handle manifest generation
+  in Flux.
+- Flux v2 no longer permits embedding arbitrary binaries with the Flux machinery.
+- Jsonnet provides a programming language for configuration.
+- Secrets must be encrypted before storing in Git.
+- Uses Jsonnet to generate Kubernetes manifests.
+- Ensure GitHub Actions are enabled on your repository.
+- Consider adding a deploy branch to a mono-repo if used.
+- Large commits in mono-repos may lead to performance bottlenecks.
+- We don’t expect you to follow these examples to the letter.
+- Some use cases may prefer to use pure Jsonnet only as it is sandboxed and therefore
+  safer.
+- The image automation is meant to be gated behind a pull request approval workflow.
+- Jenkins should not kubectl apply your manifests anymore.
+- CI is out of scope for Flux.
+- The maximum number of artifacts to be kept in storage after a garbage collection
+  is 2.
+- The duration of time that artifacts from previous reconciliations will be kept in
+  storage before being garbage collected is 1m0s.
+- The number of concurrent reconciles per controller is 2.
+- The address the health endpoint binds to is :9440.
+- The maximum size of the cache in number of indexes is not specified.
+- The interval at which the cache is purged is 1m.
+- The TTL of an index in the cache is 15m.
+- The max allowed size in bytes of a file in a Helm chart is 5242880.
+- The max allowed size in bytes of a Helm chart file is 10485760.
+- The max allowed size in bytes of a Helm repository index file is 52428800.
+- The percentage of jitter to apply to interval durations is 5.
+- The interval at which non-leader candidates will wait to force acquire leadership
+  is 35s.
+- The duration that the leading controller manager will retry refreshing leadership
+  before giving up is 30s.
+- The duration the LeaderElector clients should wait between tries of actions is 5s.
+- The log encoding format is json.
+- The log verbosity level is info.
+- The maximum amount of time for which an object being reconciled will have to wait
+  before a retry is 15m0s.
+- The address the metric endpoint binds to is :8080.
+- The minimum amount of time for which an object being reconciled will have to wait
+  before a retry is 750ms.
+- The interval at which failing dependencies are reevaluated is 30s.
+- The address the static file server binds to is :9090.
+- The local storage path is /data.
+- The maximum duration for which a token would be considered unexpired is capped at
+  1h.
+- The interval at which failing dependencies are reevaluated is 5s.
+- The specified branch and resolved HEAD revision are used as the Artifact revision.
+- The GitRepository can be reconciling while failing at the same time.
+- Conditions have a negative polarity and are only present while their status value
+  is 'True'.
+- Verification mode can be set to HEAD
+- When a change is applied, it is possible to wait for the GitRepository to reach
+  a ready state using kubectl.
+- The GitRepository API is compatible with the kstatus specification.
+- The source-controller may get stuck trying to produce an Artifact for a GitRepository
+  without completing.
+- The proxy server must be either HTTP/S or SOCKS5
+- A GitRepository can be reconciling while failing at the same time.
+- The remote Git repository URL may be temporarily unavailable.
+- An OCIRepository needs apiVersion, kind, and metadata fields.
+- Specifying a tag or digest is not acceptable for the URL field.
+- Uses URL format oci://<host>:<port>/<org-name>/<repo-name>
+- The name of an OCIRepository object must be a valid DNS subdomain name.
+- The controller can be configured to apply a jitter to the interval in order to distribute
+  the load more evenly when multiple OCIRepository objects are set up with the same
+  interval.
+- The controller can apply a jitter to the interval in order to distribute the load
+  when multiple OCIRepository objects are set up with the same interval.
+- By default, files which match the default exclusion rules are excluded while archiving
+  the OCI repository contents as an Artifact.
+- The source-controller checks the OCI repository every five minutes.
+- An OCIRepository can be annotated with reconcile.fluxcd.io/requestedAt to manually
+  trigger reconciliation.
+- The source-controller can mark an OCIRepository as reconciling, ready, or failed
+  during its lifecycle.
+- The Artifact file is a gzip compressed TAR archive
+- Default exclusions include Git files and various file extensions
+- The controller checks the object storage bucket every five minutes
+- Bucket name must be a valid DNS subdomain name
+- The source-controller checks the object storage bucket every five minutes.
+- A list of object keys and their etags in the .spec.bucketName bucket is compiled.
+- The SAS token has an expiry date, and it must be updated before it expires to allow
+  Flux to continue to access Azure Storage.
+- The Artifact file is a gzip compressed TAR archive.
+- Requires valid credentials for access.
+- When a Bucket has an Artifact and is suspended, and this Artifact later disappears
+  from the storage due to e.g. the source-controller Pod being evicted from a Node,
+  this will not be reflected in the Bucket’s Status until it is resumed.
+- The source-controller checks the object storage bucket every five minutes
+- If no chain can be established, the bucket is assumed to be publicly reachable
+- The Bucket reports the latest synchronized state from the object storage bucket
+  as an Artifact object.
+- The .spec.interval field is only used by the default Helm repository and is ignored
+  for any value in oci Helm repository.
+- This section does not apply to OCI Helm Repositories, they do not contain any information
+  in the status.
+- This field is not applicable to OCI Helm Repositories.
+- Being a data container, once created, they are ready to used by HelmCharts.
+- When a HelmRepository has an Artifact and is suspended, and this Artifact later
+  disappears from the storage due to e.g. the source-controller Pod being evicted
+  from a Node, this will not be reflected in the HelmRepository’s Status until it
+  is resumed.
+- Setting the field value to false has the same effect as removing it, but does not
+  allow for 'hot patching' using e.g. kubectl while practicing GitOps; as the manually
+  applied patch would be overwritten by the declared state in Git.
+- This section does not apply to OCI Helm Repositories, being a data container, they
+  are static objects that don’t require debugging if valid.
+- The HelmRepository API is compatible with the kstatus specification and reports
+  Reconciling and Stalled conditions where applicable to provide better (timeout)
+  support to solutions polling the HelmRepository to become Ready.
+- HelmChart is usually used by the helm-controller.
+- A HelmChart needs apiVersion, kind, and metadata fields.
+- Uses HelmChart API for fetching and packaging Helm charts.
+- The maximum size of the cache in number of indexes is set to 10.
+- The TTL of an index in the cache is set to 1 hour.
+- The interval at which the cache is purged of expired items is set to 10 minutes.
+- The spec.sourceRef field is optional and contains a reference to the custom resource
+  that the ExternalArtifact is based on.
+- Default service account used for decryption.
+- Default service account used for kubeconfig.
+- Default service account used for impersonation.
+- Enable leader election for controller manager. Enabling this will ensure there is
+  only one active controller manager.
+- The address of the events receiver.
+- The address the health endpoint binds to.
+- The maximum number of retries when failing to fetch artifacts over HTTP.
+- Allow use of the user.exec section in kubeconfigs provided for remote apply.
+- Allow that kubeconfigs provided for remote apply can disable TLS verification.
+- Percentage of jitter to apply to interval durations. A value of 10 will apply a
+  jitter of +/-10% to the interval duration. It cannot be negative, and must be less
+  than 100.
+- Interval at which non-leader candidates will wait to force acquire leadership.
+- Defines if the leader should step down voluntarily on controller manager shutdown.
+- Duration that the leading controller manager will retry refreshing leadership before
+  giving up.
+- Duration the LeaderElector clients should wait between tries of actions.
+- Log encoding format. Can be ‘json’ or ‘console’.
+- Log verbosity level. Can be one of ’trace’, ‘debug’, ‘info’, ’error’.
+- The maximum amount of time for which an object being reconciled will have to wait
+  before a retry.
+- The address the metric endpoint binds to.
+- The minimum amount of time for which an object being reconciled will have to wait
+  before a retry.
+- When set to true, references between custom resources are allowed only if the reference
+  and the referee are in the same namespace.
+- Disallow remote bases usage in Kustomize overlays. When this flag is enabled, all
+  resources must refer to local files included in the source artifact.
+- Field manager disallowed to perform changes on managed resources.
+- The interval at which failing dependencies are reevaluated.
+- The name of a Kubernetes secret in the RUNTIME_NAMESPACE containing a SOPS age decryption
+  key for fallback usage.
+- The maximum amount of entries in the LRU cache used for tokens.
+- The maximum duration for which a token would be considered unexpired. This is capped
+  at 1h.
+- Watch for custom resources in all namespaces, if set to false it will only watch
+  the runtime namespace.
+- Watch for ConfigMaps and Secrets with matching labels.
+- Watch for resources with matching labels e.g. ‘sharding.fluxcd.io/key=shard1’.
+- A comma separated list of key=value pairs defining the state of experimental features.
+- Garbage collection is performed when a Kustomization object is deleted.
+- Kustomization builds the YAML manifests located at the specified path.
+- When readyExpr is specified, the built-in readiness check is replaced by the logic
+  defined in the CEL expression.
+- A Flux GitRepository named `podinfo` is created that clones the `master` branch
+  and makes the repository content available as an Artifact inside the cluster.
+- A Flux Kustomization named `podinfo` is created that watches the GitRepository for
+  Artifact changes.
+- The Kustomization builds the YAML manifests located at the specified `.spec.path`,
+  sets the namespace of all objects to the `.spec.targetNamespace`, validates the
+  objects against the Kubernetes API and finally applies them on the cluster.
+- As specified by `.spec.interval`, every ten minutes, the Kustomization runs a server-side
+  apply dry-run to detect and correct drift inside the cluster.
+- When the Git revision changes, the manifests are reconciled automatically.
+- When `readyExpr` is specified, the built-in readiness check is replaced by the logic
+  defined in the CEL expression.
+- You can configure the controller to run both the CEL expression evaluation and the
+  built-in readiness check, with the `AdditiveCELDependencyCheck` feature gate.
+- To configure a Service Principal with Certificate credentials to access the Azure
+  Key Vault, a JSON or YAML object with `tenantId`, `clientId` and `clientCertificate`
+  fields must be configured as the `sops.azure-kv` value.
+- Kustomization reconciles Kubernetes manifests from Git repository
+- Interval must be at least 60 seconds
+- The .spec.kubeConfig field allows for secret-based or secret-less authentication.
+- You must leave metadata, kind or apiVersion in plain text.
+- The only supported encryption provider is SOPS.
+- Use token auth for Git operations
+- These annotations should be set in the Kubernetes YAML manifests included in the
+  Flux Kustomization source (Git, OCI, Bucket).
+- Using this policy for StatefulSets may result in potential data loss.
+- The Kustomization API defines a pipeline for fetching, decrypting, building, validating
+  and applying Kustomize overlays or plain Kubernetes manifests.
+- Use token auth for webapp-git-token
+- When the kustomize-controller fails to find credentials on the Kustomization object
+  itself, it will fall back to global decryption settings.
+- Components are an alpha feature in Kustomize and are therefore considered experimental
+  in Flux.
+- To convert the number or boolean to a string, wrap the variable with double quotes.
+- When the kustomize.toolkit.fluxcd.io/reconcile annotation is set to disabled, the
+  controller will no longer apply changes.
+- A reconciliation will be triggered for an event on a referenced Secret/ConfigMap
+  even if it’s marked as optional in the .spec.postBuild.substituteFrom field, including
+  deletion events.
+- The default number of concurrent HelmRelease reconciles is 4.
+- The default duration given to the reconciler to finish before forcibly stopping
+  is 600s.
+- The default address the health endpoint binds to is ':9440'.
+- The default maximum number of retries when failing to fetch artifacts over HTTP
+  is 9.
+- The default percentage of jitter to apply to interval durations is 5.
+- The default interval at which non-leader candidates will wait to force acquire leadership
+  is 35s.
+- The default duration that the leading controller manager will retry refreshing leadership
+  before giving up is 30s.
+- The default duration the LeaderElector clients should wait between tries of actions
+  is 5s.
+- The default log encoding format is 'json'.
+- The default log verbosity level is 'info'.
+- The default maximum amount of time for which an object being reconciled will have
+  to wait before a retry is 15m0s.
+- The default address the metric endpoint binds to is ':8080'.
+- The default minimum amount of time for which an object being reconciled will have
+  to wait before a retry is 750ms.
+- The default interval at which the OOM watcher will check for memory usage is 500ms.
+- The default memory threshold in percentage at which the OOM watcher will trigger
+  a graceful shutdown is 95.
+- The default interval at which failing dependencies are reevaluated is 30s.
+- The default algorithm to use to calculate the digest of Helm release storage snapshots
+  is 'sha256'.
+- The default maximum amount of entries in the LRU cache used for tokens is 100.
+- The default maximum duration for which a token would be considered unexpired is
+  1h.
+- The default value for watching for custom resources in all namespaces is true.
+- Uses Helm to manage releases and detect state drift.
+- Secret-based authentication requires a Secret containing a KubeConfig.
+- ConfigMap-based authentication is recommended.
+- The HelmRelease API allows for controller-driven reconciliation of Helm releases
+  via Helm actions such as install, upgrade, test, uninstall, and rollback.
+- If the Helm release does not exist, is not up-to-date, or has not been observed
+  to be made by the controller based on the HelmRelease’s history, then the controller
+  will install or upgrade the release.
+- Changes to the combined values will trigger a new Helm release.
+- Secret-less authentication building a kubeconfig dynamically with parameters stored
+  in a Kubernetes ConfigMap
+- When the Helm release in storage is up-to-date, the controller will check if the
+  release in the cluster has drifted from the desired state.
+- Recommended to use OCI-based Helm charts with OCIRepository as chartRef.
+- There is no support at this time for upgrading or deleting CRDs using Helm.
+- This was an explicit decision after much community discussion due to the danger
+  for unintentional data loss.
+- Changing the release name of a HelmRelease which has already been installed will
+  not rename the release.
+- The KubeConfig should be self-contained and not rely on binaries, the environment,
+  or credential files from the helm-controller Pod.
+- Instructs the helm-controller to forcefully perform a Helm install or upgrade using
+  annotations.
+- Allows resetting the number of retries while attempting to perform a Helm release.
+- The API allows for controller-driven reconciliation of Helm releases via Helm actions
+  such as install, upgrade, test, uninstall, and rollback.
+- Detects and corrects cluster state drift from the desired release state.
+- The `targetPath` supports the same formatting as you would supply as an argument
+  to the `helm` binary using `--set [path]=[value]`.
+- It is possible to achieve a likewise behavior as using ignore annotations by configuring
+  a JSON Pointer targeting a whole document.
+- KubeConfig should be self-contained and not rely on binaries, the environment, or
+  credential files from the helm-controller Pod.
+- Annotating the resource forces a one-off Helm install or upgrade if the <arbitrary-value>
+  differs from the last value the controller acted on.
+- Failed uninstall will be retried until they succeed. The HelmRelease object will
+  remain in a failed state until the uninstall succeeds.
+- Uses Kubernetes Events to report the result of each Helm action performed for a
+  HelmRelease.
+- Support for `.spec.summary` has been deprecated and will be removed in Alert API
+  v1 GA.
+- Events received by notification-controller are subject to rate limiting to reduce
+  the amount of duplicate alerts sent to external systems like Slack, Sentry, etc.
+- The interval of the rate limit is set by default to 5m but can be configured with
+  the --rate-limit-interval controller flag.
+- This type of Receiver does not perform any validation on the incoming request.
+- This type of Receiver does not support filtering using Events.
+- Cross-namespace references can be disabled for security reasons.
+- The secret token must be set in the webhook configuration.
+- The Receiver API is compatible with the kstatus specification.
+- Uses Slack Bot token from the secret indicated by the Provider.spec.secretRef.name
+  to authenticate with the Slack API
+- Create a Secret containing the Slack bot token
+- Uses OAuth2 with a bot token for authentication
+- Ensure to create necessary secrets for authentication.
+- Refer to the respective provider documentation for specific setup instructions.
+- Root SAS should not be used in production.
+- The token must have permissions to update the commit status for the GitHub repository
+  specified in `.spec.address`.
+- Default service account to use for workload identity when not specified in resources.
+- The ImagePolicy must have apiVersion, kind, and metadata fields.
+- The image-reflector-controller applies the latest tag selection policy every time
+  there’s an update in the referred ImageRepository.
+- For a publicly accessible image repository, there’s no need to provide a secret
+  reference.
+- When an ImageRepository has scan results and is suspended, this will not be reflected
+  in the ImageRepository’s Status until it is resumed.
+- The .spec.image field is required.
+- The .spec.interval field is required.
+- When an ImageRepository has scan results and is suspended, and this result later
+  disappears from the database due to e.g. the image-reflector-controller Pod being
+  evicted from a Node, this will not be reflected in the ImageRepository’s Status
+  until it is resumed.
+- An ImageRepository can be reconciling while failing at the same time.
+- An ImageUpdateAutomation needs apiVersion, kind, and metadata fields.
+- The source reference name is a required field.
+- The only supported source kind at the moment is GitRepository.
+- An ImageUpdateAutomation API defines an automation process that will update a Git
+  repository, based on ImagePolicy objects in the same namespace.
+- Uses Git for managing image updates
+- Interval must be specified in Go recognized duration string format
+- Known limitation of using the image-automation-controller with Gerrit involves handling
+  multiple concurrent Changes.
+- 'The source-watcher will log the revision detected in the format: <branch|tag>@sha1:<commit>'
+- As a user, this page normally should be a last resort, but you may be asked by a
+  maintainer to share a collected profile to debug e.g. performance issues.
+- To collect a profile, port-forward to the component’s metrics endpoint and collect
+  the data from the endpoint of choice.
+- If present, the namespace scope for this CLI request (default "flux-system")
+- timeout for this operation (default 5m0s)
+- Default branch is 'main'.
+- Default components include [source-controller,kustomize-controller,helm-controller,notification-controller].
+- Network policies are set to deny ingress access by default.
+- If true, the repository is setup or configured as private (default true)
+- Requires a GitHub personal access token exported as an env var
+- Default sync interval is 1 minute
+- Assumes repository is private by default
+- Create a GitLab API token and export it as an env var
+- When enabled, a Project Deploy Token is generated and will be used instead of the
+  SSH deploy token
+- If true, the owner is assumed to be a GitLab user; otherwise a group
+- Default cache directory (default "/opt/buildhome/.kube/cache")
+- If true, opt-out of response compression for all requests to the server
+- If true, the Kubernetes API server's certificate will not be checked for validity.
+  This will make your HTTPS connections insecure
+- The maximum burst queries-per-second of requests sent to the Kubernetes API. (default
+  300)
+- The maximum queries-per-second of requests sent to the Kubernetes API. (default
+  50)
+- Variable substitutions from Secrets and ConfigMaps are skipped in dry-run mode.
+- This command is in preview and under development.
+- While we try our best to not introduce breaking changes, they may occur when we
+  adapt to new features and/or find better ways to facilitate what it does.
+- The check command will perform a series of checks to validate that the local environment
+  is configured correctly and if the installed components are healthy.
+- Generates powershell completion scripts
+- source sync interval (default 1m0s)
+- The create alert command is in preview and under development.
+- Command is in preview and under development
+- Create or update a HelmRelease resource
+- Uses Bearer token for authentication
+- Some objects like Contact may return nulls in deeply nested fields
+- Create or update a Kubernetes secret for Helm repository authentication
+- 'source that contains the chart in the format ''<kind>/<name>'', where kind must
+  be one of: (HelmRepository, GitRepository, Bucket)'
+- pass credentials to all domains
+- Breaking changes may occur when adapting to new features.
+- Default cache directory is /opt/buildhome/.kube/cache
+- Insecure skip tls verify will make HTTPS connections insecure
+- If present, the namespace scope for this CLI request (default 'flux-system')
+- This command will print sensitive information if Kubernetes Secrets are referenced
+  in the HelmRelease .spec.valuesFrom field.
+- 'WARNING: This command will print sensitive information if Kubernetes Secrets are
+  referenced in the HelmRelease .spec.valuesFrom field.'
+- This command will print sensitive information if Kubernetes Secrets are referenced
+  in the Kustomization .spec.postBuild.substituteFrom field.
+- Delete sources and resources
+- Uses Bearer token for authentication to the API server
+- delete resource without asking for confirmation
+- This command deletes sources
+- allows the remote artifact to be pulled without TLS
+- 'Exit status: 0 No differences were found. 1 Differences were found. >1 diff failed
+  with an error.'
+- Exports artifacts objects in YAML format
+- Include credential secrets using --with-credentials
+- Export GitRepository sources in YAML format
+- Export HelmRepository sources in YAML format
+- Requires Bearer token for authentication
+- Default timeout for this operation is 5m0s
+- If present, the namespace scope for this CLI request defaults to 'flux-system'
+- Bearer token required for authentication to the API server
+- Get Receiver statuses
+- User could be a regular user or a service account in a namespace.
+- Get GitRepository source statuses
+- The install command deploys Flux in the specified namespace.
+- If a previous version is installed, then an in-place upgrade will be performed.
+- If true, deny ingress access to the toolkit controllers from other namespaces using
+  network policies (default true).
+- Default cache directory is '/opt/buildhome/.kube/cache'
+- If true, the Kubernetes API server's certificate will not be checked for validity.
+- The command can read the credentials from ‘~/.docker/config.json’ but they can also
+  be passed with –creds.
+- It can also login to a supported provider with the –provider flag.
+- Allows the remote artifacts list to be fetched without TLS
+- The migrate command must be run before a Flux minor version upgrade.
+- Cluster mode (default) migrates all the Flux custom resources stored in Kubernetes
+  etcd to their latest API version.
+- Only applicable with --path
+- Allows artifacts to be pulled without TLS
+- User could be a regular user or a service account in a namespace
+- Can read credentials from ‘~/.docker/config.json’
+- Supports pushing artifacts to multiple OCI repositories
+- Allows artifacts to be pushed without TLS
+- If insecure-skip-tls-verify is true, the Kubernetes API server's certificate will
+  not be checked for validity
+- Triggers a reconciliation of an ImageUpdateAutomation resource and waits for it
+  to finish.
+- Requires bearer token for authentication to the API server
+- The resume command marks a previously suspended Alert resource for reconciliation
+  and waits for it to finish the apply.
+- Resumes a suspended ImagePolicy resource
+- Resume a suspended ImageRepository resource for reconciliation.
+- Uses Bearer token for authentication to the API server.
+- Resume command marks a previously suspended HelmChart resource for reconciliation.
+- The command is in preview and under development.
+- Suspend resources
+- The suspend command disables the reconciliation of a Provider resource.
+- The command can read the credentials from ‘~/.docker/config.json’
+- CEL provides various macros for use in computing health check expressions.
+- Flux can authenticate to container registries using image pull secrets or IAM role
+  bindings.
+- Flux scans the container registry every five minutes for newer versions.
+- HelmCharts and HelmReleases CRDs conflict with other Helm controllers
+- Misconfiguring the HelmRelease.spec.chart may result in a HelmChart is not ready
+  error
+- This error is commonly found in low-memory environments like on Raspberry Pi 2 and
+  3 boards
+- Flux has a multi-component design
+- Flux integrates with many other systems
+- Ensure controller was not started with --insecure-kubeconfig-exec=true.
+- Ensure controller was not started with --insecure-kubeconfig-tls=true.
+- Ensure controller was started with --no-remote-bases=true.
+- Ensure Secret Decryption is enabled and secrets are not being held in Flux Sources
+  in plaintext.
+- Ensure helm-controller, kustomize-controller, notification-controller, image-reflector-controller
+  and image-automation-controller have cross namespace references disabled via --no-cross-namespace-refs=true.
+- Ensure helm-controller and kustomize-controller have a default service account set
+  via --default-service-account=<service-account-name>.
+- Ensure all Flux controllers have default service accounts set for workload identity
+  authentication via the --default-service-account=<service-account-name>, --default-decryption-service-account=<service-account-name>
+  and --default-kubeconfig-service-account=<service-account-name> flags.
+- Ensure Secret Decryption is configured correctly, such that each tenant have the
+  correct level of isolation.
+- Ensure additional Flux instances are deployed when mission-critical tenants/workloads
+  must be assured.
+- Ensure worker nodes are not being shared across tenants and the Flux components.
+- Ensure the Container Network Interface (CNI) being used in the cluster supports
+  Network Policies.
+- Ensure tenants are not able to revoke Platform Admin access to their clusters.
+- Managing secrets declaratively needs to be done right because of its broad security
+  implications.
+- Storing plain-text secrets in your desired state is not recommended.
+- Secrets should have an expiration time, and ideally such expiration should be enforced.
+- Access to secrets should be restricted to the servers and applications within the
+  environment they need to be accessed.
+- The scope of each secret must be carefully considered to decrease the blast radius
+  in case of breach.
+- Identify all potential single points of failure and ensure that there is a way around
+  them.
+- The provenance of the Flux release artifacts can be verified using the official
+  SLSA verifier tool.
+- Release candidates are intended for testing new features or improvements.
+- Patch releases are intended for critical bug fixes to the latest minor version.
+- Minor releases are intended for backwards compatible feature additions and improvements.
+- Major releases are intended for backwards incompatible feature additions and improvements.
+- For Flux Go packages we only support the latest stable release.
+- All releases must be signed with a GPG key.
+- SSH signatures are not supported at this time.
+- Flux is released at the same rate as Kubernetes, with three minor releases per year.
+- Flux is released at the same rate as Kubernetes, following their cadence of three
+  minor releases per year.
+- Critical bug fixes may be back-ported to the last three minor versions.
+- Flux does not allow the execution of Kustomize plugins which shell-out to arbitrary
+  binaries.
+- Flux takes instructions from Git as the Single Source of Truth.
+- Arbitrary clients cannot connect to any service in the flux-system namespace.
+- Webhook receivers are used to make Flux’s pull-based model as fast and responsive
+  as push-based pipelines.
+- It’s recommended to use Receivers wherever possible to shorten the feedback loop.
+- The document has not been updated for more than a year and may need review.
+- A GitRepository can be used as a source for Helm Release.
+- It is recommended that users who hit scaling issues publish the chart in a HelmRepository
+  for a better overall experience.
+- The interval of the rate limit is set by default to 5m, but it’s configurable.
+- Assuming you’ve installed Flux v1 to sync a directory with plain YAMLs from a private
+  Git repo
+- It is important to note that manifests are applied atomically to the cluster only
+  if server side validation of the apply passes.
+- One key change in Flux v2 is 'server-side apply' that enforces strict validation
+  of the manifests.
+- Uses basic auth with personal access token for Git operations
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '401 Unauthorized: Check your Bitbucket HTTP Access Token.'
+- '401 Unauthorized: Check personal access token permissions.'
+- '404 Not Found: Verify the repository or resource exists.'
+- 'Least Privilege Principle: Avoid using wildcard ''*'' in policies.'
+- 'Invalid token: Check your authentication token'
+- 'Rate limit exceeded: Reduce the frequency of API calls'
+- '404 Not Found: Check the workflow file path.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration.'
+- 'INVALID_CREDENTIALS: Check your DockerHub username and token.'
+- 'BUILD_FAILED: Ensure your Dockerfile is correctly configured.'
+- '409 Conflict: Ensure the image tag does not already exist.'
+- '403 Forbidden: Check permissions for the repository.'
+- '401 Unauthorized: Check your GitHub token and permissions'
+- 'validation failed: namespace/dev created (server dry run)'
+- 'Error from server (NotFound): error when creating namespaces ''dev'' not found'
+- Error in Jsonnet rendering may occur if dependencies are not met.
+- 'FetchFailed: Check remote Git repository availability.'
+- 'IncludeUnavailable: Ensure specified Include is available.'
+- 'StorageOperationFailed: Verify storage operations.'
+- 'FetchFailed: AuthenticationFailed'
+- 'IncludeUnavailable: GitOperationFailed'
+- 'StorageOperationFailed: AuthenticationFailed'
+- 'GitOperationFailed: failed to checkout and determine revision'
+- 'AuthenticationFailed: credentials in the referenced Secret are invalid.'
+- 'AuthenticationFailed: The credentials in the referenced Secret are invalid.'
+- 'OCIArtifactPullFailed: The remote OCI repository URL is temporarily unavailable.'
+- 'OCIArtifactLayerOperationFailed: A storage related failure when storing the artifact.'
+- 'OCIOperationFailed: failed to pull artifact from ''oci://ghcr.io/stefanprodan/manifests/podinfo'':
+  couldn''t find tag ''0.0.1'''
+- 'BucketOperationFailed: bucket ''my-new-bucket'' does not exist'
+- 'AuthenticationFailed: invalid credentials in the referenced Secret'
+- 'failed to construct Helm client: scheme "invalid" not supported'
+- 'InvalidChartReference: invalid chart reference: failed to get chart version for
+  remote reference: no ''podinfo'' chart with version matching ''9.*'' found'
+- 'FetchFailed: Human-readable message indicating the reason for the failure.'
+- 'StorageOperationFailed: Human-readable message indicating the reason for the failure.'
+- 'VerificationFailed: Human-readable message indicating the reason for the failure.'
+- '400 Bad Request: The request payload is not valid.'
+- '401 Unauthorized: Invalid token provided in the headers.'
+- 'Secret ''webhook-token'' not found: Ensure the Receiver''s Secret contains a token
+  key.'
+- '400 Bad Request: Check the request parameters and payload.'
+- '401 Unauthorized: Recheck the authentication credentials.'
+- '404 Not Found: Verify the endpoint URL.'
+- 'DependencyNotReady: failed to get the referred ImageRepository: referenced ImageRepository
+  does not exist'
+- 'ImageURLInvalid: could not parse reference'
+- 'AuthenticationFailed: invalid credentials'
+- 'Failure: generic misconfiguration'
+- 'ReadOperationFailed: database related failure'
+- 'AccessDenied: The credentials associated with the source are invalid.'
+- 'InvalidSourceConfiguration: The source configuration is invalid for the current
+  state of the source.'
+- 'GitOperationFailed: The specified branch does not exist in the remote source repository.'
+- 'UpdateFailed: The remote source repository prevents push or creation of new push
+  branch.'
+- 'InvalidPolicySelector: The policy selector is invalid, for example, label is too
+  long.'
+- '401 Unauthorized: Recheck token validity'
+- '401 Unauthorized: Check token validity'
+- '404 Not Found: Ensure the resource exists'
+- '429 Too Many Requests: Throttle your requests'
+- 'Exit status: 0 No differences were found.'
+- 1 Differences were found.
+- '>1 diff failed with an error.'
+- '401 Unauthorized: Check authentication details.'
+- 'Request entity too large: limit is 3145728'
+- unable to open the Badger database
+- 'SSH handshake failed: unable to authenticate, attempted methods [none publickey]'
+- 'The Service ''backend'' is invalid: spec.type: Unsupported value: ''Ingress'''
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - HelmRepository
+  - GitRepository
+  - personal access token
+  - Kubernetes secret
+  - ImageRepository
+  - ImagePolicy
+  - ImageUpdateAutomation
+  - IAM Roles
+  - IAM Users
+  - permission policies
+  - User-Assigned Managed Identities
+  - Applications
+  - Service Principal
+  - Managed Identities
+  - FederatedCredential
+  - ServiceAccount
+  - slack-bot-token
+  - github
+  - grafana-auth
+  - DOCKERHUB_USERNAME
+  - DOCKERHUB_TOKEN
+  - secrets.DOCKERHUB_USERNAME
+  - secrets.DOCKERHUB_TOKEN
+  - webhook-token
+  - Secret
+  - Provider
+  - OCIRepository
+  - source-controller
+  - docker credential helpers
+client:
+  base_url: https://fluxcd.io/flux
+  headers:
+    Accept: application/json
+source_metadata: null

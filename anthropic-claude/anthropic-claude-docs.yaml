@@ -1,0 +1,135 @@
+resources:
+- name: session_management
+  endpoint:
+    path: /session-management
+    method: POST
+    data_selector: session_id
+- name: Ephemeral Sessions
+  endpoint:
+    path: /api/ephemeral-sessions
+    method: POST
+    data_selector: sessionData
+- name: Long-Running Sessions
+  endpoint:
+    path: /api/long-running-sessions
+    method: POST
+    data_selector: sessionData
+- name: Hybrid Sessions
+  endpoint:
+    path: /api/hybrid-sessions
+    method: POST
+    data_selector: sessionData
+- name: Single Containers
+  endpoint:
+    path: /api/single-containers
+    method: POST
+    data_selector: sessionData
+- name: filesystem
+  endpoint:
+    path: /mcp
+    method: GET
+    data_selector: resources
+    params: {}
+- name: remote-api
+  endpoint:
+    path: /mcp/sse
+    method: GET
+    data_selector: messages
+    params: {}
+- name: get_weather
+  endpoint:
+    path: /current
+    method: GET
+- name: query_database
+  endpoint:
+    path: /query
+    method: POST
+- name: api_request
+  endpoint:
+    path: /api/request
+    method: POST
+- name: calculate
+  endpoint:
+    path: /calculate
+    method: POST
+- name: code-reviewer
+  endpoint:
+    path: /agents/code-reviewer
+    method: POST
+    data_selector: result
+    params: {}
+- name: test-runner
+  endpoint:
+    path: /agents/test-runner
+    method: POST
+    data_selector: result
+    params: {}
+- name: performance-optimizer
+  endpoint:
+    path: /agents/performance-optimizer
+    method: POST
+    data_selector: result
+    params: {}
+- name: security-reviewer
+  endpoint:
+    path: /agents/security-reviewer
+    method: POST
+    data_selector: result
+    params: {}
+- name: code-analyzer
+  endpoint:
+    path: /agents/code-analyzer
+    method: POST
+    data_selector: result
+    params: {}
+- name: slash_commands
+  endpoint:
+    path: /api/slash_commands
+    method: GET
+- name: todos
+  endpoint:
+    path: /todos
+    method: GET
+    data_selector: todos
+- name: delete_file
+  endpoint:
+    path: /v1/files/{file_id}
+    method: DEL
+    data_selector: id
+    params: {}
+notes:
+- Streaming input mode is the preferred way to use the Claude Agent SDK.
+- 'Single message input mode does not support: Direct image attachments in messages,
+  Dynamic message queueing, Real-time interruption, Hook integration, Natural multi-turn
+  conversations.'
+- Permission modes provide global control over how Claude uses tools.
+- Use default mode for controlled execution with normal permission checks.
+- The SDK automatically handles loading the conversation history and context when
+  you resume a session, allowing Claude to continue exactly where it left off.
+- The SDK should run inside a sandboxed container environment for security and isolation.
+- 'Recommended: 1GiB RAM, 5GiB of disk, and 1 CPU.'
+- 'Recommended: 1GiB RAM, 5GiB of disk, and 1 CPU (vary this based on your task as
+  needed)'
+- An agent session will not timeout, but we recommend setting a ‘maxTurns’ property
+  to prevent Claude from getting stuck in a loop.
+- Default behavior is an empty system prompt for maximum flexibility.
+- OAuth2 MCP authentication in-client is not currently supported.
+- Slash commands provide a way to control Claude Code sessions with special commands
+  that start with `/`.
+- Understand and track token usage for billing in the Claude Agent SDK
+- The Files API is currently in beta.
+errors:
+- 5 cents per hour running for hosting a container
+- 'Failed to connect: Check MCP server status'
+- Execution failed
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '200: Successful Response'
+- '4XX: Client Error'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.anthropic.com
+  headers:
+    Accept: application/json
+source_metadata: null
