@@ -1,0 +1,72 @@
+resources:
+- name: events
+  endpoint:
+    path: /api/v1/events
+    method: GET
+    data_selector: data
+    params: {}
+- name: memberships
+  endpoint:
+    path: /api/v1/memberships
+    method: GET
+    data_selector: data
+    params: {}
+- name: events
+  endpoint:
+    path: /api/v1/events
+    method: GET
+    data_selector: data
+    params: {}
+- name: memberships
+  endpoint:
+    path: /api/v1/memberships
+    method: GET
+    data_selector: data
+    params: {}
+- name: memberships
+  endpoint:
+    path: /api/memberships
+    method: GET
+    data_selector: data
+    params: {}
+notes:
+- Requires setup of OAuth2 for API access.
+- Requires setup of connected app in api
+- Data will be retained for 30 days, and should you wish to restore your account during
+  that period of time, please contact tech@prayerstorm.org to request this.
+- After the retention period, your account data will be deleted.
+- You may not transmit any Content that is unlawful, offensive, upsetting, intended
+  to disgust, threatening, libelous, defamatory, obscene or otherwise objectionable.
+- Uses OAuth2 with refresh token — requires setup of connected app in prayerstorm
+- Some objects may return nulls in deeply nested fields
+- Further support facilities are being worked on and will be integrated directly within
+  the apps once available.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+errors:
+- '401 Unauthorized: Check OAuth credentials.'
+- Notwithstanding any damages that You might incur, the entire liability of the Company
+  and any of its suppliers under any provision of this Agreement and your exclusive
+  remedy for all of the foregoing shall be limited to the amount actually paid by
+  You for the Application or through the Application or 0 GBP if You haven't purchased
+  anything through the Application.
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+client:
+  base_url: https://api.prayerstorm.org
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.prayerstorm.org/oauth/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null
