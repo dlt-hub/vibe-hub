@@ -1,0 +1,137 @@
+resources:
+- name: issues
+  endpoint:
+    path: issues
+    params:
+      state: open
+      since: '{incremental.start_value}'
+- name: issues
+  endpoint:
+    path: issues
+    params:
+      sort: updated
+      direction: desc
+      state: open
+      since:
+        type: incremental
+        cursor_path: updated_at
+        initial_value: '2024-01-25T11:21:28Z'
+- name: issue_comments
+  endpoint:
+    path: issues/{issue_number}/comments
+    params:
+      issue_number:
+        type: resolve
+        resource: issues
+        field: number
+- name: PageNumberPaginator
+  endpoint:
+    path: /dlt/sources/helpers/rest_client/paginators/PageNumberPaginator
+    method: GET
+    data_selector: items
+    params:
+      size: 100
+- name: pokemon
+  endpoint:
+    path: pokemon
+    params:
+      limit: 100
+- name: posts
+  endpoint:
+    path: posts
+    headers:
+      Content-Type: application/vnd.api+json
+      X-Custom-Header: posts-specific-value
+- name: comments
+  endpoint:
+    path: posts/{resources.posts.id}/comments
+    headers:
+      X-Post-ID: '{resources.posts.id}'
+      X-Post-Title: '{resources.posts.title}'
+- name: events
+  endpoint:
+    path: events
+    headers:
+      X-Since-Timestamp: '{incremental.start_value}'
+    incremental:
+      cursor_path: updated_at
+      initial_value: '2024-01-01T00:00:00Z'
+- name: comments
+  endpoint:
+    path: posts/{resources.posts.id}/comments
+    params:
+      sort: created_at
+- name: posts
+  processing_steps:
+  - filter: 'lambda x: x[''id''] < 10'
+  - map: lower_title
+  - yield_map: flatten_reactions
+- name: users
+  processing_steps:
+  - map: anonymize_email
+- name: issues
+  endpoint:
+    path: /repos/dlt-hub/dlt/issues
+    method: GET
+    data_selector: records
+    params:
+      per_page: 100
+      sort: updated
+      direction: desc
+- name: pokemons
+  endpoint:
+    path: /pokemon
+    method: GET
+    data_selector: results
+    params:
+      limit: 100
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Experimental Feature
+- By default, we set connection timeout and read timeout to 60 seconds, with 5 retry
+  attempts without backoff.
+- Make sure to store your access tokens and other sensitive information in the `secrets.toml`
+  file and never commit it to the version control system.
+- The REST API source automatically redacts sensitive query parameters in URLs when
+  logging or raising errors.
+- Supports various authentication strategies such as bearer tokens, API keys, and
+  HTTP basic auth.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - BearerTokenAuth
+  - APIKeyAuth
+  - HttpBasicAuth
+  - OAuth2ClientCredentials
+  - AuthConfigBase
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.github.com/repos/dlt-hub/dlt/
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+    cursor_path: updated_at
+    initial_value: pendulum.today().subtract(days=30).to_iso8601_string()
+    page_size_param: per_page
+    default_page_size: 100
+source_metadata: null

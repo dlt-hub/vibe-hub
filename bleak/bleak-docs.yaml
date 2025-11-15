@@ -1,0 +1,121 @@
+resources:
+- name: discovered_devices
+  endpoint:
+    path: /discovered_devices
+    method: GET
+    data_selector: devices
+- name: advertisement_data
+  endpoint:
+    path: /advertisement_data
+    method: GET
+    data_selector: advertisements
+- name: BleakScannerBlueZDBus
+  endpoint:
+    path: /bleak/backends/bluezdbus/scanner
+    method: GET
+    data_selector: scanner
+    params: {}
+- name: BleakClientBlueZDBus
+  endpoint:
+    path: /bleak/backends/bluezdbus/client
+    method: GET
+    data_selector: client
+    params: {}
+- name: scanner
+  endpoint:
+    path: /module-bleak.backends.p4android.scanner
+    method: GET
+    data_selector: records
+- name: client
+  endpoint:
+    path: /module-bleak.backends.p4android.client
+    method: GET
+    data_selector: records
+- name: BleakScannerBlueZDBus
+  endpoint:
+    path: /api/scanner
+    method: GET
+    data_selector: services
+    params: {}
+- name: BleakClientBlueZDBus
+  endpoint:
+    path: /api/client
+    method: GET
+    data_selector: clients
+    params: {}
+notes:
+- Do not name your script `bleak.py`! It will cause a circular import error.
+- Make sure you always get to call the disconnect method for a client before discarding
+  it;
+- Bleak requires the same asyncio run loop to be used for all of its operations.
+- Your program will not work correctly if you call it more than once.
+- If you are using the built in WiFi/Bluetooth module on a Raspberry Pi and are seeing
+  occasional “Not connected” errors, it may be due to wifi interference on the chip
+  level.
+- When changing the structure of services/characteristics on a device, remove the
+  device from BlueZ to read everything again.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- New Scanner object to allow for async device scanning.
+- Updated `txdbus` requirement to version 1.1.1
+- Implemented `write_gatt_descriptor` for Bluez backend.
+- Large change in Bluez backend handling of Twisted reactors.
+- Improved scanning data for macOS backend.
+- Improved error handling for .NET backend.
+- This is the preferred method to install bleak, as it will always install the most
+  recent stable release.
+- The develop branch can also be installed using pip.
+- Bleak is a GATT client software, capable of connecting to BLE devices acting as
+  GATT servers.
+- The scanner will listen for BLE advertisements, optionally filtering on advertised
+  services or other conditions.
+- On some devices, some characteristics may require authentication in order to read
+  or write the characteristic.
+- This method is not available on macOS. Instead of manually initiating pairing, the
+  user will be prompted to pair the device the first time that a characteristic that
+  requires authentication is read or written.
+- Unpairing will also disconnect the device.
+- Connecting to the host DBus from within a user namespace will fail.
+- Hardcode a UID with the BLEAK_DBUS_AUTH_UID environment variable.
+- There is no pairing functionality implemented in macOS right now.
+- Timeouts should be set accordingly for GATT read or write operations.
+- There is no pairing functionality implemented in Pythonista iOS app right now, since
+  it does not seem to be any explicit pairing methods in Pythonista _cb (CoreBluetooth
+  wrapper).
+- Pythonista _cb (CoreBluetooth wrapper) does not differentiate between data from
+  a notification and data from a read.
+- There is no pairing functionality implemented in macOS right now, since it does
+  not seem to be any explicit pairing methods in CoreBluetooth.
+- If the user doesn’t allow it, a BleakBluetoothNotAvailableError will raised every
+  time Bluetooth is accessed.
+- The python-for-android backend has not been fully tested.
+- Bluetooth needs permissions for access.
+- No pairing functionality implemented in Pythonista iOS app right now.
+- There is no functionality to get characteristic descriptors implemented in Pythonista
+  iOS app right now.
+errors:
+- 'ImportError: cannot import name ''BleakClient'' from partially initialized module
+  ''bleak'' (most likely due to a circular import)'
+- 'BleakBluetoothNotAvailableError: occurs when the checkbox for Bluetooth is disabled.'
+- 'BleakBluetoothNotAvailableError: if Bluetooth is not currently available'
+- 'BleakBluetoothNotAvailableError: This is raised when Bluetooth is accessed without
+  permission.'
+- Calling the bleak.BleakClient.pair() method will raise a NotImplementedError on
+  iOS.
+- Calling the bleak.BleakClient.read_gatt_descriptor() method will raise a NotImplementedError
+  on Pythonista iOS app.
+- Calling the bleak.BleakClient.write_gatt_descriptor() method will raise a NotImplementedError
+  on Pythonista iOS app.
+- 'BleakBluetoothNotAvailableError: Raised when Bluetooth access is denied.'
+- 'NotImplementedError: Calling bleak.BleakClient.pair() raises this error on iOS.'
+- 'NotImplementedError: Calling bleak.BleakClient.read_gatt_descriptor() raises this
+  error on Pythonista iOS app.'
+- 'NotImplementedError: Calling bleak.BleakClient.write_gatt_descriptor() raises this
+  error on Pythonista iOS app.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://github.com/hbldh/bleak
+  headers:
+    Accept: application/json
+source_metadata: null

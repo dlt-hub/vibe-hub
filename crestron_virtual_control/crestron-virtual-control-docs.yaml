@@ -1,0 +1,110 @@
+resources:
+- name: ProgramInstance
+  endpoint:
+    path: /VirtualControl/config/api/ProgramInstance/{ProgramInstanceId}
+    method: DELETE
+    data_selector: null
+    params: {}
+- name: ProgramInstance
+  endpoint:
+    path: /VirtualControl/config/api/ProgramInstance/[ProgramInstanceId]
+    method: DELETE
+    data_selector: null
+    params: {}
+- name: StopDebugging
+  endpoint:
+    path: /VirtualControl/config/api/StopDebugging
+    method: POST
+    data_selector: Actions
+- name: device_info
+  endpoint:
+    path: /VirtualControl/config/api/DeviceInfo
+    method: GET
+    data_selector: Device.DeviceInfo
+- name: Delete Program
+  endpoint:
+    path: /VirtualControl/config/api/ProgramLibrary/{ProgramId}/{FileType}
+    method: DELETE
+    data_selector: 'null'
+    params: {}
+- name: delete_program_file
+  endpoint:
+    path: /ProgramLibrary/{ProgramId}/{FileType}
+    method: DELETE
+    data_selector: Actions
+    params: {}
+- name: SystemTable
+  endpoint:
+    path: /VirtualControl/config/api/SystemTable
+    method: GET
+    data_selector: Device.Programs.SystemTable
+    params: {}
+- name: authentication_groups
+  endpoint:
+    path: /VirtualControl/config/api/Authentication/Groups
+    method: POST
+    data_selector: Actions
+    params: {}
+- name: Remove Authentication Group
+  endpoint:
+    path: /Authentication/Groups
+    method: POST
+- name: DeviceMap
+  endpoint:
+    path: /VirtualControl/config/api/DeviceMap
+    method: GET
+    data_selector: Device
+    params: {}
+- name: DeviceProgramMap
+  endpoint:
+    path: /VirtualControl/config/api/DeviceProgramMap/{DeviceProgramMapId}
+    method: GET
+    data_selector: Device
+    params:
+      DeviceProgramMapId: required
+- name: ethernet
+  endpoint:
+    path: /VirtualControl/config/api/Ethernet
+    method: GET
+    data_selector: Device.Ethernet
+    params: {}
+- name: IpTableByPID
+  endpoint:
+    path: /VirtualControl/config/api/IpTableByPID/{ProgramInstanceId}
+    method: GET
+    data_selector: Device.Programs.IpTableByPID
+    params:
+      ProgramInstanceId: required
+- name: license_registry
+  endpoint:
+    path: /VirtualControl/config/api/LicenseRegistry
+    method: GET
+    data_selector: Device.LicenseRegistry.Licenses
+    params: {}
+- name: RestartService
+  endpoint:
+    path: /VirtualControl/config/api/RestartService
+    method: POST
+    data_selector: Actions
+notes:
+- When a program instance (room) is created, it will move from the initializing to
+  running state in sequence. If a DELETE method is issued for the room during this
+  time, an INVALID DELETE OPERATION ERROR is returned. Waiting a few seconds between
+  the POST and DELETE requests avoids this error.
+errors:
+- '200: Successful operation'
+- '200: Invalid input (returns ''StatusInfo'': ''INVALID ID'')'
+- '400: Bad request error'
+- '404: Not found'
+- '500: Internal server error'
+- '503: Service unavailable'
+- '200: Invalid input (returns "StatusInfo": "INVALID ID")'
+- '200: Invalid input (returns "StatusInfo": "FILE NOT FOUND ERROR")'
+- '200: Invalid input (returns "StatusInfo": "INVALID GROUP")'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://[ServerURL]
+  headers:
+    accept: application/json
+source_metadata: null

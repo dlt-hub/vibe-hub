@@ -1,0 +1,131 @@
+resources:
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: protected_function
+  endpoint:
+    path: /protected_function
+    method: GET
+    data_selector: results
+    params: {}
+- name: record
+  endpoint:
+    path: /stack/record
+    method: GET
+    data_selector: records
+- name: probe
+  endpoint:
+    path: /stack/probe
+    method: GET
+    data_selector: records
+- name: supported_compilers
+  endpoint:
+    path: /supported_compilers
+    method: GET
+    data_selector: compilers
+- name: supported_lua_version
+  endpoint:
+    path: /supported_lua_version
+    method: GET
+    data_selector: lua_versions
+- name: environment
+  endpoint:
+    path: /sol/environment
+    method: GET
+    data_selector: records
+- name: as_returns_example
+  endpoint:
+    path: /examples/as_returns
+    method: GET
+    data_selector: results
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Uses metatables and userdata in Lua for their implementation
+- Runtime extensible usertypes
+- Always specify your bases if you plan to retrieve a base class using the sol abstraction
+  directly and not casting yourself.
+- You must list ALL base classes, including (if there were any) the base classes of
+  A, and the base classes of those base classes, etc. if you want sol/Lua to handle
+  them automagically.
+- sol does not support down-casting from a base class to a derived class at runtime.
+- Specify all base class member variables and member functions to avoid current implementation
+  caveats regarding automatic base member lookup.
+- Note that performance for member function calls goes down by a fixed overhead if
+  you also bind variables as well as member functions.
+- Provides error handling for Lua errors and C++ exceptions
+- Please do not throw this error type yourself. It belongs to the library and we do
+  some information appending at the front.
+- If an eror is thrown by sol, it is going to be of this type.
+- A powerful way to allow reuse of C++ code from Lua beyond just registering functions
+- Please note that the colon is necessary to “automatically” pass the `this`/`self`
+  argument to Lua methods
+- You can push types classified as userdata before you register a usertype.
+- 'Lua 5.1 has different semantics for pairs and ipairs: be wary.'
+- Note that this will not work well in Lua 5.1, as it has explicit table checks and
+  does not check metamethods, even when pairs or ipairs is passed a table.
+- This namespace is not thoroughly documented as the majority of its interface is
+  mercurial and subject to change between releases to either heavily boost performance
+  or improve the sol api.
+- Newer features will be targeted at compilers like VC++, GCC v8.x, and Clang v7.x.
+- Yes, you can turn off exceptions in sol with `#define SOL_NO_EXCEPTIONS` before
+  including or by passing the command line argument that defines `SOL_NO_EXCEPTIONS`.
+- We don’t recommend it unless you’re playing with a Lua distro that also doesn’t
+  play nice with exceptions (like non-x64 versions of LuaJIT).
+- To make this not be the case, you can set a panic function directly with `lua_atpanic(
+  lua, my_panic_function );` or when you create the `sol::state` with `sol::state
+  lua(my_panic_function);`.
+- sol was designed to be correct and fast, and in the pursuit of both uses the regular
+  `lua_to{x}` functions of Lua rather than the checking versions (`lua_check{X}`)
+  functions.
+- By default, it is off and remains off unless you define this, even in debug mode.
+- One of the few libraries with optional support!
+- Basically the fastest in almost all respects.
+- This header’s only purpose is for internal use to make sure sol compiles across
+  all platforms / distributions with no errors or missing Lua functionality.
+- As of the writing of this documentation (May 17th, 2018), sol seems to take the
+  cake in most categories for speed!
+- Lua has no thread safety. sol does not force thread safety bottlenecks anywhere.
+- Assume any access or any call on Lua affects the whole sol::state/lua_State*.
+- Leaving it off will result in the wrong constructor to be called, for either sol::table
+  or sol::environment.
+- PLEASE benchmark / profile your code before you start invoking these, as some of
+  them trade in readability / clarity for performance.
+- The <codecvt> header is no longer used and sol3 now converts utf8, utf16, and utf32
+  with internal routines.
+- If you have a problem with the transcoding, please file an issue report.
+- All licenses are MIT and CC0, safe for commercial use.
+- nested allows serialization of maps with vectors inside, and vice-versa
+- sol does not take ownership of raw pointers, returned from functions or set through
+  the set functions.
+- The layout of memory described below does not take into account alignment.
+- Lua will clean up the memory itself but does not know about any destruction semantics
+  T may have imposed.
+- Uses C++ template for multiple return types
+- Example usage with Lua scripting
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'lua: error: <error_message>'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://sol3.2.3.api.com
+  headers:
+    Accept: application/json
+source_metadata: null

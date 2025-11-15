@@ -1,0 +1,219 @@
+resources:
+- name: OptimizationInterrupt
+  endpoint:
+    path: /openTSNE/OptimizationInterrupt
+    method: GET
+    data_selector: error
+- name: PartialTSNEEmbedding
+  endpoint:
+    path: /openTSNE/PartialTSNEEmbedding
+    method: GET
+    data_selector: embedding
+- name: TSNE
+  endpoint:
+    path: /openTSNE/TSNE
+    method: GET
+    data_selector: n_components
+- name: TSNEEmbedding
+  endpoint:
+    path: /modules/openTSNE/tsne.html#TSNEEmbedding
+    method: GET
+    data_selector: embedding
+- name: installation_conda
+  endpoint:
+    path: /conda
+    method: GET
+    data_selector: installation
+    params: {}
+- name: installation_pypi
+  endpoint:
+    path: /pypi
+    method: GET
+    data_selector: installation
+    params: {}
+- name: installation_source
+  endpoint:
+    path: /source
+    method: GET
+    data_selector: installation
+    params: {}
+- name: data_set
+  endpoint:
+    path: http://file.biolab.si/opentsne/benchmark/macosko_2015.pkl.gz
+    method: GET
+    data_selector: data
+    params: {}
+- name: data
+  endpoint:
+    path: http://file.biolab.si/opentsne/benchmark/macosko_2015.pkl.gz
+    method: GET
+    data_selector: pca_50
+    params: {}
+- name: embedding_standard
+  endpoint:
+    path: /standard_tsne
+    method: POST
+    data_selector: embedding_standard
+    params:
+      perplexity: 30
+      initialization: random
+      metric: euclidean
+      n_jobs: 8
+      random_state: 3
+- name: embedding_pca
+  endpoint:
+    path: /pca_tsne
+    method: POST
+    data_selector: embedding_pca
+    params:
+      perplexity: 30
+      initialization: pca
+      metric: euclidean
+      n_jobs: 8
+      random_state: 3
+- name: embedding_cosine
+  endpoint:
+    path: /cosine_tsne
+    method: POST
+    data_selector: embedding_cosine
+    params:
+      perplexity: 30
+      initialization: random
+      metric: cosine
+      n_jobs: 8
+      random_state: 3
+- name: embedding_pca_cosine
+  endpoint:
+    path: /pca_cosine_tsne
+    method: POST
+    data_selector: embedding_pca_cosine
+    params:
+      perplexity: 30
+      initialization: pca
+      metric: cosine
+      n_jobs: 8
+      random_state: 3
+- name: embedding_pca_cosine_500
+  endpoint:
+    path: /pca_cosine_tsne_500
+    method: POST
+    data_selector: embedding_pca_cosine_500
+    params:
+      perplexity: 500
+      initialization: pca
+      metric: cosine
+      n_jobs: 8
+      random_state: 3
+- name: embedding_annealing
+  endpoint:
+    path: /annealing_tsne
+    method: POST
+    data_selector: embedding_annealing
+    params:
+      perplexity: 500
+      metric: cosine
+      initialization: pca
+      n_jobs: 8
+      random_state: 3
+- name: embedding_multiscale
+  endpoint:
+    path: /multiscale_tsne
+    method: POST
+    data_selector: embedding_multiscale
+    params:
+      n_jobs: 8
+      random_state: 3
+- name: sample_embedding
+  endpoint:
+    path: /embedding/sample
+    method: POST
+    data_selector: embedding_results
+    params: {}
+- name: macosko_data
+  endpoint:
+    path: http://file.biolab.si/opentsne/benchmark/macosko_2015.pkl.gz
+    method: GET
+    data_selector: data
+    params: {}
+- name: jitter
+  endpoint:
+    path: /openTSNE/initialization/jitter
+    method: GET
+    data_selector: returns
+    params: {}
+- name: pca
+  endpoint:
+    path: /openTSNE/initialization/pca
+    method: GET
+    data_selector: returns
+    params: {}
+- name: random
+  endpoint:
+    path: /openTSNE/initialization/random
+    method: GET
+    data_selector: returns
+    params: {}
+- name: rescale
+  endpoint:
+    path: /openTSNE/initialization/rescale
+    method: GET
+    data_selector: returns
+    params: {}
+- name: spectral
+  endpoint:
+    path: /openTSNE/initialization/spectral
+    method: GET
+    data_selector: returns
+    params: {}
+- name: PrecomputedAffinities
+  endpoint:
+    path: /affinity/PrecomputedAffinities
+    method: GET
+    data_selector: affinities
+    params: {}
+- name: Uniform
+  endpoint:
+    path: /affinity/Uniform
+    method: GET
+    data_selector: data
+    params: {}
+- name: Callback
+  endpoint:
+    path: /openTSNE/callbacks
+    method: GET
+    data_selector: callbacks
+    params: {}
+- name: TSNE
+  endpoint:
+    path: /openTSNE/sklearn/TSNE
+    method: GET
+notes:
+- t-SNE is not designed to embed into higher dimension and acceleration schemes break
+  down and are not fully implemented.
+- openTSNE requires a C/C++ compiler to be available on the system
+- numpy must be pre-installed in the active environment
+- To utilize multiple threads, the C/C++ compiler must support OpenMP
+- Consider installing FFTW3 prior to installation for better performance
+- Care must be taken to properly limit the number of threads available when running
+  benchmarks on machines with multiple cores using Intel’s Math Kernel Library (MKL).
+- Each numba-dependent library should be run for a warm-up round so numba can perform
+  its bytecode compilation without negatively affecting the benchmarks.
+- openTSNE requires a C/C++ compiler to be available on the system.
+- numpy must be pre-installed in the active environment.
+- The C/C++ compiler must support OpenMP for multi-threading.
+- Consider installing FFTW3 prior to installation for better performance.
+- This notebook demonstrates basic usage of the openTSNE library. This is sufficient
+  for almost all use-cases.
+- Requires setup of connected app in api
+- Embedding large data sets typically requires more care.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Uses the Macosko 2015 mouse retina data set as an example.
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: http://file.biolab.si/opentsne/benchmark
+  headers:
+    Accept: application/json
+source_metadata: null
