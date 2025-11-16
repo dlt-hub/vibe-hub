@@ -1,0 +1,103 @@
+resources:
+- name: topic
+  endpoint:
+    path: /topic
+    method: POST
+    data_selector: topic_description
+    params:
+      broker: kafka://kafka.example.com
+      store: rocksdb://
+- name: channel
+  endpoint:
+    path: /channel
+    method: POST
+    data_selector: channel_description
+    params: {}
+- name: transfer_counts
+  endpoint:
+    path: /app/Table/transfer_counts
+    method: GET
+    data_selector: records
+- name: worker
+  endpoint:
+    path: /faust/worker
+    method: GET
+    data_selector: records
+- name: app
+  endpoint:
+    path: /faust/app
+    method: GET
+    data_selector: records
+- name: transfer_counts
+  endpoint:
+    path: /services/data/vXX.X/sobjects/TransferCounts
+    method: POST
+    data_selector: records
+- name: on_partitions_revoked
+  endpoint:
+    path: /faust/on_partitions_revoked
+    method: CONNECT
+    data_selector: revoked
+- name: on_partitions_assigned
+  endpoint:
+    path: /faust/on_partitions_assigned
+    method: CONNECT
+    data_selector: assigned
+- name: on_configured
+  endpoint:
+    path: /faust/on_configured
+    method: CONNECT
+    data_selector: conf
+- name: on_before_configured
+  endpoint:
+    path: /faust/on_before_configured
+    method: CONNECT
+    data_selector: app
+- name: on_after_configured
+  endpoint:
+    path: /faust/on_after_configured
+    method: CONNECT
+    data_selector: app
+- name: on_worker_init
+  endpoint:
+    path: /faust/on_worker_init
+    method: CONNECT
+    data_selector: app
+- name: topic_allow_declare
+  endpoint:
+    path: /topic_allow_declare
+    method: GET
+    data_selector: records
+- name: topic_disable_leader
+  endpoint:
+    path: /topic_disable_leader
+    method: GET
+    data_selector: records
+notes:
+- RocksDB recovers tables in seconds or less, is embedded and don’t require a server
+  or additional infrastructure.
+- This docstring is used as the command help in --help.
+- The app can be started in 'client-only' mode for sending agent RPC requests.
+- Use 'autodiscover=True' to traverse the directory for agents, timers, tasks.
+- The changelog topic description to use for this table is only for advanced users
+  who know what they’re doing.
+- If enabled, timers will only execute on one of the worker instances at a time.
+- This setting disables the creation of internal topics.
+- Some Kafka managers does not allow services to create topics, in that case you should
+  set this to `False`.
+- Enable web server and other web components.
+- How often we cleanup tables to remove expired entries.
+- The number of standby replicas for each table.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+auth_info:
+  mentioned_objects:
+  - Credentials
+  - SASLCredentials
+  - GSSAPICredentials
+  - SSLCredentials
+client:
+  base_url: https://faust.readthedocs.io
+  headers:
+    Accept: application/json
+source_metadata: null

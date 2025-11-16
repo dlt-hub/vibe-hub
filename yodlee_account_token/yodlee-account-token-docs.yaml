@@ -1,0 +1,370 @@
+resources:
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: account_data
+  endpoint:
+    path: /account-token/partner/paymentprocessor/acountholder
+    method: GET
+- name: create_account_token
+  endpoint:
+    path: /paymentProcessor/token
+    method: POST
+- name: delete_account_token
+  endpoint:
+    path: /paymentProcessor/token
+    method: DELETE
+- name: get_account_holder_details
+  endpoint:
+    path: /partner/paymentProcessor/account/holder
+    method: GET
+- name: get_account_details
+  endpoint:
+    path: /partner/paymentProcessor/account
+    method: GET
+- name: get_account_balance
+  endpoint:
+    path: /partner/paymentProcessor/account/balance
+    method: GET
+- name: account_verification
+  endpoint:
+    path: /products/yodlee/account-verification
+    method: GET
+- name: User Data
+  endpoint:
+    path: /services/data/v1.0/userData
+    method: GET
+    data_selector: records
+    params: {}
+- name: Create Account Token
+  endpoint:
+    path: /products/yodlee/account-token/docs/api-reference#account-token-paymentprocessortoken-post
+    method: POST
+- name: Payment Processor
+  endpoint:
+    path: /products/yodlee/account-token/docs/api-reference#account-token-partnerpaymentprocessoraccountholder-get
+    method: GET
+- name: GET account balance
+  endpoint:
+    path: /products/yodlee/account-token/docs/api-reference#account-token-partnerpaymentprocessoraccountbalance-get
+    method: GET
+- name: transaction
+  endpoint:
+    path: /services/data/v1.0/transactions
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: account
+  endpoint:
+    path: /services/data/v1.0/accounts
+    method: GET
+    data_selector: records
+    params: {}
+- name: accounts
+  endpoint:
+    path: /accounts
+    method: GET
+- name: account_details
+  endpoint:
+    path: /accounts/{accountId}
+    method: GET
+- name: verified_accounts
+  endpoint:
+    path: /verification/verifiedAccounts
+    method: GET
+- name: provider_accounts
+  endpoint:
+    path: /providerAccounts
+    method: GET
+- name: provider_account_details
+  endpoint:
+    path: /providerAccounts/{providerAccountId}
+    method: GET
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Demo Version allows testing with up to five test accounts
+- Engage Version supports up to 100 Users with prior approval
+- Uses OAuth2 with refresh token — requires setup of connected app in Yodlee
+- No volume limitations for real-time access to User Data
+- Developer is prohibited from using the API for execution of a batch of 'instant'
+  refreshes for all or a portion of User Accounts.
+- Developer can execute an Account refresh any time a User logs into the Integrated
+  Service ('Refresh at Login').
+- Developer shall follow a written privacy notice describing how it uses, collects,
+  stores, handles and shares Data.
+- Developer shall only transfer User Data in a secure and confidential manner, including,
+  at a minimum, encrypting the data in accordance with best practices in the financial
+  services industry.
+- FastLink supports multiple regions and languages.
+- Some objects like Account may return nulls in deeply nested fields
+- FastLink supports regions including United States, Canada, Latin America, United
+  Kingdom, Australia/New Zealand, and South Africa.
+- The app localizes to multiple languages including US English, UK English, Canadian
+  English, French Canadian, Australian English, France French, Spain Spanish, Mexico
+  Spanish, Dutch, Portuguese, Japanese, German, Italian, Mandarin, Hindi, and Arabic.
+- To access FastLink, you have to enter your Company Name in the Global Settings section
+  of the FastLink Configuration Tool and publish the configuration to your development
+  and production environments.
+- You must pass a valid accessToken to authenticate your invocation of the FastLink
+  application.
+- You **MUST NOT** open the external URL within a WKWebView.
+- While loading FastLink in the WebView, additional params like deep-linking flow
+  attributes, callback details, etc., can be passed as query parameters along with
+  the mandatory configName parameter.
+- The intentUrl attribute is used to get the control back to the native app from an
+  external application.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Y007 : Authorization header missing'
+- 'Y008 : Invalid token in authorization header'
+- 'Y800 : Invalid value for processorToken'
+- 'Y016 : processorToken header missing'
+- 401 Unauthorized
+- 404 Not Found
+- 'E101: Mandatory configuration is missing, please publish configuration from configuration
+  tool to access FastLink.'
+- code: E700
+  title: INVALID_PARAMETER_OR_VALUE
+  message: Invalid value for flow
+- code: E701
+  title: INVALID_PARAMETER_OR_VALUE
+  message: Invalid value for providerId
+- code: E702
+  title: INVALID_PARAMETER_OR_VALUE
+  message: Invalid value for providerAccountId
+- code: E703
+  title: INVALID_PARAMETER_OR_VALUE
+  message: Invalid value for accountId
+- code: E704
+  title: INVALID_PARAMETER_OR_VALUE
+  message: Invalid value for container
+- code: E705
+  title: INVALID_PARAMETER_OR_VALUE
+  message: Invalid value for bankTransferCode
+- code: E800
+  title: INVALID_PARAMETER_OR_VALUE
+  message: Generic Application Error
+- code: E801
+  title: INVALID_PARAMETER_OR_VALUE
+  message: Provider not supported
+- code: E802
+  title: INVALID_PARAMETER_OR_VALUE
+  message: Invalid value for providerAccountId
+- code: E803
+  title: INVALID_PARAMETER_OR_VALUE
+  message: Operation not allowed for providerAccountId
+- code: E804
+  title: INVALID_PARAMETER_OR_VALUE
+  message: Invalid value for accountId
+- code: E600
+  title: INVALID_PARAMETER_OR_VALUE
+  message: Null value for configName
+- code: E601
+  title: INVALID_PARAMETER_OR_VALUE
+  message: Invalid value for configName
+- code: E602
+  title: PARAMETER_VALUE_INELIGIBLE
+  message: Provided configName is not supported in subscribed workflow
+- code: E806
+  title: INVALID_OB_APP_NAME
+  message: The specified OB application name is invalid or not registered
+- code: E807
+  title: OB_APP_NAME_MISSING
+  message: The OB application name is missing
+- code: E100
+  title: TECH_ERROR
+  message: Generic Functional Error.
+- code: E101
+  title: CONFIGURATION_MISSING
+  message: Mandatory configuration is missing.
+- code: E102
+  title: REFRESH_TOO_SOON_ERROR
+  message: New refresh has been attempted very soon.
+- code: E103
+  title: REFRESH_INPROGRESS_ERROR
+  message: Account Refresh already in progress.
+- code: E104
+  title: UPDATE_NOT_ALLOWED_ERROR
+  message: Account update is currently not allowed.
+- code: E105
+  title: LOCALE_NOT_SUPPORTED
+  message: Locale provided is not supported.
+- code: E110
+  title: MAX_ATTEMPTS_REACHED
+  message: The maximum attempt limit has been reached.
+- code: E111
+  title: NULL_OR_INVALID_LAST_NAME
+  message: Missing required data during registration.
+- code: E112
+  title: MAX_ATTEMPTS_REACHED_FOR_ONE_TIME_PASSWORD
+  message: Exceeded the attempt threshold for One-time password.
+- code: E113
+  title: ACCOUNT_LINKING_UNAVAILABLE
+  message: Unable to link account.
+- code: N100
+  title: TECH_ERROR
+  message: Internal Server Error.
+- code: N101
+  title: INVALID_COBAPP
+  message: Invalid cobAppName.
+- code: N102
+  title: MISMATCH_COBAPP
+  message: cobApp's data is invalid.
+- code: N103
+  title: INVALID_ACCESS
+  message: Invalid access URL.
+- code: N104
+  title: COOKIE_DISABLED
+  message: Cookie is disabled by the user or not supported in the user's browser.
+- code: N105
+  title: MEM_PREF_KEY_TAMPERED
+  message: The member preference key is tampered.
+- code: N106
+  title: INVALID_APP_ACCESS
+  message: Invalid application access.
+- code: N400
+  title: LOGIN_ERROR
+  message: Authentication is failed.
+- code: N401
+  title: EMPTY_TOKEN
+  message: Token is mandatory.
+- code: N402
+  title: INVALID_BEARER_TOKEN
+  message: Invalid token format.
+- code: N403
+  title: INVALID_TOKEN
+  message: Invalid token in the authorization header.
+- code: N404
+  title: EMPTY_SAML_ISSUER
+  message: SAML Issuer ID is mandatory.
+- code: N405
+  title: EMPTY_SAML_RESPONSE
+  message: SAML Source is mandatory.
+- code: N500
+  title: SESSION_ERROR
+  message: Session is invalid.
+- code: N501
+  title: STALE_SESSION
+  message: Stale session is found or the token is invalid.
+- code: N502
+  title: SESSION_MISMATCH
+  message: Token is mismatched.
+- code: N503
+  title: USER_SESSION_TIMED_OUT
+  message: User session has timed out.
+- code: N504
+  title: YSL_SESSION_ERROR
+  message: Invalid cobrand/user session.
+- code: N505
+  title: USER_LOGOUT
+  message: User is logged out.
+- code: N700
+  title: SERVER_ERROR
+  message: Server is not reachable.
+- code: N701
+  title: ECONNREFUSED
+  message: Server is inactive.
+- code: N702
+  title: ECONNRESET
+  message: Server Connection is closed due to time out or reboot.
+- code: N703
+  title: ENOTFOUND
+  message: Server is not found.
+- code: N704
+  title: ETIMEDOUT
+  message: Server Connection is timed out.
+- code: N705
+  title: ESOCKETTIMEDOUT
+  message: Server Connection has failed.
+- code: N706
+  title: YSL_SERVER_ERROR
+  message: Server Connection is unavailable due to database errors.
+- 'ACCOUNT_LOCKED: Your Account is Locked. You''re locked out of your account. Please
+  visit <site_name> to fix.'
+- 'ADDL_AUTHENTICATION_REQUIRED: Additional Information Required. Your security authentication
+  timed out or a new security authentication is required. Please try again.'
+- 'BETA_SITE_DEV_IN_PROGRESS: Site Support in Process. We''re still in the process
+  of building support for this site. Please try again later.'
+- 'CREDENTIALS_UPDATE_NEEDED: Action Required at <site_name>. Please visit <site_name>
+  to update your account information or password.'
+- 'INCORRECT_CREDENTIALS: Incorrect Credentials. The credentials you''ve entered are
+  incorrect. Verify that CAPS LOCK is not on and that the desired financial institution
+  was selected.'
+- 'DATA_NOT_AVAILABLE: Data is Unavailable. We''re unable to find the requested account
+  type for this site or you have closed the account.'
+- 'PROPERTY_VALUE_NOT_AVAILABLE: Property Value is Unavailable. Please ensure the
+  property information is correct or enter it manually.'
+- 'INVALID_ADDL_INFO_PROVIDED: Invalid Security Info. The information you provided
+  is incorrect. Please try again or visit <site_name> to verify your details.'
+- 'REQUEST_TIME_OUT: Unable to Link Account. We''re experiencing trouble linking your
+  account at this time. Would you like to link a different account?'
+- 'SITE_BLOCKING_ERROR: Site is Blocked. We''re unable to add your account because
+  this site is blocked. Please contact <site_name>''s customer support to fix.'
+- 'UNEXPECTED_SITE_ERROR: Technical Error. We''re unable to link your account at this
+  time. Please try again later and contact <co-brand name> support team if the issue
+  persists.'
+- 'SITE_NOT_SUPPORTED: Site Not Supported. We''re unable to support this site.'
+- 'DATASET_NOT_SUPPORTED: Technical Error. We''re unable to link your account at this
+  time. Please try again later and contact <co-brand name> support team if the issue
+  persists.'
+- 'SITE_UNAVAILABLE: Site is Down. We’re unable to link your account at this time.
+  Please try again in 4-24 hours.'
+- 'TECH_ERROR: Technical Error. We''re unable to link your account at this time. Please
+  try again later and contact <co-brand name> support team if the issue persists.'
+- 'USER_ACTION_NEEDED_AT_SITE: Action Required at <site_name>. Please visit <site_name>
+  to update your account information or password.'
+- 'SITE_SESSION_INVALIDATED: Session Ended. The session has ended due to security
+  reasons or you are already logged in. Please make sure you''re logged out on other
+  devices and try again.'
+- 'ENROLLMENT_REQUIRED_FOR_DATASET: Technical Error. We''re unable to link your account
+  at this time. Please try again later and contact <co-brand name> support team if
+  the issue persists.'
+- 'DATA_RETRIEVAL_FAILED: Technical Error. We''re unable to link your account at this
+  time. Please try again later and contact <co-brand name> support team if the issue
+  persists.'
+- 'PARTIAL_DATA_RETRIEVED: Technical Error. We''re unable to link your account at
+  this time. Please try again later and contact <co-brand name> support team if the
+  issue persists.'
+- 'NEW_AUTHENTICATION_REQUIRED: New Authentication Required. This site''s method of
+  authentication has changed. Please follow the new sign-on process.'
+- You've exceeded the number of attempts allowed to enter your authentication code.
+- We're facing a technical issue. Please contact _COMPANY_NAME_ support team or try
+  again later.
+- You do not have any accounts eligible for verification with this site. Verification
+  eligibility is determined by _COMPANY_NAME_ based on the type of data available
+  for this account.
+- 'INCORRECT_OAUTH_TOKEN: The consent you provided to access account information at
+  <site_name> has some issues. Click Update to re-authorize permissions.'
+- 'TECH_ERROR: We''re unable to link your account at this time. Please try again later
+  and contact <site_name> support team if the issue persists.'
+- 'MIGRATION_IN_PROGRESS: Upgrading your account connection is taking more time than
+  expected. Please check your account status later.'
+- 'ACTION_ABANDONED: We are unable to link your account because the flow at the bank
+  site was incomplete. Please try again later.'
+- 'GENERIC_APP_ERROR: Upgrading your account connection seems to have a temporary
+  issue. Please try again later.'
+- 'Could not launch: Ensure the URL is valid'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://developer.yodlee.com
+  auth:
+    type: oauth2
+source_metadata: null

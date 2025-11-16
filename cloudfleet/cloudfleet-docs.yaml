@@ -1,0 +1,56 @@
+resources:
+- name: cfke_cfke_cluster
+  endpoint:
+    path: /cloudfleet_cfke_cluster/cfke_test
+    method: POST
+    data_selector: id
+    params: {}
+- name: cfke_connected_fleet
+  endpoint:
+    path: /cfke_connected_fleet
+    method: POST
+    data_selector: id
+    params: {}
+- name: cfke_cfke_fleet
+  endpoint:
+    path: /cloudfleet_cfke_fleet/fleet
+    method: POST
+    data_selector: id
+    params: {}
+- name: cfke_cluster
+  endpoint:
+    path: /cloudfleet_cfke_cluster
+    method: GET
+    data_selector: attributes
+    params: {}
+- name: cfke_fleet
+  endpoint:
+    path: /cloudfleet_cfke_fleet
+    method: GET
+    data_selector: attributes
+    params: {}
+- name: client_config
+  endpoint:
+    path: /cloudfleet_client_config
+    method: GET
+    data_selector: attributes
+    params: {}
+notes:
+- Requires setup of connected app in Cloudfleet
+- CFKE uses Workload Identity Federation to access your GCP project without hardcoded
+  credentials.
+- Cloudfleet is developing a solution to support private nodes behind Cloud NAT.
+- Uses OIDC tokens for authentication — no hardcoded keys required.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://cloudfleet.ai
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://cloudfleet.ai/oauth2/token
+  headers:
+    Accept: application/json
+source_metadata: null

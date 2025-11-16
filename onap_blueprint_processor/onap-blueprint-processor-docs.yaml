@@ -1,0 +1,653 @@
+resources:
+- name: blueprint_model
+  endpoint:
+    path: /blueprint-model
+    method: GET
+- name: blueprint_model_meta_data
+  endpoint:
+    path: /blueprint-model/meta-data/{keyword}
+    method: GET
+- name: bootstrap
+  endpoint:
+    path: /blueprint-model/bootstrap
+    method: POST
+- name: publish
+  endpoint:
+    path: /blueprint-model/publish
+    method: POST
+- name: enrich_and_publish
+  endpoint:
+    path: /blueprint-model/enrichandpublish
+    method: POST
+- name: delete_blueprint_model
+  endpoint:
+    path: /blueprint-model/name/{name}/version/{version}
+    method: DELETE
+- name: enrichment
+  endpoint:
+    path: /api/v1/blueprint-model/enrich
+    method: POST
+    data_selector: enriched-cba.zip
+- name: datatype-resource-assignment
+  endpoint:
+    path: /api/v1/model-type
+    method: POST
+    data_selector: model-name
+    params: {}
+- name: datatype-property
+  endpoint:
+    path: /api/v1/model-type
+    method: POST
+    data_selector: model-name
+    params: {}
+- name: artifact-template-velocity
+  endpoint:
+    path: /artifact-template-velocity
+    method: GET
+    data_selector: description
+    params: {}
+- name: artifact-template-jinja
+  endpoint:
+    path: /artifact-template-jinja
+    method: GET
+    data_selector: description
+    params: {}
+- name: artifact-mapping-resource
+  endpoint:
+    path: /artifact-mapping-resource
+    method: GET
+    data_selector: description
+    params: {}
+- name: artifact-directed-graph
+  endpoint:
+    path: /artifact-directed-graph
+    method: GET
+    data_selector: description
+    params: {}
+- name: rest_source
+  endpoint:
+    path: /source/rest
+    method: GET
+    data_selector: records
+    params:
+      url-path: required
+      path: required
+      type:
+        required: false
+        default: JSON
+      verb:
+        required: false
+        default: GET
+      expression-type:
+        required: false
+        default: JSON_PATH
+- name: db_source
+  endpoint:
+    path: /source/db
+    method: GET
+    data_selector: records
+    params:
+      type:
+        required: true
+        constraints:
+        - valid_values:
+          - SQL
+      query:
+        required: true
+- name: uat
+  endpoint:
+    path: /api/v1/uat/spy
+    method: POST
+    data_selector: responses
+    params: {}
+- name: kafkaRequestConsumer
+  endpoint:
+    path: /kafkaRequestConsumer
+    method: GET
+    data_selector: records
+    params:
+      enabled: 'false'
+      type: kafka-basic-auth
+      groupId: cds-consumer
+      topic: cds.blueprint-processor.self-service-api.request
+      clientId: request-receiver-client-id
+      pollMillSec: 1000
+- name: kafkaRequestProducer
+  endpoint:
+    path: /kafkaRequestProducer
+    method: GET
+    data_selector: records
+    params:
+      type: kafka-basic-auth
+      clientId: request-producer-client-id
+      topic: cds.blueprint-processor.self-service-api.response
+      enableIdempotence: 'false'
+- name: kafkaAuditRequest
+  endpoint:
+    path: /kafkaAuditRequest
+    method: GET
+    data_selector: records
+    params:
+      enabled: 'false'
+      type: kafka-basic-auth
+      clientId: audit-request-producer-client-id
+      topic: cds.blueprint-processor.self-service-api.audit.request
+      enableIdempotence: 'false'
+- name: kafkaAuditResponse
+  endpoint:
+    path: /kafkaAuditResponse
+    method: GET
+    data_selector: records
+    params:
+      type: kafka-basic-auth
+      clientId: audit-response-producer-client-id
+      topic: cds.blueprint-processor.self-service-api.audit.response
+      enableIdempotence: 'false'
+- name: hello_world
+  endpoint:
+    path: /process
+    method: POST
+    data_selector: payload.Action1-response
+    params: {}
+- name: Hello-world-package-kotlin
+  endpoint:
+    path: /create-package
+    method: POST
+    data_selector: package
+    params: {}
+- name: Test Script
+  endpoint:
+    path: /create-script
+    method: POST
+    data_selector: script
+    params: {}
+- name: execution_service
+  endpoint:
+    path: /api/v1/execution-service/process
+    method: POST
+    data_selector: payload.Action1-response
+    params: {}
+- name: execute_blueprint
+  endpoint:
+    path: /api/v1/execution-service/process
+    method: POST
+    data_selector: response
+    params: {}
+- name: publish_blueprint
+  endpoint:
+    path: /api/v1/execution-service/publish
+    method: POST
+    data_selector: response
+    params: {}
+- name: cds-ui
+  endpoint:
+    path: /ping
+    method: GET
+- name: config-assign
+  endpoint:
+    path: /api/v1/execution-service/process
+    method: POST
+    data_selector: payload.config-assign-request
+    params: {}
+- name: config-deploy
+  endpoint:
+    path: /api/v1/execution-service/process
+    method: POST
+    data_selector: payload.config-deploy-request
+    params: {}
+- name: resource-assignment
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: config-assign
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: config-deploy
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: ssh-service-default
+  endpoint:
+    path: Templates/k8s-configs/ssh-service-config/values.yaml
+    method: GET
+- name: ssh-service-config
+  endpoint:
+    path: Templates/k8s-configs/ssh-service-values/values.yaml.vtl
+    method: GET
+- name: ssh-service-config-mapping
+  endpoint:
+    path: Templates/k8s-configs/ssh-service-values/ssh-service-mapping.json
+    method: GET
+- name: blueprint_model
+  endpoint:
+    path: /blueprint-model
+    method: GET
+- name: bootstrap
+  endpoint:
+    path: /blueprint-model/bootstrap
+    method: POST
+- name: delete_blueprint
+  endpoint:
+    path: /blueprint-model/name/{name}/version/{version}
+    method: DELETE
+- name: publish_blueprint
+  endpoint:
+    path: /blueprint-model/publish
+    method: POST
+- name: enrich_and_publish
+  endpoint:
+    path: /blueprint-model/enrichandpublish
+    method: POST
+- name: blueprint_model
+  endpoint:
+    path: /api/v1/blueprint-model
+    method: GET
+    data_selector: items
+- name: blueprint_model_by_name_and_version
+  endpoint:
+    path: /api/v1/blueprint-model/by-name/{name}/version/{version}
+    method: GET
+    data_selector: items
+- name: blueprint_model_download_by_name_and_version
+  endpoint:
+    path: /api/v1/blueprint-model/download/by-name/{name}/version/{version}
+    method: GET
+    data_selector: items
+- name: blueprint_model_enrich
+  endpoint:
+    path: /api/v1/blueprint-model/enrich
+    method: POST
+    data_selector: items
+- name: blueprint_model_publish
+  endpoint:
+    path: /api/v1/blueprint-model/publish
+    method: POST
+    data_selector: items
+- name: workflow_list
+  endpoint:
+    path: /api/v1/blueprint-model/workflows/blueprint-name/{name}/version/{version}
+    method: GET
+    data_selector: object
+    params:
+      name: string
+      version: string
+- name: blueprint_model_by_id
+  endpoint:
+    path: /api/v1/blueprint-model/{id}
+    method: GET
+    data_selector: object
+    params:
+      id: string
+- name: resource_config_snapshot
+  endpoint:
+    path: /api/v1/configs
+    method: GET
+    data_selector: string
+    params:
+      resourceType: string
+      resourceId: string
+      status: string
+      format: string
+- name: all_configs_by_id
+  endpoint:
+    path: /api/v1/configs/allByID
+    method: GET
+    data_selector: array
+    params:
+      resourceId: string
+      status: string
+- name: all_configs_by_type
+  endpoint:
+    path: /api/v1/configs/allByType
+    method: GET
+    data_selector: array
+- name: resource_config_snapshot
+  endpoint:
+    path: /api/v1/configs/{resourceType}/{resourceId}/{status}
+    method: POST
+    data_selector: successful operation
+- name: resource_dictionary
+  endpoint:
+    path: /api/v1/dictionary
+    method: POST
+    data_selector: successful operation
+- name: resource_dictionary_by_names
+  endpoint:
+    path: /api/v1/dictionary/by-names
+    method: POST
+    data_selector: successful operation
+- name: resource_dictionary_definition
+  endpoint:
+    path: /api/v1/dictionary/definition
+    method: POST
+    data_selector: successful operation
+- name: resource_dictionary_definition_bulk
+  endpoint:
+    path: /api/v1/dictionary/definition-bulk
+    method: POST
+    data_selector: successful operation
+- name: paged_blueprints_dictionary
+  endpoint:
+    path: /api/v1/dictionary/paged
+    method: GET
+    data_selector: successful operation
+- name: resource_dictionary_group
+  endpoint:
+    path: /api/v1/dictionary/resource_dictionary_group
+    method: GET
+    data_selector: successful operation
+- name: resource_dictionary_search_by_tags
+  endpoint:
+    path: /api/v1/dictionary/search/{tags}
+    method: GET
+    data_selector: successful operation
+- name: resource_dictionary_source_mapping
+  endpoint:
+    path: /api/v1/dictionary/source-mapping
+    method: GET
+    data_selector: successful operation
+- name: resource_dictionary_by_name
+  endpoint:
+    path: /api/v1/dictionary/{name}
+    method: GET
+    data_selector: successful operation
+- name: execution_service_process
+  endpoint:
+    path: /api/v1/execution-service/process
+    method: POST
+    data_selector: successful operation
+- name: model_type_by_definition
+  endpoint:
+    path: /api/v1/model-type/by-definition/{definitionType}
+    method: GET
+    data_selector: successful operation
+- name: model_type_search_by_tags
+  endpoint:
+    path: /api/v1/model-type/search/{tags}
+    method: GET
+    data_selector: successful operation
+- name: model_type_by_name
+  endpoint:
+    path: /api/v1/model-type/{name}
+    method: GET
+    data_selector: successful operation
+- name: resources
+  endpoint:
+    path: /api/v1/resources
+    method: GET
+    data_selector: successful operation
+- name: resource
+  endpoint:
+    path: /api/v1/resources/resource
+    method: GET
+    data_selector: object
+    params: {}
+- name: occurrences
+  endpoint:
+    path: /api/v1/resources/occurrences
+    method: GET
+    data_selector: array
+    params: {}
+- name: template_occurrences
+  endpoint:
+    path: /api/v1/template/occurrences
+    method: GET
+    data_selector: array
+    params: {}
+- name: template
+  endpoint:
+    path: /api/v1/template/{bpName}/{bpVersion}/{artifactName}/{resolutionKey}
+    method: POST
+    data_selector: object
+    params: {}
+- name: template_with_resource
+  endpoint:
+    path: /api/v1/template/{bpName}/{bpVersion}/{artifactName}/{resourceType}/{resourceId}
+    method: POST
+    data_selector: object
+    params: {}
+- name: commonHeader
+  endpoint:
+    path: /commonHeader
+    method: GET
+    data_selector: properties
+- name: List all Blueprint Models
+  endpoint:
+    path: /blueprint-model
+    method: GET
+- name: Save a Blueprint Model
+  endpoint:
+    path: /blueprint-model
+    method: POST
+- name: Bootstrap CDS
+  endpoint:
+    path: /blueprint-model/bootstrap
+    method: POST
+- name: Get a Blueprint Model by Name and Version
+  endpoint:
+    path: /blueprint-model/by-name/pnf_netconf/version/1.0.0
+    method: GET
+- name: Download a Blueprint Model
+  endpoint:
+    path: /blueprint-model/download/by-name/pnf_netconf/version/1.0.0
+    method: GET
+- name: Download a Blueprint Model by ID
+  endpoint:
+    path: /blueprint-model/download/44471683-4446-4ed9-8b27-fac6a8f81e5e
+    method: GET
+- name: Get Blueprints ordered
+  endpoint:
+    path: /api/v1/blueprint-model/paged
+    method: GET
+    data_selector: response
+    params:
+      limit: '5'
+      sort: DATE
+- name: Search for Blueprints by a Keyword in an ordered mode
+  endpoint:
+    path: /api/v1/blueprint-model/paged/meta-data/test
+    method: GET
+    data_selector: response
+    params:
+      limit: '5'
+      sort: DATE
+- name: Publish a Blueprint Model
+  endpoint:
+    path: /api/v1/blueprint-model/publish
+    method: POST
+- name: Search for a Blueprint by Tag
+  endpoint:
+    path: /api/v1/blueprint-model/search/test
+    method: GET
+- name: Get Workflow Specification
+  endpoint:
+    path: /api/v1/blueprint-model/workflow-spec
+    method: POST
+- name: Get Workflows of a Blueprint
+  endpoint:
+    path: /api/v1/blueprint-model/workflows/blueprint-name/vLB_CDS_KOTLIN/version/1.0.0
+    method: GET
+- name: Get a Blueprint Model by ID
+  endpoint:
+    path: /api/v1/blueprint-model/416f241d-3ef9-4cb6-8834-956ae4f70b07
+    method: GET
+- name: Delete a Blueprint Model by its ID
+  endpoint:
+    path: /api/v1/blueprint-model/416f241d-3ef9-4cb6-8834-956ae4f70b07
+    method: DELETE
+- name: Retrieve a resource configuration snapshot
+  endpoint:
+    path: /api/v1/configs
+    method: GET
+- name: Retrieve all resource configuration snapshots identified by a given resource_id
+  endpoint:
+    path: /api/v1/configs/allByID
+    method: GET
+- name: Retrieve all resource configuration snapshots for a given resource type
+  endpoint:
+    path: /api/v1/configs/allByType
+    method: GET
+- name: Store a resource configuration snapshot identified by resourceId, resourceType,
+    status
+  endpoint:
+    path: /api/v1/configs/PNF/1/RUNNING
+    method: POST
+- name: Retrieve all resource dictionary groups
+  endpoint:
+    path: /api/v1/dictionary/resource_dictionary_group
+    method: GET
+- name: Search for a resource dictionary
+  endpoint:
+    path: /api/v1/dictionary/by-names
+    method: POST
+- name: Retrieve a resource dictionary
+  endpoint:
+    path: /api/v1/dictionary/active-streams
+    method: GET
+- name: Remove a resource dictionary
+  endpoint:
+    path: /api/v1/dictionary/active-streams
+    method: DELETE
+- name: Get all resolved resources using the resolution key
+  endpoint:
+    path: /resources
+    method: GET
+    data_selector: ''
+    params:
+      bpVersion: 1.0.0
+      artifactName: activate
+      bpName: baseconfiguration
+      resolutionKey: 7cafa9f3-bbc8-49ec-8f25-fcaa6ac3ff08
+- name: Delete resources using resolution key
+  endpoint:
+    path: /resources
+    method: DELETE
+    data_selector: ''
+    params:
+      bpVersion: 1.0.0
+      artifactName: activate
+      bpName: baseconfiguration
+      resolutionKey: 7cafa9f3-bbc8-49ec-8f25-fcaa6ac3ff08
+- name: Fetch a resource value using resolution key
+  endpoint:
+    path: /resources/api/v1/resources/resource
+    method: GET
+    data_selector: ''
+    params:
+      bpVersion: 1.0.0
+      artifactName: activate
+      bpName: baseconfiguration
+      resolutionKey: 7cafa9f3-bbc8-49ec-8f25-fcaa6ac3ff08
+      name: test
+- name: Save a model type
+  endpoint:
+    path: /model-type/
+    method: POST
+    data_selector: ''
+    params: {}
+- name: Retrieve a list of model types
+  endpoint:
+    path: /model-type/by-definition/data_type
+    method: GET
+    data_selector: ''
+    params: {}
+- name: Retrieve a list of model types
+  endpoint:
+    path: /model-type/search/test
+    method: GET
+    data_selector: ''
+    params: {}
+- name: Retrieve a model type
+  endpoint:
+    path: /model-type/test
+    method: GET
+    data_selector: ''
+    params: {}
+- name: Remove a model type
+  endpoint:
+    path: /model-type/test
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: List all endpoints
+  endpoint:
+    path: /actuator/mappings
+    method: GET
+    data_selector: ''
+    params: {}
+- name: Bootstrap
+  endpoint:
+    path: /api/v1/blueprint-model/bootstrap
+    method: POST
+- name: Get Blueprints
+  endpoint:
+    path: /api/v1/blueprint-model
+    method: GET
+- name: Delete Blueprint Model loaded in Bootstrap
+  endpoint:
+    path: /api/v1/blueprint-model/name/pnf_netconf/version/1.0.0
+    method: DELETE
+- name: pnf-id
+  endpoint:
+    path: /api/v1/dictionary
+    method: POST
+- name: pnf-ipv4-address
+  endpoint:
+    path: /api/v1/dictionary
+    method: POST
+- name: stream-count
+  endpoint:
+    path: /api/v1/dictionary
+    method: POST
+- name: Day-1 Config Deploy
+  endpoint:
+    path: /api/v1/execution-service/process
+    method: POST
+- name: Day-2 Config Deploy
+  endpoint:
+    path: /api/v1/execution-service/process
+    method: POST
+notes:
+- Creating Custom Data Types requires a POST call to CDS endpoint
+- You need to activate the 'uat' Spring Boot profile in order to enable the spy/verify
+  endpoints.
+- The mocks created at runtime can potentially cause collateral problems in production.
+- To authenticate, use ccsdkapps/ccsdkapps login user id and password.
+- CURL request to run the CBA package requires specific headers and payload format.
+- In order to see the latest version described below in the tutorial, we will need
+  to use the latest cds-ui-server docker image.
+- CDS package runs synchronously
+- The application uses a database to store information about the blueprints and requires
+  it to be online before running.
+- This project uses a database to store information about the blueprints and therefore
+  it needs to be online before attempting to run it.
+- The recommended IDE for running CDS blueprint processor is IntelliJ IDEA.
+- 'Warning: This method of setting up the PNF simulator is not tested by the author
+  of this guide.'
+- Basic authorization with ccsdkapps as username and password.
+- Provide the enriched CBA file in the request body for enrichment and saving.
+errors:
+- '200 OK: success'
+- 'invalid flag: --release: Upgrade Java version of your local Maven installation.'
+- 'Compilation error: Change Java Version to 11.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: http://{{host}}:{{port}}/api/v1/
+  auth:
+    type: Basic
+    location: header
+    header_name: Authorization
+  headers:
+    Authorization: Basic Y2NzZGthcHBzOmNjc2RrYXBwcw==
+source_metadata: null

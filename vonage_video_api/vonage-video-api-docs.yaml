@@ -1,0 +1,503 @@
+resources:
+- name: applications
+  endpoint:
+    path: /applications
+    method: GET
+    data_selector: _embedded.applications
+    params: {}
+- name: create_application
+  endpoint:
+    path: /v2/applications
+    method: POST
+- name: application
+  endpoint:
+    path: /applications/==:id==
+    method: GET
+    data_selector: application
+- name: applications
+  endpoint:
+    path: /v2/applications/==:id==
+    method: PUT
+- name: users
+  endpoint:
+    path: /v1/users
+    method: GET
+    data_selector: _embedded.users
+    params:
+      page_size: 10
+      order: asc
+- name: delete_user
+  endpoint:
+    path: /v1/users/==:id==
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: send_message
+  endpoint:
+    path: /v1/messages
+    method: POST
+    data_selector: message_uuid
+- name: update_message
+  endpoint:
+    path: /v1/messages/==:message_uuid==
+    method: PATCH
+    data_selector: status
+- name: inbound_message_webhook
+  endpoint:
+    path: /webhooks/inbound-message
+    method: POST
+    data_selector: channel
+- name: getOwnedNumbers
+  endpoint:
+    path: /account/numbers
+    method: GET
+    data_selector: numbers
+- name: searchAvailableNumbers
+  endpoint:
+    path: /number/search
+    method: GET
+    data_selector: numbers
+- name: buyANumber
+  endpoint:
+    path: /number/buy
+    method: POST
+- name: cancelANumber
+  endpoint:
+    path: /number/cancel
+    method: POST
+- name: update_number
+  endpoint:
+    path: /number/update
+    method: POST
+    data_selector: none
+    params: {}
+- name: send_sms
+  endpoint:
+    path: /sms/:format
+    method: POST
+    data_selector: null
+    params: {}
+- name: inbound_sms
+  endpoint:
+    path: /webhooks/inbound-sms
+    method: POST
+    data_selector: null
+    params: {}
+- name: archives
+  endpoint:
+    path: /v2/project/==:application_id==/archive
+    method: GET
+    data_selector: items
+    params:
+      offset: 0
+      count: 50
+- name: archive
+  endpoint:
+    path: /v2/project/==:application_id==/archive
+    method: POST
+    data_selector: archive
+    params: {}
+- name: archive_info
+  endpoint:
+    path: /v2/project/==:application_id==/archive/==:archive_id==
+    method: GET
+    data_selector: archive
+    params: {}
+- name: delete_archive
+  endpoint:
+    path: /v2/project/==:application_id==/archive/==:archive_id==
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: modify_streams
+  endpoint:
+    path: /v2/project/==:application_id==/archive/==:archive_id==/streams
+    method: PATCH
+    data_selector: ''
+    params: {}
+- name: stop_archive
+  endpoint:
+    path: /v2/project/==:application_id==/archive/==:archive_id==/stop
+    method: POST
+    data_selector: ''
+    params: {}
+- name: archive_layout
+  endpoint:
+    path: /v2/project/==:application_id==/archive/==:archive_id==/layout
+    method: PUT
+    data_selector: OK
+- name: disconnect_connection
+  endpoint:
+    path: /v2/project/==:application_id==/session/==:session_id==/connection/==:connection_id==
+    method: DELETE
+    data_selector: No Content
+- name: mute_stream
+  endpoint:
+    path: /v2/project/==:application_id==/session/==:session_id==/stream/==:stream_id==/mute
+    method: POST
+    data_selector: OK
+- name: create_session
+  endpoint:
+    path: /session/create
+    method: POST
+    data_selector: session_id
+- name: signal_all
+  endpoint:
+    path: /v2/project/==:application_id==/session/==:session_id==/signal
+    method: POST
+    data_selector: No Content
+- name: signal_specific
+  endpoint:
+    path: /v2/project/==:application_id==/session/==:session_id==/connection/==:connection_id==/signal
+    method: POST
+    data_selector: No Content
+- name: dial
+  endpoint:
+    path: /v2/project/==:application_id==/dial
+    method: POST
+    data_selector: null
+    params: {}
+- name: play_dtmf
+  endpoint:
+    path: /v2/projects/==:application_id==/session/==:session_id==/play-dtmf
+    method: POST
+    data_selector: null
+    params: {}
+- name: list_live_streaming_broadcasts
+  endpoint:
+    path: /v2/project/==:application_id==/broadcast
+    method: GET
+    data_selector: null
+    params: {}
+- name: start_live_streaming_broadcast
+  endpoint:
+    path: /v2/project/==:application_id==/broadcast
+    method: POST
+- name: get_information_about_broadcast
+  endpoint:
+    path: /v2/project/==:application_id==/broadcast/==:broadcast_id==
+    method: GET
+- name: stop_broadcast
+  endpoint:
+    path: /v2/project/==:application_id==/broadcast/==:broadcast_id==/stop
+    method: POST
+- name: change_layout
+  endpoint:
+    path: /v2/project/==:application_id==/broadcast/==:broadcast_id==/layout
+    method: PUT
+- name: select_streams
+  endpoint:
+    path: /v2/project/==:application_id==/broadcast/==:broadcast_id==/streams
+    method: PATCH
+- name: start_live_captions
+  endpoint:
+    path: /v2/project/==:application_id==/captions
+    method: POST
+- name: stop_live_captions
+  endpoint:
+    path: /v2/project/==:application_id==/captions/==:captions_id==/stop
+    method: POST
+- name: audio_connector
+  endpoint:
+    path: /v2/project/==:application_id==/connect
+    method: POST
+    data_selector: ''
+    params: {}
+- name: experience_composer
+  endpoint:
+    path: /v2/project/==:application_id==/render
+    method: POST
+    data_selector: ''
+    params: {}
+- name: list_experience_composers
+  endpoint:
+    path: /v2/project/==:application_id==/render
+    method: GET
+    data_selector: ''
+    params: {}
+- name: Get Experience Composer Session
+  endpoint:
+    path: /v2/project/==:application_id==/render/==:experience_composer_id==
+    method: GET
+- name: Stop Experience Composer
+  endpoint:
+    path: /v2/project/==:application_id==/render/==:experience_composer_id==
+    method: DELETE
+- name: calls
+  endpoint:
+    path: /v1/calls/
+    method: GET
+    data_selector: _embedded.calls
+    params: {}
+- name: create_outbound_call
+  endpoint:
+    path: /v1/calls/
+    method: POST
+    data_selector: null
+    params: {}
+- name: get_call_detail
+  endpoint:
+    path: /v1/calls/==:uuid==
+    method: GET
+    data_selector: null
+    params: {}
+- name: modify_in_progress_call
+  endpoint:
+    path: /v1/calls/==:uuid==
+    method: PUT
+    data_selector: null
+    params: {}
+- name: stream_audio
+  endpoint:
+    path: /v1/calls/==:uuid==/stream
+    method: PUT
+    data_selector: message
+    params: {}
+- name: stop_stream_audio
+  endpoint:
+    path: /v1/calls/==:uuid==/stream
+    method: DELETE
+    data_selector: message
+    params: {}
+- name: play_tts
+  endpoint:
+    path: /v1/calls/==:uuid==/talk
+    method: PUT
+    data_selector: message
+    params: {}
+- name: stop_tts
+  endpoint:
+    path: /v1/calls/==:uuid==/talk
+    method: DELETE
+    data_selector: message
+    params: {}
+- name: play_dtmf
+  endpoint:
+    path: /v1/calls/==:uuid==/dtmf
+    method: PUT
+    data_selector: message
+    params: {}
+- name: subscribe_dtmf
+  endpoint:
+    path: /v1/calls/==:uuid==/input/dtmf
+    method: PUT
+    data_selector: message
+    params: {}
+- name: stop_dtmf
+  endpoint:
+    path: /v1/calls/==:uuid==/input/dtmf
+    method: DELETE
+    data_selector: message
+    params: {}
+- name: EventsPage
+  endpoint:
+    path: /getEvents
+    method: GET
+- name: video_reference_app
+  endpoint:
+    path: /cloud-runtime/vonage-video-react-app
+    method: GET
+    data_selector: instance
+    params: {}
+- name: sms
+  endpoint:
+    path: /v2/sms
+    method: POST
+    data_selector: messages
+- name: video_session
+  endpoint:
+    path: /v1/sessions
+    method: POST
+    data_selector: data
+    params: {}
+- name: video_token
+  endpoint:
+    path: /v1/tokens
+    method: POST
+    data_selector: data
+    params: {}
+- name: start_audio_connector
+  endpoint:
+    path: /v2/project/:application_id/connect
+    method: POST
+    data_selector: id
+- name: session
+  endpoint:
+    path: /v1/sessions
+    method: POST
+    data_selector: sessionId
+- name: token
+  endpoint:
+    path: /v1/tokens
+    method: POST
+    data_selector: token
+- name: start_broadcast
+  endpoint:
+    path: /broadcast/start
+    method: POST
+    data_selector: broadcast
+    params: {}
+- name: stop_broadcast
+  endpoint:
+    path: /broadcast/stop
+    method: POST
+    data_selector: broadcast
+    params: {}
+- name: get_broadcast_info
+  endpoint:
+    path: /broadcast/info
+    method: GET
+    data_selector: broadcast
+    params: {}
+- name: change_layout
+  endpoint:
+    path: /broadcast/layout
+    method: PUT
+    data_selector: layout
+    params: {}
+- name: broadcast_status
+  endpoint:
+    path: /broadcast/status
+    method: POST
+    data_selector: broadcast
+    params: {}
+notes:
+- The API is backwards compatible with version 1.
+- Application Name is required.
+- Uses Basic authentication with Base64 encoded API key
+- This API supports both JWT and Basic authentication.
+- Basic authentication does not support advanced features such as ACLs.
+- Numbers are specified in E.164 format.
+- You can only start live streaming for sessions that use the Vonage Video Media Router.
+- The UUID is created when your call request is accepted by Vonage.
+- Ensure to create a Vonage API account to access API Key and API Secret.
+- The Vonage Video API can require more setup than some other APIs.
+- Cloud Runtime's code editor may require enabling third-party cookies.
+- Stay connected, share your progress, and keep up with the latest developer news,
+  tips, and events!
+- The Vonage Video API Reference App can be customized to each developer's needs while
+  maintaining ownership of your innovations.
+- Auto-redact feature to protect privacy
+- We recommend using JWT authentication when working with the Verify API.
+- The generation of all JWTs should be done on the backend.
+- Requires setup of connected app in Vonage.
+- Ensure to handle token expiration appropriately.
+- Audio Connector is enabled by default for all projects, and it is a usage-based
+  product.
+- You can send up to 50 audio streams from a single session at a time.
+- If a connection to your WebSocket server is not established within 6 seconds, the
+  Connect API call will fail.
+- Requires setup of connected app in Vonage API Dashboard
+- HLS and RTMP streams stop automatically 60 seconds after the last client disconnects.
+- The default maximum duration for each HLS and RTMP stream is 4 hours.
+- When you stop a live streaming broadcast, the last 5 seconds of content from the
+  Vonage session are omitted from the broadcast stream.
+errors:
+- 'payload-validation: Invalid request payload'
+- 'list-validation: Invalid request for list'
+- 'rate-limit: The request has been rate limited'
+- '401 Unauthorized: Check your authentication credentials.'
+- '404 Not Found: Check the endpoint URL.'
+- '1000: Throttled - You have'
+- '1010: Missing params - You'
+- '1020: Invalid params  -  T'
+- '1021: Invalid tag  -  The'
+- '1022: Invalid template  -  '
+- '1030: Internal error  -  T'
+- '1040: Invalid message  -   '
+- '1050: Number barred  -  Th'
+- '1060: Partner account barr'
+- '1070: Partner quota exceed'
+- '1080: Account not enabled  '
+- '1090: Message too long  -  '
+- '1100: Communication Failed'
+- '1120: Illegal Sender Addre'
+- '1130: Invalid TTL  -  The'
+- '1140: Facility not allowed'
+- '1150: Invalid Message clas'
+- '1160: Non White-listed Des'
+- '1170: Invalid or Missing M'
+- '1180: Absent Subscriber Te'
+- '1190: Absent Subscriber Pe'
+- '1200: Portability Error  -'
+- '1210: Anti-Spam Rejection'
+- '1220: Handset Busy  -  The'
+- '1230: Network Error  -  A'
+- '1240: Illegal Number  -  Y'
+- '1241: Too many send reques'
+- '1242: Number pool does not'
+- '1250: Unroutable  -  The c'
+- '1251: Unable to route traf'
+- '1260: Destination unreacha'
+- '1270: Subscriber Age Restr'
+- '1280: Number Blocked by Ca'
+- '1282: Message blocked by p'
+- '1290: Pre-Paid - Insuffici'
+- '1300: Not part of the prov'
+- '1310: Not suitable device'
+- '1320: Message already sent'
+- '1330: Unknown  -  An unkno'
+- '1331: Provider error  -  T'
+- '1340: Outside of the allow'
+- '1350: Phone matching fee n'
+- '1360: TTL was activated, o'
+- '1370: Expired access Token'
+- '1380: Invalid resource - P'
+- '1381: Resource size is too'
+- '1382: Resource type is inv'
+- '1400: Unsupported channel'
+- '1410: Invalid channel para'
+- '1420: Invalid sender -  Th'
+- '1430: Invalid recipient -  '
+- '1440: Invalid message type'
+- '1450: Invalid client refer'
+- '1451: Invalid context - th'
+- '1460: Daily message limit'
+- '1461: Auto-limiting of mes'
+- '1470: Fraud Defender Traff'
+- '1472: Fraud Defender SMS B'
+- '1473: AIT Protection - The'
+- '1480: Entity Filter - The'
+- '1481: Header Filter - The'
+- '1482: Content Filter - The'
+- '1483: Consent Filter - The'
+- '1484: Regulation Error - U'
+- '200: success'
+- '1: DescriptionThrottled'
+- '2: DescriptionMissing P'
+- '3: DescriptionInvalid P'
+- '4: DescriptionInvalid C'
+- '5: DescriptionInternal'
+- '6: DescriptionInvalid M'
+- '7: DescriptionNumber Ba'
+- '8: DescriptionPartner A'
+- '9: DescriptionPartner Q'
+- '10: DescriptionToo Many'
+- '11: DescriptionAccount N'
+- '12: DescriptionMessage T'
+- '14: DescriptionInvalid S'
+- '15: DescriptionInvalid S'
+- '17: DescriptionMessage B'
+- '22: DescriptionInvalid N'
+- '23: DescriptionInvalid C'
+- '29: DescriptionNon-White'
+- '32: DescriptionSignature'
+- '33: DescriptionNumber De'
+- 'Unauthorized: Recheck your token or credentials'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '401 Unauthorized: Recheck API Key and Secret.'
+- '404 Not Found: Verify the endpoint path.'
+- '500 Internal Server Error: Retry the request later.'
+- '400: Invalid request - Check your parameters or request format.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+client:
+  base_url: https://video.api.vonage.com
+  auth:
+    location: header
+    header_name: Authorization
+source_metadata: null

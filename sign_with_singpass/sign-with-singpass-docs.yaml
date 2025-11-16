@@ -1,0 +1,198 @@
+resources:
+- name: Accept Success Signing Webhook
+  endpoint:
+    path: /for-relying-parties/api-documentation/sign-v3/accept-success-signing-webhook
+    method: POST
+    data_selector: token
+    params: {}
+- name: initiate_sign_request
+  endpoint:
+    path: /for-relying-parties/api-documentation/sign-v3/initiate-sign-request
+    method: POST
+- name: redirect_from_sign
+  endpoint:
+    path: /for-relying-parties/api-documentation/sign-v3/redirect-from-sign-with-singpass
+    method: GET
+- name: accept_success_signing_webhook
+  endpoint:
+    path: /for-relying-parties/api-documentation/sign-v3/accept-success-signing-webhook
+    method: POST
+- name: get_signing_result
+  endpoint:
+    path: /for-relying-parties/api-documentation/sign-v3/get-signing-result
+    method: GET
+- name: jwks_specification
+  endpoint:
+    path: /for-relying-parties/api-documentation/sign-v3/jwks-specification
+    method: GET
+- name: doc_signing_sessions
+  endpoint:
+    path: /doc-signing-sessions
+    method: POST
+    data_selector: response
+    params: {}
+- name: hash_signing_sessions
+  endpoint:
+    path: /doc-signing-sessions/<sign-ref>/hash
+    method: POST
+    data_selector: response
+    params: {}
+- name: jwks_keys
+  endpoint:
+    path: /.well-known/keys.json
+    method: GET
+    data_selector: keys
+    params: {}
+- name: doc_signing_sessions
+  endpoint:
+    path: /doc-signing-sessions
+    method: POST
+    data_selector: sign_ref
+    params: {}
+- name: doc_signing_sessions_hash
+  endpoint:
+    path: /doc-signing-sessions/<sign-ref>/hash
+    method: POST
+    data_selector: none
+    params: {}
+- name: keys
+  endpoint:
+    path: /.well-known/keys.json
+    method: GET
+    data_selector: keys
+    params: {}
+- name: webhook
+  endpoint:
+    path: /dsap/webhook
+    method: POST
+    data_selector: token
+- name: doc_signing_sessions
+  endpoint:
+    path: /doc-signing-sessions/<sign-ref>/hash
+    method: POST
+    data_selector: response
+    params: {}
+- name: sign_requests
+  endpoint:
+    path: /sign-requests
+    method: POST
+    data_selector: request_id
+- name: redirect_from_sign
+  endpoint:
+    path: /for-relying-parties/api-documentation/sign-v3/redirect-from-sign-with-singpass
+    method: GET
+    data_selector: ''
+    params: {}
+- name: accept_success_signing_webhook
+  endpoint:
+    path: /for-relying-parties/api-documentation/sign-v3/accept-success-signing-webhook
+    method: POST
+    data_selector: token
+- name: signing_result
+  endpoint:
+    path: /sign-requests/:request_id/signed-doc
+    method: GET
+    data_selector: signed_doc_url
+    params: {}
+- name: JWKS
+  endpoint:
+    path: /.well-known/keys.json
+    method: GET
+- name: sign_request
+  endpoint:
+    path: /for-relying-parties/api-documentation/sign-v3/initiate-sign-request
+    method: GET
+- name: sign_portal
+  endpoint:
+    path: /for-relying-parties/api-documentation/sign-v3/sign-portal
+    method: GET
+notes:
+- RP are required to implement token validation by fetching the Sign with Singpass
+  JWKS
+- RP are required to download the document immediately as the signed_doc_url will
+  expire in 2 minutes.
+- Signatures made using Sign with Singpass are regarded as Secure Electronic Signatures
+  (SES) under the Electronic Transactions Act 2010 (ETA).
+- Using Sign allows organisations to do away with wet-ink (physical) signatures, saving
+  cost and time.
+- Signatures created through Sign are regarded as Secure Electronic Signatures under
+  the Electronics Transaction Act 2010 (ETA)
+- Sign with Singpass is currently free of charge, both for organisations integrating
+  with us, as well as for signers.
+- The first QR code you scan is to verify your identity with Singpass and log in to
+  the Sign portal.
+- The second QR code you scan is for you to perform the signing of document.
+- Please ensure that the document has not been modified since your signature has been
+  created, as this will invalidate the signature.
+- Sign with Singpass should not be used to create Secure Electronic Signatures in
+  relation to certain excluded matters.
+- You will receive a confirmation email when your request to onboard has been approved.
+- By signing with Singpass, you create secure digital signatures that are highly resistant
+  to forgery and tampering.
+- Using Sign allows organisations to do away with wet-ink (physical) signatures, saving
+  cost and time both for the organisation and the signatory.
+- Relying Parties (RPs) will send the document, redirect the user to Sign portal,
+  and receive notifications via webhook.
+- DSAPs must implement and expose a webhook endpoint to accept information from Singpass.
+- Singpass will sign all JWTs sent to DSAPs webhook with its signing key.
+- DSAPs are expected to verify the validity of the user’s certificate status against
+  National Certificate Authority (NCA).
+- The new staging domain stg-app.singpass.gov.sg will only take effect from 18 Mar
+  2025.
+- 'Under the First Schedule to the Electronics Transaction Act 2010 (ETA), the following
+  use cases are excluded from the operation of Part II of the ETA. Sign with Singpass
+  should not be used to create Secure Electronic Signatures in relation to these matters:
+  The creation or execution of a will, The creation, performance or enforcement of
+  an indenture, declaration of trust or power of attorney, Any contract for the sale
+  or other disposition of immovable property, or Any interest in such property.'
+- Each signing session allows for one user to affix up to 5 signatures within one
+  PDF document.
+- Each signing session has a validity of 30 mins.
+- The query parameters will be changed soon.
+- We only accept one redirect URL per application onboarded.
+- RP are required to respond to the webhook request within 2 seconds.
+- The JWKS must be hosted on a publicly accessible URL.
+- Keys may be returned in random sequence or rotated for security enhancement.
+- The link provided is valid for 30 minutes.
+errors:
+- RP are required to respond to the webhook request within 2 seconds.
+- If you reject the signing, the Sign Portal will continue to stay in 'pending sign'
+  mode.
+- 'CLIENT_SIDE_ERROR: Generic error code for an invalid request.'
+- 'SERVER_SIDE_ERROR: Generic error code for an error that occurred in Singpass.'
+- 'UNAUTHORIZED: Authorization header value is invalid.'
+- 'MISSING_AUTHORIZATION: Authorization header was required but not found.'
+- 'ARGUMENTS_NOT_VALID: Some request parameters are invalid.'
+- 'SIGN_REF_NOT_FOUND: Requested sign ref is invalid or has already expired.'
+- 'MULTIPLE_ASSERTION_HEADER: Multiple DSS assertion headers.'
+- 'ASSERTION_NOT_VALID: DSS assertion header is invalid.'
+- 'JWKS_URL_NOT_FOUND: DSAP JWKS URL is not found.'
+- 'CLIENT_JWKS_ERROR: Unable to fetch DSAP JWKS or DSAP JWKS is invalid.'
+- 'SIGN_REF_NOT_FOUND: The requested sign_ref cannot be found.'
+- 'HTTP 400: Invalid request due to expired signing session.'
+- 'SIGN_REF_NOT_FOUND: The requested sign ref does not exist.'
+- 'INVALID_REQUEST: A catch all indicating an invalid request parameter from DSS.'
+- 'SERVER_ERROR: A catch all for any other errors that occurred in the DSAP.'
+- 'CONTENT_TOO_LARGE: File size has exceeded 10 MB'
+- 'BAD_SIGN_LOCATION: The signature coordinates could be out of bounds, overlapping
+  other forms or in a page that is non existent.'
+- 'INVALID_PDF: The PDF file in the request may be corrupted or set with MDP permissions
+  that restrict further signing.'
+- 'CLIENT_SIDE_ERROR: A catch-all error for bad input values.'
+- 'DOCUMENT_NOT_SIGNED: Document is not signed yet.'
+- 'REQUEST_EXPIRED: The request has expired without the user signing the document.'
+- 'SIGNED_ACCESS_EXPIRED: The document has been signed, but can no longer be retrieved
+  via this endpoint as the 1h access period has passed.'
+- 'UNAUTHORIZED: JWT validation failed'
+- 'Signature validation failure: Re-fetch from the JWKS endpoint if validation fails.'
+- 'Unauthorized: Ensure the correct NRIC is specified for signers.'
+- 'Link Invalid: The link has expired or is incorrect.'
+auth_info:
+  mentioned_objects:
+  - JWT
+  - Bearer authentication
+client:
+  base_url: https://docs.sign.singpass.gov.sg
+  auth:
+    type: oauth2
+source_metadata: null

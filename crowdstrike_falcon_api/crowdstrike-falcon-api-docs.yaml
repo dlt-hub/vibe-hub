@@ -1,0 +1,128 @@
+resources:
+- name: alerts
+  endpoint:
+    path: /alerts/queries/alerts/v2
+    method: GET
+    data_selector: .resources
+    params:
+      offset: ${pagination.offset}
+      limit: ${pagination.limit}
+      filter: created_timestamp:>'${temporalWindow.from}'+created_timestamp:<'${temporalWindow.to}'
+- name: alerts_entities
+  endpoint:
+    path: /alerts/entities/alerts/v2
+    method: POST
+    data_selector: .resources
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: http_logs
+  endpoint:
+    path: /api/data
+    method: GET
+    data_selector: logs
+    params: {}
+- name: http_logs
+  endpoint:
+    path: /logs
+    method: POST
+    data_selector: entries
+- name: firewall_threat_data
+  endpoint:
+    path: /firewall.paloalto.threat
+    method: GET
+    data_selector: logs
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: lookups
+  endpoint:
+    path: /your-vault/enrichment
+    method: GET
+- name: events_alert
+  endpoint:
+    path: /api/v2/events/dataexport/events/alert
+    method: GET
+    data_selector: result
+    params:
+      operation: next
+      index: onum_event_alert_001
+- name: events
+  endpoint:
+    path: /siem/v1/events
+    method: GET
+    data_selector: .items
+    params:
+      from_date: ${temporalWindow.from}
+      cursor: ${pagination.cursor}
+notes:
+- Onum helps security and IT leaders focus on the most important data.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- 'Logs classified into types: SQL Injection Attack, Unauthorized Access Attempt,
+  Server Configuration Error, Server Overload due to High Traffic, Unknown.'
+- Logs that match certain conditions are routed to the GenAI model for classification.
+- Enrich incoming transaction or login events with historical fraud scores, geolocation,
+  device fingerprinting, and user behavioral patterns.
+- Identify suspicious activity in real time (e.g., multiple failed login attempts
+  from a new location).
+- Uses an automated parser that can be modified for specific field extraction.
+- Real-time alerts can be sent via Twilio for exposure levels.
+- Onum supports flexible deployment options, including both on-premises and cloud
+  environments.
+- The deployment process is fully automated, ensuring quick and streamlined provisioning
+  and configuration.
+- This feature is only available for certain Tenants.
+- File size limit of 3.91 GB
+- Multitenancy is currently only available for certain users and settings.
+- Open the palette by clicking the 🔍 icon, or using `CMD + K` for Mac or `CTRL + K`
+  for Windows.
+- Transforms JSON to CSV format
+- This Pipeline integrates with API Logs from the OKTA Platform using the HTTP Pull
+  Listener.
+- Transforming it from JSON to CSV format.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://onum.com
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+source_metadata: null

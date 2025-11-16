@@ -1,0 +1,96 @@
+resources:
+- name: webhook
+  endpoint:
+    path: /webhook
+    method: POST
+- name: webhook_with_id
+  endpoint:
+    path: /webhook/:id
+    method: POST
+- name: Webhook
+  endpoint:
+    path: /service.Webhook
+    method: GET
+    data_selector: records
+- name: hello
+  endpoint:
+    path: /hello/:name
+    method: GET
+    data_selector: Message
+- name: url
+  endpoint:
+    path: /url
+    method: POST
+    data_selector: ''
+    params: {}
+- name: url_id
+  endpoint:
+    path: /url/:id
+    method: GET
+    data_selector: ''
+    params: {}
+- name: invite_member
+  endpoint:
+    path: /api/apps/${APP_ID}/member
+    method: POST
+- name: list_members
+  endpoint:
+    path: /api/apps/${APP_ID}/members
+    method: GET
+- name: update_member_role
+  endpoint:
+    path: /api/apps/${APP_ID}/members
+    method: PUT
+- name: hello
+  endpoint:
+    path: /hello/World
+    method: GET
+    data_selector: response
+    params: {}
+- name: App Metadata API
+  endpoint:
+    path: /services/data/v1.1.0/metadata
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: metadata
+  endpoint:
+    path: /metadata
+    method: GET
+    data_selector: results
+notes:
+- 'Outside calls to API must specify an authorization header in the form Authorization:
+  Bearer <token>'
+- Encore supports both public and private API definitions
+- Almost every application needs to know who's calling it.
+- Each API endpoint can be marked as requiring authentication.
+- If the auth handler returns an AuthData object, the request is considered authenticated.
+- This package provides the APIs for getting AppMetadata about the current application
+  and the CurrentRequest.
+- By default, Service singletons are shared across all tests and initialized on the
+  first call to that service by any test, which results in faster tests as you are
+  not re-initializing the service for each test, however if your service structs contain
+  state that is not reset between tests, this can cause issues.
+- If you want to mock out more than one API method on a service, consider using MockService.
+- This package is not in the latest version of its module.
+- When a project reaches major version v1 it is considered stable.
+errors:
+- '403 Forbidden: Insufficient permissions to manage members'
+- '409 Conflict: Attempting to remove the last owner (error detail: "last_owner")'
+- '404 Not Found: Member not found'
+- 'Unauthenticated: bad credentials'
+- no authorization header provided
+- no date header or invalid format provided
+- authentication expired
+- authentication failed
+- invalid signature
+auth_info:
+  mentioned_objects:
+  - auth.UID
+  - auth.Data
+  - AuthParams
+  - AuthData
+  - APIError
+client:
+  base_url: http://localhost:4000
+source_metadata: null

@@ -1,0 +1,65 @@
+resources:
+- name: shipments
+  endpoint:
+    path: /shipments/
+    method: POST
+- name: webhook_event
+  endpoint:
+    path: /webhooks
+    method: POST
+    data_selector: event_type
+    params: {}
+- name: Respond to Load Tender
+  endpoint:
+    path: /api/tenders
+    method: POST
+notes:
+- Access token is valid for 2 hours.
+- Loadsmart includes a signature in the X-Loadsmart-Signature header of each webhook
+  request.
+- Remember to keep your Client Secret secure and never expose it in client-side code
+  or public repositories.
+- 'In cases where an endpoint does not have an explicitly defined rate limit, the
+  default applies: 5 requests per minute per consumer.'
+- Keep track of API changes and version updates with our changelog.
+- It is essential that you review the changelog to understand API changes and ensure
+  that your application is consistent with our most recent enhancements.
+- Your endpoint should be able to process HTTP POST requests.
+- It should return a 2xx status code (preferably 200 OK) to acknowledge receipt of
+  the webhook.
+- If your endpoint returns a non-2xx status code, Loadsmart will consider the delivery
+  failed and will retry the webhook.
+- Implement proper error handling and logging in your endpoint to troubleshoot any
+  issues.
+- Ensure your endpoint can handle concurrent requests, as multiple webhooks may be
+  sent simultaneously.
+- EDI remains a crucial standard for logistics transaction processing.
+- ShipperGuide enables safe EDI data delivery between trading partners.
+- Rate Providers can bid on quotes that are relevant to them.
+- Webhook technology notifies Rate Providers about new loads.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '429: Too Many Requests - Clients should implement appropriate backoff and retry
+  logic when encountering rate limit errors.'
+- '400: Bad Request - The request couldn''t be processed due to missing or invalid
+  parameters.'
+- '401: Unauthorized - The API key provided is not valid.'
+- '402: Request Failed - The request was correct, but the server couldn''t fulfill
+  it.'
+- '403: Forbidden - The API key doesn''t have permission to access the requested resource.'
+- '404: Not Found - The requested resource could not be found.'
+- '409: Conflict - The request could not be completed due to a conflict with the current
+  state of the resource.'
+- '429: Too Many Requests - Too many requests have been made in a short period. Consider
+  slowing down the request rate.'
+- '500, 502, 503, 504: Server Errors - The server encountered an error. These errors
+  are typically rare.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.loadsmart.com/api/v3
+  auth:
+    type: Bearer Authentication
+  headers:
+    Content-Type: application/json
+source_metadata: null

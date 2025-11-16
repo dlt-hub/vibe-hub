@@ -1,0 +1,156 @@
+resources:
+- name: Dynamic Release Management
+  endpoint:
+    path: /products/ixia-ccms/dynamic-release-management
+    method: GET
+    data_selector: records
+- name: DITA Localization Packs
+  endpoint:
+    path: /products/ixia-ccms/dita-localization-packs
+    method: GET
+    data_selector: records
+- name: Staging Environment
+  endpoint:
+    path: /products/ixia-ccms/staging-environment
+    method: GET
+    data_selector: records
+- name: oXygen WebHelp for MadCap IXIA CCMS
+  endpoint:
+    path: /products/ixia-ccms/oxygen-webhelp
+    method: GET
+    data_selector: records
+- name: Miramo for MadCap IXIA CCMS
+  endpoint:
+    path: /products/ixia-ccms/miramo
+    method: GET
+    data_selector: records
+- name: Congree for MadCap IXIA CCMS
+  endpoint:
+    path: /products/ixia-ccms/congree
+    method: GET
+    data_selector: records
+- name: MadCap Help Viewer Api
+  endpoint:
+    path: /helpviewer060/MadCapHelpViewerApi0630.zip
+    method: GET
+- name: MadCap Flare API Documentation
+  endpoint:
+    path: /flareapi110/FlareAPIDoc1100.zip
+    method: GET
+- name: MadCap Movie Viewer
+  endpoint:
+    path: /movieviewer070/SetupMadCapMovieViewer0700.msi
+    method: GET
+- name: Author-it Converter Utility
+  endpoint:
+    path: /utilities/AuthorItConverterSetup0110.exe
+    method: GET
+- name: MadCap Help Viewer
+  endpoint:
+    path: /downloads/madcaphelpviewer
+    method: GET
+    data_selector: downloads
+    params: {}
+- name: Help Viewer SDK
+  endpoint:
+    path: /downloads/madcaphelpviewersdk
+    method: GET
+    data_selector: downloads
+    params: {}
+- name: Flare API Documentation
+  endpoint:
+    path: /downloads/flareapidocumentation
+    method: GET
+    data_selector: downloads
+    params: {}
+- name: MadCap Movie Viewer
+  endpoint:
+    path: /downloads/madcapmovieviewer
+    method: GET
+    data_selector: downloads
+    params: {}
+- name: Mimic Extras
+  endpoint:
+    path: /downloads/mimicextras
+    method: GET
+    data_selector: downloads
+    params: {}
+- name: Echo Extras
+  endpoint:
+    path: /downloads/echoextras
+    method: GET
+    data_selector: downloads
+    params: {}
+- name: MadCap Feedback Explorer
+  endpoint:
+    path: /downloads/madcapfeedbackexplorer
+    method: GET
+    data_selector: downloads
+    params: {}
+- name: Microsoft .NET Framework
+  endpoint:
+    path: /downloads/dotnetframework
+    method: GET
+    data_selector: downloads
+    params: {}
+- name: Author-it Converter for MadCap Flare
+  endpoint:
+    path: /downloads/authoritconverter
+    method: GET
+    data_selector: downloads
+    params: {}
+- name: content
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Content
+    method: GET
+    data_selector: records
+    params: {}
+- name: content
+  endpoint:
+    path: /api/v1/content
+    method: GET
+    data_selector: records
+    params: {}
+- name: API Documentation
+  endpoint:
+    path: /api/documentation
+    method: GET
+    data_selector: documentation
+    params: {}
+- name: SDK Documentation
+  endpoint:
+    path: /sdk/documentation
+    method: GET
+    data_selector: documentation
+    params: {}
+notes:
+- API documentation can be imported in HTML or Markdown format.
+- .Net 4.0 is required to run the MadCap Help Viewer Api 6.2
+- The XML files from Author-it® are from the Publish option in the Author-it® software.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Uses OAuth2 with refresh token — requires setup of connected app in MadCap
+- Some objects may return nulls in deeply nested fields
+- IXIA CCMS is a fully hosted service on Amazon’s robust Cloud Computing Services
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://www.madcapsoftware.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://www.madcapsoftware.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

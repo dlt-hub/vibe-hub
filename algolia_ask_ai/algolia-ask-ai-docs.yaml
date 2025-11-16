@@ -1,0 +1,90 @@
+resources:
+- name: search
+  endpoint:
+    path: /search
+    method: GET
+    data_selector: results
+    params:
+      page: '0'
+- name: List all A/B tests
+  endpoint:
+    path: /v2/list-ab-tests
+    method: GET
+- name: Retrieve A/B test details
+  endpoint:
+    path: /v2/get-ab-test
+    method: GET
+- name: Retrieve timeseries of an A/B test
+  endpoint:
+    path: /v2/get-timeseries
+    method: GET
+- name: Create an A/B test
+  endpoint:
+    path: /v2/add-ab-tests
+    method: POST
+- name: Schedule an A/B test
+  endpoint:
+    path: /v2/schedule-ab-test
+    method: POST
+- name: Estimate the sample size and duration of an A/B test
+  endpoint:
+    path: /v2/estimate-ab-test
+    method: POST
+- name: Stop an A/B test
+  endpoint:
+    path: /v2/stop-ab-test
+    method: POST
+- name: Delete an A/B test
+  endpoint:
+    path: /v2/delete-ab-test
+    method: DEL
+- name: authentication
+  endpoint:
+    path: /1/authentications
+    method: POST
+    data_selector: null
+    params: {}
+- name: api_key
+  endpoint:
+    path: /1/keys/{key}
+    method: GET
+    data_selector: value
+    params: {}
+notes:
+- API keys with a sensible ACL can provide enough security without adding too much
+  overhead.
+- Client-side apps should connect to the cloud search engine directly for performance
+  reasons.
+- A well-thought-out data strategy for faceting ensures effective filtering and high-speed
+  performance.
+- Uses JSON for flexible data representation.
+- Facets are crucial for creating a quality search experience.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- 'Pagination is zero-based: the first page is page: 0.'
+- All requests must use HTTPS.
+- Access to the A/B Testing API is available as part of the Premium or Elevate plans.
+- 'Required ACL: addObject, deleteIndex, editSettings'
+- Access to the Infrastructure endpoints is available as part of the Premium or Elevate
+  plans.
+- 'Required ACL: search'
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Successful responses return a 2xx status.
+- Client errors return a 4xx status.
+- Server errors return a 5xx status.
+- '401 Unauthorized: Recheck API key permissions'
+auth_info:
+  mentioned_objects:
+  - x-algolia-application-id
+  - x-algolia-api-key
+client:
+  base_url: https://dashboard.algolia.com
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

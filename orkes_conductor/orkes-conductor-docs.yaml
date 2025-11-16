@@ -1,0 +1,211 @@
+resources:
+- name: invoke_lambda
+  endpoint:
+    path: /invoke-lambda
+    method: POST
+    data_selector: requestId
+    params: {}
+- name: task_status
+  endpoint:
+    path: /{requestId}
+    method: GET
+    data_selector: status
+    params: {}
+- name: InvokeLambdaTask
+  endpoint:
+    path: /invoke-lambda
+    method: POST
+    data_selector: body
+    params:
+      requestId: ${workflow.input.requestId}
+- name: http_poll
+  endpoint:
+    path: /${workflow.input.requestId}
+    method: GET
+    data_selector: body
+    params: {}
+- name: applications
+  endpoint:
+    path: /applications
+    method: GET
+    data_selector: applications
+    params: {}
+- name: workflow_definition
+  endpoint:
+    path: /api/metadata/workflow
+    method: POST
+    data_selector: ''
+    params: {}
+- name: create_task_definition
+  endpoint:
+    path: /metadata/creating-task-definitions
+    method: POST
+- name: update_task_definition
+  endpoint:
+    path: /metadata/update-task-definitions
+    method: PUT
+- name: delete_task_definition
+  endpoint:
+    path: /metadata/delete-task-definition
+    method: DELETE
+- name: get_all_task_definitions
+  endpoint:
+    path: /metadata/get-all-task-definitions
+    method: GET
+- name: get_task_definition
+  endpoint:
+    path: /metadata/get-task-definition
+    method: GET
+- name: create_workflow_definition
+  endpoint:
+    path: /metadata/creating-workflow-definition
+    method: POST
+- name: update_workflow_definition
+  endpoint:
+    path: /metadata/update-workflow-definitions
+    method: PUT
+- name: delete_workflow_definition
+  endpoint:
+    path: /metadata/delete-workflow-definition
+    method: DELETE
+- name: get_all_workflow_definitions
+  endpoint:
+    path: /metadata/get-all-workflow-definitions
+    method: GET
+- name: get_workflow_definition
+  endpoint:
+    path: /metadata/get-workflow-definition
+    method: GET
+- name: workflow_definition
+  endpoint:
+    path: /api/metadata/workflow/{name}
+    method: GET
+    data_selector: workflow
+    params:
+      version: optional
+      metadata: optional
+- name: task
+  endpoint:
+    path: /api/tasks/{taskId}
+    method: GET
+    data_selector: task
+    params: {}
+- name: start_workflow_execution_async
+  endpoint:
+    path: /api/workflow/start-workflow-execution
+    method: POST
+- name: execute_workflow_synchronously
+  endpoint:
+    path: /api/workflow/synchronous-workflow-execution
+    method: POST
+- name: get_workflow_by_id
+  endpoint:
+    path: /api/workflow/get-workflow-by-id
+    method: GET
+- name: get_workflows_by_correlation_id
+  endpoint:
+    path: /api/workflow/get-workflows-by-correlation-id
+    method: GET
+- name: update_variable
+  endpoint:
+    path: /api/workflow/update-variable
+    method: POST
+- name: upgrade_workflow
+  endpoint:
+    path: /api/workflow/upgrade-workflow
+    method: POST
+- name: skip_task_in_workflow_execution
+  endpoint:
+    path: /api/workflow/skip-task-from-workflow
+    method: POST
+- name: pause_workflow
+  endpoint:
+    path: /api/workflow/pause-worflow
+    method: POST
+- name: resume_workflow
+  endpoint:
+    path: /api/workflow/resume-workflow
+    method: POST
+- name: terminate_workflow
+  endpoint:
+    path: /api/workflow/terminate-workflow
+    method: POST
+- name: rerun_workflow
+  endpoint:
+    path: /api/workflow/rerun-workflow
+    method: POST
+- name: restart_workflow
+  endpoint:
+    path: /api/workflow/restart-workflow
+    method: POST
+- name: retry_failed_workflow
+  endpoint:
+    path: /api/workflow/retry-failed-workflow
+    method: POST
+- name: delete_workflow
+  endpoint:
+    path: /api/workflow/delete-workflow
+    method: DELETE
+- name: search_workflow_executions
+  endpoint:
+    path: /api/workflow/search-workflow-executions
+    method: GET
+- name: test_workflow
+  endpoint:
+    path: /api/workflow/test-workflow
+    method: POST
+- name: search_workflow_executions
+  endpoint:
+    path: /api/workflow/search
+    method: GET
+    data_selector: results
+    params: {}
+- name: terminate_workflow
+  endpoint:
+    path: /api/workflow/{workflowId}
+    method: DELETE
+    data_selector: null
+    params:
+      reason: Optional
+      triggerFailureWorkflow: Optional
+- name: http
+  endpoint:
+    path: /api
+    method: GET
+    data_selector: response.body
+    params: {}
+- name: ticket_automation_workflow
+  endpoint:
+    path: /rest/api/3/issue
+    method: POST
+    data_selector: fields
+    params: {}
+notes:
+- Replace the URL with your deployed API endpoint for invoking the Lambda
+- Replace the polling URL with the endpoint for checking Lambda status
+- Applications represent non-human identities that interact with Conductor via APIs
+  or SDKs.
+- Applications can have one or more access key/secret pairs for authentication.
+- Workflows are defined as JSON.
+- Supports static and dynamic workflows.
+- Returns 200 OK, indicating that the workflow execution has been terminated successfully.
+- The HTTP task is used to make calls to remote services exposed over HTTP/HTTPS.
+- Authentication does not grant full access to all the resources in your Conductor
+  cluster. Since programmatic access to resources is also application-based, ensure
+  that your application is configured with the appropriate roles and permissions before
+  you start using the SDK or API.
+- Uses Basic Authentication with a Base64-encoded token.
+- Verify the format of the API token
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck Basic Auth credentials.'
+- 'Authentication fails: Verify the format of the API token'
+auth_info:
+  mentioned_objects:
+  - API tokens
+client:
+  base_url: https://orkes.io
+  headers:
+    Accept: application/json
+source_metadata: null
