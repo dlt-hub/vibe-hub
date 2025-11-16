@@ -1,0 +1,237 @@
+resources:
+- name: pegasus
+  endpoint:
+    path: /PegasusSimulator
+    method: GET
+    data_selector: records
+    params: {}
+- name: Pegasus Simulator
+  endpoint:
+    path: https://www.github.com/PegasusSimulator/PegasusSimulator.git
+    method: GET
+    data_selector: repository
+    params: {}
+- name: PX4-Autopilot
+  endpoint:
+    path: https://github.com/PX4/PX4-Autopilot
+    method: GET
+    data_selector: repository
+    params: {}
+- name: Barometer
+  endpoint:
+    path: /barometer
+    method: GET
+    data_selector: state
+    params: {}
+- name: GPS
+  endpoint:
+    path: /pegasus/simulator/logic/sensors/gps
+    method: GET
+    data_selector: state
+- name: imu
+  endpoint:
+    path: /api/imu
+    method: GET
+    data_selector: state
+    params: {}
+- name: Magnetometer
+  endpoint:
+    path: /pegasus/simulator/logic/sensors/magnetometer
+    method: GET
+    data_selector: state
+    params: {}
+- name: GraphicalSensor
+  endpoint:
+    path: /api/graphical_sensor
+    method: GET
+    data_selector: sensor_data
+    params: {}
+- name: MonocularCamera
+  endpoint:
+    path: /pegasus/simulator/logic/graphical_sensors/monocular_camera
+    method: GET
+- name: Lidar
+  endpoint:
+    path: /pegasus/simulator/logic/graphical_sensors/lidar
+    method: GET
+    data_selector: state
+- name: LinearDrag
+  endpoint:
+    path: /pegasus/simulator/logic/dynamics/linear_drag
+    method: GET
+    data_selector: drag
+    params: {}
+- name: QuadraticThrustCurve
+  endpoint:
+    path: /pegasus/simulator/logic/thrusters/quadratic_thrust_curve
+    method: GET
+    data_selector: QuadraticThrustCurve
+    params: {}
+- name: Backend
+  endpoint:
+    path: /backend
+    method: GET
+- name: BackendConfig
+  endpoint:
+    path: /backend/config
+    method: GET
+- name: sensors
+  endpoint:
+    path: /api/sensors
+    method: GET
+- name: graphs
+  endpoint:
+    path: /api/graphs
+    method: GET
+- name: mavlink_messages
+  endpoint:
+    path: /mavlink/messages
+    method: GET
+    data_selector: messages
+- name: state
+  endpoint:
+    path: /state
+    method: GET
+    data_selector: records
+- name: Vehicle
+  endpoint:
+    path: /vehicles
+    method: GET
+    data_selector: records
+- name: VehicleManager
+  endpoint:
+    path: /vehicle_manager
+    method: GET
+    data_selector: vehicles
+    params: {}
+- name: Multirotor
+  endpoint:
+    path: /pegasus/simulator/logic/vehicles/multirotor
+    method: GET
+    data_selector: records
+- name: MultirotorConfig
+  endpoint:
+    path: /pegasus/simulator/logic/vehicles/multirotor/config
+    method: GET
+    data_selector: records
+- name: person
+  endpoint:
+    path: /people
+    method: GET
+    data_selector: records
+    params: {}
+- name: person
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Person
+    method: GET
+    data_selector: records
+    params: {}
+- name: rebuild_nav_mesh
+  endpoint:
+    path: /rebuild_nav_mesh
+    method: POST
+    data_selector: settings
+- name: remove_all_people
+  endpoint:
+    path: /remove_all_people
+    method: DELETE
+    data_selector: response
+- name: remove_person
+  endpoint:
+    path: /remove_person
+    method: DELETE
+    data_selector: response
+    params:
+      stage_prefix: string
+- name: people
+  endpoint:
+    path: /people
+    method: GET
+    data_selector: list
+- name: rebuild_nav_mesh
+  endpoint:
+    path: /rebuild_nav_mesh
+    method: POST
+    data_selector: response
+    params:
+      radius: 0.5
+      auto_rebake_on_changes: false
+      auto_rebake_delay_seconds: 4
+      exclude_rigid_bodies: true
+      view_nav_mesh: false
+      dynamic_avoidance_enabled: false
+      navmesh_enabled: false
+- name: remove_all_people
+  endpoint:
+    path: /remove_all_people
+    method: DELETE
+    data_selector: response
+    params: {}
+- name: remove_person
+  endpoint:
+    path: /remove_person
+    method: DELETE
+    data_selector: response
+    params:
+      stage_prefix: string
+- name: people
+  endpoint:
+    path: /people
+    method: GET
+    data_selector: response
+    params: {}
+- name: vehicles
+  endpoint:
+    path: /api/vehicles
+    method: GET
+    data_selector: vehicles
+    params: {}
+- name: environments
+  endpoint:
+    path: /api/environments
+    method: GET
+    data_selector: environments
+    params: {}
+notes:
+- Tested with Isaac Sim 5.1.0 release on Ubuntu 22.04LTS
+- This extension was not tested on Windows
+- This extension was not tested on Windows.
+- You can NOT import other omniverse modules before instantiating the SimulationApp,
+  otherwise the simulation crashes before the window it’s even open.
+- We have tested Pegasus Simulator with Isaac Sim 5.1.0 release on Ubuntu 22.04LTS
+  with NVIDIA driver 550.163.01.
+- Older versions Ubuntu and PX4-Autopilot were not tested.
+- Although it is possible to setup a virtual environment following the instructions
+  here, this feature was not tested.
+- Simulates a barometer based on the implementation provided in PX4 SITL gazebo.
+- Simulates a GPS based on the implementation provided in PX4 SITL gazebo
+- The period for each sensor update is defined by update_rate.
+- The class that implements a monocular camera sensor.
+- Available configurations for the lidar are in the folder exts/omni.isaac.sensor/data/lidar_configs
+- Check the official documentation for more information
+- Computes the forces that should actuate on a rigidbody affected by linear drag
+- File that implements a quadratic thrust curve for rotors
+- 'License: BSD-3-Clause. Copyright (c) 2023, Marcelo Jacinto. All rights reserved.'
+- This class defines the templates for the communication and control backend.
+- Every vehicle can have at least one backend at the same time.
+- Requires setup of PX4 Mavlink Backend for full functionality
+- An auxiliary data class used to store all the configurations for the mavlink communications.
+- Describes the state of a vehicle (or rigidbody)
+- Defines a base interface for creating a multirotor
+- The PeopleManager class is implemented following a singleton pattern.
+- Every time a new person object is created, the ‘add_person’ method is invoked.
+- Called only when the sim with people is requested.
+- PegasusInterface is a singleton class (there is only one object instance at any
+  given time) that will be used to manage the Pegasus framework.
+errors: []
+auth_info:
+  mentioned_objects:
+  - MonocularCamera
+  - GraphicalSensor
+  - Multirotor
+  - MultirotorConfig
+client:
+  base_url: https://download.isaacsim.omniverse.nvidia.com
+  headers: {}
+  paginator: {}
+source_metadata: null

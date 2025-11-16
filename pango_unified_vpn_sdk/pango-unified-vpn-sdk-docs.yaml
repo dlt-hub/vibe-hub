@@ -1,0 +1,303 @@
+resources:
+- name: VPNGroupData
+  endpoint:
+    path: /vpn/groupdata
+    method: GET
+    data_selector: data
+- name: TrafficCounters
+  endpoint:
+    path: /vpn/trafficcounters
+    method: GET
+    data_selector: data
+- name: users
+  endpoint:
+    path: /paas/console-details/users
+    method: GET
+- name: active_sessions
+  endpoint:
+    path: /paas/console-details/active-sessions
+    method: GET
+    data_selector: sessions
+- name: project_users
+  endpoint:
+    path: /export/users
+    method: GET
+- name: user_devices
+  endpoint:
+    path: /export/devices
+    method: GET
+- name: user_sessions
+  endpoint:
+    path: /export/sessions
+    method: GET
+- name: vpn_configuration
+  endpoint:
+    path: /paas/sdk/hydra-vpn-sdk-for-routers/hydra-vpn-sdk-for-routers-ci
+    method: GET
+    data_selector: configuration
+    params: {}
+- name: VPN Management
+  endpoint:
+    path: /api/vpn
+    method: POST
+    data_selector: vpn_status
+- name: locations
+  endpoint:
+    path: /afwrt_get_locations
+    method: GET
+- name: user_login
+  endpoint:
+    path: /user/login
+    method: POST
+- name: user_countries
+  endpoint:
+    path: /user/countries
+    method: GET
+- name: user_provide
+  endpoint:
+    path: /user/provide
+    method: GET
+    data_selector: response
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: bigquery
+  endpoint:
+    path: /bigquery
+    method: GET
+- name: compute_metadata
+  endpoint:
+    path: /compute/metadata
+    method: GET
+- name: firestore
+  endpoint:
+    path: /firestore
+    method: GET
+- name: iam
+  endpoint:
+    path: /iam
+    method: GET
+- name: storage
+  endpoint:
+    path: /storage
+    method: GET
+- name: firebase_admin
+  endpoint:
+    path: /firebase
+    method: GET
+- name: jsonutil
+  endpoint:
+    path: /
+    method: GET
+- name: Network Extension
+  endpoint:
+    path: /paas/sdk/unified-vpn-sdk-for-apple/setup/network-extension-setup
+    method: GET
+- name: Hydra
+  endpoint:
+    path: HydraTunnelProvider.xcframework
+    method: COPY
+- name: WireGuard
+  endpoint:
+    path: WireguardTunnelProvider.framework
+    method: COPY
+- name: changelog_entries
+  endpoint:
+    path: /changelog
+    method: GET
+    data_selector: entries
+- name: OnDemandConfiguration
+  endpoint:
+    path: /paas/sdk/unified-vpn-sdk-for-apple/features/reconnection-strategy
+    method: GET
+    data_selector: OnDemandConfiguration
+    params: {}
+- name: HydraConfiguration
+  endpoint:
+    path: /paas/sdk/unified-vpn-sdk-for-apple/features/deferred-vpn-service-initialization
+    method: GET
+- name: WireguardConfiguration
+  endpoint:
+    path: /
+    method: POST
+    data_selector: configuration
+- name: client_networks
+  endpoint:
+    path: /paas/sdk/unified-vpn-sdk-for-apple/features/client-network-list-cnl
+    method: GET
+    data_selector: client_network_list
+    params: {}
+- name: Domain Route via VPN
+  endpoint:
+    path: /paas/sdk/unified-vpn-sdk-for-apple/features/domain-route-via-vpn
+    method: GET
+notes:
+- VPN services with different protocols can use different VPN profiles.
+- It is highly recommended that you turn on the two-factor authentication mechanism
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- The list includes up to 5,000 active sessions
+- 'Export tasks can have statuses: In progress, Done, No data, Failed'
+- Log page provides a history of all project changes.
+- Logs can be downloaded as a CSV file.
+- The SDK supports overriding default backend API URLs by adding a new raw resource
+  file named pango_default_urls.json to your project.
+- Supports Hydra, OpenVPN, Wireguard protocols.
+- Requires iOS 13+ or macOS 10.15+
+- It is not possible for users to create their own accounts directly if they do not
+  already have an account established.
+- Sign in at pango-cloud.com to create a project and use a name for your project as
+  a Public key.
+- Dynamic configuration without SDK restart allows modifying VPN settings in real-time.
+- Dynamic configuration without SDK restart
+- Transparent tunneling is supported
+- No actual connection is made until the first network packet is sent.
+- Connection is initiated immediately.
+- Selective routing by IP, MAC, or interface name.
+- The SDK library does not handle traffic routing for the Wireguard protocol.
+- It is not possible for users to create their own accounts directly if they do not
+  already have an account established with example.com.
+- SDK logs are displayed at Trace level.
+- Avoid using DEBUG or TRACE log levels for SDK logs in PROD, unless absolutely necessary
+  for troubleshooting.
+- At this time, it is not possible for users to create their own accounts directly
+  if they do not already have an account established with example.com.
+- Users cannot create their own accounts directly if they do not already have an account
+  established with example.com.
+- This limited version does not support dynamic configuration via websockets or any
+  kind of statistics/reporting.
+- Some objects like Contact may return nulls in deeply nested fields
+- Xcode 16.1 or later is required for developing with the Unified VPN SDK.
+- Enable the 'Personal VPN' capability for the App ID.
+- Bitcode is now deprecated.
+- Each VPN protocol (Hydra and WireGuard) requires its own separate Network Extension
+  target.
+- Set `Do Not Embed` under `Embed` option for **HydraTunnelProvider.framework**.
+- Set `Do Not Embed` under `Embed and sign` option for **WireguardTunnelProvider.framework**.
+- To properly configure your Network Extension target, it is essential to set the
+  `NSExtensionPrincipalClass` and `NetworkExtensionDelegate` in the Info.plist file.
+- If you want to set a breakpoint in start lifecycle methods (such as `vpnWillStart`),
+  you need to attach the debugger before connecting to the VPN.
+- Ensure that your app is already running and the VPN connection is active (VPN icon
+  is visible in the status bar).
+- VPN protocol library versioning
+- PKI support is enabled by default
+- The default value for On-Demand VPN is false.
+- 'Use the correct extension bundle ID for tvOS: com.anchorfree.TestAppTVOS.wireguard'
+- 'Set usesSystemExtension: false for tvOS in the group data configuration'
+- When using a VPN service, unexpected disconnection can expose real IP address and
+  traffic.
+- The killswitch blocks all network traffic outside of the VPN tunnel with exceptions
+  for local network traffic and user-defined rules.
+- Currently WireGuard protocol does not support wildcards as it is expects IPv4 addresses
+  to be provided for bypassing.
+- Multihop routing is only available for the Hydra protocol. For other protocols,
+  this setting will be ignored.
+- Multihop is not supported on tvOS devices.
+- CNL settings control VPN behavior based on network conditions.
+- When VPN is connected, CNL rules can dynamically enable or disable the tunnel based
+  on the current network.
+- Traffic for subdomains of domain1.com, domain2.net and domain3.org will be routed
+  through the VPN.
+- All other traffic will bypass the VPN and use direct connections.
+- The configuration also supports wildcards.
+errors:
+- 'emptyToken: Token is required for operation, but it''s missing.'
+- 'invalidToken: Saved token is invalid.'
+- 'alreadyConnected: VPN is already connected.'
+- 'inProgress: Operation is already in progress.'
+- 'notConnected: VPN status isn''t connected but it''s required by operation.'
+- 'loginWhileConnected: Login attempt while VPN is connected.'
+- 'logoutWhileConnected: Logout attempt while VPN is connected.'
+- 'notPermitted: Operation isn''t permitted by SDK.'
+- 'configurationMismatch: Static configuration properties were changed during dynamic
+  reconfiguring.'
+- 'invalidConnection: Received connection data isn''t valid.'
+- 'timeout: Connection start timeouted.'
+- 'emptyValue: Value is empty.'
+- 'updateWhileConnected: Update attempt while VPN is connected.'
+- 'unauthorized: This user is unauthorized or login operation is still pending.'
+- 'notAuthorized: The token of user is expired.'
+- 'vpnServerUnavailable: Selected server or country code is not available.'
+- 'userSuspended: This user is suspended.'
+- 'sessionExceed: Amount of allowed sessions for this user is exceed.'
+- 'trafficExceed: Amount of allowed traffic for this user is exceed.'
+- 'internalServerError: Server was unable to fetch credentials for this country code.'
+- 'deviceExceed: The amount of allowed devices for this user is exceed.'
+- 'invalidPurchase: The purchase could be validated.'
+- 'unknownServerResponse: This response could mean you don''t have latest VPN SDK.
+  Please report to developers.'
+- 'badRequest: Bad request server error.'
+- 'failedResult: Result in server response wasn''t successful, but error is unknown.'
+- 'networkError: Internet connection is not available or network request has failed.
+  Feel free to try again.'
+- 'invalidCredentials: Credentials verification failed.'
+- 'sessionNotFound: Session with the specified ID doesn''t exist on server or it''s
+  expired.'
+- 'nextHopUnavailable: One of Personal Bridge URLs is invalid.'
+- 'forbidden: Request is not allowed.'
+- 'notAnExitNode: Personal Bridge next_hops is empty.'
+- 'tooManyHops: Number of next_hops bigger then configured limit.'
+- 'hopNotAllowed: One of next_hops is not allowed to connect.'
+- 'statusChangedToInvalid: Incorrect VPN status sequence.'
+- 'canceled: Connection attempt was canceled.'
+- 'unknown: Unknown error.'
+- 'connectFailed: General connection attempt error if nothing was reported by tunnel
+  provider.'
+- 'startInProgress: Start is already in progress.'
+- 'stopInProgress: Stop is already in progress.'
+- 'timeout: Connection attempt timeout.'
+- 'wrapped: Wrapped error (usually from NetworkExtension framework)'
+- 'tunnelError: Error reported by tunnel provider.'
+- 'rateLimit: App messages rate limit reached.'
+- 'notReady: SDK is not ready to receive app message.'
+- 'unableToEncodeMessage: Failed to encode app message.'
+- 'emptyData: Received app message data is empty.'
+- 'unableToDecodeResponse: Failed to decode app message.'
+- 'appMessageFailureResult: App message sending failed with some reason.'
+- 'notConfigured: VPN SDK is not configured properly.'
+- 'interfaceChange: Network interface was changed during connected state.'
+- 'tunInterfaceFailure: Failed to start packet flow.'
+- 'systemCalledStop: OS called stop.'
+- 'systemCalledSleep: OS called sleep.'
+- 'badConfiguration: Configuration decoding failed.'
+- 'connectionTimeout: Connection timeouted.'
+- 'connectionCanceled: Connection was canceled by user.'
+- 'hydraInternalError: SDK has catched custom error from Hydra.'
+- 'failedToSetNetworkSettings: Can''t prepare network settings.'
+- 'delegateRestrictsConnect: Can''t connect because of invalid configuration.'
+- 'failedToReconfigure: Hydra reconfiguration initiated by user failed.'
+- 'authenticationFailure: Connection can''t continue because of authentication failure.'
+- 'cryptoFailure: Data decoding/encoding failed.'
+- 'tlsFailure: Some TLS operation failed.'
+- 'dnsFailure: DNS related problem (usually resolution failed).'
+- 'connectionCouldNotBeEstablished: Connection process was aborted by some other reason
+  (e.g. routing error, server shutdown).'
+- 'invalidSession: Current session has become invalid.'
+- 'trafficExceeded: VPN connection disrupted because the user is out of traffic.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Failed: technical issue, contact us for details'
+- '0: success'
+- '-1: error'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://www.pango-cloud.com
+  auth:
+    type: oauth2
+source_metadata: null

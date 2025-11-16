@@ -1,0 +1,103 @@
+resources:
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: workspaces
+  endpoint:
+    path: /workspaces
+    method: GET
+    data_selector: data
+- name: api_events
+  endpoint:
+    path: /api/events
+    method: GET
+    data_selector: events
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- 'Identifies Sensitive Data: Automatically flags personally identifiable information
+  (PII) and other sensitive data.'
+- 'Ensures GDPR, CCPA, and PCI Compliance: Highlights any violations, enabling teams
+  to remediate issues proactively and avoid regulatory penalties.'
+- 'Provides Detailed Audit Logs: Maintains records of API activities to support compliance
+  audits and ensure transparency.'
+- Sensitive information, including API keys, access tokens, and refresh tokens, was
+  leaked from 30,000 public workspaces.
+- Postman’s focus on collaboration led to sensitive data being shared indiscriminately,
+  increasing unauthorized access risks.
+- Workspaces were often set to 'public' instead of 'private,' exposing data to search
+  engines and external users.
+- Postman, by default, saved sensitive data in a plain text format without any encryption.
+- Security demands more than checklists and hope.
+- Requires proper setup of OAuth2 for access.
+- Rate limits may apply to API calls.
+- Keep your focus on building and delivering amazing API and AI Innovations while
+  we automatically generate your API docs.
+- API authentication is critical to your application's overall security posture.
+- Use a well-established authentication framework.
+- Implement two-factor authentication.
+- Use HTTPS.
+- 'Use HTTPS: HTTPS uses SSL/TLS to encrypt and store data that''s transmitted over
+  the internet.'
+- 'Implement rate limiting and throttling: Rate limits are quotas that restrict the
+  number of requests a client can make to an API within a certain period of time.'
+- 'Validate and sanitize all input parameters, headers, and payloads: Input validation
+  is the process of confirming that any data that''s sent to the API follows the expected
+  format and constraints.'
+- 'Monitor your APIs for suspicious activity: Security monitoring involves continuously
+  monitoring API telemetry data to detect security threats and breaches as soon as
+  they occur.'
+- 'Implement role-based access control: Role-based access control (RBAC) is used to
+  control access to an API''s resources according to the roles of authenticated users.'
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Unauthorized users could hijack user sessions to directly access systems.
+- Attackers can use exposed API keys to deploy malicious code or exfiltrate sensitive
+  data.
+- '400 Bad Request: Check request parameters.'
+- '401 Unauthorized: Verify token and permissions.'
+- '429 Too Many Requests: Rate limit exceeded.'
+- 'Brute-force attacks: In a brute force attack, the bad actor programmatically guesses
+  a password, encryption key, or other authentication credential.'
+- 'Denial-of-service attacks: In a denial-of-service (DoS) attack, the attacker floods
+  the API with a high volume of requests.'
+- 'Injection attacks: This type of attack occurs when APIs fail to sanitize input
+  parameters and payloads.'
+- 'Man-in-the-middle attacks: In this scenario, an attacker is able to alter or inject
+  new data into the communication stream.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - ApiKey
+  - AuthToken
+  - OAuth
+  - OpenID Connect
+  - JWT
+client:
+  base_url: https://api.treblle.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://identity.treblle.com/token
+    client_id: '{{ dlt.secrets[''treblle_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''treblle_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''treblle_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

@@ -1,0 +1,59 @@
+resources:
+- name: AWS
+  endpoint:
+    path: /api/aws
+    method: GET
+- name: Apigee
+  endpoint:
+    path: /api/apigee
+    method: GET
+- name: ApigeeX
+  endpoint:
+    path: /api/apigeex
+    method: GET
+- name: Azure
+  endpoint:
+    path: /api/azure
+    method: GET
+- name: Kong
+  endpoint:
+    path: /api/kong
+    method: GET
+- name: Mulesoft
+  endpoint:
+    path: /api/mulesoft
+    method: GET
+- name: create_api
+  endpoint:
+    path: /import/apis?_format=json
+    method: POST
+- name: update_api
+  endpoint:
+    path: /import/apis?_format=json
+    method: PATCH
+- name: get_all_apis
+  endpoint:
+    path: /import/apis
+    method: GET
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Users need to pass the access token as a bearer token for POST and PATCH operations.
+- API UUID and version are mandatory for updating existing APIs.
+errors:
+- API already exists in the system
+- API with the specified UUID was not found
+- The UUID passed in the .meta file is not valid
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: '{{base_url}}'
+  auth:
+    type: oauth2
+    flow: client_credentials
+    token_url: '{{base_url}}/oauth/token'
+    client_id: '{{ client_unique_id }}'
+    username: '{{ username }}'
+    password: '{{ password }}'
+    location: header
+    header_name: Authorization
+source_metadata: null

@@ -1,0 +1,213 @@
+resources:
+- name: fetchandreconcile
+  endpoint:
+    path: /mailchimpsync/fetchandreconcile
+    method: GET
+- name: abortsync
+  endpoint:
+    path: /mailchimpsync/abortsync
+    method: POST
+- name: fetchaccountinfo
+  endpoint:
+    path: /mailchimpsync/fetchaccountinfo
+    method: GET
+- name: getstatus
+  endpoint:
+    path: /mailchimpsync/getstatus
+    method: GET
+- name: includecontact
+  endpoint:
+    path: /mailchimpsync/includecontact
+    method: POST
+- name: updateconfig
+  endpoint:
+    path: /mailchimpsync/updateconfig
+    method: POST
+- name: updatewebhook
+  endpoint:
+    path: /mailchimpsync/updatewebhook
+    method: POST
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: guides
+  endpoint:
+    path: /guides
+    method: GET
+    data_selector: records
+- name: core
+  endpoint:
+    path: /core
+    method: GET
+    data_selector: records
+- name: index
+  endpoint:
+    path: index.md
+    method: GET
+    data_selector: content
+- name: civicrm_mailchimpsync_cache
+  endpoint:
+    path: /civicrm_mailchimpsync_cache
+    method: UPDATE
+    data_selector: contact_id
+    params:
+      incremental: mailchimp_list_id
+- name: sync_failures
+  endpoint:
+    path: /sync/failures
+    method: GET
+    data_selector: failures
+- name: civicrm_mailchimpsync_batch
+  endpoint:
+    path: /civicrm/mailchimpsync/batch
+    method: GET
+    data_selector: records
+- name: civicrm_mailchimpsync_cache
+  endpoint:
+    path: /civicrm/mailchimpsync/cache
+    method: GET
+    data_selector: records
+- name: civicrm_mailchimpsync_update
+  endpoint:
+    path: /civicrm/mailchimpsync/update
+    method: GET
+    data_selector: records
+- name: civicrm_mailchimpsync_status
+  endpoint:
+    path: /civicrm/mailchimpsync/status
+    method: GET
+    data_selector: records
+- name: lists
+  endpoint:
+    path: /3.0/lists
+    method: GET
+    data_selector: lists
+- name: accounts
+  endpoint:
+    path: /3.0/accounts
+    method: GET
+    data_selector: accounts
+- name: data_sync
+  endpoint:
+    path: /Mailchimpsync.fetcfetchandreconcile
+    method: GET
+    params:
+      with_data: '1'
+- name: civicrm_mailchimpsync_cache
+  endpoint:
+    path: /civicrm_mailchimpsync_cache
+    method: UPDATE
+    data_selector: records
+    params: {}
+- name: civicrm_email
+  endpoint:
+    path: /civicrm_email
+    method: SELECT
+    data_selector: records
+    params: {}
+- name: civicrm_contact
+  endpoint:
+    path: /civicrm_contact
+    method: SELECT
+    data_selector: records
+    params: {}
+- name: civicrm_mailchimpsync_batch
+  endpoint:
+    path: /civicrm_mailchimpsync_batch
+    method: GET
+    data_selector: records
+- name: civicrm_mailchimpsync_cache
+  endpoint:
+    path: /civicrm_mailchimpsync_cache
+    method: GET
+    data_selector: records
+- name: civicrm_mailchimpsync_update
+  endpoint:
+    path: /civicrm_mailchimpsync_update
+    method: GET
+    data_selector: records
+- name: civicrm_mailchimpsync_status
+  endpoint:
+    path: /civicrm_mailchimpsync_status
+    method: GET
+    data_selector: records
+- name: lists
+  endpoint:
+    path: /lists
+    method: GET
+    data_selector: lists
+- name: webhooks
+  endpoint:
+    path: /lists/{list_id}/webhooks
+    method: GET
+    data_selector: webhooks
+notes:
+- Use 'ever' for syncing all contacts to avoid API lockup.
+- This guide is for CiviCRM users and covers all the functionality available through
+  CiviCRM's web-based interface.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Documentation should almost always accompany new features.
+- Bug fixes will occasionally require documentation updates.
+- Use mkdocs locally to preview your guide
+- CiviCRM est un système de gestion des associations à but non lucratif et des organisations
+  d'intérêt public créé par une large communauté de contributeurs et de partenaires.
+- Requires setup of Mailchimp API key for integration
+- Sync runs normally hourly but can be triggered manually
+- Backup your Mailchimp audience and your CiviCRM database before you begin.
+- Trust overrides are temporary and once completed it will re-set to the normal incremental
+  sync algorithm.
+- It's a bad idea to kill a running sync.
+- Running the script inside tmux enables you to detach/reconnect your SSH session
+  and leave it running on the server.
+- The data sync only updates the tags registered in CiviCRM. It won't interfere with
+  any other Mailchimp tags that you may have been using.
+- If Mailchimp offered a sandbox account - that worked like a normal one except for
+  actually sending mail, development would be a lot easier.
+- Data cannot be properly deleted; if you delete an email address it is stored as
+  deleted for the purposes of remembering to never use it again.
+- You can download responses to batch updates by a request to a special URL.
+- If you set a very old date for fetching members updated 'since', e.g. 1970, the
+  API seems to just hang.
+- There's no efficient way to find emails that belong to deleted contacts as of CiviCRM
+  5.20
+- You can't use a temporary table twice in one query
+- Some errors may depend on the organisation's policy decisions.
+- Webhook handling for subscribes, unsubscribes, profile updates, and email updates
+- Uses API key for authentication.
+- Mailchimp audiences used to be called lists.
+- Handles unsubscribes, subscribes, cleaned, profile and email update webhooks.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'TypeError: App\Model\Language::getVersionByDescriptor(): Return value must be of
+  type App\Model\Version, null returned (500 Internal Server Error)'
+- 'Not In Sync: Indicates sync has not run yet'
+- 'Invalid Resource: Your merge fields were invalid.'
+- '400 Bad Request: Invalid request format or parameters'
+- '401 Unauthorized: Invalid API key or insufficient permissions'
+- '404 Not Found: Requested resource does not exist'
+- 'Invalid API Key: Check your API key.'
+- 'List Not Found: Ensure the list ID is correct.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - apiKey
+client:
+  base_url: https://civicrm.org
+  auth:
+    type: oauth2
+source_metadata: null

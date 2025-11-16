@@ -1,0 +1,87 @@
+resources:
+- name: govtrack
+  endpoint:
+    path: /api/v2/role?current=true
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+      start: 0
+      count: 100
+- name: ServiceNow
+  endpoint:
+    path: /api/now/table/incident
+    method: GET
+    data_selector: result
+    params:
+      sysparm_offset: 0
+      sysparm_limit: 10000
+- name: Best Buy
+  endpoint:
+    path: /v1/stores(region=ma)?format=json&show=storeId,city,region
+    method: GET
+    data_selector: stores
+    params:
+      page: 1
+      pageSize: 10
+- name: Facebook
+  endpoint:
+    path: /me/friends?access_token=
+    method: GET
+    data_selector: friends
+    params: {}
+- name: Google Analytics
+  endpoint:
+    path: /v3/management/accountSummaries
+    method: GET
+    data_selector: accountSummaries
+    params:
+      pageToken: ''
+- name: account_summaries
+  endpoint:
+    path: /management/accountSummaries
+    method: GET
+    params:
+      max-results: 100
+      start-index: 1
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Always use HTTPS when calling authenticated endpoints to encrypt credentials in
+  transit.
+- Rate limit restricts the number of requests a client can make within a given time
+  period (for example, 100 requests per minute).
+- When the limit is reached, the API temporarily rejects new requests and usually
+  returns an HTTP 429 Too Many Requests status code.
+- Pagination is used when there is more data to load than the data source provides
+  in a single load.
+- Finding endpoint is just like finding ports in network pentest.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- There is no way of programmatically discovering REST services as they do not have
+  a standard registry service.
+- RESTful services are designed with a focus on simplicity and ease of use.
+errors:
+- '429 Too Many Requests: Please wait 60 seconds before sending new requests.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.postman.com
+source_metadata: null

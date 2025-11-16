@@ -1,0 +1,57 @@
+resources:
+- name: Message
+  endpoint:
+    path: /messages
+    method: GET
+    data_selector: messages
+- name: Service
+  endpoint:
+    path: /services
+    method: GET
+    data_selector: services
+- name: TFClient
+  endpoint:
+    path: /tf2_web_republisher
+    method: GET
+- name: topics
+  endpoint:
+    path: /topics
+    method: GET
+    data_selector: topics
+- name: services
+  endpoint:
+    path: /services
+    method: GET
+    data_selector: services
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+notes:
+- Uses publish/subscribe model for communication between nodes.
+- Unlike the rospy library, this does not require a local ROS environment, allowing
+  usage from platforms other than Linux.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: http://wiki.ros.org/rosbridge_suite
+  headers:
+    Accept: application/json
+source_metadata: null

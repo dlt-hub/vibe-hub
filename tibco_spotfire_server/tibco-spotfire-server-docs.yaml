@@ -1,0 +1,61 @@
+resources:
+- name: upload_job
+  endpoint:
+    path: /rest/library/v1/upload
+    method: PUT
+    data_selector: data
+    params: {}
+- name: upload_data
+  endpoint:
+    path: /rest/library/v1/upload/{jobId}
+    method: POST
+    data_selector: data
+    params: {}
+- name: check_upload_status
+  endpoint:
+    path: /rest/library/v1/upload/{jobId}
+    method: GET
+    data_selector: data
+    params: {}
+- name: cancel_upload_job
+  endpoint:
+    path: /rest/library/v1/upload/{jobId}
+    method: DELETE
+    data_selector: data
+    params: {}
+- name: finish_upload
+  endpoint:
+    path: /rest/library/v1/upload/{jobId}/finish
+    method: POST
+    data_selector: data
+    params: {}
+- name: library_upload
+  endpoint:
+    path: /api.rest.library.upload
+    method: POST
+notes:
+- All communication should always be done over HTTPS when using OAuth 2.0.
+- There is a restriction on which file types that can be uploaded. Currently only
+  Spotfire Binary Data Format (SBDF) files are supported (with library filetype spotfire.sbdf).
+errors:
+- '400: Invalid or incomplete request'
+- '403: Insufficient library permissions'
+- '404: Job not found'
+- '500: Internal server error'
+- '503: Server busy'
+- 'not_authenticated: The API client is not authenticated'
+- 'not_authorized: The API client is not authorized to access the requested resource'
+- 'internal_error: The server encountered an error when processing the request'
+- 'server_busy: The server is currently too busy to handle the request'
+auth_info:
+  mentioned_objects:
+  - oauth2
+client:
+  base_url: http[s]://<host>[:<port>]/spotfire/api
+  auth:
+    type: oauth2
+    flow: Authorization Code
+    token_url: http[s]://<host>[:<port>]/spotfire/oauth2/token
+  headers:
+    Accept: application/json
+source_metadata: null

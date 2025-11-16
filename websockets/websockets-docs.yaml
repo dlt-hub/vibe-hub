@@ -1,0 +1,364 @@
+resources:
+- name: game_events
+  endpoint:
+    path: /
+    method: GET
+    data_selector: event
+    params: {}
+- name: websockets-echo
+  endpoint:
+    path: /healthz
+    method: GET
+    data_selector: OK
+- name: health_check
+  endpoint:
+    path: /healthz
+    method: GET
+    data_selector: OK
+- name: echo_server
+  endpoint:
+    path: /
+    method: GET
+    data_selector: message
+- name: health_check
+  endpoint:
+    path: /healthz
+    method: GET
+    data_selector: response
+    params: {}
+- name: inemuri
+  endpoint:
+    path: /inemuri
+    method: GET
+    data_selector: response
+    params: {}
+- name: seppuku
+  endpoint:
+    path: /seppuku
+    method: GET
+    data_selector: response
+    params: {}
+- name: health_check
+  endpoint:
+    path: /healthz
+    method: GET
+    data_selector: OK
+- name: inemuri
+  endpoint:
+    path: /inemuri
+    method: GET
+    data_selector: Sleeping for 10s
+- name: seppuku
+  endpoint:
+    path: /seppuku
+    method: GET
+    data_selector: Terminating
+- name: websocket
+  endpoint:
+    path: /
+    method: GET
+- name: channel
+  endpoint:
+    path: /channel/<uuid:channel_id>
+    method: GET
+    data_selector: records
+    params: {}
+- name: serve
+  endpoint:
+    path: /websockets/sync/server/serve
+    method: POST
+- name: unix_serve
+  endpoint:
+    path: /websockets/sync/server/unix_serve
+    method: POST
+- name: websocket
+  endpoint:
+    path: /websocket
+    method: GET
+- name: per_message_deflate_server
+  endpoint:
+    path: /extensions/permessage_deflate/server
+    method: GET
+- name: per_message_deflate_client
+  endpoint:
+    path: /extensions/permessage_deflate/client
+    method: GET
+- name: WebSocketURI
+  endpoint:
+    path: /uri
+    method: GET
+    data_selector: WebSocketURI
+    params: {}
+- name: per_message_deflate
+  endpoint:
+    path: /extensions/permessage_deflate
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: broadcast
+  endpoint:
+    path: /broadcast
+    method: POST
+    data_selector: message
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: moves
+  endpoint:
+    path: /moves
+    method: GET
+    data_selector: moves
+    params: {}
+- name: winner
+  endpoint:
+    path: /winner
+    method: GET
+    data_selector: winner
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Players take alternate turns, using the same browser.
+- You should always secure WebSocket connections with TLS.
+- The wss protocol is to ws what https is to http.
+- Close the server when receiving SIGTERM.
+- Connections are dropped after five minutes on the free plan.
+- The free tier of Koyeb is sufficient for trying this guide.
+- The app listens on the port provided in the $PORT environment variable.
+- The app provides a health check at /healthz.
+- The app closes connections and exits cleanly when it receives a SIGTERM signal.
+- Provides a health check at /healthz
+- Closes connections and exits cleanly when it receives a SIGTERM signal
+- Heroku no longer offers a free tier.
+- The app blocks for 100ms before responding.
+- Uses Supervisor to manage processes
+- Enables the reuse_port option for connections
+- This app creates artificial starvation of CPU time.
+- The WebSocket protocol requires HTTP/1.1. We must set the HTTP protocol version
+  to 1.1, else nginx defaults to HTTP/1.0 for proxying.
+- The WebSocket handshake involves the Connection and Upgrade HTTP headers. We must
+  pass them to the upstream explicitly, else nginx drops them because they’re hop-by-hop
+  headers.
+- Uses Supervisor to manage websockets server processes
+- Shuts down gracefully when receiving a SIGTERM signal
+- This configuration runs four instances of the app.
+- The WebSocket protocol requires HTTP/1.1.
+- Set the HTTP protocol version to 1.1 for proxying.
+- Exit the serve() context manager to stop the server cleanly when it receives SIGTERM
+  on Unix.
+- Set the load balancing method to leastconn in order to balance the number of active
+  connections across servers.
+- Close the connection when receiving SIGTERM.
+- Process messages received on the connection.
+- websockets sends pings at 20 seconds intervals to keep the connection open.
+- It closes the connection if it doesn’t get a pong within 20 seconds.
+- websockets takes care of closing the connection when the handler exits.
+- HTTP and WebSocket have widely different operational characteristics. Running them
+  with the same server becomes inconvenient when you scale.
+- Timeout for opening connections in seconds is 10.
+- Uses asyncio for handling WebSocket connections
+- If you choose websockets’ asyncio implementation, then you shouldn’t use threads.
+- Using time.sleep() instead of asyncio.sleep() blocks the event loop and prevents
+  asyncio from operating normally.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Supports asynchronous iteration to receive messages.
+- This function returns a Server whose API mirrors BaseServer.
+- Uses HTTP Basic Authentication according to RFC 7235 and RFC 7617
+- Requires the third-party library werkzeug
+- Set server_name for reverse proxy configurations
+- The iterator exits normally when the connection is closed with close code 1000 (OK)
+  or 1001 (going away) or without a close code.
+- recv() raises ConnectionClosed when the connection is closed.
+- Uses WebSocket protocol for real-time communication
+- This feature requires the third-party library werkzeug
+- The legacy asyncio implementation is deprecated.
+- This function is identical to serve, except the host and port arguments are replaced
+  by path.
+- If authentication succeeds, the connection’s username attribute is set.
+- If it fails, the server responds with an HTTP 401 Unauthorized status.
+- Canceling recv() is safe. There’s no risk of losing the next message.
+- Uses a WebSocket client connection with iteration to receive messages.
+- Supports asynchronous iteration to receive messages
+- Canceling recv() is safe and does not risk losing the next message
+- Broadcast function sends messages to multiple WebSocket connections synchronously.
+- The legacy async implementation is deprecated.
+- Connection retries with exponential backoff.
+- Reconnection attempts are spaced out with truncated exponential backoff
+- websockets logs to the 'websockets.client' and 'websockets.server' loggers.
+- By default, websockets doesn’t log an event for every message.
+- websockets authenticates automatically when the address of the proxy includes credentials
+  e.g. http://user:password@proxy:8080/
+- 'By default, websockets enables compression with conservative settings that optimize
+  memory usage at the cost of a slightly worse compression rate: Window Bits = 12
+  and Memory Level = 5.'
+- Reconnection attempts are spaced out with truncated exponential backoff.
+- Websockets runs a keepalive and heartbeat mechanism by sending a Ping frame every
+  20 seconds.
+- If a Pong frame is not received within 20 seconds, the connection is terminated.
+- Token must be impossible to forge by an attacker.
+- Tokens can be short-lived or single-use.
+- In production, you should always secure WebSocket connections with TLS.
+- An attacker who can open an arbitrary number of connections will be able to perform
+  a denial of service by memory exhaustion.
+- WebSocket servers are usually deployed behind a reverse proxy that terminates TLS.
+- WebSocket servers need to authenticate clients to route communications securely.
+- Tokens linked to user accounts are a better choice for authentication.
+- Client connections use SOCKS and HTTP proxies automatically.
+- Keepalive is enabled in the threading implementation.
+- The threading implementation now sends Ping frames at regular intervals.
+- websockets 12.0 requires Python ≥ 3.8.
+- websockets 11.0 is the last version supporting Python 3.7.
+- Uses logging module from standard library
+- By default, websockets doesn’t log an event for every message
+- websockets implements WebSocket Per-Message Deflate, a compression extension based
+  on the Deflate algorithm specified in RFC 7692.
+- Connections can drop as a consequence of temporary network connectivity issues.
+- Shorter values for ping_interval will detect connection drops faster but increase
+  network traffic.
+- Memory usage of a single connection is the sum of the baseline amount of memory
+  that websockets uses for each connection, the amount of memory needed by your application
+  code, and the amount of data held in buffers.
+- Compression settings are the primary factor affecting how much memory each connection
+  uses.
+errors:
+- 'Unsupported event type: {event.type}.'
+- 'ConnectionClosedError: no close frame received or sent'
+- 'ConnectionClosedError: sent 1011 (internal error) keepalive ping timeout; no close
+  frame received'
+- 'ConnectionClosed: When the connection is closed.'
+- 'ConcurrencyError: If two coroutines call recv() or recv_streaming() concurrently.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'InvalidURI: If uri isn’t a valid WebSocket URI.'
+- 'InvalidProxy: If proxy isn’t a valid proxy.'
+- 'OSError: If the TCP connection fails.'
+- 'InvalidHandshake: If the opening handshake fails.'
+- 'TimeoutError: If the opening handshake times out.'
+- 'ConcurrencyError: If two threads call recv() or recv_streaming() concurrently.'
+- 'TypeError: If message doesn’t have a supported type.'
+- 'InvalidURI: If `uri` isn’t a valid WebSocket URI'
+- 'OSError: If the TCP connection fails'
+- 'InvalidHandshake: If the opening handshake fails'
+- 'TimeoutError: If the opening handshake times out'
+- '401 Unauthorized: Recheck provided credentials.'
+- 'RuntimeError: If two coroutines call recv() concurrently.'
+- 'RuntimeError: If another ping was sent with the same data and the corresponding
+  pong wasn’t received yet.'
+- 'ConnectionClosed: When the connection is closed'
+- 'RuntimeError: If two coroutines call recv() concurrently'
+- 'ConnectionClosed: Raised when trying to interact with a closed connection.'
+- 'ConnectionClosedOK: Like ConnectionClosed when the connection terminated properly.'
+- 'ConnectionClosedError: Like ConnectionClosed when the connection terminated with
+  an error.'
+- 'InvalidURI: Raised when connecting to a URI that isn’t a valid WebSocket URI.'
+- 'InvalidProxy: Raised when connecting via a proxy that isn’t valid.'
+- 'InvalidHandshake: Base class for exceptions raised when the opening handshake fails.'
+- 'SecurityError: Raised when a handshake request or response breaks a security rule.'
+- 'ProxyError: Raised when failing to connect to a proxy.'
+- 'InvalidProxyMessage: Raised when an HTTP proxy response is malformed.'
+- 'InvalidProxyStatus: Raised when an HTTP proxy rejects the connection.'
+- 'InvalidMessage: Raised when a handshake request or response is malformed.'
+- 'InvalidStatus: Raised when a handshake response rejects the WebSocket upgrade.'
+- 'InvalidHeader: Raised when an HTTP header doesn’t have a valid format or value.'
+- 'InvalidHeaderFormat: Raised when an HTTP header cannot be parsed.'
+- 'InvalidHeaderValue: Raised when an HTTP header has a wrong value.'
+- 'InvalidOrigin: Raised when the Origin header in a request isn’t allowed.'
+- 'InvalidUpgrade: Raised when the Upgrade or Connection header isn’t correct.'
+- 'NegotiationError: Raised when negotiating an extension or a subprotocol fails.'
+- 'DuplicateParameter: Raised when a parameter name is repeated in an extension header.'
+- 'InvalidParameterName: Raised when a parameter name in an extension header is invalid.'
+- 'InvalidParameterValue: Raised when a parameter value in an extension header is
+  invalid.'
+- 'ProtocolError: Raised when receiving or sending a frame that breaks the protocol.'
+- 'PayloadTooBig: Raised when parsing a frame with a payload that exceeds the maximum
+  size.'
+- 'InvalidState: Raised when sending a frame is forbidden in the current state.'
+- 'ConcurrencyError: Raised when receiving or sending messages concurrently.'
+- 'InvalidStatusCode: Raised when a handshake response status code is invalid.'
+- 'AbortHandshake: Raised to abort the handshake on purpose and return an HTTP response.'
+- 'RedirectHandshake: Raised when a handshake gets redirected.'
+- Maximum number of redirects exceeded
+- Exceptions raised by your code in servers
+- Failures in broadcast()
+- ConnectionClosed
+- ConnectionClosedOK
+- ConnectionClosedError
+- InvalidURI
+- InvalidProxy
+- InvalidHandshake
+- SecurityError
+- ProxyError
+- InvalidProxyMessage
+- InvalidProxyStatus
+- InvalidMessage
+- InvalidStatus
+- InvalidHeader
+- InvalidHeaderFormat
+- InvalidHeaderValue
+- InvalidOrigin
+- InvalidUpgrade
+- NegotiationError
+- DuplicateParameter
+- InvalidParameterName
+- InvalidParameterValue
+- ProtocolError
+- PayloadTooBig
+- InvalidState
+- ConcurrencyError
+- Clients no longer crash when the server rejects the opening handshake and the HTTP
+  response doesn’t Include a Content-Length header.
+- 'WARNING: Failures in broadcast()'
+- 'ERROR: Exceptions raised by your code in servers'
+- An attacker who can open an arbitrary number of connections will be able to perform
+  a denial of service by memory exhaustion.
+- Clients no longer crash when the server rejects the opening handshake and the HTTP
+  response doesn’t include a Content-Length header.
+- Connections are closed with code 1007 (invalid data) when receiving invalid UTF-8
+  in a text frame.
+auth_info:
+  mentioned_objects:
+  - BasicAuthWebSocketServerProtocol
+  - basic_auth_protocol_factory
+  - WebSocket
+  - HTTP
+  - InvalidURI
+  - WebSocketURI
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: ws://localhost/
+  headers:
+    User-Agent: Python/3.10 websockets/15.0.1
+  paginator:
+    ping_interval: 20
+    ping_timeout: 20
+    close_timeout: 10
+    max_size: 1048576
+    max_queue: 16
+    write_limit: 32768
+source_metadata: null

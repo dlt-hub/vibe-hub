@@ -1,0 +1,104 @@
+resources:
+- name: jobs
+  endpoint:
+    path: /jobs
+    method: POST
+    data_selector: job
+    params: {}
+- name: datasets
+  endpoint:
+    path: /datasets
+    method: GET
+    data_selector: datasets
+    params: {}
+- name: read_gbq
+  endpoint:
+    path: /read_gbq
+    method: GET
+    data_selector: records
+- name: to_gbq
+  endpoint:
+    path: /to_gbq
+    method: POST
+    data_selector: records
+- name: read_gbq
+  endpoint:
+    path: /read_gbq
+    method: GET
+    data_selector: df
+- name: to_gbq
+  endpoint:
+    path: /to_gbq
+    method: POST
+    data_selector: df
+- name: read_gbq
+  endpoint:
+    path: read_gbq
+    method: GET
+    data_selector: data
+    params: {}
+- name: to_gbq
+  endpoint:
+    path: to_gbq
+    method: POST
+    data_selector: data
+    params: {}
+notes:
+- A `TIME` data type represents a time, independent of a specific date.
+- A timestamp represents an absolute point in time, independent of any time zone or
+  convention such as Daylight Savings Time.
+- Uses OAuth2 for authorization.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- See the How to authenticate with Google BigQuery guide for authentication instructions.
+- Uses BigQuery’s standard SQL, which is compliant with the SQL 2011 standard.
+- Uses Google Cloud client library to make requests to Google BigQuery
+- Consider using BigQuery DataFrames to process large results with pandas compatible
+  APIs that run in the BigQuery SQL query engine. This provides an opportunity to
+  save on costs and improve performance.
+- Uses OAuth2 with local webserver flow for authentication.
+- Consider using BigQuery DataFrames to process large results.
+- Uses OAuth2 with refresh token — requires setup of connected app in Google Cloud
+  Platform
+- Do not store credentials on disk when using shared computing resources such as a
+  GCE VM or Colab notebook.
+- Uses OAuth2 with service account or user account credentials.
+- Testing Mode requires fewer than 100 users and individual listing on the OAuth consent
+  screen.
+- Authentications by a test user will expire seven days from the time of consent.
+- Projects configured with a Publishing Status of Testing are limited to up to 100
+  test users who must be individually listed in the OAuth consent screen.
+- To use this module, you will need a valid BigQuery account.
+- BigQuery is best for analyzing large sets of data quickly.
+- While BigQuery uses standard SQL syntax, it has some important differences from
+  traditional databases both in functionality, API limitations (size and quantity
+  of queries or uploads), and how Google charges for use of the service.
+- If you do not provide any credentials, this module attempts to load credentials
+  from the environment.
+- These credentials are only used locally.
+errors:
+- DatasetCreationError
+- GenericGBQException
+- InvalidColumnOrder
+- InvalidIndexColumn
+- NotFoundException
+- TableCreationError
+- InvalidPageToken
+- InvalidSchema
+- QueryTimeout
+- 'ImportError: pandas-gbq requires db-dtypes'
+- 'ImportError: pandas-gbq requires pydata-google-auth'
+- 'ImportError: pandas-gbq requires google-auth-oauthlib'
+- 'ImportError: pandas-gbq requires google-cloud-bigquery'
+- Limited to 100 test users
+- OAuth client requests may require app verification for production use
+auth_info:
+  mentioned_objects:
+  - Oauth2
+  - Oauth2Client
+  - Credentials
+client:
+  base_url: https://bigquery.googleapis.com/bigquery/v2
+  auth:
+    scopes:
+    - https://www.googleapis.com/auth/bigquery
+source_metadata: null

@@ -1,0 +1,204 @@
+resources:
+- name: Transactions
+  endpoint:
+    path: /dax/udf/ABC
+    method: POST
+    data_selector: results
+    params: {}
+- name: DAX UDF
+  endpoint:
+    path: /functions/ABC
+    method: POST
+    data_selector: results
+    params: {}
+- name: SemanticModelLogs
+  endpoint:
+    path: /logs/SemanticModelLogs
+    method: GET
+    data_selector: records
+    params: {}
+- name: package_search
+  endpoint:
+    path: /3/action/package_search
+    method: GET
+    data_selector: results
+    params:
+      q: cows
+      rows: '20'
+- name: user_agent_string
+  endpoint:
+    path: http://useragentstring.com/
+    method: GET
+    data_selector: source
+    params:
+      uas: userAgent_URLEncoded
+      getJSON: all
+- name: capacity
+  endpoint:
+    path: /_apis/work/teamsettings/iterations/{IterationSK}/capacities/{AssignedToUserSK}
+    method: GET
+    data_selector: records
+    params:
+      incremental: ProjectSK
+- name: fechas_agua
+  endpoint:
+    path: /colonias/dbo_fechas_agua_list.php
+    method: GET
+    data_selector: TABLE[id='form_grid_8'] > TR
+    params:
+      masterkey1: Number.ToText(Numero)
+      mastertable: dbo.barriocolonia
+- name: agent_activities
+  endpoint:
+    path: /stats/agent-activities/interactions
+    method: GET
+- name: customer_account_transactions
+  endpoint:
+    path: /gw-bi/api/v1.0/customeraccounttransactions
+    method: GET
+- name: installed_applications
+  endpoint:
+    path: /web/api/v2.1/installed-applications
+    method: GET
+- name: items
+  endpoint:
+    path: /sites/examplesitename/_api/web/lists/GetByTitle('examplelistname')/items
+    method: GET
+    data_selector: value
+- name: projects
+  endpoint:
+    path: /sites/PWA/_api/ProjectData/Projects()
+    method: GET
+    data_selector: value
+    params:
+      Filter: ProjectType ne 7
+- name: workspace_query
+  endpoint:
+    path: /workspaces/{workspaceId}/query
+    method: POST
+    data_selector: tables
+    params:
+      query: let over95th = materialize(AppPageViews | where TimeGenerated > ago(1d)
+        | where Name in ("Chart") | where DurationMs > -1 and DurationMs ago(1d) |
+        where Name in ("Chart") | where DurationMs > -1 and DurationMs > over95DurationMs
+        | summarize over95thCountTotal = count() by Client, Name; let over95thCountByUserAndSite
+        = materialize(AppPageViews | where TimeGenerated > ago(1d) | where Name in
+        ("Chart") | where DurationMs > -1 and DurationMs > over95DurationMs | summarize
+        over95thCount = count() by Client, UserAuthenticatedId, TWSiteID, Name | where
+        isnull(TWSiteID) == false); AppPageViews | where TimeGenerated > ago(1d) |
+        where Name in ("Chart") | where DurationMs > -1 and DurationMs { c{0}, c{3}}
+- name: user_course_activity
+  endpoint:
+    path: /api-2.0/organizations/224484/analytics/user-course-activity/
+    method: GET
+    data_selector: results
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: Get Refresh History In Group
+  endpoint:
+    path: /v1.0/myorg/groups/{groupId}/datasets/{datasetId}/refreshes
+    method: GET
+    data_selector: value
+    params: {}
+- name: Refresh Dataset In Group
+  endpoint:
+    path: /v1.0/myorg/groups/{groupId}/datasets/{datasetId}/refresh
+    method: POST
+    data_selector: 'null'
+    params: {}
+- name: datasets
+  endpoint:
+    path: /v1.0/myorg/datasets
+    method: GET
+    data_selector: value
+    params: {}
+- name: datasources
+  endpoint:
+    path: /v1.0/myorg/datasets/{datasetId}/datasources
+    method: GET
+    data_selector: value
+    params: {}
+- name: ExportToFile
+  endpoint:
+    path: /export/to/file
+    method: POST
+    data_selector: exportedFile
+    params: {}
+notes:
+- This semantic model contains a DAX user-defined function called ABC that does an
+  ABC analysis on the data in the Transactions table.
+- Hiding key columns is a best practice regardless of whether you’re using Copilot.
+- Hidden columns are never considered in Copilot responses.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Queries and semantic model refreshes always have an Execution Metrics event associated
+  with them.
+- The duration of an event in Workspace Monitoring does not include any delays added
+  as a result of capacity throttling.
+- 'This is very useful for admins trying to identify why a capacity is overloaded:
+  it means that you can now see the details of expensive queries or refresh operations
+  and understand why they are causing problems.'
+- Make sure you upgrade your Capacity Metrics App to the latest version and enable
+  Workspace Monitoring on all important workspaces so you can do this!
+- At the time of writing there is a bug that causes the value given in RelativePath
+  to be appended twice when the Web.Page() function is also used.
+- Data does not return correctly if using multiple query strings.
+- Dynamic data source issues in Power BI service.
+- Requires a custom connector for proper API access.
+- Ensure to turn off 'Test Connection' in Power BI service for this data source.
+- Dynamic data sources aren’t refreshed in the Power BI service.
+- Some objects like Contact may return nulls in deeply nested fields
+- Power BI Pro allows for 8 refreshes a day, while Power BI Premium allows for 48
+  refreshes.
+- Unlimited refreshes in the API available as long as the dataset is in Premium
+- Requires administrative permissions to call certain endpoints.
+- OpenApi.Document() only supports basic and anonymous authentication by default,
+  so support for OAuth2 has to be handled using the ManualCredentials option.
+- Some limitations of the export API may affect integration or data quality.
+- Token expires every 5 or 10 minutes.
+- Some tools generate .pbix files programmatically, which is not supported.
+- Replicating old BI tool practices in Power BI may lead to issues.
+errors:
+- Copilot analyzed only part of the model due to its size, which may affect these
+  results.
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Since dynamic data sources aren’t refreshed in the Power BI service, this dataset
+  won’t be refreshed.
+- This dataset includes a dynamic data source. Since dynamic data sources aren’t refreshed
+  in the Power BI service, this dataset won’t be refreshed.
+- '400 Bad Request: Check API endpoint and parameters'
+- Invalid dataset refresh request. Number of refresh requests in last 24 hours exceeded
+  limit.
+- '404: Not Found - The requested resource could not be found.'
+- '401: Unauthorized - Check if the token has the required permissions.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.powerbi.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.microsoftonline.com/common/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

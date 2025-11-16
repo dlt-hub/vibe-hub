@@ -1,0 +1,193 @@
+resources:
+- name: extensions
+  endpoint:
+    path: /xwiki/bin/view/Main/Extensions
+    method: GET
+    data_selector: extensions
+    params: {}
+- name: dashboard
+  endpoint:
+    path: /xwiki/bin/view/Main/Dashboard
+    method: GET
+    data_selector: dashboard
+    params: {}
+- name: user_authentication
+  endpoint:
+    path: /xwiki/bin/view/Documentation/AdminGuide/Authentication/
+    method: GET
+- name: ldap_configuration
+  endpoint:
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: pagination
+  endpoint:
+    path: /pagination
+    method: GET
+    data_selector: records
+- name: root
+  endpoint:
+    path: /
+    method: GET
+    data_selector: XWiki element
+- name: syntaxes
+  endpoint:
+    path: /syntaxes
+    method: GET
+    data_selector: Syntaxes element
+- name: wikis
+  endpoint:
+    path: /wikis
+    method: GET
+    data_selector: Wikis element
+- name: wiki_query
+  endpoint:
+    path: /wikis/query
+    method: GET
+    data_selector: SearchResults element
+- name: wiki_children
+  endpoint:
+    path: /wikis/{wikiName}/children
+    method: GET
+    data_selector: Pages element
+    params:
+      limit: '-1'
+- name: wiki_search
+  endpoint:
+    path: /wikis/{wikiName}/search
+    method: GET
+    data_selector: SearchResults element
+- name: wiki_query_type
+  endpoint:
+    path: /wikis/{wikiName}/query
+    method: GET
+    data_selector: SearchResults element
+- name: spaces
+  endpoint:
+    path: /wikis/{wikiName}/spaces
+    method: GET
+    data_selector: Spaces element
+- name: pages
+  endpoint:
+    path: /wikis/{wikiName}/spaces/{spaceName}/pages
+    method: GET
+    data_selector: Pages element
+- name: pages
+  endpoint:
+    path: /wikis/{wikiName}/pages
+    method: GET
+    data_selector: pages
+    params: {}
+- name: page_history
+  endpoint:
+    path: /wikis/{wikiName}/spaces/{spaceName}/pages/{pageName}/history
+    method: GET
+    data_selector: history
+    params: {}
+- name: comments
+  endpoint:
+    path: /wikis/{wikiName}/spaces/{spaceName}/pages/{pageName}/comments
+    method: GET
+    data_selector: comments
+    params: {}
+- name: attachments
+  endpoint:
+    path: /wikis/{wikiName}/spaces/{spaceName}/pages/{pageName}/attachments
+    method: GET
+    data_selector: attachments
+    params: {}
+- name: tags
+  endpoint:
+    path: /wikis/{wikiName}/spaces/{spaceName}/pages/{pageName}/tags
+    method: GET
+    data_selector: tags
+    params: {}
+- name: class
+  endpoint:
+    path: /wikis/{wikiName}/classes
+    method: GET
+    data_selector: Classes element
+- name: class_properties
+  endpoint:
+    path: /wikis/{wikiName}/classes/{className}/properties
+    method: GET
+    data_selector: Properties element
+- name: objects
+  endpoint:
+    path: /wikis/{wikiName}/classes/{className}/objects
+    method: GET
+    data_selector: Objects element
+- name: job_status
+  endpoint:
+    path: /jobstatus/{jobId}
+    method: GET
+    data_selector: JobStatus element
+- name: job_log
+  endpoint:
+    path: /joblog/{jobId}
+    method: GET
+    data_selector: JobLog element
+- name: jobs
+  endpoint:
+    path: /jobs
+    method: PUT
+    data_selector: JobStatus element
+- name: localization_translations
+  endpoint:
+    path: /wikis/{wikiName}/localization/translations
+    method: GET
+    data_selector: translations
+- name: icon_theme_icons
+  endpoint:
+    path: /wikis/{wikiName}/iconThemes/icons
+    method: GET
+    data_selector: icons
+- name: objects
+  endpoint:
+    path: /rest/wikis/xwiki/spaces/Test/pages/Test/objects
+    method: POST
+    data_selector: object
+- name: users
+  endpoint:
+    path: /rest/wikis/query
+    method: GET
+    data_selector: object:XWiki.XWikiUsers
+notes:
+- XWiki is a light and powerful development platform that allows you to customize
+  the wiki to your specific needs.
+- XWiki requires cookies to be enabled in order to track your session and to keep
+  you logged in between pages.
+- Make sure the keytab has the right permissions and ownership
+- Installation procedure varies per Linux distribution
+- Some objects may return nulls in deeply nested fields
+- The macro is responsible for displaying browsing links, and does not involve the
+  actual display of the browsed items.
+- XWiki allows you to create your own authentication extension in order to integrate
+  with any custom mechanism you might be using already (SSO, etc).
+- Additional authenticators are available as extensions on extensions.xwiki.org
+- A form token needs to be sent in the header XWiki-Form-Token for POST requests with
+  content type text/plain, multipart/form-data or application/www-form-urlencoded.
+- Uses REST API for various operations on wikis, classes, and jobs
+- Requires proper authentication for access
+- Default source for keyword search results is Solr.
+errors:
+- 'nousername: The provided user is null.'
+- 'login empty: LDAP authentication failed'
+- '401 Unauthorized: If credentials are not provided.'
+- '400 Bad Request: If specifying a higher limit than 1000.'
+- '401: If the user is not authorized.'
+- '401 Unauthorized: If the user is not authorized'
+- '404 Not Found: If the requested resource is not found'
+- '400 Bad Request: Ensure the request format is correct.'
+- '401 Unauthorized: Check your authentication credentials.'
+auth_info:
+  mentioned_objects:
+  - OpenID Connect Authenticator
+  - WebAuthn
+  - LDAP Authenticator
+client:
+  base_url: http://www.xwiki.org/xwiki/bin/view/Main/
+  auth:
+    type: oauth2
+    flow: refresh_token
+source_metadata: null

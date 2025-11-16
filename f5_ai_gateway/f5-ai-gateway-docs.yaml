@@ -1,0 +1,38 @@
+resources:
+- name: chat_completions
+  endpoint:
+    path: /api/v1/chat
+    method: POST
+    data_selector: messages
+- name: models
+  endpoint:
+    path: /api/v1/models
+    method: GET
+    data_selector: data
+- name: openai
+  endpoint:
+    path: /v1/chat/completions
+    method: POST
+    data_selector: choices
+    params: {}
+notes:
+- A few notable OpenAI features which are not yet supported include streaming, tool
+  calling, and multi-modal input/output; only Text.
+- AI Gateway is deployed on Kubernetes.
+- We recommend using NGINX Ingress Controller in front of AI Gateway to expose it
+  to your clients.
+- Services like OpenAI require an API key.
+- Use a Kubernetes secret to store the OpenAI API key.
+errors:
+- '400 Bad request: request must include at least 1 message'
+- '422 Unprocessable content: rejection_reason: Possible Prompt Injection detected'
+- '401 Unauthorized: Check API key and permissions.'
+- '401 Unauthorized: Incorrect API key provided'
+auth_info:
+  mentioned_objects:
+  - Kubernetes secret
+client:
+  base_url: https://aigateway.clouddocs.f5.com
+  auth:
+    type: oauth2
+source_metadata: null

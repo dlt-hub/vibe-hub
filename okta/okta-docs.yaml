@@ -1,0 +1,73 @@
+resources:
+- name: person
+  endpoint:
+    path: /person
+    method: GET
+    data_selector: records
+- name: person
+  endpoint:
+    path: /person
+    method: GET
+    data_selector: records
+    params: {}
+- name: person_by_id
+  endpoint:
+    path: /person/{id}
+    method: GET
+    data_selector: record
+    params: {}
+- name: create_person
+  endpoint:
+    path: /person
+    method: POST
+    data_selector: record
+    params: {}
+- name: update_person
+  endpoint:
+    path: /person/{id}
+    method: PUT
+    data_selector: record
+    params: {}
+- name: delete_person
+  endpoint:
+    path: /person/{id}
+    method: DELETE
+    data_selector: record
+    params: {}
+notes:
+- Uses OAuth2 with client credentials flow
+- Uses OAuth2 Client Credentials Flow for authorization
+- Endpoints require a valid bearer token for access
+- All API requests must use the HTTPS scheme.
+- Not all APIs respect pagination or the before and limit parameters.
+- Some objects don't support all the listed operators.
+- The `ne` (not equal) operator isn't supported for some objects, but you can obtain
+  the same result by using `lt ... or ... gt`.
+- All `Date` values use the ISO 8601 format `YYYY-MM-DDTHH:mm:ss.SSSZ`.
+errors:
+- '401 Unauthorized: Token missing, expired or invalid'
+- '404 Not Found: Resource not found'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400 Bad Request: The request could not be understood by the server due to malformed
+  syntax.'
+- '401 Unauthorized: The request requires user authentication.'
+- '403 Forbidden: The server understood the request, but is refusing to fulfill it.'
+- '404 Not Found: The server has not found anything matching the requested URI.'
+- '500 Internal Server Error: The server encountered an unexpected condition.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects:
+  - Okta
+client:
+  base_url: http://127.0.0.1:8000
+  auth:
+    type: oauth2
+    flow: client_credentials
+    token_url: https://dev-133337.okta.com/oauth2/default/v1/token
+    client_id: 0oab8eb55Kb9jdMIr5d6
+    client_secret: NEVER-SHOW-SECRETS
+    scope: person_api
+    location: header
+    header_name: Authorization
+source_metadata: null

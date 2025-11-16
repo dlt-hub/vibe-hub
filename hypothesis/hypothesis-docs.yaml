@@ -1,0 +1,274 @@
+resources:
+- name: test_sort_correct
+  endpoint:
+    path: /test/sort/correct
+    method: POST
+    data_selector: results
+    params: {}
+- name: notes
+  endpoint:
+    path: /adding-notes
+    method: GET
+    data_selector: output
+    params: {}
+- name: Phase
+  endpoint:
+    path: /hypothesis/Phase
+    method: GET
+- name: Verbosity
+  endpoint:
+    path: /hypothesis/Verbosity
+    method: GET
+- name: HealthCheck
+  endpoint:
+    path: /hypothesis/HealthCheck
+    method: GET
+- name: Phase
+  endpoint:
+    path: /hypothesis/settings/phases
+    method: GET
+- name: Verbosity
+  endpoint:
+    path: /hypothesis/settings/verbosity
+    method: GET
+- name: HealthCheck
+  endpoint:
+    path: /hypothesis/settings/healthcheck
+    method: GET
+- name: ExampleDatabase
+  endpoint:
+    path: /hypothesis/database/example
+    method: GET
+- name: InMemoryExampleDatabase
+  endpoint:
+    path: /hypothesis/database/in_memory
+    method: GET
+- name: DirectoryBasedExampleDatabase
+  endpoint:
+    path: /hypothesis/database/directory_based
+    method: GET
+- name: GitHubArtifactDatabase
+  endpoint:
+    path: /hypothesis/database/github_artifact
+    method: GET
+- name: Phase
+  endpoint:
+    path: /_modules/hypothesis/_settings.html#Phase
+    method: GET
+- name: Verbosity
+  endpoint:
+    path: /_modules/hypothesis/_settings.html#Verbosity
+    method: GET
+- name: HealthCheck
+  endpoint:
+    path: /_modules/hypothesis/_settings.html#HealthCheck
+    method: GET
+- name: ExampleDatabase
+  endpoint:
+    path: /_modules/hypothesis/database.html#ExampleDatabase
+    method: GET
+- name: InMemoryExampleDatabase
+  endpoint:
+    path: /_modules/hypothesis/database.html#InMemoryExampleDatabase
+    method: GET
+- name: DirectoryBasedExampleDatabase
+  endpoint:
+    path: /_modules/hypothesis/database.html#DirectoryBasedExampleDatabase
+    method: GET
+- name: GitHubArtifactDatabase
+  endpoint:
+    path: /_modules/hypothesis/database.html#GitHubArtifactDatabase
+    method: GET
+- name: dates
+  endpoint:
+    path: /hypothesis/strategies/dates
+    method: GET
+    data_selector: records
+- name: times
+  endpoint:
+    path: /hypothesis/strategies/times
+    method: GET
+    data_selector: records
+- name: datetimes
+  endpoint:
+    path: /hypothesis/strategies/datetimes
+    method: GET
+    data_selector: records
+- name: timezones
+  endpoint:
+    path: /hypothesis/strategies/timezones
+    method: GET
+    data_selector: records
+- name: timezone_keys
+  endpoint:
+    path: /hypothesis/strategies/timezone_keys
+    method: GET
+    data_selector: records
+- name: timedeltas
+  endpoint:
+    path: /hypothesis/strategies/timedeltas
+    method: GET
+    data_selector: records
+- name: recursive
+  endpoint:
+    path: /hypothesis/strategies/recursive
+    method: GET
+    data_selector: records
+- name: deferred
+  endpoint:
+    path: /hypothesis/strategies/deferred
+    method: GET
+    data_selector: records
+- name: randoms
+  endpoint:
+    path: /hypothesis/strategies/randoms
+    method: GET
+    data_selector: records
+- name: random_module
+  endpoint:
+    path: /hypothesis/strategies/random_module
+    method: GET
+    data_selector: records
+- name: one_of
+  endpoint:
+    path: /hypothesis/strategies/one_of
+    method: GET
+    data_selector: records
+- name: builds
+  endpoint:
+    path: /hypothesis/strategies/builds
+    method: GET
+    data_selector: records
+- name: composite
+  endpoint:
+    path: /hypothesis/strategies/composite
+    method: GET
+    data_selector: records
+- name: data
+  endpoint:
+    path: /hypothesis/strategies/data
+    method: GET
+    data_selector: records
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Hypothesis tests are defined using @given and a strategy.
+- Use the .example() method to see generated values.
+- Default is 100 examples.
+- By default, this is a DirectoryBasedExampleDatabase in the local .hypothesis directory.
+- Inputs from @example do not shrink.
+- Prefer @example over the database for correctness.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Health checks can be disabled by settings.suppress_health_check.
+- The database is best thought of as a cache that you never need to invalidate.
+- A Hypothesis database is a simple mapping of bytes to sets of bytes.
+- The default max examples is 100.
+- The default stateful step count is 50.
+- The default deadline is 200 milliseconds.
+- The more examples you run, the better this technique works.
+- A settings object can be applied as a decorator to a test function.
+- You must provide `GITHUB_TOKEN` as an environment variable.
+- If the repository is private, it’s necessary for the token to have `repo` scope
+  in the case of a classic token, or `actions:read` in the case of a fine-grained
+  token.
+- We recommend avoiding TransactionTestCase unless you really have to run each test
+  case in a database transaction.
+- If you are using TransactionTestCase, you may need to use @settings(suppress_health_check=[HealthCheck.too_slow])
+  to avoid a HealthCheck error due to slow example generation.
+- Must provide GITHUB_TOKEN as an environment variable.
+- If the repository is private, the token must have repo scope for classic tokens
+  or actions:read for fine-grained tokens.
+- The database setting is used by fuzzing mode - adding failures to the database to
+  be replayed when you next run your tests is our preferred reporting mechanism and
+  response to the ‘fuzzer taming’ problem.
+- The verbosity and stateful_step_count settings work as usual.
+- The tzdata package is required on Windows
+- pip install hypothesis[zoneinfo] installs it, if and only if needed
+- There is quite a lot of variation between pandas versions.
+- Hypothesis is currently tested against and confirmed working with every Pandas minor
+  version from 1.1 through to 2.2.
+- Several array libraries have more library-specific strategies.
+- Hypothesis creates saved models. This will run inside your testing transaction when
+  using the test runner, but if you use the dev console this will leave debris in
+  your database.
+- Currently from_lark does not support grammars that need custom lexing.
+- Strategies in this module require the `hypothesis[lark]` extra, via `pip install
+  hypothesis[lark]`.
+- Strategies in this module require the `hypothesis[pytz]` extra, via `pip install
+  hypothesis[pytz]`.
+- Strategies in this module require the `hypothesis[dateutil]` extra, via `pip install
+  hypothesis[dateutil]`.
+- Legal questions? While the ghostwriter fragments and logic is under the MPL-2.0
+  license like the rest of Hypothesis, the output from the ghostwriter is made available
+  under the Creative Commons Zero (CC0) public domain dedication, so you can use it
+  without any restrictions.
+- This feature requires the `hypothesis[codemods]` extra, via `pip install hypothesis[codemods]`.
+- This feature requires the `hypothesis[dpcontracts]` extra, via `pip install hypothesis[dpcontracts]`.
+- Uses json lines format for observations
+- Pytest will load the plugin automatically if Hypothesis is installed
+- This feature requires the `hypothesis[codemods]` [extra](../extras.html), via `pip
+  install hypothesis[codemods]`.
+- For new projects, we recommend using either [deal](https://pypi.org/project/deal/)
+  or [icontract](https://pypi.org/project/icontract/) and [icontract-hypothesis](https://pypi.org/project/icontract-hypothesis/)
+  over [dpcontracts](https://pypi.org/project/dpcontracts/).
+- Improves input validation for several strategies in our pandas extra, so that they
+  raise a helpful InvalidArgument rather than OverflowError.
+- When a test is executed concurrently from multiple threads, HealthCheck.too_slow
+  is now disabled.
+- HealthCheck.differing_executors is no longer raised if a test is executed by different
+  executors from different threads.
+- DeadlineExceeded is now disabled when a test is executed concurrently from multiple
+  threads.
+- Improves the string representation of characters() in some cases.
+- Cap the length of bytestrings collected as part of the constants-collection feature.
+- Some objects like Contact may return nulls in deeply nested fields
+- the old way still works, but it's more verbose.
+- This release drops support for Python 2, which has passed its end of life date.
+- If you have somehow ended up with Hypothesis 5.0 on Python 2, you need to update
+  your packaging stack to pip >= 9.0 and setuptools >= 24.2.
+- Then pip uninstall hypothesis && pip install hypothesis will get you back to a compatible
+  version.
+- No new features in this major version, only removal of deprecated features.
+- This release improves validation of numeric bounds for some strategies.
+- This release cleans up all of the legacy that accrued in the course of Hypothesis
+  1.0.
+- In general your tests should have got faster.
+- This release could also be called 1.0-RC1.
+- It contains a teeny tiny bugfix, but the real point of this release is to declare
+  feature freeze.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://hypothesis.api.com
+source_metadata: null
