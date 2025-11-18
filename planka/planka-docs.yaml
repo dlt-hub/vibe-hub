@@ -1,0 +1,108 @@
+resources:
+- name: database_user
+  endpoint:
+    path: /create_user
+    method: POST
+    data_selector: user
+    params: {}
+- name: admin_user
+  endpoint:
+    path: /create_admin_user
+    method: POST
+    data_selector: admin
+    params: {}
+- name: initialize_database
+  endpoint:
+    path: /db/init
+    method: POST
+    data_selector: result
+    params: {}
+- name: create_admin_user
+  endpoint:
+    path: /db/create-admin-user
+    method: POST
+    data_selector: result
+    params: {}
+- name: planka
+  endpoint:
+    path: /planka
+    method: GET
+    data_selector: records
+- name: traefik
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Traefik
+    method: GET
+    data_selector: records
+    params: {}
+- name: planka_filter
+  endpoint:
+    path: /etc/fail2ban/filter.d/planka.conf
+    method: CREATE
+    data_selector: Definition
+    params:
+      failregex: '^(.*) Invalid (email or username:|password!) ("(.*)"!)? ?\(IP: <ADDR>\)$'
+      ignoreregex: ''
+- name: planka_jail
+  endpoint:
+    path: /etc/fail2ban/jail.d/planka.local
+    method: CREATE
+    data_selector: planka
+    params:
+      enabled: 'true'
+      port: http,https
+      filter: planka
+      logpath: /path/to/planka/logs/planka.log
+      maxretry: 5
+      bantime: 900
+notes:
+- Note the output - you'll need it for the .env file.
+- This version is not production-ready and may result in data loss. Use at your own
+  risk.
+- This version is not production-ready and may result in data loss.
+- Use at your own risk.
+- No Backup - No Mercy!
+- Please create a backup before updating.
+- Restoring a backup will overwrite your running PLANKA instance. Please ensure that
+  you are restoring the correct backup.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- There is no way to revert after migrating to v2 without a proper backup.
+- Hosting under a path like https://example.domain/planka is not currently supported.
+  Consider using a subdomain instead.
+- Hosting under a path like https://example.domain/planka is not currently supported.
+- You can remove the variables after the first successful startup.
+- If you leave DEFAULT_ADMIN_EMAIL in place, the corresponding admin user cannot be
+  deleted or edited by others.
+- PLANKA runs persistently across reboots using PM2
+- PLANKA supports exposing its internal log directory to the host machine via a shared
+  Docker volume.
+- This feature is disabled by default.
+- If you're running PLANKA without SSL encryption, Chrome might block access to your
+  file system.
+- User information and attachments from Trello won't be imported during the PLANKA
+  import process.
+- Currently, PLANKA can only import one checklist per card.
+- The default JSON export from Trello is limited to 1,000 actions.
+- Trello does not provide a warning if the JSON export is incomplete, so you will
+  need to verify the JSON file yourself.
+- SSL is not included in this configuration. For production, it is strongly recommended
+  to use HTTPS.
+- Consider redirecting HTTP to HTTPS and setting up SSL with Let's Encrypt and certbot.
+- This configuration assumes PLANKA is running on localhost:1337.
+- For production use, you should also set up an HTTPS VirtualHost (<VirtualHost *:443>)
+  with a valid SSL certificate (e.g., via Let's Encrypt).
+- Traefik handles HTTPS certificates automatically using Let's Encrypt.
+- Do not enable detailed authentication errors in production without proper protections.
+- Replace /path/to/planka/logs/planka.log with the actual location of your PLANKA
+  log file.
+- Ensure you've enabled logging in your PLANKA setup.
+- Adjust the logpath in the jail configuration if your log file is in a different
+  location or has a different name.
+- Update the port field if you're using non-standard ports for HTTP or HTTPS.
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://planka.app
+  headers:
+    Accept: application/json
+source_metadata: null

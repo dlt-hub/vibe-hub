@@ -1,0 +1,326 @@
+resources:
+- name: hotspot
+  endpoint:
+    path: /hotspots
+    method: POST
+    data_selector: hotspot
+    params: {}
+- name: certificate
+  endpoint:
+    path: /certificates
+    method: POST
+    data_selector: certificate
+    params: {}
+- name: Helium_Passpoint_SSID
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Helium_Passpoint_SSID
+    method: GET
+    data_selector: records
+    params: {}
+- name: WLAN Template
+  endpoint:
+    path: /wlan/templates
+    method: POST
+    data_selector: templates
+    params: {}
+- name: RadSec Servers
+  endpoint:
+    path: /radius/servers
+    method: POST
+    data_selector: servers
+    params: {}
+- name: Helium SSID Configuration
+  endpoint:
+    path: /path/to/ssid/configuration
+    method: POST
+    data_selector: ssid_settings
+    params:
+      ip_address: <ip of your radsecproxy container host>
+      radius_port: 1812
+      radius_secret: mysecret
+      accounting_port: 1813
+- name: Hotspot 2.0 Configuration
+  endpoint:
+    path: /path/to/hotspot/configuration
+    method: POST
+    data_selector: hotspot_settings
+    params:
+      operator_name: Helium
+      venue_name: street address of your location
+      venue_type: Chargeable public network
+      domains:
+      - FreedomFi.com
+      - Hellohelium.com
+      realm_names:
+      - name: freedomfi.com
+        eap_method_id: 13
+        authentication_method: Certificate
+      - name: Hellohelium.com
+        eap_method_id: 13
+        authentication_method: Certificate
+- name: RADIUS Profile
+  endpoint:
+    path: /configuration/security/aaa
+    method: POST
+    data_selector: profiles
+    params:
+      name: Helium_AAA
+      server_address: RadSecProxy IP
+      key: mysecret
+      auth_port: 1812
+      acct_port: 1813
+- name: AAA Method List
+  endpoint:
+    path: /aaa/method-list
+    method: POST
+    data_selector: method_lists
+    params:
+      name: Helium-aaa-meth-list
+      type: dot1x
+- name: NAS-ID Policy
+  endpoint:
+    path: /configuration/security/wireless-aaa-policy
+    method: POST
+    data_selector: policies
+    params:
+      name: Helium_aaa_policy
+      nas_id: Helium provided NAS_ID
+- name: Hotspot Profile
+  endpoint:
+    path: /configuration/wireless/hotspot
+    method: POST
+    data_selector: hotspot_profiles
+    params:
+      name: Helium
+      description: Helium
+      internet_access: true
+      network_type: Chargable Public
+- name: Helium SSID
+  endpoint:
+    path: /configuration/wireless/wlans
+    method: POST
+    data_selector: wlans
+    params:
+      name: Helium
+      ssid: Helium
+      wlan_id: 4
+      security:
+        wpa2_policy: true
+        aes: true
+        dot1x: true
+      aaa_method_list: Helium_aaa_meth_list
+- name: Policy Tag
+  endpoint:
+    path: /configuration/tags
+    method: POST
+    data_selector: tags
+    params:
+      name: Helium
+      description: Helium
+- name: RadSecProxy
+  endpoint:
+    path: /services/data/radsecproxy
+    method: POST
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: RADIUS Profile
+  endpoint:
+    path: /mobile/data-only-mikrotik/add-radius
+    method: POST
+    data_selector: records
+    params:
+      Comment: Helium AAA
+      Service: wireless
+      Address: IP_of_RadSecProxy
+      Protocol: udp
+      Secret: mysecret
+      Authentication_Port: '1812'
+      Accounting_Port: '1813'
+      Timeout: 300 s
+      Enabled: true
+- name: AP Configuration Profile
+  endpoint:
+    path: /mobile/data-only-mikrotik/add-ap-configuration
+    method: POST
+    data_selector: records
+    params:
+      Name: helium-passpoint
+      Enabled: true
+      Mode: ap
+      SSID: Helium
+      Bridge: bridge1
+- name: RadSec Authentication Proxy
+  endpoint:
+    path: /Security/Authentication/Proxy
+    method: CREATE
+    data_selector: proxy
+    params:
+      name: Helium_Radsec
+      cn_san_identity: radius.stage.wifi.freedomfi.com
+      ip_address: 52.37.147.195
+      port: 2083
+- name: RadSec Accounting Proxy
+  endpoint:
+    path: /Security/Accounting/Proxy
+    method: CREATE
+    data_selector: accounting_proxy
+    params:
+      name: Helium_radsec_acct
+      cn_san_identity: radius.stage.wifi.freedomfi.com
+      ip_address: 52.37.147.195
+      port: 2083
+- name: Hotspot 2.0 Profile
+  endpoint:
+    path: /Services/Hotspots&Portals/Hotspot2.0
+    method: CREATE
+    data_selector: hotspot_profile
+    params:
+      name: Helium_Operator
+      domain_name:
+      - FreedomFi.com
+      - Hellohelium.com
+      friendly_name: Helium
+- name: SSID Configuration
+  endpoint:
+    path: /Network/Wireless_LANS
+    method: CREATE
+    data_selector: ssid
+    params:
+      name: Helium
+      authentication_type: Hotspot2.0 Access
+      encryption_method: WPA3
+      access_network_type: Chargeable Public Network
+- name: RADIUS Profile
+  endpoint:
+    path: /settings/profiles/radius
+    method: POST
+    data_selector: profile
+    params:
+      profile_name: Helium RadSec
+      tls: true
+      client_certificate: cert.pem
+      private_key: key.pem
+      ca_certificate: ca.pem
+      authentication_servers:
+      - ip_address: 52.37.147.195
+        port: 2083
+        shared_secret: radsec
+      - ip_address: 44.229.62.214
+        port: 2083
+        shared_secret: radsec
+      - ip_address: 44.241.107.197
+        port: 2083
+        shared_secret: radsec
+      accounting_servers:
+      - ip_address: 52.37.147.195
+        port: 2083
+        shared_secret: radsec
+      - ip_address: 44.229.62.214
+        port: 2083
+        shared_secret: radsec
+      - ip_address: 44.241.107.197
+        port: 2083
+        shared_secret: radsec
+      interim_update_interval: 300
+- name: Helium SSID
+  endpoint:
+    path: /settings/wifi
+    method: POST
+    data_selector: ssid
+    params:
+      name: Helium
+      password: ''
+      advanced: Manual
+      hotspot_2_0: Passpoint
+      venue_name: Your Venue Name
+      venue_type: Your Venue Type
+      network_type: Chargeable Public Network
+      ip_address_type_availability:
+        ipv4: Double NATed private IPv4
+        ipv6: Unavailable
+      nai_realms:
+      - name: freedomfi.com
+        eap_method: EAP-TLS
+        sub_methods: Certificate
+      - name: hellohelium.com
+        eap_method: EAP-TLS
+        sub_methods: Certificate
+      domain_list: freedomfi.com
+      security_protocol: WPA3 Enterprise
+      nas_id: Your NAS-ID
+      radius_profile: Helium Radsec
+      client_device_isolation: true
+- name: Hotspot 2.0 / Passpoint Enablement
+  endpoint:
+    path: /mobile/data-only-mobile
+    method: GET
+    data_selector: records
+- name: SSID Profile
+  endpoint:
+    path: /mobile/data-only-onboarding
+    method: GET
+    data_selector: records
+- name: AAA and RADIUS / RadSec Integration
+  endpoint:
+    path: /mobile/data-only-radsecproxy
+    method: GET
+    data_selector: records
+- name: Network & Firewall Rules
+  endpoint:
+    path: /mobile/data-only-generic
+    method: GET
+    data_selector: records
+- name: VLAN Assignments
+  endpoint:
+    path: /mobile/data-only-onboarding
+    method: GET
+    data_selector: records
+- name: Testing
+  endpoint:
+    path: /mobile/data-only-onboarding
+    method: GET
+    data_selector: records
+notes:
+- Existing WiFi networks must have Passpoint-enabled access points.
+- RADIUS is a UDP protocol meant for use inside an operators secure network.
+- Onboarding requires a token fee per network or location.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects may return nulls in deeply nested fields
+- The Intel-based machine has a private IP in your network reachable from your Fortinet
+  FortiGate box.
+- ACLs or Firewalls allow Fortinet FortiGate box and Docker Container to communicate
+  UDP on port 1812 and 1813.
+- ACLs or Firewalls allow container/host to reach the internet on TCP ports 2083 and
+  3802.
+- Juniper Mist does not list Helium as a Passpoint Operator. Use preset Passpoint
+  Operator configurations only after receiving approval from the Helium Plus team.
+- Meraki has some native support for RadSec, but it is not scalable for Helium.
+- RADIUS messages are transmitted unsecured and over UDP by default.
+- Most windows will have many other parameters with default values set. Leave any
+  unmentioned parameter at its default value.
+- RADIUS messages used to authenticate users and for session accounting are transmitted
+  unsecured and over UDP by default.
+- 'Successful authentication will display lines similar to: Received Access-Request
+  from 192.168.x.x'
+- Leave any unmentioned parameter at its default value.
+- Data-Only Mobile configuration requires the Passpoint protocol.
+- Each onboarded network requires a unique NAS-ID.
+- Use the MAC address of the network controller as the NAS-ID.
+- Never give away your seed phrases or private keys
+- Avoid entering or sending private keys to any untrusted websites or applications
+errors:
+- Error if certificate files already exist in the active directory.
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://github.com/novalabsxyz/radsec-proxy
+  headers:
+    Accept: application/json
+source_metadata: null

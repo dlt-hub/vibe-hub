@@ -1,0 +1,233 @@
+resources:
+- name: upload_document
+  endpoint:
+    path: /upload/documents
+    method: POST
+    data_selector: status
+    params: {}
+- name: generate_entities
+  endpoint:
+    path: /generate/entities
+    method: POST
+    data_selector: status
+    params: {}
+- name: cross_reference
+  endpoint:
+    path: /cross/reference
+    method: POST
+    data_selector: matches
+    params: {}
+- name: OpenSanctions
+  endpoint:
+    path: /datasets/opensanctions
+    method: GET
+    data_selector: data
+    params: {}
+- name: ICIJ OffshoreLeaks
+  endpoint:
+    path: /datasets/icij-offshoreleaks
+    method: GET
+    data_selector: data
+    params: {}
+- name: OpenTender.eu
+  endpoint:
+    path: /datasets/opentender
+    method: GET
+    data_selector: data
+    params: {}
+- name: investigraph.eu
+  endpoint:
+    path: /datasets/investigraph
+    method: GET
+    data_selector: data
+    params: {}
+- name: entities
+  endpoint:
+    path: /api/entities
+    method: GET
+    data_selector: data
+    params: {}
+- name: properties
+  endpoint:
+    path: /api/properties
+    method: GET
+    data_selector: data
+    params: {}
+- name: archive_file
+  endpoint:
+    path: /api/archive
+    method: POST
+    data_selector: result
+    params: {}
+- name: create_document_record
+  endpoint:
+    path: /api/document
+    method: POST
+    data_selector: result
+    params: {}
+- name: index_entity
+  endpoint:
+    path: /api/index
+    method: POST
+    data_selector: result
+    params: {}
+- name: dispatch_ingest
+  endpoint:
+    path: /api/dispatch
+    method: POST
+    data_selector: result
+    params: {}
+- name: Office
+  endpoint:
+    path: /developers/reference/file-types/office
+    method: GET
+    data_selector: extensions
+    params: {}
+- name: Documents
+  endpoint:
+    path: /developers/reference/file-types/documents
+    method: GET
+    data_selector: extensions
+    params: {}
+- name: Plain
+  endpoint:
+    path: /developers/reference/file-types/plain
+    method: GET
+    data_selector: extensions
+    params: {}
+- name: Email
+  endpoint:
+    path: /developers/reference/file-types/email
+    method: GET
+    data_selector: extensions
+    params: {}
+- name: Tabular
+  endpoint:
+    path: /developers/reference/file-types/tabular
+    method: GET
+    data_selector: extensions
+    params: {}
+- name: Archive
+  endpoint:
+    path: /developers/reference/file-types/archive
+    method: GET
+    data_selector: extensions
+    params: {}
+- name: Image
+  endpoint:
+    path: /developers/reference/file-types/image
+    method: GET
+    data_selector: extensions
+    params: {}
+- name: Audio and video
+  endpoint:
+    path: /developers/reference/file-types/audio-video
+    method: GET
+    data_selector: extensions
+    params: {}
+- name: aleph_system
+  endpoint:
+    path: /api/system
+    method: GET
+    data_selector: aleph_system
+- name: aleph_http_requests_total
+  endpoint:
+    path: /api/metrics
+    method: GET
+    data_selector: aleph_http_requests_total
+- name: aleph_users
+  endpoint:
+    path: /api/users
+    method: GET
+    data_selector: aleph_users
+- name: storage_bucket
+  endpoint:
+    path: /storage/buckets
+    method: POST
+    data_selector: bucket
+    params: {}
+- name: message_banner
+  endpoint:
+    path: /messages.json
+    method: GET
+    data_selector: messages
+    params: {}
+notes:
+- Requires setup of connected app in api
+- Ensure the uploaded spreadsheet is clean and well-organized for effective cross-referencing.
+- Cross-referencing may take time depending on the size of the list.
+- If you are receiving an error message after putting in your one time password, this
+  issue is most likely caused by the current time on your phone or laptop.
+- Your Aleph account’s username is the email address you used to register.
+- It’s recommended to run the reconciliation service against a specific dataset on
+  Aleph, rather than a full site.
+- Starting Aleph in a development environment disabled many security measures.
+- Most other configuration options use sensible defaults which means you do not need
+  to adjust them unless you have specific requirements.
+- Aleph supports OAuth/OpenID Connect identity providers, and we do recommend that
+  you delegate authentication to a separate identity rather than using the built-in
+  password authentication system.
+- The how to guides in this section are intended for administrators operating their
+  own Aleph instance.
+- Entities can be browsed, imported, and exported in the FollowTheMoney data format.
+- Users shouldn’t be able to change evidence stored within the system, such as data
+  from public records databases, or leaked information.
+- Aleph wants to accommodate extreme entities, within boundaries.
+- Files are stored using a SHA1 hash of the file's contents for deduplication.
+- The default spaCy models are trained on generic web content. They tend to show lower
+  recall for (semi-)structured data such as listings from database websites.
+- Aleph currently doesn’t display all extracted data in the UI.
+- ElasticSearch does not support changing the field type in existing indexes.
+- No way in Aleph to do 'exact' searches that return only results matching search
+  terms character-by-character.
+- Uses the Elasticsearch scroll API to iterate over entities in batches
+- If fetching candidates and computing similarity score for a batch takes longer than
+  the timeout, Elasticsearch will raise an error
+- Cross-referencing process is a single task; if it fails, it is retried from the
+  beginning
+- 'Aleph only supports two permission levels: read access and write access.'
+- Streaming entities can consume significant system resources, limiting access to
+  users with write access or admin privileges.
+- Make sure to configure your bucket to be private.
+- Store the credentials file savely to prevent accidentally exposing it.
+- If you want to allow only users in your organization to access your Aleph instance,
+  make sure to select the correct account type.
+- The JSON file needs to have a CORS header that matches your Aleph instance.
+- It is important that you create intervals of your Aleph instance in regular intervals
+  and before upgrading to new versions.
+- Make sure to always verify that your backups are working as intended and that you
+  are able to successfully restore your data from backups.
+- If you have configured Aleph to use a separate database instance, make sure to create
+  a separate backup of the FollowTheMoney store.
+- We recommend that you always run a recent version of Aleph.
+- In some cases, new Aleph versions may include breaking changes that include additional,
+  manual steps in order to upgrade.
+- Aleph ships with a built-in password authentication system.
+- For production deployments, we recommend delegating authentication to an external
+  identity provider.
+- Aleph supports the OAuth2/OpenID Connect standards and works with a wide range of
+  identity providers.
+- Aleph includes CMS-like functionality that allows you to manage custom pages using
+  Markdown files.
+- After updating or creating new pages or translations, you need to restart Aleph
+  to apply the changes.
+- Aleph heavily relies on the default FollowTheMoney model.
+- Please note that you may have to sync your custom model with the upstream default
+  model when you upgrade Aleph.
+- Do not remove or alter existing schemata or properties.
+- Set the SENTRY_DSN configuration option to use the Sentry DSN of your project.
+- Prometheus uses a pull-based model for metrics collection
+- You shouldn’t publicly expose the Prometheus metrics port
+- Set the LOG_FORMAT configuration option to JSON.
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: http://localhost:8080
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null
