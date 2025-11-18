@@ -1,0 +1,90 @@
+resources:
+- name: RepeatedRasterScan
+  endpoint:
+    path: /api/vortex/repeatedraster
+    method: POST
+- name: cuda_device_tensor_t
+  endpoint:
+    method: GET
+- name: cuda_host_tensor_t
+  endpoint:
+    method: GET
+- name: cuda_processor_config_t
+  endpoint:
+    method: GET
+- name: cuda_processor_t
+  endpoint:
+    method: GET
+- name: ring_buffer
+  endpoint:
+    path: /vortex/ring_buffer
+    method: GET
+    data_selector: buffer
+    params: {}
+- name: scan_boundary
+  endpoint:
+    path: /vortex/scan_boundary
+    method: GET
+    data_selector: scan_boundary
+    params: {}
+- name: cpu_processor_t
+  endpoint:
+    path: /vortex/process/cpu_processor_t
+    method: GET
+    data_selector: public_members
+    params: {}
+- name: cuda_processor_t
+  endpoint:
+    path: /vortex/process/cuda_processor_t
+    method: GET
+    data_selector: public_members
+    params: {}
+- name: engine_source_t
+  endpoint:
+    path: /vortex/engine/source_t
+    method: GET
+    data_selector: public_members
+    params: {}
+- name: spectra_buffer
+  endpoint:
+    path: /vortex/engine/detail/engine_plan_t/spectra_buffer
+    method: GET
+    data_selector: public_members
+    params: {}
+- name: spiral_waypoints_t
+  endpoint:
+    path: /vortex/scan/spiral_waypoints_t
+    method: GET
+    data_selector: public_members
+    params: {}
+- name: stream_dump_storage
+  endpoint:
+    path: /vortex/endpoint/stream_dump_storage
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- A repeated scan that utilizes bidirectional segments for better scan efficiency.
+- zero blocks to acquire means infinite acquisition
+- The introduction of new markers is planned to reduce the complexity required for
+  scan resizing.
+- Public Members and Functions may vary by implementation.
+- Ensure proper configuration of parameters for optimal performance.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+errors:
+- 'BUFFER_OVERFLOW: Ensure buffer size is adequate.'
+- 'INVALID_PARAMETER: Check input parameters for correctness.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://www.vortex-oct.dev
+  headers:
+    Accept: application/json
+source_metadata: null
