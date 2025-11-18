@@ -1,0 +1,255 @@
+resources:
+- name: loadFunds
+  endpoint:
+    path: /internal/v1/accounts:loadFunds
+    method: POST
+    data_selector: reference_number
+- name: generateExternalToken
+  endpoint:
+    path: /accounts/{id}:token
+    method: POST
+    data_selector: token
+- name: users
+  endpoint:
+    path: /users
+    method: POST
+    data_selector: ID
+- name: cardproducts
+  endpoint:
+    path: /cardproducts
+    method: GET
+    data_selector: records
+- name: cards
+  endpoint:
+    path: /cards
+    method: POST
+    data_selector: ID
+- name: card_account
+  endpoint:
+    path: /cards/{id}/accounts
+    method: GET
+    data_selector: records
+- name: load_funds
+  endpoint:
+    path: /accounts/{id}:loadfunds
+    method: POST
+    data_selector: status
+- name: balance_limits
+  endpoint:
+    path: /balancelimits
+    method: POST
+    data_selector: ID
+- name: velocity_limits
+  endpoint:
+    path: /velocitylimits
+    method: POST
+    data_selector: ID
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+    data_selector: records
+    params: {}
+- name: cards
+  endpoint:
+    path: /cards
+    method: POST
+    data_selector: records
+    params: {}
+- name: cardproducts
+  endpoint:
+    path: /cardproducts
+    method: GET
+    data_selector: records
+    params: {}
+- name: cards
+  endpoint:
+    path: /cards
+    method: POST
+    data_selector: data
+    params: {}
+- name: card_info
+  endpoint:
+    path: /cards/{id}/show_info
+    method: GET
+    data_selector: data
+    params: {}
+- name: card_accounts
+  endpoint:
+    path: /cards/{id}/accounts
+    method: GET
+    data_selector: data
+    params: {}
+- name: account_details
+  endpoint:
+    path: /accounts/{id}
+    method: GET
+    data_selector: data
+    params: {}
+- name: users
+  endpoint:
+    path: /users
+    method: POST
+    data_selector: ID
+- name: cardproducts
+  endpoint:
+    path: /cardproducts
+    method: GET
+    data_selector: records
+- name: cards
+  endpoint:
+    path: /cards
+    method: POST
+    data_selector: ID
+- name: accounts
+  endpoint:
+    path: /accounts/{id}
+    method: GET
+    data_selector: account
+- name: loadfunds
+  endpoint:
+    path: /accounts/{id}:loadfunds
+    method: POST
+    data_selector: status
+- name: balancelimits
+  endpoint:
+    path: /balancelimits
+    method: POST
+    data_selector: ID
+- name: velocitylimits
+  endpoint:
+    path: /velocitylimits
+    method: POST
+    data_selector: ID
+- name: load_funds
+  endpoint:
+    path: /accounts/{id}:loadFunds
+    method: POST
+    data_selector: null
+    params: {}
+- name: unload_funds
+  endpoint:
+    path: /accounts/{id}:unloadFunds
+    method: POST
+    data_selector: null
+    params: {}
+- name: check_balance
+  endpoint:
+    path: /accounts/{id}
+    method: GET
+    data_selector: null
+    params: {}
+- name: external_funding_source
+  endpoint:
+    path: /funding-and-transfers/external-funding-source
+    method: GET
+    data_selector: externalSources
+    params: {}
+- name: transfers
+  endpoint:
+    path: /transfers
+    method: GET
+    data_selector: transfers
+- name: Get delivery option template
+  endpoint:
+    path: /get-delivery-option-template
+    method: GET
+- name: Get cascade list values
+  endpoint:
+    path: /get-cascade-list
+    method: GET
+- name: createLut
+  endpoint:
+    path: /v1/orders/users/{id}:createLut
+    method: POST
+    data_selector: token
+    params:
+      source_id: default_pci_source
+      operation: CHECKOUT_TOKEN
+- name: orders
+  endpoint:
+    path: /orders
+    method: POST
+    data_selector: result
+    params: {}
+- name: specific_order
+  endpoint:
+    path: /orders/{id}
+    method: GET
+    data_selector: result
+    params: {}
+- name: createDapiToken
+  endpoint:
+    path: /orders/token
+    method: POST
+    data_selector: token
+    params: {}
+- name: create_temporary_user_token
+  endpoint:
+    path: /orders/token
+    method: POST
+    data_selector: token
+    params:
+      account_id: e6b500c7-b37b-46cf-baae-e1b4f43e8749
+- name: dapi_bank_list
+  endpoint:
+    path: /dapi_bank_list
+    method: GET
+    data_selector: bank_list
+- name: loadFunds
+  endpoint:
+    path: /internal/v1/accounts:loadFunds
+    method: POST
+    data_selector: reference_number
+    params: {}
+- name: loadFunds
+  endpoint:
+    path: /internal/v1/accounts:loadFunds
+    method: POST
+    data_selector: reference_number
+notes:
+- Token expires in 60 minutes.
+- Create a user and a card product before creating a card.
+- Virtual card details can be displayed using PCI widgets for non PCI DSS compliant
+  customers.
+- Several internal enhancements have been implemented, which do not significantly
+  impact the current implementation for clients.
+- Uses OAuth2 with refresh token — requires setup of connected app in NymCard
+- Transfers, load/unload, DAPI, and LEAN direct API flow will be declined if either
+  the sender's or recipient's user status is not ACTIVE.
+- Delays may occur due to regulatory checks or beneficiary bank requests.
+- Multi-currency loading is not supported for now.
+- Expiration time is 30 minutes for the generated token.
+- Only AED currency is supported at the moment.
+- Expiration time for token is 30 minutes.
+- Token expiration time is 60 minutes
+- Webhook received for transaction events
+- Expiration time for the token is 60 minutes.
+- We cannot perform 'RELEASE' on a transaction which is already completed.
+errors:
+- '401 Unauthorized: Check API key or token validity'
+- '200 - OK: Your request was successfully completed'
+- '401 - Unauthorized: Indicates that the authentication is invalid or has expired'
+- '403 - Forbidden: Client was forbidden to execute the operation often due to lack
+  of permissions'
+- '404 - Resource Not Exist: The resource you are trying to find does not exist'
+- '408 - Request Timeout: The request has timed out'
+- '429 - Request Attempt Exceed: User has reached his request attempt limits and will
+  need to wait for a certain time before retrying'
+- '500 - Internal Server Error: The server is unable to handle this request at the
+  moment'
+- '503 - Internet Issue: Poor internet connection'
+- 'ORDER_CREATED: The operation was successful.'
+- 'CANCEL: The operation was canceled.'
+- 'TIMEOUT: Timeout occurred during operation processing.'
+- 'ERROR: An error occurred during operation processing.'
+- '401 Unauthorized: Recheck token expiration or permissions'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck API key or permissions'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://nymcard.com
+  auth:
+    type: oauth2
+source_metadata: null

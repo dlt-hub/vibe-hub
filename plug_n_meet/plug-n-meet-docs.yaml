@@ -1,0 +1,209 @@
+resources:
+- name: getActiveRoomInfo
+  endpoint:
+    path: /room/getActiveRoomInfo
+    method: POST
+- name: required_ports
+  endpoint:
+    path: /required_ports
+    method: GET
+    data_selector: ports
+    params: {}
+- name: log_files
+  endpoint:
+    path: /log/plugNmeet.log
+    method: GET
+    data_selector: logs
+    params: {}
+- name: recorder_logs
+  endpoint:
+    path: /recorder/logs/recorder.log
+    method: GET
+    data_selector: logs
+    params: {}
+- name: verifyToken
+  endpoint:
+    path: /api/verifyToken
+    method: POST
+- name: meetings
+  endpoint:
+    path: /api/meetings
+    method: POST
+    data_selector: meeting
+    params: {}
+- name: rooms
+  endpoint:
+    path: /api/rooms
+    method: GET
+    data_selector: rooms
+    params: {}
+- name: lti_configuration
+  endpoint:
+    path: /lti/v1
+    method: POST
+    data_selector: data
+    params: {}
+- name: create_room
+  endpoint:
+    path: /room/create
+    method: POST
+- name: join_room
+  endpoint:
+    path: /room/getJoinToken
+    method: POST
+    data_selector: ''
+    params: {}
+- name: room_status
+  endpoint:
+    path: /room/isRoomActive
+    method: GET
+    data_selector: root
+    params:
+      room_id: room_id
+- name: active_room_info
+  endpoint:
+    path: /room/getActiveRoomInfo
+    method: GET
+    data_selector: room
+- name: active_rooms_info
+  endpoint:
+    path: /room/getActiveRoomsInfo
+    method: GET
+    data_selector: rooms
+- name: fetch_past_rooms
+  endpoint:
+    path: /room/fetchPastRooms
+    method: GET
+    data_selector: result.rooms_list
+    params:
+      room_ids: room_ids
+      from: from
+      limit: limit
+      order_by: order_by
+- name: end_room
+  endpoint:
+    path: /room/endRoom
+    method: POST
+    data_selector: status
+    params:
+      room_id: room_id
+- name: fetch_recordings
+  endpoint:
+    path: /recording/fetch
+    method: GET
+    data_selector: result.recordings_list
+    params:
+      room_ids: array
+      from: number
+      limit: number
+      order_by: string
+- name: recording_info
+  endpoint:
+    path: /recording/recordingInfo
+    method: GET
+    data_selector: recording_info
+    params:
+      record_id: RM_RKD4jeiFMZDS-1645753430902
+- name: download_recording
+  endpoint:
+    path: /recording/getDownloadToken
+    method: POST
+    data_selector: status
+    params:
+      record_id: root
+- name: delete_recording
+  endpoint:
+    path: /recording/delete
+    method: POST
+    data_selector: status
+    params:
+      record_id: RM_RKD4jeiFMZDS-1645753430902
+- name: analytics
+  endpoint:
+    path: /analytics/fetch
+    method: GET
+    data_selector: result.analytics_list
+    params:
+      room_ids: room_ids
+      from: from
+      limit: limit
+      order_by: order_by
+- name: analytics_download_token
+  endpoint:
+    path: /analytics/getDownloadToken
+    method: POST
+    data_selector: token
+    params:
+      file_id: RM_SqZLoUieWYu8-209-1693729854
+- name: delete_analytics
+  endpoint:
+    path: /analytics/delete
+    method: DELETE
+    data_selector: status
+    params:
+      file_id: RM_SqZLoUieWYu8-209-1693729854
+- name: getClientFiles
+  endpoint:
+    path: /getClientFiles
+    method: GET
+    data_selector: css, js
+- name: bigbluebutton
+  endpoint:
+    path: /bigbluebutton/
+    method: GET
+- name: room
+  endpoint:
+    path: /createRoom
+    method: POST
+    data_selector: response
+    params: {}
+- name: join_token
+  endpoint:
+    path: /getJoinToken
+    method: POST
+    data_selector: response
+    params: {}
+notes:
+- All requests to these endpoints must include the authentication headers.
+- Ensure that the ports are not blocked by your firewall.
+- All server-to-server API requests must be authenticated.
+- Requests with invalid key or signature are immediately rejected.
+- This choice is not permanent. If you join in 'Listen only' mode, you can easily
+  activate your microphone later from the main control bar.
+- This choice is not permanent. If you join in 'Listen only' mode, you can easily
+  activate your microphone later from the main control bar (if the moderator allows
+  it).
+- This plugin is a client that connects your WordPress site to a PlugNmeet server.
+- You must have either a self-hosted server or a PlugNmeet Cloud subscription for
+  the plugin to work.
+- You must replace the API details from your own self-hosted or PlugNmeet Cloud server.
+- The demo server is for temporary testing only and has limitations.
+- It is highly recommended to allow the LTI tool to send the `launcher's name`.
+- The generated token is short-lived and designed for one-time use. You should consume
+  it immediately.
+- Default starting index for records is 0.
+- Default maximum number of records to return is 20.
+- Default sort order is DESC.
+- A shared network filesystem (e.g., NFS, Samba (CIFS), GlusterFS, or S3-compatible)
+  accessible by all plugnmeet-server and plugnmeet-recorder instances is critical
+  for data consistency.
+errors:
+- 'Unauthorized: Invalid API key or signature.'
+- 'Invalid API: This usually means the demo credentials have expired or you are trying
+  to use a feature disabled on the demo server.'
+- 'Invalid API: Replace with your own API credentials.'
+- 'Authentication Failed: Double-check your Consumer Key or Shared Secret.'
+- '401 Unauthorized: Recheck user credentials or token validity.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects:
+  - API-KEY
+  - HASH-SIGNATURE
+client:
+  base_url: https://demo.plugnmeet.com
+  auth:
+    type: apikey
+    client_id: plugnmeet
+    client_secret: zumyyYWqv7KR2kUqvYdq4z4sXg7XTBD2ljT6
+source_metadata: null

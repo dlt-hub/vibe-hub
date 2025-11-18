@@ -1,0 +1,261 @@
+resources:
+- name: transactions
+  endpoint:
+    path: /transactions
+    method: PUT
+    data_selector: records
+- name: transactions
+  endpoint:
+    path: /transactions/{id}
+    method: PUT
+    data_selector: ''
+    params:
+      scope: transactions.write
+- name: web_embed
+  endpoint:
+    path: /guides/features/apple-pay/web
+    method: GET
+- name: web_without_sdk
+  endpoint:
+    path: /guides/features/apple-pay/web-without-sdk
+    method: GET
+- name: mobile_ios_sdk
+  endpoint:
+    path: /guides/features/apple-pay/ios
+    method: GET
+- name: mobile_ios_without_sdk
+  endpoint:
+    path: /guides/features/apple-pay/ios-without-sdk
+    method: GET
+- name: recurring_payments
+  endpoint:
+    path: /guides/features/recurring-payments
+    method: GET
+- name: transactions
+  endpoint:
+    path: /reference/transactions/list-transactions
+    method: GET
+    data_selector: items
+- name: transactions
+  endpoint:
+    path: /transactions
+    method: GET
+    data_selector: items
+    params:
+      limit: 20
+- name: payment_options
+  endpoint:
+    path: /reference/payment-options/list-payment-options
+    method: GET
+    data_selector: items
+- name: transactions
+  endpoint:
+    path: /transactions
+    method: POST
+- name: transaction
+  endpoint:
+    path: /reference/transactions/get-transaction
+    method: GET
+    data_selector: transaction
+    params: {}
+- name: transactions
+  endpoint:
+    path: /transactions/new-transaction
+    method: POST
+    data_selector: transaction
+    params:
+      method: paypal
+      redirect_url: https://example.com/callback
+- name: payment_options
+  endpoint:
+    path: /payment-options
+    method: POST
+    data_selector: items
+- name: Android SDK
+  endpoint:
+    path: /guides/payments/android/quick-start
+    method: GET
+- name: transactions
+  endpoint:
+    path: /api/transactions
+    method: POST
+    data_selector: transaction
+    params:
+      amount: amount
+      currency: currency
+      country: country
+- name: checkout_sessions
+  endpoint:
+    path: /checkout-sessions
+    method: POST
+    data_selector: session
+    params: {}
+- name: iOS SDK
+  endpoint:
+    path: /guides/payments/ios/quick-start/ios
+    method: GET
+- name: transaction
+  endpoint:
+    path: /transactions
+    method: POST
+    data_selector: transaction
+    params: {}
+- name: cardDetails
+  endpoint:
+    path: /card-details
+    method: POST
+    data_selector: cardDetails
+    params: {}
+- name: checkout_session
+  endpoint:
+    path: /checkout/sessions
+    method: POST
+- name: transaction
+  endpoint:
+    path: /transactions
+    method: POST
+- name: transaction
+  endpoint:
+    path: /transactions
+    method: POST
+    data_selector: transaction
+    params: {}
+- name: 3-D Secure Configuration
+  endpoint:
+    path: /guides/features/3ds/setup
+    method: GET
+    data_selector: details
+    params: {}
+- name: transaction
+  endpoint:
+    path: /transactions
+    method: POST
+    data_selector: transaction
+    params: {}
+- name: buyer
+  endpoint:
+    path: /buyers
+    method: POST
+    data_selector: buyer
+    params: {}
+- name: transactions
+  endpoint:
+    path: /transactions
+    method: POST
+    data_selector: null
+    params: {}
+notes:
+- If you intend to use our API directly for card payments without Secure Fields then
+  you will have to go through your own PCI-DSS level 1 certification.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Allows for direct updates to specific fields on a transaction resource.
+- Updating metadata is a replace operation, not a merge.
+- You will need a private key to authenticate with the API. You can generate one in
+  the Integrations section of your dashboard.
+- Please set this to your own production or sandbox URL.
+- Set this to the RSA private key you prefer to use.
+- The thumbprint, or key ID, for the private key is visible in our dashboard.
+- Not all payment services support decoded Google Pay tokens, and they may require
+  this feature to be activated.
+- Google Pay can be integrated both on the web and in Android applications.
+- This endpoint requires the `transactions.read` scope.
+- Supports optional locale for label in local language.
+- Recommends using Secure Fields for card payments to reduce PCI scope.
+- Approval may be needed for cards to facilitate 3-D Secure, and for non-cards to
+  get the buyer to grant account payment authentication.
+- This endpoint requires the `payment-options.read` or `embed` scope.
+- The API handles authentication using a signed JSON Web Token (JWT) which is passed
+  in an HTTP header.
+- Token generation can only be done server side and we do not recommend doing this
+  client side as it will expose your API key to your customers.
+- Checkout sessions expire after 1 hour by default.
+- Ensure you have internet access added to the permissions in your manifest
+- Use JWT for authentication.
+- The instance ID is the unique identifier for your deployment of our system and is
+  included in every API call.
+- Only the security code can be captured when using Secure Fields with a stored payment
+  method.
+- Attempting to add any fields other than security code will result in an error.
+- Ensure your design meets accessibility standards set by the European Accessibility
+  Act (EAA).
+- Some objects may return nulls in deeply nested fields
+- Generating a checkout session can only be done server side.
+- Do not expose your private key to client-side code.
+- Card data stored in a checkout session can be used to create a transaction.
+- To optimize 3-D Secure it is highly recommended to provide a buyer with billing
+  details attached to Embed.
+- Highly recommended to provide a buyer with billing details attached to Embed.
+- Not all payment services support external 3-D Secure data.
+- Each connector handles sandbox testing and test PANs differently, so it may or may
+  not be possible to use these PANs to test end-to-end in sandbox.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity.'
+- 'service_error: Internal error, please retry'
+- '400'
+- '401'
+- '403'
+- '404'
+- '405'
+- '409'
+- '422'
+- '425'
+- '429'
+- '500'
+- '502'
+- '504'
+- '200'
+- '400: Bad Request'
+- '401: Unauthorized'
+- '403: Forbidden'
+- '404: Not Found'
+- '405: Method Not Allowed'
+- '409: Conflict'
+- '422: Unprocessable Entity'
+- '425: Too Early'
+- '429: Too Many Requests'
+- '500: Internal Server Error'
+- '502: Bad Gateway'
+- '504: Gateway Timeout'
+- 'ERR_BAD_OPTION_VALUE: Invalid or unsupported value provided in axios configuration.'
+- 'ERR_BAD_OPTION: Invalid option provided in axios configuration.'
+- 'ECONNABORTED: Request timed out due to exceeding timeout specified in axios configuration.'
+- 'ETIMEDOUT: Request timed out due to exceeding default axios time limit.'
+- 'ERR_NETWORK: Network-related issue.'
+- 'ERR_FR_TOO_MANY_REDIRECTS: Request is redirected too many times; exceeds max redirects
+  specified in axios configuration.'
+- 'ERR_DEPRECATED: Deprecated feature or method used in axios.'
+- 'ERR_BAD_RESPONSE: Response cannot be parsed properly or is in an unexpected format.'
+- 'ERR_BAD_REQUEST: Requested has unexpected format or missing required parameters.'
+- 'ERR_CANCELED: Feature or method is canceled explicitly by the user.'
+- 'ERR_NOT_SUPPORT: Feature or method not supported in the current axios environment.'
+- 'ERR_INVALID_URL: Invalid URL provided for axios request.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400 Bad Request: Check request parameters'
+- '401 Unauthorized: Invalid API key or token'
+- '403 Forbidden: Insufficient permissions'
+- CODE_INVALID - The user entered an incorrect OTP. An error message is also displayed
+  on the OTP component.
+- INVALID_CARD - The user entered incorrect card details, or the details of a card
+  that is not one of the supported schemes.
+- ACCT_INACCESSIBLE - The user’s account is temporarily not accessible.
+- USER_NOT_RECOGNIZED - The user is not recognized by Click to Pay (typically when
+  a user hasn’t signed in yet).
+- UNKNOWN - An unknown error occurred. These are usually unrecoverable. For example,
+  the Click to Pay library was not initialized due to an invalid parameter.
+- RETRIES_EXCEEDED - The user has exceeded the maximum number of retries filling in
+  their one-time password (OTP) and their profile is locked. An error message is also
+  displayed in the OTP component. It is recommended to hide the Click to Pay component
+  for the user at this point.
+- SIGN_OUT_FAILED - When attempting to sign out via the “Not you?” link, it is possible
+  that Click to Pay is not able to sign out the user. It is recommended to hide the
+  Click to Pay component for the user at this point.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://gr4vy.com
+  auth:
+    type: oauth2
+source_metadata: null
