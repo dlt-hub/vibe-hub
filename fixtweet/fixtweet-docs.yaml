@@ -1,0 +1,40 @@
+resources:
+- name: status
+  endpoint:
+    path: /:screen_name?/status/:id/:translate_to?
+    method: GET
+    data_selector: tweet
+- name: status
+  endpoint:
+    path: /api/status
+    method: GET
+- name: user
+  endpoint:
+    path: /api/user
+    method: GET
+- name: user
+  endpoint:
+    path: /:screen_name
+    method: GET
+    data_selector: user
+notes:
+- We don’t set strict limits on how many times you can call the API.
+- If you have persistent high usage of the API we may restrict you from using it.
+- This API was just added. While it is mostly stable, it may be subject to change
+  without notice
+- We rely on Twitter’s guest token API in order to fetch Tweets.
+- This approach has a number of benefits. We have practically no rate limits (when
+  not using elongator) as tokens can be regenerated if a rate limit is hit on a particular
+  edge.
+- In 2023, Twitter started blocking tweets with NSFW media from the guest API.
+- To overcome this, FixTweet uses a service binding called elongator, which utilizes
+  empty Twitter accounts to successfully make these requests.
+errors:
+- 401 PRIVATE_TWEET
+- 404 NOT_FOUND
+- 500 API_FAIL
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.fxtwitter.com
+source_metadata: null

@@ -1,0 +1,191 @@
+resources:
+- name: install
+  endpoint:
+    path: install
+    method: POST
+    data_selector: package
+    params:
+      skiptests: false
+      nodeps: false
+      nosuggestions: false
+      version: ''
+      force: false
+      user-var: ''
+- name: upgrade
+  endpoint:
+    path: upgrade
+    method: POST
+    data_selector: package
+    params:
+      skiptests: false
+      nodeps: false
+      nosuggestions: false
+      force: false
+      user-var: ''
+- name: remove
+  endpoint:
+    path: remove
+    method: POST
+    data_selector: package
+    params:
+      force: false
+      nodeps: false
+- name: package_metadata
+  endpoint:
+    path: /zkg.meta
+    method: GET
+    data_selector: records
+- name: package_index_file
+  endpoint:
+    path: /path/to/package/index/file
+    method: GET
+    data_selector: packages
+    params: {}
+- name: sources
+  endpoint:
+    path: /zeekpkg/sources
+    method: GET
+    data_selector: sources
+    params: {}
+- name: installed_pkgs
+  endpoint:
+    path: /zeekpkg/installed_pkgs
+    method: GET
+    data_selector: installed_pkgs
+    params: {}
+- name: source_packages
+  endpoint:
+    path: /source_packages
+    method: GET
+    data_selector: packages
+    params: {}
+- name: refresh_installed_packages
+  endpoint:
+    path: /refresh_installed_packages
+    method: GET
+    data_selector: refresh
+    params: {}
+- name: refresh_source
+  endpoint:
+    path: /refresh_source
+    method: GET
+    data_selector: refresh_source
+    params: {}
+- name: unload
+  endpoint:
+    path: /unload
+    method: POST
+    data_selector: unload
+    params: {}
+- name: upgrade
+  endpoint:
+    path: /upgrade
+    method: POST
+    data_selector: upgrade
+    params: {}
+- name: validate_dependencies
+  endpoint:
+    path: /validate_dependencies
+    method: POST
+    data_selector: validate_dependencies
+    params: {}
+- name: Source
+  endpoint:
+    path: /source
+    method: GET
+    data_selector: data
+    params: {}
+- name: UserVar
+  endpoint:
+    path: /zeekpkg/uservar
+    method: GET
+    data_selector: records
+- name: UserVar
+  endpoint:
+    path: /zeekpkg/uservar/UserVar
+    method: GET
+    data_selector: records
+    params: {}
+- name: analyzer_log
+  endpoint:
+    path: /logs/analyzer.log
+    method: GET
+    data_selector: data
+    params: {}
+- name: conn_log
+  endpoint:
+    path: /logs/conn.log
+    method: GET
+    data_selector: data
+    params: {}
+- name: dns_log
+  endpoint:
+    path: /logs/dns.log
+    method: GET
+    data_selector: data
+    params: {}
+- name: http_log
+  endpoint:
+    path: /logs/http.log
+    method: GET
+    data_selector: data
+    params: {}
+- name: files_log
+  endpoint:
+    path: /logs/files.log
+    method: GET
+    data_selector: data
+    params: {}
+- name: Docker Images
+  endpoint:
+    path: https://hub.docker.com/u/zeek
+    method: GET
+    data_selector: latest
+    params: {}
+- name: Binary Packages
+  endpoint:
+    path: https://build.opensuse.org/project/show/security:zeek
+    method: GET
+    data_selector: packages
+    params: {}
+notes:
+- If your Zeek installation is owned by 'root' and you intend to run zkg as a different
+  user, you can use zkg's user mode (zkg --user).
+- Creating this config file in user mode (zkg --user autoconfig) ensures that all
+  state and content directories reside within $HOME/.zkg.
+- The default package source is normally https://github.com/zeek/packages
+- The default package template is normally https://github.com/zeek/package-template
+- Uses zkg for package management — requires setup of git repository and zkg meta
+  file
+- The build_command field is an arbitrary shell command that the package manager will
+  run before installing the package.
+- The user_vars field is used to solicit feedback from users for use during execution
+  of the build_command field.
+- The test_command field is an arbitrary shell command that the package manager will
+  run when a user either manually runs the test command or before the package is installed
+  or upgraded.
+- The config_files field may be used to specify a list of files that users are intended
+  to directly modify after installation.
+- The depends field may be used to specify a list of dependencies that the package
+  requires.
+- The external_depends field follows the same format as the depends field, but the
+  dependency names refer to external/third-party software packages.
+- The suggests field follows the same format as the depends field, but it's used for
+  specifying optional packages that users may want to additionally install.
+- The magic index file name of zkg.index is available since zkg v2.0.
+- The old index file name of bro-pkg.index is also still supported.
+- Uses a state directory and a manifest file within it to keep track of package sources,
+  installed packages and their statuses.
+- Requires setup of connected app in API
+- Defines user variables for Zeek packages
+- If your Zeek installation is owned by 'root' and you intend to run zkg as a different
+  user, you have two options.
+- The primary install prefix for binary packages is /opt/zeek.
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://github.com/zeek/packages
+  headers:
+    Accept: application/json
+source_metadata: null

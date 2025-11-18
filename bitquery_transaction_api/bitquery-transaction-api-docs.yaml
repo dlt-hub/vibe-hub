@@ -1,0 +1,210 @@
+resources:
+- name: bitcoin_transaction
+  endpoint:
+    path: /bitcoin
+    method: POST
+    data_selector: transactions
+    params:
+      options:
+        desc:
+        - block.height
+        - index
+        limit: 10
+        offset: 0
+      date:
+        since: '2023-07-13'
+        till: '2023-07-20'
+- name: ethereum_transaction
+  endpoint:
+    path: /ethereum
+    method: POST
+    data_selector: transactions
+    params:
+      options:
+        desc: block.height
+        limit: 10
+        offset: 0
+      date:
+        since: '2023-07-10'
+        till: '2023-07-12'
+- name: transaction_in_block
+  endpoint:
+    path: /ethereum
+    method: POST
+    data_selector: transactions
+    params:
+      options:
+        desc: block.height
+        limit: 10
+        offset: 0
+      height:
+        is: 17680897
+- name: transaction_for_user
+  endpoint:
+    path: /ethereum
+    method: POST
+    data_selector: transactions
+    params:
+      options:
+        desc: block.height
+        limit: 10
+        offset: 0
+      date:
+        since: '2023-01-01'
+      any:
+      - txSender:
+          is: '0xa0c68c638235ee32657e8f720a23cec1bfc77c77'
+      - txTo:
+          is: '0xa0c68c638235ee32657e8f720a23cec1bfc77c77'
+      - txCreates:
+          is: '0xa0c68c638235ee32657e8f720a23cec1bfc77c77'
+- name: daily_transaction_count_solana
+  endpoint:
+    path: /solana
+    method: POST
+    data_selector: transactions
+    params:
+      options:
+        desc: date.date
+        limit: 10
+- name: cronos_crypto_org_transactions
+  endpoint:
+    path: /cosmos
+    method: POST
+    data_selector: transactions
+    params:
+      hash:
+        is: hash
+- name: daily_unique_senders_receivers
+  endpoint:
+    path: /ethereum
+    method: POST
+    data_selector: transactions
+    params:
+      date:
+        is: '2024-01-01'
+- name: inputs
+  endpoint:
+    path: /v1/docs/Examples/Transactions/input-output-api
+    method: POST
+    data_selector: inputs
+    params: {}
+- name: outputs
+  endpoint:
+    path: /v1/docs/Examples/Transactions/input-output-api
+    method: POST
+    data_selector: outputs
+    params: {}
+- name: smart_contract_events
+  endpoint:
+    path: /smartContractEvents
+    method: POST
+    data_selector: events
+    params:
+      limit: 10
+      offset: 0
+- name: smartContractCalls
+  endpoint:
+    path: /v1/smartContractCalls
+    method: POST
+    data_selector: data
+    params: {}
+- name: flow_events
+  endpoint:
+    path: /flow/events
+    method: POST
+    data_selector: flow.events
+    params:
+      type:
+        in:
+        - TokensMinted
+        - TokensBurned
+- name: tron_events
+  endpoint:
+    path: /tron/smartContractEvents
+    method: POST
+    data_selector: tron.smartContractEvents
+    params:
+      limit: 10
+      desc: block.height
+- name: transfers
+  endpoint:
+    path: /v1/graphql
+    method: POST
+    data_selector: data.ethereum.transfers
+    params: {}
+- name: balance_of_a_wallet
+  endpoint:
+    path: /v1/query
+    method: POST
+    data_selector: data.ethereum.address.balances
+    params:
+      address: '0xb3eaf12a04d9e9df7efa681a92043ef4371ed6fe'
+- name: token_transfers
+  endpoint:
+    path: /v1/query
+    method: POST
+    data_selector: data.ethereum.transfers
+    params:
+      address: '0xb3eaf12a04d9e9df7efa681a92043ef4371ed6fe'
+- name: cross_chain_trade_insights
+  endpoint:
+    path: /v1/query
+    method: POST
+    data_selector: data.ethereum.dexTrades
+    params:
+      limit: 10
+      offset: 0
+      from: '2023-12-07'
+      till: '2023-12-14T23:59:59'
+      address: '0x225fa3acd63bc510a2286e9132c017167536bf76'
+- name: ethereum_transfers
+  endpoint:
+    path: /v1/graphql
+    method: POST
+    data_selector: data.ethereum.transfers
+    params: {}
+- name: bsc_transfers
+  endpoint:
+    path: /v1/graphql
+    method: POST
+    data_selector: data.bsc.transfers
+    params: {}
+- name: celo_transfers
+  endpoint:
+    path: /v1/graphql
+    method: POST
+    data_selector: data.celo.transfers
+    params: {}
+- name: matic_transfers
+  endpoint:
+    path: /v1/graphql
+    method: POST
+    data_selector: data.matic.transfers
+    params: {}
+- name: avalanche_transfers
+  endpoint:
+    path: /v1/graphql
+    method: POST
+    data_selector: data.avalanche.transfers
+    params: {}
+notes:
+- Unified APIs to query blockchains using GraphQL
+- Complete historical and real-time indexed blockchain data
+- We now use Access Token for both V1 and V2 APIs.
+- Parsed smart contract events and arguments for all supported blockchains
+- The API allows querying transfers across various blockchains.
+- Be cautious with large date ranges to avoid empty responses.
+- The API requires a valid API key for access.
+errors:
+- '401 Unauthorized: Invalid API key provided.'
+- '400 Bad Request: Check your query syntax or parameters.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.bitquery.io
+  auth:
+    type: apikey
+    location: header
+    header_name: X-API-KEY
+source_metadata: null

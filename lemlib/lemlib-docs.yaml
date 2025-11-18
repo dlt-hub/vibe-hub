@@ -1,0 +1,161 @@
+resources:
+- name: drivetrain
+  endpoint:
+    path: /drivetrain/config
+    method: GET
+- name: odometry
+  endpoint:
+    path: /odometry/config
+    method: GET
+- name: pid_settings
+  endpoint:
+    path: /pid/config
+    method: GET
+- name: angular_controller
+  endpoint:
+    path: /angular_controller
+    method: POST
+    data_selector: settings
+    params:
+      kP: 2
+      kI: 0
+      kD: 10
+      anti_windup: 3
+      small_error_range: 1
+      small_error_timeout: 100
+      large_error_range: 3
+      large_error_timeout: 500
+      maximum_acceleration: 0
+- name: lateral_controller
+  endpoint:
+    path: /lateral_controller
+    method: POST
+    data_selector: settings
+    params:
+      kP: 10
+      kI: 0
+      kD: 3
+      anti_windup: 3
+      small_error_range: 1
+      small_error_timeout: 100
+      large_error_range: 3
+      large_error_timeout: 500
+      maximum_acceleration: 20
+- name: turnToHeading
+  endpoint:
+    path: /api/chassis/turnToHeading
+    method: POST
+    data_selector: params
+- name: turnToPoint
+  endpoint:
+    path: /api/chassis/turnToPoint
+    method: POST
+    data_selector: params
+- name: swingToHeading
+  endpoint:
+    path: /api/chassis/swingToHeading
+    method: POST
+    data_selector: params
+- name: swingToPoint
+  endpoint:
+    path: /api/chassis/swingToPoint
+    method: POST
+    data_selector: params
+- name: TurnToPointParams
+  endpoint:
+    path: /Chassis/turnToPoint
+    method: GET
+    data_selector: records
+    params: {}
+- name: TurnToHeadingParams
+  endpoint:
+    path: /Chassis/turnToHeading
+    method: GET
+    data_selector: records
+    params: {}
+- name: SwingToPointParams
+  endpoint:
+    path: /Chassis/swingToPoint
+    method: GET
+    data_selector: records
+    params: {}
+- name: SwingToHeadingParams
+  endpoint:
+    path: /Chassis/swingToHeading
+    method: GET
+    data_selector: records
+    params: {}
+- name: MoveToPoseParams
+  endpoint:
+    path: /Chassis/moveToPose
+    method: GET
+    data_selector: records
+    params: {}
+- name: MoveToPointParams
+  endpoint:
+    path: /Chassis/moveToPoint
+    method: GET
+    data_selector: records
+    params: {}
+- name: TrackingWheel
+  endpoint:
+    path: /TrackingWheel
+    method: GET
+    data_selector: records
+    params: {}
+- name: OdomSensors
+  endpoint:
+    path: /OdomSensors
+    method: GET
+    data_selector: records
+    params: {}
+- name: Drivetrain
+  endpoint:
+    path: /Drivetrain
+    method: GET
+    data_selector: records
+    params: {}
+- name: ControllerSettings
+  endpoint:
+    path: /ControllerSettings
+    method: GET
+    data_selector: records
+    params: {}
+- name: ExitCondition
+  endpoint:
+    path: /ExitCondition
+    method: GET
+    data_selector: records
+    params: {}
+- name: DriveCurve
+  endpoint:
+    path: /DriveCurve
+    method: GET
+    data_selector: records
+    params: {}
+- name: ExpoDriveCurve
+  endpoint:
+    path: /ExpoDriveCurve
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- 'Caution: kI should only be used as a last resort, when kP and kD can’t be tuned
+  to a satisfactory degree, which is rare.'
+- This motion tends to be a bit slower than the moveToPoint, so you should prefer
+  moveToPoint where you do not need the extra accuracy.
+- The position of the robot when it starts following the path is critical.
+- Motion chaining is useful for defining paths without pure pursuit or whenever you
+  prefer speed over accuracy.
+- A minSpeed of 72 means that the chassis will slow down as it approaches the target
+  point, but it won't come to a full stop.
+- create a new exponential drive curve
+- controller deadband is set to 5
+- minimum output is set to 12
+- curve gain is set to 1.132
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://lemlib.readthedocs.io/en/v0.5.0/index.html
+source_metadata: null
