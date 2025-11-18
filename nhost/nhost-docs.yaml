@@ -1,0 +1,143 @@
+resources:
+- name: movies
+  endpoint:
+    path: /v1/movies
+    method: GET
+    data_selector: data
+- name: files
+  endpoint:
+    path: /files
+    method: GET
+    data_selector: data.files
+    params: {}
+- name: functions
+  endpoint:
+    path: /functions
+    method: POST
+    data_selector: data
+    params: {}
+- name: verifyChangeUserMfa
+  endpoint:
+    path: /verifyChangeUserMfa
+    method: POST
+- name: verifyElevateWebauthn
+  endpoint:
+    path: /verifyElevateWebauthn
+    method: POST
+- name: verifySignInMfaTotp
+  endpoint:
+    path: /verifySignInMfaTotp
+    method: POST
+- name: verifySignInOTPEmail
+  endpoint:
+    path: /verifySignInOTPEmail
+    method: POST
+- name: verifySignInPasswordlessSms
+  endpoint:
+    path: /verifySignInPasswordlessSms
+    method: POST
+- name: verifySignInWebauthn
+  endpoint:
+    path: /verifySignInWebauthn
+    method: POST
+- name: verifySignUpWebauthn
+  endpoint:
+    path: /verifySignUpWebauthn
+    method: POST
+- name: verifyTicketURL
+  endpoint:
+    path: /verifyTicketURL
+    method: GET
+- name: verifyToken
+  endpoint:
+    path: /verifyToken
+    method: POST
+- name: User
+  endpoint:
+    path: /user
+    method: POST
+    data_selector: user
+    params: {}
+- name: UserMfa
+  endpoint:
+    path: /user/mfa
+    method: POST
+    data_selector: mfa
+    params: {}
+- name: sendDevMessage
+  endpoint:
+    path: /sendDevMessage
+    method: POST
+    data_selector: data.graphite.sendDevMessage
+    params: {}
+- name: setHeaders
+  endpoint:
+    path: /setHeaders
+    method: POST
+    data_selector: null
+    params: {}
+- name: unsetHeaders
+  endpoint:
+    path: /graphql/unsetHeaders
+    method: POST
+    data_selector: null
+    params: {}
+- name: getHeaders
+  endpoint:
+    path: /graphql/getHeaders
+    method: GET
+    data_selector: headers
+notes:
+- Uses OAuth2
+- WebAuthn is currently not supported in React Native when using these hooks.
+- Uses GraphQL for data interactions
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Never use admin secrets in client-side code.
+- Requires elevated permissions for certain actions.
+- Never use this middleware in client-side code or expose the admin secret to end
+  users. Admin secrets grant unrestricted access to your entire database. This should
+  only be used in trusted server-side environments.
+- Only admins can send messages to developer sessions
+- Use nhost.graphql.setAccessToken to set an access token for subsequent GraphQL requests.
+- Uses API key for authentication
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- default-role-must-be-in-allowed-roles
+- disabled-endpoint
+- disabled-user
+- email-already-in-use
+- email-already-verified
+- forbidden-anonymous
+- internal-server-error
+- invalid-email-password
+- invalid-request
+- locale-not-allowed
+- password-too-short
+- password-in-hibp-database
+- redirectTo-not-allowed
+- role-not-allowed
+- signup-disabled
+- unverified-user
+- user-not-anonymous
+- invalid-pat
+- invalid-refresh-token
+- invalid-ticket
+- disabled-mfa-totp
+- no-totp-secret
+- invalid-totp
+- mfa-type-not-found
+- totp-already-active
+- invalid-state
+- oauth-token-echange-failed
+- oauth-profile-fetch-failed
+- oauth-provider-error
+- invalid-otp
+- cannot-send-sms
+auth_info:
+  mentioned_objects:
+  - AdminSessionOptions
+client:
+  base_url: https://app.nhost.io
+  auth:
+    type: oauth2
+source_metadata: null

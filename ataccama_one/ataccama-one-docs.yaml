@@ -1,0 +1,60 @@
+resources:
+- name: status
+  endpoint:
+    path: /status
+    method: GET
+- name: models
+  endpoint:
+    path: /models
+    method: GET
+- name: entity
+  endpoint:
+    path: /entity/{entityName}
+    method: GET
+- name: changelog
+  endpoint:
+    path: /changelog
+    method: GET
+- name: link
+  endpoint:
+    path: /link
+    method: GET
+- name: changelog
+  endpoint:
+    path: /changelog
+    method: GET
+    data_selector: data
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- By default, the limit is set to 10,000 records.
+- Filters are optional and provided as query string parameters.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+errors:
+- '400 Bad Request: If the limit is reached, narrow down your search criteria before
+  repeating the request.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - Service Account Roles
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://rdm.<domain>/api/rest/
+source_metadata: null

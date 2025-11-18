@@ -1,0 +1,245 @@
+resources:
+- name: company
+  endpoint:
+    path: /api/company/company/
+    method: GET
+    data_selector: company
+    params: {}
+- name: contact
+  endpoint:
+    path: /api/contact/contact/
+    method: GET
+    data_selector: contact
+    params: {}
+- name: document_templates
+  endpoint:
+    path: /api/v1/document_templates
+    method: GET
+    data_selector: templates
+    params: {}
+- name: opportunities
+  endpoint:
+    path: /opportunities
+    method: GET
+    data_selector: opportunityList
+    params: {}
+- name: projects
+  endpoint:
+    path: /projects
+    method: GET
+    data_selector: projects
+    params: {}
+- name: OWASP Application Security Verification Standard
+  endpoint:
+    path: /_downloads/0df32474b5dd41f859338241fddf7ae5/Methodology%20-%20OWASP%20ASVS.json
+    method: GET
+- name: OWASP Mobile Application Security Verification Standard
+  endpoint:
+    path: /_downloads/7167f5364dd51325cf5b787b8663d70f/Methodology%20-%20OWASP%20MASVS.json
+    method: GET
+- name: OWASP Web Security Testing Guide
+  endpoint:
+    path: /_downloads/d463657b90fb565649b4e2977ce3f48b/Methodology%20-%20OWASP%20WSTG.json
+    method: GET
+- name: OWASP Top 10 2021
+  endpoint:
+    path: /_downloads/4ed611c111d0f239013fbc14f448a728/Taxonomy%20-%20OWASP%20Top%2010%20%282021%29.json
+    method: GET
+- name: OWASP Top 10 2013
+  endpoint:
+    path: /_downloads/4c2f982b695e45257d56d9ae8ee1876b/Taxonomy%20-%20OWASP%20Top%2010%202013.json
+    method: GET
+- name: OWASP Mobile Top 10
+  endpoint:
+    path: /_downloads/2d86d6ac2e5b2cc475df5a508d9a1a6a/Taxonomy%20-%20OWASP%20Mobile%20Top%2010%20%282016%29.json
+    method: GET
+- name: CWE
+  endpoint:
+    path: /_downloads/2db543de444656c923669069c3c6a70b/Taxonomy%20-%20CWE.json
+    method: GET
+- name: CWE/SANS Top 25 Most Dangerous Software Errors
+  endpoint:
+    path: /_downloads/a5c644d40b13b12b6b5a93ed6c571a73/Taxonomy%20-%20CWE%20SANS%20Top%2025%202011.json
+    method: GET
+- name: WASC Threat Classification
+  endpoint:
+    path: /_downloads/c0a04335b4accf175e2dd8c263000777/Taxonomy%20-%20WASC%20v2.json
+    method: GET
+- name: report_template
+  endpoint:
+    path: /report-templates/export
+    method: GET
+- name: import_template
+  endpoint:
+    path: /report-templates/import
+    method: POST
+- name: reports
+  endpoint:
+    path: /reports
+    method: GET
+- name: export_template
+  endpoint:
+    path: /export
+    method: GET
+    data_selector: template
+    params: {}
+- name: import_template
+  endpoint:
+    path: /import
+    method: POST
+    data_selector: template
+    params: {}
+- name: portal_user
+  endpoint:
+    path: /admin/portal/user/
+    method: GET
+- name: email_notifications
+  endpoint:
+    path: /etc/canopy/canopy.ini
+    method: GET
+    data_selector: settings
+    params: {}
+- name: field_sets
+  endpoint:
+    path: /field_sets
+    method: GET
+    data_selector: field_sets
+- name: supported_fields
+  endpoint:
+    path: /supported_fields
+    method: GET
+    data_selector: fields
+- name: phase_type_field_sets
+  endpoint:
+    path: /phase_type_field_sets
+    method: GET
+    data_selector: phase_field_sets
+- name: plugin
+  endpoint:
+    path: /plugins
+    method: POST
+    data_selector: plugin
+    params: {}
+notes:
+- Token does not expire
+- This patch release addresses an issue affecting the Comments functionality when
+  using Oracle databases.
+- If after the upgrade there are still images missing from reports then the workaround
+  is to remove the image and add it again.
+- Canopy uses a number of terms which should be familiar to most users.
+- Deleting findings is not typically recommended.
+- Only one group can be created at a time.
+- It is not mandatory to follow the PR/QA process. However, it is recommended in most
+  scenarios.
+- Templates for emails sent for various report statuses and project phase notifications.
+- Project access controls are still authoritative.
+- None of the export options will export the Methodologies associated with the phase.
+- Users require edit permissions on template reports to be able to export them.
+- Users require edit permissions on template reports to be able to import them.
+- The reports interface has been redesigned in Canopy 3.9.0.
+- 'Canopy supports separation of the following modules on separate servers: Web server,
+  Application server, Database server, Report server.'
+- Some Canopy settings can be exported and imported via the experimental Data Import/Export
+  feature accessible via the Canopy admin interface.
+- Separate Portal user accounts should be created for clients.
+- Canopy’s services should be restarted if any settings in that file are changed or
+  if the database is restarted.
+- File locations are for Ubuntu and might be slightly different for RHEL based distributions.
+- The EXTERNAL_BASE_URL is used as the prefix for any links sent out via email.
+- Canopy uses systemd to manage its processes and it requires environment variables
+  to be set in the systemd service override files for both the canopy and canopy-celery
+  services when operating behind a proxy.
+- Only the desktop version of Microsoft Word is supported at this time.
+- You may need to enable compatibility mode for the add-on to function correctly.
+- The email attribute (via a claim mapping) is required for both flows.
+- Session timeout should be aligned with the access token lifetime.
+- OIDC_ENABLE=true
+- OIDC_FETCH_USERINFO=true
+- OIDC_MERGE_ALL_CLAIMS=true
+- Our Backups and recovery guide is the most robust method for backup and restoration.
+- This guide is very similar but uses a different DB backup method, which is known
+  to be problematic in certain scenarios.
+- Login can be SP initiated or IdP initiated.
+- Canopy requires that the email field is mapped to a SAML attribute that contains
+  the users email address and the name field is mapped to the user’s name/surname
+  attribute.
+- OAuth may not be possible on certain instances due to incompatibilities between
+  the Jira version and the client library in use.
+- Basic auth using API tokens may be easier in such cases.
+- Canopy can only be supported under certain conditions.
+- Deployments on AWS are possible and have been tested using the Amazon and Canonical
+  supported AMIs.
+- This feature is still experimental. It and its data formats are subject change.
+- AD authentication related settings are configured in /etc/canopy/canopy.ini and
+  requires Canopy to be restarted after modification.
+- 'Plugins (Python files) must be copied to the following plugin path and must be
+  readable by the `canopy` user: /var/opt/checksec/canopy/plugins'
+- 'Management commands (Python files) must be copied to the following management command
+  path and must be readable by the `canopy` user: /var/opt/checksec/canopy/commands'
+- All files under /var/opt/checksec/canopy needs to be owned by the `canopy` user
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+errors:
+- 'CAN-3968: Certain comments fail to render with OracleDB'
+- 'CAN-3931: Retest creation fails when phase uploads or their files are missing'
+- 'CAN-3871: Firefox ESR throws exception when using iterator helpers'
+- 'CAN-3872: Images in Rich Text field can result in JS becoming unresponsive'
+- 'CAN-3873: Report view not granting edit permissions'
+- 'CAN-3874: Opportunity view not granting edit permissions'
+- 'CAN-3854: Reports have missing images'
+- 'CAN-3865: Image selection dialog doesn’t show existing images'
+- 'CAN-3867: Circular grant detection triggers on non-circular multipaths'
+- 'CAN-3357: Frontend error endpoint should log new data being sent by frontend'
+- 'CAN-3390: Comments in activity log render as escaped HTML'
+- 'CAN-3498: (react) Conflict resolution gets into loop'
+- 'CAN-3513: (react) When a Generated Report is selected, the refresh button reloads
+  the wrong endpoint'
+- 'CAN-3517: (react) Example body cannot be cleared'
+- 'CAN-3521: (react) Finding’s Insert Images modal lists non-image files'
+- 'CAN-3536: Custom rating plugins can’t set custom fields'
+- 'CAN-3538: xmlsec1-openssl dependency is not installed on RHEL8+'
+- 'CAN-3586: Grouped findings result in incorrect counts related to assets'
+- 'CAN-3588: (react) Click-out on rich text fields prevents use of tinymce modals'
+- 'CAN-3597: (react) Scoping questionnaire template breadcrumb is incorrect'
+- 'CAN-3598: SoW XML number fields strip zeros'
+- 'CAN-3600: Unable to add multiple template findings on ExtJS and React'
+- 'CAN-3606: (react) Zod error on finding view (history)'
+- 'CAN-3611: (react) Verbose error displayed when clearing and entering asset on Example
+  view'
+- 'CAN-3614: KB filtering by rating doesn’t work'
+- 'CAN-3616: Evaluate if canopy/libs/models/reversion/adhoc_fix.py is still required
+  or needs updating'
+- 'CAN-3617: Direct Report XML downloading from results in filename with leading/trailing
+  underscores'
+- 'CAN-3623: (react) Conflict resolution modal is not usable when wide content used'
+- 'CAN-3631: KB Import fails when it needs to create categories/attack classes'
+- 'CAN-3653: React breadcrumb text overflow'
+- 'CAN-3659: XLSX invalid character stripping doesn’t handle certain value types'
+- 'CAN-3668: (react) Phase view finding grid toolbars missing'
+- 'CAN-3669: Finding endpoint allows the updating of fields that should be immutable'
+- 'CAN-3670: Excel formulas don’t translate when rows are repeated'
+- 'CAN-3682: KB importing doesn’t handle certain combinations of references gracefully'
+- 'CAN-3685: Retest/Add from Project edge case failures'
+- 'CAN-3686: (react) Finding Reference creation from existing template doesn’t populate
+  template_taxonomy_item in PUT'
+- 'CAN-3714: Jira ticket tracker’s getinfo action results in an error'
+- 'CAN-3719: Tool imports use different ProjectFinding references'
+- 'CAN-3737: Burp importer fails on false positive'
+- 'CAN-3758: File upload filter not working: Opportunities/Scope'
+- 'CAN-3796: Access control API endpoint allows creation of ACLs with invalid roles'
+- 'CAN-3815: TinyMCE insert Image plugin displays and inserts tiny images'
+- 'CAN-3821: draw_permissions management command failing'
+- 'CAN-3824: (react) Questionnaire template options not showing before field interaction
+  on edit'
+- 'CAN-3842: CVSS 3 calculator has invalid None value for MI'
+- 'AttributeError: ‘NoneType’ object has no attribute ‘name_qualifier’'
+auth_info:
+  mentioned_objects:
+  - AUTH_LDAP_ENABLE
+  - AUTH_LDAP_SERVER_URI
+  - AUTH_LDAP_BIND_DN
+  - AUTH_LDAP_BIND_PASSWORD
+  - AUTH_LDAP_USER_SEARCH_DN
+  - AUTH_LDAP_USER_SEARCH_FILTER
+client:
+  base_url: https://clients.checksec.com
+source_metadata: null

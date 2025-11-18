@@ -1,0 +1,142 @@
+resources:
+- name: users
+  endpoint:
+    path: users/{userId}
+    method: GET
+    data_selector: ''
+    params: {}
+- name: access_tokens
+  endpoint:
+    path: /api/auth/access_tokens
+    method: GET
+    data_selector: tokens
+- name: tasks
+  endpoint:
+    path: /api/tasks
+    method: GET
+    data_selector: tasks
+- name: jobs
+  endpoint:
+    path: /api/jobs/
+    method: POST
+    data_selector: records
+- name: tasks
+  endpoint:
+    path: /api/tasks/{id}/
+    method: GET
+    data_selector: records
+- name: dataset_export
+  endpoint:
+    path: /api/dataset/export
+    method: POST
+- name: dataset_import
+  endpoint:
+    path: /api/dataset/import
+    method: POST
+- name: events
+  endpoint:
+    path: /api/events
+    method: GET
+- name: quality_reports
+  endpoint:
+    path: /api/quality/reports
+    method: GET
+- name: requests
+  endpoint:
+    path: /api/requests
+    method: GET
+- name: projects
+  endpoint:
+    path: /api/projects
+    method: GET
+- name: tasks
+  endpoint:
+    path: /api/tasks
+    method: GET
+- name: task
+  endpoint:
+    path: /api/v1/tasks
+    method: GET
+    data_selector: results
+- name: annotations
+  endpoint:
+    path: /task/<id>/annotations
+    method: GET
+    data_selector: annotations
+    params:
+      format: json
+- name: tasks
+  endpoint:
+    path: /tasks
+    method: GET
+    data_selector: tasks
+    params: {}
+notes:
+- Oat++ is used for many different purposes, from building REST APIs that run on embedded
+  devices to building microservices and highly-loaded cloud applications.
+- Always choose Simple API wherever possible.
+- Uses OAuth2 with refresh token — requires setup of connected app in Gitee
+- Support for API access tokens
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Automatic server URL scheme detection is deprecated. Add https:// or http:// to
+  the host explicitly to avoid future breakage.
+- Some objects like Contact may return nulls in deeply nested fields
+- New features added for dataset export and import events.
+- A trailing slash in hostname doesn't allow SDK to send some requests
+- Missed token with using social account authentication
+- Some objects aren't shown on canvas sometimes.
+- CVAT doesn't offer to restore state after an error.
+- Cannot read property 'shapeType' of undefined because of zOrder related issues.
+- Cannot read property 'pinned' of undefined because of zOrder related issues.
+- Do not iterate over hidden objects in aam (which are invisible because of zOrder).
+- Cursor position is reset after changing a text field.
+- Hidden points and cuboids can be selected to be grouped.
+- '`outside` annotations should not be in exported images.'
+- '`CVAT for video format` import error with interpolation.'
+- '`Image compression` definition mismatch.'
+- Points are duplicated during polygon interpolation sometimes.
+- When redraw a shape with activated autobordering, previous points are visible.
+- No mapping between side object element and context menu in some attributes.
+- Interpolated shapes exported as `keyframe = True`.
+- Stylelint filetype scans.
+- Fixed toolip closing issue.
+- Clearing frame cache when close a task.
+- Increase rate of throttling policy for unauthenticated users.
+- Helm charts are now available on Docker Hub
+- GET /api/events endpoint is deprecated in favor of POST /api/events/export
+- Various memory leaks in video reading on the server
+- Fixed an issue with calculating the number of objects on the annotation view when
+  frames are deleted
+- In SDK, we've fixed the issue with creating attributes with blank default values
+- CVAT is free, online, interactive video and image annotation tool for computer vision.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '401 Unauthorized: Check API token validity'
+- 500 status code returned when an API method is not allowed
+- Server returns a 404 status code with details instead of a 500 when cloud storage
+  preview defined by a manifest cannot be downloaded
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity.'
+- '404 Not Found: Check the endpoint URL'
+- '500 Internal Server Error: Server encountered an unexpected condition'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://gitee.com/api/v5
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://gitee.com/oauth/token
+    client_id: '{{ dlt.secrets[''gitee_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''gitee_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''gitee_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

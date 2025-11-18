@@ -1,0 +1,60 @@
+resources:
+- name: messages
+  endpoint:
+    path: /v1/messages/send
+    method: POST
+    data_selector: message
+    params: {}
+- name: message_status
+  endpoint:
+    path: /v1/messages/status/{uuid}
+    method: GET
+    data_selector: message
+    params: {}
+- name: messages
+  endpoint:
+    path: /messages/:uuid
+    method: DELETE
+- name: users
+  endpoint:
+    path: /users/:uuid/status
+    method: DELETE
+- name: send_message
+  endpoint:
+    path: /v1/messages/send
+    method: POST
+    data_selector: message
+    params: {}
+- name: message_status
+  endpoint:
+    path: /v1/messages/status/{uuid}
+    method: GET
+    data_selector: message
+    params: {}
+notes:
+- Ensure the recipient phone number has opted in and is within the 24-hour window
+  allowed by the WhatsApp Business API.
+- It’s necessary to specify an access token for every requests sent to the API
+- Our API will start rejecting HTTP requests by returning 429 Too Many Requests in
+  case that the RPS (Requests per Seconds) exceeds the limit of 300 RPS.
+- You can use the same steps to update a contact when a user changes their profile.
+- Uses OAuth2 with refresh token — requires setup of connected app in Callbell
+errors:
+- '429 Too Many Requests: Exceeds the limit of 300 RPS'
+- Responses in the 2xx range means that the request has been executed successfully
+- Responses in the 4xx range means that the request has been not successful because
+  of a client error like authentication, rate limit reached or wrong params
+- Responses in the 5xx range means that the request hasn’t been successful because
+  of an internal server error. It’s usually safe to retry those requests with a delay
+  or at a later time
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.callbell.eu
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Content-Type: application/json
+source_metadata: null
