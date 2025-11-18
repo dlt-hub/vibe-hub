@@ -1,0 +1,81 @@
+resources:
+- name: product_suggestions
+  endpoint:
+    path: /partner-search/suggestions
+    method: GET
+    params:
+      market: se
+      ref: <your ref id>
+- name: product_information
+  endpoint:
+    path: /partner-search/products/{product_id}
+    method: GET
+    params:
+      market: se
+      ref: <your ref id>
+- name: products
+  endpoint:
+    path: /products/{productId}
+    method: GET
+    data_selector: offers
+    params:
+      market: required
+      ref: required
+      limit: optional
+      offset: optional
+- name: search
+  endpoint:
+    path: /products
+    method: GET
+    data_selector: products
+    params:
+      market: required
+      product: optional
+      limit: optional
+      offset: optional
+      ref: optional
+- name: products
+  endpoint:
+    path: /products
+    method: GET
+    data_selector: products
+    params: {}
+- name: categories
+  endpoint:
+    path: /categories
+    method: GET
+    data_selector: categories
+    params:
+      market: se
+      q: apple phone
+- name: products
+  endpoint:
+    path: /products/{productId}
+    method: GET
+    data_selector: records
+    params:
+      market: se
+notes:
+- You must include a ref query parameter with all your requests if you want attribution
+  when a end user clicks links to shops or Prisjakt.
+- 'Rate limiting is applied to the Client ID: 10,000 requests in 1 hour.'
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '429 Too Many Requests: Current rate limit has been exceeded.'
+- 400 Bad Request
+- 422 Unprocessable Entity
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.pj.nu/partner-search
+  auth:
+    type: oauth2
+    flow: client_credentials
+    token_url: https://auth.pj.nu/oauth2/token
+    client_id: <replace with client ID>
+    client_secret: <replace with client secret>
+    location: header
+    header_name: Authorization
+  headers:
+    content-type: application/x-www-form-urlencoded
+source_metadata: null

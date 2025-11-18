@@ -1,0 +1,115 @@
+resources:
+- name: robots
+  endpoint:
+    path: /robots.txt
+    method: GET
+- name: ip
+  endpoint:
+    path: /ip
+    method: GET
+- name: post
+  endpoint:
+    path: /post
+    method: POST
+- name: bytes
+  endpoint:
+    path: /bytes/8
+    method: GET
+- name: robots_txt
+  endpoint:
+    path: /robots.txt
+    method: GET
+    data_selector: data
+    params: {}
+- name: ip
+  endpoint:
+    path: /ip
+    method: GET
+    data_selector: origin
+    params: {}
+- name: cookies
+  endpoint:
+    path: /cookies
+    method: GET
+    data_selector: cookies
+    params: {}
+- name: post
+  endpoint:
+    path: /post
+    method: POST
+    data_selector: form
+    params: {}
+- name: RequestField
+  endpoint:
+    path: /fields
+    method: GET
+- name: format_multipart_header_param
+  endpoint:
+    path: /format_multipart_header_param
+    method: GET
+- name: guess_content_type
+  endpoint:
+    path: /guess_content_type
+    method: GET
+notes:
+- Python version must be 3.9 or later
+- Removed support for non-OpenSSL TLS libraries
+- Changed the default minimum TLS version to TLS 1.2
+- By default certificate verification is handled by urllib3 to support legacy Python
+  versions
+- You can use OS-provided certificates if desired. Just specify the full path to the
+  certificate bundle as the `ca_certs` argument instead of `certifi.where()`.
+- If you are using the standard library logging module urllib3 will emit several logs.
+  In some cases this can be undesirable.
+- When using preload_content=False, you need to manually release the HTTP connection
+  back to the connection pool.
+- Making unverified HTTPS requests is strongly discouraged.
+- Zstandard support in urllib3 requires using v0.18.0 or later of the zstandard package.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Support for Emscripten and Pyodide is experimental
+- urllib3 is packaged with the default Pyodide build, so you should be able to use
+  it as normal
+- This module was no longer recommended.
+- It is recommended to use socks5h:// or socks4a:// schemes in your proxy_url to ensure
+  that DNS resolution is done from the remote server instead of client-side when connecting
+  to a domain name.
+- Some objects like Contact may return nulls in deeply nested fields
+- urllib3 v2.0 will drop support for Python 2.
+- 'Starting in urllib3 v2.0: Connections that receive a `DeprecationWarning` will
+  fail.'
+- 'Starting in urllib3 v2.0: Deprecated options will be removed.'
+- Added `PoolManager` with LRU expiration of connections (tested and documented).
+- Added `ProxyManager` (needs tests, docs, and confirmation that it works with HTTPS
+  proxies).
+- Added optional partial-read support for responses when `preload_content=False`.
+  You can now make requests and just read the headers without loading the content.
+- Made response decoding optional (default on, same as before).
+- Added optional explicit boundary string for `encode_multipart_formdata`.
+- Convenience request methods are now inherited from `RequestMethods`. Old helpers
+  like `get_url` and `post_url` should be abandoned in favour of the new `request(method,
+  url, ...)`.
+- Refactored code to be even more decoupled, reusable, and extendable.
+- License header added to `.py` files.
+- 'Embiggened the documentation: Lots of Sphinx-friendly docstrings in the code and
+  docs in `docs/` and on <https://urllib3.readthedocs.io/>.'
+- Embettered all the things!
+- Started writing this file.
+- Changed the default request body encoding from 'ISO-8859-1' to 'UTF-8'
+- urllib3 is a powerful, user-friendly HTTP client for Python.
+errors:
+- 'ImportError: urllib3 v2.0 only supports OpenSSL 1.1.1+'
+- 'AttributeError: module ‘urllib3.connectionpool’ has no attribute ‘VerifiedHTTPSConnection’'
+- 'ImportError: urllib3 v2.0 only supports OpenSSL 1.1.1+, currently the ''ssl'' module
+  is compiled with ''OpenSSL 1.0.2k-fips  26 Jan 2017'''
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'AttributeError: module ''urllib3.connectionpool'' has no attribute ''VerifiedHTTPSConnection'''
+- 'AttributeError: ''HTTPResponse'' object has no attribute ''strict'''
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://httpbin.org
+  headers:
+    Accept: application/json
+source_metadata: null
