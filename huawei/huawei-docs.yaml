@@ -1,0 +1,46 @@
+auth_info:
+- ? information_source; https://developer.huawei.com/consumer/en/doc/app/agc-help-upload-api-obbfile-uploadurl-0000002236041490
+  : - 'API client mode uses two required headers: client_id (Client ID as a string)
+      and Authorization (Bearer token format: "Authorization: Bearer ${access_token}").
+      OAuth client mode is also supported; refer to the documentation for OAuth-specific
+      header requirements. Access tokens and client IDs are obtained through the API
+      Client Mode authentication flow described in the referenced section.'
+    - OAuth2 access token authentication. Pass the access token in the oauth2Token
+      parameter (String type, mandatory) along with the teamId parameter in the request
+      body when calling the API.
+    - 'The API requires two authentication credentials: a client_id header set to
+      your application''s client ID, and an Authorization header with a Bearer token.
+      Both must be included in the request.'
+- ? information_source; https://developer.huawei.com/consumer/en/doc/app/agc-help-connect-api-obtain-server-auth-0000002271134661
+  : - 'Access tokens are obtained via HTTPS POST to https://{domain}/api/oauth2/v1/token
+      (domain varies by region: China uses connect-api.cloud.huawei.com, Germany uses
+      connect-api-dre.cloud.huawei.com, Singapore uses connect-api-dra.cloud.huawei.com,
+      Russia uses connect-api-drru.cloud.huawei.com). The response returns an access_token
+      string and expires_in value in seconds (48-hour validity); you must request
+      a new token when the current one expires. Multiple token requests within 48
+      hours return valid tokens.'
+    - Huawei uses OAuth2 client credentials flow for server authentication. Send a
+      POST request to https://connect-api.cloud.huawei.com/api/oauth2/v1/token with
+      JSON body containing grant_type set to "client_credentials", client_id, and
+      client_secret. The response includes an access_token valid for expires_in seconds,
+      which is then used in subsequent API calls.
+possible_base_urls:
+- ? information_source; https://developer.huawei.com/consumer/en/doc/app/agc-help-upload-api-obbfile-uploadurl-0000002236041490
+  : - https://connect-api.cloud.huawei.com
+    - https://connect-api.cloud.huawei.com/api/publish/v2/upload/multipart/parts
+possible_endpoints:
+- ? information_source; https://developer.huawei.com/consumer/en/doc/app/agc-help-upload-api-obbfile-uploadurl-0000002236041490
+  : - POST https://connect-api.cloud.huawei.com/api/publish/v2/upload/multipart/parts
+- ? information_source; https://developer.huawei.com/consumer/en/doc/app/agc-help-connect-api-obtain-server-auth-0000002271134661
+  : - POST https://connect-api-dra.cloud.huawei.com/api/oauth2/v1/token
+    - POST https://connect-api-dre.cloud.huawei.com/api/oauth2/v1/token
+    - POST https://connect-api-drru.cloud.huawei.com/api/oauth2/v1/token
+    - POST https://connect-api.cloud.huawei.com/api/oauth2/v1/token
+- information_source; https://developer.huawei.com/consumer/en/doc/app/agc-help-upload-api-upload-url-0000002236201294:
+  - GET https://connect-api.cloud.huawei.com/api/publish/v2/upload-url
+  - GET https://connect-api.cloud.huawei.com/api/publish/v2/upload-url/for-obs
+- information_source; https://developer.huawei.com/consumer/en/doc/app/agc-help-upload-api-upload-file-0000002271160621:
+  - PUT (URL obtained in Obtaining the File Upload URL)
+  - PUT https://developer.huawei.com/consumer/en/doc/app/agc-help-upload-api-upload-file-0000002271160621
+- information_source; https://developer.huawei.com/consumer/en/doc/app/agc-help-upload-api-obbfile-init-0000002271000677:
+  - POST https://connect-api.cloud.huawei.com/api/publish/v2/upload/multipart/init

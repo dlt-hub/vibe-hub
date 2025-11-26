@@ -1,0 +1,61 @@
+auth_info:
+- information_source; https://box.dev/reference/v2025.0/post-external-users-submit-delete-job/:
+  - 'Authorization requires a bearer token passed in the Authorization header. Send
+    the request with header "Authorization: bearer ACCESS_TOKEN" where ACCESS_TOKEN
+    is a valid Box API access token.'
+- information_source; https://box.dev/llms-full.txt:
+  - 'A Developer Token is a short-lived Access Token that expires after 60 minutes
+    and cannot be refreshed programmatically. It is sent in the Authorization header
+    as a Bearer token in API requests, for example: Authorization: Bearer [DEVELOPER_TOKEN].
+    Developer Tokens are generated via the Box Developer Console and are associated
+    with the logged-in user; they are intended only for development and testing, not
+    production use.'
+  - A string auth token is required and passed to the token parameter. The token should
+    be generated with appropriate scopes including base_preview for preview access,
+    and optional feature scopes such as item_download for downloads, annotation_view_self
+    to view own annotations, and annotation_view_all to view all annotations on the
+    file.
+  - Access Tokens are the primary credentials for Box API authentication. OAuth 2.0
+    authentication returns an Access Token and Refresh Token pair obtained by POSTing
+    to https://api.box.com/oauth2/token with content-type application/x-www-form-urlencoded.
+    The documentation also mentions JWT and CCG as alternative authentication methods,
+    and supports as-user calls when the appropriate scope is configured, allowing
+    impersonation of other users via subsequent API calls.
+  - 'Access to enterprise events requires admin permissions. API requests must include
+    Bearer token authentication via the Authorization header with format "Authorization:
+    Bearer <ACCESS_TOKEN>".'
+pagination_info:
+- information_source; https://box.dev/llms-full.txt:
+  - Events objects are returned in pages with a chunk_size parameter indicating the
+    number of events in each page and a stream_position field to query the next page.
+  - Limit is a query parameter for the GetArchivesV2025R0 method with a default or
+    example value of 100, indicating offset-limit based pagination where Limit controls
+    the number of results per request.
+  - Limit parameter in query string controls page size for listing Box Sign templates.
+    Response returns SignTemplates collection; continue fetching with updated Limit
+    value for subsequent pages.
+  - Marker-based pagination is used with a `next_marker` value returned in the response
+    body to indicate more results are available. Use the `next_marker` from the response
+    as the marker parameter in the next request to fetch additional pages.
+  - Marker-based pagination is used with optional `marker` parameter defining the
+    position to begin returning results (requires `usemarker` set to true) and optional
+    `limit` parameter specifying maximum items per page. The response is of type `FileVersionLegalHolds`
+    which contains pagination details for navigation.
+possible_base_urls:
+- information_source; https://box.dev/reference/v2025.0/post-external-users-submit-delete-job/:
+  - https://api.box.com/2.0
+- information_source; https://box.dev/llms-full.txt:
+  - http://2.realtime.services.box.net/subscribe
+possible_endpoints:
+- information_source; https://box.dev/reference/v2025.0/post-external-users-submit-delete-job/:
+  - POST https://api.box.com/2.0/external_users/submit_delete_job
+- information_source; https://box.dev/llms-full.txt:
+  - DELETE
+  - DELETE /2.0/ai_agents/{id}
+  - DELETE /archives/:id
+  - DELETE /archives/{id}
+  - DELETE /comments/{id}
+  - DELETE /device_pinners/:id
+  - DELETE /docgen-templates/
+  - DELETE /docgen-templates/{id}
+  - DELETE /file_requests/{id}

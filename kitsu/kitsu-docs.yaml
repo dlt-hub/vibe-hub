@@ -1,0 +1,41 @@
+auth_info:
+- information_source; https://kitsu.docs.apiary.io/:
+  - 'Kitsu uses OAuth 2 for authentication. Most public GET endpoints do not require
+    authentication, but NSFW/R18 content is hidden for unauthenticated requests. The
+    OAuth2 endpoint is at https://kitsu.io/api/oauth. Request headers must include
+    Content-Type as either application/json or application/x-www-form-urlencoded.
+    Apps require a client_id and client_secret; currently, these can be omitted, empty
+    strings, or use the provided test values: CLIENT_ID dd031b32d2f56c990b1425efe6c42ad847e7fe3ab46bf1299f05ecd856bdb7dd
+    and CLIENT_SECRET 54d7307928f63414defd96399fc31ba847961ceaecef3a5fd93144e960c0e151.
+    The Authorization Code grant type is defined for web server, browser-based, and
+    mobile apps but is not yet implemented.'
+  - OAuth 2.0 with Password grant type is used for authentication. To obtain an access
+    token, send a POST request to https://kitsu.io/api/oauth/token with grant_type
+    set to 'password', username (email or slug), and password (RFC3986 URL encoded).
+    Refresh tokens using grant_type 'refresh_token' and the refresh_token value at
+    the same endpoint. Include the access token in all API requests via the Authorization
+    header as "Bearer <access_token>".
+pagination_info:
+- information_source; https://kitsu.docs.apiary.io/:
+  - Pagination uses `page[limit]` and `page[offset]` query parameters. Default limit
+    is 10, maximum is 20. The response includes a `links` object with `first`, `next`,
+    and `last` URLs for navigation. Construct subsequent requests by using the `next`
+    URL or incrementing `page[offset]` by the limit value.
+  - Pagination uses limit and offset query parameters. Resources default to 10 per
+    page and maximum 20. The limit parameter controls page size, offset specifies
+    the starting position, and pagination continues until fewer than limit results
+    are returned or offset exceeds available resources.
+possible_base_urls:
+- information_source; https://kitsu.docs.apiary.io/:
+  - https://kitsu.io/api/edge
+  - https://kitsu.io/api/oauth
+possible_endpoints:
+- information_source; https://kitsu.docs.apiary.io/:
+  - GET /anime?include=categories,mediaRelationships.destination
+  - GET /users?fields[users]=name,createdAt
+  - GET /users?sort=-followersCount,-followingCount
+  - GET https://kitsu.io/api/edge/anime?page[limit]=5&page[offset]=0
+  - GET https://kitsu.io/api/edge/anime?page[limit]=5&page[offset]=12062
+  - GET https://kitsu.io/api/edge/anime?page[limit]=5&page[offset]=5
+  - POST https://kitsu.io/api/oauth
+  - POST https://kitsu.io/api/oauth/token

@@ -1,0 +1,45 @@
+auth_info:
+- information_source; https://tapis.readthedocs.io/en/latest/technical/authentication.html:
+  - The Tapis framework uses OAuth2-based authentication. Users authenticate via the
+    `/v3/oauth2` endpoints with the password grant flow to generate tokens for themselves.
+    The specific authenticator URL varies by tenant, for example https://tacc.tapis.io/v3/oauth2
+    for the tacc tenant and https://dev.tapis.io/v3/oauth2 for the dev tenant.
+- information_source; https://tapis.readthedocs.io/en/latest/technical/systems.html:
+  - AWS S3 access requires registering AWS IAM credentials (access key and secret
+    access key) with Tapis. The Tapis system uses an ACCESS_KEY authentication method,
+    and credentials are registered via POST request with the X-Tapis-Token header
+    for authentication to the Tapis API itself.
+  - 'JWT authentication is required. Include the JWT token in the Authorization header
+    as "Authorization: Bearer $JWT" when making requests to the Tapis API endpoint.'
+  - Tapis credentials are authenticated using a JWT bearer token passed in the X-Tapis-Token
+    header. When creating TMS keys for a system, include the query parameter createTmsKeys=true
+    in the POST request to the credentials endpoint, with the Authorization header
+    containing the JWT token value.
+  - 'Tapis uses OAuth2 with Globus as the identity provider. The user authenticates
+    through Globus using PKCE (Proof Key for Code Exchange) with S256 challenge method,
+    then exchanges an authorization code for tokens via the Systems credential endpoint
+    using a JWT bearer token in the X-Tapis-Token header.
+
+
+    Key details: Authorization code obtained from Globus redirect after user authentication
+    and consent (valid for 10 minutes). Exchange endpoint requires X-Tapis-Token header
+    with JWT value, POST to /v3/systems/credential/<system>/user/<user>/globus/tokens/<authCode>/<sessionId>.
+    Parameters include code_challenge, code_challenge_method=S256, access_type=offline,
+    and sessionId tracked during initial auth request.'
+possible_base_urls:
+- information_source; https://tapis.readthedocs.io/en/latest/technical/authentication.html:
+  - https://${tenant_id}.tapis.io
+  - https://admin.tapis.io/v3/sites
+possible_endpoints:
+- information_source; https://tapis.readthedocs.io/en/latest/technical/authentication.html:
+  - GET https://admin.tapis.io/v3/sites
+  - GET https://dev.tapis.io
+  - GET https://dev.tapis.io/v3/oauth2
+  - GET https://tacc.tapis.io/v3/security
+  - GET https://tacc.tapis.io/v3/tenants
+  - GET https://tacc.tapis.io/v3/tokens
+- information_source; https://tapis.readthedocs.io/en/latest/technical/systems.html:
+  - GET /v3/systems
+  - GET https://tacc.tapis.io/v3/systems/search/systems
+  - POST https://dev.tapis.io/v3/systems/credential/<system>/user/<user>/globus/tokens/<authCode>/<sessionId>
+  - POST https://tacc.tapis.io/v3/systems

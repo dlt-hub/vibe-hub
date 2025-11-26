@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://docs.ceph.com/en/quincy/mgr/ceph_api/:
+  - Authentication is performed by including an api_key parameter in the JSON request
+    body. The api_key field is required and should contain the Ceph tracker API key
+    credentials.
+  - Authentication uses username and password credentials posted to the POST /api/auth
+    endpoint, which returns a bearer token. This token must be included in the Authorization
+    HTTP header as "Bearer <token>" with every subsequent API request.
+  - The API requires authentication before access. A 401 Unauthorized response indicates
+    unauthenticated access and a 403 Forbidden response indicates insufficient permissions.
+    However, the specific authentication mechanism (e.g., header name, token format,
+    or login endpoint) is not documented in the provided text.
+  - The API uses bearer token authentication. Credentials are obtained by POSTing
+    username and password to /api/auth endpoint as JSON, then the returned token is
+    sent in the Authorization header as "Bearer <token>" for subsequent requests.
+  - The API uses token-based authentication. Clients must provide an authentication
+    token via the query parameter named token when making requests to protected endpoints.
+    A POST endpoint at /api/auth/check?token=string is available to verify token validity,
+    and requests without valid authentication will receive 401 Unauthorized responses.
+pagination_info:
+- information_source; https://docs.ceph.com/en/quincy/mgr/ceph_api/:
+  - Pagination uses offset and limit query parameters as integers. The offset parameter
+    specifies the starting position and limit specifies the maximum number of results
+    to return per request.
+  - Pagination uses offset and limit query parameters. offset is an integer specifying
+    the starting position, and limit is an integer specifying the number of results
+    to return per request. Use these parameters to retrieve successive pages of Rbd
+    images.
+  - Pagination uses offset and limit query parameters. offset specifies the starting
+    position (integer), and limit specifies the maximum number of results to return
+    (integer). No response fields indicating pagination state or stopping conditions
+    are documented.
+  - The GET /api/host endpoint uses offset and limit query parameters for pagination.
+    The offset parameter specifies the starting position and limit specifies the number
+    of results per page, both as integers. Stop paginating when fewer results than
+    the limit are returned or when no more data is available.
+possible_base_urls:
+- information_source; https://docs.ceph.com/en/quincy/mgr/ceph_api/:
+  - '-'
+  - /api/rgw/bucket
+possible_endpoints:
+- information_source; https://docs.ceph.com/en/quincy/mgr/ceph_api/:
+  - DELETE /api/block/image/trash/{image_id_spec}
+  - DELETE /api/block/image/{image_spec}
+  - DELETE /api/block/image/{image_spec}/snap/{snapshot_name}
+  - DELETE /api/block/mirroring/pool/{pool_name}/peer/{peer_uuid}
+  - DELETE /api/block/pool/{pool_name}/namespace/{namespace}
+  - DELETE /api/cephfs/{fs_id}/client/{client_id}
+  - DELETE /api/cephfs/{fs_id}/snapshot
+  - DELETE /api/cephfs/{fs_id}/tree
+  - DELETE /api/cluster/user/{user_entity}
+  - DELETE /api/cluster_conf/{name}

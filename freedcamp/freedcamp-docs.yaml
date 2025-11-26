@@ -1,0 +1,48 @@
+auth_info:
+- information_source; https://freedcamp.com/Mobile_7Yh/iOS_application_6zp/wiki/wiki_public/view/DFaab:
+  - 'Freedcamp API uses HMAC-SHA1 authentication. Requests require three query parameters:
+    api_key (your public API key), timestamp (current Unix timestamp in seconds),
+    and hash (HMAC-SHA1 digest of public_key concatenated with timestamp, using your
+    secret API key as the HMAC key, hex-encoded). The hash is computed by HMAC-SHA1(secret_api_key,
+    public_api_key + timestamp).'
+  - Session-based authentication using a session token. POST to /sessions with email
+    and password credentials to obtain a session token with a 1-week TTL per device.
+    The token should be sent in subsequent requests via the X-API-TOKEN header. GET
+    /sessions/current retrieves current session info. OAuth login is also supported
+    via oauth_provider and oauth_access_token parameters.
+  - X-API-TOKEN header should be empty for user registration via POST. Registration
+    requires email, password, first_name, and last_name fields in the request body
+    data, with optional oauth_provider and oauth_access_token for OAuth-based registration,
+    and an optional avatar file as multipart form-data.
+pagination_info:
+- information_source; https://freedcamp.com/Mobile_7Yh/iOS_application_6zp/wiki/wiki_public/view/DFaab:
+  - Pagination uses limit and offset query parameters. The limit parameter specifies
+    the number of results per request (example shows 200), and offset specifies the
+    starting position (example shows 400). Continue paginating while meta.has_more
+    is true.
+  - 'Pagination uses limit and offset query parameters. The limit parameter specifies
+    the number of results per request (example: limit=200), and offset specifies the
+    starting position (example: offset=400). Continue paginating while meta.has_more
+    is true. Note that each request may return more than the specified limit if subtasks
+    are included, as all subtasks of a task are returned together and not split across
+    pages.'
+  - The /backups GET endpoint supports limit and offset query parameters for pagination.
+    limit defaults to 200 (maximum allowed), and offset specifies the starting position.
+    The response includes a meta object with has_more boolean indicating if additional
+    results exist, and total_count when has_more is true. Continue paginating by incrementing
+    offset until has_more is false.
+possible_base_urls:
+- information_source; https://freedcamp.com/Mobile_7Yh/iOS_application_6zp/wiki/wiki_public/view/DFaab:
+  - https://freedcamp.com/api/v1
+possible_endpoints:
+- information_source; https://freedcamp.com/Mobile_7Yh/iOS_application_6zp/wiki/wiki_public/view/DFaab:
+  - DELETE /events/event_id
+  - DELETE /favorite_projects/project_id
+  - DELETE /list/app_id/list_id
+  - DELETE /lists/app_id/list_id
+  - GET /api/v1/milestones
+  - GET /backups
+  - GET /lists/app_id
+  - GET /lists/app_id?project_id=xxx
+  - GET /sessions/current
+  - GET https://freedcamp.com/api/v1/sessions/current

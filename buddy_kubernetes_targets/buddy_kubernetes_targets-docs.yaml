@@ -1,0 +1,53 @@
+auth_info:
+- information_source; https://buddy.works/docs/api/getting-started/hello-world:
+  - 'Bearer token authentication is required. Send your token in the Authorization
+    header as "Authorization: Bearer <YOUR-TOKEN>" for all API requests.'
+  - Buddy.works API uses token-based authentication. The access token can be passed
+    either as a query parameter named access_token or as a Bearer token in the Authorization
+    header. Tokens are obtained through OAuth2 flows as described in the OAuth documentation.
+- information_source; https://buddy.works/docs/api/getting-started/oauth2/introduction:
+  - 'OAuth2 authorization code flow is used to exchange an authorization code for
+    an access token. POST to https://api.buddy.works/oauth2/token with form-encoded
+    parameters: grant_type set to "authorization_code", code (from authorization response),
+    client_id, client_secret, and redirect_uri. Additionally, basic authorization
+    is supported by sending an Authorization header with Basic scheme to the same
+    token endpoint.'
+  - OAuth2 authorization code flow using HTTP Basic authentication. To obtain tokens,
+    send a POST request to https://api.buddy.works/oauth2/token with an Authorization
+    header containing base64-encoded client_id:client_secret, and POST parameters
+    grant_type (set to "client") and scope. The response includes access_token (Bearer
+    token for API requests), expires_in (seconds until expiration), refresh_token
+    (for obtaining new access tokens), and refresh_token_expires_in (seconds until
+    refresh token expiration).
+  - OAuth2 token-based authentication is required. Access tokens expire in 8 hours
+    and must be refreshed using the refresh_token via POST to https://api.buddy.works/oauth2/token
+    with Content-Type application/x-www-form-urlencoded, sending refresh_token, client_id,
+    client_secret, and grant_type set to "refresh". Refresh tokens are valid for 6
+    months. Include the access_token in API requests; expired tokens return 401 Unauthorized
+    with error message "Wrong authentication data".
+pagination_info:
+- information_source; https://buddy.works/docs/api/getting-started/overview:
+  - Paginated list requests use `page` and `per_page` query parameters, with default
+    page size of 20 items. Use `page=1` for the first page and increment to fetch
+    subsequent pages; if `page` is omitted, only the first page is returned.
+  - Pagination uses optional query parameters page (page number) and per_page (items
+    per page). The response includes paginated data; construct subsequent requests
+    by incrementing the page parameter value.
+possible_base_urls:
+- information_source; https://buddy.works/docs/api/getting-started/hello-world:
+  - https://api.buddy.works
+  - https://api.buddy.works/user
+possible_endpoints:
+- information_source; https://buddy.works/docs/api/getting-started/hello-world:
+  - GET https://api.buddy.works/user
+  - GET https://api.buddy.works/workspaces
+  - PATCH https://api.buddy.works/user
+- information_source; https://buddy.works/docs/api/getting-started/oauth2/introduction:
+  - GET https://api.buddy.works/oauth2/authorize
+  - POST https://api.buddy.works/oauth2/token
+- information_source; https://buddy.works/docs/api/getting-started/overview:
+  - DELETE https://YOUR-IP-ADDRESS/api
+  - DELETE https://api.buddy.works
+  - DELETE https://api.eu.buddy.works
+  - GET /workspaces/:workspace/projects/:project_name/repository/commits
+  - GET /workspaces/:workspace/projects/:project_name/repository/commits/:revision

@@ -1,0 +1,64 @@
+auth_info:
+- information_source; https://docs.customer.io/integrations/data-in/connections/forms/forms-api/:
+  - 'The Forms API requires authentication via an API key sent in the request headers.
+    Include the header `Authorization: Bearer YOUR_API_KEY` when making POST requests
+    to `https://track.customer.io/api/v1/forms/{form_id}/submit`. The API key should
+    be obtained from your Customer.io workspace settings. The request payload must
+    include a `data` object containing an identifier field (email or id) that maps
+    to the person submitting the form.'
+- information_source; https://docs.customer.io/get-started/send-messages/:
+  - 'Authorization: Bearer token required in the Authorization header. Pass the bearer
+    token as "Authorization: Bearer REPLACE_BEARER_TOKEN" in the request headers when
+    making API calls to Customer.io endpoints.'
+- information_source; https://docs.customer.io/integrations/api/cdp/:
+  - 'Basic Auth is required. Send credentials as an HTTP Authorization header using
+    the format "Authorization: Basic base64(username:password)". The username is your
+    Customer.io Site ID and the password is your API key.'
+  - 'Our API uses basic authorization with an API Key as the username and a blank
+    password. Base64 encode your credentials in the format API_key: and send them
+    in the Authorization header using the HTTP basic scheme. For EU regions, use the
+    cdp-eu subdomain instead of cdp in the endpoint URL.'
+- information_source; https://docs.customer.io/integrations/api/track/:
+  - Basic authentication is required for the Track API. Use your Site ID as the username
+    and your secret key as the password. Include these credentials in the Authorization
+    header using the standard HTTP Basic Auth format (base64-encoded "username:password").
+pagination_info:
+- information_source; https://docs.customer.io/integrations/api/app/:
+  - Pagination uses a "next" field in the response. Include the value of "next" as
+    a query parameter in subsequent requests to retrieve the next page of newsletters.
+    Stop paginating when "next" is not present in the response.
+  - Pagination uses a cursor-based approach with a "next" field in the response containing
+    a string value to fetch the next page of results. Include this "next" value in
+    subsequent requests to retrieve additional pages.
+  - 'Pagination uses a cursor-based scheme with query parameters: `start` (optional
+    string token for the page, obtained from the `next` property in responses) and
+    `limit` (optional integer, default 50, maximum 1000) to control page size. Responses
+    contain a `next` property to retrieve subsequent pages.'
+  - Pagination uses limit (query parameter, optional, max 100) to set results per
+    page, sort (query parameter, optional, "asc" or "desc") to order results, and
+    start (query parameter, optional) as a cursor token. The response contains a next
+    property; use this value as the start parameter in the next request to retrieve
+    subsequent pages.
+  - 'Pagination uses optional query parameters: start (string token for page navigation,
+    provided in response next property) and limit (integer for maximum results per
+    page). Use the next value from responses to construct subsequent requests.'
+possible_base_urls:
+- information_source; https://docs.customer.io/integrations/data-in/connections/forms/forms-api/:
+  - https://track.customer.io/api/v1/forms/{form_id}/submit
+- information_source; https://docs.customer.io/get-started/send-messages/:
+  - https://api.customer.io/v1
+possible_endpoints:
+- information_source; https://docs.customer.io/integrations/data-in/connections/forms/forms-api/:
+  - POST https://track.customer.io/api/v1/forms/{form_id}/submit
+- information_source; https://docs.customer.io/get-started/send-messages/:
+  - POST https://api.customer.io/v1/campaigns/{broadcast_id}/triggers
+- information_source; https://docs.customer.io/integrations/api/cdp/:
+  - GET /getRegion
+  - GET https://cdp.customer.io/v1/{method}
+  - POST https://cdp.customer.io/v1/page
+- information_source; https://docs.customer.io/integrations/api/track/:
+  - DELETE /api/v1/customers/{identifier}/devices/{device_id}
+  - DELETE https://track.customer.io/api/v1/customers/{identifier}
+  - DELETE https://track.customer.io/api/v1/customers/{identifier}/devices/{device_id}
+  - POST /api/v1/customers/{identifier}/suppress
+  - POST /api/v2/batch

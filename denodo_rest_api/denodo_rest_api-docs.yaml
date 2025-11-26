@@ -1,0 +1,80 @@
+auth_info:
+- ? information_source; https://community.denodo.com/docs/html/accessible/9.1/vdp/administration/creating_data_sources_and_base_views/software_as_a_service_wizards/sharepoint_sources/sharepoint_rest_sources.html
+  : - 'OAuth 2.0 authorization flow is required. The process involves: (1) generating
+      an authorization URL with redirect URI and scopes (offline_access and https://<tenant_name>.sharepoint.com/AllSites.Read),
+      (2) obtaining an authorization code from the callback URL, (3) exchanging the
+      code for OAuth 2.0 credentials (access token and refresh token). The obtained
+      credentials are then used for subsequent API requests to SharePoint REST API.'
+    - 'OAuth 2.0 is used to authenticate with SharePoint REST API. Required parameters
+      for token acquisition are: Client identifier (client_id from Azure app), Client
+      secret (secret value from Azure app), Token endpoint URL (https://login.microsoftonline.com/<tenant>/oauth2/v2.0/token),
+      Authorization server URL (https://login.microsoftonline.com/common/oauth2/v2.0/authorize),
+      Redirect URI (as registered in Azure), and Scopes (offline_access). The OAuth
+      2.0 flow requires exchanging client credentials and authorization code for access
+      tokens via the token endpoint.'
+- information_source; https://community.denodo.com/docs/html/accessible/9.1/vdp/data_catalog/appendix/rest_api/rest_api.html:
+  - Authentication uses session-based cookies and CSRF tokens obtained from an `/accesstoken`
+    endpoint. After authentication, include the `JSESSIONID` cookie and `X-XSRF-TOKEN`
+    header in subsequent API requests. This stateful authentication method is disabled
+    by default and must be enabled by setting `oauth.statefulEnabled=true` in the
+    DataCatalogBackend.properties configuration file.
+  - HTTP Basic Authentication (stateless) or OAuth Token (stateless or stateful) are
+    supported. For HTTP Basic Authentication, concatenate username and password with
+    a colon, encode in base64, and send in the Authorization header as "Basic <base64>".
+    For OAuth Token (stateless), send the token in the Authorization header as "Bearer
+    <token>". For OAuth Token (stateful), provide credentials once to receive a session
+    cookie and anti-CSRF token, then include both in subsequent requests. The optional
+    query parameter "serverId" specifies which Virtual DataPort server to connect
+    to.
+  - The API supports two OAuth authentication methods for the Data Catalog REST API.
+    For stateless OAuth, include the Authorization header with "Bearer oauth_token"
+    format (requires oauth.statelessEnabled=true in DataCatalogBackend.properties).
+    For stateful OAuth, first enable OAuth in Virtual DataPort, then invoke an unauthenticated
+    endpoint like /login/configuration to obtain an initial session identifier and
+    anti-CSRF token before making authenticated requests.
+pagination_info:
+- ? information_source; https://community.denodo.com/docs/html/accessible/8.0/vdp/administration/restful_architecture/odata4_service/odata4_service_pagination.html
+  : - The OData4 service paginates responses when collection size exceeds the configured
+      server.pageSize (default 1000 entries). The response includes an @odata.nextLink
+      field containing a URL with a $skiptoken parameter to request the next page.
+      Original query parameters like $top and $skip are preserved in the next link.
+      Clients follow the @odata.nextLink to retrieve subsequent pages until no next
+      link is present.
+- ? information_source; https://community.denodo.com/docs/html/browse/9.1/en/solution_manager/administration/appendix/rest_api/rest_api
+  : - The `/deployments` GET endpoint uses query parameters `start` and `count` for
+      pagination, where `start` specifies the first deployment to return and `count`
+      specifies the maximum number of deployments per request. No response fields
+      indicating next page or total count are documented.
+- ? information_source; https://community.denodo.com/docs/html/browse/9.3/en/vdp/administration/restful_architecture/odata4_service/odata4_service_pagination
+  : - Use $skiptoken query parameter returned in @odata.nextLink field to paginate
+      through results. Default page size is 1000 entries, configurable via server.pageSize
+      property or odata.maxpagesize preference in Prefer header. Stop paginating when
+      @odata.nextLink is absent from response.
+- ? information_source; https://community.denodo.com/docs/html/document/denodoconnects/8.0/en/vdp/administration/restful_architecture/odata4_service/odata4_service_pagination
+  : - Pagination uses query parameters $top (page size) and $skip (offset). The response
+      includes @odata.nextLink containing the next request URL with $skiptoken. Page
+      size can be controlled via $top parameter or odata.maxpagesize preference in
+      the Prefer header. Continue paginating until @odata.nextLink is absent.
+    - The OData 4.0 service uses server-side pagination with a configurable page size
+      (default 1000 entries). Clients request subsequent pages using a `$skiptoken`
+      parameter included in a next link returned in the response; the next link preserves
+      original query parameters and adds the `$skiptoken` value to fetch the next
+      page of results.
+possible_base_urls:
+- ? information_source; https://community.denodo.com/docs/html/accessible/9.1/vdp/administration/creating_data_sources_and_base_views/software_as_a_service_wizards/sharepoint_sources/sharepoint_rest_sources.html
+  : - https://<tenant_name>.sharepoint.com
+    - https://common/oauth2/v2.0/authorize
+possible_endpoints:
+- ? information_source; https://community.denodo.com/docs/html/accessible/9.1/vdp/administration/creating_data_sources_and_base_views/software_as_a_service_wizards/sharepoint_sources/sharepoint_rest_sources.html
+  : - GET common/oauth2/v2.0/authorize
+    - GET https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+    - POST https://login.microsoftonline.com/<tenant>/oauth2/v2.0/token
+- information_source; https://community.denodo.com/docs/html/accessible/9.1/vdp/data_catalog/appendix/rest_api/rest_api.html:
+  - GET /public/api/configuration/servers
+  - GET http://localhost:80/login/configuration
+  - GET http://localhost:8080/denodo-data-catalog/accesstoken
+  - GET http://localhost:8080/denodo-data-catalog/login/configuration
+  - GET http://localhost:8080/denodo-data-catalog/public/api/browse/databases
+  - GET http://localhost:8080/denodo-data-catalog/public/api/browse/databases?databaseName=admin&serverId=1
+- information_source; https://community.denodo.com/docs/html/browse/8.0/en/vdp/data_catalog/appendix/rest_api/rest_api:
+  - GET /public/api/configuration/servers

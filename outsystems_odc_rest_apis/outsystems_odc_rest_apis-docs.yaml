@@ -1,0 +1,65 @@
+auth_info:
+- ? information_source; https://success.outsystems.com/documentation/11/integration_with_external_systems/rest/consume_rest_apis/
+  : - OutSystems REST APIs support built-in Basic authentication and OAuth 2.0 client
+      credentials flow. For token-based authentication, use OAuth 2.0 client credentials
+      flow or add authorization info to request headers via OnBeforeRequest callback.
+      Client certificate authentication requires OnBeforeRequestAdvanced callback
+      with .NET extension code.
+- ? information_source; https://success.outsystems.com/documentation/11/integration_with_external_systems/rest/expose_rest_apis/add_custom_authentication_to_an_exposed_rest_api/
+  : - 'Custom authentication uses two required HTTP headers: X-Contacts-AppId for
+      the application identifier and X-Contacts-Key for the secret API key. Both values
+      must be included in each request and matched against records in an APIKey entity
+      database table to authenticate successfully.'
+    - Custom authentication using HTTP headers X-Contacts-AppId and X-Contacts-Key.
+      Extract both header values via GetRequestHeader server actions, validate them
+      using the ValidateAPIKey server action with ApplicationId and ApplicationKey
+      parameters, and raise an InvalidAPIKey user exception if validation fails.
+    - To implement custom authentication for an exposed REST API in OutSystems, set
+      the Authentication property to Custom, which creates an OnAuthentication callback
+      action that executes before each incoming request. Within this callback, use
+      HTTPRequestHandler API actions GetRequestHeader, GetFormValue, or GetRequestContent
+      to extract credentials from the HTTP request (headers, URL parameters, or body).
+      Design your authentication logic in the OnAuthentication action to validate
+      the received credentials against your security requirements, such as verifying
+      an App ID and API Key pair.
+- information_source; https://success.outsystems.com/documentation/11/reference/outsystems_apis/performancemonitoring_api/:
+  - Authentication can be basic authentication using LifeTime user credentials, or
+    service account tokens as described in LifeTime API documentation. The user must
+    have Open and Debug Applications permissions in the environment to retrieve request
+    events for applications.
+pagination_info:
+- information_source; https://success.outsystems.com/documentation/11/reference/outsystems_apis/performancemonitoring_api/:
+  - NumberOfResults is an optional query parameter (int32) that limits the maximum
+    events returned, with a default upper limit of 15000. The response includes a
+    ResultsTruncated boolean field; when true, retrieve the next set by sending a
+    new request with StartInstant set to the Instant of the most recent RequestEvent
+    from the previous response.
+- ? information_source; https://success.outsystems.com/documentation/outsystems_developer_cloud/odc_rest_apis/page_through_lists_of_resources/
+  : - Pagination uses limit and offset query parameters. The limit parameter specifies
+      the number of results per page (set to 2 in the example), and offset specifies
+      the starting position (set to 0 for the first page). Results are returned in
+      a results array within the response.
+    - Pagination uses offset and limit query parameters. The response includes a page
+      object with count, limit, offset, nextPageOffset, totalResults, and totalPages
+      fields. To retrieve the next page, increment the offset parameter by the limit
+      value, or use the nextPageOffset value from the response, until offset reaches
+      or exceeds totalResults.
+possible_base_urls:
+- ? information_source; https://success.outsystems.com/documentation/11/integration_with_external_systems/rest/consume_rest_apis/consume_one_or_more_rest_api_methods/
+  : - https://api.example.com
+- information_source; https://success.outsystems.com/documentation/11/reference/outsystems_apis/performancemonitoring_api/:
+  - http://[server]/PerformanceProbe/rest/PerformanceMonitoringAPI
+possible_endpoints:
+- ? information_source; https://success.outsystems.com/documentation/11/integration_with_external_systems/rest/consume_rest_apis/consume_one_or_more_rest_api_methods/
+  : - GET https://api.example.com/Portal/rest/Contacts/Get?Id={Id}
+    - GET https://api.example.com/Portal/rest/Contacts/GetAll
+    - POST https://api.example.com/Portal/rest/Contacts/Create
+- ? information_source; https://success.outsystems.com/documentation/11/integration_with_external_systems/rest/expose_rest_apis/expose_a_rest_api/
+  : - DELETE /PhoneAPI/res
+    - GET /PhoneAPI/rest/v
+    - POST /PhoneAPI/rest/
+    - PUT /PhoneAPI/rest/v
+- information_source; https://success.outsystems.com/documentation/11/reference/outsystems_apis/performancemonitoring_api/:
+  - GET http://[server]/PerformanceProbe/rest/PerformanceMonitoringAPI/RequestEvents/?EventNames={EventNames}&StartInstant={StartInstant}&EndInstant={EndInstant}
+  - GET http://[server]/PerformanceProbe/rest/PerformanceMonitoringAPI/RequestEvents/?EventNames={EventNames}&StartInstant={StartInstant}&EndInstant={EndInstant}&NumberOfResults={NumberOfResults}
+  - GET http://outsystemscloud.com/PerformanceProbe/rest/PerformanceMonitoringAPI/RequestEvents/

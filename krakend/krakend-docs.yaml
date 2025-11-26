@@ -1,0 +1,50 @@
+auth_info:
+- information_source; https://www.krakend.io/changelog/:
+  - The JWT Validator includes a configurable field auth_header_name to read tokens
+    from custom headers instead of the default Authorization header. The JWT validator
+    can parse scopes in array format or space-separated list format. The JWT signer
+    returns the typ field. These features allow flexible token extraction and scope
+    handling for authorization purposes.
+- information_source; https://www.krakend.io/docs/authorization/jwt-validation/:
+  - 'Hashicorp Vault authentication uses the URI scheme hashivault://keyID. Authentication
+    requires two environment variables: VAULT_SERVER_URL and VAULT_SERVER_TOKEN, which
+    provide the Vault server endpoint and authentication token respectively.'
+- information_source; https://www.krakend.io/docs/authorization/jwt-signing/:
+  - KrakenD signs selected fields from your backend login endpoint response into JSON
+    Web Tokens using a secret key. Your backend implements a login endpoint that validates
+    credentials and returns a JSON payload with access_token and refresh_token objects;
+    KrakenD then cryptographically signs these fields before returning them to the
+    client. The response structure includes access_token and refresh_token objects
+    with standard JWT claims like aud, iss, sub, jti, roles, and exp.
+  - KrakenD uses JWT tokens for authentication. Clients obtain tokens from a backend
+    endpoint (e.g., POST /token-issuer with username and password), which returns
+    an access_token and refresh_token as JWT payloads. KrakenD signs the JWT claims
+    with a secret key kept in the gateway or downloaded from a trusted source, and
+    validates incoming requests by verifying the token signature. Tokens contain standard
+    JWT fields like sub (user id), jti (unique id), aud (audience), iss (issuer),
+    roles, and exp (expiration time).
+- information_source; https://www.krakend.io/docs/authorization/revoking-tokens/:
+  - The documentation describes configuration for JWT token revocation using a bloom
+    filter mechanism. KrakenD instances communicate via RPC on a specified port to
+    manage revoked tokens identified by JWT claim fields (such as "jti"). Tokens should
+    be kept short-lived (e.g., 30 minutes). The `token_keys` array specifies which
+    JWT payload claims to monitor for revocation purposes, and hash generation can
+    use either "optimal" or "default" mode.
+possible_base_urls:
+- information_source; https://www.krakend.io/docs/configuration/check/:
+  - amqp://guest:guest@localhost:5672/
+  - http://127.0.0.1:8080
+possible_endpoints:
+- information_source; https://www.krakend.io/docs/configuration/check/:
+  - GET /__debug/{{.Id}}
+  - GET /cel/req-resp/:id
+  - GET /example/:id
+  - POST /__debug/cool-agent
+- information_source; https://www.krakend.io/docs/endpoints/:
+  - GET /v1/users/{user}
+  - GET https://api.example.com/users/summary/{user}
+  - POST /v1/users/{user}
+  - POST https://api.example.com/users/summary/{user}
+- information_source; https://www.krakend.io/docs/endpoints/sequential-proxy/:
+  - GET /destinations/1034
+  - GET /hotel-destinations/{id}

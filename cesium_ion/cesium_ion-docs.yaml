@@ -1,0 +1,50 @@
+auth_info:
+- information_source; https://cesium.com/learn/ion/rest-api/:
+  - 'API tokens are used for authentication. Tokens are returned as JWT values in
+    the response field "token" and should be sent in the Authorization header with
+    the Bearer scheme (e.g., Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...).
+    Tokens have associated scopes that control permissions, and specific scopes like
+    "profile:read" must be granted for token operations. Invalid credentials return
+    a 401 error.'
+  - 'All Cesium ion endpoints require an OAuth 2.0 Bearer token sent in the Authorization
+    header. The format is "Authorization: Bearer <your_access_token>". The API supports
+    multiple scopes including assets (scope details appear to be cut off in the provided
+    documentation).'
+  - 'Cesium ion uses OAuth 2.0 Bearer token authentication in the Authorization header
+    with the format Authorization: Bearer <your_access_token>. The API supports both
+    public scopes (assets:limited-list, assets:read, geocode) and private scopes (assets:list,
+    assets:write, profile:read, tokens:read, tokens:write, archives:read, archives:write,
+    exports:read, exports:write) to control access permissions. For user-facing applications,
+    the authorizationCode OAuth 2.0 flow is supported with required PKCE authentication.'
+  - Cesium ion uses OAuth2 authentication with the `tokens:write` scope required to
+    create new tokens. Tokens are returned as JWT strings and used for making subsequent
+    ion API requests.
+  - OAuth2 authentication is required for all archive operations. Use the OAuth2 token
+    in the Authorization header as a Bearer token. Required scopes are archives:read
+    for read operations (download, list) and archives:write for write operations (delete).
+    A 401 Invalid Credentials response indicates authentication failure.
+pagination_info:
+- information_source; https://cesium.com/learn/ion/rest-api/:
+  - Pagination uses RFC 5988 Link header with rel="next" and rel="prev" relations
+    pointing to next and previous pages. Stop paginating when the Link header contains
+    no next relation or is absent. Treat all link URLs as opaque and use them directly
+    for subsequent requests.
+  - Pagination uses RFC 5988 Link headers with next and prev relations. Request the
+    next page using the URL from the Link header's next relation; stop when no next
+    relation is present.
+possible_base_urls:
+- information_source; https://cesium.com/learn/ion/rest-api/:
+  - https://api.cesium.com
+  - https://api.cesium.com/v1
+possible_endpoints:
+- information_source; https://cesium.com/learn/ion/rest-api/:
+  - DELETE /v1/assets/{assetId}/archives/{archiveId}
+  - DELETE https://api.cesium.com/archives/{id}
+  - DELETE https://api.cesium.com/assets/{assetId}/archives/{archiveId}
+  - DELETE https://api.cesium.com/assets/{id}
+  - DELETE https://api.cesium.com/tokens/{id}
+  - DELETE https://api.cesium.com/v1/archives/{archiveId}
+  - DELETE https://api.cesium.com/v1/assets/{assetId}
+  - DELETE https://api.cesium.com/v1/assets/{assetId}/archives/{archiveId}
+  - DELETE https://api.cesium.com/v2/tokens/{tokenId}
+  - GET /v1/archives/?assetId={assetId}

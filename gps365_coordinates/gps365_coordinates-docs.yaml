@@ -1,0 +1,61 @@
+auth_info:
+- information_source; https://www.gps365.at/cs/docs/routing:
+  - 'All requests to the API endpoint https://www.gps365.at/api_routing/ must be POST
+    requests and include three required parameters: action, api_token, and data (a
+    JSON encoded object). The api_token parameter is used to authenticate and identify
+    the user account; it must be obtained by logging into the platform and should
+    be treated securely. The API token belongs to the user account that owns the relevant
+    trackers, as tracker permissions granted through the platform are not enforced
+    by the API.'
+  - Authentication uses an API token passed as a form parameter. Include the api_token
+    parameter with your request value in the POST data, for example api_token="392ea8428d10b0392c399c93810045a9".
+    This token is required for all API requests to the gps365.at routing endpoint.
+- information_source; https://www.gps365.at/en/docs/coordinates:
+  - API token authentication is required. Pass the api_token parameter in the POST
+    request body with your unique token value, e.g. api_token="392ea8428d10b0392c399c93810045a9".
+    This token identifies the user and grants access to their tracker data.
+  - All requests to the API must include the required parameter api_token, which identifies
+    your user account. The api_token should be sent as a POST request parameter and
+    must be handled securely; if compromised, contact support immediately. The API
+    token should belong to the user account that owns the relevant entities (trackers)
+    being accessed, as tracker permissions from the platform are not enforced by the
+    API.
+  - 'The API requires an api_token parameter sent in the request body. The token is
+    a string value (example: "392ea8428d10b0392c399c93810045a9") that authenticates
+    the request and grants access to trackers belonging to the user.'
+pagination_info:
+- information_source; https://www.gps365.at/en/docs/coordinates:
+  - The API uses page-based pagination with a "page" optional query parameter to request
+    specific pages. The documentation does not explicitly describe response fields
+    indicating pagination state (such as total pages, has_more, or next_page), so
+    the exact stopping condition and response structure for pagination are not fully
+    specified in this excerpt.
+  - Use optional query parameter "page" (starting at 1) to paginate through historic
+    coordinates. Response includes "rows" (number of rows returned), "total" (total
+    available rows), and "last_date" (timestamp of last row); continue requesting
+    with incremented page number until rows returned is less than the limit (10,000
+    for single tracker, 500 per tracker for multiple).
+  - Use start and end date parameters to specify date ranges per tracker (max five
+    weeks apart). The response includes a summary with rows count, total matching
+    rows, and last_date field. Use last_date from the previous response as the start
+    date for the next request to avoid duplicates, noting that the same record will
+    appear again due to >= / <= comparison logic.
+possible_base_urls:
+- information_source; https://www.gps365.at/cs/docs/routing:
+  - https://www.gps365.at/api_routing/
+- information_source; https://www.gps365.at/en/docs/coordinates:
+  - https://www.gps365.at/api
+possible_endpoints:
+- information_source; https://www.gps365.at/cs/docs/routing:
+  - GET https://www.gps365.at/api_routing/
+  - POST https://www.gps365.at/api_routing/
+- information_source; https://www.gps365.at/en/docs/coordinates:
+  - GET https://www.gps365.at/api/coordinates/historic
+  - GET https://www.gps365.at/api/coordinates/list
+  - GET https://www.gps365.at/api/coordinates/nearest
+  - POST https://www.gps365.at/api/coordinates/list
+  - POST https://www.gps365.at/api/coordinates/live
+  - POST https://www.gps365.at/api/coordinates/nearest
+  - POST https://www.gps365.at/api/trackers/list
+- information_source; https://www.gps365.at/en/docs/driver:
+  - DELETE https://www.gps365.at/api_driver/account/tracker

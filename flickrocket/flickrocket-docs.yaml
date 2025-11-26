@@ -1,0 +1,51 @@
+auth_info:
+- information_source; https://developer.flickrocket.com/en/rest-api/introduction/:
+  - FlickRocket uses OAuth 2.0 as its primary authentication mechanism for apps to
+    access shop data through the REST API. When a shop installs your app, it grants
+    permission to access their shop's data via OAuth 2.0 authorization.
+- information_source; https://developer.flickrocket.com/en/rest-api/oauth/:
+  - Bearer token authentication via HTTP Authorization header. Access tokens are validated
+    at the tokeninfo endpoint and support scopes including products, customers, orders,
+    themes, files, companies, statistics, and webhooks. Send the token in the Authorization
+    header as "Bearer {access_token}" or optionally as a query parameter access_token={access_token},
+    though the header is preferred to avoid server log visibility. Validate tokens
+    using GET https://api.flickrocket.com/api/tokeninfo?access_token={access_token},
+    which returns user_id, scope, expires_in (in seconds), and access_type. Possible
+    validation errors are expired, access_token required, or invalid access_token.
+  - 'OAuth2 authorization code flow is used. Redirect users to https://api.flickrocket.com/oauth2/auth
+    with query parameters: client_id (app''s client ID), scope (comma-separated list
+    of requested scopes like "products", "orders", "customers"), access_type set to
+    "offline", and redirect_uri (must match a registered Application Redirect URL).
+    After user authorization, the authorization server redirects to your redirect_uri
+    with a code parameter, which is then exchanged for an access_token.'
+  - 'OAuth2 refresh token flow with bearer token authentication. Exchange refresh_token
+    via POST to https://api.flickrocket.com/token with grant_type=refresh_token, refresh_token,
+    and client_id as query parameters. The response contains an access_token with
+    expiration info and a new refresh_token that must be stored permanently. Include
+    the access_token in subsequent API requests either as Authorization: Bearer {access_token}
+    header (preferred) or as access_token query parameter.'
+  - The API uses OAuth 2.0 for authentication. Apps must obtain user permission before
+    accessing REST API resources through an OAuth authorization process as specified
+    in the OAuth 2.0 specification.
+pagination_info:
+- information_source; https://developer.flickrocket.com/en/rest-api/api-reference/product/:
+  - Use the `since_id` query parameter to retrieve products after a specified ID.
+    This appears to be a cursor-based pagination approach where `since_id` filters
+    results to only those with IDs greater than the specified value.
+possible_base_urls:
+- information_source; https://developer.flickrocket.com/en/rest-api/oauth/:
+  - https://api.flickrocket.com
+  - https://api.flickrocket.com/api
+possible_endpoints:
+- information_source; https://developer.flickrocket.com/en/rest-api/oauth/:
+  - GET https://api.flickrocket.com/api/tokeninfo?access_token={access_token}
+  - GET https://api.flickrocket.com/oauth2/auth
+  - POST https://api.flickrocket.com/token?grant_type=refresh_token&refresh_token={refresh_token}&client_id={client_id}
+- information_source; https://developer.flickrocket.com/en/rest-api/api-reference/category/:
+  - DELETE /api/categories/#id.json
+  - DELETE /api/categories/#{id}.json
+  - GET /api/categories.json
+  - GET /api/categories/#id.json
+  - GET /api/categories/#{id}.json
+  - GET /api/categories/1062.json
+  - GET /api/categories/count.json

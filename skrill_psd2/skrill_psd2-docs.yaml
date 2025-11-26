@@ -1,0 +1,68 @@
+auth_info:
+- information_source; https://developer-psd2.skrill.com/:
+  - Authentication uses OAuth 2.0 Authorization Code Grant flow (RFC 6749). Client
+    registration requires token_endpoint_auth_method set to urn:paysafe:oauth:token-endpoint-auth-method:eidas-qwac:psd,
+    and clients must provide a JSON Web Key Set (jwks) containing Qualified Sealing
+    Certificates (QSealC) for request signing. Supported grant types are authorization_code
+    and refresh_token, with response_type set to code. Required scopes are space-separated
+    values from aisp, pisp, or cbpii, and redirect_uris must be HTTPS URLs.
+  - 'OAuth 2.0 Authorization Code Grant flow with PKCE (SHA-256) is required. TPP
+    applications must register an OAuth 2 Client and integrate with the authorization
+    and token endpoints.
+
+
+    Authorization request parameters: response_type set to code, client_id (OAuth
+    Client ID from registration), scope (one of registered client scopes), redirect_url
+    (TPP-provided redirect URL), state (TPP session state parameter), code_challenge
+    (SHA-256 code challenge from PKCE extension per RFC 7636 section 4.2).
+
+
+    Token exchange uses the authorization code received in the redirect along with
+    the PKCE code_verifier secret. The authorization server provides user login and
+    consent interface before returning the authorization code and state to the TPP
+    redirect URL.'
+  - OAuth 2.0 authorization code flow with PKCE. TPP obtains access and refresh tokens
+    by exchanging authorization code, client_id, client_secret, grant_type set to
+    authorization_code, code, redirect_uri, and code_verifier with the OAuth authorization
+    server. Access tokens are then used to call ASPSP APIs on behalf of the user.
+    Additionally, TPPs must include the PSU-IP-Address HTTP header in API requests
+    to indicate user presence; absence of this header restricts data access.
+  - Third Party Providers must register OAuth 2 clients and authenticate using mutual
+    TLS with a Qualified Website Authentication Certificate (QWAC). Client registration
+    is performed via POST to /psd2-oauth2/v1/registrations with a JSON body containing
+    client_name and other properties, and all Client Management API calls require
+    mutual TLS authentication using the QWAC certificate issued by a Qualified Trust
+    Service Provider.
+- information_source; https://developer-psd2.skrill.com:
+  - 'OAuth 2.0 Authorization Code Grant flow is used for authentication and authorization.
+    Client registration on the `/psd2-oauth2/v1/registrations` endpoint requires a
+    JSON body with scope (space-separated list of PSD2 scopes: aisp, pisp, cbpii),
+    token_endpoint_auth_method set to `urn:paysafe:oauth:token-endpoint-auth-method:eidas-qwac:psd`,
+    redirect_uris (HTTPS URLs), grant_types (authorization_code and refresh_token
+    only), response_types (code), and jwks (JSON Web Key Set containing Qualified
+    Sealing Certificates for request signing).'
+possible_base_urls:
+- ? information_source; https://developer-psd2.skrill.com/api-reference/skrill-mobile-api/account-information-service/getaccounts
+  : - https://api.skrill.com/v1
+- ? information_source; https://developer-psd2.skrill.com/api-reference/skrill-mobile-api/account-information-service/gettransactionhistory
+  : - https://api.skrill.com/v1
+possible_endpoints:
+- information_source; https://developer-psd2.skrill.com/:
+  - POST /psd2-oauth2/v1/registrations
+- information_source; https://developer-psd2.skrill.com:
+  - POST /psd2-oauth2/v1/registrations
+- ? information_source; https://developer-psd2.skrill.com/api-reference/skrill-mobile-api/account-information-service/getaccounts
+  : - GET /v1/accounts
+- ? information_source; https://developer-psd2.skrill.com/api-reference/skrill-mobile-api/account-information-service/gettransactionhistory
+  : - GET /v1/transactions/all-transactions-history
+- ? information_source; https://developer-psd2.skrill.com/api-reference/skrill-mobile-api/payment-initiation-service/sendmoneypreview
+  : - GET /me/send-money/preview
+- information_source; https://developer-psd2.skrill.com/api-reference/skrill-mobile-api/payment-initiation-service/sendmoney:
+  - POST /me/send-money
+  - POST /me/send-money/{slipID}/finalize
+- ? information_source; https://developer-psd2.skrill.com/api-reference/skrill-mobile-api/payment-initiation-service/sendmoneyfinalize
+  : - POST /me/send-money/{slipID}/finalize
+- ? information_source; https://developer-psd2.skrill.com/api-reference/skrill-mobile-api/strong-customer-authentication/sendsms
+  : - POST /api/2fa/v1/sms-challenge
+- ? information_source; https://developer-psd2.skrill.com/api-reference/skrill-mobile-api/strong-customer-authentication/verifyotp
+  : - POST /api/2fa/v1/otp-verify

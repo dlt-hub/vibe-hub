@@ -1,0 +1,60 @@
+auth_info:
+- information_source; https://docs.knowi.com/hc/en-us/articles/115006386708-REST-API:
+  - 'Basic authentication uses a username and password that are base64 encoded and
+    sent in an Authorization header. OAuth 2.0 uses token-based authorization where
+    tokens are generated during connection setup and stored for reuse. The "Other"
+    method involves a separate login call on each request that returns a token passed
+    as a header, POST payload, or URL parameter.
+
+
+    For Basic auth, provide User ID and Password for Basic Authentication fields,
+    which are combined as username:password, base64 encoded, and appended to request
+    headers as an Authorization header. For OAuth 2.0, tokens are generated and managed
+    by the platform during the connection workflow. For the "Other" type, implement
+    a login endpoint call that returns a token to be passed in subsequent requests
+    via headers, POST body, or URL parameters as required by the API.'
+  - 'OAuth 2.0 authentication is used for REST API datasources. Auth tokens obtained
+    from the datasource auth request are passed in HTTP headers using the syntax {tokenName},
+    typically as Authorization: Bearer {access_token}. Additional optional headers
+    can be specified one per line, and URL parameters can be added separately.'
+  - 'OAuth 2.0 authentication is used with client credentials (OAuth Client ID and
+    OAuth Client Secret) obtained during application registration. The flow involves
+    exchanging an authorization code for an access token via the OAuth Access Token
+    URL, with user permissions defined by OAuth Scope, and requires registering the
+    OAuth callback URL with the provider in advance.
+
+
+    Required fields: OAuth Client ID, OAuth Client Secret, OAuth Scope (space-separated),
+    OAuth callback URL, OAuth Authorization URL (with tokens for clientId, callbackURL:url,
+    scope, response_type=code, and state), OAuth Access Token URL, and OAuth Access
+    Token Header. The authorization URL opens a browser popup where users sign in
+    and grant permissions, then the provider redirects to the callback URL with an
+    authorization code that is exchanged for an access token at the Access Token URL.'
+  - OAuth2 authorization code flow with support for refresh tokens. Required parameters
+    include client_id, client_secret, redirect_uri (callbackURL), and scope. The flow
+    uses authorization code exchange for access tokens, with refresh_token for token
+    renewal. Optional state parameter (knowiSessionToken) maintains request state.
+    Connection properties like readTimeout and connectTimeout can be configured via
+    URL parameters.
+  - 'OAuth2 refresh token flow is supported. Access tokens expire and are refreshed
+    by POSTing to an OAuth Refresh Access Token URL with refresh token credentials.
+    The refresh request requires: OAuth Refresh Token Header (e.g., Content-Type and
+    Authorization headers), OAuth Post Data containing grant_type=refresh_token and
+    {refresh_token} placeholder (may also include client_id, client_secret, redirect_uri
+    depending on provider), and optionally OAuth Refresh Token Type set to "Limited-Use
+    Refresh Token" to store updated refresh tokens. New access tokens are extracted
+    from the response and used in subsequent REST calls; new refresh tokens are stored
+    if the refresh token type supports it.'
+pagination_info:
+- information_source; https://docs.knowi.com/hc/en-us/articles/115006386708-REST-API:
+  - Pagination information can be accessed via response headers using the "HTTP response
+    headers pagination" checkbox. The pagination start value defaults to 0 for POST
+    payload with $C9_POST_PAGE_INDEX token, or 1 for sequential page numbers, and
+    is offset by array element count.
+possible_base_urls:
+- information_source; https://docs.knowi.com/hc/en-us/articles/115006386708-REST-API:
+  - https://example.com/oauth2/authorize
+  - https://example.com/oauth2/token/bearer
+possible_endpoints:
+- information_source; https://docs.knowi.com/hc/en-us/articles/115006386708-REST-API:
+  - POST https://example.com/oauth2/token/refresh

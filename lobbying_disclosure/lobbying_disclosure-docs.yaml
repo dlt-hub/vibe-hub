@@ -1,0 +1,68 @@
+auth_info:
+- information_source; https://lda.senate.gov/api/redoc/v1/:
+  - API key authentication is available for registered users. Unauthenticated requests
+    are throttled to 15 requests per minute, while API key authenticated requests
+    are throttled to 120 requests per minute. The documentation does not specify the
+    exact header name or parameter name for sending the API key.
+  - 'The API offers two authentication methods: API Key (registered) or unauthenticated
+    (anonymous) access. For API Key authentication, include the token in the Authorization
+    HTTP header prefixed with "Token " (e.g., "Authorization: Token z944b09199c62bcf9418ad846dd0e4bbdfc6ee4b").
+    To obtain an API key, register at https://lda.senate.gov/api/register/ and then
+    authenticate via POST to https://lda.senate.gov/api/auth/login/ with JSON body
+    containing username and password fields; the response contains a key field with
+    your API token. Anonymous clients can access the API without authentication but
+    are subject to stricter rate limiting.'
+- information_source; https://lda.senate.gov/api/openapi/v1/:
+  - API Key authentication is supported for registered users, sent as part of the
+    request (likely as a header or query parameter). Unauthenticated requests are
+    allowed but rate-limited to 15 requests per minute by IP address, while authenticated
+    API Key requests are limited to 120 requests per minute per user.
+  - 'The API supports two authentication methods. For API Key authentication, include
+    the token in the Authorization HTTP header prefixed with "Token " (e.g., "Authorization:
+    Token z944b09199c62bcf9418ad846dd0e4bbdfc6ee4b"). Obtain an API key by registering
+    and then making a POST request to https://lda.senate.gov/api/auth/login/ with
+    username and password as JSON or form data. Unauthenticated (anonymous) access
+    is available but subject to stricter rate limiting.'
+- information_source; https://lda.senate.gov/api/auth/login/:
+  - Username and password credentials are required for authentication. Send a POST
+    request to `/api/auth/login/` with a JSON body containing "username" and "password"
+    fields to obtain authentication credentials for accessing the API.
+pagination_info:
+- information_source; https://lda.senate.gov/api/redoc/v1/:
+  - Large result sets use the `page` query string parameter to request specific pages.
+    The response includes `next` and `previous` keys for navigation; continue paginating
+    until `next` is null.
+- information_source; https://lda.senate.gov/api/v1/filings/:
+  - Pagination uses a page query parameter (page=1, page=2, etc.) with response fields
+    count (total results), next (URL to next page), previous (URL to previous page),
+    and results (data array). Stop paginating when next is null.
+- information_source; https://lda.senate.gov/api/v1/filings/\/:
+  - Pagination uses optional query parameter page (e.g., ?page=2) to navigate through
+    results. Response includes count (total records), next (URL for next page), previous
+    (URL for previous page), and results array. Stop paginating when next is null.
+- information_source; https://lda.senate.gov/api/v1/contributions/:
+  - Pagination uses a page query parameter to navigate through results. The response
+    includes count for total results, next and previous fields with URLs to the next
+    and previous pages, and results array containing the current page's data. Stop
+    paginating when previous is null (first page) or next is null (last page).
+- information_source; https://lda.senate.gov/api/v1/contributions/\/:
+  - 'Pagination uses a page query parameter (e.g., ?page=2). The response includes
+    count (total records: 635310), next (URL to next page or null), previous (URL
+    to previous page or null), and results array. Stop paginating when next is null.'
+possible_base_urls:
+- information_source; https://lda.senate.gov/api/redoc/v1/:
+  - https://lda.senate.gov/api
+  - https://lda.senate.gov/api/auth/password/reset/
+possible_endpoints:
+- information_source; https://lda.senate.gov/api/redoc/v1/:
+  - GET https://lda.senate.gov/api/v1/
+  - GET https://lda.senate.gov/api/v1/constants/*
+  - GET https://lda.senate.gov/api/v1/filings/?page=2
+  - GET https://lda.senate.gov/filings/public/contribution/{filing_uuid}/print/
+  - GET https://lda.senate.gov/filings/public/filing/{filing_uuid}/print/
+  - POST https://lda.senate.gov/api/auth/login/
+  - POST https://lda.senate.gov/api/auth/password/reset/
+  - POST https://lda.senate.govapi/auth/password/reset/confirm/<uidb64>/<token>/
+- information_source; https://lda.senate.gov/api/openapi/v1/:
+  - GET /api/openapi/v1/
+  - GET https://lda.senate.gov/api/v1/

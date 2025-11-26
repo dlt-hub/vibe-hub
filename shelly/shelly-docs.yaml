@@ -1,0 +1,43 @@
+auth_info:
+- information_source; https://shelly-api-docs.shelly.cloud/integrator-api/:
+  - 'Integrator authentication uses a two-step token flow. First, exchange integrator
+    tag and token via POST to https://api.shelly.cloud/integrator/get_access_token
+    with form parameters itg and token to obtain a JWT valid for 24 hours. Then authenticate
+    WebSocket connections by passing the JWT as a query parameter t in the WSS URL:
+    wss://<HOST>:6113/shelly/wss/hk_sock?t=<JWT>.'
+- information_source; https://shelly-api-docs.shelly.cloud/gen1:
+  - All resources except for `/shelly` require Basic HTTP authentication when it is
+    enabled via the `/settings/login` endpoint. The `/shelly` endpoint does not require
+    authentication even if authentication is globally enabled.
+  - HTTP authentication configuration is available via the `/settings/login` endpoint.
+    Authentication can be enabled by setting the `enabled` flag to `1` and providing
+    `username` and `password` parameters in the GET request. Credentials are passed
+    as query parameters, and the `unprotected` flag can be set to suppress UI warnings
+    when auth is disabled.
+  - "HTTP authentication is required when the `enabled` attribute is set to true.\
+    \ Credentials are sent via standard HTTP Basic Authentication using a `username`\
+    \ and `password` (each 1\u201350 characters). The `unprotected` flag can be set\
+    \ to true to acknowledge the security risks of disabling authentication. Note\
+    \ that the `password` attribute is not returned in API responses for login-protected\
+    \ devices as of v1.7.0."
+  - MQTT authentication is optional and configured via the `/settings` endpoint using
+    mqtt_user and mqtt_pass parameters when the broker requires it. The device connects
+    to the MQTT broker specified by mqtt_server (address:port) after mqtt_enable is
+    set to true, with an optional custom mqtt_id for client identification.
+possible_base_urls:
+- information_source; https://shelly-api-docs.shelly.cloud/integrator-api/:
+  - https://api.shelly.cloud/integrator/get_access_token
+  - https://my.shelly.cloud/integrator.html
+possible_endpoints:
+- information_source; https://shelly-api-docs.shelly.cloud/integrator-api/:
+  - POST https://api.shelly.cloud/integrator/get_access_token
+  - WSS wss://<HOST>:6113/shelly/wss/hk_sock
+- information_source; https://shelly-api-docs.shelly.cloud/gen1:
+  - GET /cit/d
+  - GET /color/0
+  - GET /debug/log
+  - GET /debug/log1
+  - GET /emeter/0
+  - GET /emeter/{index}
+  - GET /input/0
+  - GET /input/{index}

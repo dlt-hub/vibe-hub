@@ -1,0 +1,54 @@
+auth_info:
+- information_source; https://docs.vitally.io/en/articles/9880649-rest-api-overview:
+  - A 401 Unauthorized status code indicates an issue with authorization using either
+    a Secret Token or Basic Auth Header. The documentation references these two auth
+    methods but does not provide explicit details on header names, parameter names,
+    or how to construct the credentials. Based on the mention of "Secret Token/Basic
+    Auth Header", the API likely accepts either a bearer token in an Authorization
+    header or HTTP Basic Authentication, but the exact implementation details are
+    not specified in this excerpt.
+  - 'The API uses HTTP Basic Authentication with an API Key as the username. The Authorization
+    header must be formatted as `Authorization: Basic <base64_encoded_api_key>`, where
+    the API key is obtained from the Vitally UI under Settings > Integrations > REST
+    API. The API key serves as the username in the basic auth scheme, with an empty
+    password.'
+pagination_info:
+- information_source; https://docs.vitally.io/en/articles/9880649-rest-api-overview:
+  - Cursor-based pagination uses query parameters limit (optional, controls page size)
+    and from (optional, cursor for subsequent pages), with optional sortBy parameter
+    set to "createdAt" or "updatedAt" (default descending). Response includes results
+    array and next field (string cursor or null when no more pages); use next value
+    as from parameter in subsequent requests to paginate.
+  - List endpoints use cursor-based pagination ordered by updatedAt (default) or createdAt.
+    The documentation mentions cursor-based pagination but does not specify the exact
+    cursor parameter names, response field names, or how to construct subsequent requests.
+  - 'Pagination uses cursor-based navigation with optional limit parameter. Request
+    parameters: limit (query, optional, default/max 100) and from (query, optional
+    cursor). Response includes results array and next field containing the cursor
+    for the next page; when next is null, pagination is complete. Use the next cursor
+    value as the from parameter in the subsequent request.'
+- information_source; https://docs.vitally.io/en/articles/9880652-rest-api-organizations:
+  - Pagination uses limit and from parameters. The limit parameter controls page size,
+    and from parameter accepts a cursor value to fetch subsequent pages. Response
+    includes a cursor field for constructing the next request.
+  - 'Pagination uses optional query parameters: limit (controls page size) and from
+    (cursor-based token for fetching subsequent pages). Response includes results
+    array and next field containing the cursor for the next page; when next is absent,
+    all data has been retrieved.'
+possible_base_urls:
+- information_source; https://docs.vitally.io/en/articles/9880652-rest-api-organizations:
+  - https://rest.vitally-eu.io
+  - https://{subdomain}.rest.vitally.io
+possible_endpoints:
+- information_source; https://docs.vitally.io/en/articles/9880649-rest-api-overview:
+  - GET /endpoint?limit=100&from=c29tZWJhc2U2NA==
+- information_source; https://docs.vitally.io/en/articles/9880652-rest-api-organizations:
+  - DELETE https://rest.vitally-eu.io/resources/organizations/:id
+  - DELETE https://{subdomain}.rest.vitally.io/resources/organizations/:id
+  - GET https://rest.vitally-eu.io/resources/organizations
+  - GET https://rest.vitally-eu.io/resources/organizations/:id
+  - GET https://{subdomain}.rest.vitally.io/resources/organizations
+  - GET https://{subdomain}.rest.vitally.io/resources/organizations/:externalId
+  - GET https://{subdomain}.rest.vitally.io/resources/organizations/:id
+  - GET https://{subdomain}.rest.vitally.io/resources/organizations?limit=10&from=cursor
+  - POST https://rest.vitally-eu.io/resources/organizations

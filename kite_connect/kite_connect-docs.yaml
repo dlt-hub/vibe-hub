@@ -1,0 +1,46 @@
+auth_info:
+- information_source; https://kite.trade/docs/connect/v3/user/:
+  - API key and access token are passed as query parameters. The endpoint expects
+    api_key and access_token query parameters to validate the session token. Both
+    parameters are required for authentication.
+  - 'Access tokens are passed as query parameters in logout requests: api_key and
+    access_token. The X-Kite-Version header set to 3 is required. After logout, the
+    access_token is invalidated and a new login flow is needed for subsequent API
+    interactions.'
+  - 'All requests must be authenticated using the HTTP Authorization header with the
+    scheme "token" followed by the api_key and access_token separated by a colon,
+    formatted as "Authorization: token api_key:access_token". The access_token expires
+    at 6 AM the next day (regulatory requirement) unless invalidated via logout or
+    master-logout from the Kite Web trading terminal, and can be refreshed using the
+    refresh_token for approved platforms.'
+  - Authentication and token exchange uses a two-step process. First, obtain an authorization
+    code via a login redirect, then exchange it for an access token by sending a POST
+    request with api_key, request_hash, and checksum parameters. Subsequent API requests
+    require the access_token sent in the Authorization header as "Bearer {access_token}"
+    and the api_key in the X-Kite-Version header.
+  - Authorization is performed using a token-based scheme. Send the API key and access
+    token in the Authorization header with the format "token api_key:access_token",
+    and include the X-Kite-Version header set to 3 in requests.
+pagination_info:
+- information_source; https://kite.trade/docs/connect/v3/alerts/:
+  - Use query parameters page (page number) and page_size (number of alerts per page)
+    to paginate through alert results. Response structure for pagination endpoints
+    not detailed in provided excerpt.
+possible_base_urls:
+- information_source; https://kite.trade/docs/connect/v3/sdks/:
+  - https://api.kite.trade
+- information_source; https://kite.trade/docs/connect/v3/user/:
+  - https://api.kite.trade
+possible_endpoints:
+- information_source; https://kite.trade/docs/connect/v3/sdks/:
+  - DELETE https://api.kite.trade
+  - GET https://api.kite.trade
+  - PATCH https://api.kite.trade
+  - POST https://api.kite.trade
+  - PUT https://api.kite.trade
+- information_source; https://kite.trade/docs/connect/v3/user/:
+  - DELETE https://api.kite.trade/session/token
+  - GET /api/margins
+  - GET /api/profile
+  - GET /user/margins/:segment
+  - GET https://api.kite.trade/session/token

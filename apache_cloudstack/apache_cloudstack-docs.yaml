@@ -1,0 +1,77 @@
+auth_info:
+- information_source; https://docs.cloudstack.apache.org/en/4.21.0.0/adminguide/accounts.html:
+  - Users can authenticate to CloudStack APIs using API key and Secret key based authentication.
+    The API key uniquely identifies the Account, while the Secret key is used to generate
+    a secure signature that must be included along with the command and other parameters
+    when making API calls to the CloudStack API endpoint. API key based access is
+    enabled by default but can be disabled at the User, Account, or Domain level by
+    Root Administrators, or globally to enforce external authorization mechanisms
+    like LDAP, SAML, or OAuth2.
+- information_source; https://docs.cloudstack.apache.org/en/4.21.0.0/adminguide/virtual_machines.html:
+  - Linux user's username and password are needed for the listVmsForImport API call,
+    and those same credentials are later used for SSH authentication when moving QCOW2
+    images to CloudStack storage pools. Credentials are passed as parameters in the
+    API request for authentication to the external host.
+  - The importVm API requires authentication credentials for the external host being
+    accessed. The username and password parameters must be provided in the request
+    to authenticate with the External Host where the instance resides. These credentials
+    are used to establish a connection to the remote host for disk conversion and
+    migration purposes.
+- information_source; https://docs.cloudstack.apache.org/en/4.21.0.0/developersguide/dev.html:
+  - CloudStack API uses API Key and Secret Key authentication. The API Key is sent
+    as the apiKey query parameter in HTTP GET/POST requests. The Secret Key is used
+    to generate an HMAC-SHA1 signature of the request parameters, which must be appended
+    as the signature query parameter. Both keys are provided by the cloud administrator
+    and required for all API calls.
+  - CloudStack API uses query parameter-based authentication with an API key and HMAC-SHA1
+    signature. Include the apiKey query parameter with your unique account identifier
+    and a signature query parameter containing the HMAC-SHA1 hash of the request.
+    The signature is computed from a canonicalized string of all request parameters
+    in alphabetical order, concatenated with your secret key, then base64-encoded.
+pagination_info:
+- information_source; https://cloudstack.apache.org/api/apidocs-4.21/apis/listCiscoNexusVSMs.html:
+  - 'Use query parameters page (optional) and pagesize (optional) to paginate results.
+    The response does not explicitly document pagination fields like next, has_more,
+    or total_count, so standard CloudStack pagination behavior is implied: increment
+    page parameter and repeat request until fewer results than pagesize are returned.'
+- information_source; https://cloudstack.apache.org/api/apidocs-4.21/apis/listGuestNetworkIpv6Prefixes.html:
+  - The API uses offset-based pagination with page and pagesize as optional query
+    parameters. The page parameter specifies which page to retrieve, and pagesize
+    specifies the number of results per page, though default and maximum values are
+    not documented in this section.
+- information_source; https://cloudstack.apache.org/api/apidocs-4.21/apis/listIpv4SubnetsForGuestNetwork.html:
+  - 'The API supports pagination through optional query parameters: page (page number)
+    and pagesize (number of results per page). These parameters control which subset
+    of results is returned in the response.'
+- information_source; https://cloudstack.apache.org/api/apidocs-4.21/apis/listNetworkIsolationMethods.html:
+  - Request uses page (optional, query parameter) and pagesize (optional, query parameter)
+    for pagination. Response structure for pagination fields is not documented.
+- information_source; https://cloudstack.apache.org/api/apidocs-4.21/apis/listNetworkServiceProviders.html:
+  - Pagination uses optional query parameters page and pagesize. The page parameter
+    specifies which page to retrieve, and pagesize specifies the number of results
+    per page. The response does not explicitly document pagination metadata fields
+    like total count or next page indicators.
+possible_base_urls:
+- information_source; https://docs.cloudstack.apache.org/en/4.21.0.0/developersguide/dev.html:
+  - http://localhost:8080/client/api
+  - http://www.example.com:8080/client/api
+possible_endpoints:
+- information_source; https://docs.cloudstack.apache.org/en/4.21.0.0/adminguide/virtual_machines.html:
+  - GET /listVmsForImport
+  - POST /importVm
+- information_source; https://docs.cloudstack.apache.org/en/4.21.0.0/developersguide/dev.html:
+  - GET http://localhost:8080/client/api
+- information_source; https://cloudstack.apache.org/api/apidocs-4.21/apis/deleteGuestNetworkIpv6Prefix.html:
+  - DELETE /deleteGuestNetworkIpv6Prefix
+- information_source; https://cloudstack.apache.org/api/apidocs-4.21/apis/listNetworkIsolationMethods.html:
+  - GET /listNetworkIsolationMethods
+- information_source; https://cloudstack.apache.org/api/apidocs-4.21/apis/updateNetwork.html:
+  - POST /network/update
+- information_source; https://cloudstack.apache.org/api/apidocs-4.21/apis/createTungstenFabricManagementNetwork.html:
+  - POST /createTungstenFabricManagementNetwork
+- information_source; https://cloudstack.apache.org/api/apidocs-4.21/apis/deployVirtualMachine.html:
+  - POST /deployVirtualMachine
+- information_source; https://cloudstack.apache.org/api/apidocs-4.21/apis/listVirtualMachines.html:
+  - GET /listVirtualMachines
+- information_source; https://cloudstack.apache.org/api/apidocs-4.21/apis/listVirtualMachinesMetrics.html:
+  - GET /listVirtualMachinesMetrics

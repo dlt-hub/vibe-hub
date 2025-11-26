@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://docs.cloud.google.com/vision/docs/request:
+  - The Cloud Vision API requires authentication via either an API key or an OAuth
+    token passed with each POST request to the annotate endpoint. Refer to the Authenticate
+    page for specific details on how to pass these credentials.
+- information_source; https://docs.cloud.google.com/docs/authentication:
+  - Application Default Credentials (ADC) is the primary authentication mechanism
+    for Google Cloud services. When using Cloud Client Libraries, gcloud CLI, or REST
+    API calls, ADC automatically discovers and uses credentials from your environment
+    (service account keys, user credentials, or workload identity). For REST API requests,
+    you can use curl with credentials obtained through ADC. For applications requiring
+    ID tokens, obtain an OpenID Connect (OIDC) ID token and provide it with your request.
+    For user authentication in applications accessing Google services, implement user-facing
+    authentication flows as detailed in the authentication use cases documentation.
+- information_source; https://docs.cloud.google.com/vertex-ai/generative-ai/docs/image/overview:
+  - Application Default Credentials (ADC) is used for authentication. Install the
+    Google Cloud CLI, authenticate via gcloud CLI (with federated identity support
+    if using an external IdP), and the Python client library automatically uses the
+    credentials provided to gcloud. For REST API calls, use the credentials configured
+    in gcloud.
+  - Google Cloud authentication uses Bearer tokens obtained from gcloud. Set the Authorization
+    header to "Bearer $(gcloud auth print-access-token)" for API requests to the Vertex
+    AI Imagen endpoint. The GOOGLE_CLOUD_PROJECT and GOOGLE_CLOUD_LOCATION environment
+    variables are required to construct the request URL.
+- information_source; https://docs.cloud.google.com/vertex-ai/generative-ai/docs/multimodal/function-calling:
+  - 'Authorization uses Bearer token authentication via the Authorization header.
+    The token is obtained by running gcloud auth print-access-token, which retrieves
+    a Google Cloud access token. Include this in the request header as Authorization:
+    Bearer <access_token>. The request must also specify the Google Cloud project
+    ID, model ID, and location in the URL path.'
+possible_base_urls:
+- information_source; https://docs.cloud.google.com/vision/docs/request:
+  - https://vision.googleapis.com/v1/images
+  - https://vision.googleapis.com/v1/images:annotate
+possible_endpoints:
+- information_source; https://docs.cloud.google.com/vision/docs/request:
+  - POST https://vision.googleapis.com/v1/images:annotate
+- information_source; https://docs.cloud.google.com/vertex-ai/generative-ai/docs/image/overview:
+  - POST https://${GOOGLE_CLOUD_LOCATION}-aiplatform.googleapis.com/v1/projects/${GOOGLE_CLOUD_PROJECT}/locations/${GOOGLE_CLOUD_LOCATION}/publishers/google/models/imagen-4.0-generate-preview-05-20:predict
+- information_source; https://docs.cloud.google.com/vertex-ai/generative-ai/docs/multimodal/function-calling:
+  - POST /v1/models/{modelName}:generateContent
+  - POST https://${LOCATION}-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/${MODEL_ID}:generateContent
+- information_source; https://docs.cloud.google.com/vertex-ai/docs/generative-ai/models/evaluate-models:
+  - POST https://LOCATION-aiplatform.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/pipelineJobs
+- information_source; https://docs.cloud.google.com/vertex-ai/generative-ai/docs/multimodal/configure-safety-attributes:
+  - POST https://LOCATION-aiplatform.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/publishers/google/models/MODEL_ID:streamGenerateContent
+- information_source; https://docs.cloud.google.com/healthcare-api/docs/concepts/nlp:
+  - POST /v1/projects.locations.services.nlp/analyzeEntities
+- information_source; https://docs.cloud.google.com/kms/docs/hsm:
+  - POST https://cloudkms.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/keyRings
+  - POST https://cloudkms.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/keyRings/KEY_RING/cryptoKeys/KEY_NAME:decrypt
+  - POST https://cloudkms.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/keyRings/KEY_RING/cryptoKeys/KEY_NAME:encrypt

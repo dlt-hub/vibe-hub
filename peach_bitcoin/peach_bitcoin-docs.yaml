@@ -1,0 +1,46 @@
+auth_info:
+- information_source; https://docs.peachbitcoin.com/:
+  - Authentication uses public key cryptography with message signing. Send a POST
+    request to /v1/user/auth/ with publicKey, message (formatted as "Peach Registration
+    ${CURRENT_TIMESTAMP}"), and signature (ECDSA signature of SHA256-hashed message).
+    The response contains an accessToken and expiry timestamp that should be used
+    for subsequent authenticated requests.
+  - Authorization header with Bearer token. Send the token in the Authorization header
+    as "Bearer {token}" for all authenticated requests to the API.
+  - Authorization uses Bearer token authentication. Include the token in the Authorization
+    header with the format "Bearer {token}" when making requests to the API.
+  - 'Authorization uses a Bearer token sent in the Authorization header. The token
+    is a UUID string that must be included as ''Authorization: Bearer <token>'' in
+    request headers for authenticated endpoints.'
+  - Private data requires an auth token acquired by presenting a public key (user
+    id) and a message with an associated signature. Public market data endpoints do
+    not require authentication.
+pagination_info:
+- information_source; https://docs.peachbitcoin.com/:
+  - Pagination is implemented using query parameters `page` (page number, string,
+    optional) and `size` (page size, string, optional). No response fields indicating
+    pagination state or navigation are described.
+  - Query parameters page (starting at 0) and size (number of results per page) control
+    pagination. The response includes an offers array. Continue paginating by incrementing
+    the page parameter until fewer results than size are returned or the offers array
+    is empty.
+  - The endpoint uses a page-based pagination scheme with a query parameter `page`
+    (optional, number type) where each page contains 21 messages. The response is
+    an array of message objects; construct subsequent requests by incrementing the
+    page parameter value.
+possible_base_urls:
+- information_source; https://docs.peachbitcoin.com/:
+  - https://api.peachbitcoin.com
+  - https://api.peachbitcoin.com/v1
+possible_endpoints:
+- information_source; https://docs.peachbitcoin.com/:
+  - DELETE /v1/user/:userId/block
+  - DELETE https://api.peachbitcoin.com/v1/offer/:offerId/match
+  - GET /v1/contract/:contractId
+  - GET /v1/contracts
+  - GET /v1/contracts/summary
+  - GET /v1/market/price/:pair/
+  - GET /v1/market/prices
+  - GET /v1/market/tradePricePeaks
+  - GET /v1/offer/:offerId
+  - GET /v1/offer/:offerId/details

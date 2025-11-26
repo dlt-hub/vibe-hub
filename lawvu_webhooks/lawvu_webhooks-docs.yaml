@@ -1,0 +1,65 @@
+auth_info:
+- information_source; https://api-docs.lawvu.com/docs/errors:
+  - 'The request lacks valid authentication credentials if the `Authorization` header
+    is missing, the token is invalid, expired, or revoked. Include a valid access
+    token in the `Authorization` header to resolve 401 Unauthorized errors. Access
+    control is also enforced: a 403 Forbidden indicates the authenticated user lacks
+    required roles or permissions for the requested resource or action.'
+- information_source; https://api-docs.lawvu.com/docs/guides/authentication:
+  - Access to the LawVu Developer API uses OAuth 2.0 authorization code flow. Clients
+    must direct users to the authorize endpoint at GET https://{web_host}/#/authorize?response_type=code&client_id={client_id}&redirect_uri={redirect_uri},
+    where web_host is demo.lawvu.com for sandbox or go.lawvu.com for production, client_id
+    identifies your application, and redirect_uri is where LawVu returns the auth
+    code as a query parameter after user consent.
+  - OAuth2 authorization code flow with JWT tokens. Obtain an authorization code via
+    redirect_uri and client_id query parameters, then exchange it for an access token
+    using a POST request with grant_type, client_id, and code in the request body.
+    The access token is a JWT that can be decoded to extract claims like organisationId.
+- information_source; https://api-docs.lawvu.com/docs/guides/creating-contracts:
+  - 'Authentication uses Bearer tokens passed in the Authorization header. Include
+    the header Authorization: Bearer <your_access_token> in requests to the POST /v2/files
+    and POST /v2/contracts endpoints.'
+  - Bearer token authentication is required. Send the access token in the Authorization
+    header as "Bearer <your_access_token>" for all contract creation requests.
+pagination_info:
+- information_source; https://api-docs.lawvu.com/new-api/lawvuapi.openapi/contracts:
+  - Pagination uses query parameters $skip and $top. $skip specifies items to skip
+    (default 0), and $top specifies maximum items to return (default 25). Both are
+    optional integers.
+- information_source; https://api-docs.lawvu.com/new-api/lawvuapi.openapi/fields:
+  - $skip and $top query parameters enable offset-based pagination. $skip (default
+    0) specifies items to skip, and $top specifies the maximum items to return per
+    request. Use the values from the response to construct subsequent requests by
+    incrementing $skip.
+  - The endpoint supports offset-based pagination using $skip (number of items to
+    skip, default 0) and $top (maximum items to return, default 25) query parameters.
+    The response returns an items array containing the paginated results.
+  - The endpoint uses offset-limit pagination with query parameters $skip (default
+    0, specifies items to skip) and $top (default 25, specifies maximum items to return).
+    The response returns an items array containing the paginated results.
+- information_source; https://api-docs.lawvu.com/new-api/lawvuapi.openapi/matters:
+  - $skip and $top are query parameters used for pagination. $skip (default 0, int32)
+    specifies how many items to skip, and $top (default 25, int32) specifies the maximum
+    number of items to return. Construct subsequent requests by incrementing $skip
+    by the number of items returned until fewer items than $top are returned, indicating
+    the final page.
+possible_base_urls:
+- information_source; https://api-docs.lawvu.com/docs/guides/webhooks:
+  - https://myapplication.com/webhooks
+- information_source; https://api-docs.lawvu.com/docs/guides/authentication:
+  - https://demo.lawvu.com
+possible_endpoints:
+- information_source; https://api-docs.lawvu.com/docs/guides/webhooks:
+  - DELETE /account-apis/v1/webhooks/subscriptions/619
+  - GET /account-apis/v1/webhooks/subscriptions
+- information_source; https://api-docs.lawvu.com/docs/changelog:
+  - GET /v2/contracttypes
+  - GET /v2/fields
+  - GET /v2/fields/{fieldId}/options
+  - GET /v2/mattertypes
+- information_source; https://api-docs.lawvu.com/docs/guides/authentication:
+  - GET https://{web_host}/#/authorize?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}
+- information_source; https://api-docs.lawvu.com/docs/guides/creating-contracts:
+  - GET /v2/contractTypes
+  - POST /v2/contracts
+  - POST /v2/files

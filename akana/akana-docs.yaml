@@ -1,0 +1,47 @@
+auth_info:
+- information_source; https://help.akana.com/content/current/cm/api/:
+  - The documentation references authentication and session management. Authentication
+    with the Akana API Platform API uses a session cookie-based approach. You must
+    log in using credentials, manage the session cookie for subsequent requests, and
+    explicitly log out by invoking POST /api/login/logout when finished. Refer to
+    the "Authentication and Security with the Akana API Platform API" documentation
+    for detailed information on the login process and session cookie management.
+  - Use the POST /api/login endpoint to obtain an authentication token, which must
+    then be included in subsequent API requests. The token is valid for 30 minutes
+    and must be renewed periodically. Authentication is required for some operations
+    but not all; check individual operation documentation to determine if authentication
+    is needed. Tokens are typically passed via cookies, which the client platform
+    must support.
+- information_source; https://help.akana.com/content/current/cm/api/Ref_AuthenticationAndSecurity.htm:
+  - 'Authentication uses cookie-based sessions. After login, the server returns a
+    cookie via Set-Cookie response header that must be included in subsequent requests.
+    When the Atmo-Renew-Token: renew response header is present, the client must use
+    the updated cookie from the new Set-Cookie header in further operations. Cookies
+    can be manually renewed using POST /api/login/renewToken, and sessions are ended
+    with GET /api/login/endsession.'
+  - CSRF protection is implemented using X-Csrf-Token_{fedmemberID} response headers
+    that must be extracted and sent back in subsequent requests. Session cookies are
+    maintained via Set-Cookie response headers and can be renewed using POST /api/login/renewToken
+    endpoint when user information changes during the session.
+  - Session-based authentication using a cookie named AtmoAuthToken. After calling
+    POST /api/login, include the returned session cookie in subsequent request headers.
+    Most operations require this session cookie; specific permission requirements
+    depend on user roles (app team member, Business Admin, Site Admin, API Admin,
+    etc.) as documented per operation.
+possible_base_urls:
+- information_source; https://help.akana.com/content/current/ag/assets/latest_api_plat/rest/api-platform/index.html:
+  - http://soa.com/wsdl/app/1.0
+  - http://soa.com/wsdl/openid/1.0
+possible_endpoints:
+- information_source; https://help.akana.com/content/current/cm/api/:
+  - POST /api/login
+  - POST /api/login/logout
+- information_source; https://help.akana.com/content/current/cm/api/Ref_AuthenticationAndSecurity.htm:
+  - DELETE /api/apps/{AppID}
+  - GET /api/apis
+  - GET /api/login/endsession
+  - GET /api/users/{UserID}/board
+  - GET /{contentpath}
+  - POST /api/groups/requests/{MembershipRequestID}/actions
+  - POST /api/groups/{GroupID}/members
+  - POST /api/login

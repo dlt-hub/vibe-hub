@@ -1,0 +1,46 @@
+auth_info:
+- information_source; https://documentation.censhare.com/online-solutions/hcms-rest-endpoints:
+  - 'The Cookies API endpoint /auth/cookie/set accepts authorization cookies via query
+    parameters (GET) or request body (POST) in application/json or application/x-www-form-urlencoded
+    format. For JWT auth provider, if no cookie is configured, behavior depends on
+    API version: v4.3+ treats cookies as disabled, while v4.2 and lower use a default
+    cookie name. The endpoint returns 204 No Content and sets appropriate authorization
+    cookies for configured auth providers.'
+- information_source; https://documentation.censhare.com/online-solutions/hcms-server-module:
+  - Server authentication can be enabled by setting `server-auth="true"` on the `config`
+    element in the configuration XML. When enabled, standard Server REST API authentication
+    (HTTP Basic or JWT token from Keycloak) is required before requests reach HCMS.
+    Authentication failures return standard Server responses (HTML) rather than HCMS
+    JSON errors. User identity is provided via standard query variables/logger values
+    and the `/auth/whoami` endpoint. Asset permissions are evaluated based on the
+    authenticated user's domains and roles, and assets outside the user's domain are
+    not visible. HCMS authentication can still be configured to run in addition to
+    Server authentication, though this is rarely useful except for IP-based role grants.
+- information_source; https://documentation.censhare.com/online-solutions/rest-api-overview:
+  - Authorization is handled by HCMS through JWT tokens. Most middleware endpoints
+    forward the JWT token received by clients directly to HCMS using the utility function
+    nonPrivilegedHcms, which creates an appropriate request with the token. Different
+    endpoints may handle authorization differently, but the primary mechanism is JWT
+    token forwarding to HCMS for validation.
+pagination_info:
+- information_source; https://documentation.censhare.com/online-solutions/hcms-rest-endpoints:
+  - Pagination uses offset-based navigation with query parameters. The optional query
+    parameter order specifies sorting as a comma-separated list of property names,
+    optionally prefixed with minus for descending order. Results include first, last,
+    and current page links, with first page at offset 0. The /query endpoint supports
+    pagination and ordering identically to single-entity lists.
+possible_base_urls:
+- information_source; https://documentation.censhare.com/online-solutions/rest-api-overview:
+  - https://documentation.censhare.com
+possible_endpoints:
+- information_source; https://documentation.censhare.com/online-solutions/hcms-rest-endpoints:
+  - DELETE /entity/{name}/{id}
+  - DELETE /entity/{viewName}/{key}
+  - GET /auth/cookie/set
+  - GET /entity/{name}
+  - GET /entity/{name}/key/{key}/dependencies
+  - GET /entity/{name}/{id}
+  - GET /entity/{name}/{id}/dependencies
+  - GET /entity/{viewName}/{key}
+  - GET /graphql
+  - GET /graphql/schema.graphql

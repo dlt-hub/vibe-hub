@@ -1,0 +1,63 @@
+auth_info:
+- information_source; https://doc-api.matera.com/mp_server.html:
+  - A valid OAuth2 access token is required and must be provided in the Authorization
+    header. Additionally, a Transaction-Hash header is required, which is calculated
+    from the boleto barcode or typeable line. The access token must be valid; requests
+    with invalid or missing tokens will receive a 401 response.
+  - A valid OAuth2 access token must be provided in the Authorization header as "Bearer
+    {token}". Additionally, a Transaction-Hash header is required, computed as the
+    lowercase HTTP method name, request path, limitType, and amount (integer part)
+    joined by colons.
+  - 'A valid OAuth2 access token must be provided in the Authorization header as a
+    Bearer token. Additionally, a Transaction-Hash header is required, which is a
+    hash computed from specific transaction fields concatenated in a defined order:
+    receivedAmount (integer part), transactionType, billingIdentifier.transactionId,
+    status, recipient.accountId, recipient.amount (integer part).'
+  - A valid OAuth2 access token must be provided in the Authorization header with
+    the format "Bearer {token}". Additionally, a Transaction-Hash header is required,
+    computed as the lowercase HTTP method name, request path, and alias separated
+    by colons, then hashed.
+  - A valid OAuth2 access token must be provided in the Authorization header. Additionally,
+    a Transaction-Hash header is required, computed as the lowercase HTTP method name,
+    request path, and alias.name separated by colons (e.g., post:/v1/accounts/1CDD2D73-E641-8CF6-51AC-065F01CD7422/aliases:email@example.com).
+pagination_info:
+- information_source; http://doc-api.matera.com/ibk_edge.html:
+  - Pagination uses query parameters size (integer >= 1, required) for page size and
+    page (integer >= 0, required) for current page number. Response includes a data
+    object with content array and pageable metadata containing sort information; continue
+    paginating by incrementing the page parameter until no more results are returned.
+  - 'Pagination uses query parameters: size (integer, >= 1, required page size) and
+    page (integer, >= 0, required page number). The response includes a data array
+    with paginated results. Stop paginating when the returned data array is empty
+    or contains fewer items than the requested size.'
+- information_source; http://doc-api.matera.com/ibk_server.html:
+  - Pagination is used in the GET /api/v1/settlements endpoint with query parameters
+    pageSize and pageNumber. pageSize specifies the number of results per page and
+    pageNumber specifies which page to retrieve, both as query parameters. The documentation
+    does not specify response fields indicating total pages, has_more flags, or navigation
+    cursors.
+  - Pagination uses offset-based parameters with pageNumber and pageSize in the pageable
+    request object. Response includes pageable object with pageNumber, pageSize, offset,
+    and boolean fields (paged, unpaged), plus totalPages, totalElements, last, and
+    first fields to indicate pagination state and position within results.
+  - 'Pagination uses offset-based parameters with response metadata. Request parameters:
+    pageNumber (page index, optional, default 0) and pageSize (items per page, optional,
+    default 0) in query string. Response includes pageable object with pageNumber,
+    pageSize, offset; totalPages, totalElements, numberOfElements, size, and boolean
+    flags first, last, empty to indicate pagination state.'
+possible_base_urls:
+- information_source; https://doc-api.matera.com/mp_server.html:
+  - https://api.matera.com/v1
+  - https://doc-api.matera.com
+possible_endpoints:
+- information_source; https://doc-api.matera.com/mp_server.html:
+  - DELETE /v1/accounts/deposits/{transactionId}
+  - DELETE /v1/accounts/{accountId}/aliases/{alias}/cancel-portability-claims
+  - DELETE /v1/accounts/{accountId}/withdraw/{transactionId}
+  - DELETE /v1/payments/internal-payment/{transactionId}
+  - DELETE /v1/payments/{transactionId}
+  - DELETE https://doc-api.matera.com/v1/accounts/deposits/{transactionId}/unlock
+  - DELETE https://doc-api.matera.com/v1/accounts/{accountId}/withdraw/{transactionId}
+  - DELETE https://doc-api.matera.com/v1/accounts/{branch}/{account}
+  - DELETE https://doc-api.matera.com/v1/payments/internal-payment/{transactionId}
+  - DELETE https://doc-api.matera.com/v1/payments/{transactionId}

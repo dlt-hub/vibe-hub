@@ -1,0 +1,44 @@
+auth_info:
+- information_source; https://help.dronetag.cz/cs/developers/data-pull/getting-started-sio:
+  - Bearer token authentication is required for WebSocket connections. Send the access
+    token in the `Authorization` header of the handshake request using the format
+    `Bearer <token>`. The header must be included in the `extraHeaders` option when
+    establishing the Socket.IO connection to the Dronetag API endpoint.
+  - Socket.io session authentication uses an access token obtained from the REST API
+    credentials. The token can be passed via the native Socket.io `auth` configuration
+    option as a string value, or alternatively as a Bearer token in the handshake
+    request headers. The exact method depends on your Socket.io client library's capabilities.
+  - The authentication is passed via the Socket.io connection options in the auth
+    field. Credentials should be provided as an object in the auth parameter when
+    establishing the connection to the Socket.io endpoint at https://api.dronetag.app
+    with path /v2/airspace/socket.io, though the specific auth scheme and required
+    fields are not detailed in this excerpt.
+- information_source; https://help.dronetag.cz/developers/data-pull/authenticating:
+  - 'Authentication uses Bearer tokens in the Authorization header. Access tokens
+    are issued as JWTs and are short-lived, requiring refresh upon expiration. Personal
+    Access Tokens (PATs) are also supported as an authentication method.
+
+
+    Authorization: Bearer <JWT_token>'
+  - Personal Access Tokens (PATs) are created via POST to /v2/pats/tokens after authenticating
+    through OpenID Connect flow, with a JSON body containing password and optional
+    expires_at fields. Once created, use the token in the X-Personal-Access HTTP header
+    for subsequent API requests. PATs only work for HTTP requests, not WebSockets.
+possible_base_urls:
+- information_source; https://help.dronetag.cz/cs/developers/data-pull/getting-started-sio:
+  - https://api.dronetag.app
+  - https://api.dronetag.app/v2/airspace/socket.io
+possible_endpoints:
+- information_source; https://help.dronetag.cz/cs/developers/data-pull/getting-started-sio:
+  - GET https://api.dronetag.app/v2/airspace/socket.io
+- information_source; https://help.dronetag.cz/developers/data-pull/authenticating:
+  - GET https://auth.dronetag.app/realms/dcp/.well-known/openid-configuration
+  - POST /v2/airspace/telemetry/ua
+  - POST /v2/pats/tokens
+  - POST https://api.dronetag.app/v2/airspace/telemetry/ua
+  - POST https://auth.dronetag.app/realms/dcp/protocol/openid-connect/token
+- information_source; https://help.dronetag.cz/developers/guides/accessing-historical-telemetry:
+  - GET /v1/flights/
+  - GET /v1/flights/{id}
+  - GET /v1/flights/{id}/telemetry
+  - GET /v2/airspace/operation/{operation_id}

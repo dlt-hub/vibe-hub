@@ -1,0 +1,55 @@
+auth_info:
+- information_source; https://apollox-finance.gitbook.io/apollox-finance/api/api-documentation:
+  - API requests must include a `timestamp` parameter (millisecond timestamp when
+    the request was created) and may include a `recvWindow` parameter (milliseconds
+    after timestamp the request is valid for; defaults to 5000). The server validates
+    that the timestamp is within 1000ms of server time and the request age does not
+    exceed recvWindow. Additionally, requests use HMAC SHA256 signature for authentication,
+    with the signature computed over the request parameters and sent as part of the
+    signed payload. An `apiKey` and `secretKey` are required to generate the HMAC
+    SHA256 signature.
+  - API-keys are passed via the X-MBX-APIKEY header and are case sensitive. TRADE
+    and USER_DATA endpoints require HMAC SHA256 signatures computed from the secretKey
+    and totalParams (query string concatenated with request body), sent in the query
+    string or request body. SIGNED endpoints also require a timestamp parameter in
+    milliseconds and optionally a recvWindow parameter. USER_STREAM and MARKET_DATA
+    endpoints require only a valid API-Key. API-keys can be restricted to specific
+    endpoint types like TRADE only.
+  - 'Authentication uses HMAC SHA256 signatures with an API key header. Include the
+    API key in the X-MBX-APIKEY header, compute an HMAC SHA256 signature of the query
+    string or request body using your secret key, and append the signature parameter
+    to the request URL or body.
+
+
+    Key details: Header name is X-MBX-APIKEY, signature algorithm is HMAC SHA256,
+    signature parameter name is signature, include timestamp and recvWindow in the
+    signed data.'
+  - Requests require HMAC SHA256 signature authentication. Include the API key in
+    the X-MBX-APIKEY header. Generate the signature by computing HMAC-SHA256 of the
+    concatenated query string and request body using your secret key, then append
+    the signature parameter to the request body.
+pagination_info:
+- information_source; https://apollox-finance.gitbook.io/apollox-finance/api/api-documentation:
+  - The endpoint accepts optional limit parameter (INT, default 500, max 1000) to
+    control results returned per request. fromId (LONG, optional) retrieves trades
+    from a specific aggregate trade ID onwards, enabling pagination by using the last
+    tradeId from a previous response as the next fromId.
+  - limit is an optional query parameter with default value 500 and maximum value
+    1500, controlling how many kline records are returned per request. No explicit
+    next page mechanism is described; use startTime and endTime parameters to retrieve
+    different time ranges sequentially.
+possible_base_urls:
+- information_source; https://apollox-finance.gitbook.io/apollox-finance/api/api-documentation:
+  - https://fapi/apollox.finance/fapi/v1
+possible_endpoints:
+- information_source; https://apollox-finance.gitbook.io/apollox-finance/api/api-documentation:
+  - GET /fapi/v1/aggTrades
+  - GET /fapi/v1/depth
+  - GET /fapi/v1/exchangeInfo
+  - GET /fapi/v1/fundingRate
+  - GET /fapi/v1/historicalTrades
+  - GET /fapi/v1/indexPriceKlines
+  - GET /fapi/v1/klines
+  - GET /fapi/v1/markPriceKlines
+  - GET /fapi/v1/ping
+  - GET /fapi/v1/premiumIndex

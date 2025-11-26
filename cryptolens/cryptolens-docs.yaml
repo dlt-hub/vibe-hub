@@ -1,0 +1,58 @@
+auth_info:
+- information_source; https://help.cryptolens.io/getting-started/troubleshooting-guide:
+  - The access token is passed as a query parameter named `token` in the URL. The
+    token must have the appropriate permissions for the API method being called (e.g.,
+    "Activate" permission for the Activate endpoint), and an "Unable to authenticate"
+    error indicates either an incorrect token or an expired subscription.
+- information_source; https://help.cryptolens.io/faq:
+  - Access tokens are required and passed as a query parameter named `token`. The
+    token must have the appropriate permissions for the specific API method being
+    called (e.g., "GetKey" permission for the GetKey method). An "Unable to authenticate"
+    error indicates an invalid token or expired subscription, while "Access denied"
+    means the token lacks sufficient permissions for the requested operation.
+- information_source; https://help.cryptolens.io/examples/user-verification:
+  - 'The Cryptolens Web API requires an access token with either UserAuthNormal or
+    UserAuthAdmin permission passed to the Login method. The Login method accepts
+    username and password credentials and returns licenses associated with the authenticated
+    user.
+
+
+    Access token requirement: pass the token as the first parameter to UserAuth.Login()
+    method. For production use in applications, assign the access token UserAuthNormal
+    permission only. The Login method signature is UserAuth.Login(access_token, LoginUserModel
+    with UserName and Password fields).'
+- information_source; https://help.cryptolens.io/payments/recurring/setup:
+  - 'Stripe API authentication uses HTTP Basic Auth with the private API key. Include
+    the private key (format: `sk_test_*` or `sk_live_*`) as the username with a colon
+    and empty password in the Authorization header, or use curl''s `-u` flag with
+    `key:` syntax. The webhook signing secret (format: `whsec_*`) is used to verify
+    webhook authenticity on the receiving end.'
+- information_source; https://help.cryptolens.io/recurring-payments/setup:
+  - 'Stripe API authentication uses HTTP Basic Auth with the private API key. The
+    private key (format: `sk_test_*` or `sk_live_*`) is sent as the username in the
+    Authorization header with an empty password (colon separator). For example, use
+    `-u sk_test_123abcd:` in curl requests to `https://api.stripe.com/v1/webhook_endpoints`.
+    Additionally, webhook endpoints require a signing secret (format: `whsec_*`) for
+    verifying webhook authenticity on the receiving end.'
+possible_base_urls:
+- information_source; https://help.cryptolens.io/getting-started/troubleshooting-guide:
+  - https://api.cryptolens.io
+- information_source; https://help.cryptolens.io/faq:
+  - https://app.cryptolens.io/api/key/Activate
+possible_endpoints:
+- information_source; https://help.cryptolens.io/getting-started/troubleshooting-guide:
+  - GET https://api.cryptolens.io/api/key/Activate?token=<access token>&ProductId=<product
+    id>&Key=<license key string>
+- information_source; https://help.cryptolens.io/faq:
+  - GET https://app.cryptolens.io/api/key/Activate
+- information_source; https://help.cryptolens.io/licensing-models/subscription:
+  - GET https://app.cryptolens.io/api/key/ExtendLicense
+- information_source; https://help.cryptolens.io/licensing-models/usage-based:
+  - GET https://app.cryptolens.io/api/data/AddDataObjectToKey
+- information_source; https://help.cryptolens.io/payments/recurring/setup:
+  - POST https://api.stripe.com/v1/webhook_endpoints
+- information_source; https://help.cryptolens.io/recurring-payments/setup:
+  - POST https://api.stripe.com/v1/webhook_endpoints
+- information_source; https://help.cryptolens.io/payments/forms/automating-customer-and-license-creation:
+  - GET https://app.cryptolens.io/api/key/CreateKey?CustomerId=[customerId]&Feature=True&ProductId=<enter
+    the product id>&token=<use the token we generated in the previous section>

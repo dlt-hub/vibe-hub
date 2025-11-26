@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://forums.online-go.com/t/ogs-api-notes/17136:
+  - OAuth2 authentication is required. Obtain tokens via POST to https://online-go.com/oauth2/token/
+    using grant_type=password with username, password, client_id, and client_secret
+    parameters. Refresh expired tokens using grant_type=refresh_token with username,
+    refresh_token, client_id, and client_secret. Use the obtained token in subsequent
+    API requests (typically in the Authorization header as a Bearer token).
+  - The OGS API supports multiple authentication mechanisms. The primary approach
+    mirrors the web client, using REST calls to https://online-go.com/api/v1/ui/config
+    and https://online-go.com/api/v0/login to obtain authentication tokens. Alternatively,
+    bot accounts can use an API key generated on the bot's account page; after opening
+    a real-time connection, send a bot/id command with the API key as a parameter
+    to receive authentication tokens. OAuth2 keys are also mentioned as a possible
+    third option, though their usage is unclear and would likely replace the standard
+    login and config REST calls. The documentation does not provide exact header names,
+    parameter formats, or implementation details for any of these mechanisms.
+  - 'To authenticate with the Online Go Server API, first call the login endpoint
+    at https://online-go.com/api/v0/login to receive session cookies. For subsequent
+    REST API POST requests, include these cookies in the request. If a "csrftoken"
+    cookie is received, also include the header Referer: https://online-go.com/ and
+    X-CSRFToken: header with the csrftoken cookie value. The RT (real-time) API connection
+    uses the same session established from the login call.'
+  - Username and password are sent via POST request body (application/json) to the
+    login endpoint at https://online-go.com/api/v0/login with fields "username" and
+    "password". The server responds with HTTP cookies that must be included in all
+    subsequent REST requests for authentication. Additionally, a GET request to https://online-go.com/api/v1/ui/config
+    (authenticated with those cookies) returns a config structure containing "chat_auth"
+    and "notification_auth" strings used for later authentication, plus a "user" struct
+    with "username" and "id" fields. RT API calls are sent as JSON-encoded text frames
+    over a websocket connection to wss://online-go.com/socket.io/?transport=websocket.
+- information_source; https://forums.online-go.com/t/browseable-api-really/29248/1:
+  - OGS uses OAuth2 for API authentication. Applications must be generated through
+    the Developer portal to obtain OAuth2 application tokens. The REST API is browseable
+    at https://online-go.com/api/.
+possible_base_urls:
+- information_source; https://forums.online-go.com/t/ogs-api-notes/17136:
+  - https://online-go.com/api/
+  - https://online-go.com/api/v0
+possible_endpoints:
+- information_source; https://forums.online-go.com/t/ogs-api-notes/17136:
+  - GET https://online-go.com/api/v0/login
+  - GET https://online-go.com/api/v1/ui/config
+  - GET wss://online-go.com/socket.io/?transport=websocket
+  - POST https://online-go.com/api/v0/login
+  - POST https://online-go.com/api/v1/me/challenges/1234/accept
+  - POST https://online-go.com/oauth2/token/
+- information_source; https://forums.online-go.com/t/browseable-api-really/29248/2:
+  - GET https://online-go.com/api/
+  - GET https://online-go.com/api/v1/games/869960
+- information_source; https://forums.online-go.com/t/browseable-api-really/29248/1:
+  - GET https://online-go.com/api/
+  - GET https://online-go.com/api/v1/games/869960

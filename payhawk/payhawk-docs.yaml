@@ -1,0 +1,50 @@
+auth_info:
+- information_source; https://help.payhawk.com/en/articles/8957381-overview-of-the-payhawk-developer-api:
+  - API key authentication is required. Obtain the API key from Settings > Integrations
+    > API Keys in the Payhawk portal, then include it when making requests to the
+    Payhawk API endpoints. The Account ID from the portal URL is also needed to construct
+    API endpoints (e.g., payhawk_demo_6fc0db9a).
+  - API key authentication. Include the API key in the request headers to authenticate
+    with the Payhawk Developer API. The API key is obtained from Settings > Integrations
+    > API Keys in the Payhawk portal and must be enabled before use.
+  - Payhawk uses RSA-signed SHA256 signatures for webhook authentication. The signature
+    is sent in the X-Payhawk-Signature header, and verification requires fetching
+    the public key from https://api.payhawk.io/api/v2/rsa-public-key to decrypt and
+    validate the request payload.
+  - 'The Payhawk API uses two distinct authentication mechanisms depending on the
+    context:
+
+
+    For webhook verification, requests include an RSA signature in a header (exact
+    header name not specified in excerpt). The signature is computed over a data string
+    formatted as timestampString:url:payload, verified against a public key fetched
+    from https://api.payhawk.io/api/v2/rsa-public-key. For API queries to expense
+    records, use an API key obtained from Settings > Integrations > API Keys in the
+    Payhawk portal, sent as a request header (exact header name not specified). Include
+    the Account ID from your portal URL (format: payhawk_demo_XXXXXX) in the request
+    path. The exact header name for the API key and the timestamp header name for
+    webhook verification are not explicitly stated in the provided documentation.'
+pagination_info:
+- information_source; https://help.payhawk.com/en/articles/8957381-overview-of-the-payhawk-developer-api:
+  - Pagination uses Skip and Take parameters in query string. Skip specifies the number
+    of records to skip, Take specifies how many records to return per request (page
+    size is 1000 maximum). Stop paginating when fewer records than Take are returned.
+  - Pagination uses query parameters $skip and $take. Default page size is 1000 results
+    per request. Pass $skip to specify the offset and $take to specify the number
+    of results to return in each request.
+possible_base_urls:
+- information_source; https://help.payhawk.com/en/articles/8957381-overview-of-the-payhawk-developer-api:
+  - https://api.payhawk.com/api/v3
+  - https://api.payhawk.io
+possible_endpoints:
+- information_source; https://help.payhawk.com/en/articles/8957381-overview-of-the-payhawk-developer-api:
+  - GET /api/v3/accounts/{accountId}/expenses
+  - GET /api/v3/accounts/{accountId}/expenses/{expenseId}/workflow
+  - GET https://api.payhawk.com/api/v3/accounts/demo/fund-accounts
+  - GET https://api.payhawk.com/api/v3/accounts/demo/fund-accounts/1/bank-statement
+  - GET https://api.payhawk.io/api/v2/rsa-public-key
+  - GET https://api.payhawk.io/api/v3/accounts/payhawk_demo_6fc0db9a/expenses
+  - GET https://api.payhawk.io/api/v3/accounts/payhawk_demo_6fc0db9a/webhooks
+  - GET https://api.payhawk.io/api/v3/accounts/{accountId}/expenses
+  - POST (webhook endpoint)
+  - POST https://api.payhawk.io/api/v3/accounts/payhawk_demo_6fc0db9a/webhooks

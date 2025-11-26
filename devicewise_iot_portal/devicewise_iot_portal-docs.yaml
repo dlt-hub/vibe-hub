@@ -1,0 +1,58 @@
+auth_info:
+- ? information_source; https://docs.devicewise.com/Content/Products/IoT_Portal_API_Reference_Guide/HTTP_Interface/REST-API.htm
+  : - Authentication is performed via a sessionId parameter passed in the form data
+      of POST requests. The sessionId must be included in every request as a form-encoded
+      parameter named sessionId to authenticate the client and authorize access to
+      the API endpoints.
+    - Authentication requires a POST request to the /rest/auth endpoint with form-encoded
+      credentials. For user authentication, send username and password parameters.
+      For thing authentication, send thingKey, appToken, and appId parameters. The
+      response returns a sessionId string that must be included as a form parameter
+      (sessionId=<sessionId>) in subsequent API requests.
+    - 'Authentication uses a session-based approach where a sessionId must be provided
+      with every request. The sessionId is passed as a query parameter for GET requests
+      or as form data for POST requests.
+
+
+      Key details: sessionId parameter is required in all API calls; it is sent as
+      a URL query parameter (e.g., ?sessionId=<sessionId>) for GET requests and as
+      form-encoded data (sessionId=<sessionId>) for POST requests; example sessionId
+      format shown is 50m3535510n1dg035h3r3.'
+    - Session-based authentication is required. Include the sessionId parameter in
+      either the request body (form data) for POST requests or as a query parameter
+      for GET requests. The sessionId value must be obtained prior to making API calls
+      and is passed as sessionId=<sessionId>.
+- ? information_source; https://docs.devicewise.com/Content/Products/IoT_Portal_API_Reference_Guide/APIs/User/user.mfa.enable.htm
+  : - 'Two-step MFA activation uses parameters sent in request bodies: the first step
+      requires loginFqdn and twoStep=true to get an mfaRef and QR code, then the second
+      step requires mfaRef and mfaToken (from an authenticator app) to complete activation.
+      The loginFqdn parameter specifies the Open Server endpoint FQDN for the authentication
+      flow.'
+pagination_info:
+- information_source; https://docs.devicewise.com/Content/Products/IoT_Portal_API_Reference_Guide/APIs/User/user.list.htm:
+  - Pagination uses offset and limit query parameters. Offset defaults to 0 and specifies
+    the starting position; limit defaults to 2000 with a maximum of 2000. The response
+    includes a count field indicating the number of results returned. When support
+    parameter is true, results are not paginated.
+- ? information_source; https://docs.devicewise.com/Content/Products/IoT_Portal_API_Reference_Guide/APIs/User/user.alert.ack.list.htm
+  : - Pagination uses offset and limit parameters. offset (integer, optional, defaults
+      to 0) specifies the starting position. limit (integer, optional, defaults to
+      2000, maximum 2000) specifies the number of results per request. Iterate by
+      incrementing offset by the limit value until fewer results than limit are returned.
+possible_base_urls:
+- ? information_source; https://docs.devicewise.com/Content/Products/IoT_Portal_API_Reference_Guide/HTTP_Interface/REST-API.htm
+  : - https://api.devicewise.com
+- ? information_source; https://docs.devicewise.com/Content/Products/IoT_Portal_API_Reference_Guide/APIs/User/user.mfa.enable.htm
+  : - api.devicewise.com
+possible_endpoints:
+- ? information_source; https://docs.devicewise.com/Content/Products/IoT_Portal_API_Reference_Guide/HTTP_Interface/REST-API.htm
+  : - GET <endpoint URL>/rest/<thingkey>/property/<propkey>
+    - GET http://<open server>/rest/<thingkey>/property/<propkey>
+    - GET https://api.devicewise.com/rest/<thingkey>/location
+    - POST <endpoint URL>/rest/<thingkey>/alarm/<alarmkey>
+    - POST https://api.devicewise.com/rest/<thingKey>/method.exec
+    - POST https://api.devicewise.com/rest/<thingkey>/location
+    - POST https://api.devicewise.com/rest/<thingkey>/property/<propkey>
+    - POST https://api.devicewise.com/rest/auth
+    - POST https://api.devicewise.com/rest/{thingkey}/alarm/switch
+    - POST https://api.devicewise.com/rest/{thingkey}/attribute/{attrkey}

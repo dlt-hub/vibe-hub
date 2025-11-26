@@ -1,0 +1,50 @@
+auth_info:
+- information_source; https://docs.mod.io/terms:
+  - All platform authentication flows supported by mod.io require a `terms_agreed`
+    field (boolean) to be included in the authentication request. Set `terms_agreed`
+    to `false` by default, and to `true` once the user has agreed to the latest Terms
+    of Use and Privacy Policy. If `terms_agreed` is `false` when agreement is required,
+    the authentication endpoint returns a 403 Forbidden error with error_ref 11074.
+    Access tokens issued by mod.io have limited lifetimes and can expire or be revoked;
+    your code must handle token expiration and re-authentication.
+- information_source; https://docs.mod.io/restapi/monetization:
+  - The API requires the user's authentication token to be supplied when downloading
+    mods if certain game options are enabled (specifically when api_access_options
+    has a bitwise value of 4 and above or 8). When bitwise value 8 is enabled, the
+    system also verifies mod ownership before allowing the download.
+- information_source; https://docs.mod.io/restapi/docs/purchase:
+  - 'OAuth2 with implicit flow is required. Authorization URL is https://mod.io/login.
+    Send credentials as a Bearer token in the Authorization header (format: "Authorization:
+    Bearer <token>"). Two scopes are available: read for read-only access and write
+    for add, edit, or delete permissions.'
+- information_source; https://docs.mod.io/restapi/introduction:
+  - API Key authentication is passed as a query parameter and supports read-only GET
+    requests. OAuth 2.0 bearer tokens are passed in the HTTP header and support GET,
+    POST, PUT, DELETE methods with full read-write-delete permissions. If both an
+    API Key and Access Token are provided in the same request, the Access Token takes
+    precedence. Default OAuth 2 scope is read+write, and scopes can be customized
+    to limit token permissions.
+  - 'Authorization header using Bearer token scheme. Send the token in the Authorization
+    header as `Authorization: Bearer your-token-here`. The token value should be replaced
+    with an actual authentication token provided by the API.'
+possible_base_urls:
+- information_source; https://docs.mod.io/restapi/docs/purchase:
+  - https://g-{your-game-id}.modapi.io/v1
+- information_source; https://docs.mod.io/restapi/docs/schemas/download-object:
+  - https://api.mod.io/v1
+possible_endpoints:
+- information_source; https://docs.mod.io/restapi/monetization:
+  - GET /restapi/docs/get-game
+  - GET /restapi/docs/get-game-token-packs
+  - GET /restapi/docs/get-mods
+- information_source; https://docs.mod.io/restapi/docs/purchase:
+  - POST https://g-{your-game-id}.modapi.io/v1/games/:game-id/mods/:mod-id/checkout
+- information_source; https://docs.mod.io/restapi/localization:
+  - GET https://*.modapi.io/v1/games/1/mods/1
+  - POST https://*.modapi.io/v1/games/1/mods/1
+- information_source; https://docs.mod.io/restapi/docs/terms:
+  - GET /restapi/docs/get-current-agreement
+  - GET https://mod.io/legal/privacy?no_links=true
+  - GET https://mod.io/legal/terms?no_links=true
+- information_source; https://docs.mod.io/restapi/docs/authenticate-via-steam:
+  - POST /external/steamauth
