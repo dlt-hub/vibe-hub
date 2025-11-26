@@ -1,0 +1,69 @@
+auth_info:
+- ? information_source; https://docs.hitachivantara.com/r/en-us/virtual-storage-platform-360/mk-25vsp360005/api-reference/overview/clear-sight-advanced-rest-api-process
+  : - 'A user submits a REST API request with a valid bearer access token. The VSP
+      360 OAuth2 Proxy validates the token using Keycloak, and Clear Sight Advanced
+      verifies that the request originates from a service account with the required
+      role permissions.
+
+
+      The bearer access token must be included in the request. The token is validated
+      against Keycloak by the OAuth2 Proxy. Service accounts require appropriate role
+      permissions to access the API.'
+    - Authorization is required for API requests. Send a valid authentication token
+      with each request; if the token is invalid or missing, the API returns response
+      code B50000E9 with message "Authorization is required." The documentation does
+      not specify the exact header name, parameter name, or token format required.
+    - Bearer token authentication is required. Send the access token in the Authorization
+      header as "Bearer access_token". The content-type header must be set to "application/json".
+    - OAuth2 client credentials flow is used for authentication. Obtain an access
+      token by sending a POST request to the token endpoint with grant_type set to
+      client_credentials, along with client_id and client_secret as form data. Then
+      include the access token in the Authorization header as Bearer access_token
+      when making API requests to Clear Sight Advanced APIs.
+    - OAuth2 client credentials flow is used for authentication. To obtain an access
+      token, send a POST request to the Token Endpoint with grant_type set to client_credentials,
+      client_id, and client_secret as form data parameters. The Client ID, Client
+      Secret, and Token Endpoint URL are obtained from the service account details
+      page after assigning the Admin role for the application.
+pagination_info:
+- information_source; https://docs.hitachivantara.com/r/en-us/virtual-storage-platform-360/mk-25vsp360005/api-reference:
+  - The documentation describes a `splitResponse` parameter (boolean) and `maxResponseSize`
+    parameter (numeric, example value 0.05) that can be used in query requests. When
+    `splitResponse` is true, the server returns incremental data with HTTP 206 PARTIAL
+    CONTENT status codes instead of 200 OK, allowing large responses to be split across
+    multiple requests. The `maxResponseSize` parameter controls the size of each response
+    chunk.
+- ? information_source; https://docs.hitachivantara.com/r/en-us/virtual-storage-platform-360/mk-25vsp360005/api-reference/overview
+  : - The documentation describes a `splitResponse` parameter (boolean) and `maxResponseSize`
+      parameter (numeric, example value 0.05) that can be used in query requests.
+      When `splitResponse` is true, the server returns incremental data with HTTP
+      206 PARTIAL CONTENT status codes. However, the documentation does not explain
+      how to construct subsequent requests, what response fields indicate pagination
+      state, or when pagination ends, so complete pagination details are unclear.
+- ? information_source; https://docs.hitachivantara.com/r/en-us/virtual-storage-platform-360/mk-25vsp360005/migrate-to-clear-sight-advanced/migration-limitations
+  : - Use `splitResponse` set to true and `maxResponseSize` (in MB) as optional query
+      parameters to split large responses. Server returns HTTP 200 for complete data
+      or HTTP 206 PARTIAL CONTENT for incremental data when split is active.
+- information_source; https://docs.hitachivantara.com/r/GaxcqWljyS4ksqbbQloU3Q/LEps04MVuastNmifo_ws6g:
+  - If the query API returns HTTP status code 206 (Partial Content), use the Get Request
+    Status API to retrieve results incrementally until status code 200 (OK) is returned.
+    Stop paginating when status 200 is received, indicating all results are available.
+possible_base_urls:
+- ? information_source; https://docs.hitachivantara.com/r/en-us/virtual-storage-platform-360/mk-25vsp360005/api-reference/overview/clear-sight-advanced-rest-api-process
+  : - baseURL/clearsightadvanced/dbapi.do
+    - https://VSP-360-FQDN-OR-IP-Address/auth/realms/vsp360/protocol/openid-connect/token
+possible_endpoints:
+- ? information_source; https://docs.hitachivantara.com/r/en-us/virtual-storage-platform-360/mk-25vsp360005/api-reference/overview/clear-sight-advanced-rest-api-process
+  : - GET baseURL/clearsightadvanced/dbapi.do?action=abortRequest&dataset=<Datasetname>&requestId=<requestId-of-API-request>
+    - GET baseURL/clearsightadvanced/dbapi.do?action=getStatus&dataset=<Datasetname>&requestId=<reqId>
+    - POST baseURL/clearsightadvanced/dbapi.do?action=query&dataset=<Datasetname>&processSync=<true
+      | false>
+    - POST baseURL/clearsightadvanced/dbapi.do?action=query&dataset=defaultDs&processSync=true
+    - POST https://192.XXX.XXX.XXX/auth/realms/vsp360/protocol/openid-connect/token
+    - POST https://VSP-360-FQDN-OR-IP-Address/auth/realms/vsp360/protocol/openid-connect/token
+- ? information_source; https://docs.hitachivantara.com/r/en-us/virtual-storage-platform-360/mk-25vsp360005/migrate-to-clear-sight-advanced
+  : - POST https://VSP-360-FQDN-OR-IP-Address/auth/realms/vsp360/protocol/openid-connect/token
+- information_source; https://docs.hitachivantara.com/r/en-us/virtual-storage-platform-360/mk-25vsp360005/api-reference:
+  - GET <scheme>://<VSP360-FQDN-or-IP-Address>:<port>/clearsightadvanced/dbapi.do?action=abortRequest&dataset=defaultDs
+  - GET <scheme>://<VSP360-FQDN-or-IP-Address>:<port>/clearsightadvanced/dbapi.do?action=getStatus&dataset=defaultDs
+  - GET <scheme>://<VSP360-FQDN-or-IP-Address>:<port>/clearsightadvanced/dbapi.do?action=query&dataset=defaultDs

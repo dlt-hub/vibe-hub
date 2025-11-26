@@ -1,0 +1,75 @@
+auth_info:
+- information_source; https://www.matrixport.com/docs/en-us/phoenix.html:
+  - 'API key authentication via the x-matrixport-access-key header, combined with
+    request signing using a signature query parameter (HMAC-based) and timestamp in
+    milliseconds. Each request requires a unique x-request-id header.
+
+
+    Required headers: x-matrixport-access-key (API key), x-request-id (unique request
+    identifier). Required query parameters: signature (HMAC signature), timestamp
+    (epoch time in milliseconds). The signature and timestamp are used to verify request
+    authenticity and prevent replay attacks.'
+  - 'API key authentication via the x-matrixport-access-key header, plus request signing
+    with signature and timestamp fields in the JSON body. The x-request-id header
+    is also required for request tracking.
+
+
+    Header x-matrixport-access-key: your API key value. Header x-request-id: unique
+    request identifier string. Request body must include signature field (HMAC or
+    similar signature of the request) and timestamp field (millisecond epoch time
+    as string, e.g. "1711606452000").'
+  - Authentication uses HMAC-SHA256 signature verification. Requests require a signature
+    parameter calculated by HMAC-SHA256 hashing the API path concatenated with encoded
+    request parameters using a secret key, with the hexadecimal digest sent as the
+    signature parameter. Requests must include a timestamp parameter that must not
+    differ from server timestamp by more than 5000ms, or the request will be rejected.
+    Authentication failure returns HTTP 412 with message "Account credentials is invalid".
+  - HMAC-SHA256 signature-based authentication is required. The signature is calculated
+    by hex-encoding HMAC-SHA256 of the API secret key and encoded request parameters,
+    then concatenated with the endpoint URL and an ampersand. Include the signature
+    and timestamp as query parameters, and provide the matrixport access key via the
+    x-matrixport-access-key header and a unique request ID via the x-request-id header.
+  - 'Requests require two custom headers: x-matrixport-access-key (containing your
+    API key) and x-request-id (a unique request identifier). Additionally, the request
+    body must include a signature field and a timestamp field, indicating HMAC-based
+    request signing is required.'
+pagination_info:
+- information_source; https://www.matrixport.com/docs/en-us/smart_trend.html:
+  - Pagination uses offset and limit query parameters. offset defaults to 0, and limit
+    defaults to 10 items per page. The response includes a count field indicating
+    total results. Continue paginating by incrementing offset by the limit value until
+    fewer than limit items are returned.
+  - offset and limit are query string parameters for pagination. offset specifies
+    the starting position (optional), and limit specifies the number of results per
+    page (optional). The response structure is not fully shown, but these parameters
+    control which subset of orders is returned.
+- information_source; https://www.matrixport.com/docs/en-us/wallet.html:
+  - Pagination uses limit (optional, default 10) and offset (optional, default 1)
+    query parameters. The response returns an array of deposit records without explicit
+    pagination metadata fields like next or has_more.
+  - The endpoint uses limit (int, optional, default 10) as a query parameter to control
+    the number of results returned. The start_id (string, optional) parameter enables
+    cursor-based pagination by specifying where to start retrieving records. The response
+    returns an array of bills; use the last bill's sn value as the next start_id to
+    fetch subsequent pages.
+  - The endpoint uses limit and offset query parameters for pagination. The limit
+    parameter controls the number of items returned per request (example shows limit=10),
+    and offset specifies the starting position (example shows offset=0). The response
+    contains an items array with deposit records; continue paginating by incrementing
+    the offset parameter by the limit value until fewer items than the limit are returned.
+possible_base_urls:
+- information_source; https://www.matrixport.com/docs/en-us/dcp.html:
+  - https://mapi.matrixport.com
+  - https://mapi.matrixport.com/dcp/api/v1
+possible_endpoints:
+- information_source; https://www.matrixport.com/docs/en-us/dcp.html:
+  - GET /dcp/api/v1/available_balance
+  - GET /dcp/api/v1/invest-days
+  - GET /dcp/api/v1/order
+  - GET /dcp/api/v1/order/result
+  - GET /dcp/api/v1/orders
+  - GET /dcp/api/v1/product/agreement
+  - GET /dcp/api/v1/product/list
+  - GET /dcp/api/v1/quote
+  - GET /dcp/api/v1/redeem/quote
+  - GET /dcp/api/v1/tenor_config

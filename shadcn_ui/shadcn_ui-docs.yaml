@@ -1,0 +1,44 @@
+auth_info:
+- information_source; https://ui.shadcn.com/docs/changelog:
+  - API key authentication is required. Send the API key in the Authorization header
+    or as a query parameter. If the key expires, renew it at https://example.com/api/renew-key.
+- information_source; https://ui.shadcn.com/docs/components-json:
+  - Private registries require authentication via headers. The Authorization header
+    accepts a Bearer token from the REGISTRY_TOKEN environment variable, and custom
+    headers like X-API-Key can be configured using environment variables (e.g., ${API_KEY}).
+    Headers are specified in the registries configuration with environment variable
+    substitution using ${VARIABLE_NAME} syntax.
+- information_source; https://ui.shadcn.com/docs/registry/namespace:
+  - 'Authentication uses two required headers: X-API-Key (passed via API_KEY environment
+    variable) and X-Workspace-Id (passed via WORKSPACE_ID environment variable). For
+    private registries, Bearer token authentication is supported via Authorization
+    header with token value from PRIVATE_REGISTRY_TOKEN environment variable. All
+    credentials should be stored in .env.local and never committed to version control.
+    HTTPS is required for all registry URLs to encrypt credentials in transit.'
+  - Registries that require authentication use the object format with a headers field.
+    The Authorization header accepts Bearer tokens via the format "Bearer ${REGISTRY_TOKEN}",
+    and custom headers like "X-API-Key" can be set to "${API_KEY}". Environment variables
+    in the format ${VAR_NAME} are automatically expanded from process.env at runtime.
+    Both headers and params fields support environment variable substitution.
+  - The "@private" registry requires the REGISTRY_TOKEN environment variable for authentication.
+    This token must be set in your .env or .env.local file and is used to authorize
+    access to private registry resources. Authentication failures (401 Unauthorized)
+    indicate missing or invalid credentials, while 403 Forbidden errors suggest the
+    token lacks necessary permissions for the requested resource.
+possible_base_urls:
+- information_source; https://ui.shadcn.com/docs/changelog:
+  - http://example.com
+  - https://example.com
+possible_endpoints:
+- information_source; https://ui.shadcn.com/docs/registry/namespace:
+  - GET https://api.company.com/registry/{name}
+  - GET https://api.company.com/registry/{name}.json
+  - GET https://api.enterprise.com/v2/registry/{name}
+  - GET https://api.github.com/repos/org/registry/contents/{name}.json
+  - GET https://registry.acme.com/{name}.json
+  - GET https://registry.company.com/{name}.json
+  - GET https://registry.example.com/{name}.json
+  - GET https://registry.example.com/{style}/{name}.json
+  - GET https://repos/org/registry/contents/{name}.json
+- information_source; https://ui.shadcn.com/docs/registry/authentication:
+  - GET /api/registry/[name]

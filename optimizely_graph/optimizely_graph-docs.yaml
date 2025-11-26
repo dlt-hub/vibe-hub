@@ -1,0 +1,59 @@
+auth_info:
+- information_source; https://optimizely-parent.readme.io/platform-optimizely/docs/external-oidc-providers:
+  - Authorization uses HTTP Basic Auth for OIDC configuration setup and Bearer token
+    (JWT) for GraphQL queries. For Basic Auth, send the Authorization header with
+    base64-encoded appKey:secret. For GraphQL queries, send the Authorization header
+    with Bearer followed by a JWT token that includes issuer, audience, roles, and
+    preferred_username claims in its payload.
+  - 'The API uses JWT (JSON Web Token) for authentication. The JWT must include specific
+    claims: roles and preferred_username. Tokens are validated based on issuer and
+    audience configured via OIDC endpoints. Configuration of OIDC endpoints requires
+    either Basic auth or HMAC auth in the Authorization header when sending a PUT
+    request to https://cg.optimizely.com/api/config/oidc. The JWT should contain standard
+    fields: ver, jti, iss, aud, iat, exp, cid, uid, scp, auth_time, sub, roles, and
+    preferred_username.'
+- information_source; https://optimizely-parent.readme.io/platform-optimizely/docs/manage-webhooks:
+  - Authentication required for webhook management endpoints. Use either Basic authentication
+    (username and password) or HMAC authentication (signature-based). Both methods
+    are applied to the request when calling the webhook management endpoints at https://cg.optimizely.com/api/webhooks.
+  - Use either Basic or HMAC authentication within the request. Basic authentication
+    requires a username and password encoded in Base64 sent via the Authorization
+    header. HMAC authentication requires signing the request with a secret key. Both
+    methods are supported for webhook operations.
+- information_source; https://optimizely-parent.readme.io/platform-optimizely/docs/synchronize-content-types:
+  - 'Authorization uses HTTP Basic Authentication. Credentials are sent in the Authorization
+    header with the format "Basic" followed by a Base64-encoded string of username:password.
+    The example shows: Authorization: Basic V25KQmNtUlpSNTFYaDJuSmE1UWV5eEkwWWxOUVpFdWsxMDRWV1BYZkcydlcxZUluOkYwaWRhcDRPQ1ZOc0JSQTJmdVpCVDNtYXVoaVl1QWtRcDM5SHduazB2dW1XblpoZytjbmg4QnpHVU5VQlVIYTM='
+pagination_info:
+- information_source; https://optimizely-parent.readme.io/platform-optimizely/docs/cursor:
+  - Cursor pagination is used via the cursor parameter in requests, starting with
+    an empty string for the first query. The limit parameter controls results per
+    batch. Continue requests by passing the cursor value returned in the response
+    until it becomes null or empty, indicating no more results. Sort by DOC for optimal
+    performance.
+  - Cursor-based pagination uses a cursor parameter in requests and a cursor field
+    in responses. Start with an empty cursor string, include a limit parameter (example
+    shows 100), and repeat requests using the cursor value from the previous response
+    until the cursor is null or empty. Cursors expire after 5 minutes of inactivity,
+    requiring restart from an empty cursor.
+possible_base_urls:
+- information_source; https://optimizely-parent.readme.io/platform-optimizely/reference:
+  - https://prod.cg.optimizely.com
+- information_source; https://optimizely-parent.readme.io/platform-optimizely/docs/external-oidc-providers:
+  - https://cg.optimizely.com/api/config/oidc
+possible_endpoints:
+- information_source; https://optimizely-parent.readme.io/platform-optimizely/reference:
+  - GET https://prod.cg.optimizely.com/api/bestbets/collection
+- information_source; https://optimizely-parent.readme.io/platform-optimizely/docs/external-oidc-providers:
+  - POST https://cg.optimizely.com/content/v2
+  - PUT https://cg.optimizely.com/api/config/oidc
+- information_source; https://optimizely-parent.readme.io/platform-optimizely/docs/manage-webhooks:
+  - DELETE https://cg.optimizely.com/api/webhooks/{id}
+  - POST https://cg.optimizely.com/api/webhooks
+- information_source; https://optimizely-parent.readme.io/platform-optimizely/docs/synchronize-content-types:
+  - POST https://cg.optimizely.com/api/content/v3/types
+  - PUT https://cg.optimizely.com/api/content/v3/types?id=com
+  - PUT https://dev.cg.optimizely.com/api/content/v3/types?id=,quang
+  - PUT https://dev.cg.optimizely.com/api/content/v3/types?id=src2
+- information_source; https://optimizely-parent.readme.io/platform-optimizely/docs/synchronize-content-data:
+  - DELETE http://cg.optimizely.com/api/content/v2/data

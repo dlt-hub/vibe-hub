@@ -1,0 +1,51 @@
+auth_info:
+- information_source; https://help.sap.com/docs/btp/sap-btp-neo-environment/using-platform-apis:
+  - HTTP Basic Authentication is used for initial destination setup, requiring Base64-encoded
+    clientId:clientSecret in the Authorization header as "Basic <Base64EncodedCredentials>".
+    Subsequently, Bearer token authentication is required for platform API calls,
+    with the access token passed in the Authorization header as "Bearer <token_value>".
+  - OAuth 2.0 client credentials grant is used for platform API authentication. To
+    authenticate, create an OAuth client in the SAP BTP cockpit (Security > OAuth
+    > Platform API tab) which generates a client ID and client secret. Use these credentials
+    with the OAuth 2.0 client credentials grant flow to obtain a JWT access token
+    from the OAuth access token endpoint. Reuse the same access token throughout its
+    validity period instead of requesting a new token for each API call.
+  - OAuth2 client credentials flow is used to obtain access tokens. Send a POST request
+    to the token endpoint with Basic authentication, where the Authorization header
+    contains Base-64 encoded clientID:clientSecret. The response includes access_token
+    (valid for expires_in seconds, default 1500), token_type (Bearer), and scope parameters.
+- information_source; https://help.sap.com/docs/integration-suite/sap-integration-suite/api-documentation:
+  - The OData APIs are protected by basic authentication using username and password
+    credentials. Send credentials via the standard HTTP Authorization header with
+    Basic scheme encoding.
+- information_source; https://help.sap.com/docs/leanix/ea/exporting-workspace-snapshots:
+  - 'Authorization is performed using a Bearer token passed in the Authorization header.
+    Include the header Authorization: Bearer {ACCESS_TOKEN} where {ACCESS_TOKEN} is
+    your access token obtained from the authentication service.'
+pagination_info:
+- ? information_source; https://help.sap.com/docs/Advanced_Workflow/b7cb13f8b6a04157a722ad9ddfde4a28/1895728e557f4e3a8d28679de30ae53f.html
+  : - Pagination in REST APIs uses query parameters page (starting from page 1, or
+      optionally 0 which returns same result as page 1) and page_size to control results.
+      The response includes a page field indicating the current page number.
+- information_source; https://help.sap.com/docs/leanix/ea/exporting-workspace-snapshots:
+  - 'The `/exports` endpoint supports pagination via optional query parameters: `pageSize`
+    (controls number of results per page) and `sorting`/`sortDirection` (for ordering).
+    The response returns a data array with export records; repeatedly call the endpoint
+    to monitor export status until it reaches `COMPLETED`, at which point a `downloadKey`
+    becomes available for file download.'
+possible_base_urls:
+- information_source; https://help.sap.com/docs/btp/sap-btp-neo-environment/using-platform-apis:
+  - https://api.hana.ondemand.com
+  - https://api.hana.ondemand.com/oauth2/apitoken/v1
+possible_endpoints:
+- ? information_source; https://help.sap.com/docs/Advanced_Workflow/b7cb13f8b6a04157a722ad9ddfde4a28/1895728e557f4e3a8d28679de30ae53f.html
+  : - GET {$url}/wpm/api/users?department=wfl_admin&page=0&page_size=10
+    - GET {$url}/wpm/api/users?department=wfl_admin&page=1&page_size=10
+- information_source; https://help.sap.com/docs/btp/sap-btp-neo-environment/using-platform-apis:
+  - GET https://api.hana.ondemand.com/authorization/v1/accounts/mysampleaccount/users/roles/?userId=mysampleuser
+  - POST (destination-based endpoint via HttpURLConnection)
+  - POST https://api.hana.ondemand.com/oauth2/apitoken/v1?grant_type=client_credentials
+- information_source; https://help.sap.com/docs/leanix/ea/exporting-workspace-snapshots:
+  - GET https://{SUBDOMAIN}.leanix.net/services/pathfinder/v1/exports
+  - GET https://{SUBDOMAIN}.leanix.net/services/pathfinder/v1/exports/downloads/{workspaceId}
+  - POST https://{SUBDOMAIN}.leanix.net/services/pathfinder/v1/exports/fullExport

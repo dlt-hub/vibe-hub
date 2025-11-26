@@ -1,0 +1,39 @@
+auth_info:
+- information_source; https://mrfields.net/auth-api/:
+  - The authentication setup uses JWT tokens issued by Identity Server 4. Clients
+    obtain tokens by authenticating with a client ID (clientid) and secret (nooneknows)
+    to the Identity Server, then include the JWT token in the Authorization header
+    of REST API requests. The API validates the token against the Identity Server
+    issuer and returns HTTP 401 Unauthorized if validation fails.
+  - 'To obtain a token, make a POST request to the IS4 `/connect/token` endpoint with
+    Content-Type application/x-www-form-urlencoded and body parameters: client_id,
+    client_secret, scope, and grant_type set to client_credentials. Then use the returned
+    token in subsequent API requests by including the Authorization header with value
+    Bearer <token>.'
+- information_source; https://mrfields.net/:
+  - OAuth2 client credentials flow is used for authentication. To obtain a token,
+    send a POST request to the identity server with grant_type=client_credentials,
+    client_id, client_secret, and scope as form data. The response contains a JWT
+    token that must be sent in subsequent API requests via the Authorization header
+    as "Bearer {token}". API endpoints return HTTP 401 Unauthorized if the token is
+    missing, invalid, expired, or malformed.
+  - 'The REST API expects authentication via a JWT token sent in the `authorization`
+    header. To obtain a token, make a POST request to the Identity Server `/connect/token`
+    endpoint with client credentials: `client_id` set to the client ID (e.g., `clientid`),
+    `client_secret` set to the secret (e.g., `nooneknows`), and `scope` set to the
+    desired scope (e.g., `insidelayer`). The token response is a JWT with a configurable
+    lifetime (default 3600 seconds, recommended 86400 for development). Include this
+    JWT in the `Authorization` header of subsequent API requests; requests without
+    a valid token receive HTTP 401 Unauthorized.'
+possible_base_urls:
+- information_source; https://mrfields.net/auth-api/:
+  - http://identity-server-url:8001
+  - http://our-api-url
+possible_endpoints:
+- information_source; https://mrfields.net/auth-api/:
+  - GET http://our-api-url/api/values
+  - POST http://identity-server-url:8001/connect/token
+- information_source; https://mrfields.net/:
+  - GET http://our-api-url/api/values
+  - POST /connect/token
+  - POST http://identity-server-url:8001/connect/token

@@ -1,0 +1,47 @@
+auth_info:
+- information_source; https://a2a-protocol.org/latest/specification/:
+  - A2A uses HTTP transport layer authentication rather than JSON-RPC payload authentication.
+    Identity information is handled at the HTTP level following standard enterprise
+    web security practices. The specific authentication scheme, headers, parameters,
+    and credentials required are not detailed in this documentation excerpt.
+  - 'Clients obtain credentials (API keys, OAuth tokens, JWTs) through an out-of-band
+    process specific to the authentication scheme and identity provider, then include
+    them in HTTP headers (e.g., Authorization: Bearer <token>, X-API-Key: <value>)
+    for every A2A request. The server must authenticate each request based on provided
+    HTTP credentials, use standard HTTP status codes (401 Unauthorized, 403 Forbidden)
+    for authentication challenges, and may include WWW-Authenticate headers to indicate
+    required authentication schemes.'
+  - Identity information is handled at the HTTP transport layer, not within A2A JSON-RPC
+    payloads. Production deployments must use HTTPS with TLS 1.3+ and strong cipher
+    suites. Clients discover required authentication schemes from the AgentCard's
+    authentication field, which may include Bearer tokens for OAuth 2.0, Basic Auth,
+    or API keys. Credentials are obtained out-of-band through processes specific to
+    the identity provider and are not part of the A2A protocol specification itself.
+    Clients should verify the server's TLS certificate against trusted certificate
+    authorities during the TLS handshake.
+  - 'The agent interface supports security schemes defined via OpenAPI 3.0 Security
+    Scheme Objects in the securitySchemes field, with a security array specifying
+    which schemes apply to all interactions. The security array uses an OR-of-ANDs
+    logic: each object in the array represents one valid combination of schemes (e.g.,
+    OAuth with "read" scope, or API-key plus mTLS), and a request must satisfy at
+    least one complete object in the array to be authorized.'
+- information_source; https://a2a-protocol.org/v0.1.0/specification/:
+  - A2A requires clients to discover authentication schemes from the server's AgentCard
+    object's authentication field, which uses OpenAPI-aligned scheme names like "Bearer"
+    for OAuth 2.0 tokens, "Basic" for Basic Auth, and "ApiKey" for API keys. Credentials
+    are obtained out-of-band and transmitted at the HTTP transport layer, not in JSON-RPC
+    payloads. Production deployments must use HTTPS with TLS 1.2 or higher, and clients
+    should verify the server's TLS certificate against trusted certificate authorities.
+possible_base_urls:
+- information_source; https://a2a-protocol.org/latest/specification/:
+  - https://a2a-protocol.org/latest/specification
+possible_endpoints:
+- information_source; https://a2a-protocol.org/latest/specification/:
+  - DELETE /v1/tasks/{id}
+  - GET /v1/card
+  - GET /v1/tasks
+  - GET /v1/tasks/{id}
+  - GET /v1/tasks/{id}/p
+  - POST /v1/message:str
+  - POST /v1/tasks/{id}/
+  - 'POST /v1/tasks/{id}:'

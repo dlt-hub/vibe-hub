@@ -1,0 +1,45 @@
+auth_info:
+- information_source; https://developer.handelsbanken.com/api/psd2/guidelines/payments:
+  - 'Authorization header using Bearer token scheme. The token is obtained from Step
+    3 (ACG/DG access token) and is mandatory. Additionally, three mandatory headers
+    are required: TPP-Request-ID (unique request identifier), TPP-Transaction-ID (unique
+    transaction identifier), and X-IBM-Client-Id (registered application client ID).
+    The Authorization header can alternatively accept a CCG token from Step 1.'
+  - Authorization uses a Bearer token scheme. The CCG access token must be sent in
+    the Authorization header as "Bearer {token}". Additionally, the X-IBM-Client-Id
+    header containing your registered application's client-id is mandatory. Both are
+    required for all requests.
+  - Client Credentials Grant (CCG) access token is required for payment initiation.
+    The token is obtained via a POST request to https://api.handelsbanken.com/mlurd/oauth2/token/1.0
+    using mutual TLS authentication with a private key file and certificate file,
+    with the scope set to PIS (Payment Initiation Service). The resulting access token
+    is then used in subsequent API calls for payment operations.
+  - Handelsbanken uses OAuth2 Client Credentials Grant (CCG) flow with mutual TLS
+    authentication. Send a POST request to https://api.handelsbanken.com/mlurd/oauth2/token/1.0
+    with your private key file and public cert file, including grant_type=client_credentials,
+    scope (e.g., PIS, AIS, CBPII separated by whitespace), and client_id as form-encoded
+    parameters. The response contains an access_token valid for 15 minutes, which
+    is then used to call the Payments API endpoints.
+  - Mutual TLS (mTLS) authentication is required along with bearer token authorization.
+    Requests must include a private key file (--key) and public certificate file (--cert)
+    for mTLS, an Authorization header with a bearer token obtained from a prior Payment
+    Authorization Grant step, and an X-IBM-Client-Id header containing your application's
+    client-id. Additional required headers include PSU-IP-Address, TPP-Request-ID,
+    and TPP-Transaction-ID for transaction tracking and PSU identification.
+possible_base_urls:
+- information_source; https://developer.handelsbanken.com/api/psd2/guidelines/payments:
+  - https://api.handelsbanken.com
+  - https://api.handelsbanken.com/mlurd/oauth2/token/1.0
+possible_endpoints:
+- information_source; https://developer.handelsbanken.com/api/psd2/guidelines/payments:
+  - GET https://api.handelsbanken.
+  - GET https://api.handelsbanken.com/openbanking/psd2/v1/payments/{paymentproduct}/{paymentId}/status
+  - GET https://secure.handelsbanken.com/bb/gls5/oauth2/authorize/1.0
+  - POST https://api.handelsbanken.com/mlurd/decoupled/mbid/initAuthorization/2.0
+  - POST https://api.handelsbanken.com/mlurd/oauth2/token/1.0
+  - POST https://api.handelsbanken.com/openbanking/psd2/v1/payments/{paymentproduct}
+  - PUT https://api.handelsbanken.com/openbanking/psd2/v1/payments/{paymentproduct}/{paymentId}
+- information_source; https://developer.handelsbanken.com/api/apis/premium/account:
+  - GET /premium/premium-accounts/v1/{orgNr}/accounts[?format=tree]
+  - GET /premium/premium-accounts/{orgNr}/accounts/{accountId}
+  - GET /premium/premium-accounts/{orgNr}/accounts/{accountId}/transactions?dateFrom=&dateTo=

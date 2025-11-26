@@ -1,0 +1,59 @@
+auth_info:
+- information_source; https://docs.seamless.ai:
+  - OAuth2 authentication is required. The API uses OAuth2 for authorization on endpoints
+    like the Poll Company Research endpoint. Credentials must be provided according
+    to OAuth2 standards, though specific header names, token acquisition details,
+    and scopes are not detailed in this documentation excerpt.
+  - OAuth2 authentication is required. To obtain an access token, POST to /oauth/accessToken
+    with a JSON body containing client_id, client_secret, redirect_uri, grant_type
+    set to "authorization_code", code, and refresh_token. The response includes access_token,
+    expires_at, and refresh_token. Use the access_token for subsequent API requests
+    to endpoints like Contact Search.
+  - OAuth2 authorization code flow with client credentials. Exchange an authorization
+    code for access and refresh tokens by posting client_id, client_secret, redirect_uri,
+    grant_type set to authorization_code, and code to https://api.seamless.ai/api/client/v1/oauth/accessToken.
+    Include the returned access_token in the Authorization header as Bearer ACCESS_TOKEN
+    for all authenticated requests. Refresh tokens using the same endpoint with grant_type
+    set to refresh_token and the refresh_token parameter.
+  - OAuth2 is required for authentication. The endpoint uses OAuth2 as the authorization
+    scheme. Include a valid OAuth2 access token in the request to authenticate.
+  - 'OAuth2 is required for this endpoint. Send the access token in the Authorization
+    header as a Bearer token (format: "Authorization: Bearer {access_token}").'
+pagination_info:
+- information_source; https://docs.seamless.ai:
+  - Pagination uses query parameters page (integer, default 1) and limit (integer,
+    max 500, default not specified). The response contains a data array with contact
+    objects. No explicit next/previous fields or stop conditions are documented in
+    the provided response structure.
+  - Use nextToken (string, optional, default null) or deprecated page (integer) parameter
+    in request body for pagination. Response includes nextToken to retrieve subsequent
+    pages. Set limit (integer, optional, default 50) to control page size. Stop paginating
+    when nextToken is not returned in response.
+  - 'page is an optional query parameter (default: 1) and limit is an optional query
+    parameter (maximum: 500, default not specified). Use page to navigate through
+    results; increment page number for subsequent requests. The response contains
+    a data array with company objects.'
+- information_source; https://docs.seamless.ai/:
+  - Pagination uses limit (integer, default 50) and nextToken (string, default null)
+    parameters in the request body. The nextToken from a response should be used in
+    the subsequent request to fetch the next page; the page parameter is deprecated.
+  - Pagination uses query parameters page (integer, default 1) and limit (integer,
+    max 500, default not specified). The response contains a data array with company
+    objects. No explicit next/previous fields or stop conditions are documented.
+possible_base_urls:
+- information_source; https://docs.seamless.ai:
+  - https://api.seamless.ai/api/client/v1
+  - https://api.seamless.ai/api/client/v1/oauth/accessToken
+possible_endpoints:
+- information_source; https://docs.seamless.ai:
+  - GET https://api.seamless.ai/api/client/v1/companies
+  - GET https://api.seamless.ai/api/client/v1/companies/research/poll
+  - GET https://api.seamless.ai/api/client/v1/contacts
+  - GET https://api.seamless.ai/api/client/v1/contacts/research/poll
+  - POST https://api.seamless.ai/api/client/v1/Contact Search
+  - POST https://api.seamless.ai/api/client/v1/companies/research
+  - POST https://api.seamless.ai/api/client/v1/contacts/research
+  - POST https://api.seamless.ai/api/client/v1/oauth/accessToken
+- information_source; https://docs.seamless.ai/:
+  - GET https://api.seamless.ai/api/client/v1/companies
+  - GET https://api.seamless.ai/api/client/v1/companies/research/poll

@@ -1,0 +1,79 @@
+auth_info:
+- information_source; https://docs.openiam.com/docs-4.2.1.3/admin/8-sso/2-oauth2:
+  - OAuth 2.0 authentication using Authorization Code grant flow. Credentials are
+    passed to the authorization server via either Basic Authentication (base64-encoded
+    client_id:client_secret in Authorization header) or Request Body parameters. The
+    system generates a client_id and client_secret upon configuration save. Access
+    tokens expire after the configured idle time (e.g., 30 minutes). Scopes define
+    access limits and are managed as resources. Refresh tokens can be optionally enabled
+    to obtain new access tokens without re-authentication.
+- information_source; https://docs.openiam.com/docs-4.2.1.3/admin/8-sso/3-oidc:
+  - 'OAuth 2.0 / OpenID Connect configuration with the following auth mechanisms:
+    Authorization Grant Flow (Implicit flow selected) to acquire access tokens; Client
+    Authentication Type via Request Body or Basic Authentication to pass credentials
+    to the authorization server; JWT tokens signed with RS-256 algorithm, identified
+    by JWT Issuer value; Scopes limit token access permissions; Access tokens expire
+    after configured idle time (e.g., 30 minutes); Redirect URL required for post-authorization
+    redirect with authorization code or access token; Refresh tokens supported for
+    token renewal. OpenID Connect Discovery URL provides OIDC configuration details.'
+- information_source; https://docs.openiam.com/docs-4.2.1.3/developerguide/2-api/1-createauthprovider:
+  - OAuth 2.0 authentication with Implicit grant flow and Basic Authentication. The
+    client will receive auto-generated clientid and clientsecret credentials. Configure
+    scopes as `[openiam host name]/webconsole/rest/api/*` and `user_name`, with access
+    tokens expiring after 30 minutes of idle time. JWT Issuer identifies the client
+    (e.g., "Postman client"), and OpenID Connect Discovery URL is auto-generated for
+    OIDC application configuration.
+- information_source; https://docs.openiam.com/docs-4.2.1.3/developerguide/2-api/2-postmanconfig:
+  - OAuth 2.0 authentication is required using the Implicit grant type. Configure
+    Postman with clientid and clientsecret variables from your OpenIAM Authentication
+    provider, set Grant type to Implicit, Auth URL to https://[openiam server host]idp/oauth2/authorize,
+    Callback URL to https://postman:1000/callback, and pass auth data via Request
+    headers.
+  - OAuth2 authorization code flow with basic authentication. Auth URL is https://[openiam
+    server host]idp/oauth2/authorize. Use ClientId and Client Secret variables, send
+    credentials as basic auth headers in the authorization request.
+pagination_info:
+- information_source; https://docs.openiam.com/docs-4.2.1.3/developerguide/8-api/access-right:
+  - 'The GET /rest/api/accessrights/search endpoint supports pagination via query
+    parameters: size (integer, optional, controls page size) and from (integer, optional,
+    controls offset). The response schema is BeanResponse, which likely contains pagination
+    metadata, but specific response fields for navigation are not documented here.'
+- information_source; https://docs.openiam.com/docs-4.2.1.3/developerguide/8-api/access-certification:
+  - The GET /rest/api/access-certifications endpoint uses query parameters size (integer)
+    and from (integer) for pagination. The endpoint also supports sortBy and orderBy
+    parameters for sorting. Response schema is BeanResponse but specific pagination
+    fields are not detailed in the documentation provided.
+- information_source; https://docs.openiam.com/docs-4.2.1.3/developerguide/8-api/auth-provider:
+  - The GET /rest/api/authprovider/search endpoint supports offset-based pagination
+    using query parameters from (integer, required offset starting position) and size
+    (integer, required number of results per page). The response schema is BeanResponse,
+    which typically contains paginated results, though specific response fields for
+    navigation are not documented here.
+- information_source; https://docs.openiam.com/docs-4.2.1.3/developerguide/8-api/audit-log:
+  - The API uses offset-based pagination with query parameters `from` (offset, integer
+    int32) and `size` (page size, integer int32) for the GET endpoints `/rest/api/auditlog/get/(id)/children`
+    and `/rest/api/auditlog/get/(id)/children/docs`. Response structure and stopping
+    conditions are not documented.
+  - The GET /rest/api/auditlog/findLogs endpoint uses offset-based pagination with
+    query parameters from (offset, integer, int32) and size (page size, integer, int32)
+    to control pagination. The response structure for pagination fields is not documented
+    in the provided excerpt.
+possible_base_urls:
+- information_source; https://docs.openiam.com/docs-4.2.1.3/developerguide/2-api/2-postmanconfig:
+  - https://[openiam server host]idp/oauth2/authorize
+- information_source; https://docs.openiam.com/docs-4.2.1.3/developerguide/8-api/idp-rest:
+  - /rest/api
+possible_endpoints:
+- information_source; https://docs.openiam.com/docs-4.2.1.3/developerguide/2-api/2-postmanconfig:
+  - GET https://[openiam server host]idp/oauth2/authorize
+- information_source; https://docs.openiam.com/docs-4.2.1.3/developerguide/8-api/access-right:
+  - DELETE /rest/api/accessrights/(id)
+  - GET /rest/api/accessrights/(id)
+  - GET /rest/api/accessrights/new
+  - GET /rest/api/accessrights/search
+  - POST /rest/api/accessrights/save
+- information_source; https://docs.openiam.com/docs-4.2.1.3/developerguide/8-api/access-certification:
+  - DELETE /rest/api/access-certifications/(id)
+  - GET /rest/api/access-certifications
+  - GET /rest/api/access-certifications/(access-certification-id)
+  - GET /rest/api/access-certifications/(access-certification-id)/stats

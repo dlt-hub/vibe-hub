@@ -1,0 +1,80 @@
+auth_info:
+- information_source; https://docs.visier.com/developer/Studio/data/data connectors/data-connectors.htm:
+  - Data connectors authenticate to source systems using service account credentials
+    stored in an encrypted secret store. The specific authentication requirements
+    vary by source system and may include REST API authentication over HTTPS, JDBC
+    database connections, SOAP, or GraphQL APIs, with permissions controlled by the
+    service account's access level in the source system.
+- information_source; https://docs.visier.com/developer/Studio/data/data connectors/databricks/databricks-reqs.htm:
+  - 'Bearer token authentication is used for Delta Sharing. The bearer token is passed
+    in the Authorization header to authorize access to the share endpoint, with an
+    optional expiration time in ISO 8601 format.
+
+
+    Key details: bearerToken field contains the token value (example: test_token),
+    sent as Authorization: Bearer <token> header; endpoint is the Delta Sharing API
+    URL (example: https://oregon.cloud.databricks.com/api/2.0/delta-sharing/.../);
+    expirationTime is optional and indicates when the token expires (example: 2025-05-29T22:00:00.000Z);
+    shareCredentialsVersion indicates the credential format version (currently 1).'
+  - Delta Sharing authentication uses a bearer token provided in a credential file
+    generated during the Databricks share setup. The token is supplied as "bearerToken"
+    in JSON format and should be used in the Authorization header as a Bearer token
+    when making requests to the Delta Sharing endpoint specified in the same credential
+    file.
+- information_source; https://docs.visier.com/developer/Studio/data/data connectors/workday/workday-reqs.htm:
+  - OAuth 2.0 using authorization code grant type with non-expiring refresh token
+    is recommended. Provide Domain name (Workday instance URL), client ID, client
+    secret, and refresh token in connector credential configuration. For basic auth,
+    provide Username and Password. OAuth 2.0 is required for Workday Query Language
+    connector support.
+- information_source; https://docs.visier.com/developer/Studio/data/data connectors/workday/workday-raas-reqs.htm:
+  - OAuth 2.0 authentication requires an API client configured in Workday with authorization
+    code grant type. Provide client ID, client secret, and a non-expiring refresh
+    token. Additionally supply domain name (your Workday instance URL), integration
+    user username and password, and implementation name (tenant ID). Optionally provide
+    an integration system ID for custom attributes. The refresh token should not expire
+    to avoid authentication failures during scheduled Visier jobs.
+pagination_info:
+- information_source; https://docs.visier.com/developer/apis/references/api-reference.htm:
+  - Pagination is controlled by query parameters limit (integer, the maximum number
+    of results to retrieve) and start (integer, the offset index starting at 0). The
+    response includes limit and start fields echoing the request parameters, and connectorCredentials
+    array containing the paginated results. To retrieve the next page, increment start
+    by the previous limit value and repeat the request.
+  - 'Pagination is supported via query parameters: limit (integer, the maximum number
+    of results to retrieve) and start (integer, the offset/index to start from, beginning
+    at 0). The response includes limit and start fields echoing the request parameters.
+    To paginate, increment start by the limit value and repeat the request until fewer
+    results than limit are returned.'
+  - Pagination is used with the GET endpoint for retrieving committed changes. The
+    query parameters limit (default 400) and start (default 0) control pagination,
+    where limit specifies the maximum number of results per request and start specifies
+    the zero-based index to begin returning results from.
+  - Pagination uses a limit query parameter (integer, default 100, maximum 1000) to
+    control the maximum number of data access sets returned. When the number of valid
+    sets exceeds 100, the response status code is 206; to retrieve more than 100 sets,
+    increase the limit parameter value.
+  - Pagination uses limit (integer, query parameter) to specify the maximum number
+    of analytic tenant details to retrieve, and start (integer, query parameter) as
+    the offset index starting from 0. The response includes limit and start fields
+    echoing the request parameters.
+possible_base_urls:
+- information_source; https://docs.visier.com/developer/Studio/data/data connectors/databricks/databricks-reqs.htm:
+  - https://oregon.cloud.databricks.com/api/2.0/delta-sharing/
+- information_source; https://docs.visier.com/developer/Studio/data/data connectors/workday/workday-reqs.htm:
+  - https://impl-services1.wd10.myworkday.com/ccx/api/v1/visier_gms1
+possible_endpoints:
+- information_source; https://docs.visier.com/developer/Studio/data/data connectors/workday/workday-raas-reqs.htm:
+  - GET https://impl-services1.wd10.myworkday.com/ccx/api/v1/visier_gms1
+- information_source; https://docs.visier.com/developer/apis/data-in/direct-data-intake/get-started.htm:
+  - GET https://{vanity_name}.api.visier.io/v1/data/directloads/prod/schemas/Employee_Exit
+- information_source; https://docs.visier.com/developer/apis/apis-get-started-home.htm:
+  - GET https://{vanity_name}.api.visier.io/v1/admin/users
+- information_source; https://docs.visier.com/developer/apis/data-in/direct-data-intake/fundamentals/code-samples.htm:
+  - DELETE https://{vanity_name}.api.visier.io/v1/data/directloads/prod/transactions/0403f38d-7795-4df0-b805-ba3986761a4c
+  - GET https://{vanity_name}.api.visier.io/v1/data/directloads/prod/sc
+  - GET https://{vanity_name}.api.visier.io/v1/data/directloads/prod/schemas/Employee_Exit
+  - GET https://{vanity_name}.api.visier.io/v1/data/directloads/prod/transactions
+  - GET https://{vanity_name}.api.visier.io/v1/data/directloads/prod/transactions/0403f38d-7795-4df0-b805-ba3986761a4c
+  - POST https://{vanity_name}.api.visier.io/v1/data/directloads/pro
+  - POST https://{vanity_name}.api.visier.io/v1/data/directloads/prod/transactions

@@ -1,0 +1,67 @@
+auth_info:
+- information_source; https://api.bol.com/retailer/public/Retailer-API/authentication.html:
+  - 'HTTP Basic authentication is required, using base64-encoded ClientId and ClientSecret
+    concatenated with a colon. Send a POST request to https://login.bol.com/token
+    with grant_type=client_credentials in the body and Content-Type: application/x-www-form-urlencoded
+    header. The response contains an access_token field with a Bearer token that must
+    be extracted and used in subsequent API requests; the token expires in 299 seconds
+    as indicated by expires_in.'
+  - 'JWT token-based authentication. Acquire a JWT token via a prior authentication
+    step, then pass it in the Authorization header as "Bearer <token>" when calling
+    the Retailer API. The token is embedded with expiration information and should
+    be reused across multiple requests rather than requesting a new token per request.
+    Set the Authorization header with value "Bearer <token>" and include Accept: application/json
+    header.'
+  - 'JWT tokens are used for authentication by including them in the Authorization
+    header as a Bearer token. The token format is `Authorization: Bearer [jwt]`, where
+    the JWT is a signed token that cannot be modified without invalidation. Tokens
+    can be introspected for debugging but are read-only; modification will cause signature
+    mismatch and request rejection.'
+- information_source; https://api.bol.com/retailer/public/Retailer-API/intermediary-authorization.html:
+  - 'The bol Retailer API uses OAuth2 bearer token authentication. Send the access
+    token in the Authorization header as `Authorization: Bearer <access_token>`. Tokens
+    expire and are refreshed; use the new refresh token provided with each token response.'
+- information_source; https://api.bol.com/retailer/public/Retailer-API/conventions.html:
+  - The Retailer API uses OAuth2 for authentication. Retrieve a token from an OAuth2
+    server, then include it in the Authorization header as "Bearer <token>" for all
+    authenticated requests. Omitting this header will result in a 403 Forbidden response.
+pagination_info:
+- information_source; https://api.bol.com/advertiser/docs/redoc/sponsored-products/v11/campaign-management.html:
+  - Pagination uses optional query parameter page (integer, >= 1, default 1) to request
+    specific pages. Response includes page field indicating current page number. Continue
+    paginating by incrementing page parameter until no more results are returned.
+  - Pagination uses page and pageSize parameters in the request body. page is the
+    page number (starting at 1) and pageSize is the number of results per page. The
+    response contains an ads array with the paginated results, but does not include
+    fields indicating total pages, has_more, or next page information.
+  - 'The pagination parameters are passed in the request body: page (required, integer
+    starting at 1) and pageSize (required, integer for results per page). The response
+    does not include pagination metadata or navigation fields; only the adGroups array
+    is returned.'
+- information_source; https://api.bol.com/advertiser/docs/redoc/sponsored-products/v11/budget-management.html:
+  - Pagination is controlled by page (required, starts at 1) and pageSize (required)
+    parameters in the request body. The response contains a campaignBudgets array
+    but does not indicate total pages, next page markers, or stopping conditions,
+    so pagination navigation rules are unclear from this documentation.
+- ? information_source; https://api.bol.com/retailer/public/Retailer-API/v11/functional/advertising-api/campaign-management/campaigns.html
+  : - Pagination uses `page` and `pageSize` parameters in the request body. The `page`
+      parameter specifies which page to retrieve, and `pageSize` specifies the number
+      of results per page, with a maximum limit of 50 for `pageSize`. The response
+      returns a `campaigns` array containing the paginated results.
+possible_base_urls:
+- information_source; https://api.bol.com/retailer/public/Retailer-API/authentication.html:
+  - https://api.bol.com
+  - https://api.bol.com/retailer
+possible_endpoints:
+- information_source; https://api.bol.com/retailer/public/Retailer-API/authentication.html:
+  - GET https://api.bol.com/retailer/orders
+  - POST https://login.bol.com/token
+- information_source; https://api.bol.com/retailer/public/Retailer-API/conventions.html:
+  - DELETE /retailer/offers/
+  - DELETE /retailer/offers/<offer-id>
+  - DELETE /retailer/orders/<order-id>
+  - DELETE /retailer/transports/<transport-id>
+  - GET /retailer/offers
+  - GET /retailer/offers/<offer-id>
+  - GET /retailer/orders
+  - GET /retailer/orders/<order-id>

@@ -1,0 +1,64 @@
+auth_info:
+- information_source; https://help.feefo.com/knowledge-base/how-to-connect-using-an-oauth-2.0-token:
+  - Feefo uses OAuth2 client credentials grant type for authentication. Send a POST
+    request to https://api.feefo.com/api/oauth/v2/token with client_id, client_secret,
+    and grant_type set to "client_credentials" in either JSON or form-urlencoded format.
+    The response contains an access_token with a bearer token_type and expires_in
+    value in seconds. Use the access_token by adding an Authorization header to subsequent
+    API requests. When the token expires, request a new one by repeating the token
+    creation request.
+- information_source; https://help.feefo.com/knowledge-base/reevoo-reviews-api-migration:
+  - Bearer token authentication is required. Generate a token from your Feefo App
+    Keys in Hub settings, then include it in the Authorization header as "Bearer TOKENGENERATED"
+    for all API requests.
+  - Feefo APIs use OAuth 2.0 bearer token authentication. You must include a bearer
+    token in the Authorization header, generated from secure credentials stored in
+    your Feefo Hub account App Keys settings. Additionally, all requests require a
+    merchant identifier to be provided in the request parameters, which is the unique
+    identifier for your Feefo Hub account.
+  - The Fast Response API uses bearer token authentication. Include an Authorization
+    header with the value "Bearer TOKENGENERATED" when making POST requests to reply
+    to reviews. The token must be obtained separately and included in the request
+    header.
+- information_source; https://help.feefo.com/knowledge-base/reviews-api:
+  - Authentication is not required for the Reviews API endpoints. The API supports
+    public access modes (all, service, product) that do not require credentials to
+    retrieve review data.
+pagination_info:
+- information_source; https://help.feefo.com/knowledge-base/reevoo-reviews-api-migration:
+  - Pagination uses query parameters page (required, starts at 1) and page_size (required,
+    set to 100 in examples) to control paginated requests. The documentation does
+    not specify response fields indicating pagination state or how to determine when
+    to stop paginating.
+  - Results are paginated using query parameters page and page_size, where page defaults
+    to 1 and page_size can be set (example shows 100). Pagination metadata is included
+    in the response, indicating total pages and current page information to determine
+    when to stop paginating.
+- information_source; https://help.feefo.com/knowledge-base/reviews-api-detail:
+  - Use the limit and offset query parameters to paginate results. The limit parameter
+    controls page size (default and maximum values not specified in excerpt), and
+    offset specifies the starting position. Continue requesting with incremented offset
+    values until fewer results than the limit are returned, indicating the final page.
+- information_source; https://help.feefo.com/knowledge-base/reviews-api-summary-response:
+  - The API uses offset-based pagination with page and page_size parameters. Response
+    includes meta.count (total items), meta.pages (total pages), and meta.page_size
+    (20 items per page). Construct subsequent requests by incrementing the page parameter
+    until reaching meta.pages.
+possible_base_urls:
+- information_source; https://help.feefo.com/knowledge-base/api-integration:
+  - https://api.feefo.com/api/20/products/ratings
+  - https://api.feefo.com/api/20/reviews/
+possible_endpoints:
+- information_source; https://help.feefo.com/knowledge-base/api-integration:
+  - GET https://api.feefo.com/api/20/products/ratings?
+  - GET https://api.feefo.com/api/20/reviews/
+  - GET https://api.feefo.com/api/20/reviews/summary/
+  - GET https://api.feefo.com/api/version/reviews/summary/all
+- information_source; https://help.feefo.com/knowledge-base/how-to-connect-using-an-oauth-2.0-token:
+  - POST https://api.feefo.com/api/oauth/v2/token
+- information_source; https://help.feefo.com/knowledge-base/reevoo-reviews-api-migration:
+  - GET https://api.feefo.com/api/20/products/ratings
+  - GET https://api.feefo.com/api/20/reviews/all?merchant_identifier=MERCHANTIDENTIFIER&since_period=all&full_thread=include&page_size=100&page=1
+  - GET https://api.feefo.com/api/20/reviews/product?merchant_identifier=MERCHANTIDENTIFIER&since_period=all&full
+  - GET https://api.feefo.com/api/20/reviews/summary/all?merchant_identifier=MERCHANTIDENTIFIER&since_period=all
+  - POST https://api.feefo.com/api/20/review/ALPHA-NUMERIC-ID-FROM-REVIEW-CONTENT/reply

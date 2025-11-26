@@ -1,0 +1,71 @@
+auth_info:
+- information_source; https://foundations-documentation.reapit.cloud/api/api-documentation:
+  - 'OAuth2 client credentials flow with base64-encoded Basic authentication. To obtain
+    an access token, send a POST request with `Content-Type: application/x-www-form-urlencoded`
+    and set the `Authorization` header to `Basic <base64 secret>` where base64 secret
+    is the base64 encoding of `client_id:client_secret` (credentials obtained from
+    the developer portal). The response includes an `access_token` with `token_type:
+    Bearer` and `expires_in` in seconds. Use the access token by including `Authorization:
+    Bearer <access_token>` in subsequent requests to protected endpoints. For accessing
+    customer data via client credentials flow, also include the `reapit-customer`
+    header set to the customer''s unique id.'
+- information_source; https://foundations-documentation.reapit.cloud/api/graphql:
+  - The GraphQL service requires two custom HTTP headers for authentication. The authorization
+    header must contain an idToken and the reapit-connect-token header must contain
+    an accessToken, both obtained from a Reapit Connect session using the Authorization
+    Code flow. Client Credentials flow is not supported. Scopes for your clientId
+    must map directly to the downstream platform endpoints queried by GraphQL.
+- information_source; https://foundations-documentation.reapit.cloud/api/reapit-connect:
+  - Access tokens from Reapit Connect expire after 60 minutes and are validated using
+    JWT verification against well-known keys fetched from the issuer's `/.well-known/jwks.json`
+    endpoint. To refresh an expired access token, send a POST request to `https://connect.reapit.cloud/token`
+    with Content-Type `application/x-www-form-urlencoded` and include the `client_id`
+    and refresh token in the request payload. The `userInfo` endpoint at `https://connect.reapit.cloud/oauth2/userInfo`
+    requires the access token to be included in the request to retrieve user identity
+    information.
+  - OAuth 2.0 Authorization Code Grant flow is used. Your application redirects users
+    to https://connect.reapit.cloud/authorize with response_type=code and client_id
+    parameters. After user authentication, Reapit Connect redirects back to your registered
+    redirect URL with an authorization code in the query string, which your application
+    exchanges for tokens via REST API call. A client_id is issued upon app registration
+    in the developer portal. Customer administrators grant permissions (scopes) during
+    AppMarket installation. Sandbox testing uses developer portal credentials without
+    requiring customer installation.
+  - Reapit Connect uses OAuth2 authorization code flow. Direct users to Reapit Connect
+    with client_id, redirect_uri, and state parameters. After user authentication,
+    extract the authorization code from the redirect URL callback. Exchange the code
+    for JWT tokens by sending a POST request to https://connect.reapit.cloud/token
+    with Content-Type application/x-www-form-urlencoded, including client_id, code,
+    grant_type set to authorization_code, and redirect_uri. Authorization codes expire
+    10 minutes after issuance and can only be exchanged once. The response contains
+    JWT tokens for authenticating subsequent API requests to Foundations resources.
+pagination_info:
+- information_source; https://foundations-documentation.reapit.cloud/api/api-documentation:
+  - The APIs use offset-based pagination with pageSize and pageNumber query parameters.
+    pageSize specifies results per page and pageNumber specifies which page to retrieve
+    (for example pageSize=10&pageNumber=2 returns the second page of ten results).
+    These parameters are required for top-level APIs and must be URL encoded.
+- information_source; https://foundations-documentation.reapit.cloud/whats-new:
+  - Use pageSize and pageNumber as query parameters to paginate through journal entries
+    on the GET /journalEntries/landlords endpoint. The documentation does not specify
+    response fields indicating pagination state or stopping conditions.
+possible_base_urls:
+- information_source; https://foundations-documentation.reapit.cloud/api/api-documentation:
+  - https://foundations-documentation.reapit.cloud
+- information_source; https://foundations-documentation.reapit.cloud/api/graphql:
+  - https://graphql.reapit.cloud/graphql
+possible_endpoints:
+- information_source; https://foundations-documentation.reapit.cloud/api/api-documentation:
+  - GET /contact/{id}
+  - GET /contacts/OXF18000001/?embed=offices&embed=negotiators
+  - POST /documents/signedUrl
+  - POST /identityChecks
+  - POST /propertyImages
+- information_source; https://foundations-documentation.reapit.cloud/api/graphql:
+  - POST https://graphql.reapit.cloud/graphql
+- information_source; https://foundations-documentation.reapit.cloud/api/reapit-connect:
+  - GET ${issuer}/.well-known/jwks.json
+  - GET https://connect.reapit.cloud/oauth2/userInfo
+  - POST https://connect.reapit.cloud/token
+- information_source; https://foundations-documentation.reapit.cloud/platform-glossary:
+  - GET /documents/{id}/download

@@ -1,0 +1,59 @@
+auth_info:
+- information_source; https://developer.genesys.cloud/api/digital/webmessaging/websocketapi:
+  - 'JWT bearer token authentication is required. Send the JWT in the Authorization
+    header as `Authorization: Bearer <token>`. The `Origin` header with the domain
+    the consumer is browsing is also required.'
+- information_source; https://developer.genesys.cloud/devapps/api-explorer:
+  - OAuth 2.0 client credentials flow is required, with the OAuth token authorized
+    for at least the messaging scope. The token should be passed in the Authorization
+    header as a Bearer token.
+  - OAuth token generated using OAuth client credentials with at least messaging scope.
+    Send the token in the Authorization header as a Bearer token.
+  - 'OAuth2 is used for authentication. Clients must be created with one of three
+    grant types: CODE (requires client ID and client secret, for web servers), TOKEN/IMPLICIT
+    (for browser/mobile apps without secure secret storage), or CLIENT-CREDENTIALS
+    (for non-user contexts, requiring roleIds assignment). Authentication tokens are
+    generated using the OAuth Grant/Client credentials to access PureCloud.'
+  - OAuth2 token is required for the message and reaction ingestion endpoints. The
+    token must be generated using OAuth client credentials flow and must include at
+    least the social scope. Send the token in the Authorization header as a Bearer
+    token.
+pagination_info:
+- information_source; https://developer.genesys.cloud/api/digital/webmessaging/websocketapi:
+  - Use query parameters pageSize and pageNumber to paginate through message history
+    via GET /api/v2/webmessaging/messages. The response returns message entities in
+    an array; construct subsequent requests by incrementing pageNumber while keeping
+    pageSize constant.
+- information_source; https://developer.genesys.cloud/devapps/api-explorer:
+  - Gets a paged list of alerts. Query parameter limit controls page size with maximum
+    of 50. Response includes pagination fields to navigate through results, though
+    exact field names are not specified in the provided documentation.
+  - Pagination is used with cursor-based navigation on the /api/v2/authorization/divisions/query
+    endpoint. Use the "after" parameter to fetch the next page and "before" parameter
+    to fetch the previous page.
+  - Pagination uses a cursor-based approach via the `nextUri` field in the response.
+    Clients should continue sending requests using the `nextUri` value until it is
+    no longer present in the response, at which point all items have been returned.
+    The `nextUri` is already URL encoded and should not be re-encoded.
+  - Pagination uses a cursor-based approach with the 'nextUri' field in the response.
+    Clients should continue sending requests using the 'nextUri' value from each response
+    until 'nextUri' is no longer present, indicating all items have been returned.
+    The 'nextUri' is already URL encoded and should not be encoded again.
+possible_base_urls:
+- information_source; https://developer.genesys.cloud/api/digital/webmessaging/websocketapi:
+  - https://api.mypurecloud.com/api/v2
+- information_source; https://developer.genesys.cloud/devapps/api-explorer:
+  - /api/v2
+possible_endpoints:
+- information_source; https://developer.genesys.cloud/api/digital/webmessaging/websocketapi:
+  - GET /api/v2/webmessaging/messages
+- information_source; https://developer.genesys.cloud/devapps/api-explorer:
+  - DELETE /api
+  - DELETE /api/v2/
+  - DELETE /api/v2/alerting/alerts/all
+  - DELETE /api/v2/alerting/alerts/{alertId}
+  - DELETE /api/v2/alerting/rules/{ruleId}
+  - DELETE /api/v2/analytics/conversations/details/jobs/{jobId}
+  - DELETE /api/v2/analytics/users/details/jobs/{jobId}
+  - DELETE /api/v2/architect/emergencygroups/{emergencyGroupId}
+  - DELETE /api/v2/architect/grammars/{grammarId}

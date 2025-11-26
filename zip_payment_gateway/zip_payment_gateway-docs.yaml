@@ -1,0 +1,41 @@
+auth_info:
+- information_source; https://docs.us.zip.co/docs/api-implementation:
+  - All operations require HMAC-SHA256 signatures using a shared secret key provided
+    by Zip. For POST JSON requests, sign the entire request body. For POST Form and
+    GET requests, sign all keys and values in alphabetical order excluding the signature
+    itself. The signature is sent via the X-QP-Signature header or query parameter
+    as a Base64-encoded string.
+  - The authentication mechanism uses a Merchant ID provided by Zip. Include the merchantId
+    field in the POST request body to the /orders/authorize endpoint; this serves
+    as your merchant credential for identifying your account with Zip.
+  - Use HMAC-SHA256 signature-based authentication. Exclude the X-QP-Signature parameter
+    from the cryptographic hash, sort all remaining query parameters or form data
+    alphabetically by key name, concatenate the sorted keys and values without separators,
+    and generate the signature using the merchant's API secret via HMAC-SHA256. The
+    X-QP-Signature parameter is then included in the request for validation.
+- information_source; https://docs.us.zip.co/reference/overview:
+  - The API uses Bearer token authentication. Retrieve the API key from configuration
+    key 'ZipAPIKey' and add it to the Authorization header as "Bearer {apiKey}". For
+    idempotent requests, include an additional Idempotency-Key header with a unique
+    value (V4 UUID recommended) on POST requests.
+  - The Zip API uses a secure API key for authentication to identify and authorize
+    merchants. API keys are provided upon registration and must be kept secure, though
+    the documentation does not specify the exact header name, parameter name, or method
+    for transmitting the key in requests.
+possible_base_urls:
+- information_source; https://docs.us.zip.co/docs/api-implementation:
+  - https://api.merchant.com
+  - https://gateway.us.zip.co
+possible_endpoints:
+- information_source; https://docs.us.zip.co/docs/api-implementation:
+  - POST https://gateway.us.zip.co/orders/authorize
+  - POST https://gateway.us.zip.co/orders/{orderId}/capture
+  - POST https://gateway.us.zip.co/orders/{orderId}/confirm
+  - POST https://gateway.us.zip.co/orders/{orderId}/refund
+  - POST https://gateway.us.zip.co/orders/{orderId}/void
+- information_source; https://docs.us.zip.co/reference/overview:
+  - GET https://api.sandbox.zipmoney.com.au/merchant/v1
+  - GET https://api.zipmoney.com.au/merchant/v1
+  - GET https://global-api.prod.au.edge.zip.co/merchant
+  - GET https://global-api.sand.au.edge.zip.co/merchant
+  - GET https://global-api.sand.au.edge.zip.co/merchant/checkouts/

@@ -1,0 +1,53 @@
+auth_info:
+- information_source; https://www.challengermode.com/developers/docs/auth-api/reference/user?lang=en:
+  - 'The API supports two bearer token authentication schemes sent via the Authorization
+    header. AccessKey tokens are used for server authentication, while personal access
+    tokens are used for user authentication. Both are passed using the Authorization
+    Bearer scheme (format: Authorization: Bearer {token}).'
+- information_source; https://www.challengermode.com/developers/docs/auth-api/server-authentication:
+  - Bearer token authentication is used to call authorized endpoints. Include the
+    access token obtained from authentication in the Authorization header with the
+    format "Bearer <access_token>". The access token is a JWT that expires at the
+    time specified in the expiresAt field returned during token acquisition.
+  - 'Bot authentication uses short-lived BOT access tokens obtained by exchanging
+    a long-lived Refresh Key. The Refresh Key is created in the Application Dashboard,
+    and exchanged via POST /v1/auth/access_keys to get a BOT token with a default
+    20-minute lifetime.
+
+
+    To authenticate requests: include the BOT access token in the Authorization header
+    (standard bearer token format). The Refresh Key is a long-lived credential stored
+    securely and used server-side to obtain new access tokens when needed.'
+  - 'Use a long-lived refresh key (generated in the Application Dashboard and stored
+    securely) to request a short-lived bot access token via the POST /v1/auth/access_keys
+    endpoint. The access token is a JWT that grants access to specific API resources.
+
+
+    Key details: Refresh key is a base64-encoded string shown only once during creation.
+    Exchange it with the /v1/auth/access_keys endpoint to obtain a JWT access token
+    (value field) that is short-lived and used for subsequent API requests.'
+- information_source; https://www.challengermode.com/developers/docs/auth-api/user-authentication?lang=en:
+  - OAuth2 device code flow with periodic token endpoint polling. Send POST requests
+    to https://challengermode.com/oauth/token with Content-Type application/x-www-form-urlencoded
+    containing device_code, client_id (your application ID), and grant_type set to
+    urn:ietf:params:oauth:grant-type:device_code. The endpoint returns authorization_pending
+    until user completes verification on their device, then returns access tokens.
+    For token refresh, request the offline_access scope in the authorize URL to receive
+    a refresh token valid for 3 months, which can be exchanged for new PAT tokens
+    without re-authentication.
+possible_base_urls:
+- information_source; https://www.challengermode.com/developers/docs/auth-api/reference/user?lang=en:
+  - https://publicapi.challengermode.com/mk1
+- information_source; https://www.challengermode.com/developers/docs/auth-api/server-authentication:
+  - https://publicapi.challengermode.com/mk1/v1
+possible_endpoints:
+- information_source; https://www.challengermode.com/developers/docs/auth-api/reference/user?lang=en:
+  - GET /v1/me/userinfo
+  - GET https://publicapi.challengermode.com/mk1/v1/me/userinfo
+- information_source; https://www.challengermode.com/developers/docs/auth-api/server-authentication:
+  - GET https://publicapi.challengermode.com/mk1/v1/tournaments/8e1ae7b7-683a-44c7-290e-08d89c6e5cd2
+  - POST /v1/auth/access_keys
+  - POST /v1/me/userinfo
+  - POST Me
+- information_source; https://www.challengermode.com/developers/docs/auth-api/user-authentication?lang=en:
+  - POST https://challengermode.com/oauth/token

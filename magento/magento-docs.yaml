@@ -1,0 +1,51 @@
+auth_info:
+- ? information_source; https://emmo.net.co/articles/post/how-to-obtain-an-admin-token-via-rest-api-in-magento-24-with-two-factor-authentication-2fa-enabled.html
+  : - 'Bearer token authentication is required for API requests. Obtain an admin token
+      via POST request (using a provider-specific endpoint for 2FA-enabled systems),
+      then include it in the Authorization header as "Authorization: Bearer <ACCESS_TOKEN>"
+      for subsequent requests. Alternatively, create an integration token in the Magento
+      Admin panel under System > Extensions > Integrations.'
+    - 'Magento 2.4+ with 2FA enabled requires using provider-specific endpoints instead
+      of the standard token endpoint. For Google Authenticator, send a POST request
+      to /rest/V1/tfa/provider/google/authenticate with Content-Type: application/json
+      header and a JSON body containing username, password, and otp (six-digit code
+      from Google Authenticator). The response will contain the admin token needed
+      for subsequent API requests.'
+    - 'To authenticate and obtain an admin token with 2FA enabled, use POST /rest/V1/tfa/provider/google/authenticate
+      with your admin username, password, and six-digit OTP from Google Authenticator.
+      Include the resulting admin token in subsequent API requests using the Authorization
+      header as Authorization: Bearer <ACCESS_TOKEN>. Admin tokens are valid for 4
+      hours by default and can be configured under Stores > Settings > Configuration
+      > Services > OAuth > Access Token Expiration. Alternatively, create an integration
+      token via System > Extensions > Integrations in the Admin panel to bypass 2FA
+      requirements.'
+- information_source; https://emmo.net.co/articles/post/resolving-two-factor-authentication-issues-in-magento-24.html:
+  - Two-Factor Authentication (2FA) in Magento requires a six-digit code from an authenticator
+    app (such as Google Authenticator) in addition to username and password credentials.
+    To generate an admin API token with 2FA enabled, send a POST request to `/rest/V1/tfa/provider/google/authenticate`
+    with username, password, and the current six-digit authenticator code. The QR
+    code provided during 2FA setup must be scanned into the authenticator app to enable
+    code generation for login and token requests.
+  - Two-Factor Authentication (2FA) is required for admin token generation. POST to
+    `<BASE_URL>/rest/V1/tfa/provider/google/authenticate` with JSON body containing
+    username, password, and otp (six-digit code from authenticator app). The response
+    includes an access_token that must be sent in the Authorization header as "Bearer
+    <ACCESS_TOKEN>" for subsequent API requests.
+possible_base_urls:
+- information_source; https://emmo.net.co/articles/post/magento-2-update-product-stock-inventory-using-rest-api.html:
+  - https://magento2.example.com/rest
+  - https://magento2.example.com/rest/V1
+possible_endpoints:
+- ? information_source; https://emmo.net.co/articles/post/how-to-obtain-an-admin-token-via-rest-api-in-magento-24-with-two-factor-authentication-2fa-enabled.html
+  : - POST /rest/V1/tfa/provider/google/authenticate
+    - POST <BASE_URL>/rest/V1/integration/admin/token
+    - POST <BASE_URL>/rest/V1/tfa/provider/google/authenticate
+- information_source; https://emmo.net.co/articles/post/resolving-two-factor-authentication-issues-in-magento-24.html:
+  - POST /rest/V1/tfa/provider/google/authenticate
+  - POST <BASE_URL>/rest/V1/tfa/provider/google/authenticate
+- information_source; https://emmo.net.co/articles/post/magento-2-update-product-stock-inventory-using-rest-api.html:
+  - GET /V1/stockItems/24-MB01
+  - GET /V1/stockItems/:SKU
+  - GET /V1/stockItems/:sku
+  - GET https://magento2.example.com/rest/V1/stockItems/24-MB01
+  - POST /V1/integration/admin/token

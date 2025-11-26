@@ -1,0 +1,51 @@
+auth_info:
+- information_source; https://support.threatdown.com/hc/en-us/articles/30353265633939-OneView-API-examples-using-PowerShell:
+  - The API uses OAuth2 client credentials flow for authentication. POST to the /oauth2/token
+    endpoint with a Basic Authorization header containing Base64-encoded ClientID:ClientSecret,
+    and a request body with grant_type set to 'client_credentials' and a scope parameter.
+    The response contains access_token and expires_in fields that should be used for
+    subsequent API requests.
+  - The API uses a token-based authentication scheme where credentials are passed
+    via a OneView.Token object that contains a Headers property. The token is extracted
+    from the OneViewToken parameter (a PSTypeName of 'OneView.Token') and its Headers
+    are included in the Invoke-RestMethod call as the -Headers argument for authentication.
+  - The authentication uses a OneView token object passed as a mandatory parameter.
+    The token's Headers property is extracted and sent with the REST API request via
+    the -Headers parameter of Invoke-RestMethod. The token object must be of type
+    OneView.Token and is typically obtained through a prior authentication step with
+    the OneView API.
+  - This API uses OAuth2 client credentials flow for authentication. Obtain a token
+    by calling Get-OneViewToken with a ClientID (UUID format) and ClientSecret (64-character
+    hex string), optionally specifying a Scope parameter (defaults to 'read write
+    execute') and BaseUrl (defaults to 'https://api.malwarebytes.com/oneview'). The
+    returned token is then used for subsequent API requests.
+  - Use the OneView.Token object obtained from Get-OneViewToken with ClientID and
+    ClientSecret. Pass the token's Headers property in the -Headers parameter of Invoke-RestMethod
+    requests. The token contains the necessary authentication credentials for API
+    calls to Malwarebytes OneView endpoints.
+pagination_info:
+- information_source; https://support.threatdown.com/hc/en-us/articles/30353265633939-OneView-API-examples-using-PowerShell:
+  - Pagination is used when gathering all users from OneView. The function iterates
+    through a paginated response, but the specific pagination parameters, response
+    fields, and navigation mechanism are not detailed in the provided documentation
+    excerpt.
+- ? information_source; https://support.threatdown.com/hc/en-us/articles/35082574965011-API-Example-Get-endpoints-not-seen-for-more-than-24-hours
+  : - Use cursor-based pagination with pageSize (query parameter, optional, controls
+      number of results per request) and nextCursor (query parameter, optional, token
+      from previous response). Response includes nextCursor field; when null, pagination
+      is complete. Construct next request by passing the nextCursor value as the nextCursor
+      parameter.
+possible_base_urls:
+- information_source; https://support.threatdown.com/hc/en-us/articles/30353265633939-OneView-API-examples-using-PowerShell:
+  - https://api.malwarebytes.com/oneview
+  - https://api.malwarebytes.com/oneview/v1
+possible_endpoints:
+- information_source; https://support.threatdown.com/hc/en-us/articles/30353265633939-OneView-API-examples-using-PowerShell:
+  - GET https://api.malwarebytes.com/oneview/v1/accounts/{NebulaAccountId}/groups
+  - GET https://api.malwarebytes.com/oneview/v1/sites
+  - GET https://api.malwarebytes.com/oneview/v2/sites/$($SiteID)/subscriptions
+  - POST https://api.malwarebytes.com/oneview
+  - POST https://api.malwarebytes.com/oneview/oauth2/token
+- ? information_source; https://support.threatdown.com/hc/en-us/articles/35082574965011-API-Example-Get-endpoints-not-seen-for-more-than-24-hours
+  : - GET https://api.malwarebytes.com/oneview/v1/sites
+    - POST https://api.malwarebytes.com/oneview/oauth2/token

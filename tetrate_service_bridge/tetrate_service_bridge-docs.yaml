@@ -1,0 +1,41 @@
+auth_info:
+- information_source; https://docs.tetrate.io/service-bridge/1.11.x/reference/rest-api/guide:
+  - 'TSB REST API uses two authentication mechanisms: basic authentication via the
+    HTTP Authorization header with base64-encoded username:password, and JWT token
+    authentication. For basic auth, send the Authorization header with value "Basic
+    base64(username:password)".'
+  - 'The API supports two authentication methods. Basic Authentication uses the Authorization
+    header with base64-encoded username:password credentials formatted as "Authorization:
+    Basic base64(username:password)". JWT Token Authentication uses the x-tetrate-token
+    header to send a JWT token, for example "x-tetrate-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...".'
+- ? information_source; https://docs.tetrate.io/service-bridge/1.12.x/howto/gateway/application-gateway-with-openapi-annotations
+  : - Basic authentication is required using username and password credentials passed
+      via the curl -u flag, which translates to an Authorization header with Basic
+      auth encoding. The credentials are used for rate limiting purposes where different
+      users (alice, bob) have different rate limit quotas.
+- information_source; https://docs.tetrate.io/service-bridge/1.12.x/operations/users/oidc-azure:
+  - AzureAD OAuth2 client credentials grant flow is used for service principal authentication.
+    Obtain a token by sending a POST request to https://login.microsoftonline.com/<directoryID>/oauth2/token
+    with grant_type=client_credentials, client_id, client_secret, and resource parameters,
+    then pass the resulting access_token to tctl login --use-token-exchange --access-token
+    <token>. The client_id must match the tokenExchange.clientId configured in ManagementPlane.
+    Device code login is also supported via tctl login --use-device-code for end-user
+    OIDC authentication.
+- information_source; https://docs.tetrate.io/service-bridge/1.12.x/howto/gateway/end-user-auth-keycloak:
+  - Bearer token authentication is required. Send access tokens in the Authorization
+    header as "Bearer <access_token>". Different user roles (e.g., admin, normal)
+    have different endpoint access permissions enforced by the authorization policy.
+possible_base_urls:
+- ? information_source; https://docs.tetrate.io/service-bridge/1.12.x/howto/gateway/application-gateway-with-openapi-annotations
+  : - https://httpbin.tetrate.com
+- information_source; https://docs.tetrate.io/service-bridge/1.12.x/howto/gateway/end-user-auth-keycloak:
+  - https://httpbin.tetrate.com
+possible_endpoints:
+- information_source; https://docs.tetrate.io/envoy-gateway/howto/eg-and-istio:
+  - GET /httpbin/get
+- information_source; https://docs.tetrate.io/service-bridge/1.12.x/knowledge-base/faq:
+  - GET http://localhost:15021/healthz/ready
+- information_source; https://docs.tetrate.io/service-bridge/1.12.x/howto/gateway/end-user-auth-keycloak:
+  - GET /get
+  - GET /status/*
+  - GET /status/200
