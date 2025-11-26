@@ -1,0 +1,42 @@
+auth_info:
+- information_source; https://docs.brightsign.biz/developers/2025-api-usage-guide:
+  - Authentication uses Bearer token scheme. Include the access token in the Authorization
+    header as "Bearer [accessToken]" for all requests to select network by ID or name.
+  - Bearer token authentication is required. Send an access token in the Authorization
+    header as "Bearer [accessToken]". Client secrets expire every 180 days and can
+    be rotated via API or UI; when rotated, a new secret is returned immediately and
+    the old secret continues working temporarily before requiring the new one.
+  - OAuth2 authorization code flow is used for authentication. Obtain an access token
+    from https://auth.bsn.cloud/realms/bsncloud/protocol/openid-connect/token, then
+    include it in subsequent API requests using the Authorization header with Bearer
+    scheme. The token response contains access_token, expires_in, and scope fields.
+    All API requests require the Authorization header formatted as "Bearer [accessToken]".
+- information_source; https://docs.brightsign.biz/developers/diagnostic-web-server-apis:
+  - Local DWS APIs use username and password authentication, not OAuth bearer tokens.
+    Credentials are sent as basic auth (HTTP Authorization header with base64-encoded
+    username:password). Remote DWS APIs use bearer tokens for BSN.cloud authentication,
+    sent in the Authorization header.
+- information_source; https://docs.brightsign.biz/developers/main-api-version-202206:
+  - BSN.cloud API uses OAuth2 protocol with customizations for person, user, and network
+    entity authentication. The base URL for authentication and API requests is https://api.bsn.cloud/2022/06/REST,
+    and the implementation distinguishes between person (customer), user (person instance
+    in a network), and network (company) entities. Refer to the person and user entity
+    documentation for specific token acquisition and credential management workflows.
+possible_base_urls:
+- information_source; https://docs.brightsign.biz/developers/2025-api-usage-guide:
+  - https://api.bsn.cloud
+  - https://api.bsn.cloud/2022/06/REST/Self/Applications/{id}/Secret/
+possible_endpoints:
+- information_source; https://docs.brightsign.biz/developers/202010-to-202206:
+  - GET ~/2022/06/REST/Self/Networks/{networkId}/
+  - GET ~/2022/06/REST/Self/Networks/{networkId}/Subscription/
+- information_source; https://docs.brightsign.biz/developers/2025-api-usage-guide:
+  - POST https://api.bsn.cloud/2022/06/REST/Self/Applications/{id}/Secret/
+  - POST https://auth.bsn.cloud/realms/bsncloud/protocol/openid-connect/token
+  - PUT https://api.bsn.cloud/2022/06/REST/Self/Session/Network
+- information_source; https://docs.brightsign.biz/developers/main-api-version-202206:
+  - DELETE https://api.bsn.cloud/2022/06/REST
+  - GET https://api.bsn.cloud/2022/06/REST
+  - PATCH https://api.bsn.cloud/2022/06/REST
+  - POST /Token
+  - POST /Token/

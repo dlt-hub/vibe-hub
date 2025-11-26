@@ -1,0 +1,63 @@
+auth_info:
+- information_source; https://thinketl.com/how-to-access-informatica-cloud-iics-rest-api-using-postman/:
+  - 'Informatica Intelligent Cloud Services uses credential-based login via a POST
+    request to obtain session tokens. Submit username and password in a JSON request
+    body to the login endpoint, then extract serverUrl and icSessionId from the response
+    to use in subsequent API calls.
+
+
+    Request Method: POST
+
+    Request URL: https://dm-us.informaticacloud.com/ma/api/v2/user/login
+
+    Headers: Content-Type application/json, Accept application/json
+
+    Body (JSON): @type field set to "login", username field with email address, password
+    field with user password
+
+    Response: Returns icSessionId and serverUrl tokens required for authenticating
+    subsequent requests'
+- information_source; https://thinketl.com/introduction-to-snowflake-sql-rest-api-using-postman/:
+  - JWT key pair authentication is required for SQL REST API requests. Generate a
+    public-private key pair using OpenSSL, assign the public key to your Snowflake
+    user account, and store the private key locally. The private key is used to sign
+    JWT tokens that authenticate API requests. OAuth is also supported as an alternative
+    authentication method.
+  - 'Snowflake SQL REST API uses Bearer token authentication with JWT. Send the JWT
+    token in the Authorization header as "Authorization: Bearer <jwt_token>" and include
+    the header "X-Snowflake-Authorization-Token-Type: KEYPAIR_JWT" to specify the
+    token type.'
+  - 'Snowflake SQL REST API uses JWT bearer token authentication. Send the JWT token
+    in the Authorization header as "Bearer <jwt_token>" and include the header "X-Snowflake-Authorization-Token-Type:
+    KEYPAIR_JWT" to specify the token type. The Content-Type and Accept headers should
+    both be set to "application/json".'
+  - Snowflake SQL REST API uses Key Pair Authentication with JWT tokens. Generate
+    a public-private key pair using OpenSSL, assign the public key to your Snowflake
+    user, and store the private key locally. Generate a time-limited JWT token using
+    the SnowSQL command with account identifier, username, and private key path. Send
+    the JWT token in the Authorization header as "Bearer <jwt_token>" with each API
+    request.
+pagination_info:
+- information_source; https://thinketl.com/snowflake-snowpipe-rest-api/:
+  - The insertReport endpoint uses marker-based pagination. The beginMark query parameter
+    (optional, returned from previous calls) is used to reduce repeated events. The
+    response includes a nextBeginMark field that should be passed as beginMark in
+    the next request to continue pagination. The completeResult boolean indicates
+    when all results have been retrieved.
+possible_base_urls:
+- information_source; https://thinketl.com/how-to-access-informatica-cloud-iics-rest-api-using-postman/:
+  - https://dm-us.informaticacloud.com/ma/api/v2
+- information_source; https://thinketl.com/introduction-to-snowflake-sql-rest-api-using-postman/:
+  - https://<account_identifier>.snowflakecomputing.com/api
+possible_endpoints:
+- information_source; https://thinketl.com/how-to-access-informatica-cloud-iics-rest-api-using-postman/:
+  - POST https://dm-us.informaticacloud.com/ma/api/v2/user/login
+- information_source; https://thinketl.com/introduction-to-snowflake-sql-rest-api-using-postman/:
+  - GET https://<account_identifier>.snowflakecomputing.com/api/v2/statements/<statementHandle>
+  - POST /api/v2/statements/
+  - POST /api/v2/statements/{statementHandle}/cancel
+  - POST https://<account_identifier>.snowflakecomputing.com/api/v2/statements
+  - POST https://<account_identifier>.snowflakecomputing.com/api/v2/statements/<statementHandle>/cancel
+- information_source; https://thinketl.com/snowflake-snowpipe-rest-api/:
+  - GET https://<account>.snowflakecomputing.com/v1/data/pipes/<pipeName>/insertReport?requestId=<requestId>&beginMark=<beginMark>
+  - POST https://<account>.snowflakecomputing.com/v1/data/pipes/<pipeName>/insertFiles?requestId=<requestId>

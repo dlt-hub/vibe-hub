@@ -1,0 +1,53 @@
+auth_info:
+- information_source; https://api.klarpay.com/docs:
+  - 'Authenticate with a bearer token in the Authorization header. Call the Authentication
+    endpoint first to obtain a token for API access, then include it as "Authorization:
+    Bearer {token}" in all subsequent requests.'
+  - 'Authentication uses bearer tokens. Include the token in the Authorization header
+    as "Authorization: Bearer <token>" for all requests. The API returns 401 for missing
+    or invalid credentials and 403 for insufficient permissions.'
+  - Bearer token authentication is required. Include the bearer token in the Authorization
+    header when making requests to this endpoint.
+  - 'Bearer token authentication is required. Send the bearer token in the Authorization
+    header (format: "Bearer <token>") to access the Query Payments endpoint.'
+  - 'Bearer token authentication is required. Send the bearer token in the Authorization
+    header as "Authorization: Bearer {token}" to access the endpoint.'
+pagination_info:
+- information_source; https://api.klarpay.com/docs:
+  - Pagination is available on two payment query endpoints. The new `/api/payment/filter-extended`
+    endpoint accepts query parameters pageSize and pageNo, returning totalCount in
+    the response. The existing `/api/payment/filter` endpoint supports the same pagination
+    via headers x-page-size, x-page-no, and x-total-count.
+  - Pagination uses pageNo and pageSize parameters in the request body. The response
+    includes meta object with pageSize, pageNo, totalCount, and resultCount fields
+    to track pagination state.
+  - The response includes pagination metadata with pageSize (50), pageNo (1), totalCount
+    (1), and resultCount (1). To paginate, use pageNo as a query parameter in subsequent
+    requests, incrementing it to retrieve additional pages until resultCount is less
+    than pageSize or totalCount is reached.
+- information_source; https://api.klarpay.com/docs/swagger.json:
+  - Pagination is implemented via response headers for the filter transactions endpoint.
+    The POST /api/payment/filter endpoint returns x-page-no, x-page-size, x-result-count,
+    and x-total-count headers to indicate current page number, page size, result count,
+    and total count respectively. The request body schema (FilterTransactionsDto)
+    likely contains pagination parameters, but their exact names are not specified
+    in this documentation excerpt.
+  - 'Pagination uses header-based response fields: x-page-no (page number), x-page-size
+    (page size), x-result-count (current result count), and x-total-count (total count).
+    No request parameters for pagination are specified in the documented endpoint.'
+possible_base_urls:
+- information_source; https://api.klarpay.com/docs:
+  - https://api.klarpay.com
+  - https://api.klarpay.com/api
+possible_endpoints:
+- information_source; https://api.klarpay.com/docs:
+  - GET /api/direct-debit/requests/{id}
+  - GET /api/payment/filter
+  - GET /api/payment/filter-extended
+  - GET /api/payment/{id}
+  - GET /api/payment/{id}/status
+  - GET api/fx-rate
+  - GET https://api.klarpay.com/api/account/main
+  - GET https://api.klarpay.com/api/account/{id}
+  - GET https://api.klarpay.com/api/account/{id}/balance
+  - GET https://api.klarpay.com/api/account/{id}/balance-historic

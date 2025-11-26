@@ -1,0 +1,58 @@
+auth_info:
+- information_source; https://awardwallet.com/api/account:
+  - The authentication uses URL query parameters in a browser redirect flow. After
+    a user approves a connection, a code parameter is sent to your endpoint via browser
+    redirect, which must then be exchanged via GET request to the get-connection-info
+    endpoint with the code as a path parameter. The code is valid for only 1 minute
+    for security reasons.
+- information_source; https://awardwallet.com/api/email:
+  - Google OAuth2 authentication is required. Send a POST request with email, accessToken
+    (OAuth2 access token from Google), and refreshToken (OAuth2 refresh token) in
+    the JSON body to connect a Gmail account.
+  - Google OAuth2 authentication is used to connect Google mailboxes. End users authorize
+    access via Google's consent screen. Optionally, you can provide your own `googleClientId`,
+    `googleClientSecret`, and `googlePubSubTopic` obtained from Google Cloud Console
+    to replace the default AwardWallet credentials; contact support to update your
+    account with these values.
+  - OAuth2 flow with Yahoo. Request `Mail - Read` and `Profiles - Read Public Extended`
+    permissions. Supply accessToken and refreshToken in the JSON request body along
+    with email, startFrom, callbackUrl, and optional userData and tags parameters.
+  - OAuth2 is required. You must obtain approval from Verizon Media Mail API (mail-api
+    @ verizonmedia.com), then create an app under your Yahoo! developer account at
+    https://developer.yahoo.com/apps/. Use the /mailboxes/start-auth method with redirect
+    URI https://awardwallet.com/mailboxes/callback/oauth/aol and request email and
+    mail-r permissions. In requests, provide accessToken and refreshToken fields in
+    the JSON body, along with email address.
+pagination_info:
+- information_source; https://awardwallet.com/api/email:
+  - Use nextPageToken from the response as a query parameter in the next request to
+    retrieve subsequent pages. Stop paginating when nextPageToken is not returned.
+  - Use the `pageToken` query parameter (optional on first call, required for subsequent
+    calls) to paginate through mailbox results. The response includes a `nextPageToken`
+    field; pass this value as `pageToken` in the next request to fetch the next page.
+    Stop paginating when `nextPageToken` is not returned in the response.
+  - Use the scroll endpoint with cursor-based pagination. Include optional tags query
+    parameter to filter by tags (comma-separated). The response returns mailbox items;
+    use the scroll mechanism to retrieve subsequent pages when dealing with large
+    result sets.
+  - Use the scroll method to fetch larger datasets beyond the 500 record limit per
+    request. The documentation mentions this pagination approach but does not specify
+    the exact scroll parameter names, request structure, or response fields needed
+    to implement scrolling.
+possible_base_urls:
+- information_source; https://awardwallet.com/api/account:
+  - https://awardwallet.com
+  - https://business.awardwallet.com/api/export/v1
+possible_endpoints:
+- information_source; https://awardwallet.com/api/account:
+  - GET https://business.awardwallet.com/api/export/v1/account/{id}
+  - GET https://business.awardwallet.com/api/export/v1/connectedUser/{id}
+  - GET https://business.awardwallet.com/api/export/v1/get-connection-info/{code}
+  - GET https://business.awardwallet.com/api/export/v1/member/{id}
+  - GET https://business.awardwallet.com/api/export/v1/providers/{code}
+  - POST https://business.awardwallet.com/api/export/v1/create-auth-url
+- information_source; https://awardwallet.com/api/email:
+  - GET /json/v2/mailboxes/scroll/
+  - GET /mailboxes/detect-type/{email}
+  - GET https://email-eu.awardwallet.com/email/
+  - GET https://email-eu.awardwallet.com/email/json/v2/getResults/{requestId}

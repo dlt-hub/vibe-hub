@@ -1,0 +1,78 @@
+auth_info:
+- information_source; https://api.youracclaim.com/docs/web_service_api:
+  - Authentication can be done using Authorization Tokens or OAuth 2.0. The documentation
+    references separate pages for each mechanism but does not provide the specific
+    implementation details, header names, parameter names, or credential formats in
+    this section.
+  - 'Authentication is handled via HTTP Basic Authentication or OAuth 2.0. For HTTP
+    Basic Authentication, send credentials in the Authorization header using the standard
+    format. For OAuth 2.0, use bearer tokens in the Authorization header. All requests
+    must use SSL and include Content-Type: application/json.'
+- information_source; https://api.youracclaim.com/docs/authorization_tokens:
+  - 'Authorization tokens are required to access this API. Tokens are passed in the
+    Authorization header as bearer tokens and can be created via POST /organizations/<organization_id>/authorization_tokens
+    using an existing token with write permissions. New tokens have a 180-day default
+    expiration and support granular permissions: read_enabled, write_enabled, and
+    delete_enabled. A token cannot be granted more permissions than the token used
+    to create it.'
+  - Authorization tokens are used for API authentication and are passed in requests
+    to access the Credly API. Tokens expire after 180 days by default and can be rotated
+    via POST request to generate a new token, which immediately invalidates the previous
+    one. The token response includes a token field containing the authorization credential,
+    along with metadata about permissions (write_enabled, read_enabled, delete_enabled),
+    expiration time (expires_at), and owner information. To rotate a token, POST to
+    /organizations/<organization_id>/authorization_tokens/rotate with an optional
+    description parameter in the JSON body.
+  - Authorization tokens are used to access the Credly platform and can be created
+    via API or UI. Tokens are passed as credentials and support read, write, and delete
+    permissions. Retrieve tokens via GET /organizations/<organization_id>/authorization_tokens,
+    which returns token strings (e.g., "RnsDbkhD31hw7u2WnNymVEDgn3k123443H1w3") with
+    associated metadata including permission flags (write_enabled, read_enabled, delete_enabled)
+    and expiration times. Use the token value in subsequent API requests for authentication.
+pagination_info:
+- information_source; https://api.youracclaim.com/docs/issued_badges:
+  - Pagination uses a forward cursor mechanism. The response includes a `next_page_url`
+    field that contains the full URL for the next page of results. Continue requesting
+    the URL in `next_page_url` until it becomes null, indicating no more data. Results
+    are sorted by `created_at` and then by `id` for ties. The `sort` parameter is
+    not supported on this endpoint.
+  - Use the `page` query parameter to specify the page number of badges to retrieve.
+    The documentation does not specify response fields indicating total pages, next
+    page, or when to stop paginating, so the exact stopping condition is unclear.
+- information_source; https://api.youracclaim.com/docs/authorization_tokens:
+  - 'Based on the provided documentation chunk, here is the pagination information:
+
+
+    Paginated responses use metadata fields including count, current_page, total_count,
+    total_pages, and per (items per page). Navigation uses previous_page_url and next_page_url
+    fields; when these are null, there are no additional pages. The per parameter
+    defaults to 50 items per page.'
+- information_source; https://api.youracclaim.com/docs/oauth:
+  - Pagination uses query parameters page (optional, defaults to 1) and per_page (optional,
+    defaults to 50). Response metadata includes current_page, total_pages, total_count,
+    count, per, next_page_url, and previous_page_url to navigate pages; stop when
+    next_page_url is null.
+- information_source; https://api.youracclaim.com/docs/badge_templates:
+  - Pagination is implemented using query parameters page and per_page (optional,
+    defaults to 50). The response metadata includes count, current_page, total_count,
+    total_pages, per, previous_page_url, and next_page_url. Continue paginating while
+    next_page_url is not null; stop when it becomes null or current_page equals total_pages.
+possible_base_urls:
+- information_source; https://api.youracclaim.com/docs/issued_badges:
+  - https://api.credly.com/v1
+- information_source; https://api.youracclaim.com/docs/web_service_api:
+  - https://api.credly.com/v1
+possible_endpoints:
+- information_source; https://api.youracclaim.com/docs/issued_badges:
+  - DELETE /organizations/<organization_id>/badges/<badge_id>
+  - GET /organizations/<organization_id>/badges
+  - GET /organizations/<organization_id>/high_volume_issued_badge_search
+  - POST /organizations/<organization_id>/badges
+  - POST /organizations/<organization_id>/badges/<badge_id>/replace
+  - PUT /organizations/<organization_id>/badges/<badge_id>/revoke
+- information_source; https://api.youracclaim.com/docs/authorization_tokens:
+  - GET /organizations/<organization_id>/authorization_tokens
+  - POST /organizations/<organization_id>/authorization_tokens
+  - POST /organizations/<organization_id>/authorization_tokens/rotate
+- information_source; https://api.youracclaim.com/docs/oauth:
+  - DELETE /organizations/<organization_id>/oauth_applications/<oauth_application_id>

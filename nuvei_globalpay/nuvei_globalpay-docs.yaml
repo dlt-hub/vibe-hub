@@ -1,0 +1,68 @@
+auth_info:
+- information_source; https://docs-apm.nuvei.com/:
+  - HTTP Basic Authentication is used for all API requests. Credentials consist of
+    a secret API Key sent via HTTP Basic Auth. All requests must use HTTPS protocol.
+    The API Key must be kept secret and regenerated immediately if compromised. Separate
+    API Keys are provided for Test and Live environments.
+- information_source; https://docs-apm.nuvei.com/category/security/:
+  - 'HTTP Basic Auth is required for REST API access. The username is the SiteID and
+    the password is the API Key, both generated upon Integration site creation. Concatenate
+    SiteID and API Key with a colon separator, Base64 encode the result, and send
+    it in the Authorization header as "Authorization: Basic {Base64-encoded-string}".
+    Example: for SiteID "30201" and API Key "+9KeGzKF7W8S/79a5R33YJUg7E7WFNcZbjGfzLV3bXSnFCOyFt",
+    the header becomes "Authorization: Basic MzAyMDE6KzlLZUd6S0Y3VzhTLzc5YTVSMzNZSlVnN0U3V0ZOY1piakdmekxWM2JYU25GQ095RnQ=".
+    Keep API keys secret and regenerate immediately if compromised.'
+- information_source; https://docs-apm.nuvei.com/category/security/authentication/:
+  - 'HTTP Basic Auth is required for all REST API requests. The username is the SiteID
+    and the password is the API Key (both generated during Integration site creation).
+    Encode the credentials as "SiteID:API Key" using Base64 encoding and send in the
+    Authorization header as "Authorization: Basic <base64_encoded_credentials>". Keep
+    API keys secret and regenerate immediately if compromised.'
+- information_source; https://docs-apm.nuvei.com/category/payments-api/:
+  - Authorization header using Basic authentication scheme. The credentials are base64-encoded
+    in the format "username:password" and passed in the Authorization header as "Basic
+    [encoded_credentials]".
+  - 'Basic HTTP Authentication is required. Send credentials in the Authorization
+    header using the format "Basic" followed by base64-encoded "username:password".
+    Example: Authorization: Basic MTAxMDpnYWJp'
+pagination_info:
+- information_source; https://docs-apm.nuvei.com/category/payments-api/:
+  - Pagination uses query parameters pagesize (optional, specifies number of transactions
+    per page) and pageindex (optional, specifies which page to retrieve, starting
+    from 1). The response contains a Payments array with the requested transactions;
+    continue paginating by incrementing pageindex until fewer results are returned
+    than pagesize or no results remain.
+  - Use optional query parameters PageIndex (default 0) and PageSize to control pagination.
+    Response includes PageIndex, PageSize, TotalPages, Count, and TotalCount fields
+    to track position and navigate through pages.
+- information_source; https://docs-apm.nuvei.com/category/payments-api/get-information-on-a-payment-object/:
+  - Pagination uses query parameters pagesize (optional, specifies transactions per
+    page) and pageindex (optional, specifies which page group to return, 1-indexed).
+    The response contains a Payments array with the requested page of transactions;
+    continue requesting with incremented pageindex values until no more transactions
+    are returned.
+  - Use query parameters page (optional, default configured server-side) and pagesize
+    (optional) to request specific pages. Response includes PageIndex, PageSize, TotalPages,
+    Count, and TotalCount fields to track pagination state; stop when PageIndex reaches
+    TotalPages.
+- ? information_source; https://docs-apm.nuvei.com/category/payments-api/get-information-on-a-payment-object/get-a-list-of-payments/
+  : - Pagination uses query parameters PageIndex (zero-based, optional) and PageSize
+      (optional, system-configured default) to request pages. Response includes TotalPages,
+      PageSize, PageIndex, Count, and TotalCount fields to track pagination state.
+possible_base_urls:
+- information_source; https://docs-apm.nuvei.com/:
+  - https://docs-apm.nuvei.com
+- information_source; https://docs-apm.nuvei.com/category/payments-api/:
+  - http://demo.smart2pay.com
+possible_endpoints:
+- information_source; https://docs-apm.nuvei.com/category/payments-api/:
+  - GET /v1/payments/{id}/status
+  - GET https://paytest.smart2pay.com/v1/exchangerates/{FromCurrency}/{ToCurrency}
+  - GET https://paytest.smart2pay.com/v1/payments
+  - GET https://paytest.smart2pay.com/v1/payments/{id}
+  - GET https://paytest.smart2pay.com/v1/payments?methodTransactionID=100200
+  - GET https://paytest.smart2pay.com/v1/payments?pagesize=2&pageindex=3
+  - GET https://paytest.smart2pay.com/v1/payments?statusID=2
+  - GET https://paytest.smart2pay.com/v1/payments?typeID=1
+  - GET https://securetest.smart2pay.com/v1/payments/202230/status
+  - POST /v1/payments

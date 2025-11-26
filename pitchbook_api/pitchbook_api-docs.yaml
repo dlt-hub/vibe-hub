@@ -1,0 +1,49 @@
+auth_info:
+- information_source; https://documenter.getpostman.com/view/1797923/2s83mbojGM:
+  - The API uses Bearer token authentication. After login, the response includes an
+    access_token field with token_type "Bearer" that should be sent in the Authorization
+    header as "Bearer {access_token}". The token expires after expires_in seconds
+    (1800 in the example). A refresh_token may be provided for obtaining new access
+    tokens.
+  - The API uses username and password credentials sent as JSON in the request body
+    to a login endpoint at POST {{URL}}/ECM/api/login. The response returns a Bearer
+    token in the access_token field with token_type "Bearer" and an expires_in value
+    of 1800 seconds, along with a refresh_token for token refresh. Subsequent authenticated
+    requests should use the Bearer token in the Authorization header.
+  - The SSM API uses Bearer token authentication. Send a POST request to {{url}}/ECM/api/login
+    with username and password in JSON body to obtain a token. Include the returned
+    token in the Authorization header as "Bearer {token}" for all subsequent API requests.
+pagination_info:
+- information_source; https://documenter.getpostman.com/view/7679680/SVYrrxuU:
+  - 'Pagination uses page[size] and page[number] as query parameters. page[size] specifies
+    the number of results per page, and page[number] specifies which page to retrieve
+    (example: page[size]=1&page[number]=1).'
+  - Pagination uses query parameters page[size] and page[number], both optional and
+    specified in the query string. page[size] controls results per page and page[number]
+    specifies which page to retrieve, as shown in example URLs with page[size]=1&page[number]=1.
+  - The API uses query parameters `page[number]` (page index, starting at 1) and `page[size]`
+    (results per page) for pagination. The response includes a `pagination` object
+    with the total number of hits, and a `next` link to retrieve the next page. Increment
+    `page[number]` or use the `next` link to paginate through results.
+  - Use the query parameters page[number] (required, starting at 1) and page[size]
+    (required, controls results per page) to paginate lei-records endpoint results.
+    The response includes pagination metadata to construct subsequent requests.
+  - Where a response contains more than 15 results, pagination information and first/last
+    page links are included in the response. The documentation indicates pagination
+    is based on the JSON API specification but does not specify the exact request
+    parameters, response field names, or navigation mechanics beyond mentioning first/last
+    page links.
+possible_base_urls:
+- information_source; https://documenter.getpostman.com/view/1797923/2s83mbojGM:
+  - https://example.saviyntcloud.com
+  - '{{URL}}/ECM/api'
+possible_endpoints:
+- information_source; https://documenter.getpostman.com/view/1797923/2s83mbojGM:
+  - POST https://example.saviyntcloud.com/ECM/api/login
+  - POST {{URL}}/ECM/api/login
+  - POST {{url}}/ECM/api/login
+- information_source; https://documenter.getpostman.com/view/7679680/SVYrrxuU:
+  - GET https://api.gleif.org/api/v1/fuzzycompletions
+  - GET https://api.gleif.org/api/v1/lei-records
+  - GET https://api.gleif.org/api/v1/lei-records?sort=entity.legalAddress.country&page[size]=1&page[number]=1
+  - GET https://api.gleif.org/api/v1/lei-records?sort=entity.legalName&page[size]=1&page[number]=1

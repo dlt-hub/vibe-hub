@@ -1,0 +1,42 @@
+auth_info:
+- information_source; https://docs.sikt.no/docs/api-pvt/01-02-oauth:
+  - OAuth 2.0 with client credentials grant type. Register a client application to
+    obtain CLIENT_ID and CLIENT_SECRET, then POST to https://sso.nsd.no/oauth/token
+    with HTTP Basic Auth (client_id:client_secret in Authorization header) and form
+    data grant_type=client_credentials and scope=org:{organization_id}. The response
+    contains an access_token JWT that is used to authenticate API requests.
+  - The API uses OAuth 2.0 Bearer token authentication. Obtain an access token from
+    the token endpoint, then pass it in the Authorization header as "Bearer {access_token}"
+    when making API requests. The token endpoint and metadata are available at https://sso.nsd.no/.well-known/openid-configuration.
+    The access_token is valid for the duration specified in expires_in (typically
+    3600 seconds).
+- information_source; https://docs.sikt.no/assets/files/digdir-krr-api-template-1677a5d5154a61f14c727d0e13b731a1.json:
+  - Authorization header is required (or optional depending on endpoint), sent as
+    a string in the HTTP header. The API uses OAuth2 bearer token authentication;
+    401 responses include a WWW-Authenticate header with error, error_description,
+    and scope fields following RFC 6750, indicating insufficient_scope errors when
+    proper OAuth2 scopes are not provided.
+  - Kontakt- og reservasjonsregisteret (KRR) API uses OAuth2 authentication secured
+    with Maskinporten. Access tokens are issued from ID-porten's OAuth2 service and
+    must be included in requests to access the API endpoints.
+  - OAuth2 authentication is required with bearer token in the Authorization header.
+    Required scopes include user/kontaktinformasjon.read, user/spraak.read, user/spraak.write,
+    krr:user/kontaktinformasjon.read, and krr:user/spraak.write depending on the operation.
+    The WWW-Authenticate header may return OAuth2 error details including insufficient_scope
+    errors as per RFC 6750.
+possible_base_urls:
+- information_source; https://docs.sikt.no/docs/api-pvt/01-02-oauth:
+  - https://api.nsd.no/graphql
+  - https://sso.nsd.no/.well-known/openid-configuration
+possible_endpoints:
+- information_source; https://docs.sikt.no/docs/api-pvt/01-02-oauth:
+  - POST https://api.nsd.no/graphql
+  - POST https://sso.nsd.no/oauth/token
+- information_source; https://docs.sikt.no/docs/datadeling/teknisk-plattform/api/fs:
+  - GET https://api-test.fellesstudentsystem.no/version
+  - GET https://api-utv.fellesstudentsystem.no/version
+  - GET https://api.fellesstudentsystem.no/version
+- information_source; https://docs.sikt.no/assets/files/digdir-krr-api-template-1677a5d5154a61f14c727d0e13b731a1.json:
+  - GET http://oidc-ver2.difi.no
+  - POST /rest/v1/personer
+  - POST /rest/v2/krr/hentEndringer
