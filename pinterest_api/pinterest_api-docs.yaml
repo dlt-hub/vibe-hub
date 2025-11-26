@@ -1,0 +1,59 @@
+auth_info:
+- information_source; https://developers.pinterest.com/docs/getting-started/set-up-authentication-and-authorization/:
+  - OAuth2 authorization code flow with scopes. Client redirects user to Pinterest
+    OAuth endpoint with client_id, redirect_uri, response_type=code, and scope (multiple
+    scopes separated by spaces or commas, e.g., boards:read,pins:read). After user
+    authorization, Pinterest redirects to the provided redirect_uri with authorization
+    code and state parameter. The state parameter is optional but recommended for
+    CSRF protection and must match between request and redirect.
+  - OAuth2 refresh token flow using Basic authentication. Send a POST request to https://api.pinterest.com/v5/oauth/token
+    with Authorization header containing base64-encoded client_id:client_secret, and
+    request body parameters grant_type set to "refresh_token", refresh_token (string
+    starting with "pinr"), and optional scope. Response includes new access_token
+    (prefixed with "pina"), refresh_token, and refresh_token_expires_at in Unix time.
+  - Pinterest API uses Bearer token authentication. Include the access token in the
+    Authorization header as "Bearer {your_token}". Access tokens expire within 30
+    days and should be refreshed before expiration using the OAuth refresh token endpoint.
+    Invalid or expired tokens return HTTP 401 with API error code 2. Tokens can be
+    stored as JSON files or environment variables.
+  - Pinterest API uses OAuth 2.0 with Authorization Code and Client Credentials grant
+    types. For Authorization Code grant, send a POST to https://api.pinterest.com/v5/oauth/token
+    with an Authorization header containing a Base64-encoded string of client_id:client_secret,
+    and include grant_type set to authorization_code, code parameter with the authorization
+    code received from the redirect URI, and redirect_uri that must match the registered
+    value. The continuous_refresh parameter (true/false) applies only to apps created
+    before September 25, 2025, to control refresh token behavior. For Client Credentials
+    grant, include scope parameter (at least one required, space or comma separated)
+    and set grant_type to authorization_code. The response includes an access token
+    for API requests.
+  - 'Pinterest API uses OAuth 2.0 with two grant types: Authorization Code and Client
+    Credentials. For Authorization Code flow, POST to https://api.pinterest.com/v5/oauth/token
+    with grant_type=authorization_code, code, redirect_uri, and optional continuous_refresh
+    parameter in the request body. For Client Credentials flow, POST to the same endpoint
+    with Authorization header containing Basic auth (base64-encoded client_id:client_secret),
+    grant_type=client_credentials, and scope parameter. Access tokens are prefixed
+    with ''pina''. Use https://api-sandbox.pinterest.com/v5/oauth/token for Sandbox
+    environment testing.'
+pagination_info:
+- information_source; https://developers.pinterest.com/docs/getting-started/make-an-api-call/:
+  - Pagination uses a bookmark-based approach. The response includes a bookmark field;
+    pass this value as the bookmark query parameter in the next request to retrieve
+    the next page of results. When bookmark is null, there are no more pages.
+possible_base_urls:
+- information_source; https://developers.pinterest.com/docs/getting-started/set-up-authentication-and-authorization/:
+  - https://api-sandbox.pinterest.com/v5
+  - https://api.pinterest.com/v5
+possible_endpoints:
+- information_source; https://developers.pinterest.com/docs/getting-started/set-up-authentication-and-authorization/:
+  - GET https://api.pinterest.com/v5/user_account
+  - POST /oauth/access_token
+  - POST https://api-sandbox.pinterest.com/v5/oauth/token
+  - POST https://api.pinterest.com/v5/oauth/token
+- information_source; https://developers.pinterest.com/docs/getting-started/make-an-api-call/:
+  - GET https://api.pinterest.com/v5/pins
+- information_source; https://developers.pinterest.com/docs/work-with-organic-content-and-users/create-boards-and-pins/:
+  - GET https://api.pinterest.com/v5/media/{media_id}
+  - POST /pins
+  - POST https://api.pinterest.com/v5/pins
+- information_source; https://developers.pinterest.com/docs/reference/rate-limits/:
+  - GET https://api.pinterest.com/v5/pins

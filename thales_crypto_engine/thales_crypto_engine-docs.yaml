@@ -1,0 +1,53 @@
+auth_info:
+- information_source; https://thalesdocs.com/gphsm/luna/7/docs/network/Content/admin_cluster/luna_par_migration.htm:
+  - 'The API requires authentication credentials passed in JSON request bodies using
+    password-based authentication. Two authentication types are supported: "PO" (Primary
+    Owner) and "CO" (Cluster Owner). Credentials are submitted as objects within "migratingAuthentication",
+    "clusterAuthentication", or "authentication" arrays in the request body, each
+    containing a "type" field (either "PO" or "CO") and a "password" field with the
+    plaintext password value.'
+  - 'The API requires two sets of credentials in the request body for partition object
+    migration: migratingPartitionCoAuth and keyringCoAuth, each containing a type
+    field set to "CO" and a password field with the respective partition and keyring
+    CO (Crypto Officer) passwords. Up to 1000 objects can be migrated per request
+    by including their OUIDs in the objectID array, and the target keyring is specified
+    via the keyringId UUID parameter.'
+  - The authentication for cluster migration operations uses role-based credentials
+    sent in JSON request bodies. Provide an authentication array with type field set
+    to either "CO" (Crypto Officer) or "PO" (Partition Officer) and corresponding
+    password field. For ending migration, include migratingAuthentication array with
+    both PO and CO credentials, each as separate objects with type and password fields.
+- ? information_source; https://thalesdocs.com/gphsm/luna/7/docs/network/Content/lunash/commands/cluster/cluster_member_partition_migration_begin.htm
+  : - Users must have Admin privileges to perform this command. The command requires
+      authentication via Crypto Officer (CO) and Partition SO (PSO) passwords for
+      both the source partition and cluster partition, provided via the -copassword,
+      -popassword, -clusterco, and -clusterpo arguments respectively, or entered interactively
+      when not specified.
+- information_source; https://thalesdocs.com/gphsm/luna/7/docs/network/Content/admin_cluster/cluster_config.htm:
+  - Log in as HSM SO using POST /api/lunasa/hsms/{hsmid}/login endpoint. The CO must
+    change the initial password/PED key before performing other actions when "Force
+    user PIN change after set/reset" policy is enabled (default). An authorization
+    code from Thales is required for package verification.
+pagination_info:
+- ? information_source; https://thalesdocs.com/gphsm/luna/7/docs/network/Content/lunash/commands/cluster/cluster_member_partition_object_list.htm
+  : - 'Pagination is controlled by two optional parameters: startIndex (query parameter
+      specifying the index position to begin listing from, default 0) and maxEntries
+      (query parameter specifying the number of objects to include, valid range 1-4294967295,
+      defaults to all objects if omitted). Stop paginating when fewer objects are
+      returned than maxEntries or when startIndex exceeds available objects.'
+possible_base_urls:
+- information_source; https://www.thalesdocs.com/gphsm/luna/7/docs/network/Content/CRN/Luna/appliance/7-8-5.htm:
+  - /api/lunasa/ntls/clients
+  - /api/lunasa/syslog/remoteHosts/ca
+possible_endpoints:
+- information_source; https://www.thalesdocs.com/gphsm/luna/7/docs/network/Content/CRN/Luna/appliance/7-9-0.htm:
+  - GET /api/cluster/config
+  - GET /api/cluster/member/partitions
+  - GET /api/cluster/member/partitions/{partitionID}/objects
+  - GET /api/clusters/{clusterID}/clients/{clientID}
+  - GET /api/clusters/{clusterID}/members/{memberID}
+  - GET /api/lunasa/ntp/status
+  - PATCH /api/cluster/client/{clientID}
+  - PATCH /api/lunasa/hsms/{hsmid}/policies/{policyid}
+  - PATCH /api/lunasa/network
+  - PATCH /api/lunasa/ntp/servers/{serverid}

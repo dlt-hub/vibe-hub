@@ -1,0 +1,73 @@
+auth_info:
+- information_source; https://api.constellation1.com/:
+  - 'Access token must be included in the Authorization HTTP header as a Bearer token
+    for every request to the Constellation Data Labs API. The header format is "Authorization:
+    Bearer [access_token]".'
+  - Uses OAuth2 client credentials grant type. To obtain an access token, POST to
+    https://authenticate.constellation1apis.com/oauth2/token with grant_type=client_credentials,
+    client_id=5pq9999coididi613e222o1nnpp, optional scope parameter (empty string
+    or https://api.constellation1apis.com/Api.Read), and Authorization header with
+    Basic auth scheme containing base64-encoded credentials (85e1b0e7539a4a96b00ee02b335aa6418c580917a6b4667f6f7a6fe2149536041569924dfbe4a7df33f==).
+    The response contains access_token, expires_in (3600 seconds), and token_type
+    (Bearer). Use the access_token in the Authorization header as Bearer token for
+    subsequent API requests to Constellation Data Labs API.
+- information_source; https://api.constellation1.com/graphql:
+  - This API uses OAuth2 client credentials flow for authentication. To obtain an
+    access token, send a POST request to https://authenticate.constellation1apis.com/oauth2/token
+    with grant_type=client_credentials, client_id=5pq9999coididi613e222o1nnpp, and
+    an optional scope parameter (either empty string or https://api.constellation1apis.com/Api.Read).
+    Include the Authorization header with Basic auth scheme containing the base64-encoded
+    credentials (85e1b0e7539a4a96b00ee02b335aa6418c580917a6b4667f6f7a6fe2149536041569924dfbe4a7df33f==).
+    The token response includes access_token, expires_in (3600 seconds), and token_type
+    (Bearer). Use the returned access_token as a Bearer token in subsequent API requests.
+- information_source; https://api.constellation1.com/entityevents:
+  - Consumers must establish authorization with the provider using an OAuth2 bearer
+    token. Include the token in the Authorization header with the standard Bearer
+    scheme format.
+  - OAuth2 bearer token authentication is required. Provide either a fixed access
+    token or credentials for dynamic token generation including ClientId, ClientSecret,
+    AccessTokenURL, and GrantType. The token must be sent in the Authorization header
+    as "Bearer <oauth_token>". Additionally, provide a PostEndpoint URL where event
+    payloads will be delivered via HTTP POST requests.
+pagination_info:
+- information_source; https://api.constellation1.com/:
+  - .nextLink field enables server-side pagination for cycling through entire result
+    sets. $top parameter (default 10, recommended max 1000) controls results per page,
+    $skip enables client-side pagination with non-negative integers, and SkipToken
+    approach is recommended as more performant alternative for paging through results.
+  - OData pagination uses the @odata.nextLink field returned in responses; subsequent
+    requests should use the skiptoken path parameter embedded in this URL to fetch
+    the next page of results. The $top parameter controls page size (set to 300 in
+    this example), and pagination continues until @odata.nextLink is no longer present
+    in the response.
+  - Pagination uses $top parameter to set page size (example shows $top=300) and $orderby=ListingKey
+    asc for initial ordering. The response includes @odata.nextLink field containing
+    the URL for the next page; subsequent requests use this nextLink URL directly
+    until no further nextLink is returned.
+  - The API uses OData protocol with server-side pagination. The $top query parameter
+    controls page size (default 10). The response includes @odata.count (records returned),
+    @odata.totalCount (total records found), and @odata.nextLink (URL for the next
+    page). Continue paginating by following @odata.nextLink until it is no longer
+    present.
+  - 'The API uses OData query parameters for pagination: $top (to limit results) and
+    $skip (implied by OData standard) to control page size and offset. Results are
+    returned in a flat response structure without explicit pagination metadata fields
+    like next or has_more; clients must manually construct subsequent requests using
+    $skip to retrieve additional pages.'
+possible_base_urls:
+- information_source; https://api.constellation1.com/:
+  - http://listings.cdatalabs.com
+  - https://api.constellation1apis.com
+possible_endpoints:
+- information_source; https://api.constellation1.com/:
+  - GET /OData/Property
+  - GET /OData/Property?$ignorenulls=false&$top=1&$select=UnparsedAddress,ListingId,StandardStatus,PhotosCount&$expand=Media($filter=Permission
+    ne 'Private')&$filter=OriginatingSystemName eq 'MLSL' and ListingId eq 'ML81984127'
+  - GET /odata/Property
+  - GET /odata/Property/skiptoken/FGluY2x1ZGVfY29udGV4dF91dWlkDn
+  - GET /odata/Property/skiptoken/FGluY2x1ZGVfY29udGV4dF91dWlkDnF1ZXJ5VGhlbkZldGNoBRZGYmFTT0FSRVExeTRfckMxZ1loOEhnAAAAAAm0TVYWajZEYmttQ1JSWEdIUTlfRDRHNnB0dxY0NUZaQzBJcFI2NmU5N1h5NHFpWXZ3AAAAAAnwnR4WTVQ3WEhKLU9Ua215d2xxWW94SFcydxZGYmFTT0FSRVExeTRfckMxZ1loOEhnAAAAAAm0TVcWajZEYmttQ1JSWEdIUTlfRDRHNnB0dxY0NUZaQzBJcFI2NmU5N1h5NHFpWXZ3AAAAAAnwnR8WTVQ3WEhKLU9Ua215d2xxWW94SFcydxY0NUZaQzBJcFI2NmU5N1h5NHFpWXZ3AAAAAAnwnSAWTVQ3WEhKLU9Ua215d2xxWW94SFcydw==/?$filter=OriginatingSystemName%20eq%20%27CRMLS%27&$ignorenulls=true&$top=300
+  - GET /odata/Property/skiptoken/FGluY2x1ZGVfY29udGV4dF91dWlkDnF1ZXJ5VGhlbkZldGNoBRZGYmFTT0FSRVExeTRfckMxZ1loOEhnAAAAAAm0TVYWajZEYmttQ1JSWEdIUTlfRDRHNnB0dxY0NUZaQzBJcFI2NmU5N1h5NHFpWXZ3AAAAAAnwnR4WTVQ3WEhKLU9Ua215d2xxWW94SFcydxZGYmFTT0FSRVExeTRfckMxZ1loOEhnAAAAAAm0TVcWajZEYmttQ1JSWEdIUTlfRDRHNnB0dxY0NUZaQzBJcFI2NmU5N1h5NHFpWXZ3AAAAAAnwnR8WTVQ3WEhKLU9Ua215d2xxWW94SFcydxY0NUZaQzBJcFI2NmU5N1h5NHFpWXZ3AAAAAAnwnSAWTVQ3WEhKLU9Ua215d2xxWW94SFcydw==/?$filter=OriginatingSystemName%20eq%20%27CRMLS%27and%20StandardStatus%20in%20%28%27Active%27%2C%27Pending%27%2C%27Active%20Under%20Contract%27%2C%27Coming%20Soon%27%29&$ignorenulls=true&$top=300
+  - GET /odata/Property?
+  - GET /odata/Property?$apply=groupby((StateOrProvince))&$top=0
+  - GET /odata/Property?$apply=groupby((StateOrProvince,City))&$top=0
+  - GET /odata/Property?$expand=BuyerMember

@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://lyft.github.io/confidant/api.html:
+  - Authentication is required for all API endpoints. The allowed authentication types
+    (kmsauth, SAML, OAuth, etc.) depend on your Confidant configuration and RBAC settings.
+    Refer to the configuration and RBAC documentation for specific details on which
+    auth methods are enabled and how to use them.
+  - The API uses SAML-based authentication. Requests to protected endpoints (like
+    GET /v1/user/email) require the user to be authenticated via SAML login at GET
+    /v1/saml/login. Authentication state is maintained through the user session, and
+    unauthenticated requests to protected endpoints will redirect to the SAML login
+    page.
+  - The API uses SAML-based authentication. Users must be authenticated via SAML (endpoints
+    include /v1/saml/metadata, /v1/saml/consume, and /v1/saml/logout), and endpoints
+    like POST /v1/user/email require an authenticated session. Authorization is enforced
+    via permissions checks, returning 403 Forbidden when the client lacks required
+    permissions.
+pagination_info:
+- information_source; https://lyft.github.io/confidant/api.html:
+  - Pagination uses a limit query parameter (required, integer) to specify items per
+    page. The response includes a next_page field that is null when there are no more
+    pages; use the next_page value to fetch subsequent pages.
+  - Pagination uses an optional next_page query parameter. When paged results are
+    returned, pass the next_page value from the response as the next_page query parameter
+    in the subsequent request to fetch the next page.
+  - The API uses cursor-based pagination for the GET /v1/credentials endpoint. The
+    next_page query parameter accepts a string value from a previous response to fetch
+    the next page of results. Stop paginating when next_page is not returned in the
+    response.
+  - The endpoint uses offset-based pagination with a next_page query parameter. To
+    fetch the next page of results, pass the next_page value returned in the response
+    as the next_page query parameter in the subsequent request. When next_page is
+    null, all results have been retrieved.
+  - The response includes a next_page field set to null, indicating pagination support
+    where null signals the end of results. However, no request parameters for controlling
+    pagination (such as page, limit, offset, or cursor) are documented in the provided
+    excerpt.
+possible_base_urls:
+- information_source; https://lyft.github.io/confidant/api.html:
+  - /v1
+  - /v1/archive
+possible_endpoints:
+- information_source; https://lyft.github.io/confidant/api.html:
+  - GET /v1/archive/cred
+  - GET /v1/archive/credentials
+  - GET /v1/archive/credentials/abcd12345bf4f1cafe8e722d3860404
+  - GET /v1/archive/credentials/{id}
+  - GET /v1/archive/serv
+  - GET /v1/archive/services
+  - GET /v1/archive/services/{id}
+  - GET /v1/cas
+  - GET /v1/cas/(ca)
+  - GET /v1/certificates

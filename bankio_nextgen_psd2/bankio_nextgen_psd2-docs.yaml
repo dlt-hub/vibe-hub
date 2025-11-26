@@ -1,0 +1,54 @@
+auth_info:
+- information_source; https://bankio.co.uk/open-banking/knowledge-base/OpenBankingUK/:
+  - JWT-based authorization with signature verification using the "subject" claim,
+    combined with Mutual TLS (MATLS) for transport-level security. Public keys are
+    published via jwk_uri in JWK format for third parties to verify signed JWTs. Access
+    tokens are validated by an API Gateway, either by invoking the authorization server
+    (stateful tokens) or through local validation (stateless tokens). Transport certificates
+    must be properly configured to access protected bank endpoints and APIs requiring
+    specific permission levels.
+- information_source; https://bankio.co.uk/open-banking/knowledge-base/openapi/:
+  - Authorization header is required and must contain an authorization token. Additionally,
+    X-Request-ID (UUID format), Digest (SHA-256), and Signature (with keyId) headers
+    are required for request signing. TPP-Signature-Certificate header is also required
+    containing the certificate as byte data.
+  - 'OAuth2 Client Credentials flow is required for authentication (scope: pisp).
+    Send the access token in the Authorization header as a Bearer token. Additionally,
+    include required headers: X-Request-ID (UUID), TPP-PSU-ID, and PSU-IP-Address.
+    Other headers like Digest, Signature, TPP-Signature-Certificate, and various TPP-*
+    and PSU-* headers provide request signing, PSU identification, and redirect configuration
+    but specifics on their exact format/requirements are not fully detailed in this
+    excerpt.'
+  - 'OAuth2 token endpoint supporting four grant types: Authorization Code, Client
+    Credentials, Resource Owner Password Credentials, and Refresh Token. Confidential
+    clients authenticate via HTTP Basic Authentication (base64 encoded client_id:client_secret
+    in Authorization header) or by posting client_id and client_secret as formData
+    parameters; public clients send client_id as formData. Required parameters vary
+    by grant_type: Authorization Code requires code and redirect_uri; Client Credentials
+    and password grant accept optional scope; Refresh Token requires refresh_token
+    parameter. All grant types require client_id and client_secret except public clients
+    which only need client_id.'
+  - 'OAuth2 with Authorization Code flow is required (scope: pisp). Request must include
+    X-Request-ID header (UUID), Digest header (SHA-256 hash), Signature header (keyId
+    format), and TPP-Signature-Certificate header (byte). PSU identification headers
+    (PSU-ID, PSU-ID-Type, PSU-Corporate-ID, PSU-Corporate-ID-Type, PSU-IP-Address,
+    PSU-IP-Port, PSU-Device-ID, PSU-Geo-Location) and PSU context headers (PSU-Accept,
+    PSU-Accept-Charset, PSU-Accept-Encoding, PSU-Accept-Language, PSU-User-Agent,
+    PSU-Http-Method) are also required or conditional.'
+possible_base_urls:
+- information_source; https://bankio.co.uk/open-banking/knowledge-base/OpenBankingUK/:
+  - https://service.directory.ob.bankIO.financial/directory-services/api/directory/keys/jwk_uri
+- information_source; https://bankio.co.uk/open-banking/knowledge-base/openapi/:
+  - https://ob.bankio.co.uk
+possible_endpoints:
+- information_source; https://bankio.co.uk/open-banking/knowledge-base/openapi/:
+  - DELETE https://ob.bankio.co.uk/api/org/{organisation}/v1/{payment-service}/{payment-product}/{paymentId}/cancellation-authorisations
+  - DELETE https://ob.bankio.ro/api/org/{organisation}/v1/{payment-service}/{payment-product}/{paymentId}/cancellation-authorisations
+  - GET /v1/accounts/{account-id}/balances
+  - GET /v1/accounts/{account-id}/transactions
+  - GET https://ob.bankio.co.uk/api/org/{organisation}/v1/funds-confirmations
+  - GET https://ob.bankio.co.uk/api/org/{organisation}/v1/{payment-service}/{payment-product}/{paymentId}/authorisations
+  - GET https://ob.bankio.ro/api/org/{organisation}/v1/funds-confirmations
+  - GET https://ob.bankio.ro/api/org/{organisation}/v1/{payment-service}/{payment-product}/{paymentId}/authorisations
+  - POST /oauth2/token
+  - POST https://ob.bankio.co.uk/

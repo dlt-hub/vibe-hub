@@ -1,0 +1,68 @@
+auth_info:
+- information_source; https://help.dayforce.com/r/documents/Dayforce-RESTful-Web-Services-Developer-Guide:
+  - Access tokens are obtained via OAuth2 and returned with token_type "Bearer" and
+    an expires_in value (standard 3600 seconds). To request Dayforce APIs, include
+    the access token in the Authorization header as "Bearer {access_token}". User
+    security access is enforced based on the authenticated account.
+- information_source; https://help.dayforce.com/r/documents/Dayforce-RESTful-Web-Services-Developer-Guide/Authentication:
+  - Access tokens are obtained via OAuth2 Bearer token flow with a 3600-second expiration.
+    Include the access token in the Authorization header as "Bearer <token>" when
+    making API requests to Dayforce APIs.
+  - Dayforce REST services support two authentication methods. First, HTTP basic authentication
+    protocol where credentials are passed with each request; note that some third-party
+    REST clients may not include credentials on redirect responses, potentially causing
+    401 errors. Second, token-based authentication where an access token is obtained
+    from the Dayforce identity service API using Web Services login credentials, then
+    used in subsequent API requests instead of sending username and password with
+    each call. Additionally, the user account must have Web Services feature access
+    enabled on its default role, with at minimum the Web Services and Read Data sub-features
+    configured.
+- ? information_source; https://help.dayforce.com/r/documents/Dayforce-RESTful-Web-Services-Developer-Guide/Pagination-of-Response-Data
+  : - Data returned from Dayforce REST Services is filtered based on field-level and
+      access authorizations associated with the default role of the authenticated
+      user account. The user role must have access to both the data and fields for
+      proper filtering to apply.
+- ? information_source; https://help.dayforce.com/r/documents/Dayforce-RESTful-Web-Services-Developer-Guide/REST-Services-for-Retrieving-Documents
+  : - Updating labor metric codes requires role-based access control through the HCM
+      Anywhere > Web Services > Patch/Post Labor Metrics Code role feature, which
+      must be configured in System Admin > Roles > Features tab.
+pagination_info:
+- ? information_source; https://help.dayforce.com/r/documents/Dayforce-RESTful-Web-Services-Developer-Guide/Pagination-of-Response-Data
+  : - Pagination uses a cursor-based approach with a `Next` field in the `Paging`
+      response object containing a complete URL for the next page. Optionally specify
+      `pageSize` query parameter to control records per page (default 1,000). When
+      `Next` is an empty string, pagination is complete.
+    - Response data is paginated using a `Paging` element containing a `Next` property
+      with the URI to the next page. When `Next` is an empty string, pagination is
+      complete. Use the provided URI directly to retrieve subsequent pages.
+    - The response includes a "Paging" object with a "Next" field containing a string
+      value that represents the URL or token for retrieving the next page of results.
+      Use this "Next" value to construct subsequent requests for pagination.
+- ? information_source; https://help.dayforce.com/r/documents/Dayforce-RESTful-Web-Services-Developer-Guide/REST-Service-for-Adding-Employee-Raw-Clock-Entries
+  : - "The EmployeePayAdjustments API supports pagination and returns responses in\
+      \ multiple pages based on payload size. You must check for the next page of\
+      \ the response. However, the specific pagination mechanism (request parameters,\
+      \ response fields, or navigation instructions) is not detailed in the provided\
+      \ documentation excerpt\u2014you are directed to see \"Pagination of Response\
+      \ Data\" for those details."
+    - The EmployeePunches API supports pagination with responses returned in multiple
+      pages depending on payload size. Refer to the Pagination of Response Data documentation
+      for details on checking for the next page and handling paginated responses.
+possible_base_urls:
+- information_source; https://help.dayforce.com/r/documents/Dayforce-RESTful-Web-Services-Developer-Guide:
+  - https://www.dayforcehcm.com/58/api
+  - https://www.dayforcehcm.com/api
+possible_endpoints:
+- information_source; https://help.dayforce.com/r/documents/Dayforce-RESTful-Web-Services-Developer-Guide:
+  - GET https://www.dayforcehcm.com/api/Company123/v1/ClientMetadata
+  - GET https://www.dayforcehcm.com/api/{clientName}/V1/ClientMetadata
+  - GET https://www.dayforcehcm.com/api/{clientName}/swagger/docs/v1
+  - GET https://www.dayforcehcm.com/api/{clientName}/v1
+- information_source; https://help.dayforce.com/r/documents/Dayforce-RESTful-Web-Services-Developer-Guide/Authentication:
+  - GET https://www.dayforcehcm.com/api/Company123/v1/ClientMetadata
+  - GET https://www.dayforcehcm.com/api/{clientName}/V1/ClientMetadata
+  - GET https://www.dayforcehcm.com/api/{clientName}/swagger/docs/v1
+  - GET https://www.dayforcehcm.com/api/{clientName}/v1
+- ? information_source; https://help.dayforce.com/r/documents/Dayforce-RESTful-Web-Services-Developer-Guide/Pagination-of-Response-Data
+  : - DELETE https://www.dayforcehcm.com/api/CompanyName/V1/EmployeePunches
+    - GET /EmployeeSchedules

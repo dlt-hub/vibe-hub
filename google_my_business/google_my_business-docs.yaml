@@ -1,0 +1,66 @@
+auth_info:
+- information_source; https://mixedanalytics.com/knowledge-base/import-google-my-business-data-to-google-sheets/:
+  - OAuth 2.0 authentication is required using Google My Business credentials. The
+    API uses OAuth for authorization, and you must authenticate through Google My
+    Business to obtain the necessary access tokens for making requests to the Google
+    Business Profile Performance API endpoints.
+- information_source; https://mixedanalytics.com/knowledge-base/create-custom-request/:
+  - API key authentication is used, passed as a query parameter named api_key. Include
+    the api_key query parameter in the request URL (e.g., com/api/v1/link?api_key=12345).
+    Additionally, a workspace_id field must be provided in the JSON request body to
+    specify which workspace the request applies to.
+  - Linkly API requires an API key passed as a query parameter and a workspace ID
+    included in the request body. Send POST requests to https://app.linklyhq.com/api/v1/link
+    with api_key=YOUR_API_KEY as a query parameter and workspace_id in the JSON body.
+- information_source; https://mixedanalytics.com/knowledge-base/import-coingecko-data-to-google-sheets/:
+  - CoinGecko API uses an optional API key passed as a custom header for authentication.
+    For the free API, use the header `x-cg-demo-api-key` with your key value. For
+    the paid API, change the base URL to `https://pro-api.coingecko.com/api/v3/` and
+    use the header `x-cg-pro-api-key` instead.
+  - CoinGecko supports optional API key authentication as of October 2023. Requests
+    can be made without a key, but authenticated requests using an API key avoid shared
+    rate limits. The documentation does not specify the exact header name, parameter
+    name, or format for submitting the API key in requests.
+pagination_info:
+- information_source; https://mixedanalytics.com/knowledge-base/import-google-my-business-data-to-google-sheets/:
+  - The Google Business API uses cursor-based pagination with pageSize parameter to
+    control records returned per request. Set pageSize to 50 or 100 depending on endpoint
+    limits. Use the pageToken parameter in subsequent requests, retrieving its value
+    from the next_page_token field in the response to fetch additional records.
+- information_source; https://mixedanalytics.com/knowledge-base/import-coinmarketcap-data-to-google-sheets/:
+  - The CoinMarketCap API uses offset-limit pagination with a limit parameter capped
+    at 1000. The limit parameter controls the maximum number of results returned per
+    request, and you continue making requests with incremented offsets until you reach
+    your desired stopping point.
+  - The CoinMarketCap listings endpoint uses query parameters start and limit for
+    pagination. Set start to the beginning position (e.g., 1001) and limit to the
+    number of results per request (e.g., 1000) to retrieve specific ranges of coins
+    sorted by market capitalization.
+- information_source; https://mixedanalytics.com/knowledge-base/import-facebook-ad-data-to-google-sheets/:
+  - By default Facebook limits results to 25 records per response. Use the limit query
+    parameter set to 5000 to increase results per request. Pagination is handled using
+    a cursor-based system where you loop through results using pagination tokens returned
+    in the response to fetch additional records.
+- information_source; https://mixedanalytics.com/knowledge-base/filter-specific-fields-values/:
+  - Use limit query parameter (default 100) to control page size. Navigate using next_uri
+    field in response; stop when next_uri is null or absent.
+possible_base_urls:
+- information_source; https://mixedanalytics.com/knowledge-base/import-google-my-business-data-to-google-sheets/:
+  - https://businessprofileperformance.googleapis.com/v1
+- information_source; https://mixedanalytics.com/knowledge-base/create-custom-request/:
+  - https://app.linklyhq.com/api/v1
+possible_endpoints:
+- information_source; https://mixedanalytics.com/knowledge-base/import-google-my-business-data-to-google-sheets/:
+  - GET /v1/accounts/{account_id}/locations
+  - GET https://businessprofileperformance.googleapis.com/v1/locations/your_location_id:fetchMultiDailyMetricsTimeSeries
+- information_source; https://mixedanalytics.com/knowledge-base/create-custom-request/:
+  - POST /api/v1/link
+  - POST https://app.linklyhq.com/api/v1/link
+- information_source; https://mixedanalytics.com/knowledge-base/use-cell-values-in-requests/:
+  - GET http://api.carsxe.com/marketvalue?key=&vin=1FT8X3BT0BEA61538&mileage=120000&interval=180&format=json
+  - GET http://dnd5eapi.co/api/
+- information_source; https://mixedanalytics.com/knowledge-base/import-coingecko-data-to-google-sheets/:
+  - GET https://api.coingecko.com/api/v3/coins/bitcoin/history?date=01-01-2021&localization=false
+  - GET https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range
+  - GET https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=1
+  - GET https://api.coingecko.com/api/v3/coins/list

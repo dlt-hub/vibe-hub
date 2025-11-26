@@ -1,0 +1,42 @@
+auth_info:
+- information_source; https://community.home-assistant.io/t/enphase-envoy-current-state-of-things/443829:
+  - 'Envoys running firmware D7.x and later require JWT bearer token authentication
+    obtained from Enphase''s Enlighten service. The token acquisition process involves:
+    logging in to enlighten.enphaseenergy.com with web credentials, extracting the
+    session cookie and username, then requesting a JWT from https://enlighten.enphaseenergy.com/entrez-auth-token?serial_num={envoy_serial_number},
+    and finally using that JWT as a bearer token in the Authorization header for local
+    Envoy API requests. The token acquisition is prone to 401 unauthorized errors
+    from the Enlighten service.'
+  - JWT authentication via Authorization header. The token is obtained from a single
+    endpoint and remains valid for 6 months (expiration coded in the JWT's exp field).
+    Send the JWT in the Authorization header for API requests; a session cookie is
+    generated automatically after the first connection but is not required. Token
+    must be renewed before the exp field indicates expiration.
+  - The Enphase Enlighten API uses cookie-based session authentication. Authentication
+    requires sending a cookie named `_enlighten_4_session` containing a 32-character
+    alphanumeric session ID in requests to endpoints like `https://enlighten.enphaseenergy.com/entrez-auth-token`.
+    The session must be obtained by signing in first; requests without a valid session
+    return 401 Unauthorized.
+  - The Enphase Enlighten API uses cookie-based session authentication. To obtain
+    an auth token, send a GET request to https://enlighten.enphaseenergy.com/entrez-auth-token?serial_num=SERIAL_NUMBER
+    with a cookie header containing _enlighten_4_session set to a valid session ID
+    obtained from prior authentication.
+- information_source; https://community.home-assistant.io/t/having-trouble-posting-input-select-options-with-restapi/167790:
+  - The API uses bearer token authentication. Include an Authorization header with
+    the value "Bearer" followed by your access token (the REDACTED value in your example).
+    The token should be passed in the Authorization header of your HTTP request.
+possible_base_urls:
+- information_source; https://community.home-assistant.io/t/enphase-envoy-current-state-of-things/443829:
+  - https://enlighten.enphaseenergy.com
+  - https://enlighten.enphaseenergy.com/
+possible_endpoints:
+- information_source; https://community.home-assistant.io/t/enphase-envoy-current-state-of-things/443829:
+  - GET https://enlighten.enphaseenergy.com
+  - GET https://enlighten.enphaseenergy.com/
+  - GET https://enlighten.enphaseenergy.com/entrez-auth-token
+  - GET https://enlighten.enphaseenergy.com/entrez-auth-token?serial_num=myserialnumber
+  - GET https://enlighten.enphaseenergy.com/entrez-auth-token?serial_num={}
+  - GET https://entrez.enphaseenergy.com/login
+  - GET https://envoy/backbone/application.js?version=07.0.107
+- ? information_source; https://community.home-assistant.io/t/home-assistant-api-turn-on-off-light-via-simple-http-command-from-other-device/75098
+  : - POST https://hass.example.org:8123/api/services/switch/turn_on

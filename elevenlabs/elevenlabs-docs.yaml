@@ -1,0 +1,60 @@
+auth_info:
+- information_source; https://elevenlabs.io/music:
+  - Eleven Labs API uses API key authentication passed via the apiKey parameter in
+    the client initialization. The API key should be provided from the ELEVENLABS_API_KEY
+    environment variable.
+- information_source; https://elevenlabs.io/docs/api-reference/text-to-speech/convert:
+  - The ElevenLabs API uses API key authentication. Pass your API key via the Authorization
+    header as a Bearer token when making requests to the API endpoints.
+- information_source; https://elevenlabs.io/docs/agents-platform/libraries/react:
+  - 'For agents requiring authorization, use the REST API to generate signed links
+    or conversation tokens. The ElevenLabs API requires the xi-api-key header with
+    your API key passed in server-side requests. Never expose your API key to the
+    client; instead, generate signed URLs or tokens on your backend and pass them
+    to the frontend.
+
+
+    Key details: Header name is xi-api-key, value is your ElevenLabs API key stored
+    in process.env.ELEVENLABS_API_KEY, sent in HTTP headers to the endpoint https://api.elevenlabs.io/v1/convai/conversation/get-signed-url
+    with agent_id as a query parameter.'
+- information_source; https://elevenlabs.io/docs/agents-platform/libraries/websocket:
+  - For public agents, use the agent_id directly in the WebSocket URL as a query parameter
+    without additional authentication. For private agents, obtain a signed URL from
+    your server using your API key to securely authorize the connection. The signed
+    URL approach requires backend communication with ElevenLabs API using your API
+    key for authorization.
+  - The ElevenLabs Convai API requires authentication via the xi-api-key header. To
+    establish a WebSocket connection, first call the get-signed-url endpoint with
+    the xi-api-key header and your agent_id, which returns a signed_url containing
+    a token parameter for WebSocket authentication. The signed_url should never be
+    exposed on the client side; obtain it server-side and pass only the WebSocket
+    URL to the client.
+pagination_info:
+- information_source; https://elevenlabs.io/docs/changelog:
+  - Test invocations listing uses `page_size` parameter (default 30, max 100) and
+    `cursor` for pagination in the GET /v1/convai/test-invocations endpoint. The response
+    includes pagination support to navigate through test invocation results.
+  - Use the value of cursor from the response as the cursor parameter in the next
+    request. The page_size parameter (optional, default 30, max 100) controls results
+    per page. Pagination stops when no cursor is returned.
+possible_base_urls:
+- information_source; https://elevenlabs.io/docs/api-reference/audio-native/create:
+  - https://api.elevenlabs.io
+- information_source; https://elevenlabs.io/docs/api-reference/text-to-speech/convert:
+  - https://api.elevenlabs.io
+possible_endpoints:
+- information_source; https://elevenlabs.io/music:
+  - POST /music/compose
+- information_source; https://elevenlabs.io/docs/api-reference/audio-native/create:
+  - POST /v1/audio-native
+  - POST https://api.elevenlabs.io/v1/audio-native
+- information_source; https://elevenlabs.io/docs/api-reference/text-to-speech/convert:
+  - GET /v1/models
+  - POST /v1/text-to-speech/:voice_id
+  - POST https://api.elevenlabs.io/v1/text-to-speech/:voice_id
+- information_source; https://elevenlabs.io/docs/agents-platform/libraries/react:
+  - GET https://api.elevenlabs.io/v1/convai/conversation/get-signed-url
+- information_source; https://elevenlabs.io/docs/agents-platform/libraries/websocket:
+  - GET https://api.elevenlabs.io/v1/convai/conversation/get-signed-url
+  - GET https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=
+  - WebSocket wss://api.elevenlabs.io/v1/convai/conversation?agent_id={agent_id}

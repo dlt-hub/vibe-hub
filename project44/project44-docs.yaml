@@ -1,0 +1,74 @@
+auth_info:
+- information_source; https://developers.project44.com/api-reference:
+  - All API endpoints require authentication. Valid credentials must be acquired prior
+    to using the web services. See the authentication reference for details on the
+    supported authentication mechanisms and how to provide credentials with requests.
+- information_source; https://developers.project44.com/api-reference/webhook-guide:
+  - API_KEY authentication is supported for webhook configurations. The authenticationMethods
+    field accepts a type of API_KEY with associated parameters. Error code 401 indicates
+    invalid or missing credentials, and 403 indicates the user is not authorized to
+    perform the operation.
+  - 'OAuth2 authentication requires supplying clientId, clientSecret, accessTokenUri,
+    grantType (e.g. client_credentials), and clientAuthenticationScheme (either "form"
+    or "header") in the authenticationMethods parameters object. The clientAuthenticationScheme
+    field determines whether OAuth2 credentials are sent in the Authorization header
+    or as form-encoded body parameters; when set to "header", a Content-Type: application/x-www-form-urlencoded
+    header is added. Optional extraParams can include additional fields for the access
+    token provider request. Mutual TLS authentication alternatively uses client certificate
+    chain, private key, and optional trusted CA certificate in PEM format for two-way
+    certificate verification.'
+  - 'This documentation describes three authentication methods:
+
+
+    API_KEY authentication sends credentials via a header or query parameter using
+    api_key_name and api_key fields. BASIC authentication concatenates username and
+    password with a colon, base64-encodes the result, and sends it in the Authorization
+    header with the Basic identifier. OAuth2 authentication uses client_credentials
+    grant type with clientId and clientSecret to obtain a bearer token from accessTokenUri,
+    then applies the token to the Authorization header with the Bearer identifier;
+    the token is cached and automatically refreshed on expiry, with clientAuthenticationScheme
+    determining whether OAuth2 credentials are sent in the header or form request
+    body.'
+  - Webhook configurations support API_KEY authentication. The authType field should
+    be set to "API_KEY" and authenticationMethods array should include an object with
+    type "API_KEY" and parameters object for credential details. The authParams object
+    holds the actual authentication parameters for the webhook endpoint.
+pagination_info:
+- information_source; https://developers.project44.com/api-reference/api-docs/shipment-search:
+  - Pagination uses a page-based scheme with pageNumber and pageSize request parameters.
+    The response includes a paginationInfo object containing pageNumber, pageSize,
+    and total fields to indicate the current page position and total resource count.
+- information_source; https://developers.project44.com/api-reference/api-docs/order-visibility:
+  - Pagination uses pageNumber (starting at 0), pageSize (items per page), and total
+    (total item count) fields in the response. Stop paginating when results returned
+    are fewer than pageSize or when pageNumber times pageSize exceeds total.
+  - Pagination uses query parameters page (starting at 1) and size (default 30) to
+    control the request, with an optional sort parameter. The response includes paginated
+    results, though specific response fields for navigation are not detailed in the
+    provided documentation.
+  - Request uses query parameters page (integer, range 1-50, default 1) and size (integer)
+    to paginate results. Response includes paginationInfo object with pageNumber,
+    pageSize, and total fields, plus results array containing the page data.
+  - The search endpoint uses query parameter pagination with page (starting at 0)
+    and size (number of results per page) parameters, plus an optional sort parameter.
+    The response includes paginated results, though the specific response structure
+    for pagination fields is not shown in this documentation excerpt.
+possible_base_urls:
+- information_source; https://developers.project44.com/api-reference:
+  - https://eu12.api.project44.com/api/v4
+  - https://na12.api.project44.com/api/v4
+possible_endpoints:
+- information_source; https://developers.project44.com/api-reference:
+  - GET https://na12.api.project44.com/api/v4/$api_endpoint
+  - POST https://na12.api.project44.com/api/v4/$api_endpoint
+- information_source; https://developers.project44.com/guides/shippers/visibility/parcel:
+  - DELETE /api/v4/shipments/{shipmentId}/tracking
+  - GET /api/v4/shipments/{shipmentId}/tracking
+  - POST /api/v4/shipments/tracking
+- information_source; https://developers.project44.com/api-reference/webhook-guide:
+  - GET /api/v4/webhooks
+  - GET /api/v4/webhooks/name/{webhookName}
+  - PUT /api/v4/webhooks
+- information_source; https://developers.project44.com/api-reference/api-docs:
+  - DELETE /api/v4/assets/tracking
+  - DELETE /api/v4/capacityprovideraccountgroups/{id}

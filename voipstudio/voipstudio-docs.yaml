@@ -1,0 +1,46 @@
+auth_info:
+- information_source; https://voipstudio.com/docs/administrator/integrations/webhooks/:
+  - Authentication appending TOKEN parameter on query URL is supported. This means
+    you can append a token as a query parameter to your webhook URL for authentication
+    purposes, such as `https://your-url.com/webhook?token=YOUR_TOKEN`.
+- information_source; https://voipstudio.com/docs/api/introduction/:
+  - API requests require the X-Auth-Token header containing a user_token (API Key)
+    obtained from a successful POST /login or POST /apitokens response. Include the
+    token in the X-Auth-Token header for all authenticated requests.
+  - Login credentials (email and password) are sent in the JSON request body to POST
+    /v1.2/voipstudio/login, which returns a user_token that expires after 30 minutes
+    of inactivity. The user_token is passed in the X-Auth-Token header for subsequent
+    API requests. Longer-lived API tokens can be created via POST /apitokens using
+    the user_token, specifying a name and expiry duration in seconds.
+  - VoIPstudio API requires an API Key (user_token) for authorization. Obtain it either
+    by sending a POST request to the /login endpoint with email and password credentials,
+    or generate it via the VoIPstudio Web Dashboard. The user_token is then used to
+    authorize all subsequent API requests.
+- information_source; https://voipstudio.com/docs/api/resources/auth/:
+  - API user token authentication is required. POST to /login with email and password
+    in JSON body to obtain a token that expires after 15 minutes of inactivity. Include
+    the token in the Authorization header (Basic auth scheme) for all API requests.
+    Use GET /ping periodically to keep the token valid. Optional parameters include
+    remember_me and device_fingerprint.
+pagination_info:
+- information_source; https://voipstudio.com/docs/api/introduction/:
+  - For collection endpoints, use query parameters page (page number) and limit (records
+    per page, maximum 5000) to paginate. Successful GET collection responses include
+    data array and total field indicating total resource count.
+possible_base_urls:
+- information_source; https://voipstudio.com/docs/api/introduction/:
+  - https://l7api.com/v1.2
+  - https://l7api.com/v1.2/voipstudio
+possible_endpoints:
+- information_source; https://voipstudio.com.br/docs/administrador/integra%C3%A7%C3%B5es/webhooks/:
+  - GET /v1.1/calls/139543232
+  - GET /v1.1/cdrs?filter=[{"property":"live_id","operator":"=","value":"139543232"}]
+  - GET /v1.1/monitors
+  - GET /v1.1/monitors?filter=[{"property":"live_id","operator":"=
+  - PATCH /v1.1/calls/139543232
+- information_source; https://voipstudio.com/docs/administrator/integrations/webhooks/:
+  - GET /v1.1/calls/139543232
+  - GET /v1.1/cdrs
+  - GET /v1.1/cdrs?filter=[{"property":"live_id","operator":"=","value":"139543232"}]
+  - GET /v1.1/monitors
+  - GET /v1.1/monitors?filter=[{"property":"live_id","operator":"=","value":"139543232"}]

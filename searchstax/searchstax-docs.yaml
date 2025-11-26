@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://www.searchstax.com/docs/searchstax-cloud-authentication-api/:
+  - Authentication is obtained by POSTing credentials to https://app.searchstax.com/api/rest/v2/obtain-auth-token/
+    with a JSON body containing username, password, and tfa_token fields. The response
+    returns a JSON document with a token field that is used as the authorization token
+    for subsequent API requests.
+  - 'Authentication uses API keys passed in the Authorization header with the format
+    "APIkey <key_value>". The API key is a JWT token that includes scopes defining
+    permissions like "deployment.dedicateddeployment". Send the key in the Authorization
+    header as "Authorization: APIkey $APIKEY" in requests to the API endpoints.'
+  - 'Authentication uses a token-based scheme where credentials are sent via the Authorization
+    header. Include the header "Authorization: Token <token>" with each request, where
+    <token> is your authentication token. Additionally, the request body requires
+    two parameters: "apikey" (the API key string) and "deployment" (the deployment
+    UID).'
+  - Authentication uses username and password credentials submitted as JSON in a POST
+    request to the obtain-auth-token endpoint, with optional two-factor authentication
+    support. Send a POST request to https://app.searchstax.com/api/rest/v2/obtain-auth-token/
+    with Content-Type application/json containing JSON body with fields username (required
+    string, email address), password (required string), and tfa_token (optional string,
+    six-digit code or backup token). The response returns a TOKEN that is then used
+    for subsequent API requests.
+  - 'Authorization uses a Token scheme sent via the Authorization header. Include
+    the header "Authorization: Token <token>" where <token> is the authentication
+    token string (e.g., "YXBwNDAtYXBpOmdUSG8xNyNrdXU4"). Tokens have creation and
+    expiration timestamps that can be verified via the verify-auth-token endpoint.'
+pagination_info:
+- information_source; https://www.searchstax.com/docs/searchstax-cloud-deployment-api/:
+  - 'Pagination uses optional query parameters: page (page number) and page_size (number
+    of deployments per page). Both parameters are optional with no specified defaults
+    or limits mentioned in the documentation.'
+  - The API uses a query parameter `page` to paginate results. The `page` parameter
+    specifies the page number within the paginated result set and is passed as a query
+    string parameter (e.g., `?page=1`). The documentation does not specify response
+    fields indicating pagination state, total pages, or how to determine when to stop
+    paginating.
+possible_base_urls:
+- information_source; https://www.searchstax.com/docs/searchstax-cloud-authentication-api/:
+  - https://app.searchstax.com/api/rest/v2
+  - https://app.searchstax.com/api/rest/v2/account/
+possible_endpoints:
+- information_source; https://www.searchstax.com/docs/searchstax-cloud-authentication-api/:
+  - GET https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/apikey/deployments/
+  - GET https://app.searchstax.com/api/rest/v2/verify-auth-token/
+  - POST https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/apikey/disassociate/
+  - POST https://app.searchstax.com/api/rest/v2/account/<account_name>/apikey/
+  - POST https://app.searchstax.com/api/rest/v2/account/<account_name>/apikey/associate/
+  - POST https://app.searchstax.com/api/rest/v2/account/<account_name>/apikey/deployments/
+  - POST https://app.searchstax.com/api/rest/v2/account/<account_name>/apikey/disassociate/
+  - POST https://app.searchstax.com/api/rest/v2/account/<account_name>/apikey/list/
+  - POST https://app.searchstax.com/api/rest/v2/account/<account_name>/apikey/revoke/
+  - POST https://app.searchstax.com/api/rest/v2/account/{ACCOUNT}/apikey/revoke/

@@ -1,0 +1,64 @@
+auth_info:
+- information_source; https://help.alteryx.com/aac/en/release-notes/release-notes-for-alteryx-one.html:
+  - Account members can generate OAuth 2.0 API tokens via the Alteryx One API to access
+    account services. Tokens are created through the OAuth 2.0 API Tokens Page for
+    Users, and OAuth 2.0 authentication is also supported for REST API Connections.
+  - OAuth 2.0 API tokens are now enabled by default in newly created workspaces for
+    generating and managing personal access tokens via the OAuth 2.0 API Access page.
+    Exact authentication scheme details, header names, token endpoint URLs, scopes,
+    and client credential requirements are not provided in this documentation excerpt.
+- ? information_source; https://help.alteryx.com/aac/en/platform/connections/configure-connectivity/enable-oauth-2-0-authentication/oauth-2-0-for-box.html
+  : - OAuth 2.0 authentication is required for Box integration in Alteryx One. Register
+      an OAuth 2.0 client with Type set to box, providing the Client ID and Client
+      Secret from your Box app setup. Use authorization URL https://account.box.com/api/oauth2/authorize
+      and token URL https://api.box.com/oauth2/token. Set the scope to root_readwrite,
+      with access token expiration of 3600000 ms and refresh token expiration of 0
+      ms.
+- ? information_source; https://help.alteryx.com/aac/en/platform/connections/configure-connectivity/enable-oauth-2-0-authentication/oauth-2-0-for-google-analytics.html
+  : - OAuth 2.0 authentication is required. You must create OAuth 2.0 credentials
+      with Client ID and Client Secret from Google Cloud Console, then configure the
+      authorized redirect URI as https://ayxpreview.alteryxcloud.com/oauth2/callback.
+      These credentials are applied in Alteryx One to authenticate with Google Analytics
+      APIs.
+- ? information_source; https://help.alteryx.com/aac/en/platform/connections/configure-connectivity/enable-oauth-2-0-authentication/oauth-2-0-for-hubspot.html
+  : - HubSpot uses OAuth 2.0 authentication. The authorization endpoint is https://api.hubapi.com/oauth/v1/authorize,
+      the token endpoint is https://api.hubapi.com/oauth/v1/token, access tokens expire
+      in 1800000 milliseconds, and refresh tokens do not expire (set to 0). You must
+      provide required scopes when configuring the OAuth 2.0 client.
+pagination_info:
+- ? information_source; https://help.alteryx.com/aac/en/platform/connections/supported-connection-types/rest-api-connections.html
+  : - Pagination uses the nextPageURL method. The response contains a nextPageURL
+      field that provides the URL for the next page of results; continue requesting
+      until no nextPageURL is returned.
+    - 'The API supports four pagination methods: None (no pagination), Next page URL
+      (URL of next page returned in response body with configurable XPath), Paging
+      token (token returned in response and submitted in subsequent request via configurable
+      parameter), Record offset (query parameters for offset and page size), and Page
+      number (query parameters for page number and page size). Each method requires
+      specific configuration of parameter names and response field paths.'
+    - Use the next_url field from the response (accessed via JSON path $.next_url)
+      to retrieve subsequent pages. The pagination type is nextPageURL, meaning each
+      response contains a direct URL to the next page that should be used for the
+      following request.
+possible_base_urls:
+- information_source; https://help.alteryx.com/aac/en/release-notes/release-notes-for-alteryx-one.html:
+  - https://us1.alteryxcloud.com/documentation/api
+- ? information_source; https://help.alteryx.com/aac/en/platform/connections/configure-connectivity/enable-oauth-2-0-authentication/oauth-2-0-for-box.html
+  : - https://account.box.com/api/oauth2/authorize
+possible_endpoints:
+- information_source; https://help.alteryx.com/aac/en/release-notes/release-notes-for-alteryx-one.html:
+  - POST /v1/schedule
+- ? information_source; https://help.alteryx.com/aac/en/platform/connections/configure-connectivity/enable-oauth-2-0-authentication/oauth-2-0-for-box.html
+  : - GET https://account.box.com/api/oauth2/authorize
+    - POST https://api.box.com/oauth2/token
+- ? information_source; https://help.alteryx.com/aac/en/platform/connections/configure-connectivity/enable-oauth-2-0-authentication/oauth-2-0-for-hubspot.html
+  : - GET https://app.hubspot.com/oauth/authorize
+    - POST https://api.hubapi.com/oauth/v1/token
+- ? information_source; https://help.alteryx.com/aac/en/platform/connections/configure-connectivity/enable-oauth-2-0-authentication/oauth-2-0-for-marketo.html
+  : - POST https://172-KJH-591.mktorest.com/identity/oauth/token
+- information_source; https://help.alteryx.com/aac/en/platform/connections/supported-connection-types/qlik-connections.html:
+  - GET https://<tenant hostname>/api/v1/users/me
+  - POST /oauth/token
+- ? information_source; https://help.alteryx.com/aac/en/platform/connections/supported-connection-types/rest-api-connections.html
+  : - GET /v3/reference/tickers
+    - GET https://api.polygon.io/v3/reference/tickers

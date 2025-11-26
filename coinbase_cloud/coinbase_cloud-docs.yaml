@@ -1,0 +1,46 @@
+auth_info:
+- information_source; https://coinbase-cloud.mintlify.app/api-reference/v2/authentication:
+  - 'Bearer Token (JWT) authentication is required. Generate a JWT token and include
+    it in the Authorization header as "Bearer $JWT". The token expires after 2 minutes
+    and must be refreshed. For sensitive wallet write operations, an additional Wallet
+    Secret is used to generate a Wallet Token (JWT) sent via the X-Wallet-Auth header.
+    Required headers: Authorization (Bearer token), Content-Type (application/json),
+    Accept (application/json).'
+  - Bearer Tokens (JWTs) are required for server-to-server communication and must
+    be included in the Authorization header. They are generated using your Secret
+    API Key. Store your KEY_NAME and KEY_SECRET as environment variables for secure
+    access, never hardcode them in your code.
+  - Client API Key is included in the URL path at https://api.developer.coinbase.com/rpc/v1/base/${CLIENT_API_KEY}
+    for JSON-RPC requests. Secret API Key is required for server-to-server communication
+    and is used to generate a Bearer Token JWT that goes in the Authorization header.
+    The Secret API Key must be kept secure and never exposed in client-side code,
+    and can be configured with IP allowlists.
+  - 'The API uses JWT (JSON Web Token) authentication signed with ECDSA. Credentials
+    are provided via environment variables: WALLET_SECRET contains a base64-encoded
+    PKCS8 private key used to sign JWTs. The JWT payload includes iat (issued at),
+    nbf (not before), jti (unique ID), and uris (array containing the request method,
+    host, and path). If a request body is present, a reqHash field containing the
+    SHA256 hash of the sorted request body JSON is added to the payload. The signed
+    JWT is then used to authenticate API requests.'
+  - The API uses two JWT bearer tokens for authentication. Send the primary JWT in
+    the Authorization header as "Bearer ${JWT}" and a wallet-specific JWT in the "X-Wallet-Auth"
+    header. Both tokens are passed as environment variables and required for authenticated
+    requests.
+possible_base_urls:
+- information_source; https://coinbase-cloud.mintlify.app/api-reference/v2/authentication:
+  - https://api.cdp.coinbase.com
+  - https://api.cdp.coinbase.com/platform/v1
+possible_endpoints:
+- information_source; https://coinbase-cloud.mintlify.app/api-reference/v2/authentication:
+  - POST https://api.cdp.coinbase.com/platform/v1/networks/base-mainnet/assets/BTC
+  - POST https://api.developer.coinbase.com/rpc/v1/base/${CLIENT_API_KEY}
+- information_source; https://coinbase-cloud.mintlify.app/get-started/demo-apps/app-examples/discord-bot-demo:
+  - POST DISCORD_WEBHOOK_URL
+- information_source; https://coinbase-cloud.mintlify.app/onramp-&-offramp/offramp-apis/generating-offramp-url:
+  - GET https://pay.coinbase.com/v3/sell/input
+  - POST https://api.developer.coinbase.com/onramp/v1/token
+- information_source; https://coinbase-cloud.mintlify.app/get-started/authentication/jwt-authentication:
+  - POST https://api.cdp.coinbase.com/platform/v1/networks/base-mainnet/assets/BTC
+- information_source; https://coinbase-cloud.mintlify.app/get-started/authentication/cdp-api-keys:
+  - POST https://api.cdp.coinbase.com/platform/v1/networks/base-mainnet/assets/BTC
+  - POST https://api.developer.coinbase.com/rpc/v1/base/${CLIENT_API_KEY}

@@ -1,0 +1,57 @@
+auth_info:
+- information_source; https://www.genesys-pgr.org/documentation/apis:
+  - Genesys APIs use OAuth 2.0 for authentication. For user-interactive flows, use
+    Authorization Code grant with Client ID and Client Secret sent as Basic Auth header.
+    For system-to-system integration, use OAuth 2.1 client credentials grant by sending
+    a POST request to the token endpoint with grant_type=client_credentials parameter.
+  - 'Genesys uses OAuth2 client credentials grant type for system authentication.
+    Request an access token via POST to https://api.sandbox.genesys-pgr.org/oauth/token
+    with query parameters grant_type=client_credentials, client_id=CLIENTID, and client_secret=SECRET.
+    The response contains access_token, token_type (bearer), refresh_token, expires_in
+    (43199 seconds), and scope (read write). Use the access token in subsequent API
+    requests either as Authorization header "Authorization: Bearer OAUTH-ACCESS-TOKEN"
+    or as query parameter _access_token=OAUTH-ACCESS-TOKEN.'
+  - Genesys uses OpenID Connect (OIDC) for API authentication. To obtain an access
+    token, you need a valid Client ID and Client Secret (provided by helpdesk@genesys-pgr.org
+    for each client application). For the Sandbox environment, use Client ID "dLCiR.MzwkNha18ImEcw"
+    and Client Secret "wGmRAhVplWLEVWlqiMT7". The access_token obtained through the
+    OIDC flow is required to access protected API resources. User permissions are
+    checked before API actions are executed, and permission to modify data must be
+    granted by helpdesk@genesys-pgr.org based on FAO WIEWS codes of institutes.
+  - OAuth2 access token authentication is required. Send the access token as a query
+    parameter named _access_token or via the Authorization header with Bearer scheme.
+    A 401 Unauthorized response indicates missing or invalid authentication credentials.
+- information_source; https://www.genesys-pgr.org/documentation/brapi:
+  - 'All BrAPI requests require OAuth2 authentication using a Bearer token passed
+    in the Authorization header. The token must be obtained through the Genesys API
+    manual (login and logout endpoints are not supported via BrAPI). Send requests
+    with the header Authorization: Bearer <TOKEN>.'
+pagination_info:
+- information_source; https://www.genesys-pgr.org/documentation/brapi:
+  - Pagination uses query parameters page (the page to retrieve, starting at 0) and
+    pageSize (requested page size). The response includes pagination data in the metadata
+    section. Construct subsequent requests by incrementing the page parameter value.
+  - Pagination uses query parameters page (zero-indexed, required) and pageSize (required)
+    to control which page and how many results per page are returned. The response
+    structure for pagination fields is not specified in the provided documentation.
+  - Request parameters include pageSize (requested page size) and page (the page to
+    retrieve), both used as query parameters. The response includes a metadata object
+    with status and datafiles arrays, and a result.data array containing the list
+    of germplasm records. Stop paginating when the page index exceeds available pages.
+possible_base_urls:
+- information_source; https://www.genesys-pgr.org/documentation/apis:
+  - https://api.example.com/api/v0
+  - https://api.example.com/api/v1
+possible_endpoints:
+- information_source; https://www.genesys-pgr.org/documentation/apis:
+  - GET esys-pgr.org/api/v0/me?_access_token=OAUTH-ACCESS-TOKEN
+  - GET https://api.sandbox.genesys-pgr.org/api/v1/me/profile
+  - POST /api/v1/acn/SYR
+  - POST /api/v1/acn/{instituteCode}/delete
+  - POST /api/v1/acn/{instituteCode}/upsert
+  - POST https://api.sandbox.genesys-pgr.org/oauth/token
+- information_source; https://www.genesys-pgr.org/documentation/brapi:
+  - GET https://api.genesys-pgr.org/brapi/v1/commoncropnames
+  - GET https://api.genesys-pgr.org/brapi/v1/crops
+  - GET https://api.genesys-pgr.org/brapi/v1/germplasm
+  - GET https://api.genesys-pgr.org/brapi/v1/germplasm/{germplasmID}

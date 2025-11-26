@@ -1,0 +1,58 @@
+auth_info:
+- information_source; https://developers.willowinc.com/docs/authentication-endpoints/:
+  - OAuth 2.0 client credentials grant flow is used for authentication. Send a POST
+    request to /oauth2/token with client_id, client_secret, and grant_type set to
+    "client_credentials" in the JSON request body. The response includes an access
+    token that is then used to make API calls to other endpoints.
+- information_source; https://developers.willowinc.com/openapi/willowtwin/v1/:
+  - Authentication is required to access the Willow API using OAuth2. To obtain an
+    access token, send a POST request to /oauth2/token with clientId and clientSecret
+    as JSON body parameters. The API returns rate limit information via X-RateLimit-Limit,
+    X-RateLimit-Remaining, and X-RateLimit-Reset response headers, with a default
+    limit of 3600 calls per hour.
+  - Authentication uses Bearer token scheme. Include the token in the Authorization
+    header with the format "Bearer <YOUR_TOKEN_HERE>" for all requests to this endpoint.
+  - OAuth2 authentication is required. Include a Bearer token in the Authorization
+    header with format "Bearer <YOUR_TOKEN_HERE>" when making requests to retrieve
+    assets.
+  - OAuth2 authentication is required. Send a Bearer token in the Authorization header
+    with the format "Bearer <YOUR_TOKEN_HERE>" when making requests to the devices
+    endpoint.
+pagination_info:
+- information_source; https://developers.willowinc.com/openapi/willowtwin/v1/:
+  - Continuation Token method of pagination is used. When making a request to an endpoint,
+    a continuation token is provided in the response to retrieve subsequent pages;
+    use this token in the next request to continue pagination.
+  - Continuation token pagination is supported on many endpoints. Include the continuation
+    token received in the response body as a query parameter in subsequent requests
+    along with the desired page size to retrieve the next page of results.
+  - Pagination uses optional query parameters pageSize (integer) and continuationToken
+    (string). The response includes a continuationToken field; use this token value
+    in the next request's continuationToken parameter to fetch the next page, and
+    stop when no continuationToken is returned.
+  - Pagination uses optional query parameters pageSize (integer, max 32) and continuationToken
+    (string). The response includes a continuationToken field; use its value in the
+    next request's continuationToken parameter to fetch subsequent pages, or stop
+    when no continuationToken is returned.
+  - Pagination uses query parameters continuationToken and pageSize. The continuationToken
+    string from the response is passed in the next request to retrieve subsequent
+    pages, while pageSize controls the number of results per page. Both parameters
+    are optional.
+possible_base_urls:
+- information_source; https://developers.willowinc.com/docs/authentication-endpoints/:
+  - https://<organization>.app.willowinc.com/api/v3
+- information_source; https://developers.willowinc.com/openapi/willowtwin/v1/:
+  - https://api.willowinc.com/v1
+possible_endpoints:
+- information_source; https://developers.willowinc.com/docs/authentication-endpoints/:
+  - POST https://<organization>.app.willowinc.com/api/v3/oauth2/token
+- information_source; https://developers.willowinc.com/openapi/willowtwin/v1/:
+  - DELETE https://api.willowinc.com/v1/sites/{siteId}/insights/{insightId}
+  - GET /sites/{siteId}/equipments
+  - GET /sites/{siteId}/floors
+  - GET /sites/{siteId}/points
+  - GET /sites/{siteId}/tickets/{ticketId}
+  - GET https://api.willowinc.com/v1/sites
+  - GET https://api.willowinc.com/v1/sites/{siteId}/assets/{assetId}
+  - GET https://api.willowinc.com/v1/sites/{siteId}/categories
+  - GET https://api.willowinc.com/v1/sites/{siteId}/categories/{categoryId}/assets

@@ -1,0 +1,40 @@
+auth_info:
+- information_source; https://developer.hypo.at/live-psd2-oauth-flow:
+  - 'OAuth2 Bearer token authentication is required. Obtain an access token via OAuth2
+    authorization code flow using client_id and client_secret with scope "apic-psd2",
+    then include the token in the "Authorization: Bearer" header for all API requests
+    to psd2.hypo.at. The token response includes access_token, token_type "Bearer",
+    and expires_in (seconds). Additionally, X-Request-ID, Consent-ID, and Cache-Control
+    headers are required, and client certificate authentication (cert.pem and key.key
+    files) via mTLS is also needed.'
+  - This API uses mutual TLS (mTLS) certificate-based authentication combined with
+    OAuth2 client credentials flow. First, register via POST to obtain a clientId
+    using client certificate and key files. Then exchange the clientId for an OAuth
+    access token by POSTing to the SSO endpoint with grant_type=client_credentials,
+    client_id, and scope=apic-psd2, again using the same certificate and key files.
+    The token request requires Content-Type application/x-www-form-urlencoded and
+    returns an access token for subsequent API calls.
+- information_source; https://developer.hypo.at/sandbox-oauth-flow:
+  - Bearer token authentication is required. Send the access token in the Authorization
+    header as "Bearer {token}". Additionally, include the Consent-ID header with a
+    consent identifier value for PSD2 compliance.
+  - OAuth 2.0 Client Credentials Grant flow is used. Send a POST request to https://sso.hypo.at/
+    with Basic Authorization header containing Base64-encoded ClientId:ClientSecret
+    credentials to obtain an access token.
+  - 'OAuth2 with client credentials grant type. Exchange base64-encoded client credentials
+    (Authorization: Basic header) for an access token at https://sso.hypo.at/as/token.oauth2
+    using grant_type=client_credentials and scope=apic-sbx-psd2. Use the returned
+    access_token value in subsequent API requests via Authorization: Bearer header.'
+possible_base_urls:
+- information_source; https://developer.hypo.at/live-psd2-oauth-flow:
+  - https://psd2.hypo.at
+  - https://psd2.hypo.at/api/psd2-xs2a
+possible_endpoints:
+- information_source; https://developer.hypo.at/live-psd2-oauth-flow:
+  - GET https://psd2.hypo.at/api/psd2-xs2a/rest/v1/accounts
+  - POST https://psd2.hypo.at/api/psd2-xs2a/first-contact/
+  - POST https://sso-psd2.hypo.at/as/token.oauth2
+- information_source; https://developer.hypo.at/sandbox-oauth-flow:
+  - GET https://sandbox.hypo.at/api/psd2-xs2a/rest/v1/accounts
+  - POST https://sso.hypo.at/
+  - POST https://sso.hypo.at/as/token.oauth2

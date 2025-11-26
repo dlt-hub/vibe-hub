@@ -1,0 +1,28 @@
+auth_info:
+- information_source; https://docs.lightify-api.com/:
+  - OAuth 2.0 authorization code flow. Client must send browser to oauth2/authorize
+    endpoint with client_id, state (randomized), redirect_uri (must match developer
+    portal config), and response_type=code. After user authorizes, exchange the returned
+    code for access token via POST to oauth2/access_token with code, client_id, and
+    client_secret (code valid for 5 minutes only). Access token retrieved from vault
+    as authorization-secret.
+  - OAuth2 authorization code flow with client credentials. Exchange authorization
+    code for access token by POSTing to https://na.lightify-api.com/oauth2/access_token
+    with Content-Type application/x-www-form-urlencoded containing client_id, client_secret,
+    code, grant_type set to authorization_code, and redirect_uri. The code is valid
+    for 5 minutes and redirect_uri must match the authorize call URI. Refresh tokens
+    using the same endpoint with grant_type set to refresh_token and the refresh_token
+    parameter; refreshing invalidates current tokens and returns new access and refresh
+    tokens for subsequent API calls.
+  - OAuth2 refresh token flow using form-encoded POST request. Send client_id, client_secret,
+    refresh_token, and grant_type=refresh_token as URL-encoded form data to https://na.lightify-api.com/oauth2/access_token
+    with Content-Type application/x-www-form-urlencoded header to obtain new access
+    tokens.
+possible_base_urls:
+- information_source; https://docs.lightify-api.com/:
+  - https://na.lightify-api.com
+  - https://na.lightify-api.com/oauth2/access_token
+possible_endpoints:
+- information_source; https://docs.lightify-api.com/:
+  - GET https://na.lightify-api.com/oauth2/authorize
+  - POST https://na.lightify-api.com/oauth2/access_token

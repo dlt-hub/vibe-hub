@@ -1,0 +1,69 @@
+auth_info:
+- information_source; https://developers.orbipay.com/auxiliary_paymentsapi/references/v1.1.0/:
+  - Signature-based authentication is required. Requests must include a calculated
+    signature, likely sent in request headers or as part of the authentication mechanism.
+    The documentation references a "Signature Calculation Example" but the specific
+    header name, signature algorithm, and calculation method are not fully detailed
+    in the provided excerpt.
+  - The API uses HMAC-SHA256 signature-based authentication. Include an Authorization
+    header with format "OPAY1-HMAC-SHA256 Credential=<client_key>,Signature=<signature>"
+    where the signature is computed as Base64(HMAC-SHA256(secret, input)) and input
+    is constructed by concatenating HTTP method, path, query string, headers, and
+    payload with colons as separators.
+- information_source; https://developers.orbipay.com/fasterpayoutsapi/reference/:
+  - The API requires authentication via a required header parameter named client_key
+    (a unique identifier string) sent with each request. Additional required headers
+    include product, payment_channel, requestor_type, and timestamp, which together
+    form part of the authentication and request validation scheme.
+  - 'The API requires multiple header parameters for authentication and request identification:
+    client_key (unique identifier), product (product ID), payment_channel (FI channel),
+    requestor_type (identifies requestor), timestamp (UTC datetime), and idempotent_request_key
+    (unique token) are all required headers. Additional optional headers include access_channel,
+    client_requestor_ref, requestor, context_variant, processing_mode, and X-PAAS-Headers.
+    The response codes include 401 Unauthorized and 403 Forbidden, indicating credential
+    validation is enforced.'
+  - 'The API requires multiple header parameters for authentication and request identification:
+    client_key (unique identifier), product (product id), payment_channel (FI channel),
+    requestor_type (identifies the requestor), and timestamp (UTC datetime) are all
+    required headers. Additionally, X-PAAS-Headers is available for additional authentication
+    context, and idempotent_request_key provides unique token tracking for requests.'
+pagination_info:
+- information_source; https://developers.orbipay.com/auxiliary_paymentsapi/references/v1.1.0/:
+  - Pagination uses page_size query parameter to control results per request. Response
+    includes total_results_count, has_more_results boolean, from_index, and to_index
+    fields to indicate pagination state. Use query_id in the url field for subsequent
+    requests when has_more_results is true.
+- information_source; https://developers.orbipay.com/paymentsapi/reference/:
+  - The API uses page_size as an optional query parameter (string, 1-2 digits) to
+    control pagination. The response includes the first page of results and provides
+    URLs for next/previous pages to navigate through customer accounts matching the
+    filter criteria.
+  - page_size is a query parameter (string, 1-2 digits) that controls pagination.
+    The 200 response indicates pagination with next/previous page URLs, though the
+    exact response field names are not specified in the provided documentation excerpt.
+- information_source; https://developers.orbipay.com/paymentsapi/references/v1/:
+  - 'Pagination information: The response includes total_results_count, has_more_results
+    (boolean indicating if more results exist), from_index, and to_index fields to
+    track pagination state. However, no request parameters for controlling pagination
+    (such as limit, offset, page, or cursor) are documented in this excerpt.'
+  - Pagination uses a page_size query parameter (string type) to control the number
+    of results returned per request. The documentation does not specify response fields
+    for navigation (such as next, has_more, or total_count), stopping conditions,
+    or how to request subsequent pages.
+possible_base_urls:
+- information_source; https://developers.orbipay.com/auxiliary_paymentsapi/references/v1.1.0/:
+  - https://api.orbipay.com
+  - https://api.orbipay.com/payments/v1
+possible_endpoints:
+- information_source; https://developers.orbipay.com/auxiliary_paymentsapi/references/v1.1.0/:
+  - DELETE /recordedpayments/{ID_PAYMENT}
+  - GET /recordedpayments
+  - GET /recordedpayments/{ID_PAYMENT}
+  - GET https://api.orbipay.com/payments/v1
+  - GET https://sbapi.orbipay.com/payments/v1
+  - POST /feecalculators
+- information_source; https://developers.orbipay.com/fasterpayoutsapi/reference/:
+  - DELETE /transfer/getrecurringinstances
+  - GET https://api.orbipay.com/umm/v1/route/routingdetails/{routing_number}
+  - GET https://api.orbipay.com/umm/v1/route/supportedcorridors/
+  - POST /calculatefee

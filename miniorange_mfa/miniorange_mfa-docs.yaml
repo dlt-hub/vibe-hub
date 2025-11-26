@@ -1,0 +1,62 @@
+auth_info:
+- information_source; https://developers.miniorange.com/docs/idp/api/multi-factor-authentication:
+  - The Validate OTP REST API requires authentication via customer credentials sent
+    in the JSON request body. Specifically, you must include customerKey (your customer
+    key) and username (the enrolled user's email) in the POST request to https://login.xecurify.com/moas/api/auth/validate,
+    along with the token field containing the OTP to validate.
+- information_source; https://developers.miniorange.com/docs/idp/api/groups-api-guide:
+  - 'API authentication uses HMAC-SHA512 signature verification. Three headers are
+    required: Customer-Key (the customer identifier), Timestamp (current time in milliseconds),
+    and Authorization (SHA-512 hash of concatenated customerKey, timestamp, and apiKey).
+
+
+    To authenticate: compute stringToHash as customerKey concatenated with currentTimeInMillis
+    concatenated with apiKey, hash it using SHA-512, then include three headers in
+    the request: Customer-Key header with the customerKey value, Timestamp header
+    with the current time in milliseconds, and Authorization header with the computed
+    hash value.'
+  - 'All requests require three custom headers: Customer-Key (your account customer
+    key as an integer), Timestamp (current time in milliseconds), and Authorization
+    (SHA-512 hash of the concatenated string: customerKey + timeInMillis + apiKey).
+    Include these headers in every API request.'
+  - Authentication uses HMAC-SHA512 signing with three required headers. Include Customer-Key
+    header with the customerKey value, Timestamp header with current time in milliseconds,
+    and Authorization header with SHA512 hash of concatenated currentTimeInMillis,
+    0, empty string, empty string, and apiKey.
+  - 'Authentication uses HMAC-SHA512. Include three headers: Customer-Key (your customer
+    key), Timestamp (current time in milliseconds), and Authorization (SHA-512 hash
+    of concatenated customerKey + timestamp + apiKey). The apiKey is provided separately
+    and used only for hash computation, not sent directly.'
+pagination_info:
+- information_source; https://developers.miniorange.com/docs/idp/api/groups-api-guide:
+  - Pagination uses batchSize and batchNo parameters in the request body. batchSize
+    specifies the number of records per batch (required), and batchNo specifies which
+    batch to retrieve (required, starting from 1). Increment batchNo to fetch subsequent
+    batches.
+  - The API uses batch-based pagination with required parameters batchSize (number
+    of items per batch) and batchNo (batch number starting from 1) sent in the request
+    body. The response returns customerId and data for the requested batch; continue
+    paginating by incrementing batchNo until no more data is returned.
+- information_source; https://developers.miniorange.com/docs/idp/api/user-api-guide:
+  - Pagination is handled using batchSize and batchNo parameters in the request body.
+    batchSize specifies the number of users per batch (maximum 500), and batchNo specifies
+    which batch to retrieve (starting from 1). To fetch all users, increment batchNo
+    in subsequent requests until no more results are returned.
+possible_base_urls:
+- information_source; https://developers.miniorange.com/docs/idp/api/multi-factor-authentication:
+  - https://login.xecurify.com/moas/api/auth/challenge
+  - https://login.xecurify.com/moas/api/auth/validate
+possible_endpoints:
+- information_source; https://developers.miniorange.com/docs/idp/api/multi-factor-authentication:
+  - POST https://login.xecurify.com/moas/api/auth/challenge
+  - POST https://login.xecurify.com/moas/api/auth/validate
+- information_source; https://developers.miniorange.com/docs/idp/api/groups-api-guide:
+  - POST https://login.xecurify.com/moas/api/admin/groups/getall
+  - POST https://login.xecurify.com/moas/api/admin/groups/members
+  - POST https://login.xecurify.com/moas/api/admin/groups/members/update
+  - POST https://login.xecurify.com/moas/api/admin/groups/update
+- information_source; https://developers.miniorange.com/docs/idp/api/user-api-guide:
+  - GET https://login.xecurify.com/moas/api/admin/users/stats/count
+  - POST https://login.xecurify.com/moas/api/admin/users/change-password
+  - POST https://login.xecurify.com/moas/api/admin/users/create
+  - POST https://login.xecurify.com/moas/api/admin/users/delete

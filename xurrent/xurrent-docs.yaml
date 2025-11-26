@@ -1,0 +1,76 @@
+auth_info:
+- information_source; https://developer.xurrent.com/graphql/:
+  - 'Authorization is via OAuth2 bearer token. Include the token in the Authorization
+    header as "Authorization: bearer <oauth-token>" when making requests to https://graphql.xurrent.com/.
+    Additionally, the X-Xurrent-Account header is required for all requests except
+    the introspection GET request.'
+  - 'The Xurrent GraphQL API requires two HTTP headers for authentication. First,
+    supply an Authorization header with a Bearer token obtained as a personal access
+    token generated in the Xurrent Specialists console under My Profile > Personal
+    Access Tokens. Second, supply an X-Xurrent-Account header with your account ID
+    to specify which account the request targets. The personal access token must have
+    appropriate scopes: Read action for queries on the accessed model node types,
+    and Create or Update action for mutations. Example headers: Authorization: Bearer
+    <oauth-token> and X-Xurrent-Account: <accountID>.'
+  - 'The Xurrent GraphQL API uses OAuth token-based authentication. Each request requires
+    two HTTP headers: Authorization header with format "Bearer <oauth-token>" where
+    the token is obtained as a Personal Access Token from My Profile or via an OAuth
+    Application from Settings, and X-Xurrent-Account header containing the account
+    ID.'
+- information_source; https://developer.xurrent.com/v1/:
+  - 'Each request to the Xurrent REST API requires two HTTP headers: Authorization
+    header with Bearer token format containing an OAuth token, and X-Xurrent-Account
+    header containing the account ID. OAuth tokens can be obtained by generating a
+    Personal Access Token from My Profile in Xurrent or by creating an OAuth Application
+    from Settings. The token must include appropriate scopes for the requested actions.'
+  - Personal Access Tokens are used for authentication. Generate a token via My Profile
+    > Personal Access Tokens > Generate token. Include the token in API requests using
+    the Authorization header with Bearer scheme. To access resources from trusted
+    accounts, add the X-Xurrent-Account header with the account identifier (e.g.,
+    "wna-it").
+pagination_info:
+- information_source; https://developer.xurrent.com/v1/general/changelog/:
+  - Pagination is implemented via response headers. The API returns x-pagination-current-page,
+    x-pagination-per-page, x-pagination-total-entries, x-pagination-total-pages, x-pagination-next-page,
+    x-pagination-last-page, and x-pagination-throttled headers (case-insensitive).
+    A Link header is also provided. Request parameters for controlling pagination
+    are not described in this excerpt.
+- information_source; https://developer.xurrent.com/v1/general/pagination/:
+  - 'API requests return paginated collections with a default page size of 20 records,
+    adjustable via the optional `?per_page=` query parameter (maximum 100). Pagination
+    state is provided in response headers: `x-pagination-per-page`, `x-pagination-current-page`,
+    `x-pagination-total-pages`, and `x-pagination-total-entries`. Navigation uses
+    the Link header with rel="first", rel="prev", rel="next", and rel="last" to construct
+    subsequent requests using `search_after` and `search_before` query parameters.'
+  - Pagination uses Link header with rel values (first, prev, next) containing full
+    URLs for navigation. Query parameter per_page controls page size. Response includes
+    x-pagination-throttled header set to true when results exceed 100,000 records,
+    indicating retrieval is capped at that limit.
+- information_source; https://developer.xurrent.com/v1/search/:
+  - Search API requests are paginated with a default page size of 25 records, adjustable
+    via the `?per_page=` query parameter with a maximum of 100. The response includes
+    the `x-pagination-next-page` header containing a token to use as the `?page=`
+    parameter for retrieving the next page, and a Link header with rel="next" for
+    navigation.
+  - The API uses cursor-based pagination with the `x-pagination-next-page` header
+    token passed as the `page` query parameter for subsequent requests. The `per_page`
+    query parameter controls page size, and the pagination token remains valid for
+    30 minutes. Note that search results may contain duplicates across pages due to
+    non-deterministic relevance scoring.
+possible_base_urls:
+- information_source; https://developer.xurrent.com/graphql/:
+  - https://developer.xurrent.com/graphql/
+  - https://graphql.au.x
+possible_endpoints:
+- information_source; https://developer.xurrent.com/graphql/:
+  - GET https://graphql.xurrent.com/
+  - POST https://graphql.au.x
+  - POST https://graphql.ch.x
+  - POST https://graphql.uk.x
+  - POST https://graphql.us.x
+  - POST https://graphql.xurr
+  - POST https://graphql.xurrent.com/
+- information_source; https://developer.xurrent.com/v1/:
+  - GET https://api.xurrent.com/v1
+  - GET https://api.xurrent.com/v1/account/billing
+  - GET https://api.xurrent.com/v1/cis

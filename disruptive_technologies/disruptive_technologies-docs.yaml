@@ -1,0 +1,65 @@
+auth_info:
+- information_source; https://developer.disruptive-technologies.com/api:
+  - All requests to the Disruptive Technologies REST API must be authenticated using
+    a Service Account with either basic auth or OAuth2. Service Account authentication
+    uses basic auth credentials, while DT Studio User Account authentication uses
+    OAuth2. Refer to the linked authentication documentation for specific header names,
+    token acquisition, and scoping details.
+- information_source; https://developer.disruptive-technologies.com/api/emulator:
+  - All requests to the Disruptive Technologies emulator REST API must be authenticated
+    using a Service Account. You can authenticate either with a Service Account using
+    basic auth, or with a DT Studio User Account using OAuth2. Refer to the Service
+    Accounts introduction and OAuth2 authentication documentation for specific header
+    names, credential formats, and token acquisition details.
+- information_source; https://docs.developer.disruptive-technologies.com/authentication/basic-auth:
+  - Basic authentication is required using Service Account credentials. Send the Service
+    Account Key ID and Secret as HTTP Basic Auth (username:password format) in the
+    Authorization header, or via the -u flag in curl. The credentials are typically
+    stored in environment variables DT_SERVICE_ACCOUNT_KEY_ID and DT_SERVICE_ACCOUNT_SECRET.
+  - 'HTTP Basic Authentication is required. Credentials are provided via environment
+    variables DT_SERVICE_ACCOUNT_KEY_ID (username) and DT_SERVICE_ACCOUNT_SECRET (password),
+    passed to the Authorization header using the Basic auth scheme via the SetBasicAuth
+    method or equivalent base64-encoded "Authorization: Basic <base64(username:password)>"
+    header.'
+- information_source; https://docs.developer.disruptive-technologies.com/examples/pagination:
+  - Authentication uses HTTP Basic Auth with service account credentials. Set environment
+    variables DT_SERVICE_ACCOUNT_KEY_ID and DT_SERVICE_ACCOUNT_SECRET, then pass them
+    as the auth tuple (key_id, secret) to the requests library's auth parameter for
+    GET requests to the API endpoint https://api.d21s.com/v2.
+pagination_info:
+- information_source; https://docs.developer.disruptive-technologies.com/examples/pagination:
+  - Pagination uses a pageToken parameter in the query string. Send requests with
+    an empty pageToken initially, then use the pageToken value from the response to
+    fetch subsequent pages. Continue looping until no pageToken is returned in the
+    response, indicating the final page has been reached.
+  - Pagination uses a pageToken parameter passed in the query string. The response
+    includes a nextPageToken field; if it has a non-empty value, use it as the pageToken
+    in the next request, otherwise stop paginating.
+  - Pagination uses a token-based scheme with a `pageToken` query parameter (initially
+    empty string) sent in GET requests. The response contains paginated results in
+    a field specified by the API endpoint, and a `pageToken` value for the next page;
+    loop continues until `pageToken` is absent or empty.
+  - Projects are fetched in groups of 100 at a time using pagination. The documentation
+    mentions iterating through paginated results until all projects are retrieved,
+    but does not explicitly specify the pagination parameter names, response fields,
+    or stopping conditions.
+- information_source; https://docs.developer.disruptive-technologies.com/explore-our-rest-api/with-postman:
+  - The API uses token-based pagination. Request the next page by including the nextPageToken
+    value from the previous response as a query parameter in the subsequent request.
+    When nextPageToken is empty, all results have been retrieved.
+possible_base_urls:
+- information_source; https://developer.disruptive-technologies.com/api:
+  - https://api.disruptive-technologies.com/v2
+  - https://developer.disruptive-technologies.com
+possible_endpoints:
+- information_source; https://developer.disruptive-technologies.com/api:
+  - DELETE /organizations/{organization}/members/{member}
+  - DELETE /projects/{project}/dataconnectors/{dataconnector}
+  - DELETE /projects/{project}/devices/{device}/labels/{label}
+  - DELETE /projects/{project}/members/{member}
+  - GET /events
+  - GET /organizations
+  - GET /organizations/{organization}
+  - GET /organizations/{organization}/members/{member}
+  - GET /organizations/{organization}/members/{member}:getInviteUrl
+  - GET /organizations/{organization}/permissions

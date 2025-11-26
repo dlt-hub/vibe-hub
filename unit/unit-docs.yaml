@@ -1,0 +1,58 @@
+auth_info:
+- information_source; https://unit.co/docs/api/:
+  - 'Customer tokens use Bearer token authentication sent in the Authorization header
+    (format: "Authorization: Bearer ${TOKEN}"). Tokens include built-in Two Factor
+    Authentication (OTP) with customizable expiry up to 24 hours. Send a GET request
+    to /identity endpoint with the Authorization header to retrieve decoded token
+    information. Org API tokens are also supported as an alternative for accessing
+    sensitive scopes without relying on customer 2FA. Scopes define the level of access
+    granted to resources.'
+  - 'Unit''s API uses OAuth 2.0 Bearer Token authentication. All API requests must
+    include an Authorization header with the format "Bearer <token>". Tokens are assigned
+    scopes that define accessible resources and access levels (read/write). Two token
+    types exist: Org API tokens for system-level access and Customer Tokens for end-customer-specific
+    access. Invalid, missing, or expired tokens result in HTTP 401 Unauthorized responses.'
+- information_source; https://unit.co/docs/api/application-documents/:
+  - 'Authorization uses Bearer token authentication. The token must be passed in the
+    Authorization header as "Authorization: Bearer ${TOKEN}" for all document endpoints.'
+  - The API requires OAuth2 authentication with the "applications-write" scope. Include
+    the access token in the Authorization header as "Bearer {access_token}".
+  - 'The API uses Bearer token authentication. Send the token in the Authorization
+    header as "Authorization: Bearer ${TOKEN}". The required scope is "applications".'
+pagination_info:
+- information_source; https://unit.co/docs/api/cards-authorization-requests/:
+  - Pagination uses limit and offset query parameters. The response includes a meta
+    object with pagination details such as total count and whether more results are
+    available. Use offset to navigate through pages by incrementing it based on the
+    limit value.
+  - Pagination uses query parameters page[limit] (integer, default 100, optional)
+    for maximum results per page and page[offset] (integer, default 0, optional) for
+    the starting position. The response returns a data array containing the paginated
+    results.
+- information_source; https://unit.co/docs/api/webhooks/:
+  - Pagination uses query parameter page[limit] (integer type) to control the number
+    of results per page. The documentation indicates paging can be applied but does
+    not specify default values, maximum limits, response fields for navigation, or
+    stopping conditions.
+  - Pagination uses query parameters page[limit] (optional, default 100, maximum number
+    of results) and page[offset] (optional, default 0, number of results to skip).
+    The response returns a data array of results; construct the next request by incrementing
+    page[offset] by page[limit] until fewer results than page[limit] are returned.
+possible_base_urls:
+- information_source; https://unit.co/docs/api/:
+  - https://api.s.unit.s
+  - https://api.s.unit.sh
+possible_endpoints:
+- information_source; https://unit.co/docs/api/:
+  - GET https://api.s.unit.sh/identity
+- information_source; https://unit.co/docs/api/application-documents/:
+  - GET https://api.s.unit.s
+  - GET https://api.s.unit.sh/applications/1/documents
+  - GET https://api.s.unit.sh/applications/10001/documents/1/download
+  - GET https://api.s.unit.sh/applications/10001/documents/1/download/back
+  - POST https://api.s.unit.sh/applications/46/documents/
+  - POST https://api.s.unit.sh/applications/:id/documents/:id/verify
+  - PUT https://api.s.unit.sh/applications/46/documents/3
+  - PUT https://api.s.unit.sh/applications/46/documents/3/back
+- information_source; https://unit.co/docs/api/cards-authorization-requests/:
+  - GET https://api.s.unit.s

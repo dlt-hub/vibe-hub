@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://docs.investsuite.com/concepts/authentication/:
+  - Authenticate using an access key and secret to receive a JSON Web Token (JWT).
+    Add the JWT token to API requests for authorization. Exact header name and parameter
+    details for token submission are not provided in this excerpt.
+  - Authentication uses JWT tokens obtained via the `/auth/login` endpoint. Send a
+    POST request with `access_key_id` and `secret_access_key` in the JSON body to
+    receive an `access_token` and `refresh_token`. Include the `access_token` in the
+    HTTP Authorization header for all subsequent requests. The `access_token` expires
+    after a duration specified in the `expires_at` field and can be refreshed using
+    the `/auth/refresh-token` endpoint. All requests must use HTTPS; HTTP requests
+    will fail.
+  - 'Authentication uses access key credentials exchanged for bearer tokens. POST
+    access_key_id and secret_access_key to /auth/login/ to receive an access_token
+    with token_type Bearer and expires_in 300 seconds, plus a refresh_token. Use the
+    refresh_token with /auth/refresh-token/ to obtain a new access_token. Include
+    the access_token in subsequent requests via Authorization: Bearer {access_token}
+    header.'
+  - 'The API uses JWT Bearer token authentication. After obtaining an `access_token`
+    from the authentication endpoint, include it in all subsequent requests via the
+    `Authorization` header as `Authorization: Bearer {access_token_string}`. Requests
+    without this header will return a 403 Access Forbidden error.'
+- information_source; https://docs.investsuite.com/insight-apis/authentication_usage/:
+  - 'Authenticate using two required headers: X-TENANT-ID containing your tenant-user
+    identifier and X-Api-Key containing your secret key. Both credentials must be
+    included in the request header for all API calls, and all requests must use HTTPS.
+    Obtain credentials by contacting your InvestSuite representative or emailing api@investsuite.com.'
+pagination_info:
+- information_source; https://docs.investsuite.com/concepts/embedding/:
+  - The API uses offset-based pagination with a limit query parameter (default or
+    example value 10) to control page size. The response includes a next field containing
+    the full URL for the next page, an offset field with the cursor value, and a results
+    array with the paginated data. To paginate, use the next URL or extract the offset
+    value and pass it as the offset query parameter in subsequent requests.
+possible_base_urls:
+- information_source; https://docs.investsuite.com/concepts/authentication/:
+  - https://api.data.investsuite.com
+  - https://api.ivs.tst.investsuite.com
+possible_endpoints:
+- information_source; https://docs.investsuite.com/concepts/authentication/:
+  - GET https://api.sandbox.investsuite.com/users/
+  - POST /auth/refresh-token
+  - POST https://api.sandbox.investsuite.com/auth/login/
+  - POST https://api.sandbox.investsuite.com/auth/refresh-token/
+- information_source; https://docs.investsuite.com/concepts/embedding/:
+  - GET /portfolios/P01234567890123456789012345
+  - GET /portfolios/P01234567890123456789012345?embed=owned_by_user_id
+  - GET /portfolios/P01234567890123456789012345?embed=readable_by
+  - GET /users/U01234567890123456789012345
+  - GET https://api.investsuite.com/portfolios/?embed=owned_by_user_id&limit=10
+- information_source; https://docs.investsuite.com/concepts/events/:
+  - GET /portfolios/?query=config.manager_settings.suitability_profile_id+eq+'profile_id'

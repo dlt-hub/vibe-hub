@@ -1,0 +1,39 @@
+auth_info:
+- information_source; https://mycaseapi.stoplight.io/docs/mycase-api-documentation/k5xpc4jyhkom7-getting-started:
+  - 'All API endpoints require HTTP bearer authentication using an access token in
+    the Authorization header as `Authorization: Bearer <access_token>`. Access tokens
+    are valid for 24 hours and can be refreshed using a refresh token (valid for 2
+    weeks) by sending a POST request to `https://auth.mycase.com/tokens` with client_id,
+    client_secret, refresh_token, and grant_type set to `refresh_token` in the request
+    body. The response provides a new access_token. A 401 Unauthorized response indicates
+    the access token has expired.'
+  - MyCase API uses OAuth 2.0 with the Authorization Code grant type. Applications
+    must obtain client credentials from MyCase support, then redirect users to the
+    authorization server with their client ID and redirect URI. After the user grants
+    access, an authorization code is returned to the specified redirect URI. The application
+    exchanges this code along with client credentials for an access token, which is
+    then used to make authenticated API requests.
+  - 'MyCase uses OAuth 2.0 authorization code flow. Step 1: GET request to https://auth.mycase.com/login_sessions/new
+    with query parameters client_id (your OAuth Client ID), redirect_uri (pre-registered
+    redirect URI), response_type set to "code", and optional state parameter for CSRF
+    protection. Step 2: Exchange the authorization code for an access token via POST
+    request to https://auth.mycase.com/tokens with client_id and client credentials
+    in the request body. The authorization code is returned in the redirect URL as
+    the code parameter after user grants access.'
+  - OAuth2 authorization code grant flow is used. In the token exchange POST request,
+    send client_id, client_secret, code, grant_type set to "authorization_code", and
+    redirect_uri in the JSON request body. The response provides an access_token with
+    token_type "Bearer" used for subsequent API requests, a refresh_token valid for
+    2 weeks, and access_token expires_in 86400 seconds (24 hours).
+possible_base_urls:
+- information_source; https://mycaseapi.stoplight.io/docs/mycase-api-documentation/k5xpc4jyhkom7-getting-started:
+  - https://auth.mycase.com
+  - https://auth.mycase.com/tokens
+possible_endpoints:
+- information_source; https://mycaseapi.stoplight.io/docs/mycase-api-documentation/k5xpc4jyhkom7-getting-started:
+  - GET https://auth.mycase.com/login_sessions/new
+  - POST https://auth.mycase.com/tokens
+- information_source; https://mycaseapi.stoplight.io/docs/mycase-api-documentation/efca9db642ede-get-an-individual-case:
+  - GET https://external-integrations.mycase.com/v1/cases/{id}
+- ? information_source; https://mycaseapi.stoplight.io/docs/mycase-api-documentation/4969bd9bc5428-get-an-individual-custom-field
+  : - GET https://external-integrations.mycase.com/v1/custom_fields/{id}

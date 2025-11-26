@@ -1,0 +1,50 @@
+auth_info:
+- information_source; https://docs.stack-auth.com/api/overview:
+  - Stack API uses header-based authentication with project-scoped credentials. All
+    requests require X-Stack-Access-Type (either "client" or "server"), X-Stack-Project-Id
+    (UUID), and either X-Stack-Publishable-Client-Key (for client access) or X-Stack-Secret-Server-Key
+    (for server access). Optionally include X-Stack-Access-Token as a string for authenticated
+    user context; omit it for unauthenticated requests. Client keys are safe for frontend
+    code but can only access the current user's data, while secret server keys must
+    be kept private and grant full access to all user data.
+  - Stack Auth uses header-based authentication with multiple required headers depending
+    on access type and context. All requests require X-Stack-Access-Type (either "client"
+    or "server"), X-Stack-Project-Id (your project UUID), and X-Stack-Publishable-Client-Key
+    (prefixed with pck_). Server-side requests additionally require X-Stack-Secret-Server-Key
+    (prefixed with ssk_). User-specific requests include X-Stack-Access-Token containing
+    the current user's access token. Send all credentials as HTTP headers to api.stack-auth.com/api/v1/.
+- information_source; https://docs.stack-auth.com/docs/getting-started/setup:
+  - 'Stack Auth uses three environment variables for authentication: NEXT_PUBLIC_STACK_PROJECT_ID
+    (public project identifier), NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY (public
+    client key for frontend), and STACK_SECRET_SERVER_KEY (secret server key for backend).
+    These credentials are obtained from the Stack Auth dashboard after creating a
+    project and should be configured in .env.local for Next.js projects.'
+- information_source; https://docs.stack-auth.com/docs/getting-started/production:
+  - OAuth2 authentication is supported for multiple providers (GitLab, Bitbucket,
+    LinkedIn, X). Each provider requires a client ID and client secret to be entered
+    in the Stack dashboard's Auth Methods section. OAuth callbacks are handled at
+    provider-specific endpoints like https://api.stack-auth.com/api/v1/auth/oauth/callback/{provider}.
+    Custom OAuth credentials can be configured by switching from shared keys to custom
+    keys in the dashboard.
+- information_source; https://docs.stack-auth.com/docs/concepts/backend-integration:
+  - JWT bearer token authentication. Access tokens are passed in request headers and
+    verified against a JWKS endpoint at https://api.stack-auth.com/api/v1/projects/<your-project-id>/.well-known/jwks.json
+    using ES256 algorithm. The JWT payload contains a 'sub' claim for the authenticated
+    user ID and requires 'audience' claim matching your project ID.
+possible_base_urls:
+- information_source; https://docs.stack-auth.com/api/overview:
+  - https://api.stack-auth.com/api/v1/
+- information_source; https://docs.stack-auth.com/docs/getting-started/production:
+  - https://api.stack-auth.com/api/v1/auth/oauth/callback/bitbucket
+possible_endpoints:
+- information_source; https://docs.stack-auth.com/docs/getting-started/production:
+  - POST https://api.stack-auth.com/api/v1/auth/oauth/callback/bitbucket
+  - POST https://api.stack-auth.com/api/v1/auth/oauth/callback/gitlab
+  - POST https://api.stack-auth.com/api/v1/auth/oauth/callback/linkedin
+  - POST https://api.stack-auth.com/api/v1/auth/oauth/callback/x
+- information_source; https://docs.stack-auth.com/docs/concepts/backend-integration:
+  - GET https://api.stack-auth.com/api/v1/projects/<your-project-id>/.well-known/jwks.json
+  - GET https://api.stack-auth.com/api/v1/users/me
+- information_source; https://docs.stack-auth.com/docs/concepts/jwt:
+  - GET https://api.stack-auth.com/api/v1/projects/YOUR_PROJECT_ID/.well-known/jwks.json
+  - GET https://api.stack-auth.com/api/v1/projects/YOUR_PROJECT_ID/.well-known/jwks.json?include_anonymous=true
