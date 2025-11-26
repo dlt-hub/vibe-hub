@@ -1,0 +1,58 @@
+auth_info:
+- information_source; https://helidon.io/docs/v4/mp/guides/security-oidc:
+  - OAuth 2.0 Resource Owner Password Credentials Grant is used for direct token requests.
+    Send credentials via POST to the Access Token URL with Grant Type "Password Credentials",
+    providing Client ID, Client Secret (via Basic Auth Header), Username, Password,
+    and Scope "openid". The server returns an access token and refresh token; include
+    the access token in subsequent requests using the Authorization header with "bearer"
+    prefix. Role-based access control is enforced via @RolesAllowed annotations on
+    endpoints.
+  - 'OAuth2 Authorization Code flow with Keycloak. Step 1: redirect user to Keycloak
+    auth endpoint at http://localhost:8080/realms/myRealm/protocol/openid-connect/auth
+    with query parameters client_id=myClientID and response_type=code. Step 2: receive
+    authorization code from Keycloak redirect. Step 3: POST to http://localhost:8080/realms/myRealm/protocol/openid-connect/token
+    with x-www-form-urlencoded body containing grant_type=authorization_code, client_id=myClientID,
+    client_secret=(your client secret), and code=(received authorization code). Response
+    includes access_token and refresh_token. Access token lifespan can be increased.
+    Resource Owner Password Credentials Grant (Direct Access Grants) flow is also
+    available for REST clients requesting tokens on behalf of users.'
+- information_source; https://helidon.io/docs/v4/mp/jwt:
+  - JWT (JSON Web Token) authentication is required. Tokens are obtained from an external
+    issuer and sent in the Authorization header as "Bearer {token}". Configuration
+    requires setting mp.jwt.verify.issuer to the issuer's OAuth2 endpoint and mp.jwt.verify.publickey.location
+    to the issuer's public key endpoint. The application is annotated with @LoginConfig(authMethod
+    = "MP-JWT") to enable JWT verification.
+- information_source; https://helidon.io/docs/v4/mp/security/providers:
+  - Authentication to the identity server token endpoint uses one of several client
+    authentication methods configured via the `token-endpoint-auth` parameter. Supported
+    methods include CLIENT_SECRET_BASIC (HTTP Basic auth with client credentials,
+    the default), CLIENT_SECRET_POST (client credentials in request body), CLIENT_SECRET_JWT
+    (HMAC-signed JWT), PRIVATE_KEY_JWT (asymmetrically-signed JWT), CLIENT_CERTIFICATE
+    (mutual TLS), and NONE (no authentication). JWT validation uses public keys from
+    a JWK resource specified by `sign-jwk.resource`. Scope requests are prefixed with
+    a configurable string via the scope-prefix parameter.
+  - 'Multiple OAuth 2.0 client authentication methods are supported at the token endpoint:
+    CLIENT_SECRET_JWT (HMAC SHA-256 signed JWT using client_secret as shared key),
+    PRIVATE_KEY_JWT (RSA signed JWT using registered public key), CLIENT_CERTIFICATE
+    (mutual TLS), or NONE (public clients). JWT authentication requires iss, sub,
+    aud, jti, exp claims (required) and optionally iat. The token endpoint URI defaults
+    to oidcMetadata or identityUri/oauth2/v1/token if not explicitly defined.'
+possible_base_urls:
+- information_source; https://helidon.io/docs/v4/mp/guides/health:
+  - http://localhost:8080
+- information_source; https://helidon.io/docs/v4/mp/guides/security-oidc:
+  - http://localhost:7987/greet/
+possible_endpoints:
+- information_source; https://helidon.io/docs/v4/mp/guides/health:
+  - GET http://localhost:8080/health
+  - GET http://localhost:8080/health/live
+  - GET http://localhost:8080/health/ready
+  - GET http://localhost:8080/health/started
+- information_source; https://helidon.io/docs/v4/mp/guides/security-oidc:
+  - GET http://localhost:7987/greet/
+  - GET http://localhost:8080/realms/myRealm/protocol/openid-connect/auth?client_id=myClientID&response_type=code
+  - POST http://localhost:8080/realms/myRealm/protocol/openid-connect/token
+- information_source; https://helidon.io/docs/v4/mp/health:
+  - GET http://localhost:8080/health/live
+  - GET http://localhost:8080/health/ready
+  - GET http://localhost:8080/health/started

@@ -1,0 +1,49 @@
+auth_info:
+- information_source; https://developer.crossborder.corpay.com/apidocscrossborder:
+  - Our RESTful API uses OAuth2 with a two-part flow. First, create an HS256-signed
+    JWT token with "Issuer" (Partner or Client name) in the claim set and "issued-at"
+    and "expiration" fields set 20 minutes apart, then send it in the request body's
+    "assertion" field to exchange it for a "CMG-AccessToken". The response provides
+    an "access_code" that is used for subsequent authenticated requests. A 401 status
+    code indicates the authorization token has expired and needs to be refreshed.
+  - The API uses JWT (JSON Web Token) authentication. Submit a JWT with "aud" (audience)
+    claim set to "cambidgefx", "iat" (issued-at) and "exp" (expiration) claims set
+    approximately 20 minutes apart, and sign it with a current auth key. The response
+    provides an "access_code" which must be submitted in the "CMG-AccessToken" header
+    for subsequent client-level requests; the partner-level request does not require
+    this header. The JWT expiration must not exceed approximately 24 hours after issue
+    time.
+  - Use the Corpay-Signature header included in each webhook POST request to verify
+    the authenticity of the payload and prevent man-in-the-middle attacks. The signature
+    is a digital signature that authenticates that the webhook notification came from
+    Corpay.
+- information_source; https://developer.crossborder.corpay.com/apidocscrossborder/2-token-auth:
+  - 'Authentication uses JWT (JSON Web Token) bearer tokens. Generate a JWT with claims:
+    iss (issuer), iat (issued-at, current Unix timestamp), exp (expiration, typically
+    current time + 20 minutes), aud (audience, must be "cambridgefx"), and sub (subject,
+    can be empty). Sign the token with your auth key. Submit the resulting access_code
+    in the CMG-AccessToken header for subsequent client-level requests. Partner-level
+    requests do not require CMG-AccessToken header.'
+  - Corpay Cross-Border uses OAuth2 with a two-part token flow. First, create an HS256-signed
+    JWT token with "Issuer" (Partner or Client name) and "Signature" in the claim
+    set, setting "issued-at" and "expiration" 20 minutes apart, then send it in the
+    request body "assertion" field to exchange for a "CMG-AccessToken". Use the returned
+    access token for subsequent API requests; a 401 status indicates the token has
+    expired and needs refresh.
+possible_base_urls:
+- information_source; https://developer.crossborder.corpay.com/apidocscrossborder:
+  - '`https://crossborder.corpay.com/api`'
+  - https://crossborder.beta.corpay.com
+possible_endpoints:
+- information_source; https://developer.crossborder.corpay.com/apidocscrossborder:
+  - GET /api/payment-tracking/{trackerId}
+  - GET https://crossborder.corpay.com/api/123456/0/benes/jsmith321
+  - GET https://crossborder.corpay.com/api/{clientCode}/0/benes/{beneID}
+  - POST /api/payment-tracking/{trackerId}
+- information_source; https://developer.crossborder.corpay.com/apidocscrossborder/2-token-auth:
+  - GET /api/payment-tracking/{trackerId}
+  - GET https://crossborder.corpay.com/api/123456/0/benes/jsmith321
+  - GET https://crossborder.corpay.com/api/market-news/headlines?numberOfHeadlines=10
+  - GET https://crossborder.corpay.com/api/{clientCode}/0/benes/{beneID}
+  - GET https://pay.com/api/{clientCode}/0
+  - POST /webhook

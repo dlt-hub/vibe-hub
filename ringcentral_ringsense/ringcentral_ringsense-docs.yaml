@@ -1,0 +1,40 @@
+auth_info:
+- information_source; https://community.ringcentral.com/developer-platform-apis-integrations-5:
+  - 'The RingCentral API supports two authentication methods: 3-legged OAuth flow
+    (Authorization Code grant for server-side web applications) which returns an access
+    token for dashboard login, and JWT authorization for the embedded Web Phone. The
+    access token from OAuth can be reused to authenticate the Web Phone within an
+    iframe to enable single sign-on, provided the application has the VoipCalling
+    permission scope; if this permission is missing, the API returns a 403 error.'
+- ? information_source; https://community.ringcentral.com/developer-platform-apis-integrations-5/how-to-authenticate-with-rest-api-6193
+  : - RingCentral uses OAuth2 Password Flow authentication. Send a POST request to
+      https://platform.devtest.ringcentral.com/restapi/oauth/token with an Authorization
+      header containing Base64-encoded clientId:clientSecret in the format "Basic
+      <Base64(clientId:clientSecret)>", and include the request body with Content-Type
+      application/x-www-form-urlencoded containing username, password, extension,
+      and grant_type=password parameters.
+    - The RingCentral REST API uses OAuth 2.0 password flow authentication. Send a
+      POST request with Accept and Content-Type headers set to application/json and
+      application/x-www-form-urlencoded respectively. Include an Authorization header
+      with Basic auth containing base64-encoded client_id and client_secret (not username/password).
+      In the request body, send grant_type=password, username (phone number), extension,
+      and password as form-encoded parameters.
+possible_base_urls:
+- information_source; https://community.ringcentral.com/developer-platform-apis-integrations-5:
+  - https://platform.ringcentral.com
+- ? information_source; https://community.ringcentral.com/developer-platform-apis-integrations-5/how-to-authenticate-with-rest-api-6193
+  : - https://platform.devtest.ringcentral.com
+possible_endpoints:
+- information_source; https://community.ringcentral.com/developer-platform-apis-integrations-5:
+  - POST /restapi/v1.0/account/~/message-store-report
+  - POST https://platform.ringcentral.com/restapi/oauth/token
+  - POST https://platform.ringcentral.com/restapi/v1.0/client-info/sip-provision
+- ? information_source; https://community.ringcentral.com/developer-platform-apis-integrations-5/how-to-authenticate-with-rest-api-6193
+  : - POST https://platform.devtest.ringcentral.com/restapi/oauth/token
+- ? information_source; https://community.ringcentral.com/developer-platform-apis-integrations-5/in-order-to-call-this-api-endpoint-for-another-extension-one-of-the-following-permissions-readmessages-have-to-be-granted-with-extended-scope-to-the-authorized-user-3901
+  : - GET /restapi/v1.0/account/accountId/extension/[extensionId]/message-store
+    - GET /restapi/v1.0/account/accountId/extension/extensionId/message-store
+    - GET /restapi/v1.0/account/~/extension/[extensionId]/message-store
+    - GET /restapi/v1.0/account/~/extension/~/message-store
+- ? information_source; https://community.ringcentral.com/developer-platform-apis-integrations-5/post-ringsense-insights-to-n8n-webhook-11255
+  : - POST /restapi/v1.0/subscription

@@ -1,0 +1,69 @@
+auth_info:
+- information_source; https://docs.astran.ai/docs/astran-s5-object-storage/api-reference/s3/copy-object:
+  - Authorization header is required for CopyObject requests. The exact format of
+    the authorization string is not detailed in this excerpt, but it must be included
+    in the HTTP request headers.
+  - Authorization header is required for copy object requests. Include an "Authorization"
+    header with an authorization string value in the PUT request. The exact format
+    and generation method for the authorization string is not specified in this documentation
+    excerpt.
+- information_source; https://docs.astran.ai/docs/astran-s5-object-storage/api-reference/s3/create-bucket:
+  - You must have a valid AWS Access Key ID to authenticate requests. Anonymous requests
+    are not allowed. The documentation does not specify the exact header name or parameter
+    name where the Access Key ID should be sent, so the precise authentication mechanism
+    cannot be determined from this excerpt.
+- information_source; https://docs.astran.ai/docs/astran-s5-object-storage/api-reference/s3/create-multipart-upload:
+  - The API requires an Authorization header in HTTP requests. The exact authorization
+    string format is not specified in this documentation excerpt, but it must be included
+    in the Authorization header for the CreateMultipartUpload request to be valid.
+- information_source; https://docs.astran.ai/docs/astran-s5-object-storage/api-reference/s3/delete-object:
+  - The API uses AWS Signature Version 4 authorization. Include an Authorization header
+    in the request with a signature computed from the request details (HTTP method,
+    path, query parameters, headers, and body). The exact signature format follows
+    AWS S3 authentication standards.
+pagination_info:
+- information_source; https://docs.astran.ai/docs/astran-s5-object-storage/api-reference/s3/list-multipart-uploads:
+  - Pagination uses `max-uploads` query parameter to set maximum multipart uploads
+    returned per request. Response includes `NextKeyMarker` and `NextUploadIdMarker`
+    elements; use these values as `key-marker` and `upload-id-marker` parameters in
+    subsequent requests to retrieve the next set of uploads.
+  - Use query parameters max-uploads (optional, controls page size), key-marker and
+    upload-id-marker (optional, used to continue pagination from a previous response).
+    The response includes NextKeyMarker, NextUploadIdMarker, and IsTruncated fields;
+    when IsTruncated is true, use the NextKeyMarker and NextUploadIdMarker values
+    in the next request to retrieve the next page.
+- information_source; https://docs.astran.ai/docs/astran-s5-object-storage/api-reference/s3/list-object-versions:
+  - Use query parameters key-marker and version-id-marker to paginate through object
+    versions, with max-keys controlling the maximum number of results returned per
+    request. The response indicates whether more results exist and provides the markers
+    needed for the next request.
+- information_source; https://docs.astran.ai/docs/astran-s5-object-storage/api-reference/s3/list-objects-v2:
+  - ListObjectsV2 uses query string parameters for pagination. The max-keys parameter
+    controls the maximum number of objects returned per request (up to 1,000). The
+    continuation-token parameter from the response is used in the next request to
+    retrieve the next set of objects; when is-truncated is false, all objects have
+    been returned.
+  - Pagination uses max-keys query parameter (default 1000, optional) to control page
+    size. Response includes IsTruncated boolean field; when true, use the last key's
+    value with start-after parameter in the next request to continue listing.
+possible_base_urls:
+- information_source; https://docs.astran.ai/docs/astran-s5-object-storage/api-reference/iam/add-user-to-group:
+  - https://<partition>.iam.astran.io
+- information_source; https://docs.astran.ai/docs/astran-s5-object-storage/api-reference/s3/abort-multipart-upload:
+  - partition.s3.astran.io
+possible_endpoints:
+- information_source; https://docs.astran.ai/docs/astran-s5-object-storage/api-reference/s3/abort-multipart-upload:
+  - DELETE /Bucket/Key+?uploadId=UploadId
+  - DELETE https://partition.s3.astran.io/Bucket/Key+?uploadId=UploadId
+- information_source; https://docs.astran.ai/docs/astran-s5-object-storage/api-reference/s3/complete-multipart-upload:
+  - POST /Bucket/Key+?uploadId=UploadId
+  - POST /example-bucket/example-object?uploadId=AAAsb2FkIElEIGZvciBlbHZpbmcncyWeeS1tb3ZpZS5tMnRzIRRwbG9hZA
+- information_source; https://docs.astran.ai/docs/astran-s5-object-storage/api-reference/s3/copy-object:
+  - PUT /<partition>.s3.astran.io/mybucket/my-second-image.jpg
+  - PUT /mybucket/my-second-image.jpg
+  - PUT https://<partition>.s3.astran.io/Bucket/Key+
+- information_source; https://docs.astran.ai/docs/astran-s5-object-storage/api-reference/s3/create-bucket:
+  - PUT https://<partition>.s3.astran.io/Bucket
+- information_source; https://docs.astran.ai/docs/astran-s5-object-storage/api-reference/s3/create-multipart-upload:
+  - POST /<partition>.s3.astran.io/example-bucket/example-object?uploads
+  - POST /Bucket/{Key+}?uploads

@@ -1,0 +1,43 @@
+auth_info:
+- information_source; https://community.panopto.com/discussion/191/oauth2-token-2019-07-09:
+  - Panopto uses OAuth2 for API authentication. API clients are created and managed
+    through Panopto's admin interface, requiring a Client ID and Client Secret. Access
+    tokens are obtained via the OAuth2 authorization code flow, where the YourClientAPIKey
+    is the Base64-encoded value of ClientId:ClientSecret, YourClientRedirectURL is
+    the registered redirect URI for your application, and GeneratedNonceValue is a
+    unique value generated per request. The access token is then sent in the Authorization
+    header as a Bearer token for subsequent REST API calls.
+- information_source; https://community.panopto.com/discussion/206/statuscode-403-reasonphrase-forbidden-2019-12-12:
+  - Basic authentication with credentials formatted as "username:password" encoded
+    in Base64, sent via the Authorization header with "Basic" scheme. After obtaining
+    an access token, use Bearer token authentication by sending the token in the Authorization
+    header with "Bearer" scheme. The error indicates insufficient scope permissions
+    for the requested operation.
+- information_source; https://community.panopto.com/discussion/2121/panopto-public-api-authentication-failing:
+  - The Panopto REST API uses OAuth2 access tokens for authentication. Credentials
+    should be provided as OAuth2 client credentials (client ID and client secret),
+    and the resulting access token should be included in API calls. The API does not
+    use cookie-based authentication.
+- information_source; https://community.panopto.com/discussion/2122/understanding-soap-api-documentation:
+  - 'The Panopto SOAP API supports two authentication methods: either include userkey
+    and password in the auth section of the SOAP request, or alternatively send a
+    cookie previously obtained from the Auth SOAP API. The auth section is optional
+    if you use the cookie approach. When including credentials directly, pass userkey
+    and password as auth parameters in the SOAP request body.'
+- information_source; https://community.panopto.com/discussion/2390/rest-api-no-result-when-home-folder-has-no-subfolders:
+  - The Panopto API uses access tokens for authentication with the REST API. To access
+    SOAP API endpoints, first call the LegacyLogin REST API endpoint with your access
+    token to obtain an authorization cookie, then include that cookie in subsequent
+    SOAP API calls instead of sending authentication credentials directly.
+possible_base_urls:
+- information_source; https://community.panopto.com/discussion/197/auth-for-new-restful-api-2019-09-16:
+  - https://lincoln.ap.panopto.com/Panopto/oauth2/.well-known/openid-configuration
+- information_source; https://community.panopto.com/discussion/2390/rest-api-no-result-when-home-folder-has-no-subfolders:
+  - https://demo.hosted.panopto.com/Panopto/api/docs/index.html
+possible_endpoints:
+- information_source; https://community.panopto.com/discussion/2390/rest-api-no-result-when-home-folder-has-no-subfolders:
+  - POST /Panopto/api/Auth/LegacyLogin
+- ? information_source; https://community.panopto.com/discussion/2694/scheduling-recordings-using-the-panopto-rest-api-v1-error-unsupportedapiversion
+  : - POST https://umch.cloud.panopto.eu/Panopto/api/v1/sessions
+- information_source; https://community.panopto.com/discussion/914/call-api-via-javascript:
+  - POST https://xyz.cloud.panopto.eu/Panopto/api/v1/scheduledRecordings?resolveConflicts=false

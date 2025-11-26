@@ -1,0 +1,40 @@
+auth_info:
+- information_source; https://pro.dokku.com/docs/features/api/:
+  - 'Token-based authentication using JWT. First, exchange username and password via
+    HTTP Basic Auth (curl -u flag) with a POST request to the token endpoint, extracting
+    the JWT from the response. Then use the JWT token in the Authorization header
+    as "Bearer {token}" for subsequent API requests.
+
+
+    Key details: Initial authentication uses HTTP Basic Auth with username and password
+    credentials sent to the token endpoint. The response contains a JWT token in the
+    data.id field. Subsequent requests require the Authorization header with format
+    "Authorization: Bearer {jwt_token}". Content-Type header should be set to application/json
+    for requests.'
+- information_source; https://pro.dokku.com/docs/features/api/openapi.yml:
+  - Authentication is performed by exchanging basic auth credentials for an expiring
+    JSON Web Token (JWT). Basic auth credentials are exchanged via the authentication
+    endpoint to obtain a JWT token, which is then used for subsequent API requests.
+  - Bearer token authentication is required. Send the token in the Authorization header
+    as "Bearer {token}".
+  - 'Bearer token authentication is required. Send the token in the Authorization
+    header as `Authorization: Bearer <token>`.'
+  - The API uses bearer token authentication. Include the bearer token in the Authorization
+    header for requests to protected endpoints, as indicated by the security scheme
+    "bearer_auth" applied to operations like updating HTTP auth settings and maintenance
+    mode settings.
+possible_base_urls:
+- information_source; https://pro.dokku.com/docs/features/api/:
+  - https://admin.dokku.me/@api
+- information_source; https://pro.dokku.com/docs/features/api/openapi.yml:
+  - /@api
+possible_endpoints:
+- information_source; https://pro.dokku.com/docs/features/api/:
+  - GET https://admin.dokku.me/@api/apps
+  - POST https://admin.dokku.me/@api/tokens
+- information_source; https://pro.dokku.com/docs/features/api/openapi.yml:
+  - GET /@api/apps/{appId}/builderSetting
+  - PATCH /builderSettings/{appId}
+  - PATCH /httpAuths/{appId}
+  - PATCH /maintenances/{appId}
+  - PATCH /schedulerSettings/{appId}

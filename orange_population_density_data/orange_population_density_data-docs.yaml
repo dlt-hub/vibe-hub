@@ -1,0 +1,44 @@
+auth_info:
+- ? information_source; https://docs.developer.orange.com/network-apis/api-catalog/population-density-data/playground/0.2/api-reference
+  : - Population Density Data API uses Client Credentials (2-legged) OAuth2 flow for
+      authentication. Credentials should be obtained through the onboarding process
+      and sent according to the OAuth2 Client Credentials specification referenced
+      in the Identity and Consent Management documentation at https://github.com/camaraproject/IdentityAndConsentManagement/.
+- information_source; https://docs.developer.orange.com/network-apis/practical-guides/api-authentication/frontend-flow:
+  - 'OAuth2 authorization code flow with PKCE. Step 1: Client requests authorization
+    code via GET to /authorize endpoint with client_id, redirect_uri, scope, response_type=code,
+    code_challenge, and code_challenge_method=S256. Step 2: Client exchanges authorization
+    code for access token via POST to /token endpoint using Basic authentication with
+    Authorization header containing base64_encode(client_id:client_secret), along
+    with grant_type=authorization_code, code, redirect_uri, and code_verifier. Response
+    includes access_token, token_type (Bearer), and expires_in (in seconds).'
+  - OAuth2 with PKCE (Proof Key for Code Exchange) flow. Authorization requires client_id,
+    redirect_uri, and scope parameters in the authorization URL. Token exchange uses
+    grant_type set to authorization_code, along with code, redirect_uri, client_id,
+    and code_verifier in the POST request body. The code_challenge is derived from
+    code_verifier using SHA256 and base64url encoding, sent as code_challenge_method
+    S256 in the initial authorization request.
+  - OIDC Authorization Code Flow is used for frontend authentication. The authorization
+    request requires client_id, redirect_uri, and scope parameters. The scope must
+    include openid, dpv:<dpvValue>, and a technical parameter as specified per API
+    documentation. Some APIs require PKCE extension. The authorization server base
+    URL is provided in each API's description. The application must handle HTTP 302
+    redirects to receive the authorization code at the specified redirect_uri.
+  - Orange uses OAuth 2.0 Authorization Code Flow with PKCE for API access. Required
+    parameters include client_id, redirect_uri, scope (formatted as "openid dpv:<dpvValue>
+    <technicalParameter>"), response_type set to "code", code_challenge, and code_challenge_method
+    set to "S256". The authorization server returns a code and state in the redirect_uri
+    callback, which is then exchanged for an access token in the next step.
+possible_base_urls:
+- ? information_source; https://docs.developer.orange.com/network-apis/api-catalog/population-density-data/playground/0.2/getting-started
+  : - https://api.orange.com/camara/playground/api/population-density-data/v0.2
+    - https://api.orange.com/openidconnect/playground/v1.0/token
+possible_endpoints:
+- ? information_source; https://docs.developer.orange.com/network-apis/api-catalog/population-density-data/playground/0.2/api-reference
+  : - POST {apiRoot}{basePath}/retrieve
+- information_source; https://docs.developer.orange.com/network-apis/practical-guides/api-authentication/frontend-flow:
+  - GET <authorization server base url>/authorize
+  - POST <authorization server base url>/token
+  - POST https://authorization-server/auth
+- ? information_source; https://docs.developer.orange.com/network-apis/api-catalog/population-density-data/playground/0.2/getting-started
+  : - POST https://api.orange.com/camara/playground/api/population-density-data/v0.2/retrieve

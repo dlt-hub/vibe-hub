@@ -1,0 +1,42 @@
+auth_info:
+- information_source; https://docs.ejabberd.im/archive/25.07/admin-api/:
+  - OAuth token-based authentication is used. Clients must first register with oauth_add_client_password
+    endpoint providing client_id and secret, then use oauth_issue_token endpoint to
+    obtain a token by specifying jid, ttl (time to live in seconds), and scopes list.
+    The returned token is used for subsequent API requests; exact usage mechanism
+    for token in requests is not specified in this documentation chunk.
+- information_source; https://docs.ejabberd.im/developer/ejabberd-api/:
+  - 'The ejabberd API supports two authentication mechanisms: Basic authentication
+    (enabled by default) and OAuth 2.0 token-based authentication (must be explicitly
+    configured). Authentication is checked by mod_http_api, which verifies client
+    credentials and permissions before executing commands via mod_admin_extra. Alternatively,
+    access can be restricted by originating IP addresses instead of credentials.'
+- information_source; https://docs.ejabberd.im/developer/ejabberd-api/oauth/:
+  - Bearer token authentication is required. Send the token in the Authorization header
+    as "Bearer {token}" or use the --oauth2-bearer option. For XML-RPC calls, the
+    token must be passed as an XML-RPC parameter along with user and host parameters.
+  - 'OAuth2 bearer token authentication is required. Obtain an access token via ejabberdctl
+    or web browser authorization flow, then pass it in the Authorization HTTP header
+    as "Authorization: Bearer <access_token>". The token includes a scope (e.g., ejabberd:admin)
+    that determines permissions, and has an expiration time in seconds.'
+  - X-OAUTH2 SASL authentication is enabled by default in ejabberd. Tokens are generated
+    through the ejabberd_oauth HTTP request handler, typically exposed at the "/oauth"
+    endpoint. The X-OAUTH2 mechanism can be disabled globally or per virtual host
+    using the disable_sasl_mechanisms configuration option in ejabberd.yml with value
+    ["X-OAUTH2"].
+possible_base_urls:
+- information_source; https://docs.ejabberd.im/archive/25.07/admin-api/:
+  - /api
+  - /api/delete_old_pubsub_items
+possible_endpoints:
+- information_source; https://docs.ejabberd.im/archive/25.07/admin-api/:
+  - GET /api/stats
+  - POST /api/abort_delete_old_mam_messages
+  - POST /api/abort_delete_old_messages
+  - POST /api/add_blocked_domain
+  - POST /api/add_rosteritem
+  - POST /api/add_to_spam_filter_cache
+  - POST /api/backup
+  - POST /api/ban_account
+  - POST /api/bookmarks_to_pep
+  - POST /api/change_password

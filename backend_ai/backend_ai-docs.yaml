@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://docs.backend.ai/en/latest/manager/common-api/auth.html:
+  - HMAC-SHA256 signature-based authentication. Client constructs an Authorization
+    header with scheme "BackendAI sign" containing an HMAC-SHA256 signature. The signature
+    is computed over a canonicalized string combining HTTP method, request path, timestamp,
+    canonicalized headers (lowercased name with trimmed value), and SHA256 hash of
+    the request body (or empty string for GET). The signing key is derived separately.
+    All non-ASCII strings must be UTF-8 encoded, header values trimmed of whitespace,
+    and components joined with newline characters.
+  - The API uses HMAC signature-based authentication. Each request requires an Authorization
+    header containing signature information generated according to the "Signing API
+    Requests" section (details not provided in this excerpt). Requests must also include
+    a Date header in RFC 8022 or ISO 8601 format (UTC assumed, within 15-minute server
+    deviation), an X-BackendAI-Version header with format vX.yyyymmdd, and optionally
+    an X-BackendAI-Date header (mirrors Date) and X-BackendAI-Client-Token header
+    for idempotent request deduplication.
+  - The API uses HMAC-SHA256 signature-based authentication. Construct an Authorization
+    header with the format "BackendAI signMethod=HMAC-SHA256, credential=<access-key>:<signature>"
+    where the signature is computed using your access key and secret key. The access-key
+    and signature are separated by a colon in the credential field.
+- information_source; https://docs.backend.ai/en/latest/manager/rest-reference/index.html:
+  - The API uses TokenAuth for all endpoints shown. This is a token-based authentication
+    scheme where a token must be provided to access the endpoints. The exact mechanism
+    for providing the token (header name, parameter name, or other method) is not
+    specified in this documentation excerpt, so the precise implementation details
+    cannot be determined from the provided text.
+  - The API uses TokenAuth for authentication. All endpoints require a valid token
+    to be sent with requests. User privilege and manager status (FROZEN or RUNNING)
+    are required as preconditions for accessing cluster template operations.
+pagination_info:
+- information_source; https://docs.backend.ai/en/latest/manager/common-api/auth.html:
+  - The API uses optional Link headers specified in RFC 5988 for paginating collections
+    of objects. The Link header contains web links, typically with rel="next" or rel="prev"
+    to navigate between pages.
+possible_base_urls:
+- information_source; https://docs.backend.ai/en/latest/manager/common-api/auth.html:
+  - your.sorna.api.endpoint
+- information_source; https://docs.backend.ai/en/latest/manager/rest-reference/index.html:
+  - https://docs.backend.ai
+possible_endpoints:
+- information_source; https://docs.backend.ai/en/latest/manager/common-api/auth.html:
+  - GET /v2
+  - GET /v2/kernel/create
+- information_source; https://docs.backend.ai/en/latest/manager/rest-reference/index.html:
+  - DELETE /domain-config/dotfiles
+  - DELETE /folders
+  - DELETE /folders/_/mounts
+  - DELETE /folders/invitations/delete
+  - DELETE /folders/{folder_id}/force
+  - DELETE /folders/{name}
+  - DELETE /group-config/dotfiles
+  - DELETE /group/registry-quota

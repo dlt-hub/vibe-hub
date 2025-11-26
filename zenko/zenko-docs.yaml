@@ -1,0 +1,67 @@
+auth_info:
+- information_source; https://zenko.readthedocs.io/en/latest/reference/apis/cloudserver/common_features/https_protocols.html:
+  - Zenko REST API uses an Authorization header for authentication. The Authorization
+    header contains the information required for authentication and is a typical request
+    header found in Zenko requests. The documentation references RFC 2616 for HTTP
+    protocol compliance but does not specify the exact authorization scheme, token
+    format, credential acquisition method, or how to construct the Authorization header
+    value.
+- information_source; https://zenko.readthedocs.io/en/latest/reference/apis/cloudserver/common_features/request_headers.html:
+  - The API uses an Authorization header for request authentication. The Authorization
+    header must be included in requests and is part of the request signature. Either
+    the Date header or the x-amz-date header (with x-amz-date taking precedence if
+    both are present) must also be specified in the Authorization header. This appears
+    to be an AWS S3-compatible signature-based authentication scheme where request
+    headers are signed.
+- information_source; https://zenko.readthedocs.io/en/latest/reference/apis/blobserver/Account/SetBlobServiceProperties.html:
+  - Azure Blob Storage uses SharedKey authentication, a signature-based scheme. The
+    Authorization header must contain "SharedKey" followed by the account name and
+    a computed HMAC-SHA256 signature of the request. The signature is derived from
+    the account access key and request details including method, content type, date
+    (via x-ms-date header), and canonicalized resource path. Only the storage account
+    owner with the correct access key can successfully authenticate.
+- information_source; https://zenko.readthedocs.io/en/latest/reference/apis/blobserver/Account/GetBlobServiceStats.html:
+  - Authorization header is required and must contain the authorization scheme, account
+    name, and signature according to Azure Storage authorization rules. The Date or
+    x-ms-date header is also required to specify the UTC timestamp for the request.
+  - Azure Blob Storage uses SharedKey authentication. The Authorization header must
+    contain the account name and a computed HMAC-SHA256 signature of the request.
+    Include the x-ms-version and x-ms-date headers with each request; the signature
+    is derived from the account key, HTTP method, content properties, and canonicalized
+    headers and URI.
+pagination_info:
+- information_source; https://zenko.readthedocs.io/en/latest/reference/apis/blobserver/Account/ListContainers.html:
+  - Pagination uses marker-based navigation. Request parameter marker (query string,
+    optional) specifies where to resume listing; response field NextMarker indicates
+    the marker value for the next request. maxresults (query string, optional) controls
+    page size. Stop when NextMarker is absent from response.
+  - The List Containers operation uses marker-based pagination. The optional marker
+    parameter identifies where to resume listing; the response includes a NextMarker
+    field that should be used as the marker value in the next request to get the next
+    page. The optional maxresults parameter specifies the maximum number of containers
+    to return, with a server default and cap of 5000. Stop paginating when NextMarker
+    is not returned in the response.
+  - Use maxresults query parameter to set maximum results per request (optional, default
+    appears to be higher). Response includes NextMarker element; when present, pass
+    its value as marker query parameter in the next request to continue pagination.
+    Stop when NextMarker is absent.
+possible_base_urls:
+- information_source; https://zenko.readthedocs.io/en/latest/reference/apis/blobserver/Account/SetBlobServiceProperties.html:
+  - https://myaccount.blob.example.com
+- information_source; https://zenko.readthedocs.io/en/latest/reference/apis/blobserver/Account/GetBlobServiceProperties.html:
+  - https://<account-name>.blob.example.com
+possible_endpoints:
+- information_source; https://zenko.readthedocs.io/en/latest/reference/apis/blobserver/Account/SetBlobServiceProperties.html:
+  - PUT https://myaccount.blob.example.com/?restype=service&comp=properties
+- information_source; https://zenko.readthedocs.io/en/latest/reference/apis/blobserver/Account/GetBlobServiceProperties.html:
+  - GET https://<account-name>.blob.example.com/?restype=service&comp=properties
+- information_source; https://zenko.readthedocs.io/en/latest/reference/apis/blobserver/Account/GetBlobServiceStats.html:
+  - GET http://myaccount-secondary.blob.example.com/?restype=service&comp=stats
+  - GET https://myaccount-secondary.blob.example.com/?restype=service&comp=stats
+- information_source; https://zenko.readthedocs.io/en/latest/reference/apis/blobserver/Account/GetAccountInformation.html:
+  - GET https://myaccount.blob.example.com/?restype=account&comp=properties
+  - GET https://myaccount.blob.example.com/?restype=account&comp=properties&sv=myvalidsastoken
+  - GET https://myaccount.blob.example.com/mycontainer/?restype=account&comp=properties&sv=myvalidsastoken
+  - GET https://myaccount.blob.example.com/mycontainer/myblob?restype=account&comp=properties&sv=myvalidsastoken
+  - HEAD https://myaccount.blob.example.com/?restype=account&comp=properties
+  - HEAD https://myaccount.blob.example.com/?restype=account&comp=properties&sv=myvalidsastoken

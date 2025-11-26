@@ -1,0 +1,49 @@
+auth_info:
+- ? information_source; https://developer.dhl.com/api-reference/authentication-dhl-ecommerce-americas?language_content_entity=en&lang=en
+  : - The API uses OAuth 2.0 client credentials flow for authentication. To obtain
+      an access token, send a POST request to /auth/v4/accesstoken with form parameters
+      client_id, client_secret, and grant_type set to client_credentials. The response
+      returns an access_token (Bearer token) valid for 60 minutes; include it in all
+      resource requests via the Authorization header as "Bearer {access_token}". Refresh
+      the token every 15-30 minutes to avoid expiration errors.
+- ? information_source; https://developer.dhl.com/api-reference/parcel-de-shipping-post-parcel-germany-v2?language_content_entity=en
+  : - DHL Parcel DE Shipping API uses OAuth2 with Resource Owner Password Credentials
+      (ROPC) grant type. To authenticate, first obtain an Access Token from the Authentication
+      API endpoint at https://api-sandbox.dhl.com/parcel/de/account/auth/ropc/v1/token
+      by sending grant_type=password, username, password, client_id (your API key),
+      and client_secret (your API secret) as POST data. Then include the Access Token
+      in subsequent Shipping API requests. Basic Auth is deprecated and OAuth2 is
+      strongly recommended for future API versions. Alternatively, you can use the
+      dhl-api-key header for direct API key authentication.
+- information_source; https://developer.dhl.com/api-reference/shipment-booking-dhl-freight?language_content_entity=en:
+  - 'DHL Freight APIs use two-step authentication: first obtain API credentials (Consumer
+    Key and Consumer Secret) from the My Apps developer portal, then use these as
+    username and password to retrieve a Bearer Token from the DHL Freight APIs authentication
+    endpoint. The Bearer Token is then used in subsequent API requests via the Authorization
+    header.
+
+
+    To authenticate: set the username parameter to your Consumer Key and the password
+    parameter to your Consumer Secret when requesting a Bearer Token. Once obtained,
+    include the Bearer Token in the Authorization header as "Bearer {token}" for all
+    DHL Freight API calls. API credentials are accessed from https://developer.dhl.com/user/apps
+    under the Credentials section for your specific Freight API subscription.'
+possible_base_urls:
+- ? information_source; https://developer.dhl.com/api-reference/authentication-dhl-ecommerce-americas?language_content_entity=en&lang=en
+  : - https://api-sandbox.dhlecs.com
+- information_source; https://developer.dhl.com/api-reference/ecommerce-uk?language_content_entity=en&lang=ja:
+  - https://developer.dhl.com/api-reference/parcel-uk
+possible_endpoints:
+- ? information_source; https://developer.dhl.com/api-reference/authentication-dhl-ecommerce-americas?language_content_entity=en&lang=en
+  : - POST /auth/v4/accesstoken
+- information_source; https://developer.dhl.com/api-reference/dhl-express-xml?language_content_entity=en:
+  - POST /XMLShippingServlet/pickups/book_pickup
+  - POST /XMLShippingServlet/routing
+  - POST /XMLShippingServlet/shipment/validation
+  - POST /XMLShippingServlet/tracking/track_known
+  - POST /XMLShippingServlet/tracking/track_unknown
+- information_source; https://developer.dhl.com/api-reference/ecommerce-uk?language_content_entity=en&lang=ja:
+  - GET /customer/v1/tradingLocations
+  - GET /customsdeclaration/v1/documents
+  - GET /image
+  - GET /pickup/v1/pickup

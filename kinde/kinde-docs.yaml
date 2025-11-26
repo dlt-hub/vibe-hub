@@ -1,0 +1,60 @@
+auth_info:
+- information_source; https://docs.kinde.com/developer-tools/your-apis/access-to-your-api/:
+  - 'The API supports two authentication methods: API keys that users can manage themselves
+    (create, rotate, delete), and OAuth2 client credentials flow where a third party
+    requests a token by posting to the token endpoint with client_id, client_secret,
+    grant_type set to "client_credentials", and an audience claim specifying the API
+    resource (e.g., "http://api.example.com/api"). Tokens are obtained via POST to
+    https://yourbusiness.kinde.com/oauth2/token with the JSON body containing client_id,
+    client_secret, grant_type, and audience fields.'
+- information_source; https://docs.kinde.com/build/self-service-portal/self-serve-portal-for-orgs/:
+  - Make a request to the POST /api/v1/portal/generate_url endpoint using an M2M (machine-to-machine)
+    token for authentication. The M2M token should be included as a bearer token in
+    the Authorization header.
+- information_source; https://docs.kinde.com/build/self-service-portal/self-serve-portal-for-users/:
+  - Make a request to the POST /api/v1/portal/generate_url endpoint using an M2M token.
+    The M2M token should be included as a bearer token in the Authorization header.
+- information_source; https://docs.kinde.com/build/tokens/configure-tokens/:
+  - 'To revoke a token via the `/oauth2/revoke` endpoint, make a POST request with
+    Content-Type header set to `application/x-www-form-urlencoded` and include the
+    following parameters in the request body: token (the token to revoke), client_id
+    (your client identifier), and client_secret (the secret associated with your client).
+    A 200 status code indicates successful revocation.'
+- information_source; https://docs.kinde.com/build/tokens/refresh-tokens/:
+  - Authorization Code OAuth2 grant flow with refresh token rotation. Send POST requests
+    to https://<yoursubdomain>.kinde.com/oauth2/auth with response_type, client_id,
+    redirect_uri, scope, and grant_type parameters. Use the https://<your_subdomain>.kinde.com/oauth2/token
+    endpoint with grantType=refresh_token to obtain new access tokens. Responses include
+    access_token (Bearer type), refresh_token, and token_type fields. Refresh tokens
+    are automatically rotated on each use, with the old token becoming immediately
+    invalid. A brief overlap period allows both previous and new refresh tokens to
+    be valid to handle retries and network issues.
+pagination_info:
+- information_source; https://docs.kinde.com/authenticate/device-authorization-flow/quick-start/:
+  - 'The documentation describes polling for an access token in device flow: poll
+    the token endpoint every 5 seconds (or use the interval value from the response)
+    with grant_type, client_id, and device_code parameters until receiving an access_token
+    in the response. Stop polling when a successful token response is received.'
+possible_base_urls:
+- information_source; https://docs.kinde.com/developer-tools/your-apis/access-to-your-api/:
+  - https://yourbusiness.kinde.com/oauth2/token
+- information_source; https://docs.kinde.com/build/tokens/refresh-tokens/:
+  - https://<your_subdomain>.kinde.com/oauth2/token
+possible_endpoints:
+- information_source; https://docs.kinde.com/developer-tools/your-apis/access-to-your-api/:
+  - POST https://yourbusiness.kinde.com/oauth2/token
+- information_source; https://docs.kinde.com/build/self-service-portal/self-serve-portal-for-orgs/:
+  - POST /api/v1/portal/generate_url
+- information_source; https://docs.kinde.com/build/self-service-portal/self-serve-portal-for-users/:
+  - POST /api/v1/portal/generate_url
+- information_source; https://docs.kinde.com/build/tokens/configure-tokens/:
+  - POST /oauth2/revoke
+- information_source; https://docs.kinde.com/build/tokens/refresh-tokens/:
+  - POST https://<your_subdomain>.kinde.com/oauth2/token
+  - POST https://<yoursubdomain>.kinde.com/oauth2/auth
+- information_source; https://docs.kinde.com/developer-tools/about/using-kinde-without-an-sdk/:
+  - GET https://<your_kinde_subdomain>.kinde.com/.well-known/openid-configuration
+  - GET https://<your_kinde_subdomain>.kinde.com/oauth2/auth
+  - POST https://<your_kinde_subdomain>.kinde.com/oauth2/token
+- information_source; https://docs.kinde.com/developer-tools/kinde-api/connect-to-kinde-api/:
+  - POST /oauth2/token

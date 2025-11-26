@@ -1,0 +1,50 @@
+auth_info:
+- information_source; https://support.singlewire.com/s/article/InformaCast-Scenarios-API-Integration-Setup:
+  - Authentication is required to send Scenarios through the InformaCast API using
+    one of two methods. Option 1 uses OAuth2 Applications following the OAuth2 industry
+    standard, with details available in the Fusion User Guide and sample apps on GitHub.
+    Option 2 uses Service Accounts which pass a static bearer token in the HTTP request
+    header instead of leveraging the OAuth2 flow, though this is only recommended
+    for internal organizational use. Further configuration details for Security Groups
+    are referenced but not provided in this excerpt.
+  - Bearer token authentication is required. Send the access token in the Authorization
+    header as "Bearer <your-informacast-security-token>". The token must be included
+    in every HTTP request to the API endpoint.
+  - 'Service Accounts authenticate by passing an access token in the HTTP request
+    header. OAuth2 Applications allow end-user-initiated requests through your application.
+    Service Account tokens expire after one year with a 30-day renewal warning.
+
+
+    For Service Account method: include the security token (generated via the Tokens
+    area) in the HTTP request header. The exact header name and format are not fully
+    specified in this excerpt, but the cURL example indicates header-based token passing.
+    Tokens must be rotated annually. OAuth2 Application authentication details require
+    referencing the sample apps at https://github.com/singlewire/oauth2-public-examples.'
+- information_source; https://support.singlewire.com/s/article/Trigger-InformaCast-Fusion-Scenarios-from-Meraki-Sensors:
+  - Authorization header with Bearer token format. Include Authorization header with
+    value "Bearer <your-service-account-token>" and Content-Type header with value
+    "application/json" in the webhook request to the InformaCast API endpoint.
+- information_source; https://support.singlewire.com/s/article/Send-Zoom-Room-Alerts-with-the-InformaCast-API-Connector:
+  - OAuth 2.0 with server-to-server account credentials grant type. Requires Client
+    ID, Client Secret, and Account ID fields. Token endpoint is https://zoom.us/oauth/token.
+    Required scope is room:write:admin.
+possible_base_urls:
+- information_source; https://support.singlewire.com/s/article/InformaCast-Scenarios-API-Integration-Setup:
+  - https://api.icmobile.singlewire.com/api/v1
+- information_source; https://support.singlewire.com/s/article/Trigger-InformaCast-Fusion-Scenarios-from-Meraki-Sensors:
+  - https://api.icmobile.singlewire.com/api/v1/scenario-notifications
+possible_endpoints:
+- information_source; https://support.singlewire.com/s/article/InformaCast-Scenarios-API-Integration-Setup:
+  - POST https://api.icmobile.singlewire.com/api/v1/scenario-notifications
+- information_source; https://support.singlewire.com/s/article/Trigger-InformaCast-Fusion-Scenarios-from-Meraki-Sensors:
+  - POST https://api.icmobile.singlewire.com/api/v1/scenario-notifications
+- information_source; https://support.singlewire.com/s/article/Send-Zoom-Room-Alerts-with-the-InformaCast-API-Connector:
+  - PATCH https://api.zoom.us/v2/rooms/events
+  - POST https://zoom.us/oauth/token
+- ? information_source; https://support.singlewire.com/s/article/Perform-a-Kisi-Access-Control-Lockdown-with-the-InformaCast-API-Connector
+  : - POST https://api.kisi.io/docs#/operations/createLogin
+    - POST https://api.kisi.io/places/<your-kisi-place-id>/lock_down
+- ? information_source; https://support.singlewire.com/s/article/Perform-a-Rhombus-Access-Control-Lockdown-with-the-InformaCast-API-Connector
+  : - POST https://api2.rhombussystems.com/api/accesscontrol/lockdownPlan/activateLockdownForLocation
+- information_source; https://support.singlewire.com/s/article/Send-TigerConnect-Messages-with-the-InformaCast-API-Connector:
+  - POST https://api.tigertext.me/v2/message

@@ -1,0 +1,49 @@
+auth_info:
+- information_source; https://docs.anzworldline-solutions.com.au/en/integration/api-developer-guide/webhooks:
+  - Webhook validation requires a key and secret. Send the webhooks key configured
+    in your account and a base64-encoded HMAC-SHA256 hash of an empty string using
+    your webhooks secret to the ValidateWebhookCredentials endpoint. Include {merchantId}
+    as a path parameter. The request body contains key (string) and secret (base64-encoded
+    string) fields.
+- information_source; https://docs.anzworldline-solutions.com.au/en/api-reference:
+  - Webhook credentials validation requires sending a key and secret in the request
+    body. The key is a webhook identifier string, and the secret is a hashed value
+    computed by hashing an empty string with your webhook key using the same hashing
+    method used in your system. Authentication failure returns a 403 status code.
+- ? information_source; https://docs.anzworldline-solutions.com.au/en/integration/basic-integration-methods/hosted-checkout-page
+  : - The API uses HMAC-based authentication. Initialize the client with V1HmacAuthenticator
+      using your API key and API secret, then specify your PSPID when making requests
+      to the merchant endpoint.
+- ? information_source; https://docs.anzworldline-solutions.com.au/en/integration/basic-integration-methods/hosted-tokenization-page
+  : - HMAC authentication is used with an API key and API secret passed to V1HmacAuthenticator.
+      The authenticator is then provided to the client factory along with a metadata
+      provider and connection configuration, and requests are made through a client
+      interface using a merchant ID in the request path.
+    - 'Your application authenticates to the platform using HMAC-based authentication
+      with an API key and API secret. Initialize the V1HmacAuthenticator with your
+      API key and API secret, then use it with the DefaultConnection to communicate
+      with the environment-specific endpoint (e.g., https://payment.preprod.anzworldline-solutions.com.au
+      for TEST).
+
+
+      Key details: The authenticator class is V1HmacAuthenticator, constructor parameters
+      are API key (first) and API secret (second). The MetadataProvider is initialized
+      with "OnlinePayments". Requests are sent via DefaultConnection configured with
+      these credentials to the respective environment URL.'
+possible_base_urls:
+- information_source; https://docs.anzworldline-solutions.com.au/en/api-reference:
+  - https://payment.pre
+  - https://payment.preprod.anzworldline-solutions.com.au
+possible_endpoints:
+- information_source; https://docs.anzworldline-solutions.com.au/en/integration/api-developer-guide/webhooks:
+  - POST /SendTestWebhook
+  - POST /ValidateWebhookCredentials
+- information_source; https://docs.anzworldline-solutions.com.au/en/api-reference:
+  - GET https://payment.preprod.anzworldline-solutions.com.au/client/v1/{customerId}/products/{paymentProductId}/networks
+  - GET https://payment.preprod.anzworldline-solutions.com.au/v2/{merchantId}/payouts/{payoutId}
+  - PATCH /merchants/{merchantId}/mandates/{uniqueMandateReference}/revoke
+  - POST /client/v1/{customerId}/products/networks
+  - POST /client/v1/{customerId}/services/surchargecalculation
+  - POST /v1/hostedtokenization/{merchantId}
+  - POST /v1/merchants/{merchantId}/paymentlinks
+  - POST /v1/merchants/{merchantId}/payments/{paymentId}/capture

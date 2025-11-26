@@ -1,0 +1,51 @@
+auth_info:
+- information_source; https://www.snow-mirror.com/doc/AdministratorGuide.html:
+  - Basic authentication sends credentials (username and password) with every HTTPS
+    request to ServiceNow. OAuth2 authentication (REST API only) sends credentials
+    once to retrieve an access token. For OAuth2, choose either Resource Owner Password
+    Credentials flow (requires username and password) or Client Credentials flow (requires
+    Client Id). Proxy authentication is optional and uses Proxy Username and Proxy
+    Password if the proxy server requires it.
+  - "OAuth2 protocol is used for authorization with ServiceNow REST API. SnowMirror\
+    \ uses the Resource Owner Password Credentials grant type. You must register SnowMirror\
+    \ as an OAuth API endpoint in ServiceNow's System OAuth \u2192 Application Registry,\
+    \ then configure SnowMirror with the Client Id and Client Secret obtained from\
+    \ the ServiceNow registration. The OAuth2 access tokens are used instead of passing\
+    \ credentials with each request."
+  - "SnowMirror supports two authentication methods for ServiceNow: Basic Authentication\
+    \ (username and password sent with every request, supported by SOAP and REST APIs)\
+    \ and OAuth2 (using short-lived access tokens with client id and client secret,\
+    \ supported only by REST API). OAuth2 supports two flows: Resource Owner Password\
+    \ Credentials (username and password sent only on initial authentication or token\
+    \ refresh) and Client Credentials (no username/password required). Configuration\
+    \ requires entering Client Id and Client Secret in the Settings \u2192 ServiceNow\
+    \ section and selecting the OAuth2 authentication protocol. When access tokens\
+    \ expire, SnowMirror automatically obtains new tokens using refresh tokens."
+- information_source; https://www.snow-mirror.com/doc/RestApiGuide.html:
+  - SnowMirror API uses HTTP Basic Authentication with the realm "SnowMirror API".
+    Credentials must be provided in the Authorization header using the Basic scheme
+    (base64-encoded username:password). A user account requires the Api Caller role
+    to access the API, Synchronization Reader role to read data, and Synchronization
+    Administrator role to perform modifications. The API returns 401 Unauthorized
+    if credentials are missing or incorrect, and 403 Forbidden if the user lacks permission
+    for the requested resource.
+  - SnowMirror REST API uses basic HTTP authentication. You must include an "Authentication"
+    header in every request containing the string username:password encoded in Base64.
+    If the header is missing or credentials are incorrect, the API returns a 401 Unauthorized
+    response with a WWW-Authenticate header set to Basic realm="SnowMirror API".
+possible_base_urls:
+- information_source; https://www.snow-mirror.com/snowmirror-2-1-released-new-rest-api/:
+  - http://{hostname}:{port}/api/{api-version}/{resource-name}
+possible_endpoints:
+- information_source; https://www.snow-mirror.com/doc/RestApiGuide.html:
+  - GET /mirrorDb
+  - GET /synchronization/{id}
+  - GET /synchronization/{id}/advancedSettings
+  - GET /synchronization/{id}/history
+  - GET /synchronization/{id}/history/{id}
+  - GET /synchronization/{id}/history/{id}/log
+  - GET {hostname}:{port}/api/{api-version}/synchronization
+  - POST /settings
+  - POST /synchronization/{id}/action
+- information_source; https://www.snow-mirror.com/snowmirror-2-1-released-new-rest-api/:
+  - GET http://snowmirror.company.com/api/v1/synchronization

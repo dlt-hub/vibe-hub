@@ -1,0 +1,48 @@
+auth_info:
+- information_source; https://exchange-docs.crypto.com/exchange/v1/rest-ws/index.html:
+  - 'API Key and Secret Key are system-generated credentials used for authentication.
+    The API Key can have permissions configured (default is "Read" only) and optionally
+    restricted to whitelisted IP addresses. REST API requests require "Content-Type:
+    application/json" header. Rate limits are applied per API method per API Key for
+    authenticated calls.'
+  - 'REST API private methods and WebSocket public/auth command require API key (as
+    "api_key") and Digital Signature (as "sig"). Authentication uses HMAC-SHA256 hash
+    of request parameters: concatenate method + id + api_key + sorted_params_as_key_value_pairs
+    + nonce, then hash with API Secret as the cryptographic key and encode as hex.
+    For REST private endpoints, pass api_key and sig in the request. For WebSocket,
+    invoke public/auth once per session with api_key and sig in the request body;
+    subsequent user-specific commands do not require these credentials. Never include
+    the API Secret in plain text.'
+  - The API requires authentication via a nonce-based request signing mechanism. Each
+    request must include a nonce field (Unix timestamp in milliseconds) and is designed
+    for an authenticated user context, though the specific signing method, required
+    headers, and credential format are not detailed in this excerpt.
+  - 'To access user-specific websocket methods, the public/auth method requires two
+    parameters: api_key (your API key as a string) and sig (a Digital Signature computed
+    according to the Digital Signature section). These are sent in the JSON request
+    body. REST API calls do not require this authentication step. The authentication
+    is specific to websocket connections on the User API.'
+pagination_info:
+- information_source; https://exchange-docs.crypto.com/exchange/v1/rest-ws/index.html:
+  - Pagination uses zero-based page numbering with page and page_size parameters (both
+    required) in the params object. The response structure is not shown, but page
+    and page_size control which subset of fiat withdrawal transactions are returned
+    per request.
+  - Pagination uses zero-based page numbering with page and page_size parameters in
+    the request params object. The response returns page and page_size fields indicating
+    current pagination state; continue requesting with incremented page numbers until
+    fewer items than page_size are returned or no more data exists.
+possible_base_urls:
+- information_source; https://exchange-docs.crypto.com/exchange/v1/rest-ws/index.html:
+  - https://api.crypto.com/exchange/v1
+  - https://api.crypto.com/v1
+possible_endpoints:
+- information_source; https://exchange-docs.crypto.com/exchange/v1/rest-ws/index.html:
+  - GET /public/get-risk-parameters
+  - GET https://api.crypto.com/exchange/v1/{method}
+  - GET https://api.crypto.com/v1/public/get-announcements
+  - GET https://uat-api.3ona.co/exchange/v1/{method}
+  - POST https://api.crypto.com/exchange/v1/{method}
+  - POST https://uat-api.3ona.co/exchange/v1/{method}
+  - POST private/set-cancel-on-disconnect
+  - POST public/auth

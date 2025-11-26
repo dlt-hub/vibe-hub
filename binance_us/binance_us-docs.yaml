@@ -1,0 +1,61 @@
+auth_info:
+- information_source; https://docs.binance.us/:
+  - API key and secret key authentication using HMAC SHA256. The api_key and secret_key
+    parameters are passed to the binanceus_request function, which constructs the
+    request with a timestamp parameter (in milliseconds). The request is signed using
+    HMAC SHA256 with the secret_key.
+  - API key authentication is required via the X-MBX-APIKEY header. Send your API
+    key in the X-MBX-APIKEY header when making requests to create or manage user data
+    streams. The listenKey obtained from the stream creation endpoint is then used
+    to access WebSocket streams at /ws/<listenKey> or /stream?streams=<listenKey>.
+  - API key authentication is required. Send your API key in the `X-MBX-APIKEY` header
+    for all requests to the user data stream endpoints. The `listenKey` parameter
+    must also be provided in the request body or query parameters depending on the
+    HTTP method used.
+  - API key authentication via X-MBX-APIKEY header combined with HMAC SHA256 request
+    signing. Send the API key in the X-MBX-APIKEY header, and include a signature
+    parameter (in query string or request body) computed as HMAC SHA256 of totalParams
+    using your secret key, with signature parameter name being signature.
+  - API key authentication via custom header X-MBX-APIKEY, combined with HMAC SHA256
+    signature-based request signing. The api_key goes in the X-MBX-APIKEY header,
+    the api_secret is used to generate an HMAC SHA256 signature of the request data,
+    and the signature is included as a "signature" parameter in the request payload
+    alongside other data parameters like quoteId and timestamp.
+pagination_info:
+- information_source; https://docs.binance.us/:
+  - 'Pagination for Get Trades uses optional query parameters: limit (default 500,
+    max 1000) to control page size, and fromId (optional) to specify the trade ID
+    to start from. Response includes an array of trades; to get the next page, use
+    the ID of the last trade from the current response as the next fromId parameter.'
+  - The Get Staking History endpoint uses query parameter pagination with page and
+    limit parameters. The page parameter specifies which page to retrieve, and limit
+    controls the number of results per page. Both are optional query parameters in
+    the request URL.
+  - The `GET /api/v3/klines` endpoint supports pagination through the limit parameter,
+    which is optional with a default of 500 and maximum of 1000. Pagination is achieved
+    by using startTime and endTime parameters to specify time ranges for retrieving
+    kline bars; if neither is provided, the most recent klines are returned.
+  - The endpoint supports offset-based pagination using query parameters page (page
+    number, optional, no maximum) and limit (records per page, optional, default 10,
+    maximum 100). Include both parameters in the request to retrieve specific pages
+    of results.
+  - The endpoint supports pagination via a limit parameter (query string, optional,
+    default 20, maximum 500). The response includes a total field indicating total
+    records. No explicit next page or cursor mechanism is described; pagination appears
+    to rely on the limit parameter alone without offset or continuation tokens.
+possible_base_urls:
+- information_source; https://docs.binance.us/:
+  - https://api.binance.com/api/v3
+  - https://api.binance.us
+possible_endpoints:
+- information_source; https://docs.binance.us/:
+  - DELETE /api/v3/openOrders
+  - DELETE /api/v3/order
+  - DELETE /api/v3/orderList
+  - DELETE /sapi/v1/custodian/cancelOcoOrder
+  - DELETE /sapi/v1/custodian/cancelOrder
+  - DELETE /sapi/v1/custodian/cancelOrdersBySymbol
+  - DELETE https://api.binance.us
+  - DELETE https://api.binance.us/api/v3/userDataStream
+  - GET /api/v3/account
+  - GET /api/v3/aggTrades

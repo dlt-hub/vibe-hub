@@ -1,0 +1,42 @@
+auth_info:
+- information_source; https://docs.armory.io/continuous-deployment/armory-admin/api-endpoint/:
+  - Gate supports X509 client certificate-based authentication on a dedicated port
+    (8085). Clients must present a certificate signed by a configured CA certificate
+    that Gate validates; the CA certificate is imported as a trust store and Gate
+    uses it to validate all inbound certificate-based clients. TLS termination cannot
+    occur on a load balancer for this endpoint since certificate validation happens
+    at Gate.
+- ? information_source; https://docs.armory.io/continuous-deployment/installation/armory-operator/op-manifest-reference/armory/
+  : - GitHub, Stash, and GitLab authentication via tokens. GitHub uses githubToken
+      (supports encryption) sent to githubEndpoint (default https://api.github.com).
+      Stash requires stashUsername and stashToken (encrypted) to stashEndpoint. GitLab
+      uses gitlabToken (encrypted) to gitlabEndpoint. Terraform git access uses accessToken
+      and username. Vault secrets use authMethod, role, and path for authentication.
+- ? information_source; https://docs.armory.io/continuous-deployment/installation/armory-operator/op-manifest-reference/notification/
+  : - Slack, Twilio, and GitHub use token-based authentication. Slack requires a bot
+      token passed via the `token` parameter (supports encrypted values). Twilio requires
+      an account SID in the `account` parameter and an auth token in the `token` parameter
+      (supports encrypted values). GitHub requires an account token in the `token`
+      parameter (supports encrypted values). All tokens support encrypted values.
+- information_source; https://docs.armory.io/continuous-deployment/installation/ae-instance-reg/:
+  - 'OAuth2 token-based authentication is required. Configure the following in your
+    Spinnaker gate profile: set tokenIssuerUrl to https://auth.cloud.armory.io/oauth/token,
+    clientId to your registered client ID, and clientSecret to your registered client
+    secret. These credentials are obtained during instance registration and must be
+    placed in spec.spinnakerConfig.profiles.gate.armory.cloud.iam.'
+- information_source; https://docs.armory.io/continuous-deployment/armory-admin/artifacts-github-connect/:
+  - GitHub Personal Access Token authentication is supported via the token field in
+    the GitHub account configuration, with alternative options for username/password
+    or file-based credentials. The token field accepts direct values or encrypted
+    secret references, and can alternatively use username/password, usernamePasswordFile,
+    or tokenFile fields for credential storage.
+possible_base_urls:
+- ? information_source; https://docs.armory.io/continuous-deployment/installation/armory-operator/op-manifest-reference/armory/
+  : - https://api.github.com
+- information_source; https://docs.armory.io/continuous-deployment/installation/ae-instance-reg/:
+  - https://api.cloud.armory.io
+possible_endpoints:
+- information_source; https://docs.armory.io/plugins/pipelines-as-code/install/armory-cd/:
+  - GET https://api.github.com/meta
+  - POST https://<your-gate-url>/webhooks/git/github
+  - POST https://<your-spinnaker-url>/api/v1/webhooks/git/github
