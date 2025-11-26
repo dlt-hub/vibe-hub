@@ -1,0 +1,49 @@
+auth_info:
+- information_source; https://docs.eazybi.com/eazybi/data-import/external-data-sources/import-from-rest-api:
+  - Basic authentication with username and password, HTTP header authentication with
+    custom header name and value, OAuth 1.0a, or OAuth 2.0 are supported. For OAuth
+    2.0, register eazyBI as a client in the provider application to obtain Client
+    ID and Client Secret, then specify the Authorization callback URL as the Redirect
+    URL. For HTTP header authentication, be aware that encoded values may be required
+    for authorization.
+  - OAuth 2.0 authentication is used. Provide Authorize URL and Token URL parameters
+    according to the REST API source's OAuth documentation. For GitHub, use authorize
+    URL https://github.com/login/oauth/authorize and token URL https://github.com/login/oauth/access_token.
+    A single Client ID and Client Secret can be reused across multiple REST API sources
+    connecting to the same provider.
+- ? information_source; https://docs.eazybi.com/eazybi/set-up-and-administer/atlassian-cloud/eazybi-for-confluence-cloud-security-statement
+  : - eazyBI for Confluence Cloud uses Atlassian Connect JWT authentication. Users
+      are authenticated via JWT tokens provided by Confluence Cloud, and eazyBI retrieves
+      the current user information from Confluence Cloud to enforce access control.
+      Customers must maintain security of their own Confluence Cloud login credentials.
+- ? information_source; https://docs.eazybi.com/eazybi/data-import/external-data-sources/import-from-rest-api/example-import-using-auth0-com
+  : - OAuth 2.0 authentication is required. Configure with ClientId and Client secret
+      from Auth0 Application settings, Scope field must include "offline_access" to
+      obtain refresh_token, Authorize URL format is <Your Auth0 Domain>/authorize?audience=<URL
+      encoded API identifier>, and Token URL format is <Your Auth0 Domain>/oauth/token.
+pagination_info:
+- information_source; https://docs.eazybi.com/eazybi/data-import/external-data-sources/import-from-rest-api:
+  - For POST requests, pagination uses a path expression to locate the next page parameter
+    (for example, meta.issues.jql.nextPageToken). In the request body, use the placeholder
+    {{next_page}} at the specified path to insert the returned next page parameter
+    value for the subsequent request.
+  - 'Pagination supports two methods: Page parameter (using page=1, page=2, etc. with
+    optional per_page for page size) or Offset and limit parameters (using offset
+    and limit query parameters, or in request body for POST requests). For Jira Server
+    REST API specifically, use startAt as offset and maxResults as limit.'
+  - 'The documentation describes three pagination approaches: offset/limit or page
+    parameters (in query string or POST body), next page URL extraction from response
+    JSON properties (e.g., _links.next.href) or Link headers with rel="next", and
+    cursor-based pagination via a next page parameter field. For offset/limit approaches,
+    concurrent requests are supported (default 10, adjustable via Concurrency parameter).
+    For cursor pagination, extract the next page parameter value from the response
+    using a path expression and pass it in the next request body using {{next_...}}
+    placeholder.'
+possible_base_urls:
+- information_source; https://docs.eazybi.com/eazybi/data-import/data-adjustments-using-javascript:
+  - /rest/agile/1.0/board/
+  - /rest/api/2/search
+possible_endpoints:
+- information_source; https://docs.eazybi.com/eazybi/data-import/data-adjustments-using-javascript:
+  - GET /rest/agile/1.0/board/{id}/sprint
+  - POST /rest/api/2/search

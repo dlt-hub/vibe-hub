@@ -1,0 +1,50 @@
+auth_info:
+- information_source; https://support.clicktime.com/hc/en-us/articles/360002884071-REST-API-v2-General-Information:
+  - 'Basic HTTP authentication is used to obtain a token from the "Me" endpoint. Send
+    a GET request to https://api.clicktime.com/v2/me with credentials formatted as
+    EMAIL:PASSWORD either via the --user flag or as a Base64-encoded string in the
+    Authorization header using the format "Authorization: Basic ENCODED_STRING" where
+    ENCODED_STRING is the Base64 encoding of EMAIL:PASSWORD.'
+  - 'Clients authenticate using a custom per-user token sent in the Authorization
+    header as "Authorization: Token {token}". The token is obtained by logging into
+    the web application under "My Preferences" > "Authentication Token" tab, or via
+    Basic authentication against the "Me" endpoint. Tokens do not expire based on
+    time but can be manually invalidated and regenerated through "My Preferences"
+    or the "Me/ResetAuthToken" endpoint.'
+  - Set the Authorization header as usual for batch requests to /v2/$batch. The documentation
+    references standard authorization but does not explicitly specify the auth scheme,
+    header name, or credential format in this excerpt.
+  - The ClickTime v2 REST API supports two authentication methods. Most endpoints
+    require token authentication, while the GET /Me endpoint and POST /Me/ResetAuthToken
+    endpoint support basic HTTP authentication using email and password credentials.
+    Basic authentication allows you to retrieve your API token from the Me endpoint,
+    which can then be used for other API calls.
+pagination_info:
+- information_source; https://support.clicktime.com/hc/en-us/articles/360002884071-REST-API-v2-General-Information:
+  - The API uses Link headers containing first and last page links constructed with
+    offset and limit query parameters for pagination.
+  - 'The API uses page-based pagination with a count parameter in responses showing
+    total results to calculate expected pages. Different endpoints have different
+    maximum page sizes: GET /TimeEntries has a maximum of 100, while GET /Reports/Time
+    has a default of 2,500.'
+  - The page element contains pagination data including count (total results), offset
+    (position from first result), and limit (results per response). It provides a
+    links object with absolute URLs to first, last, next, previous, and current pages.
+    Response Link headers also contain first and last page links using offset and
+    limit query parameters.
+possible_base_urls:
+- information_source; https://support.clicktime.com/hc/en-us/articles/360002884071-REST-API-v2-General-Information:
+  - https://api.clicktime.com
+  - https://api.clicktime.com/v2
+possible_endpoints:
+- information_source; https://support.clicktime.com/hc/en-us/articles/360002884071-REST-API-v2-General-Information:
+  - DELETE /
+  - DELETE https://api.clicktime.com/v2/Jobs/{jobID}
+  - GET /Jobs/?ID={jobID}
+  - GET /Jobs/{jobID}
+  - GET /Me
+  - GET /Reports/Time
+  - GET /TimeEntries
+  - GET /v2/Users
+  - GET https://api.clicktime.com/Me
+  - GET https://api.clicktime.com/v2/me

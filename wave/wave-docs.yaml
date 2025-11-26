@@ -1,0 +1,45 @@
+auth_info:
+- information_source; https://developer.waveapps.com/hc/en-us/articles/360018856171-Clients:
+  - The API uses Bearer token authentication. Include the access token in the Authorization
+    header with the format "Bearer <ACCESS_TOKEN>" when making POST requests to the
+    GraphQL endpoint.
+- information_source; https://developer.waveapps.com/hc/en-us/articles/360019493652-OAuth-Guide:
+  - OAuth2 token refresh flow is used to obtain a new access_token when the current
+    one expires. POST to https://api.waveapps.com/oauth2/token/ with Content-Type
+    application/x-www-form-urlencoded and include required parameters client_id, client_secret,
+    refresh_token, grant_type set to refresh_token, and redirect_uri. The response
+    contains a new access_token in the same format as the initial token response.
+    Note that a 403 Forbidden error occurs if the associated business subscription
+    is no longer active.
+  - Wave API uses OAuth2 authorization code flow. Redirect users to https://api.waveapps.com/oauth2/authorize/
+    with GET parameters client_id, response_type set to "code", scope (space-delimited),
+    and optional redirect_uri and state. After user authorization, Wave redirects
+    to your redirect_uri with authorization code in the code query parameter (valid
+    for 10 minutes, single use) and the state value you provided. Exchange the code
+    for tokens by POSTing to https://api.waveapps.com/oauth2/token/ with Content-Type
+    application/x-www-form-urlencoded and parameters client_id and client_secret.
+  - Wave uses OAuth2 authorization code flow. Exchange authorization code for access
+    token by POSTing client_id, client_secret, code, grant_type set to "authorization_code",
+    and redirect_uri to the token endpoint, receiving access_token, refresh_token,
+    expires_in, token_type, and scope. Include the access_token in the Authorization
+    header as "Bearer <ACCESS_TOKEN>" when making API requests to https://gql.waveapps.com/graphql/public.
+  - Wave uses OAuth2 for authentication. Access tokens can be refreshed, but will
+    fail with a 403 error if the business subscription is inactive. Redirect URIs
+    must exactly match whitelisted entries (host, port, and path as subdirectory).
+    To revoke tokens, POST to https://api.waveapps.com/oauth2/token-revoke/ with client_id,
+    client_secret, and token as application/x-www-form-urlencoded parameters. Multiple
+    authorizations are supported, and the approval_prompt=force GET parameter forces
+    re-authorization to access different businesses or upgrade scopes.
+possible_base_urls:
+- information_source; https://developer.waveapps.com/hc/en-us/articles/360018856171-Clients:
+  - https://gql.waveapps.com/graphql/public
+- information_source; https://developer.waveapps.com/hc/en-us/articles/360019493652-OAuth-Guide:
+  - https://api.waveapps.com
+possible_endpoints:
+- information_source; https://developer.waveapps.com/hc/en-us/articles/360018856171-Clients:
+  - POST https://gql.waveapps.com/graphql/public
+- information_source; https://developer.waveapps.com/hc/en-us/articles/360019493652-OAuth-Guide:
+  - GET https://api.waveapps.com/oauth2/authorize/
+  - POST https://api.waveapps.com/oauth2/token-revoke/
+  - POST https://api.waveapps.com/oauth2/token/
+  - POST https://gql.waveapps.com/graphql/public

@@ -1,0 +1,55 @@
+auth_info:
+- information_source; https://crates.io/api/openapi.json:
+  - 'API token authentication is required for some endpoints. Send the token in the
+    Authorization header using the Bearer scheme, e.g., Authorization: Bearer YOUR_API_TOKEN.
+    Cookie authentication is also supported for web UI requests. Most endpoints do
+    not require authentication.'
+  - The API requires authentication via either cookie-based session auth or API token
+    auth. Use the `cookie` security scheme for session-based access, or the `api_token`
+    security scheme to pass an API token (typically in an Authorization header or
+    as a query parameter, depending on implementation).
+  - 'The API supports three authentication options: no authentication (empty object),
+    API token authentication via the "api_token" security scheme, or cookie-based
+    authentication via the "cookie" security scheme. Exact header/parameter names
+    and token format are not specified in this documentation excerpt.'
+  - 'The API uses two authentication methods: API token authentication via the "api_token"
+    security scheme, or cookie-based authentication via the "cookie" security scheme.
+    Clients must provide either a valid API token or an authenticated session cookie
+    to access protected endpoints.'
+  - 'The API uses two authentication methods: Bearer tokens passed in the `Authorization`
+    header (for trusted publishing token revocation), and either `api_token` or `cookie`
+    security schemes (for user endpoints like email verification). The Bearer token
+    is sent as `Authorization: Bearer <token>`, and the `api_token` and `cookie` options
+    are alternative auth methods for protected user operations.'
+pagination_info:
+- information_source; https://crates.io/api/openapi.json:
+  - 'Pagination uses optional `page` query parameter (example: `?page=3`). Responses
+    include `meta.next_page` and `meta.prev_page` fields containing query strings
+    for subsequent/previous pages, or null when unavailable. `meta.total` indicates
+    total matching results. Stop paginating when `next_page` is null.'
+  - Pagination uses optional query parameters page (integer, minimum 1) or seek (string,
+    mutually exclusive with page). Responses include meta.next_page (query string
+    for next page) and meta.total (total count). Use meta.next_page value in the seek
+    parameter for subsequent requests.
+- information_source; https://crates.io/crates/crudcrate:
+  - The documentation describes built-in pagination for the GET /api/customers endpoint
+    using query parameters page and per_page (for example ?page=1&per_page=20), or
+    alternatively range=[0,19] for React Admin compatibility. However, no details
+    are provided about response fields, pagination limits, or how to determine when
+    to stop paginating.
+possible_base_urls:
+- information_source; https://crates.io/api/openapi.json:
+  - https://crates.io
+  - https://staging.crates.io
+possible_endpoints:
+- information_source; https://crates.io/api/openapi.json:
+  - DELETE /api/v1/me/tokens
+  - DELETE /api/v1/tokens/current
+  - DELETE /api/v1/trusted_publishing/github_configs/{id}
+  - GET /api/v1/crates/new
+  - GET /api/v1/me/tokens
+  - GET /api/v1/teams/{team}
+  - GET /api/v1/trusted_publishing/github_configs
+  - GET /api/v1/users/{id}/stats
+  - GET /api/v1/users/{user}
+  - GET /trusted-publishing/github-configs

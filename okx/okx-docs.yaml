@@ -1,0 +1,64 @@
+auth_info:
+- information_source; https://api-okx.mustprofit.cn/docs-v5/en/:
+  - '# Auth Information Extracted
+
+
+    The OKX SpreadTrading API uses three-part credential authentication. Pass apikey,
+    secretkey, and passphrase to the SpreadTradingAPI constructor. These credentials
+    are used internally by the SDK to sign requests and authenticate with the API.
+    The flag parameter (0 for production, 1 for demo) determines the trading environment
+    but is not part of authentication itself.'
+  - API Key authentication is used for sub-account management. Sub-account API Keys
+    require specific permissions (read_only or trade) and can be restricted to linked
+    IP addresses (up to 20). The apiKey is passed in request bodies, and master account
+    API Keys must be linked to IP addresses to perform operations like deleting sub-account
+    API Keys.
+  - 'API Key authentication with three credentials passed to the SubAccountAPI client:
+    apikey, secretkey, and passphrase. The apikey must be linked to IP addresses for
+    master accounts. Include flag parameter to specify production (0) or demo (1)
+    trading environment.'
+  - 'API authentication uses API Key-based signing. Send a login operation with apiKey,
+    passphrase, timestamp (Unix seconds), and sign (HMAC SHA256 signature of concatenated
+    timestamp+method+requestPath, encrypted with SecretKey and Base64-encoded). The
+    signature algorithm: concatenate timestamp, method, requestPath as a string, then
+    HMAC SHA256 encrypt using SecretKey and Base64 encode the result.'
+  - 'API initialization requires three credential parameters passed to the SavingsAPI
+    constructor: apikey (API key), secretkey (secret key), and passphrase. These credentials
+    must be obtained from your OKX account and are used to authenticate requests to
+    the API.'
+pagination_info:
+- information_source; https://api-okx.mustprofit.cn/docs-v5/en/:
+  - Cursor-based pagination using after and before parameters. The after parameter
+    returns records earlier than the specified ordId, before returns records newer
+    than the specified ordId. The limit parameter controls results per request with
+    a maximum of 100 and default of 100.
+  - Every page has 20 records. Use the `annType` parameter to filter announcement
+    types in the request.
+  - Pagination is supported with query parameters limit (optional, default 100, max
+    100) and after (optional cursor for retrieving records after a specific bill).
+    The response is sorted with most recent first, and you continue paginating by
+    using the after value from the previous response until no more records are returned.
+  - Pagination is supported with the response sorted most recent first. Use query
+    parameters `after` (bill ID to paginate after) and `limit` (number of results,
+    default and max typically 100) to control pagination; the response includes a
+    `data` array and pagination metadata to determine if more results exist.
+  - Pagination uses a limit parameter in the query string to control results per request,
+    with a maximum of 100 and default of 100. The begin and end parameters allow filtering
+    by timestamp to retrieve records within a specific range, enabling manual pagination
+    through historical data.
+possible_base_urls:
+- information_source; https://api-okx.mustprofit.cn/docs-v5/en/:
+  - /api/v5
+  - /api/v5/copytrading/public-pnl
+possible_endpoints:
+- information_source; https://api-okx.mustprofit.cn/docs-v5/en/:
+  - CONNECT wss://ws.okx.com:8443/ws/v5/business
+  - GET /api/v1/asset/valuation
+  - GET /api/v5/account/account-position-risk
+  - GET /api/v5/account/adjust-leverage-info
+  - GET /api/v5/account/balance
+  - GET /api/v5/account/bills
+  - GET /api/v5/account/bills-archive
+  - GET /api/v5/account/bills-history-archive
+  - GET /api/v5/account/collateral-assets
+  - GET /api/v5/account/config

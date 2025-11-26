@@ -1,0 +1,40 @@
+auth_info:
+- information_source; https://docs.kvik.shop/app-api/authentication:
+  - API uses Bearer token authentication. Obtain an access_token from the /api/app/oauth/access_token
+    endpoint, then include it in the Authorization header as "Bearer ACCESS_TOKEN_STRING"
+    for all requests. Invalid or expired tokens return 400 or 401 errors respectively.
+  - OAuth2 bearer token authentication is required. Include the `Authorization` header
+    with value `Bearer ACCESS_TOKEN_STRING`, where `ACCESS_TOKEN_STRING` is obtained
+    from the `/api/app/oauth/access_token` endpoint. The token contains scopes (e.g.,
+    `email`) and has standard JWT claims including expiration (`exp`).
+  - The App API uses OAuth2 client credentials flow for authentication. To obtain
+    an access token, send a POST request to /api/app/oauth/access_token with grant_type
+    set to client_credentials, your client_id, client_secret, and scope set to all
+    in the request body as application/x-www-form-urlencoded format. The response
+    includes a Bearer token with token_type Bearer and expires_in of 3600 seconds;
+    use this access_token in subsequent API requests via the Authorization header
+    as Bearer {access_token}.
+- information_source; https://docs.kvik.shop/customer-api:
+  - Authentication uses OAuth2 bearer tokens. Obtain an access_token from the /api/customer/oauth/access-token
+    endpoint, then include it in the Authorization header as "Bearer ACCESS_TOKEN_STRING"
+    for all authorized API calls. Tokens can expire, returning a 401 Unauthorized
+    error with "invalid_token" error code when expired.
+  - OAuth2 client credentials flow is used to obtain access tokens. Send a POST request
+    to api/customer/oauth/access-token with grant_type=client_credentials, client_id,
+    client_secret, and scope=all in the request body as application/x-www-form-urlencoded.
+    The response contains a Bearer token in the access_token field with a 3600 second
+    expiration. Use the returned access_token value in subsequent API requests as
+    a Bearer token in the Authorization header.
+possible_base_urls:
+- information_source; https://docs.kvik.shop/app-api/authentication:
+  - https://yourshopname.com
+- information_source; https://docs.kvik.shop/customer-api:
+  - https://theshopname.com
+possible_endpoints:
+- information_source; https://docs.kvik.shop/app-api/authentication:
+  - GET /api/app/
+  - GET /api/app/test
+  - POST /api/app/oauth/access_token
+- information_source; https://docs.kvik.shop/customer-api:
+  - POST /api/customer/oauth/access-token
+  - POST https://theshopname.com/api/customer/oauth/access-token

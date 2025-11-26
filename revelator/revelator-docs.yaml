@@ -1,0 +1,59 @@
+auth_info:
+- information_source; https://api-docs.revelator.com/changelog/:
+  - The documentation mentions that the `/partner/users` endpoint requires a `partnerApiKey`
+    parameter for authentication on this administrative endpoint. Pass the `partnerApiKey`
+    as a required parameter when making requests to this endpoint for user management
+    operations.
+- information_source; https://api-docs.revelator.com/:
+  - API key authentication via the Authorization header. The partnerApiKey must be
+    a UUID in the format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx. Additionally, the partnerAPIKey
+    parameter is required in request bodies for user management endpoints. An incorrectly
+    formatted UUID will result in a 500 error with a specific validation message.
+  - Authentication uses a login endpoint that requires partnerUserId and partnerApiKey
+    credentials sent in the request body as JSON. The login response returns an accessToken
+    that should be used for subsequent authenticated requests, along with permissions
+    data indicating the user's access level across various resources.
+  - 'POST `/partner/account/login` requires two types of credentials in the JSON request
+    body: `partnerApiKey` (always required, provided during onboarding) and either
+    `partnerUserId` (for unprompted login) or `username`/`password` pair (for prompted
+    login), but never both simultaneously. The endpoint returns an accessToken upon
+    successful authentication.'
+  - Pass the partner API key in the request body as the `partnerAPIKey` parameter
+    (a UUID string provided during onboarding) to authenticate requests. The `partnerUserId`
+    parameter is also required in the signup request body for authentication purposes.
+pagination_info:
+- information_source; https://api-docs.revelator.com/en/catalog-management:
+  - Pagination uses `pageNumber` (optional, default 1) and `pageSize` (optional, system-defined
+    default) query parameters. `pageNumber` is required for `pageSize` to work properly.
+    The response structure for indicating total pages or next page availability is
+    not documented in the provided excerpt.
+  - Pagination uses `pageNumber` (query parameter, required, starts at 1) and `pageSize`
+    (query parameter, required) request parameters. Response includes `totalItemsCount`,
+    `pageNumber`, and `pageSize` fields. Iterate by incrementing `pageNumber` until
+    all items are retrieved based on `totalItemsCount`.
+  - Pagination uses query parameters pageNumber (optional, default 1) and pageSize
+    (optional) to request pages. The response structure for pagination fields is not
+    documented in the provided text.
+  - Pagination uses query parameters pageNumber (required, starting at 1) and pageSize
+    (required, default 10) to request pages. The response includes totalItemsCount,
+    pageNumber, pageSize, and items array. Stop paginating when the number of items
+    returned is less than pageSize or when pageNumber times pageSize exceeds totalItemsCount.
+  - Pagination uses query parameters pageNumber and pageSize in the request, with
+    response fields totalItemsCount, pageNumber, pageSize, and items array. Stop paginating
+    when the items array is empty or when pageNumber times pageSize reaches totalItemsCount.
+possible_base_urls:
+- information_source; https://api-docs.revelator.com/changelog/:
+  - https://<custom_v2_url>
+  - https://api-docs.revelator.com
+possible_endpoints:
+- information_source; https://api-docs.revelator.com/changelog/:
+  - GET /analytics/artificialStreams/dashboard/byClient
+  - GET /analytics/artificialStreams/{aggregation}
+  - GET /analytics/consumption/{aggregation}
+  - GET /analytics/engagement/{aggregation}
+  - GET /analytics/revenue/metricsByDate
+  - GET /analytics/{dataSet}/{aggregationDimension}
+  - GET /artists
+  - GET /artists/{artistId}
+  - GET /content/artist/all
+  - GET /content/artist/{id}

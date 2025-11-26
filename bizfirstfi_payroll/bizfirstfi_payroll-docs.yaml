@@ -1,0 +1,59 @@
+auth_info:
+- information_source; https://www.bizfirstfi.com/public-documentation/api-documentation.html:
+  - All BizFirstFi APIs use OAuth 2.0 authentication with JWT bearer tokens. To authenticate,
+    submit a POST request to https://auth.bizfirstfi.com/oauth/token with grant_type
+    "client_credentials", your client_id, client_secret, and desired scopes in the
+    JSON body. The response contains an access_token field with a JWT bearer token.
+    Include this token in the Authorization header as "Bearer {access_token}" for
+    all API requests. Available scopes include kyc:read, kyc:write, aml:read, aml:write,
+    payroll:read, and payroll:write.
+  - OAuth 2.0 / JWT Bearer Token authentication is required. Send credentials as a
+    Bearer token in the Authorization header. Rate limit is 1000 requests/hour per
+    API key. Base URL is https://api.bizfirstfi.com/v1.
+  - OAuth2 Bearer token authentication. Request an access token via OAuth2 client
+    credentials flow with desired scopes (kyc:read, kyc:write, aml:read, aml:write,
+    payroll:read, payroll:write, admin). Include the token in the Authorization header
+    as "Bearer {access_token}" for all API requests. Token expires in 3600 seconds
+    and scopes control access to KYC, AML, and Payroll modules.
+- information_source; https://www.bizfirstfi.com/public-documentation/kyc/api-documentation.html:
+  - 'API uses Bearer token authentication. Send the token in the Authorization header
+    as "Authorization: Bearer <your-api-token>". Obtain tokens via POST /auth/login
+    with email and password in the JSON request body, which returns a token field
+    in the response.'
+  - 'Authorization is required using Bearer token authentication. Include the token
+    in the Authorization header for all requests using the format: Authorization:
+    Bearer <your-token>. The token must be provided to access endpoints for retrieving
+    and managing KYC documents and business profiles.'
+pagination_info:
+- information_source; https://www.bizfirstfi.com/public-documentation/kyc/api-documentation.html:
+  - Pagination uses query parameters page (page number, integer) and limit (number
+    of records per page, integer). The response contains a data array with KYC application
+    records. No response fields indicate whether more pages exist or how to construct
+    the next request.
+  - Use query parameters page (default 1) and limit (default 10) to paginate GET /kyc/applications
+    results. Response includes total, page, limit, and totalPages fields to track
+    pagination state.
+  - Use query parameters page (required, default 1) and limit (required, default 20)
+    to paginate. Response includes pagination object with total, page, limit, and
+    totalPages fields. Stop when page exceeds totalPages.
+- information_source; https://www.bizfirstfi.com/public-documentation/payroll/api-documentation.html:
+  - Pagination uses limit and offset query parameters. The limit parameter specifies
+    the number of records per page (default 50), offset specifies the starting position
+    (default 0), and the response includes total count, current limit, and current
+    offset to construct subsequent requests.
+possible_base_urls:
+- information_source; https://www.bizfirstfi.com/public-documentation/api-documentation.html:
+  - https://api.bizfirstfi.com/v1
+  - https://auth.bizfirstfi.com
+possible_endpoints:
+- information_source; https://www.bizfirstfi.com/public-documentation/api-documentation.html:
+  - GET /aml/alerts
+  - GET /payroll/employees
+  - GET /payroll/tax-reports
+  - GET /unified/compliance-dashboard
+  - GET /unified/customers/{customer_id}
+  - GET https://api.bizfirstfi.com/v1/kyc/compliance-reports
+  - GET https://api.bizfirstfi.com/v1/kyc/customers
+  - GET https://api.bizfirstfi.com/v1/kyc/customers/{id}
+  - POST /aml/cases
+  - POST /aml/sar-filings

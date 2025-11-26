@@ -1,0 +1,63 @@
+auth_info:
+- information_source; https://docs.chaster.app/api/basics/getting-started:
+  - OAuth 2 authentication is required. Obtain credentials via developer token (generated
+    from developer interface, linked to your Chaster account) or OAuth 2 access token
+    (for any user). Client ID and client secret are provided when you create an application
+    on the developer interface. Use the obtained token to authenticate requests to
+    the Public API.
+- information_source; https://docs.chaster.app/api/extensions-api/authentication:
+  - 'Bearer token authentication is required. Generate a token from the developer
+    interface under "Tokens" section, then include it in the Authorization header
+    as `Authorization: Bearer <token>` for all API requests. Keep the token secret
+    as it grants full API access on your behalf.'
+  - To authenticate with the Chaster Extensions API, use a bearer token in the Authorization
+    header. Generate a developer token from your Developer interface by navigating
+    to your application and selecting "Tokens" in the left sidebar. Include the token
+    as a bearer token in requests to endpoints starting with /api/extensions.
+- information_source; https://docs.chaster.app/api/extensions-api/changelog:
+  - Basic HTTP authentication is available for webhooks. When configuring a webhook,
+    provide a username and password to enable Basic HTTP authentication for webhook
+    requests.
+- information_source; https://docs.chaster.app/api/extensions-api/create-your-extension/main-page:
+  - 'The extension uses a token-based authentication scheme where a main page token
+    is passed in URL hash parameters to your web application, which must then pass
+    this token to your backend to make authenticated requests to the Extensions API
+    endpoints.
+
+
+    To implement: extract the mainToken from the hash parameter using JSON.parse(decodeURIComponent(window.location.hash.substring(1))),
+    then include this token in requests to the Extensions API (specifically in requests
+    to GET /api/extensions/auth/sessions/:mainToken as documented in the authentication
+    documentation). The token is only retrievable by your web application and must
+    be used server-side for all API requests.'
+pagination_info:
+- information_source; https://docs.chaster.app/api/extensions-api/sessions:
+  - Pagination uses a `paginationId` field from each result to navigate through extension
+    sessions. Include the last `paginationId` from the previous response in subsequent
+    requests to fetch the next set of sessions.
+  - The endpoint POST /api/extensions/sessions/search uses cursor-based pagination
+    with limit parameter. Request body includes limit (default 15, controls batch
+    size) and paginationLastId (optional, pass the paginationId from previous results
+    to fetch next batch). Response contains hasMore boolean indicating more results
+    exist, count for total matching sessions, and results array where each item has
+    paginationId to use in next request's paginationLastId field.
+possible_base_urls:
+- information_source; https://docs.chaster.app/api/extensions-api/create-your-extension/regular-actions/:
+  - https://api.chaster.app
+  - https://api.chaster.app/api
+possible_endpoints:
+- information_source; https://docs.chaster.app/api/extensions-api/create-your-extension/regular-actions/:
+  - GET /api/extensions/sessions/:sessionId/regular-actions
+  - POST /api/extensions/sessions/:sessionId/regular-actions
+- information_source; https://docs.chaster.app/api/extensions-api/authentication:
+  - GET https://api.chaster.app/api/extensions/sessions/:sessionId
+- information_source; https://docs.chaster.app/api/extensions-api/sessions:
+  - GET /api/extensions/sessions/:sessionId
+  - POST /api/extensions/sessions/search
+- information_source; https://docs.chaster.app/api/extensions-api/penalties:
+  - POST /api/extensions/sessions/:sessionId/penalties/increment
+  - POST /api/extensions/sessions/:sessionId/penalties/time-limit/cancel
+  - POST /api/extensions/sessions/:sessionId/penalties/time-limit/create
+- information_source; https://docs.chaster.app/api/extensions-api/changelog:
+  - PATCH /api/extensions/sessions/{sessionId}
+  - PATCH /api/extensions/sessions/{sessionId}/data

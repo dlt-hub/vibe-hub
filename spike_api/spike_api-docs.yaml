@@ -1,0 +1,37 @@
+auth_info:
+- information_source; https://docs.spikeapi.com/api-docs/authentication:
+  - Authentication uses HMAC-SHA256 signing with a shared secret key obtained from
+    the administrative console. Generate an HMAC-SHA256 signature of the user ID using
+    the secret key, then exchange it at the endpoint https://app-api.spikeapi.com/v3/auth/hmac
+    to receive an access token. The secret key is stored as HMAC_KEY_FROM_ADMIN_CONSOLE
+    and the user ID is signed using hmac.new(hmac_key, user_id.encode(), hashlib.sha256).hexdigest().
+  - Spike API uses HMAC-based authentication. To obtain an access token, POST to https://app-api.spikeapi.com/v3/auth/hmac
+    with a JSON body containing application_id, application_user_id, and signature
+    (an HMAC signature generated to verify user authenticity). The response returns
+    an access_token string for subsequent API requests.
+  - 'The API uses bearer token authentication. After successful authentication, store
+    the returned access_token (a JWT) and include it in the Authorization header as
+    "Authorization: Bearer <access_token>" for all subsequent API requests.'
+  - The Spike API uses a three-step HMAC-based authentication flow. Step 1 involves
+    generating an HMAC signature using a shared secret key obtained from the administrative
+    console. Step 2 exchanges this signature for an access token via a dedicated endpoint.
+    Step 3 requires storing and using the access token for subsequent API requests.
+- information_source; https://docs.spikeapi.com/lab-reports-docs/implementation:
+  - 'You''ll need to add a Bearer token into the Authorization header for all API
+    requests. Include the token as "Authorization: Bearer {token}" where {token} is
+    your API credential.'
+possible_base_urls:
+- information_source; https://docs.spikeapi.com/api-docs/authentication:
+  - https://app-api.spikeapi.com/v3
+- information_source; https://docs.spikeapi.com/lab-reports-docs/implementation:
+  - https://docs.spikeapi.com
+possible_endpoints:
+- information_source; https://docs.spikeapi.com/api-docs/authentication:
+  - GET https://docs.spikeapi.com/api-reference/query-nutrition-record-by-id
+  - GET https://docs.spikeapi.com/api-reference/query-nutrition-records-list
+  - POST https://app-api.spikeapi.com/v3/auth/hmac
+  - POST https://docs.spikeapi.com/api-reference/post-nutrition-records
+- information_source; https://docs.spikeapi.com/lab-reports-docs/implementation:
+  - GET /lab_reports
+  - GET /lab_reports/{lab_report_id}
+  - POST /lab_reports

@@ -1,0 +1,61 @@
+auth_info:
+- information_source; https://phenixrts.com/docs/api/:
+  - Authentication is performed by including applicationId and secret in the JSON
+    request body. Send a PUT request to /pcast/stream/playlist with Content-Type application/json,
+    and include "applicationId" and "secret" fields in the JSON payload along with
+    the streamId parameter.
+  - 'Authentication is required and supports two methods: HTTP Authorization header
+    with Basic auth (combining applicationId and secret as applicationId:secret, then
+    base64 encoded) or an alternative method not fully detailed in this excerpt. Send
+    credentials via the Authorization header as Authorization: Basic <base64(applicationId:secret)>.'
+  - 'Authentication tokens are generated via POST request to /pcast/auth using applicationId
+    and secret credentials in the JSON request body. The response provides a token
+    that is subsequently used to authenticate API requests.
+
+
+    Request endpoint: POST https://pcast.phenixrts.com/pcast/auth
+
+
+    Required request headers: Accept: application/json, Content-Type: application/json
+
+
+    Required JSON body fields: applicationId (your application ID), secret (your application
+    secret)
+
+
+    Optional JSON body field: capabilities (array of capability strings)'
+  - Authorization header using Basic authentication with base64-encoded credentials
+    in the format applicationId:secret. Send the Authorization header with value "Basic"
+    followed by the base64-encoded applicationId and secret separated by a colon.
+  - Authorization header with Bearer token scheme. Send a PUT request with the Authorization
+    header set to "Bearer <edgeAuthToken>" where edgeAuthToken is obtained separately.
+    The token must be included in the request to the pcast/:tenancy/stream/publish/uri/:type
+    endpoint.
+pagination_info:
+- information_source; https://phenixrts.com/docs/api/:
+  - The API uses limit-based pagination with optional cursor-like parameters. The
+    limit query parameter (optional) controls the number of messages returned per
+    request. The beforeMessageId and afterMessageId query parameters (both optional)
+    provide cursor-like bounds for message ranges, allowing you to fetch messages
+    before or after specific message IDs to navigate through pages.
+  - The `/pcast/room/<urlEncodedRoomId>/messages` endpoint uses query parameter pagination
+    with limit (optional, default not specified), beforeMessageId (optional, upper
+    bound), and afterMessageId (optional, lower bound) to control message retrieval.
+    The response structure and navigation fields are not documented in the provided
+    excerpt.
+possible_base_urls:
+- information_source; https://phenixrts.com/docs/api/:
+  - https://pcast.phenixrts.com
+  - https://pcast.phenixrts.com/pcast/channel/
+possible_endpoints:
+- information_source; https://phenixrts.com/docs/api/:
+  - DELETE /channels/{urlEncodedChannelId}
+  - DELETE /pcast/channel/<urlEncodedChannelId>
+  - DELETE /pcast/room/<urlEncodedRoomId>
+  - DELETE /pcast/stream
+  - DELETE https://pcast.phenixrts.com/pcast/channel/<urlEncodedChannelId>
+  - DELETE https://pcast.phenixrts.com/pcast/channel/<urlEncodedChannelId>/messages
+  - DELETE https://pcast.phenixrts.com/pcast/composition/<urlEncodedCompositionId>
+  - DELETE https://pcast.phenixrts.com/pcast/room/<urlEncodedRoomId>
+  - DELETE https://pcast.phenixrts.com/pcast/room/<urlEncodedRoomId>/messages
+  - DELETE https://pcast.phenixrts.com/pcast/stream/archive

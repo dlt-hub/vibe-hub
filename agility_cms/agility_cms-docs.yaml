@@ -1,0 +1,50 @@
+auth_info:
+- information_source; https://agilitycms.com/docs/developers/content-fetch-api:
+  - API Key authentication is required and must be passed as part of the URL path.
+    All requests follow the pattern https://api.aglty.io/{guid}/{apitype}/{locale}/{requestType}/{requestParams},
+    where guid is the API Key identifier. The API Key is included directly in the
+    URL path rather than as a header or query parameter.
+  - 'API Key authentication is required in the header for each REST API request. The
+    API Key is a secret credential retrieved from Settings > API Keys and must be
+    included in request headers. API Keys support two types: preview (for previewing
+    content) and fetch (for published content only), and may have optional expiry
+    dates. The base API URL format is https://api.aglty.io/{guid}/{apitype}, with
+    regional alternatives available for Canada, Europe, and Australia.'
+  - 'API Keys are required for authentication. Retrieve your API Key from Agility
+    Settings > API Keys, then include it in the APIKey header of your HTTP request.
+    The header format is "APIKey: <your-api-key-value>".'
+  - Whether you are hitting the Content Fetch REST API over HTTP directly or through
+    an SDK, you need to authenticate your requests using API Keys found under Settings
+    > API Keys. The API URL is the base endpoint where requests are sent, and some
+    SDKs will resolve this automatically. All requests use GET methods and return
+    JSON responses.
+- information_source; https://agilitycms.com/docs/developers/content-sync-api:
+  - API Key authentication is required. Send the API key in the `APIKey` header with
+    each request to the Sync API endpoint. The first sync call uses `syncToken=0`,
+    and subsequent calls use the `syncToken` value returned from the previous response
+    to fetch only changed content incrementally.
+pagination_info:
+- information_source; https://agilitycms.com/docs/developers/content-fetch-api:
+  - Sync Content Items and Sync Pages methods use paged format pagination. Each request
+    returns a syncToken that must be persisted and passed into subsequent requests
+    to maintain sync state and retrieve the next page of results.
+- information_source; https://agilitycms.com/docs/developers/content-sync-api:
+  - The Sync API uses token-based pagination with syncToken and pageSize parameters.
+    The syncToken query parameter (starting at 0) identifies the current page, while
+    pageSize (max 500) controls results per request. The response provides the next
+    syncToken to use; pagination is complete when syncToken equals 0 or no results
+    are returned.
+possible_base_urls:
+- information_source; https://agilitycms.com/docs/developers/content-fetch-api:
+  - https://api-aus.aglty.io
+  - https://api-ca.aglty.io
+possible_endpoints:
+- information_source; https://agilitycms.com/docs/developers/content-fetch-api:
+  - GET https://api-aus.aglty.io/{guid}/{apitype}
+  - GET https://api-ca.aglty.io/{guid}/{apitype}
+  - GET https://api-eu.aglty.io/{guid}/{apitype}
+  - GET https://api.aglty.io/e13c7b01-u/preview/en-us/list/posts
+  - GET https://api.aglty.io/{guid}/{apitype}
+  - GET https://api.aglty.io/{guid}/{apitype}/{locale}/{requestType}/{requestParams}
+- information_source; https://agilitycms.com/docs/developers/content-sync-api:
+  - GET https://api.aglty.io/4582b5fa-u/fetch/en-us/sync/items

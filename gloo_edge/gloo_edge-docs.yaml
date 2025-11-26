@@ -1,0 +1,43 @@
+auth_info:
+- information_source; https://docs.solo.io/gateway/2.0.x/about/overview/:
+  - The documentation describes NASA's Astronomy Picture of the Day API, which uses
+    API key authentication. To access the API, you generate an API key from https://api.nasa.gov/,
+    then include it as a query parameter named api_key in your HTTP GET request to
+    the endpoint https://api.nasa.gov/planetary/apod?api_key=$YOUR_API_KEY.
+- information_source; https://docs.solo.io/gateway/2.0.x/traffic-management/destination-types/backends/lambda/creds-secret/:
+  - AWS credentials authentication is required. Obtain AWS access key ID and secret
+    access key with appropriate Lambda permissions, then store them in a Kubernetes
+    secret named aws-creds with fields accessKey, secretKey, and sessionToken (which
+    can be empty).
+- information_source; https://docs.solo.io/gateway/2.0.x/traffic-management/match/header/:
+  - 'Authorization: Bearer token authentication is required. Send the token in the
+    Authorization header with the format "Bearer <token>", for example "Bearer 123".'
+  - The Authorization request header must use the Bearer scheme with the format "Bearer
+    {token}", where the token is one or more characters following a space after "Bearer".
+- information_source; https://docs.solo.io/gateway/2.0.x/security/extauth/api-key/:
+  - 'API key authentication is required. Send the API key in the "api-key" header
+    with a UUID-formatted value (example: N2YwMDIxZTEtNGUzNS1jNzgzLTRkYjAtYjE2YzRkZGVmNjcy).
+    The key is configured via a Kubernetes secret named "infra-apikey" and validated
+    through an AuthConfig resource.'
+possible_base_urls:
+- information_source; https://docs.solo.io/gateway/latest:
+  - https://docs.solo.io
+- information_source; https://docs.solo.io/gateway/2.0.x/quickstart/:
+  - https://docs.solo.io
+possible_endpoints:
+- information_source; https://docs.solo.io/gateway/2.0.x/about/overview/:
+  - GET https://api.nasa.gov/planetary/apod?api_key=$YOUR_API_KEY
+- information_source; https://docs.solo.io/gateway/2.0.x/traffic-management/destination-types/backends/static/:
+  - GET https://static.example.com/posts
+- information_source; https://docs.solo.io/gateway/2.0.x/traffic-management/header-control/request-header/:
+  - GET http://$INGRESS_GW_ADDRESS:8080/headers
+  - GET localhost:8080/headers
+- information_source; https://docs.solo.io/gateway/2.0.x/traffic-management/header-control/response-header/:
+  - GET http://$INGRESS_GW_ADDRESS:8080/response-headers
+  - GET localhost:8080/response-headers
+- information_source; https://docs.solo.io/gateway/2.0.x/traffic-management/health-checks/gateway/:
+  - POST 127.0.0.1:19000/healthcheck/fail
+  - POST 127.0.0.1:19000/healthcheck/ok
+- information_source; https://docs.solo.io/gateway/2.0.x/traffic-management/match/header/:
+  - GET http://$INGRESS_GW_ADDRESS:8080/status/200
+  - GET localhost:8080/status/200

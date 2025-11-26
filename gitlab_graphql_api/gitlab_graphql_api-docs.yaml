@@ -1,0 +1,61 @@
+auth_info:
+- information_source; https://docs.gitlab.co.jp/ee/api/graphql/getting_started.html:
+  - GitLab GraphQL API uses bearer token authentication. Pass your token via the Authorization
+    header as "Bearer $GRAPHQL_TOKEN" in POST requests to https://gitlab.com/api/graphql.
+    The token should be stored in the GRAPHQL_TOKEN environment variable.
+  - 'You can authorize GraphQL requests using a personal access token as a bearer
+    token in the Authorization header. The token requires at least the read_api scope.
+    Send the token as "Authorization: Bearer <your-token>" in the request headers.'
+- information_source; https://docs.gitlab.co.jp/runner/:
+  - GitLab Runner uses token-based authentication for API interactions. Runners register
+    with GitLab using a registration_token via POST /api/v4/runners, then authenticate
+    subsequent job requests and operations using the returned runner_token. Job-specific
+    operations (cloning sources, downloading artifacts, updating job status) are authenticated
+    with a job_token included in the request payload.
+  - Use multiple tokens with multiple servers. Runners authenticate using registration
+    tokens (sent via POST to /api/v4/runners) and runner tokens. Job requests use
+    job tokens as documented in the CI job token specification. Registration and authentication
+    tokens are distinct mechanisms for runner setup and job handling.
+- information_source; https://docs.gitlab.co.jp/ee/administration/pages/:
+  - Access control for GitLab Pages uses OAuth authentication with GitLab. The `auth_secret`
+    parameter is a secret key for signing authentication requests (leave blank to
+    pull automatically from GitLab during OAuth registration), and `auth_redirect_uri`
+    is the callback URL that defaults to the project's subdomain of `pages_external_url`
+    + `/auth`. The `api_secret_key` parameter specifies the full path to a file containing
+    the secret key used to authenticate with the GitLab API and is auto-generated
+    when left unset.
+pagination_info:
+- information_source; https://docs.gitlab.co.jp/ee/api/graphql/getting_started.html:
+  - GitLab GraphQL API uses cursor-based pagination. Request parameters include `first`
+    (returns first N records, default 100, max 100) and `last` (returns last N records,
+    max 100), plus `after` and `before` cursor arguments. Response includes `pageInfo`
+    with `endCursor`, `startCursor`, and `hasNextPage` boolean to determine if more
+    records exist. Pass the `endCursor` value to the `after` parameter in the next
+    request to retrieve subsequent records.
+  - Pagination uses `first` or `last` arguments to specify the number of records per
+    page, with a default of 100 records. The response includes `nodes` containing
+    the paginated items and likely cursor-based navigation fields for retrieving subsequent
+    pages.
+- information_source; https://docs.gitlab.co.jp/ee/user/gitlab_com/:
+  - For performance reasons, if a query returns more than 10,000 records, GitLab excludes
+    some pagination response headers.
+possible_base_urls:
+- information_source; https://docs.gitlab.co.jp/ee/api/graphql/getting_started.html:
+  - https://gitlab.com/api/graphql
+- information_source; https://docs.gitlab.co.jp/runner/:
+  - https://gitlab.com/api/v4
+possible_endpoints:
+- information_source; https://docs.gitlab.co.jp/ee/api/graphql/getting_started.html:
+  - POST /api/graphql
+  - POST https://gitlab.com/api/graphql
+- information_source; https://docs.gitlab.co.jp/runner/:
+  - POST /api/v4/jobs/request
+  - POST /api/v4/runners
+- information_source; https://docs.gitlab.co.jp/ee/integration/mattermost/:
+  - GET https://gitlab.domain.com/api/v4/user
+  - GET https://gitlab.domain.com/oauth/authorize
+  - GET https://mm.domain.com
+  - GET https://mm.domain.com/signup/gitlab/complete
+  - POST http://gitlab.domain.com/oauth/token
+- information_source; https://docs.gitlab.co.jp/operator/installation.html:
+  - GET https://gitlab.com/api/v4/projects/18899486/packages/generic/gitlab-operator/${GL_OPERATOR_VERSION}/gitlab-operator-${PLATFORM}-${GL_OPERATOR_VERSION}.yaml

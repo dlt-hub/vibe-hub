@@ -1,0 +1,57 @@
+auth_info:
+- information_source; https://api-docs.jrni.com/v3/authentication:
+  - 'All API requests require the App-Id header. The Auth-Token header is required
+    for endpoints with Member, Contact, or Admin permission levels. Auth tokens are
+    obtained by posting email and password to /api/v3/login/admin or /api/v3/login/member
+    endpoints, or returned in basket responses. Send both headers as: App-Id: [your
+    app id] and Auth-Token: [token value].'
+  - 'Authentication uses a login endpoint that accepts email and password in the request
+    body and returns an auth token. The token must be sent in subsequent requests
+    via the Auth-Token header along with the App-Id header. Tokens are valid for 24
+    hours from last use and expire with a 401 response. For purchase APIs, either
+    a long ID parameter or an Auth-Token header (for authenticated members) is required.
+
+
+    Key details: POST to /login/member with JSON body containing email and password
+    fields. Required headers: App-Id (application ID) and Auth-Token (returned from
+    login, used in subsequent requests). Token validity: 24 hours from last use. Purchase
+    APIs use either a unique long ID or Auth-Token for authenticated members.'
+  - The JRNI API uses two required headers for authentication. The App-Id header identifies
+    the client and is required on all API requests. The Auth-Token header is used
+    for authenticating user sessions (documentation appears incomplete but indicates
+    token-based authentication). Both headers must be included in HTTP requests to
+    the API.
+- information_source; https://api-docs.jrni.com/v5/authentication:
+  - Authentication uses two main approaches depending on the API context. For member
+    APIs, obtain an auth token by posting email and password to the login endpoint,
+    then include the token in subsequent requests. All requests require the App-Id
+    header set to your application ID. Include the Auth-Token header with the token
+    value returned from login. Tokens are valid for 24 hours from last use and expire
+    to a 401 error. Purchase APIs can alternatively use a long ID parameter for guest
+    authentication, or an auth token if the purchase was made by an authenticated
+    member.
+  - 'The API uses two required headers for authentication. The App-Id header identifies
+    the client on all requests. The Auth-Token header provides authorization and is
+    obtained differently depending on permission level: for basket operations it is
+    returned in the response from the add item endpoint, for admin access it is obtained
+    by calling the login endpoint with email and password credentials. Auth tokens
+    for public booking journeys are typically valid for 15 minutes but configurable.
+    Permission types include Public (no auth required), Member (authenticated account),
+    Contact (non-authenticated account), and Admin (studio interface administrators).'
+possible_base_urls:
+- information_source; https://api-docs.jrni.com/v3/authentication:
+  - https://api-docs.jrni.com/v3
+  - https://example.jrni.com/api/v3
+possible_endpoints:
+- information_source; https://api-docs.jrni.com/v3/authentication:
+  - GET https://example.jrni.com/api/v3/1/administrators/1
+  - GET https://example.jrni.com/api/v3/1/members/1
+  - POST https://example.jrni.com/api/v3/1/basket/checkout
+  - POST https://example.jrni.com/api/v3/1/login/member
+  - POST https://example.jrni.com/api/v3/login/admin
+  - POST https://example.jrni.com/api/v3/login/member
+- information_source; https://api-docs.jrni.com/v5/authentication:
+  - GET https://example.jrni.com/api/v5/1/administrators/1
+  - GET https://example.jrni.com/api/v5/1/members/1
+  - POST https://example.jrni.com/api/v5/1/basket/checkout
+  - POST https://example.jrni.com/api/v5/login/admin

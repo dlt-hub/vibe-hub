@@ -1,0 +1,55 @@
+auth_info:
+- information_source; https://www.backblaze.com/docs/cloud-storage-event-notifications-reference-guide:
+  - Webhook requests include HMAC SHA-256 signature verification. You must provide
+    an `hmacSha256SigningSecret` when creating an Event Notification rule. The webhook
+    request will include an `X-Bz-Event-Notification-Signature` HTTP header with format
+    `v1=<64-character lowercase hex signature>`. To verify, compute HMAC-SHA256 of
+    the request payload using `hmacSha256SigningSecret` as the key, then compare the
+    resulting hex-encoded digest to the signature value in the header. Respond with
+    200 OK if signatures match, or 401 Unauthorized if they do not.
+- information_source; https://www.backblaze.com/apidocs/s3-delete-object:
+  - This request uses AWS Signature authentication. You must sign the DELETE request
+    with AWS credentials (Access Key ID and Secret Access Key) following the AWS Signature
+    Version 4 signing process. The signature is included in the Authorization header
+    along with other required headers like Host, x-amz-date, and x-amz-content-sha256.
+- information_source; https://www.backblaze.com/apidocs/s3-delete-objects:
+  - This request uses AWS Signature authentication. You must sign the request with
+    your AWS access key and secret key using the AWS Signature Version 4 signing process,
+    which involves creating an Authorization header with the signature and including
+    required headers like Host, X-Amz-Content-Sha256, and X-Amz-Date. The signature
+    is computed from the request method, path, query parameters, headers, and body.
+- information_source; https://www.backblaze.com/apidocs/s3-get-object-acl:
+  - This request uses AWS Signature authentication. The authorization scheme is AWS
+    Signature Version 4, which requires signing the request with your AWS access key
+    ID and secret access key. The signature is typically included in the Authorization
+    header along with other required headers like Host, X-Amz-Date, and X-Amz-Content-Sha256,
+    following the AWS SigV4 signing process.
+- information_source; https://www.backblaze.com/apidocs/s3-get-object-legal-hold:
+  - This request uses AWS Signature authentication. The authorization scheme is AWS
+    Signature Version 4, which requires signing the request with AWS access key credentials
+    (Access Key ID and Secret Access Key). The signature is typically included in
+    the Authorization header along with other required headers like Host, x-amz-content-sha256,
+    and x-amz-date. Credentials can be provided via environment variables AWS_ACCESS_KEY_ID
+    and AWS_SECRET_ACCESS_KEY, or through AWS credential configuration files.
+possible_base_urls:
+- information_source; https://www.backblaze.com/apidocs/s3-copy-object:
+  - https://s3.<your-region>.backblazeb2.com
+- information_source; https://www.backblaze.com/apidocs/s3-delete-object:
+  - https://s3.<your-region>.backblazeb2.com
+possible_endpoints:
+- information_source; https://www.backblaze.com/apidocs/s3-copy-object:
+  - PUT https://s3.<your-region>.backblazeb2.com/my-bucket-name/object-2
+- information_source; https://www.backblaze.com/apidocs/s3-delete-object:
+  - DELETE https://s3.<your-region>.backblazeb2.com/<your-bucket-name>/<your-key>
+  - POST https://www.backblaze.com/apidocs/b2-upload-part
+- information_source; https://www.backblaze.com/apidocs/s3-delete-objects:
+  - POST https://s3.<your-region>.backblazeb2.com/<your-bucket-name>/?delete
+- information_source; https://www.backblaze.com/apidocs/s3-get-object:
+  - GET https://s3.<your-region>.backblazeb2.com/{bucket}/{key}
+- information_source; https://www.backblaze.com/apidocs/s3-get-object-acl:
+  - GET https://s3.<your-region>.backblazeb2.com/<your-bucket-name>/<your-key>?acl
+  - POST https://www.backblaze.com/apidocs/b2-upload-part
+- information_source; https://www.backblaze.com/apidocs/s3-get-object-legal-hold:
+  - GET https://s3.<your-region>.backblazeb2.com/<your-bucket-name>/<your-key>?legal-hold
+  - POST https://www.backblaze.com/apidocs/b2-upload-file
+  - POST https://www.backblaze.com/apidocs/b2-upload-part

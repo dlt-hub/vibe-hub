@@ -1,0 +1,63 @@
+auth_info:
+- information_source; https://developer.surfsight.net/developer-portal/authentication-overview/:
+  - 'The Surfsight API supports two authentication methods: basic authentication and
+    organization authentication. Authentication tokens are region-specific (US or
+    EU cloud) and grant temporary API access based on user type. A separate media
+    token is required for live video or recording access.'
+- information_source; https://developer.surfsight.net/developer-portal/basic-authentication/:
+  - Bearer token authentication is required. Include the token in the Authorization
+    header as "Bearer {token}" for all API requests. The token should be obtained
+    through basic authentication as referenced in the documentation.
+  - Surfsight API uses bearer token authentication. To obtain a token, send a POST
+    request to /authenticate with email and password in the JSON body, which returns
+    a token valid for 24 hours. Include this token in the Authorization header as
+    "Bearer <token>" for all subsequent API requests.
+- information_source; https://developer.surfsight.net/developer-portal/call-structure/:
+  - 'Authentication uses JWT bearer tokens sent in the Authorization header. Tokens
+    are environment-specific: users registered to the North America cloud (https://api-prod.surfsight.net/v2/)
+    receive tokens for that environment, and users registered to the Europe cloud
+    (https://api.de.surfsight.net/v2/) receive tokens for that environment. Include
+    the token in requests as Authorization: Bearer {token} where {token} is the JWT
+    authentication token.'
+- information_source; https://developer.surfsight.net/developer-portal/changelog/changelog_main/:
+  - A new /scoped-token API authenticates users via bearer token and generates a scoped
+    JWT valid for 24 hours. The resulting JWT is included in the Authorization header
+    of subsequent API calls as a bearer token and restricts access to specified entities
+    (device, devices in a group, or all devices in an organization).
+pagination_info:
+- information_source; https://developer.surfsight.net/developer-portal/changelog/changelog_main/:
+  - Pagination is supported via optional query parameters limit (maximum results to
+    retrieve) and offset (results to omit) on GET /events and GET /organizations/{orgId}/devices
+    calls. The response includes pagination metadata with limit, offset, and count
+    (total results).
+  - The `GET /devices/{imei}/events` and `GET /organizations/{orgId}/devices` calls
+    now support optional pagination parameters to divide large datasets into manageable
+    pages, though the specific parameter names, response fields, and pagination mechanics
+    are not detailed in this documentation excerpt.
+  - The `GET /organizations/{orgId}/devices-data-usage` call uses pagination with
+    a default page size of 100 devices per page and a maximum of 200 devices per page,
+    though the specific request parameters and response fields for navigating pages
+    are not documented in the provided text.
+- information_source; https://developer.surfsight.net/developer-portal/pagination/:
+  - 'Pagination uses query or body parameters: `limit` (maximum results per request,
+    optional) and `offset` (number of results to skip, optional). The response returns
+    `count` (total results), `limit`, and `offset` as metadata. Applies to GET /devices/{imei}/events,
+    GET /organizations/{orgId}/devices, and POST /organizations/{orgId}/events.'
+possible_base_urls:
+- information_source; https://developer.surfsight.net/developer-portal/authentication-overview/:
+  - https://app.de.surfsight.net
+  - https://app.surfsight.net
+possible_endpoints:
+- information_source; https://developer.surfsight.net/developer-portal/basic-authentication/:
+  - GET /devices/{imei}/events
+  - GET https://api-prod.surfsight.net/v2/devices/{imei}/events
+  - POST https://api-prod.surfsight.net/v2/authenticate
+- information_source; https://developer.surfsight.net/developer-portal/billing-status/:
+  - GET /devices/{imei}/billing-status
+  - GET /organizations/{orgId}/devices
+  - GET /organizations/{orgId}/devices/billing-status
+  - PUT /devices/billing-status/{billingStatus}
+  - PUT /devices/{imei}/billing-status/{billingStatus}
+- information_source; https://developer.surfsight.net/developer-portal/changelog/changelog_main/:
+  - DELETE /organization/{orgId}
+  - DELETE /organizations/{orgId}

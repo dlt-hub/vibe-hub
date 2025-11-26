@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://docs.nuance.com/agent-coach/APIs/Reporting-API/authentication.html:
+  - 'Cookie-based session authentication where a session cookie obtained from login
+    is passed via the -b flag in curl requests (or Cookie header in other clients).
+    The same cookie can be used for multiple sessions. Alternatively, OAuth2 token-based
+    access is available: create a client in the oauth_client_details table with client_id
+    and client_secret, send a POST request to the Nuance OAuth Server to obtain an
+    access_token from the JSON response, then use that token in subsequent API requests.
+    Tokens can be refreshed when expired. Rate limiting is configurable per user account
+    via the Portal interface (Admin > User Management > Edit User > API Settings tab)
+    by setting the Number of Requests Allowed per Second value.'
+  - Nuance uses OAuth2 with the password grant type. Send a POST request to https://{auth.nuance.com}/oauth-server/oauth/token
+    with an Authorization header containing base64-encoded apiClientId:apiClientSecret
+    in Basic auth format. Include client_id, grant_type set to password, username,
+    and password as form-urlencoded body parameters. The response contains an access
+    token valid for access_token_validity_sec (900 seconds in the example) and a refresh_token
+    valid for refresh_token_validity_sec (9000 seconds). Supported scopes are read,
+    write, historic, and realtime. Use the returned access_token in subsequent API
+    requests.
+  - The API uses OAuth2 bearer token authentication. Extract the access_token from
+    the JSON response and include it in the Authorization header as "Bearer <access_token>"
+    for subsequent API requests. When the token expires after the time specified in
+    expires_in (in seconds), use the refresh_token to obtain a new access_token.
+  - The API uses session-based authentication via HTTPS with secure cookies. Authenticate
+    by POST to https://api.<<clientname>>.digital.nuance.com/j_spring_security_check
+    with form parameters j_username, j_password, and submit=Login; capture the returned
+    cookie and include it in subsequent requests using the -b/--cookie flag. Close
+    sessions with a GET request to http://api.<<clientname>>.digital.nuance.com/logout
+    passing the session cookie.
+- information_source; https://docs.nuance.com/agent-coach/APIs/UMAPI/umapi-introduction.html:
+  - API token authentication is required. Tokens are obtained through an auth server
+    token exchange and then sent with requests to the User Management API. Consult
+    the API token authentication and typical auth server token exchange URL documentation
+    for specific header names, token formats, and exchange endpoint details.
+possible_base_urls:
+- information_source; https://docs.nuance.com/agent-coach/APIs/Reporting-API/authentication.html:
+  - http://api.<<clientname>>.digital.nuance.com
+  - https://api.<<clientname>>.digital.nuance.com
+possible_endpoints:
+- information_source; https://docs.nuance.com/agent-coach/APIs/Reporting-API/authentication.html:
+  - GET http://api.<<clientname>>.digital.nuance.com/logout
+  - GET https://api.nuance.com/v3/transcript/historic?filter=engagementID=123&site=306&returnFields=engagementID&encrypted=false&output=xml
+  - POST https://api.<<clientname>>.digital.nuance.com/j_spring_security_check
+  - POST https://api.nuance.com/logout
+  - POST https://{auth.nuance.com}/oauth-server/oauth/token
+- information_source; https://docs.nuance.com/agent-coach/APIs/Reporting-API/requests.html:
+  - GET https://api.nuance.com/{version}/metric/realtime?
+  - GET https://api.nuance.com/{version}/transcript/historic?
+  - GET https://api.nuance.com/{version}/transcript/realtime?
+- information_source; https://docs.nuance.com/agent-coach/APIs/Reporting-API/responses.html:
+  - GET https://api.nuance.com/v3/metric/realtime
+  - GET https://api.nuance.com/v3/metric/realtime?category=agent&dimension=summary&site=XXX

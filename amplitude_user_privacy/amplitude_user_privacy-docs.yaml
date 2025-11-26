@@ -1,0 +1,61 @@
+auth_info:
+- information_source; https://amplitude.com/docs/apis:
+  - Amplitude API uses API key and secret key authentication. The api_key and secret_key
+    credentials are required and should be provided in requests (typically as query
+    parameters or in the request body, depending on the specific endpoint). Refer
+    to the authentication documentation at amplitude.com/docs/apis/authentication
+    to retrieve your project's API key.
+- information_source; https://amplitude.com/docs/apis/analytics/batch-event-upload:
+  - The API requires an api_key parameter in the JSON request body for authentication.
+    Include the api_key field with your Amplitude API key value in the POST request
+    body sent to the batch endpoint.
+- information_source; https://amplitude.com/docs/apis/analytics/behavioral-cohorts:
+  - Amplitude API uses HTTP Basic Authentication for cohort upload endpoints. Credentials
+    must be base64 encoded and sent in the Authorization header as "Basic {base64(api-key:secret-key)}".
+    The api-key and secret-key are separated by a colon before encoding. Alternatively,
+    use the -u flag with curl as -u '{api_key}:{secret_key}'.
+  - Amplitude API uses HTTP Basic authentication. Send credentials in the Authorization
+    header as "Basic" followed by base64-encoded "api-key:secret-key". The api-key
+    and secret-key must be base64 encoded together in the format api-key:secret-key.
+  - Authorization uses HTTP Basic Auth with base64-encoded credentials. The Authorization
+    header must be formatted as "Basic {base64-encoded-api-key:secret-key}" where
+    api-key and secret-key are base64 encoded together in the format api-key:secret-key.
+pagination_info:
+- information_source; https://amplitude.com/docs/apis/analytics/dashboard-rest:
+  - Pagination uses optional offset and limit query parameters. offset is zero-indexed
+    for starting position, limit specifies number of events to return, and direction
+    controls sort order (earliest or latest). Response contains events array and userData
+    object.
+  - The API supports pagination via an optional "limit" query parameter that controls
+    the number of results returned. However, the documentation does not specify the
+    default value, maximum allowed value, or how to navigate to subsequent pages (such
+    as offset, cursor, or next_page fields in the response).
+- information_source; https://amplitude.com/docs/apis/experiment/experiment-management-api-experiments:
+  - Pagination uses cursor-based navigation with limit and cursor query parameters.
+    The limit parameter controls the maximum number of experiments returned per request,
+    and the cursor parameter specifies the offset to start from in the result set.
+  - The API uses offset-based pagination with a limit query parameter. Use limit to
+    control page size (example shows limit=1000). The response returns a list of experiments
+    in an "experiments" array; continue paginating by incrementing the offset parameter
+    in subsequent requests until fewer results than the limit are returned.
+- information_source; https://amplitude.com/docs/apis/experiment/experiment-management-api-version-endpoints:
+  - Pagination uses cursor-based navigation with query parameters limit (max number
+    of results) and cursor (offset to start from). The response includes a nextCursor
+    field to retrieve the next page, and versions are ordered by creation time descending.
+possible_base_urls:
+- information_source; https://amplitude.com/docs/apis/analytics/batch-event-upload:
+  - https://api.eu.amplitude.com
+  - https://api2.amplitude.com
+possible_endpoints:
+- information_source; https://amplitude.com/docs/apis/analytics/batch-event-upload:
+  - POST https://api2.amplitude.com/batch
+- information_source; https://amplitude.com/docs/apis/analytics/behavioral-cohorts:
+  - GET https://amplitude.com/api/3/cohorts
+  - GET https://amplitude.com/api/5/cohorts/request-status/:request_id
+  - GET https://amplitude.com/api/5/cohorts/request-status/qfaZya
+  - GET https://amplitude.com/api/5/cohorts/request/26umsb5
+  - GET https://amplitude.com/api/5/cohorts/request/26umsb5?props=1
+  - GET https://amplitude.com/api/5/cohorts/request/:requestId/file
+  - GET https://amplitude.com/api/5/cohorts/request/id
+  - POST /api/3/cohorts/upload
+  - POST https://amplitude.com/api/3/cohorts/membership

@@ -1,0 +1,67 @@
+auth_info:
+- information_source; https://devzone.iot-ignite.com/knowledge-base/getting-sensor-data/:
+  - Bearer token authentication is required. Send the access token in the Authorization
+    header as 'Bearer ' + getAccessToken(), where getAccessToken() retrieves the current
+    access token. A 401 status indicates authentication failure.
+  - The API uses Bearer token authentication. The access token must be passed in the
+    Authorization header as "Bearer {access_token}". The token is stored in window.localStorage
+    under the key "access_token" and retrieved for each API request. The Content-Type
+    header should also be set to "application/json".
+- information_source; https://devzone.iot-ignite.com/knowledge-base/iot-ignite-api/:
+  - All API calls use OAuth authentication, so developers need an access token. The
+    access token must be obtained as explained in the IoT-Ignite Service Authentication
+    document. Specific header names, token acquisition flow, and other technical details
+    are not provided in this excerpt.
+- information_source; https://devzone.iot-ignite.com/knowledge-base/iot-ignite-services-authentication/:
+  - Access tokens are required and passed as bearer tokens in the Authorization header.
+    When a token expires (HTTP 401 with "invalid_token" error), a new access token
+    must be obtained either by re-authenticating with username and password or by
+    using a refresh token through an OAuth flow.
+  - 'OAuth2 authentication with two grant types: password grant (username/password)
+    and refresh token grant. Access tokens are obtained via POST to https://api.ardich.com/api/v3/login/oauth
+    with grant_type, username, and password in the request body, and Basic auth header
+    with empty credentials (Authorization: Basic :). Refresh tokens can renew expired
+    access tokens by sending grant_type=refresh_token and refresh_token parameters.
+    The API returns access_token, refresh_token, and expiration information. Store
+    the access_token in local storage for subsequent API requests.'
+pagination_info:
+- information_source; https://devzone.iot-ignite.com/knowledge-base/getting-sensor-data/:
+  - Use query parameter pageSize to specify maximum number of values returned. Response
+    includes a list array of sensor data objects with deviceId, command, nodeId, sensorId,
+    value, and timestamp fields.
+- information_source; https://devzone.iot-ignite.com/knowledge-base/iot-ignite-api/:
+  - Request uses query parameters page (starting at 0) and size (default 10) for pagination.
+    Response includes paginated device summary data. Use page and size parameters
+    to navigate through results.
+  - The Sensor Data History API accepts a pageSize query parameter that controls how
+    many records are returned per request, but the documentation does not specify
+    response fields for pagination navigation, stopping conditions, or how to request
+    subsequent pages.
+  - 'The device summary endpoint uses offset-based pagination with optional query
+    parameters: page (page number, optional) and size (page size, optional). When
+    no parameters are provided, all devices are returned. No response fields indicating
+    pagination state or navigation are documented.'
+- information_source; https://devzone.iot-ignite.com/knowledge-base/iot-ignite-services-authentication/:
+  - Pagination uses query parameters page, size, and sort in the self link. The response
+    includes a page object with size (default 10), totalElements, totalPages, and
+    number (current page, zero-indexed). To paginate, increment the page number parameter
+    in subsequent requests until page.number reaches page.totalPages minus one.
+possible_base_urls:
+- information_source; https://devzone.iot-ignite.com/article-categories/service-provider-app/:
+  - https://api.ardich.com/api/v3
+- information_source; https://devzone.iot-ignite.com/knowledge-base/getting-sensor-data/:
+  - https://api.ardich.com/api/v3
+possible_endpoints:
+- information_source; https://devzone.iot-ignite.com/article-categories/service-provider-app/:
+  - GET https://api.ardich.com/api/v3
+- information_source; https://devzone.iot-ignite.com/knowledge-base/getting-sensor-data/:
+  - GET https://api.ardich.com/api/v3/device/{DEVICE-ID}/sensor-data
+  - GET https://api.ardich.com/api/v3/device/{DEVICE-ID}/sensor-data-history?nodeId={NODE-ID}&sensorId={SENSOR-ID}&startDate={START-DATE}&endDate={END-DATE}&pageSize=PAGE-SIZE
+- information_source; https://devzone.iot-ignite.com/knowledge-base/iot-ignite-api/:
+  - GET https://api.ardich.com/api/v3/device/summary?page=0&size=10&device=%7BdeviceId%7D
+  - GET https://api.ardich.com/api/v3/device/summary?page=0&size=10&device={deviceId}
+  - GET https://api.ardich.com/api/v3/device/{deviceId}
+  - GET https://api.ardich.com/api/v3/device/{deviceId}/device-node-inventory
+  - GET https://api.ardich.com/api/v3/device/{deviceId}/sensor-data-history?nodeId={nodeId}&sensorId={sensorId}&startDate={startDate}&endDate={enddate}&pageSize={pageSize}
+  - GET https://api.ardich.com/api/v3/device/{deviceId}/sensor-data?nodeId={nodeId}&sensorId={sensorId}
+  - POST https://api.ardich.com/api/v3/device-config/addInventoryConfigurationUsingPOST

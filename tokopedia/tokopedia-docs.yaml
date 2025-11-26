@@ -1,0 +1,41 @@
+auth_info:
+- information_source; https://developer.tokopedia.com/openapi/b2b/api-reference/frequently-asked-question:
+  - B2B Digital requires OAuth 2.0 for most endpoints and network authentication via
+    IP whitelisting. The checkout endpoint additionally requires RSA encryption. Access
+    tokens have a validity period returned in the login response; it is recommended
+    to generate a new access_token 10 minutes before expiration while the old token
+    remains active until its stated expiry time.
+  - OAuth and Digital Signature authentication methods are used. OAuth requires token-based
+    authorization for API access. Digital Signature involves signing requests cryptographically
+    to verify authenticity and integrity of API calls.
+- information_source; https://developer.tokopedia.com/openapi/b2b/api-reference/web-service-security/:
+  - Authorization header uses Bearer token with base64-encoded client credentials
+    in format "client_id:client_secret". Signature header contains RSA-PSS signature
+    over the request message, base64-encoded. Both headers are required for POST requests
+    to /v2/order endpoint.
+  - Bearer token authentication is required in the Authorization header. Obtain the
+    access token by first acquiring client_id and client_secret from the Developer
+    Console, then use those credentials to request an access token via the token generation
+    flow. Include the Bearer token in every API request. Additionally, a digital signature
+    (PSS or PKCS mode) in the Signature header and current RFC1123-formatted timestamp
+    in the Date header are mandatory for checkout requests.
+  - Client ID and Client Secret credentials are obtained from the Developer Console's
+    Authentication Management section. To get an access token, base64-encode your
+    client_id:client_secret pair and send it in a POST request to https://accounts.tokopedia.com/token?grant_type=client_credentials
+    using the Authorization header with the base64-encoded string. Use credentials
+    from the Testing App for sandbox (https://b2b-playground.tokopedia.com/api) or
+    Live App for production (https://b2b.tokopedia.com/api), and ensure your production
+    server IP is whitelisted.
+possible_base_urls:
+- information_source; https://developer.tokopedia.com/openapi/b2b/api-reference/web-service-security/:
+  - https://accounts.tokopedia.com/token
+  - https://b2b-playground.tokopedia.com/api
+possible_endpoints:
+- information_source; https://developer.tokopedia.com/openapi/b2b/api-reference/web-service-security/:
+  - GET https://b2b.tokopedia.com/api/v2/sample/endpoint
+  - POST https://accounts.tokopedia.com/token?grant_type=client_credentials
+  - POST https://b2b-playground.tokopedia.com/api/v2/order
+- information_source; https://developer.tokopedia.com/openapi/b2b/api-reference/web-services-detail/:
+  - GET /v2/order/testordercchm4
+  - GET {{base_url_pcidss}}/v2/credit-card/otu
+  - POST {{base_url_pcidss}}/v2/credit-card/otu

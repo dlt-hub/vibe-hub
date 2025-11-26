@@ -1,0 +1,51 @@
+auth_info:
+- information_source; https://docs.tealium.com/ja/api/getting-started/auth/:
+  - Authentication uses HTTP POST to endpoint https://api.tealiumiq.com/v2/auth with
+    form-encoded credentials. Send username (email address) and key (API key) as URL-encoded
+    form parameters in the request body with Content-Type application/x-www-form-urlencoded.
+- information_source; https://docs.tealium.com/server-side/connectors/webhook-connectors/basicauth-oauth2/:
+  - Tealium's Webhook connectors support three authentication methods. OAuth2 3-Legged
+    uses an Authorization URL, Access Token URL, Client ID, and Client Secret, with
+    the authorization token placed via Authorization Header Prefix (default Bearer).
+    OAuth2 2-Legged supports client credentials and resource owner password credentials
+    grants, requiring Access Token URL, Client ID, Client Secret, and optionally Username/Password
+    for Password grant type, with token placement configurable via Authorization Token
+    Location and Authorization Header Prefix (default Bearer). JWT authentication
+    is also supported for webhook requests.
+- information_source; https://docs.tealium.com/server-side/functions/event-visitor-functions/function-examples-v2/:
+  - Access tokens are passed as query parameters in the URL. Specifically, the access_token
+    parameter must be appended to the request URL (e.g., https://graph.facebook.com/v8.0/act_${ACT_ID}/campaigns?access_token=${ACCESS_TOKEN}).
+    The ACT_ID represents the ad account ID and ACCESS_TOKEN is the Facebook API access
+    token required for authentication.
+  - Facebook Graph API requires an access token passed as a query parameter. Include
+    access_token=${ACCESS_TOKEN} in the URL query string for API requests. The ACT_ID
+    (ad account ID) is also required in the URL path as act_${ACT_ID}. Requests are
+    made via POST with JSON body parameters.
+  - Facebook Graph API v7.0 uses OAuth2 access token authentication. The access token
+    must be passed as a query parameter named access_token in the URL for all requests.
+    The token is appended to the endpoint URL like https://graph.facebook.com/v7.0/{endpoint}?access_token={ACCESS_TOKEN}.
+    The ACT_ID (ad account ID) is also required as part of the URL path in the format
+    act_{ACT_ID}.
+possible_base_urls:
+- information_source; https://docs.tealium.com/ja/api/getting-started/auth/:
+  - https://api.tealiumiq.com/v2
+- ? information_source; https://docs.tealium.com/server-side/attributes/data-layer-enrichment/data-layer-enrichment-api/get-data-layer-enrichment-api/
+  : - https://visitor-service-{REGION}.tealiumiq.com/{ACCOUNT}/{PROFILE}/{VISITOR_ID}
+possible_endpoints:
+- information_source; https://docs.tealium.com/ja/api/getting-started/auth/:
+  - POST https://api.tealiumiq.com/v2/auth
+- ? information_source; https://docs.tealium.com/server-side/attributes/data-layer-enrichment/data-layer-enrichment-api/get-data-layer-enrichment-api/
+  : - GET https://visitor-service-{REGION}.tealiumiq.com/{ACCOUNT}/{PROFILE}/{VISITOR_ID}
+- ? information_source; https://docs.tealium.com/server-side/attributes/data-layer-enrichment/data-layer-enrichment-api/get-profile-definition-api/
+  : - GET https://visitor-service.tealiumiq.com/datacloudprofiledefinitions/{ACCOUNT}/{PROFILE}
+- information_source; https://docs.tealium.com/server-side/moments-api/endpoint/:
+  - GET https://personalization-api.{REGION}.prod.tealiumapis.com/personalization/accounts/{ACCOUNT}/profiles/{PROFILE}/engines/{ENGINE_ID}/visitors/{IDENTIFIER}?suppressNotFound={SUPPRESS_NOT_FOUND}
+  - GET https://personalization-api.{REGION}.prod.tealiumapis.com/personalization/accounts/{ACCOUNT}/profiles/{PROFILE}/engines/{ENGINE_ID}?attributeId={attributeId}&attributeValue={attributeValue}&suppressNotFound={SUPPRESS_NOT_FOUND}
+- information_source; https://docs.tealium.com/server-side/connectors/webhook-connectors/vendor-examples/webhook-keenio-api/:
+  - POST https://api.keen.io/3.0/projects/98765/events
+  - POST https://api.keen.io/API_VERSION/projects/PROJECT_ID/events
+  - POST https://api.keen.io/{{apiVersion}}/projects/{{projectId}}/events
+- ? information_source; https://docs.tealium.com/server-side/connectors/webhook-connectors/vendor-examples/webhook-facebook-app-events-api/
+  : - POST https://graph.facebook.com/API_VERSION/APP_ID/activities
+- information_source; https://docs.tealium.com/server-side/functions/event-visitor-functions/function-examples-v2/:
+  - GET https://api.ipstack.com/${ip_address}?access_key=${ip_stack_api_key}&format=1

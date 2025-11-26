@@ -1,0 +1,66 @@
+auth_info:
+- information_source; https://developers.figma.com/docs/rest-api/:
+  - 'Figma API supports two authentication methods: access tokens and OAuth2. Access
+    tokens are sent as bearer tokens in the Authorization header, while OAuth2 follows
+    standard OAuth2 flows for user authorization and token exchange.'
+  - 'The Figma API supports two authentication methods: OAuth2 and access tokens.
+    You can authenticate requests using either approach, with details available in
+    the authentication documentation referenced in the links.'
+- information_source; https://developers.figma.com/docs/rest-api/activity-logs-endpoints/:
+  - 'Bearer token authentication is required. Include the token in the Authorization
+    header as `Authorization: Bearer <TOKEN>` when making requests to the activity
+    logs API endpoints.'
+  - 'Figma API uses Bearer token authentication. Include the token in the Authorization
+    header as ''Authorization: Bearer <TOKEN>'' when making requests to the API endpoints.'
+  - 'This endpoint requires OAuth2 bearer token authentication passed in the Authorization
+    header. The token must have the org:activity_log_read scope to access activity
+    logs.
+
+
+    Authorization: Bearer <TOKEN> header is required. The TOKEN is an OAuth2 access
+    token with org:activity_log_read scope. Query parameters include events, start_time,
+    end_time, limit, and order for filtering results. A 401 error indicates insufficient
+    permissions.'
+pagination_info:
+- information_source; https://developers.figma.com/docs/rest-api/activity-logs-endpoints/:
+  - The endpoint supports cursor-based pagination with a maximum of 1000 events per
+    request. Use the optional `limit` parameter to set a lower value. When `next_page`
+    is true in the response, use the returned `cursor` value as the `cursor` query
+    parameter in the next request to retrieve subsequent events; stop when `next_page`
+    is false.
+  - Use cursor as a query parameter to paginate through activity logs. The response
+    includes a cursor field and next_page boolean; pass the cursor value from the
+    previous response to the cursor parameter in the next request to retrieve unseen
+    events. Stop paginating when next_page is false.
+- information_source; https://developers.figma.com/docs/rest-api/library-analytics-endpoints/:
+  - Pagination uses cursor-based navigation. Request parameter `cursor` (optional,
+    in query string) specifies the page. Response includes `cursor` (string for next
+    request) and `next_page` (boolean indicating if more data exists). Continue paginating
+    by passing the returned `cursor` value in the next request until `next_page` is
+    false.
+  - Pagination uses cursor-based navigation. The response includes a cursor string
+    and a next_page boolean field. To retrieve the next page, pass the cursor value
+    as a query parameter in the subsequent request. Stop paginating when next_page
+    is false.
+  - Pagination uses optional query parameter cursor (string) to fetch subsequent pages.
+    Response includes cursor (string) for the next request and next_page (boolean)
+    to indicate if more pages exist; when next_page is false, pagination is complete.
+possible_base_urls:
+- information_source; https://developers.figma.com/docs/rest-api/:
+  - https://api.figma.com
+- information_source; https://developers.figma.com/docs/rest-api/activity-logs-endpoints/:
+  - https://api.figma.com
+possible_endpoints:
+- information_source; https://developers.figma.com/docs/rest-api/activity-logs-endpoints/:
+  - GET /v1/activity_logs
+  - GET https://api.figma.com/v1/activity_logs
+  - GET https://api.figma.com/v1/activity_logs?events=org_user_account_type_change
+  - GET https://api.figma.com/v1/activity_logs?events=org_user_create,org_user_delete
+  - GET https://api.figma.com/v1/activity_logs?start_time=1638300000&end_time=1638400000
+- information_source; https://developers.figma.com/docs/rest-api/authentication/:
+  - GET https://www.figma.com/oauth
+  - POST https://api.figma.com/v1/oauth/token
+- information_source; https://developers.figma.com/docs/rest-api/file-endpoints/:
+  - GET /v1/files/:key
+  - GET /v1/files/:key/images
+  - GET /v1/files/:key/meta

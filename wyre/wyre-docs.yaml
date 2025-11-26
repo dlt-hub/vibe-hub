@@ -1,0 +1,59 @@
+auth_info:
+- information_source; https://docs.sendwyre.com/docs/authentication:
+  - Bearer token authentication via the Authorization header. Submit a client-generated
+    secret key (SK-XXXX-XXXX-XXXX-XXXX format) to the auth endpoint first to validate
+    it, then include it in the Authorization header as "Bearer SK-XXXX-XXXX-XXXX-XXXX"
+    on all subsequent requests. The secret key should be a long random string generated
+    client-side and transmitted only over SSL.
+  - The API uses bearer token authentication. Generate a cryptographically secure
+    random 30-character secret key, POST it to /v2/sessions/auth/key?secretKey=X to
+    receive an API Key, then include this bearer token in the Authorization header
+    for subsequent requests. The token becomes associated with an account after the
+    first account creation request.
+  - Tokens can be used as the secret key for signature-based authentication, providing
+    additional security since the token is not retransmitted after initial delivery.
+    Obtain the API key from POST /v2/sessions/auth/key and use it for signature authentication
+    requests. For bearer token IP whitelisting, pass the secretKey as the Bearer token
+    to the Create API Key endpoint with the ipWhitelist parameter. The masqueradeAs
+    query parameter allows master accounts to query and transact on behalf of sub-accounts
+    or users by supplying masqueradeAs=AC_XXXXXX1 (for accounts) or masqueradeAs=user:US_XXXXXX1
+    (for users) in the query string alongside your own credentials; this parameter
+    must be included when signing API key signature auth requests.
+- information_source; https://docs.sendwyre.com/reference/authentication-1:
+  - Bearer token authentication is required for account creation and API access. Submit
+    the bearer token in the Authorization header for initial requests. Alternatively,
+    use API key signature authentication by obtaining an API key from POST /v2/sessions/auth/key
+    and signing requests with it for enhanced security. For sub-account management,
+    include the masqueradeAs query parameter to perform requests on behalf of specified
+    sub-accounts or users. IP whitelisting is available via POST to /v2/sessions/apiKey/:apiKeyId/ipWhitelist
+    after creating an API key.
+  - Send a randomly generated secret key as a query parameter to POST /v2/sessions/auth/key?secretKey=X.
+    The response provides an API Key. Use the bearer token returned in the Authorization
+    header for subsequent requests.
+pagination_info:
+- information_source; https://docs.sendwyre.com/reference/listorderspaginated:
+  - Pagination uses `limit` and `offset` as query string parameters to navigate pages.
+    Response includes `position` (current page), `recordsTotal` (total records across
+    all pages), and `recordsFiltered` (records on current page). Refer to Formatting
+    Parameters documentation for complete query parameter details.
+- information_source; https://docs.sendwyre.com/v3/reference/listwalletspaginated:
+  - The endpoint uses query string parameters `limit` and `offset` to navigate pages.
+    The response includes `position` for the current page, `recordsTotal` for total
+    records across all pages, and `recordsFiltered` for records on the current page.
+possible_base_urls:
+- information_source; https://docs.sendwyre.com/docs/authentication:
+  - https://api.sendwyre.com/v3
+  - https://api.testwyre.com/v3
+possible_endpoints:
+- information_source; https://docs.sendwyre.com/docs/authentication:
+  - GET https://api.sendwyre.com/v3/accounts/AC_XXXXXX1?masqueradeAs=AC_XXXXXX1
+  - GET https://api.sendwyre.com/v3/users/US_XXXXXX1?masqueradeAs=user:US_XXXXXX1
+  - POST /v2/sessions/auth/key
+  - POST /v2/sessions/auth/key?secretKey=X
+  - POST https://api.testwyre.com/v3/orders/reserve
+- information_source; https://docs.sendwyre.com/reference/authentication-1:
+  - GET https://api.sendwyre.com/v3/accounts/AC_XXXXXX1
+  - GET https://api.sendwyre.com/v3/users/US_XXXXXX1
+  - POST /v2/sessions/auth/key
+  - POST /v2/sessions/auth/key?secretKey=X
+  - POST https://api.sendwyre.com/v2/sessions/apiKey/:apiKeyId/ipWhitelist

@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://help.rapid7.com/insightvm/en-us/api/index.html:
+  - Basic authentication is supported via the Authorization header using the format
+    Basic Base64("username:password"). Additionally, if two-factor authentication
+    is enabled, a Token header with a numeric value (e.g., 123456) must be included
+    in requests.
+  - HTTP Basic Authorization is required. Requests must include an Authorization header
+    with a Base64 encoded hash of "username:password". For two-factor authentication,
+    supply an additional Token request header with the authentication token.
+- information_source; https://help.rapid7.com/insightvm/en-us/api/api-v3.json:
+  - Authorization to the API uses HTTP Basic Authorization with a Base64 encoded hash
+    of username:password supplied in the Authorization header. For two-factor authentication,
+    also supply an authentication token in the Token request header.
+pagination_info:
+- information_source; https://help.rapid7.com/insightvm/en-us/api/index.html:
+  - Pagination uses Link headers with "next", "previous", "first", and "last" relations
+    to navigate pages. All required parameters for moving to the next page are included
+    in the link href. Requests outside page boundaries return 404. The API does not
+    provide stateful cursors; records may change between page requests.
+  - Pagination uses query parameters page (integer >= 0, default 0, zero-based index)
+    and size (integer >= 1, default 10, records per page). The response structure
+    is not shown, but page and size control which page of results to retrieve.
+- information_source; https://help.rapid7.com/insightvm/en-us/api/api-v3.json:
+  - Pagination uses link-based navigation with "next", "previous", "first", and "last"
+    links provided in the response. All parameters required to move to the next page
+    are included in the href of the "next" link, allowing natural movement through
+    pages. Requests outside page boundaries return 404 NOT FOUND. The API does not
+    provide stateful cursors and does not guarantee read consistency across pages.
+  - Pagination uses page (query parameter, zero-based index, optional, default 0,
+    minimum 0) and size (query parameter, optional, default 10, minimum 1) to request
+    pages. The response schema is PagedModelAsset, which contains the paginated results
+    and navigation information.
+  - Pagination uses query parameters page (zero-based index, optional, default 0,
+    minimum 0) and size (records per page, optional, default 10, minimum 1). Response
+    returns PagedModelAsset schema containing paginated results; stop when reaching
+    the last page based on the response structure.
+possible_base_urls:
+- information_source; https://help.rapid7.com/insightvm/en-us/api/index.html:
+  - <host>:<port>/api/3/
+  - https://<host>:<port>/
+possible_endpoints:
+- information_source; https://help.rapid7.com/insightvm/en-us/api/index.html:
+  - DELETE /api/3/asset_groups/{id}/assets
+  - DELETE /api/3/asset_groups/{id}/tags
+  - DELETE /api/3/scan_engine_pools/{id}
+  - DELETE /api/3/sites/{id}/included_asset_groups
+  - DELETE /api/3/tags/{id}/asset_groups
+  - DELETE https://<host>:<port>/api/3/assets/{id}/vulnerabilities/{vulnerabilityId}/validations/{validationId}
+  - DELETE https://<host>:<port>/api/3/scan_engine_pools/{id}
+  - DELETE https://<host>:<port>/api/3/sites/{id}/excluded_targets
+  - DELETE https://<host>:<port>/api/3/sites/{id}/included_targets
+  - DELETE https://<host>:<port>/api/3/users/{id}/sites

@@ -1,0 +1,57 @@
+auth_info:
+- information_source; https://www.kucoin.com/docs-new/authentication:
+  - 'The API uses HMAC-SHA256 signature-based authentication. Three required headers
+    must be included in each request: KC-API-TIMESTAMP (Unix timestamp in milliseconds),
+    KC-API-SIGN (base64-encoded HMAC-SHA256 hash of timestamp+uppercase-method+endpoint+body
+    using API-Secret), and KC-API-PASSPHRASE (base64-encoded HMAC-SHA256 hash of passphrase
+    using API-Secret). For GET and DELETE requests, query parameters go in the URL
+    with empty body; for POST requests, query parameters go in the JSON request body.
+    The prehash string for signing must use the original unencoded URL content and
+    must match the actual request body sent.'
+- information_source; https://www.kucoin.com/docs-new/rest/broker/api-broker/fast-api:
+  - KuCoin uses OAuth2 with authorization code flow. Send bearer token in Authorization
+    header as "bearer {token}". The API returns apiKey, secret, and passphrase credentials.
+    Auth scopes include API_COMMON, API_FUTURES, API_SPOT, API_EARN, API_TRANSFER,
+    and API_MARGIN. No withdrawal authorization is allowed for broker users.
+  - KuCoin uses OAuth2.0 authorization code flow. The broker exchanges a client_secret
+    and authorization code to obtain an access_token and refresh_token. The access_token
+    must be sent in the Authorization header for all API requests and is valid for
+    1 hour; the refresh_token is valid for 3 days and is used to obtain a new access_token
+    when the previous one expires.
+- information_source; https://www.kucoin.com/docs-new/rest/futures-trading/orders/add-order-test:
+  - Add Order Test endpoint uses private API authentication. Requests require KC-API-SIGN
+    (HMAC-SHA256 signature), KC-API-KEY (API key), KC-API-TIMESTAMP (Unix timestamp
+    in milliseconds), and KC-API-PASSPHRASE (passphrase) sent as HTTP headers. The
+    signature is computed from timestamp, method, request path, and request body using
+    your API secret as the key.
+pagination_info:
+- information_source; https://www.kucoin.com/docs-new/rest/margin-trading/debit/get-borrow-history:
+  - Pagination uses currentPage and pageSize query parameters. currentPage starts
+    at 1 with default 1, pageSize defaults to 50 with minimum 10 and maximum 500.
+    Response structure for pagination fields is not documented in this excerpt.
+  - Pagination uses optional query parameters currentPage (page number, default 1)
+    and pageSize (results per page, default 50, range 10-500). Response includes currentPage,
+    pageSize, totalNum, totalPage, and items array; stop when currentPage equals totalPage.
+possible_base_urls:
+- information_source; https://www.kucoin.com/docs-new/introduction:
+  - https://api-broker.kucoin.com
+  - https://api-futures.kucoin.com
+possible_endpoints:
+- information_source; https://www.kucoin.com/docs-new/rest/account-info/account-funding/get-account-detail-spot:
+  - GET https://api.kucoin.com/api/v1/accounts/{accountId}
+- information_source; https://www.kucoin.com/docs-new/rest/account-info/account-funding/get-account-isolated-margin:
+  - GET https://api.kucoin.com/api/v3/isolated/accounts
+- information_source; https://www.kucoin.com/docs-new/rest/broker/api-broker/fast-api:
+  - POST https://www.kucoin.com/_oauth/resource/ucenter/outer/api-key/add
+- information_source; https://www.kucoin.com/docs-new/rest/futures-trading/orders/add-order-test:
+  - POST https://api-futures.kucoin.com/api/v1/orders/test
+- information_source; https://www.kucoin.com/docs-new/rest/margin-trading/debit/get-borrow-history:
+  - GET https://api.kucoin.com/api/v3/margin/borrow
+- information_source; https://www.kucoin.com/docs-new/rest/spot-trading/orders/add-order-test:
+  - POST https://api.kucoin.com/api/v1/hf/orders/test
+- information_source; https://www.kucoin.com/docs/basic-info/connection-method/pager/introduction:
+  - GET https://api-broker.kucoin.com
+  - GET https://api-futures.kucoin.com
+  - GET https://api.kucoin.com
+- information_source; https://www.kucoin.com/docs/log/update/futures:
+  - GET https://api-broker.kucoin.com

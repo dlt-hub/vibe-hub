@@ -1,0 +1,47 @@
+auth_info:
+- information_source; https://voltagent.dev/docs/api/authentication/:
+  - 'JWT authentication is required for VoltAgent execution endpoints. The JWT secret
+    is provided via the JWT_SECRET environment variable. Authentication can operate
+    in opt-in mode (default, only execution routes protected) or opt-out mode (all
+    routes protected by default, with selective public routes via the publicRoutes
+    array). In opt-out mode with defaultPrivate: true, specific routes can be exempted
+    from authentication by listing them in publicRoutes using patterns like "GET /health"
+    or "POST /api/webhooks/*".'
+  - 'JWT authentication is required. The API uses JWT tokens verified with a secret
+    key from the JWT_SECRET environment variable (fallback to "your-secret-key").
+    Tokens are verified using HS256 or RS256 algorithms, with optional audience and
+    issuer validation. The JWT payload is mapped to a user object with fields: sub
+    (id), email, name, roles (array, defaults to empty), and tier (defaults to "free").
+    Public routes can be exempted from auth via publicRoutes configuration (e.g.,
+    "GET /api/public/*", "POST /api/webhooks/*").'
+  - The API requires JWT authentication for agent and workflow execution endpoints
+    by default. Credentials are passed via a JWT token in the Authorization header
+    using the Bearer scheme. The JWT secret is configured server-side via the jwtAuth
+    provider, typically from the JWT_SECRET environment variable. WebSockets and specific
+    suspend/resume endpoints are currently unauthenticated by default but can be protected
+    with custom guards. Send the JWT token in the Authorization header as "Bearer
+    <token>" when calling POST endpoints like /agents/:id/text, /agents/:id/stream,
+    /agents/:id/object, /agents/:id/stream-object, /workflows/:id/execute, and /workflows/:id/stream.
+  - 'The API supports three authentication methods: Bearer tokens in the Authorization
+    header (format "Bearer <token>"), auth_token cookies, or token query parameters.
+    Authentication is required by default for all routes except public routes like
+    "GET /api/status" and "POST /api/login". Failed authentication returns a 401 error
+    with message "Authentication required".'
+possible_base_urls:
+- information_source; https://voltagent.dev/docs/api/overview/:
+  - http://localhost:3141
+- information_source; https://voltagent.dev/docs/workflows/overview/:
+  - http://localhost:3141
+possible_endpoints:
+- information_source; https://voltagent.dev/docs/agents/overview/:
+  - POST /agents/:id/chat
+  - POST /agents/:id/object
+  - POST /agents/:id/stream
+  - POST /agents/:id/stream-object
+  - POST /agents/:id/text
+- information_source; https://voltagent.dev/docs/api/authentication/:
+  - GET /agents
+  - GET /api/public/*
+  - GET /api/status
+  - GET /health
+  - POST /agents/:id/object

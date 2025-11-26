@@ -1,0 +1,65 @@
+auth_info:
+- information_source; https://spec.matrix.org/v1.14/identity-service-api/:
+  - 'Access tokens from an Identity Server are used to authenticate requests via the
+    Authorization Bearer scheme in the request header: `Authorization: Bearer TheTokenHere`.
+    Alternatively, the access token may be provided as a deprecated query string parameter
+    `access_token=TheTokenHere`, though this method is discouraged to prevent token
+    leakage in logs. Missing or invalid credentials return a 401 status with error
+    code `M_UNAUTHORIZED`.'
+  - 'Authentication is required for this endpoint. Credentials are passed as query
+    parameters: client_secret (the secret from the requestToken call) and sid (the
+    Session ID from the requestToken call). Both parameters are required.'
+  - Identity Servers require authentication on most endpoints using an access token
+    scheme similar to the Client-Server API. The Authorization header should be used
+    to supply credentials, as indicated in the CORS headers documentation which lists
+    Authorization as an allowed header.
+  - 'Requires authentication via an access token. The token must be sent as a bearer
+    token in the Authorization header (format: "Bearer <token>"). The endpoint returns
+    401 if the token is invalid or unknown, and 403 if additional user actions are
+    required before access is granted.'
+  - Requires authentication via client secret. The client_secret parameter (obtained
+    from a prior requestToken call) must be supplied as a query parameter along with
+    the sid parameter to validate phone number ownership.
+pagination_info:
+- information_source; https://spec.matrix.org/v1.14/client-server-api/:
+  - Pagination uses `from` and `to` query parameters as tokens to specify result ranges.
+    The `from` token (required to start pagination) can be a `next_batch`, `prev_batch`,
+    or `start` token from previous calls. The `limit` query parameter controls maximum
+    results per chunk. The `dir` parameter (`f` or `b`) controls chronological direction.
+    Response includes `next_batch` and `prev_batch` tokens for constructing subsequent
+    requests.
+  - Pagination uses a `limit` query parameter to control the number of results returned
+    and a `since` parameter that accepts a pagination token from a previous response
+    to retrieve the next or previous batch of results, with direction determined by
+    which token is supplied.
+  - Pagination uses a token-based cursor mechanism. The `from` query parameter (optional,
+    from a previous request or initial sync) specifies where to stream from, and the
+    response returns `end` token to use in the next request's `from` parameter to
+    continue pagination. Stop when no more events are returned in the `chunk` array.
+  - 'Pagination uses optional `from` query parameter (a token from previous response''s
+    `next_batch`, `prev_batch`, or `start` field) to specify where to start returning
+    results; if omitted, starts at the most recent event. The `dir` query parameter
+    (optional, default `b`) controls direction: `f` for chronological order or `b`
+    for reverse chronological. Note that `from` token must be "after" `to` token in
+    topological ordering since pagination only works backwards through events.'
+  - Pagination uses optional query parameters `from` and `to` as tokens for backward
+    pagination through events in topological order. The `from` token must be "after"
+    the `to` token; passing a `from` from page 2 and `to` from page 1 returns empty
+    results. Response includes `next_batch` and `prev_batch` tokens to construct subsequent
+    requests.
+possible_base_urls:
+- information_source; https://spec.matrix.org/v1.14/identity-service-api/:
+  - https://_matrix/identity/v2
+  - https://matrix.org/_matrix/identity/v2
+possible_endpoints:
+- information_source; https://spec.matrix.org/v1.14/identity-service-api/:
+  - GET /\_matrix/identity/v2/validate/msisdn/submitToken
+  - GET /_matrix/identity/v2/account
+  - GET /_matrix/identity/v2/hash_details
+  - GET /_matrix/identity/v2/pubkey/ephemeral/isvalid
+  - GET /_matrix/identity/v2/pubkey/isvalid
+  - GET /_matrix/identity/v2/pubkey/{keyId}
+  - GET /_matrix/identity/v2/terms
+  - GET /_matrix/identity/v2/validate/email/submitToken
+  - GET /_matrix/identity/versions
+  - GET https://example.org/_matrix/identity/v2

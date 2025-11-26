@@ -1,0 +1,63 @@
+auth_info:
+- information_source; https://docs.axelglobe.com/en/stac/getting-started:
+  - 'Authentication uses a Bearer token passed in the Authorization header. Include
+    the header "Authorization: Bearer ${YOUR_ACCESS_TOKEN_GOES_HERE}" where YOUR_ACCESS_TOKEN_GOES_HERE
+    is replaced with your actual access token.'
+  - 'Authorization via Bearer token in the Authorization header. Send the access token
+    as "Authorization: Bearer ${YOUR_ACCESS_TOKEN_GOES_HERE}" where YOUR_ACCESS_TOKEN_GOES_HERE
+    is replaced with your actual access token value.'
+  - AxelGlobe STAC API uses OAuth 2.1 Client Credentials Flow for authentication.
+    Obtain an access token by posting client_id and client_secret to https://auth.axelglobe.com/oauth/token
+    with grant_type "client_credentials" and audience "https://api.axelglobe.com".
+    The response contains access_token (valid 24 hours), expires_in (86400 seconds),
+    and token_type ("Bearer"). Include the access token in the Authorization header
+    as "Bearer ${access_token}" when requesting API resources. Frequent unnecessary
+    token requests may trigger rate limiting.
+  - 'The API requires Bearer token authentication. Include the access token in the
+    Authorization header as "Authorization: Bearer ${YOUR_ACCESS_TOKEN_GOES_HERE}"
+    when making requests to the STAC search endpoint.'
+  - The API uses Bearer token authentication. Include your access token in the Authorization
+    header as "Bearer ${YOUR_ACCESS_TOKEN_GOES_HERE}" when making requests to the
+    STAC API endpoints.
+pagination_info:
+- information_source; https://docs.axelglobe.com/en/stac/getting-started:
+  - Pagination uses a limit query parameter (default or example value shown as 5)
+    to control page size. Response structure for pagination navigation is not described
+    in the provided documentation.
+  - Pagination uses a page query parameter in the URL. The response includes a links
+    array with a rel="next" entry containing the href for the next page. Continue
+    paginating by following the next link until it is no longer present in the response.
+  - The search endpoint accepts a query parameter `limit` (optional, default appears
+    to be unspecified) to control the number of results returned per request. The
+    response is a FeatureCollection with a `features` array containing the paginated
+    items. No pagination navigation fields (such as `next`, `cursor`, or `has_more`)
+    are shown in the provided response example, so the pagination mechanism is unclear
+    from this documentation.
+- information_source; https://docs.axelglobe.com/en/stac/openapi:
+  - The API uses cursor-based pagination with a "next" link in the response. To paginate,
+    extract the "href" value from the links array where "rel" is "next" and use it
+    as the URL for the subsequent request. Stop paginating when no "next" link is
+    present in the response.
+- information_source; https://docs.axelglobe.com/en/tasking/openapi.html:
+  - Pagination is supported via limit and offset query parameters. The limit parameter
+    is a positive integer specifying the maximum number of results per request, and
+    offset is a non-negative integer specifying the starting position. The response
+    returns a FeatureCollection with features array containing the paginated results.
+possible_base_urls:
+- information_source; https://docs.axelglobe.com/en/stac/getting-started:
+  - https://api.axelglobe.com/stac/v1
+  - https://api.axelglobe.com/stac/v1/catalogs/axelglobe
+possible_endpoints:
+- information_source; https://docs.axelglobe.com/en/stac/getting-started:
+  - GET https://api.axelglobe.com/stac/v1/catalogs/axelglobe/collections
+  - GET https://api.axelglobe.com/stac/v1/catalogs/axelglobe/search
+  - POST https://auth.axelglobe.com/oauth/token
+- information_source; https://docs.axelglobe.com/en/stac/openapi:
+  - GET https://api.axelglobe.com/stac/v1/search
+- information_source; https://docs.axelglobe.com/en/tasking/openapi.html:
+  - DELETE https://api.axelglobe.com/wfs/tasking/v2/collections/requests
+  - DELETE https://api.axelglobe.com/wfs/tasking/v2/collections/requests/items/{taskRequestId}
+  - GET /wfs/tasking/v2/collections
+  - GET /wfs/tasking/v2/collections/candidates/items
+  - GET /wfs/tasking/v2/conformance
+  - GET https://api.axelglobe.com/wfs/tasking/v2/

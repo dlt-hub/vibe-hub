@@ -1,0 +1,61 @@
+auth_info:
+- information_source; https://discord.com/developers/docs/change-log:
+  - Bearer tokens are required to edit command permissions. The bearer token must
+    be retrieved via OAuth2 and the authenticating user must have permission to manage
+    the guild and roles. The applications.commands.permissions.update OAuth2 scope
+    is required for this operation.
+  - The `role_connections.write` OAuth2 scope is required to authenticate requests
+    for retrieving and updating a user's role connections via the GET and PUT endpoints
+    at `/users/@me/applications/{application.id}/role-connection`.
+- information_source; https://discord.com/developers/docs/interactions/overview:
+  - Request signature validation using Ed25519. The public key (APPLICATION_PUBLIC_KEY)
+    is obtained from the Developer Portal. Validate incoming requests by verifying
+    the X-Signature-Ed25519 header against the concatenated X-Signature-Timestamp
+    header and request body using NaCl's VerifyKey.
+  - 'Validate security-related request headers sent by Discord: the `X-Signature-Ed25519`
+    header contains an Ed25519 signature and the `X-Signature-Timestamp` header contains
+    a timestamp. Your app must verify that the signature matches the request body
+    using the public key associated with your app. This is a required security measure
+    before processing any interactions.'
+- information_source; https://discord.com/developers/docs/interactions/application-commands:
+  - Command permissions require a Bearer token (OAuth2) for updates, not a bot token.
+    The Bearer token must be authorized with the `applications.commands.permissions.update`
+    scope. The authenticating user must have Manage Guild, Manage Roles permissions
+    in the guild, ability to run the command being edited, and permission to manage
+    affected resources (roles, users, channels).
+pagination_info:
+- information_source; https://discord.com/developers/docs/change-log:
+  - Setting `with_member` to `true` enables pagination for List Thread Members endpoint
+    using `after` (cursor) and `limit` (default 100) query parameters to fetch additional
+    thread members. In API v11, pagination will always be enabled regardless of the
+    `with_member` parameter.
+- information_source; https://discord.com/developers/docs/resources/message:
+  - The Get Channel Pins endpoint uses limit-offset pagination. The limit query parameter
+    (optional, default 50, range 1-50) controls the number of pins returned. The response
+    includes a has_more boolean field. To get additional pins, use the before query
+    parameter set to the pinned_at timestamp of the last pin from the previous response,
+    then repeat with limit=50.
+- information_source; https://discord.com/developers/docs/resources/user:
+  - The endpoint uses query string parameters before (snowflake, optional) and after
+    (snowflake, optional) for cursor-based pagination, along with limit (integer,
+    1-200, default 200) to control page size. However, pagination is not needed since
+    the endpoint returns a maximum of 200 guilds by default, which is the maximum
+    non-bot users can join.
+possible_base_urls:
+- information_source; https://discord.com/developers/docs/reference:
+  - https://discord.com/api
+- information_source; https://discord.com/developers/docs/change-log:
+  - wss://gateway.discord.gg
+possible_endpoints:
+- information_source; https://discord.com/developers/docs/reference:
+  - '-'
+  - GET https://discord.com/api
+  - GET https://discord.com/api/v{version_number}
+- information_source; https://discord.com/developers/docs/change-log:
+  - DELETE /applications/<application.id>/entitlements/<entitlement.id>
+  - DELETE /webhooks/<application_id>/<interaction_token>/messages/<message_id>
+  - DELETE /webhooks/<application_id>/<interaction_token>/messages/@original
+  - DELETE /webhooks/{webhook.id}
+  - GET /applications/<application.id>/entitlements
+  - GET /applications/<application.id>/role-connections/metadata
+  - GET /applications/<application.id>/skus

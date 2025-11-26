@@ -1,0 +1,60 @@
+auth_info:
+- information_source; https://www.librechat.ai/docs/configuration/dotenv:
+  - 'LibreChat uses OpenID Connect for authentication with support for token reuse
+    from OpenID providers. Configure via environment variables: OPENID_REUSE_TOKENS
+    (boolean to enable provider token reuse), OPENID_SCOPE (space-separated scopes,
+    must include offline_access for token reuse), OPENID_AUDIENCE (audience parameter,
+    required for Auth0 when reusing tokens), OPENID_JWKS_URL_CACHE_ENABLED (boolean
+    for signing key caching), and OPENID_JWKS_URL_CACHE_TIME (cache duration in milliseconds).
+    Refresh tokens issued by the OpenID provider are passed to users as cookies for
+    session management. Debug logging is controlled via DEBUG_OPENID_REQUESTS environment
+    variable to log request headers with sensitive data masked.'
+  - 'OpenID Connect (OIDC) OAuth2 authentication is configured via environment variables.
+    Required credentials include OPENID_CLIENT_ID, OPENID_CLIENT_SECRET, OPENID_ISSUER
+    URL, and OPENID_SESSION_SECRET. Additional parameters: OPENID_SCOPE (default "openid
+    profile email"), OPENID_CALLBACK_URL (redirect URI), OPENID_AUDIENCE (for Auth0
+    JWT tokens), OPENID_REQUIRED_ROLE (single or comma-separated roles with OR logic),
+    OPENID_REQUIRED_ROLE_TOKEN_KIND (token source), and OPENID_REQUIRED_ROLE_PARAMETER_PATH
+    (role claim path in token).'
+- information_source; https://www.librechat.ai/docs/quick_start/custom_endpoints:
+  - 'API keys for custom endpoints can be configured in three ways: by referencing
+    an environment variable using ${VARIABLE_NAME} syntax, by setting the value to
+    "user_provided" to allow web interface input, or by directly including the key
+    in the configuration file. Environment variable references are recommended for
+    security. The apiKey field accepts the variable name in ${VARIABLE_NAME} format,
+    the literal string "user_provided", or a direct API key value.'
+- information_source; https://www.librechat.ai/docs/features/mcp:
+  - Authorization uses a Bearer token passed in the Authorization header. The token
+    value is sourced from the API_TOKEN environment variable. User context can be
+    included via placeholders like {{LIBRECHAT_USER_ROLE}}, {{LIBRECHAT_USER_ID}},
+    {{LIBRECHAT_USER_EMAIL}}, {{LIBRECHAT_USER_USERNAME}}, and others in request headers
+    or bodies.
+  - 'LibreChat supports OAuth 2.0 authentication for MCP servers using Authorization
+    Code Flow with PKCE and automatic client discovery. Credentials are passed via
+    custom user variables (e.g., `PAT_TOKEN`) referenced in request headers like `Authorization:
+    "{{PAT_TOKEN}}"`, and servers can be configured with `startup: false` to defer
+    connection until manual reinitialization. OAuth flows support automatic token
+    renewal via refresh tokens when available.'
+possible_base_urls:
+- information_source; https://www.librechat.ai/docs/quick_start/custom_endpoints:
+  - http://host.docker.internal:11434/v1/
+  - https://openrouter.ai/api/v1
+possible_endpoints:
+- information_source; https://www.librechat.ai/docs/quick_start/custom_endpoints:
+  - POST https://openrouter.ai/api/v1/chat/completions
+- information_source; https://www.librechat.ai/docs/configuration/librechat_yaml/ai_endpoints/cloudflare:
+  - GET https://gateway.ai.cloudflare.com/v1/${CF_ACCOUNT_ID}/${CF_GATEWAY_ID}/workers-ai/v1/models
+  - POST https://gateway.ai.cloudflare.com/v1/${CF_ACCOUNT_ID}/${CF_GATEWAY_ID}/workers-ai/v1/chat/completions
+- information_source; https://www.librechat.ai/docs/configuration/librechat_yaml/ai_endpoints/anyscale:
+  - POST https://api.endpoints.anyscale.com/v1/chat/completions
+- information_source; https://www.librechat.ai/docs/configuration/librechat_yaml/ai_endpoints/apipie:
+  - GET https://apipie.ai/models
+  - GET https://apipie.ai/v1/
+- information_source; https://www.librechat.ai/docs/configuration/librechat_yaml/ai_endpoints/databricks:
+  - POST https://your_databricks_serving_endpoint_url_here_ending_with/invocations
+- information_source; https://www.librechat.ai/docs/configuration/librechat_yaml/ai_endpoints/deepseek:
+  - POST https://api.deepseek.com/v1/chat/completions
+- information_source; https://www.librechat.ai/docs/configuration/librechat_yaml/ai_endpoints/fireworks:
+  - POST https://api.fireworks.ai/inference/v1/chat/completions
+- information_source; https://www.librechat.ai/docs/configuration/librechat_yaml/ai_endpoints/groq:
+  - GET https://api.groq.com/openai/v1/

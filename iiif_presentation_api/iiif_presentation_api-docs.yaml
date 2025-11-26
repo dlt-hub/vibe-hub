@@ -1,0 +1,74 @@
+auth_info:
+- information_source; http://iiif.io/api/auth/:
+  - The API uses a token-based authentication mechanism delivered via postMessage.
+    Clients must send an access token obtained from the token service in subsequent
+    requests, and the token service response includes an accessToken property that
+    expires after the specified expiresIn duration in seconds.
+  - The access token must be included with all future requests to the probe service.
+    The access token is obtained from a token service and should be sent as an opaque
+    string; it must not contain sensitive information and has an optional expiration
+    time specified in seconds via the expiresIn property.
+  - 'The access token response must be a JSON-LD object sent via postMessage with
+    required properties: @context (URI http://iiif.io/api/auth/2/context.json), type
+    (string "AuthAccessTokenError2"), profile (error classification: invalidRequest,
+    invalidOrigin, missingAspect, invalidAspect, expiredAspect, or unavailable), and
+    messageId (string matching the original messageId query parameter from the token
+    service request). Optional heading and note properties provide user-facing error
+    text.'
+  - This documentation describes IIIF Authentication API 2.0 service structure with
+    nested authentication services. The authentication flow uses an AuthProbeService2
+    to check access, an AuthAccessService2 for login (with profile "active"), an AuthAccessTokenService2
+    to obtain tokens, and an AuthLogoutService2 for logout. The `@context` value `http://iiif.io/api/auth/2/context.json`
+    must be included in the parent Image API 3.0 or Presentation API 3.0 resource's
+    `@context` array rather than within the service object itself. Credentials are
+    obtained through the login service endpoint and managed via token service interactions.
+- information_source; https://iiif.io/api/image/2.1/:
+  - Authentication is required for some requests. See the Authentication section for
+    details. The documentation references an Authentication section (section 8) but
+    does not provide the specific auth mechanism, headers, parameters, or credentials
+    format in this excerpt.
+pagination_info:
+- information_source; https://iiif.io/api/search/2.0/:
+  - Pagination uses `next` and `prev` properties in AnnotationPage responses, where
+    each contains an object with `id` (URI of the next/previous page) and `type` set
+    to `AnnotationPage`. The AnnotationCollection includes `first` property (required,
+    URI of first page), optional `last` property (URI of last page), and optional
+    `total` property (total annotation count). The `startIndex` property indicates
+    the zero-based position of the first annotation in the current page relative to
+    all pages.
+  - Use the `page` query parameter (optional, default 1) to request specific pages.
+    Response includes `id` with page number and `items` array containing results.
+    Continue paginating by incrementing the page parameter until no more results are
+    returned.
+  - Use the `page` query parameter to request specific Annotation Pages. The response
+    includes a `partOf` property referencing the parent Annotation Collection, and
+    a `next` property containing the `id` URI of the subsequent page when more results
+    exist. Continue paginating by following the `next` property until it is absent.
+- information_source; https://iiif.io/api/search/1.0/:
+  - Pagination uses `next` and `prev` properties in the annotation list to reference
+    subsequent and previous pages. Each page has a `startIndex` property indicating
+    the position of the first result in the entire set (0-indexed). The containing
+    layer has `first` and `last` properties referencing the first and last page URIs,
+    and a `total` property with the total number of results.
+  - Pagination uses query parameter page (starting at 1) in the request URI. Response
+    includes within.total for total results, within.first and within.last for first/last
+    page URIs, and next field containing the URI for the next page. Stop paginating
+    when next is absent.
+possible_base_urls:
+- information_source; https://iiif.io/api/presentation/2.0/:
+  - http://iiif.io/api/presentation/2/context.json
+  - http://www.example.org/iiif/book1/canvas/p
+possible_endpoints:
+- information_source; http://iiif.io/api/auth/:
+  - GET https://auth.example.org/login
+  - GET https://auth.example.org/logout
+  - GET https://auth.example.org/probe/my-video
+  - GET https://auth.example.org/token
+- information_source; https://iiif.io/api/image:
+  - GET {scheme}://{server}{/prefix}/{identifier}
+  - GET {scheme}://{server}{/prefix}/{identifier}/info.json
+  - GET {scheme}://{server}{/prefix}/{identifier}/{region}/{size}/{rotation}/{quality}.{format}
+- information_source; https://iiif.io/api/image/3.0/:
+  - GET {scheme}://{server}{/prefix}/{identifier}
+  - GET {scheme}://{server}{/prefix}/{identifier}/info.json
+  - GET {scheme}://{server}{/prefix}/{identifier}/{region}/{size}/{rotation}/{quality}.{format}

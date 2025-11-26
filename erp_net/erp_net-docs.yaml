@@ -1,0 +1,61 @@
+auth_info:
+- information_source; https://docs.erp.net/dev/index.html:
+  - ERP.net APIs use OAuth 2 with OpenID Connect support for authentication. The instance-specific
+    API reference documentation at https://demodb.my.erp.net/api/domain/docs requires
+    authentication to access user-defined attributes and objects. Detailed authentication
+    implementation details are available in the Introduction to authentication in
+    ERP.net documentation.
+- information_source; https://docs.erp.net/dev/building-apps/auth/how-apps-connect/identity-server.html:
+  - OAuth 2.0 Authorization Code flow with OpenID Connect. Applications request authorization
+    at the authorize endpoint (GET /id/connect/authorize with client_id, redirect_uri,
+    response_type=code, scope, state parameters), receive an authorization code, then
+    exchange it at the token endpoint (POST /id/connect/token) using client_id, client_secret,
+    grant_type=authorization_code, code, and redirect_uri in the request body (application/x-www-form-urlencoded)
+    to obtain access_token and refresh_token. Discovery document at /.well-known/openid-configuration
+    lists supported grant_types_supported, scopes_supported, and jwks_uri for token
+    validation.
+  - OAuth2 with OpenID Connect is used for authentication. Authorization Code flow
+    requires client_id, client_secret, redirect_uri, and scope parameters sent to
+    POST /id/connect/token; Client Credentials flow requires client_id, client_secret,
+    grant_type=client_credentials, and scope in the request body as application/x-www-form-urlencoded.
+    Access tokens are returned as Bearer tokens in the token_type field with an expires_in
+    value in seconds. Refresh tokens are issued only for Authorization Code flow with
+    interactive confidential clients, not for Client Credentials. End session is triggered
+    via GET /id/connect/endsession with id_token_hint and post_logout_redirect_uri
+    parameters. Both internal and external users can authenticate but have different
+    data access permissions based on scopes and roles.
+  - The ERP.net instance uses OAuth 2.0 and OpenID Connect for authentication. Developers
+    must first call the auto-discovery endpoint at GET https://{instance-root}/sys/auto-discovery
+    to locate the Identity Server URL (typically at /id), then retrieve OAuth 2.0
+    metadata from the discovery endpoint at GET https://{instance-root}/id/.well-known/openid-configuration
+    to obtain token and authorization endpoint URLs for standard OAuth 2.0 flows.
+  - This API uses OpenID Connect (OIDC) / OAuth 2.0 for authentication. Applications
+    must obtain access tokens from the token_endpoint using either authorization_code,
+    client_credentials, or refresh_token grant types, then include the token in requests.
+    The configuration endpoint provides the issuer URL, authorization_endpoint, token_endpoint,
+    end_session_endpoint, jwks_uri for key validation, and supported scopes (openid,
+    profile, offline_access, update).
+pagination_info:
+- information_source; https://docs.erp.net/dev/building-apps/api-access/best-practices.html:
+  - Handle pagination with $skip and $top for large datasets. $skip specifies the
+    number of records to skip, $top specifies the maximum number of records to return.
+    Stop paginating when the number of returned records is less than $top.
+possible_base_urls:
+- information_source; https://docs.erp.net/dev/index.html:
+  - https://demodb.my.erp.net/api/domain/docs
+  - https://demodb.my.erp.net/api/domain/odata
+possible_endpoints:
+- information_source; https://docs.erp.net/dev/index.html:
+  - GET https://demodb.my.erp.net/api/domain/docs
+  - GET https://demodb.my.erp.net/api/domain/odata/General_Products_Products
+- information_source; https://docs.erp.net/dev/table-api/index.html:
+  - GET /tableapi/data/Crm_Sales_Orders
+  - GET /tableapi/data/Gen_Documents
+  - GET /tableapi/odata/
+  - GET /tableapi/odata/Gen_Documents
+  - GET /tableapi/odata/Gen_Documents?$filter=Void eq false and State ge 30
+  - GET /tableapi/odata/Gen_Documents?$filter=Void eq false and State ge 30 and Entity_Name
+    in ('Inv_Transactions','Crm_Sales_Orders')
+  - GET /tableapi/odata/Gen_Documents?$filter=Void eq false and State ge 30&$top=1000
+- information_source; https://docs.erp.net/dev/building-apps/auth/how-apps-connect/identity-server.html:
+  - GET https://testdb.my.erp.net/id/.well-known/openid-configuration

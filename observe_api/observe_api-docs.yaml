@@ -1,0 +1,42 @@
+auth_info:
+- information_source; https://developer.observeinc.com/eng:
+  - API tokens are used for authentication. Create tokens via POST /v1/service-accounts/{accountId}/api-tokens
+    endpoint, then include the token in requests. Tokens are managed through service
+    accounts and can be created, retrieved, patched, and deleted via dedicated API
+    endpoints.
+  - Requests to the Observe API are authenticated using HTTP Bearer authentication.
+    Supply the API token in the Authorization header with the format "Bearer <customerid>
+    <token>".
+  - The API uses Bearer token authentication. Include the Authorization header with
+    the value "Bearer YOUR_SECRET_TOKEN" in all requests. API tokens are managed through
+    login endpoints and documented in the API authentication reference.
+pagination_info:
+- information_source; https://developer.observeinc.com/eng:
+  - Pagination uses query parameters cursorId (required, string), offset (optional,
+    int64), and numRows (optional, int64) to fetch pages. Response headers include
+    X-Observe-Total-Rows for total row count and X-Observe-Next-Page containing the
+    URL for the next page; use X-Observe-Cursor-Id with offset and numRows to construct
+    custom pagination requests.
+  - Set paginate to true as a query parameter for asynchronous paginated mode, which
+    returns 202 Accepted with headers for fetching results via /v1/meta/export/query/page.
+    Use rowCount in the request body to specify maximum rows returned, defaulting
+    to 100,000 (max without pagination) or up to int64 maximum with pagination enabled.
+  - Use the paginate parameter set to true in the request body to enable pagination.
+    Response includes a next_page_token field; use this token in subsequent requests
+    to retrieve the next page of results.
+possible_base_urls:
+- information_source; https://developer.observeinc.com/eng:
+  - https://<customerid>.<observe-domain>.com/v1
+  - https://OBSERVE_CUSTOMERID.observeinc.com
+possible_endpoints:
+- information_source; https://developer.observeinc.com/eng:
+  - DELETE /v1/meta/reftable/{id}
+  - DELETE /v1/monitor-mute-rules/{id}
+  - DELETE /v1/monitors/{id}
+  - DELETE /v1/referencetables/{id}
+  - DELETE /v1/service-accounts/{accountId}
+  - DELETE /v1/service-accounts/{accountId}/api-tokens/{tokenId}
+  - GET (Poll the status of a pending login request)
+  - GET /v1/dataset
+  - GET /v1/dataset/{id}
+  - GET /v1/login/delegated/{serverToken}

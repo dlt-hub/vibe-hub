@@ -1,0 +1,47 @@
+auth_info:
+- information_source; https://documentation.autoinvoice.visma.com/integration-guide/:
+  - 'Access tokens are passed via the data-token attribute in the HTML embed, containing
+    a JWT (example: eyJhbGciOiJIUzI1NiIs...). Tokens expire after one hour and cannot
+    be renewed during the session, requiring a page refresh to re-authenticate. For
+    iframe embedding, tokens are obtained from https://ax-stage.maventa.com (testing)
+    or https://ax.maventa.com (production) endpoints, then used to initiate sessions
+    via https://autointerface endpoints.'
+  - OAuth2 client credentials flow is used to obtain an access token. POST to the
+    token endpoint (https://ax-stage.maventa.com/oauth2/token for testing or https://ax.maventa.com/oauth2/token
+    for production) with multipart/form-data containing grant_type=client_credentials,
+    client_id (company_uuid value), client_secret (user_api_key value), scope=eui,
+    and vendor_api_key (erp_vendor_api_key value). The response includes access_token
+    (JWT), token_type=bearer, expires_in=3600, and scope=eui. Use the access_token
+    in subsequent API requests as a bearer token.
+  - Personal online banking credentials or Mobile ID are required to complete the
+    KYC form. Authentication is facilitated through Netvisor KYC partner. KYC can
+    be initiated via email link sent using the "authorization_email" parameter in
+    the PUT /v2/services/amili/receivables call, or customers can access the "activation_url"
+    link returned by GET /v2/services/amili/receivables to complete the process directly.
+  - 'The API requires three authentication keys used in nearly all requests: user_api_key
+    (identifies a user), company_uuid (identifies a company), and vendor_api_key (identifies
+    a partner). In SOAP API, all three keys are provided on each request. In REST
+    API, oauth2 standard tokens are used for authentication. Keys must be written
+    exactly as provided with no extra whitespace. The vendor_api_key is mandatory
+    for partner and ERP integrations to ensure correct billing, reporting, and support
+    handling.'
+  - 'You need to provide authentication using HTTP headers with one of two methods:
+    either USERNAME and USERPW headers (credentials from Mass printing API account
+    registration), or COMPANY-UUID and USER-API-KEY headers (credentials from AutoInvoice
+    account).'
+possible_base_urls:
+- information_source; https://documentation.autoinvoice.visma.com/integration-guide/:
+  - http://autointerface
+  - http://directory.peppol.eu/
+possible_endpoints:
+- information_source; https://documentation.autoinvoice.visma.com/integration-guide/:
+  - DELETE /v1/fi_bank_messages/ri_messages/{id}
+  - DELETE /v1/services/autoscan
+  - "DELETE /v1\u200B/company\u200B/profiles"
+  - DELETE /v2/services/amili/receivables
+  - GET /v1/assignments
+  - GET /v1/assignments/{assignment_id}
+  - GET /v1/companies/{id}/status
+  - GET /v1/company/profiles
+  - GET /v1/company/profiles/{id}
+  - GET /v1/company/settings

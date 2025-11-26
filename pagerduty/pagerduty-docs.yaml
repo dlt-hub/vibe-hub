@@ -1,0 +1,71 @@
+auth_info:
+- information_source; https://developer.pagerduty.com/api-reference/02bb39b038412-start-an-incident-workflow-instance:
+  - 'Authorization uses a token passed in the Authorization header. Send the token
+    value directly in the Authorization header (e.g., Authorization: 123 or Authorization:
+    your_token_here).'
+  - Security uses API Key authentication. The exact header name and parameter details
+    are not specified in this documentation chunk, so the auth mechanism is API Key-based
+    but the specific header name (likely `Authorization` or `X-API-Key`) is not explicitly
+    stated here. Scoped OAuth requires the `incident_workflows:instances.write` scope
+    if using OAuth instead.
+- information_source; https://developer.pagerduty.com/api-reference/:
+  - All endpoints require the X-EARLY-ACCESS header to be included in requests. This
+    is a custom header-based access control mechanism for early access features.
+  - 'The provided documentation chunk contains information about OAuth token expiries
+    and their lifecycle, which is authentication-related. Here is the extracted auth
+    information:
+
+
+    OAuth 2.0 authorization code grant flow uses access tokens and refresh tokens
+    with time-based expiry. For OAuth clients registered before October 30th 2022,
+    access tokens and refresh tokens expire after one year. For clients registered
+    after October 30th 2022, access tokens expire after 30 days, refresh tokens expire
+    after 210 days, and a rolling refresh window of 3 years is applied. After April
+    30th 2023, the new expiry settings apply to all OAuth clients.'
+  - This documentation excerpt describes OAuth2 scopes that are required for various
+    API endpoints. The API uses scope-based authorization where different endpoints
+    require specific scopes like services.read, services.write, incidents.read, incidents.write,
+    and status_dashboards.read. Clients must obtain an access token with the appropriate
+    scopes to call these endpoints, with the token typically sent in the Authorization
+    header as a Bearer token.
+pagination_info:
+- information_source; https://developer.pagerduty.com/api-reference/:
+  - Update `GET /incident_workflows/triggers` and `GET /incident_workflows/actions`
+    endpoints to use cursor pagination. The documentation does not specify the exact
+    cursor parameter names, response field names, or pagination mechanics.
+- information_source; https://developer.pagerduty.com/api-reference/f1a95bb9397ba-changelog:
+  - The `GET /incident_workflows/triggers` and `GET /incident_workflows/actions` endpoints
+    use cursor pagination. The documentation does not specify the exact cursor parameter
+    names, request field names, or response field names for navigating pages.
+- information_source; https://developer.pagerduty.com/api-reference/d54514b5b003f-list-incident-workflows:
+  - Pagination uses limit (integer, results per page) and offset (integer, pagination
+    start position) as query parameters. The response includes a total field (null
+    by default, set total=true query parameter to populate it). Response structure
+    contains paginated array of Incident Workflows.
+- information_source; https://developer.pagerduty.com/api-reference/aa192a25fac39-list-actions:
+  - Pagination uses cursor-based navigation with optional limit parameter. Request
+    includes cursor (query parameter, optional, obtained from previous next_cursor
+    response field) and limit (query parameter, integer). Response includes limit
+    and next_cursor fields; when next_cursor is null, there are no additional results.
+- information_source; https://developer.pagerduty.com/api-reference/977aea38ee804-list-triggers:
+  - Cursor-based pagination is used with optional `cursor` query parameter (obtained
+    from `next_cursor` field in previous response) to request subsequent result sets,
+    and optional `limit` query parameter to control result size per request.
+possible_base_urls:
+- information_source; https://developer.pagerduty.com/api-reference/02bb39b038412-start-an-incident-workflow-instance:
+  - https://api.pagerduty.com
+- information_source; https://developer.pagerduty.com/api-reference/:
+  - https://mcp.pagerduty.com/mcp
+possible_endpoints:
+- information_source; https://developer.pagerduty.com/api-reference/02bb39b038412-start-an-incident-workflow-instance:
+  - POST https://api.pagerduty.com/incident_workflows/{id}/instances
+- information_source; https://developer.pagerduty.com/api-reference/:
+  - DELETE /alert_grouping_settings/{id}
+  - DELETE /automation_actions/actions/{id}
+  - DELETE /automation_actions/actions/{id}/services/{service_id}
+  - DELETE /automation_actions/actions/{id}/teams/{team_id}
+  - DELETE /automation_actions/runners/{id}
+  - DELETE /automation_actions/runners/{id}/teams/{team_id}
+  - DELETE /business_services/priority_thresholds
+  - DELETE /business_services/{id}/account_subscription
+  - DELETE /custom_fields/{id}

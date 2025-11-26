@@ -1,0 +1,56 @@
+auth_info:
+- information_source; https://docs.monite.com/api/concepts/authentication:
+  - All API requests to the Monite API must use Bearer token authentication compliant
+    with OAuth 2.0. The Bearer token is generated from Client ID and Client Secret
+    values obtained from the Monite Partner Portal. Additionally, the x-monite-entity-id
+    HTTP header must be included in requests to specify the entity ID for resource
+    access, and all requests must be made over HTTPS.
+  - Entity user tokens are obtained by calling POST /auth/token with grant_type set
+    to entity_user, providing client_id, client_secret, and entity_user_id in the
+    JSON request body. The response contains an access_token with Bearer token_type
+    and expires_in validity in seconds; use the access_token in subsequent requests
+    for authentication tied to the specific entity user's role-based permissions.
+  - Monite API uses OAuth 2.0 token-based authentication. Developers obtain Client
+    ID and Client Secret from the Monite Partner Portal, then exchange them via POST
+    /auth/token with grant_type (either client_credentials for backend-to-backend
+    or entity_user for entity user access) to receive an access token. The /auth/token
+    endpoint requires no authentication headers but accepts x-monite-version header
+    for API versioning. Request body must contain client_id, client_secret, and grant_type
+    fields. Client Secret must be stored securely and cannot be retrieved if lost.
+  - 'The Monite API uses OAuth2 client credentials grant for token generation. To
+    obtain a partner token, send a POST request to `/auth/token` with `grant_type`
+    set to `client_credentials`, `client_id`, and `client_secret` in the JSON request
+    body. Include the `X-Monite-Version` header and `Content-Type: application/json`.
+    Tokens can be revoked via a POST request to the token revocation endpoint. Entity
+    user tokens are also available and their permissions are role-based.'
+  - The Monite API uses OAuth2 with client credentials grant type. To authenticate,
+    POST to the token endpoint with grant_type, client_id, and client_secret in the
+    JSON body to receive an access_token with Bearer token_type and expires_in validity
+    period in seconds. Include the X-Monite-Version header with requests. Tokens can
+    be revoked by POSTing to /auth/revoke with client_id, client_secret, and token
+    in the request body. Use the access_token as a Bearer token in subsequent API
+    requests.
+pagination_info:
+- information_source; https://docs.monite.com/entities/index:
+  - This endpoint supports standard pagination, sorting, and filtering parameters
+    as referenced in the pagination, sorting, and filtering concepts documentation,
+    but the specific parameter names and response fields are not detailed in this
+    excerpt.
+possible_base_urls:
+- information_source; https://docs.monite.com/api/concepts/authentication:
+  - https://a
+  - https://api.monite.com
+possible_endpoints:
+- information_source; https://docs.monite.com/api/concepts/authentication:
+  - POST https://api.monite.com/auth/revoke
+  - POST https://api.monite.com/auth/token
+  - POST https://auth/token
+- information_source; https://docs.monite.com/api/files/get-files:
+  - DELETE /v1/files/{id}
+  - GET /v1/files
+  - GET /v1/files/{id}
+  - POST /v1/files
+- information_source; https://docs.monite.com/entities/index:
+  - DELETE /entities/{entity_id}/logo
+  - GET /entities
+  - GET /entities/{entity_id}
