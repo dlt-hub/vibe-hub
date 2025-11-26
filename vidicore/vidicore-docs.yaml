@@ -1,0 +1,62 @@
+auth_info:
+- information_source; https://apidoc.vidispine.com/25.2.0/rest.html:
+  - The RunAs header is used for authentication. This header allows a user to execute
+    requests on behalf of another user (Run-As option). Exact header name is RunAs.
+- information_source; https://apidoc.vidispine.com/25.2.0/storage/storage.html:
+  - Credentials are embedded in storage method URLs (username and password in FTP/Azure
+    URLs). Passwords are encrypted and cannot be viewed through API/server logs. When
+    requesting file URLs with methodType=AUTO, a no-auth URL is generated instead.
+  - Credentials are stored write-only in the VidiCore database via the API secret
+    endpoint. Credentials like username and password are created using PUT requests
+    to paths like /secret/{secret-id}/{field-name}, then referenced in storage URIs
+    (e.g., ftp://export-ftp-credentials@ftp-server/export/) where the secret ID acts
+    as the credential identifier.
+  - Storage credentials can be specified directly in storage URIs (e.g., `ftp://testuser:testpassword@ftp.example.com/`)
+    or referenced by alias from a credentials storage (e.g., `ftp://exampleftp@ftp.example.com/`).
+    Credentials are stored in a Java Keystore or similar credential storage system.
+- information_source; https://apidoc.vidispine.com/25.2.0/storage/auto-import.html:
+  - 'Basic authentication is required. Credentials are sent via HTTP Basic Auth using
+    the format `-uusername:password` in requests, where the username and password
+    are base64-encoded in the Authorization header as `Authorization: Basic base64(username:password)`.'
+pagination_info:
+- information_source; https://apidoc.vidispine.com/25.2.0/ref/item/item.html:
+  - Use `offset` (integer, default 1) to specify the starting position and `number`
+    (integer, default 100) to specify how many entities to fetch per request. The
+    response includes a hits field indicating total results; continue paginating by
+    incrementing the offset parameter until all results are retrieved.
+- information_source; https://apidoc.vidispine.com/25.2.0/ref/metadata/document-metadata.html:
+  - The endpoint uses offset-based pagination with query parameters first (starting
+    position, default 1) and number (limit, default all). The Link response header
+    contains URLs for previous, next, first, and last pages.
+- information_source; https://apidoc.vidispine.com/25.2.0/ref/metadata/metadata.html:
+  - The API uses Link header-based pagination with rel values for previous, next,
+    first, and last page URLs. No explicit query parameters for pagination are documented
+    in this section.
+- information_source; https://apidoc.vidispine.com/25.2.0/ref/search/search.html:
+  - 'Pagination uses offset-based and cursor-based methods. Request parameters: first
+    (integer, default 1, specifies starting offset) and cursor (string, optional,
+    use * for initial request or pass cursor string from previous search results).
+    Response includes cursor string for subsequent requests.'
+  - Pagination uses query parameters first (integer, default 1, specifies starting
+    offset) and number (integer, default 100, specifies count of entities to fetch).
+    The response includes hits when count is true (default).
+possible_base_urls:
+- information_source; https://apidoc.vidispine.com/25.2.0/item/collection.html:
+  - http://localhost:8080/API
+- information_source; https://apidoc.vidispine.com/25.2.0/item/shape.html:
+  - http://localhost:8080/API
+possible_endpoints:
+- information_source; https://apidoc.vidispine.com/25.2.0/paths.html:
+  - PUT /configuration/path-alias
+- information_source; https://apidoc.vidispine.com/25.2.0/item/import.html:
+  - POST /item/import
+  - POST /item/raw-import
+- information_source; https://apidoc.vidispine.com/25.2.0/item/export.html:
+  - PUT /API/export-location/default-exports
+  - PUT /export-location/External_FTP
+  - PUT /export-location/External_FTP/script
+- information_source; https://apidoc.vidispine.com/25.2.0/item/metadata/metadata.html:
+  - GET /item/VX-250/metadata
+  - GET item/VX-250/metadata
+  - PUT /item/(item-id)/re-index
+  - PUT /item/VX-250/metadata

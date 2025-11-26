@@ -1,0 +1,57 @@
+auth_info:
+- information_source; https://docs.cobalt.io/organization/organization-settings/saml-sso/:
+  - 'Cobalt supports SAML SSO authentication. Users sign in through an identity provider
+    configured with Cobalt''s ACS URL (unique per organization, format: https://login.app.us.cobalt.io/login/callback?connection=SLUG),
+    Entity ID (https://api.us.cobalt.io/users/saml/metadata), and SAML metadata endpoint
+    (https://login.app.us.cobalt.io/samlp/metadata?connection=SLUG). Users must have
+    matching email addresses in both Cobalt and the identity provider, and must have
+    confirmed their email and created a password in Cobalt before SAML authentication
+    works.'
+- information_source; https://docs.cobalt.io/integrations/integrationbuilder/how-to-guides/http/:
+  - Bearer token authentication is required in the Authorization header. The header
+    value must be formatted as `Bearer my_api_token`, where `my_api_token` is replaced
+    with your actual API token. The token should be included in the HTTP Authorization
+    header, not as a query parameter or in the request body.
+  - 'The API requires Bearer token authentication. Send the token in the Authorization
+    header as "Authorization: Bearer my_api_token", where my_api_token should be replaced
+    with your actual API token.'
+- information_source; https://docs.cobalt.io/cobalt-api/get-organization-token/:
+  - 'Personal API tokens are sent as Bearer tokens in the Authorization header. Organization
+    tokens are retrieved by first creating a personal API token, then using it to
+    call the /orgs endpoint with the header "Authorization: Bearer YOUR-PERSONAL-API-TOKEN",
+    and extracting the token value from the response for use in subsequent API calls
+    as "Authorization: Bearer YOUR-V2-ORGANIZATION-TOKEN".'
+  - The API uses organization token authentication. Include the organization token
+    in the `X-Org-Token` header of requests. The token value is obtained from the
+    organizations endpoint response and is referred to as `YOUR-V2-ORGANIZATION-TOKEN`
+    in documentation.
+pagination_info:
+- information_source; https://docs.cobalt.io/cobalt-api/get-organization-token/:
+  - Pagination uses cursor-based navigation with next_page and prev_page fields in
+    the pagination response object containing relative URLs with cursor query parameters.
+    Use the cursor value from next_page or prev_page in subsequent requests to navigate
+    pages.
+- information_source; https://docs.cobalt.io/cobalt-api/get-findings/:
+  - The API uses cursor-based pagination. Request parameters include a cursor query
+    parameter to specify the page. The response includes a pagination object with
+    next_page and prev_page fields containing the full path with cursor values for
+    navigating to the next or previous page.
+possible_base_urls:
+- information_source; https://docs.cobalt.io/organization/organization-settings/saml-sso/:
+  - https://api.us.cobalt.io
+  - https://login.app.us.cobalt.io
+possible_endpoints:
+- information_source; https://docs.cobalt.io/organization/organization-settings/saml-sso/saml-migration/:
+  - GET https://api.eu.cobalt.io/users/saml/metadata
+  - GET https://api.us.cobalt.io/users/saml/metadata
+  - POST https://api.cobalt.io/users/saml/auth
+  - POST https://login.app.us.cobalt.io/login/callback?connection=example-org
+- information_source; https://docs.cobalt.io/integrations/integrationbuilder/how-to-guides/http/:
+  - POST https://echo.free.beeceptor.com/api/v2/finding/fixed
+- information_source; https://docs.cobalt.io/cobalt-api/get-organization-token/:
+  - GET https://api.cobalt.io/orgs
+- information_source; https://docs.cobalt.io/cobalt-api/create_asset/:
+  - GET https://api.cobalt.io/alt-api/documentation/v2/#get-all-assets
+  - GET https://api.cobalt.io/assets
+  - POST https://api.cobalt.io/assets
+  - PUT https://api.cobalt.io/assets/YOUR-ASSET-IDENTIFIER

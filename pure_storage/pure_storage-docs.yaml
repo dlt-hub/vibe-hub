@@ -1,0 +1,51 @@
+auth_info:
+- information_source; https://www.codyhosterman.com/2014/07/powershell-and-pure-storage-rest-api-scripting/:
+  - Authentication for Pure Storage FlashArray REST API requires obtaining an API
+    token via a POST request to the /api/1.1/auth/apitoken endpoint with username
+    and password credentials in the request body, then using that token in subsequent
+    API calls. The credentials are sent as JSON fields "username" and "password" in
+    the POST body to acquire the token.
+- information_source; https://www.codyhosterman.com/2020/07/powershell-authentication-with-flasharray-rest-2-x/:
+  - 'Authentication uses a two-step token-based flow: first, send an initial API token
+    in the "api-token" header to POST /api/2.2/login, then use the returned "x-auth-token"
+    response header in subsequent requests.
+
+
+    Key details: Initial request header is "api-token" containing the API token. Login
+    response includes "x-auth-token" header which must be extracted and sent as "x-auth-token"
+    header in all following API calls.'
+  - Bearer token authentication is used with an Authorization header. First obtain
+    an access token via username/password authentication (using the Pure Storage PowerShell
+    SDK's New-PfaArray cmdlet or equivalent REST 1.x endpoint), then send the token
+    in the Authorization header as "Bearer <access_token>". The token can be extracted
+    from the response JSON field access_token and reused across requests. REST 2.x
+    requires OAuth2, but legacy API tokens from REST 1.x can be converted to session
+    tokens for REST 2.x compatibility.
+  - 'The API uses a two-step authentication process: first, POST an api-token credential
+    to the /api/2.2/login endpoint, then extract the x-auth-token response header
+    and include it in subsequent requests as the x-auth-token header.'
+- information_source; https://www.codyhosterman.com/2014/07/10/powershell-and-pure-storage-rest-api-scripting/:
+  - Pure Storage FlashArray REST API uses token-based authentication. To authenticate,
+    send a POST request to the /api/1.1/auth/apitoken endpoint with a JSON body containing
+    username and password fields. The response returns an API token that must be included
+    in subsequent requests via the Authorization header as a bearer token.
+possible_base_urls:
+- ? information_source; https://www.codyhosterman.com/2018/08/powercli-and-vvols-part-iii-getting-vvol-uuids-from-the-flasharray/
+  : - https://pure01.example.com/api/1.14
+- information_source; https://www.codyhosterman.com/2019/01/using-the-pure1-rest-api-part-i-powershell/:
+  - https://api.pure1.purestorage.com/api/1.0
+possible_endpoints:
+- information_source; https://www.codyhosterman.com/2020/07/powershell-authentication-with-flasharray-rest-2-x/:
+  - GET https://{endpoint}/api/2.2/volumes
+  - GET https://{flasharray.Endpoint}/api/2.2/volumes
+  - POST https://{endpoint}/api/2.2/login
+  - POST https://{flasharray.Endpoint}/api/2.2/login
+- ? information_source; https://www.codyhosterman.com/2018/08/powercli-and-vvols-part-iii-getting-vvol-uuids-from-the-flasharray/
+  : - GET https://pure01.example.com/api/1.14/volume
+    - GET https://pure01.example.com/api/1.14/volume?tags=true
+- information_source; https://www.codyhosterman.com/2019/01/using-the-pure1-rest-api-part-i-powershell/:
+  - GET https://api.pure1.purestorage.com/api/1.0/arrays
+  - POST https://api.pure1.purestorage.com/oauth2/1.0/token
+- information_source; https://www.codyhosterman.com/2018/02/using-postman-with-the-flasharray-rest-api/:
+  - POST https://pure01.example.com/api/1.12/auth/apitoken
+  - POST https://pure01.example.com/api/1.12/auth/session

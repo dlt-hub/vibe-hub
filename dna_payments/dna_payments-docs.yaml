@@ -1,0 +1,59 @@
+auth_info:
+- information_source; https://developer.dnapayments.com/docs/partner-tools/reporting/reporting-api/auth:
+  - OAuth2 client credentials flow is used for authentication. Send a POST request
+    to https://test-oauth.dnapayments.com/oauth2/token with grant_type set to client_credentials,
+    scope set to partners_reporting, and provide client_id and client_secret in the
+    request body. The response includes an access_token (Bearer token type) with an
+    expires_in value in seconds, which should be used in subsequent API requests.
+  - This API uses OAuth2 with the client_credentials grant type. To authenticate,
+    POST to https://test-oauth.dnapayments.com/oauth2/token with form data containing
+    client_id, client_secret, grant_type set to 'client_credentials', and scope 'partners_reporting'.
+    The response includes an access_token with token_type 'Bearer' that should be
+    used in subsequent API requests as a Bearer token in the Authorization header.
+- information_source; https://developer.dnapayments.com/docs/partner-tools/reporting/reporting-api/merchants:
+  - 'Bearer token authentication is required. Send the token in the Authorization
+    header as "Bearer {token}" where the token value is provided (example: 6945595921271780).
+    This applies to all requests shown in both V1 and V2 API endpoints.'
+- information_source; https://developer.dnapayments.com/docs/partner-tools/reporting/settlement-api/auth:
+  - OAuth2 client credentials flow used to obtain bearer tokens. Send a POST request
+    to https://test-oauth.dnapayments.com/oauth2/token with grant_type set to "client_credentials",
+    scope set to "partners_reporting", and the mandatory client_id and client_secret
+    fields. The response includes an access_token field (bearer token) with expires_in
+    in seconds, plus a token_type field set to "Bearer". Use the access_token in subsequent
+    API requests as a bearer token.
+  - The API uses OAuth2 with the client credentials grant type. Send a POST request
+    to https://test-oauth.dnapayments.com/oauth2/token with form data containing client_id,
+    client_secret, grant_type set to 'client_credentials', and scope. The response
+    includes an access_token (Bearer token) with expires_in in seconds and a refresh_token.
+    Use the access_token as a Bearer token in subsequent API requests.
+pagination_info:
+- information_source; https://developer.dnapayments.com/docs/partner-tools/reporting/reporting-api/merchants:
+  - The V2 API uses query parameter page (starting at 1) to paginate merchant results.
+    The response contains a data array with merchant objects, but the documentation
+    does not specify response fields indicating pagination state (such as total pages,
+    has_more, or next_page), so the full pagination behavior is unclear.
+- information_source; https://developer.dnapayments.com/docs/partner-tools/reporting/settlement-api/settlements:
+  - Pagination uses optional query parameters page (page number, starting at 1) and
+    size (number of records per page, example shows 100). The response includes totalCount
+    field indicating total records available. Continue requesting with incremented
+    page values until the returned record count is less than the requested size or
+    all totalCount records have been retrieved.
+  - The response includes a totalCount field indicating total records available. The
+    number of data objects returned is limited by page and size request parameters.
+    Pagination is controlled via page and size fields in the request parameters (see
+    Request Parameters section for details on these fields).
+possible_base_urls:
+- information_source; https://developer.dnapayments.com/docs/partner-tools/reporting/reporting-api/auth:
+  - https://test-oauth.dnapayments.com/oauth2/token
+- information_source; https://developer.dnapayments.com/docs/partner-tools/reporting/reporting-api/merchants:
+  - https://test-api.dnapayments.com/v1
+possible_endpoints:
+- information_source; https://developer.dnapayments.com/docs/partner-tools/reporting/reporting-api/auth:
+  - POST https://test-oauth.dnapayments.com/oauth2/token
+- information_source; https://developer.dnapayments.com/docs/partner-tools/reporting/reporting-api/merchants:
+  - GET https://test-api.dnapayments.com/v1/partners/merchants
+  - GET https://test-api.dnapayments.com/v2/partners/merchants
+- information_source; https://developer.dnapayments.com/docs/partner-tools/reporting/settlement-api/auth:
+  - POST https://test-oauth.dnapayments.com/oauth2/token
+- information_source; https://developer.dnapayments.com/docs/partner-tools/reporting/settlement-api/settlements:
+  - GET https://test-api.dnapayments.com/v3/partners/settlements

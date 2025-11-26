@@ -1,0 +1,55 @@
+auth_info:
+- information_source; https://developer.identitysoon.com/iiq/api/get-entitlement-by-id/index.html:
+  - The documentation indicates basic authentication is required. Send requests with
+    a Username and Password, which should be provided as HTTP Basic Authentication
+    credentials (base64-encoded in the Authorization header as "Basic [base64(username:password)]").
+- information_source; https://developer.identitysoon.com/idn/api/getting-started:
+  - OAuth2 client credentials flow is used to authenticate API requests. Exchange
+    client_id and client_secret via POST to https://{tenant}.api.identitynow.com/oauth/token?grant_type=client_credentials&client_id={client_id}&client_secret={secret}
+    to obtain an access_token. Include the access_token in the Authorization header
+    as "Bearer {access_token}" for subsequent API requests. Rate limit is 100 requests
+    per access_token per 10 seconds.
+  - Personal access tokens are used to generate access tokens for API authentication.
+    Create a personal access token in IdentityNow (via Preferences > Personal Access
+    Tokens) which yields a Client ID and Secret. Use these credentials with the OAuth2
+    client credentials flow to obtain an access_token by sending a request to the
+    token endpoint, then include the access_token in the Authorization header as a
+    Bearer token for subsequent API calls.
+- information_source; https://developer.identitysoon.com/idn/api/authentication:
+  - Client Credentials OAuth2 flow is used to obtain access tokens by posting client_id
+    and client_secret to https://{tenant}.api.identitynow.com/oauth/token. The response
+    contains an access_token (JWT) that must be sent in the Authorization header as
+    a Bearer token for subsequent API requests. The token includes scope information
+    (read, write) and an expiration time (exp claim).
+  - OAuth 2.0 Client Credentials flow is used for authentication. Send a POST request
+    to https://{tenant}.api.identitynow.com/oauth/token with grant_type set to CLIENT_CREDENTIALS,
+    along with client_id and client_secret. These credentials can be passed as form-data,
+    url-encoded data in the request body, or as query parameters in the URL. Alternatively,
+    use the Authorization tab in Postman with the token endpoint specified.
+pagination_info:
+- information_source; https://developer.identitysoon.com/idn/api/standard-collection-parameters:
+  - The API uses cursor-based pagination with a `limit` query parameter (default 100)
+    to control page size. To paginate, extract the `id` value from the last record
+    in the response and pass it as the `searchAfter` property in the request body
+    for the next query. Continue until no records are returned.
+possible_base_urls:
+- information_source; https://developer.identitysoon.com/iiq/api/get-entitlement-by-id/index.html:
+  - http://localhost:8080/identityiq/scim/v2
+- information_source; https://developer.identitysoon.com/idn/api/getting-started:
+  - https://{tenant}.api.identitynow.com
+possible_endpoints:
+- information_source; https://developer.identitysoon.com/iiq/api/get-entitlement-by-id/index.html:
+  - GET http://localhost:8080/identityiq/scim/v2/Entitlements/:entitlementId
+- information_source; https://developer.identitysoon.com/idn/api/getting-started:
+  - GET https://{tenant}.api.identitynow.com/v3/public-identities?limit=1
+  - POST https://{tenant}.api.identitynow.com/oauth/token?grant_type=client_credentials&client_id={client_id}&client_secret={secret}
+- information_source; https://developer.identitysoon.com/idn/api/authentication:
+  - GET /beta/oauth-clients/
+  - GET /beta/oauth-clients/{client-id}
+  - GET https://{tenant}.api.identitynow.com/v3/account-activities
+  - POST https://example.api.identitynow.com/oauth/token
+  - POST https://{tenant}.api.identitynow.com/oauth/token
+- information_source; https://developer.identitysoon.com/idn/api/authorization:
+  - POST https://{tenant}.api.identitynow.com/v3/personal-access-tokens
+- information_source; https://developer.identitysoon.com/idn/api/standard-collection-parameters:
+  - POST https://{tenant}.api.identitynow.com/v3/search?limit=100&count=true
