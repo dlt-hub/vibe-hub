@@ -1,0 +1,55 @@
+auth_info:
+- information_source; https://docs.supergood.ai/travelperk-api/:
+  - Basic authentication is required for all API calls. The POST /authenticate endpoint
+    accepts username and password (with optional mfaEmailAddress for multi-factor
+    authentication) and returns an authToken. Subsequent API requests must include
+    the authToken in the request body and use the Authorization header with Basic
+    <Base64 encoded token> format. The POST /reauthenticate endpoint refreshes the
+    token before expiry to maintain continuous access.
+- information_source; https://docs.supergood.ai/navan-api/:
+  - HTTP Basic authentication is required, using Base64-encoded credentials sent in
+    the Authorization header. After initial login via POST /authenticate with username
+    and password, an authToken is returned and must be included in subsequent API
+    requests. The authToken can be refreshed via POST /reauthenticate before expiry
+    to maintain continuous access.
+- information_source; https://docs.supergood.ai/insync-ehr-api/:
+  - Supergood API uses HTTP Basic Authentication with a Base64 encoded token sent
+    in the Authorization header for initial authentication. The /authenticate endpoint
+    accepts username and password in the request body and returns an authToken. This
+    authToken must then be included in the request body of subsequent API calls like
+    /update_patient_details. The /reauthenticate endpoint allows token refresh before
+    expiry to maintain continuous access.
+  - Supergood authenticates to InSync through the standard login flow using POST /authenticate
+    with username and password credentials. Supergood manages session tokens and automatic
+    token refresh internally, abstracting the underlying bearer token mechanism with
+    short validity periods that InSync requires.
+- information_source; https://docs.supergood.ai/appfolio-api/:
+  - Basic authentication is used for API requests via the Authorization header with
+    a Base64-encoded token. Additionally, an authToken obtained from the /authenticate
+    endpoint must be included in the request body for operations like creating tenant
+    charges. The /authenticate endpoint accepts username, password, domain, and optional
+    mfaEmailAddress to handle multi-factor authentication and return a session-valid
+    auth token.
+pagination_info:
+- information_source; https://docs.supergood.ai/neos-api/:
+  - 'Use take and skip query parameters for offset-based pagination on the /sync endpoint:
+    take specifies the number of records to retrieve (example 100), skip specifies
+    the offset (example 100), and continue requesting with incremented skip values
+    until fewer records than take are returned, indicating the final page.'
+possible_base_urls:
+- information_source; https://docs.supergood.ai/travelperk-api/:
+  - https://api.supergood.ai/integrations/<integration_id>/auth
+  - https://api.supergood.ai/integrations/<integration_id>/sync
+possible_endpoints:
+- information_source; https://docs.supergood.ai/travelperk-api/:
+  - GET /get_invoices
+  - GET /get_itineraries_pdf
+  - GET /get_user_trips
+  - GET /get_users
+  - POST /reauthenticate
+  - POST https://api.supergood.ai/integrations/<integration_id>/auth
+  - POST https://api.supergood.ai/integrations/<integration_id>/sync
+- information_source; https://docs.supergood.ai/navan-api/:
+  - GET /get_admin_trips
+  - GET /get_invoices_poc
+  - GET /get_itineraries_pdf

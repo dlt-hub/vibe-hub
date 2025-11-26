@@ -1,0 +1,48 @@
+auth_info:
+- information_source; https://api.docs.shoptet.com/:
+  - OAuth access token obtained from e-shop administration's Access to API section
+    is required. Use this token in the Authorization header as "Bearer <OAuth access
+    token>" when calling the getAccessToken endpoint at https://<eshop-address.tld>/action/ApiOAuthServer/getAccessToken
+    to receive an API access token. Include the API access token in every API request
+    using the HTTP header Shoptet-Access-Token. Maximum 5 valid tokens can be held
+    simultaneously; expired tokens return HTTP 401 with errorCode "expired-token".
+  - OAuth2 authorization is required for addon access. When an addon is installed,
+    your server receives an HTTP GET request with a code parameter. You must immediately
+    exchange this code for an OAuth access token by making a request to the OAuth
+    server using your clientID. The code is single-use and short-lived, so token exchange
+    must happen synchronously before responding with 200 OK to the installation request.
+    Store and use the resulting access token for subsequent API calls.
+  - Send API access tokens in the request header `Shoptet-Private-API-Token` for private
+    API access. Tokens grant automatic access to all API endpoints; requests without
+    proper token rights receive HTTP 403 Forbidden with error code `invalid-token-no-rights`.
+    Rate limiting enforces a maximum of 3 concurrent connections per token, returning
+    HTTP 429 if exceeded, with rate limit status communicated via `X-RateLimit-Bucket-Filling`
+    and `Retry-After` response headers.
+  - The Shoptet API uses bearer token authentication via the `Shoptet-Access-Token`
+    header. Set your access token as the value of the `Shoptet-Access-Token` key in
+    the Authorization tab, and include it in requests to https://api.myshoptet.com/.
+- information_source; https://api.docs.shoptet.com/shoptet-api/openapi/endpoints:
+  - OAuth2 authorization flow with two-stage token acquisition. First, exchange a
+    short-lived authorization code for an OAuth access token by calling the OAuth
+    server endpoint (found in e-shop admin). Then use that OAuth access token in an
+    Authorization Bearer header to request an API access token from https://<eshop-address.tld>/action/ApiOAuthServer/getAccessToken.
+    Finally, include the API access token in the Shoptet-Access-Token header for all
+    API requests to https://api.myshoptet.com/api/eshop. Maximum 5 valid API access
+    tokens allowed simultaneously; expired tokens return HTTP 401 with errorCode "expired-token".
+possible_base_urls:
+- information_source; https://api.docs.shoptet.com/:
+  - https://<eshop-address.tld>/action/ApiOAuthServer/getAccessToken
+  - https://api.docs.shoptet.com/_mock/shoptet-api/openapi/
+possible_endpoints:
+- information_source; https://api.docs.shoptet.com/:
+  - GET https://api.myshoptet.com
+  - GET https://api.myshoptet.com/api/eshop
+  - POST https://<eshop-address.tld>/action/ApiOAuthServer/getAccessToken
+- information_source; https://api.docs.shoptet.com/shoptet-api/openapi/endpoints:
+  - GET https://api.docs.shoptet.com/_mock/shoptet-api/openapi/api/system/endpoints
+  - GET https://api.myshoptet.com/api/eshop
+  - GET https://api.myshoptet.com/api/system/endpoints
+  - GET https://developers.shoptet.com/addons/
+  - GET https://developers.shoptet.com/premium
+  - GET https://www.shoptet.cz/
+  - GET https://www.shoptetpremium.cz/

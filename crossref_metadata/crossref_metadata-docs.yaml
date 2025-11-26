@@ -1,0 +1,63 @@
+auth_info:
+- information_source; https://www.crossref.org/services/metadata-retrieval/metadata-plus/:
+  - Plus subscribers can create their own API keys to use with either or both the
+    OAI-PMH and REST API. API keys are required for accessing Metadata Plus features
+    and are used for authentication with these APIs.
+- ? information_source; https://www.crossref.org/documentation/retrieve-metadata/rest-api/tips-for-using-public-data-files-and-plus-snapshots/
+  : - 'Crossref API requires authentication via a token passed in the Crossref-Plus-API-Token
+      header. The token should be set as an environment variable (e.g., TOKEN) and
+      included in requests like curl -H "Crossref-Plus-API-Token: ${TOKEN}". This
+      token is necessary for accessing snapshot downloads from the API endpoint.'
+- information_source; https://www.crossref.org/documentation/retrieve-metadata/openurl/:
+  - No authentication is required, but an email address must be provided in the pid
+    query parameter for all requests. The email address serves as identification and
+    is used as the key for interfaces that require one.
+  - Your email address is required as the `pid` parameter in all requests to identify
+    you and allow contact if issues arise. The email should be included in request
+    parameters, and logs are retained for 90 days only.
+- information_source; https://www.crossref.org/documentation/retrieve-metadata/deposit-harvester/:
+  - Basic authentication is required using username and password credentials passed
+    as query parameters. Include usr=username and pwd=password in the request URL
+    query string to authenticate with the Crossref deposit harvester API.
+pagination_info:
+- information_source; https://www.crossref.org/documentation/retrieve-metadata/:
+  - Use query parameters page and rows to paginate results. The page parameter specifies
+    which page to retrieve (default 1), and rows specifies results per page (default
+    20, maximum 1000). Response includes total-results field indicating total number
+    of matching records.
+- ? information_source; https://www.crossref.org/documentation/retrieve-metadata/rest-api/a-non-technical-introduction-to-our-api/
+  : - Pagination uses query parameters rows (optional, default and maximum 2000) to
+      specify result set size and offset (optional, default 0) to specify the starting
+      position. Construct subsequent requests by incrementing the offset parameter
+      value by the rows value to retrieve the next batch of results.
+- information_source; https://www.crossref.org/documentation/retrieve-metadata/deposit-harvester/:
+  - Use resumption tokens for pagination when responses are too large. If a response
+    contains a resumption token, make an additional request with the same authentication
+    credentials (usr and pwd parameters) and include the resumption token to retrieve
+    remaining data. Continue until no resumption token is returned.
+- information_source; https://www.crossref.org/documentation/event-data/use/:
+  - The API uses a rows parameter (query string) to control page size, for example
+    rows=500 retrieves up to 500 events per request. The documentation references
+    a full API guide but does not explicitly describe how to paginate through multiple
+    pages, such as offset/limit parameters, cursor-based pagination, or response fields
+    indicating next pages.
+possible_base_urls:
+- information_source; https://www.crossref.org/documentation/retrieve-metadata/:
+  - https://api.crossref.org/v1
+- ? information_source; https://www.crossref.org/documentation/member-setup/constructing-your-dois/suffixes-containing-special-characters/
+  : - https://api.crossref.org
+possible_endpoints:
+- information_source; https://www.crossref.org/documentation/retrieve-metadata/:
+  - GET https://api.crossref.org/v1/
+  - GET https://api.crossref.org/v1/works/10.1088/0004-637X/722/2/971
+  - GET https://api.crossref.org/v1/works?filter=funder:10.13039/100000001
+  - GET https://api.crossref.org/v1/works?filter=update-type:retraction
+  - GET https://api.crossref.org/v1/works?query=allen+renear
+- ? information_source; https://www.crossref.org/documentation/member-setup/constructing-your-dois/suffixes-containing-special-characters/
+  : - GET https://api.crossref.org/works/{doi}
+- ? information_source; https://www.crossref.org/documentation/register-maintain-records/maintaining-your-metadata/updating-after-title-transfer/
+  : - GET http://api.crossref.org/works?filter=issn:2090-8091&rows=1000
+    - GET http://api.crossref.org/works?filter=issn:2090-8091&rows=1000&select=DOI,link
+    - GET http://api.crossref.org/works?query.container-title=Connections
+- information_source; https://www.crossref.org/documentation/funder-registry/funder-data-via-the-api/:
+  - GET https://api.crossref.org/funders

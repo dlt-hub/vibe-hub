@@ -1,0 +1,51 @@
+auth_info:
+- information_source; http://rapid.newsedge.com/api/documentation/?category=auth:
+  - API sessions are passed as a query parameter named "session" containing a session
+    token string. Sessions remain active for 3 minutes of inactivity, after which
+    they become invalid and a new session must be obtained via the session/login endpoint.
+    When a session expires, the API returns a status of ERROR with an error message
+    indicating the session is invalid.
+- information_source; http://rapid.newsedge.com/api/documentation/?category=auth&page=api/list:
+  - The OPENS API uses session-based authentication. To authenticate, call the session/login
+    endpoint with query parameters name (username) and password, which returns a user-token
+    value. Include this token in subsequent API requests via the session query parameter.
+- information_source; http://rapid.newsedge.com/api/documentation/?category=search:
+  - Authentication uses a session token passed as a query parameter. The required
+    parameter is session, which should contain the user token obtained from the authentication
+    system. The session token must be included in all API requests as a query parameter
+    (e.g., session=<<user-token>>).
+  - Session-based authentication is used. Pass the session token as a query parameter
+    named `session` in the request URL. The session token value is a hexadecimal string
+    like `935DA0B364E9E130F0EC3827FC3CCC9C`. Additional query parameters like `savedSearch`
+    and `searchDate` are also required for search requests.
+- information_source; https://rapid.newsedge.com/api/documentation/?category=auth:
+  - API sessions are managed via a session parameter passed in query strings. Sessions
+    remain active for 3 minutes of inactivity; when a session expires, re-authenticate
+    by calling the session/login endpoint to obtain a new session token, then include
+    that token as the session query parameter in subsequent API requests.
+pagination_info:
+- information_source; http://rapid.newsedge.com/api/documentation/?category=search:
+  - Pagination uses query parameter `resultsPerPage` (default 20) to control page
+    size. Response includes `pageInfo` with `totalResults`, `totalPages`, and `resultsPage`
+    fields indicating current page number. To navigate pages, use the `resultsPage`
+    parameter in subsequent requests, incrementing until `resultsPage` equals `totalPages`.
+possible_base_urls:
+- information_source; http://rapid.newsedge.com/api/documentation/?category=auth:
+  - https://secure.newsedge.com/opensapi/20/api/
+- information_source; http://rapid.newsedge.com/api/documentation/?category=auth&page=api/list:
+  - https://secure.newsedge.com/opensapi/20
+possible_endpoints:
+- information_source; http://rapid.newsedge.com/api/documentation/?category=auth:
+  - GET /sessions/getactivesessions
+  - GET https://secure.newsedge.com/opensapi/20/api/info
+  - POST /session/login
+- information_source; http://rapid.newsedge.com/api/documentation/?category=auth&page=api/list:
+  - GET https://secure.newsedge.com/opensapi/20/session/login
+  - GET https://secure.newsedge.com/opensapi/20/session/logout
+- information_source; http://rapid.newsedge.com/api/documentation/?category=search:
+  - GET https://secure.newsedge.com/opensapi/20/geography/search
+  - GET https://secure.newsedge.com/opensapi/20/news/search
+- information_source; https://rapid.newsedge.com/api/documentation/?category=auth:
+  - GET /sessions/getactivesessions
+  - GET https://secure.newsedge.com/opensapi/20/api/info
+  - POST /session/login

@@ -1,0 +1,55 @@
+auth_info:
+- information_source; https://docs.opencue.io/docs/quick-starts/quick-start-cueweb/:
+  - The API uses JWT (JSON Web Token) bearer authentication. Send the token in the
+    Authorization header as "Bearer $JWT_TOKEN". The JWT is constructed by base64url-encoding
+    a header and payload separated by a dot, then appending a base64url-encoded HMAC-SHA256
+    signature of those components using a secret key. Ensure the JWT_SECRET environment
+    variable matches between the client and REST Gateway for successful authentication.
+- information_source; https://docs.opencue.io/docs/concepts/cueweb-rest-gateway/:
+  - The REST Gateway uses JWT (JSON Web Token) authentication. Clients send HTTP POST
+    requests with a JWT token, which the Gateway validates for signature and expiration
+    before translating the request to gRPC and forwarding to Cuebot. The token is
+    sent in the HTTP request (specific header name not detailed in this excerpt, but
+    standard practice is the Authorization header with Bearer scheme).
+- information_source; https://docs.opencue.io/docs/getting-started/deploying-rest-gateway/:
+  - JWT-based authentication is required. Send a Bearer token in the Authorization
+    header with format "Bearer <token>". The JWT_SECRET environment variable must
+    be set correctly, and tokens will expire over time.
+- information_source; https://docs.opencue.io/docs/getting-started/deploying-cueweb/:
+  - OAuth 2.0 authentication is supported via Google, Okta, or GitHub providers. Redirect
+    URIs must be configured for each provider at https://cueweb.company.com/api/auth/callback/{provider}.
+    Authentication can be disabled in development by commenting out NEXT_PUBLIC_AUTH_PROVIDER
+    in the .env file.
+- information_source; https://docs.opencue.io/docs/user-guides/using-rest-api/:
+  - All REST Gateway endpoints require JWT authentication. Generate a JWT token by
+    encoding a payload with HS256 algorithm using the JWT_SECRET environment variable,
+    then send it in the Authorization header as "Bearer <token>". The payload should
+    include a user claim and exp claim for expiration.
+pagination_info:
+- information_source; https://docs.opencue.io/docs/reference/rest-api-reference/:
+  - Use page (required, starts at 1) and limit (required, max 100) query parameters
+    in the request body's req object to paginate frames. The response returns a frames
+    array; continue paginating by incrementing page until no more frames are returned.
+  - Use page and limit parameters in the request body to paginate frame results. page
+    starts at 1 and limit specifies the maximum number of frames per request. Stop
+    paginating when fewer frames than the limit are returned.
+possible_base_urls:
+- information_source; https://docs.opencue.io/docs/quick-starts/quick-start-cueweb/:
+  - http://localhost:8448
+- information_source; https://docs.opencue.io/docs/getting-started/deploying-rest-gateway/:
+  - http://localhost:8448
+possible_endpoints:
+- information_source; https://docs.opencue.io/docs/quick-starts/quick-start-cueweb/:
+  - POST http://localhost:8448/show.ShowInterface/GetShows
+- information_source; https://docs.opencue.io/docs/getting-started/deploying-rest-gateway/:
+  - POST http://localhost:8448/show.ShowInterface/GetShows
+- information_source; https://docs.opencue.io/docs/user-guides/using-rest-api/:
+  - POST http://localhost:8448/job.JobInterface/GetJobs
+  - POST http://localhost:8448/show.ShowInterface/GetShows
+- information_source; https://docs.opencue.io/docs/reference/rest-api-reference/:
+  - POST /deed.DeedInterface/GetHost
+  - POST /deed.DeedInterface/GetOwner
+  - POST /depend.DependInterface/GetDepend
+  - POST /depend.DependInterface/Satisfy
+  - POST /depend.DependInterface/Unsatisfy
+  - POST /facility.AllocationInterface/Find

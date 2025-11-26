@@ -1,0 +1,47 @@
+auth_info:
+- information_source; https://help.lengow.com/hc/en-us/articles/360011980072-Getting-started-on-the-Lengow-API:
+  - Access token authentication is required for all API requests. Obtain an access
+    token (a UUID-like string such as "6b7280eb-e7d4-4b94-a829-7b3853a20126"), then
+    include it in the Authorization header for every API request.
+- information_source; https://help.lengow.com/hc/en-us/articles/9581380274716-API-Best-Practice-for-Orders-API:
+  - 'Authorization header with a UUID token. Send the token in the Authorization header
+    as a Bearer token or direct value. The exact format shown is `Authorization: 69946b78-edae-49b8-8874-6fb025e09a58`
+    (a UUID string).'
+  - 'Authorization header with a token value. Send the token in the HTTP header named
+    ''Authorization'' with the format ''Authorization: [token_value]''. The token
+    appears to be a UUID-like string (example: 69946b78-edae-49b8-8874-6fb025e09a58).'
+  - 'Authorization header with bearer token format. Send credentials as ''Authorization:
+    {token}'' where token is a UUID-like string (e.g., ''69946b78-edae-49b8-8874-6fb025e09a58'').
+    The token appears to be account-specific and is required for all API requests.'
+  - 'Authorization uses bearer tokens passed in the Authorization header. Send the
+    token value directly in the Authorization header (e.g., Authorization: 69946b78-edae-49b8-8874-6fb025e09a58).
+    The /me endpoint returns token expiration time and scopes including feed_id, account_id,
+    catalog_id, and product_id.'
+pagination_info:
+- information_source; https://help.lengow.com/hc/en-us/articles/360011980072-Getting-started-on-the-Lengow-API:
+  - To use pagination, specify the query parameter page with a given page number as
+    a non-negative integer. Resources that return lists of entities are paginated,
+    though the documentation does not provide details on response fields, default
+    values, or stopping conditions.
+- information_source; https://help.lengow.com/hc/en-us/articles/9581380274716-API-Best-Practice-for-Orders-API:
+  - Pagination uses a maximum of 100 items per page. Responses include a "next" key
+    containing the URL to the next page, or null if on the last page. Continue paginating
+    only when "next" is not null; stop when it is null to avoid unnecessary 404 errors.
+  - The API uses offset-based pagination with a page parameter. The response includes
+    a count field showing total results (16778), a next field containing the URL for
+    the next page, and a previous field for the previous page. To paginate, use the
+    next URL provided in the response, or manually add the page parameter to the query
+    string. Stop paginating when next is null.
+  - The list of orders is paginated with a maximum of 100 items per page. If additional
+    pages are available, the response JSON contains a "next" key with the URL for
+    the next page; pagination is complete when "next" is absent.
+possible_base_urls:
+- information_source; https://help.lengow.com/hc/en-us/articles/9581380274716-API-Best-Practice-for-Orders-API:
+  - https://api.lengow.io
+  - https://api.lengow.io/v3.0
+possible_endpoints:
+- information_source; https://help.lengow.com/hc/en-us/articles/9581380274716-API-Best-Practice-for-Orders-API:
+  - GET https://api.lengow.io/me
+  - GET https://api.lengow.io/v3.0/orders/
+  - GET https://api.lengow.io/v3.0/orders/actions/
+  - GET https://api.lengow.io/v3.0/orders/actions/?account_id=1&id=81982959

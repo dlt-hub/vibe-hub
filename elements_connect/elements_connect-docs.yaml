@@ -1,0 +1,46 @@
+auth_info:
+- information_source; https://doc.elements-apps.com/elements-connect-cloud/rest-api:
+  - 'Elements Connect REST API supports OAuth 2.0 with two grant types: Authorization
+    Code flow for user-level authentication (used with services like Salesforce, Google
+    APIs, Microsoft Graph, GitHub, Dropbox) and Client Credentials flow for application-level
+    access without refresh token support. The Authorization Code flow redirects users
+    to an authorization server for login and consent, then exchanges an authorization
+    code for an access token. Client Credentials flow requires the client to request
+    a new access token when the previous one expires since refresh tokens are not
+    supported.'
+  - 'Elements Connect supports multiple authentication modes: No auth, Basic auth,
+    API Key, OAuth 2 Client credentials, and OAuth 2 Authorization Code. For Basic
+    auth, provide username and password which are base64-encoded and sent as Authorization
+    header in format "Basic <base64(username:password)>". For API Key, specify the
+    key name and value to be sent either as a request header or query parameter, and
+    Elements Connect will add it to every call.'
+  - This documentation describes OAuth2 authorization code grant flow. The app receives
+    an authorization code from the server after user approval, exchanges it for an
+    access token (and optionally a refresh token) at the authorization server, then
+    includes the access token in requests to access protected resources. Refresh tokens
+    are automatically renewed by Elements Connect when supported by the service, or
+    manually refreshed by a Jira admin if automatic renewal is not available.
+- information_source; https://doc.elements-apps.com/elements-connect/oauth2-client-credentials:
+  - OAuth2 Client Credentials flow is used for server-to-server machine authentication.
+    The application must authenticate to the /token endpoint using client_id and client_secret
+    to obtain an access token, which is then used for subsequent API requests.
+  - OAuth2 Client Credentials grant type is used to authenticate with Okta's REST
+    API. The flow requires registering Elements Connect as an application, obtaining
+    a Client ID and Client secret, then configuring the datasource with OAuth2 Client
+    Credentials authentication type. No refresh tokens are supported; new access tokens
+    are requested when the previous one expires. Required configuration fields include
+    Client ID, Client secret, and granted scopes for access level control.
+possible_base_urls:
+- information_source; https://doc.elements-apps.com/elements-connect/jira-rest-api:
+  - https://docs.atlassian.com/software/jira/docs/api/REST/8.13.6
+  - https://docs.atlassian.com/software/jira/docs/api/REST/latest
+possible_endpoints:
+- information_source; https://doc.elements-apps.com/elements-connect/jira-rest-api:
+  - GET /createmeta
+  - GET /rest/api/2/issue/createmeta/{projectIdOrKey}/issuetypes/{issueTypeId}
+  - GET /rest/api/2/issue/{issueIdOrKey}
+  - GET /rest/api/2/search
+  - POST /rest/api/2/issue
+  - PUT /rest/api/2/issue/{issueIdOrKey}
+- information_source; https://doc.elements-apps.com/elements-connect/oauth2-client-credentials:
+  - POST /token

@@ -1,0 +1,61 @@
+auth_info:
+- information_source; https://api.exchange.cryptomkt.com/v2:
+  - API authentication uses HTTP Basic Auth with public and secret keys. Send credentials
+    as `-u "publicKey:secretKey"` in the Authorization header. Additionally, certain
+    endpoints require specific API key Access Rights, such as "Payment information"
+    for the crypto withdrawal estimate endpoints.
+  - API key and secret key authentication using HTTP Basic Auth. Include credentials
+    as "publicKey:secretKey" in the Authorization header (base64-encoded) or use the
+    -u flag in curl requests. The API key must have appropriate permissions for the
+    requested operation.
+  - API key authentication using HTTP Basic Auth. Send credentials as `-u "publicKey:secretKey"`
+    in the request header, where publicKey is the username and secretKey is the password.
+    This applies to endpoints like POST /api/2/sub-acc/freeze. No specific API key
+    Access Rights are required for these subaccount operations.
+  - API key authentication using HTTP Basic Auth. Send credentials as `publicKey:secretKey`
+    in the Authorization header (base64-encoded). The endpoint requires an API key
+    with "Withdraw cryptocurrencies" access right for the crypto withdraw operation,
+    and "Payment information" access right for the transfer-convert operation.
+  - API key authentication using HTTP Basic Auth. Send credentials as a base64-encoded
+    "publicKey:secretKey" pair in the Authorization header using the format "Basic
+    base64(publicKey:secretKey)". Certain endpoints require specific API key Access
+    Rights such as "Withdraw cryptocurrencies" or "Payment information".
+pagination_info:
+- information_source; https://api.exchange.cryptomkt.com/v2:
+  - Pagination uses `limit` (query parameter, optional, default 100, max 1000) and
+    `offset` (query parameter, optional, default 0, max 100000) to control page size
+    and starting position. Response is a flat array of candles with no explicit pagination
+    fields; construct next request by incrementing offset by limit value.
+  - Pagination uses an index-based approach where the from query parameter specifies
+    a 64-bit integer threshold, limit controls results per request (default 100),
+    sort determines order (ASC or DESC), and by specifies the sort field (index).
+    Stop paginating when the response contains fewer results than the limit or when
+    no new transactions exist beyond the current index.
+  - Pagination uses limit and from parameters in query string. limit parameter controls
+    page size (example shows limit=100 and limit=10). from parameter specifies the
+    starting trade ID for the next request, constructed by adding 1 to the last trade's
+    id from the previous response. Stop paginating when the response contains fewer
+    trades than the limit or is empty.
+  - Pagination uses limit and offset parameters. limit is optional with a default
+    of 100 and maximum of 1000, while offset is optional with a default of 0 and maximum
+    of 100000. When clientOrderId is provided, other parameters including limit and
+    offset are ignored.
+  - Pagination uses offset and limit parameters. The limit parameter controls page
+    size with a default of 100 and maximum of 1000, while offset parameter specifies
+    the starting position with a default of 0 and maximum of 100000.
+possible_base_urls:
+- information_source; https://api.exchange.cryptomkt.com/v2:
+  - https://api.cryptomarket.com
+  - https://api.cryptomarket.com/v2
+possible_endpoints:
+- information_source; https://api.exchange.cryptomkt.com/v2:
+  - DELETE /api/2/account/crypto/withdraw/{id}
+  - DELETE /api/2/order
+  - DELETE https://api.exchange.cryptomkt.com/api/2/order/{clientOrderId}
+  - GET /account/crypto/address
+  - GET /account/crypto/address/{currency}
+  - GET /account/crypto/addresses/{currency}
+  - GET /account/crypto/estimate-withdraw
+  - GET /account/crypto/used-addresses/{currency}
+  - GET /api/2/account/crypto/address/{currency}
+  - GET /api/2/account/crypto/addresses/{currency}

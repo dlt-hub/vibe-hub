@@ -1,0 +1,50 @@
+auth_info:
+- information_source; https://ddfapi-docs.realtor.ca/:
+  - Bearer token authentication is required. Send the access token obtained from the
+    previous authentication step in the Authorization header as "Bearer {access_token}"
+    with each API request.
+  - The DDF Web API uses OAuth2 client credentials grant type for authentication.
+    To obtain an access token, send a POST request to https://identity.crea.ca/connect/token
+    with x-www-form-urlencoded body containing client_id (username), client_secret
+    (password), grant_type set to "client_credentials", and scope set to "DDFApi_".
+    The response returns access_token, expires_in, token_type (Bearer), and scope
+    fields. Include the access_token in the Authorization header as a Bearer token
+    for all subsequent API requests.
+  - "The DDF\xAE Web API uses OAuth 2.0 for authorization. All API requests require\
+    \ a Bearer token passed in the Authorization header as \"Authorization: Bearer\
+    \ {access_token}\". Tokens are obtained by sending a POST request to an Identity\
+    \ Server endpoint with valid data feed credentials; server-to-server token requests\
+    \ are recommended over client-to-server requests for security."
+  - "The REALTOR.ca DDF\xAE Web API requires bearer token authentication. Include\
+    \ an `access_token` with each API call to access endpoints and data. The `access_token`\
+    \ is generated using data feed credentials by calling the authentication server."
+pagination_info:
+- information_source; https://ddfapi-docs.realtor.ca/:
+  - Pagination uses OData query parameters $top (page size) and $skip (offset) in
+    the request URL. The response includes an @odata.nextLink field containing the
+    next request URL with updated $skip value. Use $count parameter to retrieve total
+    record count for calculating total pages, though this increases overhead so request
+    it once. Results must be sorted to avoid duplicates across pages. For paginating
+    beyond 10,000 listings, use dedicated replication endpoints (OfficeReplication,
+    MemberReplication, PropertyReplication) which return recently modified records
+    sorted by modification timestamp.
+  - Results are paginated with a default page size of 20 records, increasable to a
+    maximum of 100 using the $top query parameter. If additional pages exist, the
+    response includes an @odata.nextLink field containing the URL to the next page;
+    use this URL to fetch subsequent pages until @odata.nextLink is absent.
+possible_base_urls:
+- information_source; https://ddfapi-docs.realtor.ca/:
+  - https://ddfapi-docs.realtor.ca/
+  - https://ddfapi.realtor.ca
+possible_endpoints:
+- information_source; https://ddfapi-docs.realtor.ca/:
+  - GET /Destination
+  - GET /Destination(Destina
+  - GET /Member
+  - GET /Member(MemberKey)/M
+  - GET /Member/MemberReplic
+  - GET /OpenHouse
+  - GET /OpenHouse(OpenHouse
+  - GET /Property
+  - GET /Property(PropertyKe
+  - GET /Property/PropertyRe

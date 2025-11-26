@@ -1,0 +1,60 @@
+auth_info:
+- information_source; https://connect.withsecure.com/getting-started/elements:
+  - A client must authenticate using OAuth2 bearer token credentials provided in the
+    Authorization header as "Bearer <access_token>". The access token is obtained
+    through Elements API client credentials (created at either organization or partner
+    level), and the client can only retrieve security events for organizations within
+    the scope of those credentials.
+  - Bearer token authentication is required in the Authorization header. Send the
+    token as "Bearer ${token}" in the Authorization header for GET requests to the
+    API.
+  - Bearer token authentication is required. Include the access token in the Authorization
+    header as "Bearer <access_token>".
+  - Bearer token authentication is required. Send the access token in the Authorization
+    header as "Bearer <access_token>".
+  - Elements API uses OAuth2 client credentials flow for authentication. Clients must
+    authenticate by sending a POST request to /as/token.oauth2 with Base64-encoded
+    credentials in the Authorization header using "Basic" scheme, form data containing
+    grant_type set to "client_credentials", and a scope parameter (either "connect.api.read"
+    for read-only or "connect.api.write" for write operations). A User-Agent header
+    is required on all requests or they will be rejected.
+pagination_info:
+- information_source; https://connect.withsecure.com/getting-started/elements:
+  - Collections are paginated with up to 200 items per page. Use the `nextAnchor`
+    value from the response as the `anchor` query parameter in the next request to
+    iterate through pages. The `limit` query parameter controls page size. Stop paginating
+    when `nextAnchor` is not returned or is null.
+  - Pagination uses query parameters anchor (cursor for next page) and limit (page
+    size, default/max 10). Use the anchor value from the response to request the next
+    page; stop when no anchor is returned.
+- information_source; https://connect.withsecure.com/getting-started/elements-cookbook:
+  - Pagination uses a limit parameter (set to 50 in the example) as a query parameter
+    to control page size, and a next_page parameter to retrieve subsequent pages.
+    Stop paginating when no next_page value is returned in the response.
+  - Pagination uses a limit query parameter to specify maximum items per response
+    (default appears to be configurable, example shows 10). The response includes
+    an items array and a nextAnchor property; if nextAnchor is present, include it
+    as a parameter in the next request to fetch the next page. Stop paginating when
+    nextAnchor is absent from the response.
+  - 'Use query parameters for pagination: `limit` (default 200) controls page size,
+    `persistenceTimestampStart` specifies the timestamp threshold, and `exclusiveStart`
+    (boolean, must be `true` to avoid duplicates) determines whether results are strictly
+    greater than or greater-than-or-equal-to the timestamp. Use the `next_page` token
+    from the response to fetch subsequent pages.'
+possible_base_urls:
+- information_source; https://connect.withsecure.com/getting-started/elements:
+  - api.connect.withsecure.com
+  - https://api.connect.withsecure.com
+possible_endpoints:
+- information_source; https://connect.withsecure.com/getting-started/elements:
+  - GET /devices/v1/devices
+  - GET /organizations/v1/organizations
+  - GET https://api.connect.withsecure.com/devices/v1/devices
+  - GET https://api.connect.withsecure.com/organizations/v1/organizations
+  - GET https://api.connect.withsecure.com/whoami/v1/whoami
+  - POST /as/token.oauth2
+  - POST /security-events/v1/security-events
+  - POST https://api.connect.withsecure.com/security-events/v1/security-events
+- information_source; https://connect.withsecure.com/getting-started/elements-cookbook:
+  - GET /incidents/v1/incidents
+  - GET https://api.connect.withsecure.com/devices/v1/devices

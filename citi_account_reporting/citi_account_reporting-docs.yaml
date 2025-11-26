@@ -1,0 +1,59 @@
+auth_info:
+- information_source; https://developer.citi.com/apidocs/account-reporting/statements/statements-api-reference/:
+  - Authorization uses OAuth 2.0 with the client credentials grant type. The OAuth
+    token must be sent in the Authorization header prefixed with "Bearer" followed
+    by a space. The endpoint requires both Content-Type (supporting "application/XML"
+    or "application/JSON") and Authorization headers.
+  - 'OAuth2 with client credentials flow is required. Pass the client_id as a query
+    parameter and include the OAuth token in the Authorization header prefixed with
+    "Bearer ".
+
+
+    Query parameter: client_id (your unique identifier from CitiConnect API onboarding)
+
+    Header: Authorization (format: "Bearer {oauth_token}")
+
+    Header: Content-Type (application/xml or application/json)'
+  - OAuth2 with client credentials flow. Required query parameter client_id (your
+    unique CitiConnect identifier) and required Authorization header with Bearer token
+    format (OAuth token prefixed with "Bearer "). Token must be obtained separately
+    via OAuth token generation.
+- information_source; https://developer.citi.com/apidocs/:
+  - Access tokens are valid for 1800 seconds with expiration time returned in the
+    expires_in field. No refresh token is provided; request a new token either by
+    monitoring expires_in or handling 401 Unauthorized responses. Most API requests
+    require asymmetric PKI encryption and signing using a signing certificate (with
+    alias in signKeyAlias field and password in signKeyPassword field), except those
+    using V4 authentication endpoint which do not require signing encryption. Include
+    the path to your local certificate in FileInputStream and the Citi encryption
+    certificate path on your server.
+  - Basic authentication is required, sent via the Authorization header as "Basic
+    " followed by Base64-encoded credentials in the format "username:password". Additionally,
+    mutual TLS (mTLS) authentication is implemented using a PKCS12 client certificate
+    keystore with a password-protected private key, and the API requires X.509 certificate-based
+    encryption for the request payload. OAuth2 client credentials grant type with
+    scope "/authenticationservices/v1" is used to obtain tokens.
+pagination_info:
+- information_source; https://developer.citi.com/apidocs/account-reporting/balances/balances-api-reference:
+  - Pagination uses a page-based scheme with page_number query parameter (integer
+    >= 1, default 1). The response includes a pagination-metadata header containing
+    total_page property; increment page_number for subsequent requests until page_number
+    exceeds total_page.
+possible_base_urls:
+- information_source; https://developer.citi.com/apidocs/account-reporting/statements/statements-api-reference/:
+  - https://tts.apib2b.citi.com/citiconnect/prod/accountstatementservices/v1
+  - https://tts.sandbox.apib2b.citi.com/citiconnect/sb/accountstatementservices/v1
+possible_endpoints:
+- information_source; https://developer.citi.com/apidocs/account-reporting/statements/statements-api-reference/:
+  - POST /statements
+  - POST https://tts.apib2b.citi.com/citiconnect/prod/accountstatementservices/v1/statement/retrieval
+  - POST https://tts.sandbox.apib2b.citi.com/citiconnect/sb/accountstatementservices/v1/mock/statement/retrieval
+- information_source; https://developer.citi.com/apidocs/authentication/authentication-api-reference:
+  - POST /authenticationservices/v1
+  - POST /authenticationservices/v2/oauth/token
+  - POST /v4/oauth2/token
+  - POST https://tts.apib2b.citi.com/citiconnect/prod/authenticationservices/v1/oauth/token
+  - POST https://tts.sandbox.apib2b.citi.com/cit/authenticationservices/v2/oauth/token
+  - POST https://tts.sandbox.apib2b.citi.com/citiconnect/sb/authenticationservices/v1/oauth/token
+- information_source; https://developer.citi.com/apidocs/account-reporting/statements/statements-api-reference:
+  - POST /Create Payment Account Statements

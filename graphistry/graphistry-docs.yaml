@@ -1,0 +1,75 @@
+auth_info:
+- information_source; https://hub.graphistry.com/docs/api/2/rest/curl-tutorial/:
+  - Authentication uses username and password credentials sent as JSON in the request
+    body to the /api-token-auth/ endpoint. The response returns a token value that
+    must be extracted and subsequently used as the GRAPHISTRY_TOKEN environment variable
+    for authenticated requests. Send credentials as JSON fields "username" and "password"
+    in the POST request body to obtain the token.
+  - Authorization uses Bearer tokens passed in the Authorization header. Set the Authorization
+    header to "Bearer ${GRAPHISTRY_TOKEN}" where GRAPHISTRY_TOKEN is an environment
+    variable containing your authentication token. This token is required for POST
+    requests to /api/v2/files/ and /api/v2/upload/files/{FILE_ID} endpoints.
+  - Graphistry uses JWT tokens for API authentication. To obtain a token, send a POST
+    request to /api-token-auth/ with a JSON body containing username and password
+    fields. The returned JWT token should then be included in subsequent API calls
+    for authentication and authorization. The token grants access to the corresponding
+    user account, so token transmission should be carefully controlled depending on
+    whether it is used by a server or client application.
+- information_source; https://hub.graphistry.com/docs/api/1/rest/auth/:
+  - Use your account credentials to obtain a short-lived JWT token (approximately
+    1 hour validity). Include the token in HTTP requests as an Authorization header.
+    Tokens can be refreshed by exchanging for a new one, but full credential re-login
+    is required daily as tokens are valid for exchange only up to 24 hours.
+- information_source; https://hub.graphistry.com/docs/api/2/rest/sso/:
+  - Admin-restricted single-use token authentication for external dataset access.
+    Admins call GET /api/v2/generate/single-use-url/?username=any_username&dataset_id=DATASET_ID
+    with Bearer token authorization header to receive a magic login URL containing
+    a one-time sesame token passed as query parameter sst. External users access the
+    URL to gain temporary dataset-scoped access. Token configuration uses SESAME_TOKEN_NAME
+    (default sst), SESAME_MAX_AGE (default 3600 seconds), and SESAME_ONE_TIME (default
+    True for single-use enforcement). Admins revoke access via GET /api/v2/logout-user/username/.
+pagination_info:
+- information_source; https://hub.graphistry.com/docs/UDF/gfql-udf-api/:
+  - Pagination uses limit and offset query parameters. limit (optional) controls the
+    number of results per page, and offset (required) specifies which page to view.
+    The response includes a count field for total UDF endpoints and a next field containing
+    a link to the next page (or null when no more pages exist).
+  - Use limit (optional, integer) and offset (required, integer) query parameters
+    to paginate results. Response includes count (total number of endpoints), next
+    (string or null with link to next page), previous (string or null with link to
+    previous page), and results array containing UDF endpoint objects. Construct subsequent
+    requests using the next/previous links or by adjusting offset and limit parameters.
+- information_source; https://hub.graphistry.com/docs/UDF/py-udf-api/:
+  - Pagination uses optional query parameter `limit` (integer, controls results per
+    page) and required query parameter `offset` (integer, specifies page to view).
+    Response includes `count` (total UDF endpoints) and `next` (string or null, likely
+    indicates next page URL).
+  - Pagination uses optional query parameter `limit` to specify results per page and
+    required query parameter `offset` to specify the page number. Response includes
+    `next` and `previous` fields containing links to navigate pages, and `count` field
+    with total number of results.
+- information_source; https://hub.graphistry.com/docs/api/2/rest/upload/:
+  - Offset-based pagination is used for listing datasets. The request accepts optional
+    query parameters limit (integer) and offset (integer). The response includes count
+    (total number of datasets), next (URL to next page or null), previous (URL to
+    previous page or null), and results array containing dataset objects. Use the
+    next/previous URLs or construct new requests with updated offset values to navigate
+    pages.
+possible_base_urls:
+- information_source; https://hub.graphistry.com/docs/api/2/rest/curl-tutorial/:
+  - ${GRAPHISTRY_BASE_PATH}
+- information_source; https://hub.graphistry.com/docs/api/2/rest/sso/:
+  - http://localhost
+possible_endpoints:
+- information_source; https://hub.graphistry.com/docs/api/2/rest/curl-tutorial/:
+  - PATCH /api/v2/upload/files/MY_FILE_ID/
+  - POST ${GRAPHISTRY_BASE_PATH}/api-token-auth/
+  - POST ${GRAPHISTRY_BASE_PATH}/api/v2/files/
+  - POST ${GRAPHISTRY_BASE_PATH}/api/v2/upload/files/${EDGES_FILE_ID}?erase=true
+  - POST /api-token-auth/
+  - POST /api/v2/files/
+  - POST /api/v2/upload/files/MY_FILE_ID?erase=true
+- information_source; https://hub.graphistry.com/docs/api/2/rest/sso/:
+  - GET /api/v2/g/sso/oidc/login
+  - GET /api/v2/generate/single-use-url/?username=any_username&dataset_id=DATASET_ID
+  - GET /api/v2/logout-user/username/

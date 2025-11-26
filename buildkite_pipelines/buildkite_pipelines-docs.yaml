@@ -1,0 +1,62 @@
+auth_info:
+- information_source; https://buildkite.com/docs/apis:
+  - Buildkite uses bearer token authentication for both REST and GraphQL APIs. Generate
+    an API access token via the Buildkite dashboard, then include it in the Authorization
+    header as "Bearer $TOKEN" when making requests to https://api.buildkite.com. Tokens
+    require appropriate scopes; GraphQL API access requires the "Enable GraphQL API
+    Access" permission.
+  - 'The Buildkite REST and GraphQL APIs require bearer token authentication. Include
+    an access token in the Authorization HTTP header using the format "Authorization:
+    Bearer $TOKEN". Generate an access token from the Buildkite user API access tokens
+    page. Tokens can be assigned different scopes to control permissions.'
+- information_source; https://buildkite.com/docs/apis/agent-api:
+  - 'The agent REST API uses an agent token for authentication. Set the Authorization
+    HTTP header to the string "Token" followed by a space and the agent token value.
+    Example: Authorization: Token $TOKEN'
+- information_source; https://buildkite.com/docs/apis/managing-api-tokens:
+  - Buildkite API uses access tokens issued to individual user accounts. Tokens are
+    created in personal settings and scoped to specific organizations and permissions.
+    Send the token in the Authorization header as a bearer token to authenticate requests.
+    Token scopes include read_agents, write_agents, and others that grant granular
+    permissions to specific API resources and operations.
+- information_source; https://buildkite.com/docs/apis/rest-api:
+  - 'Access tokens are sent via the Authorization HTTP header as Bearer tokens: set
+    `Authorization: Bearer $TOKEN`. Alternatively, API tokens can be created with
+    public/private key pairs, where the private key signs JWTs containing the token
+    UUID as the `iss` claim, `iat` within 10 seconds of current time, and `exp` within
+    5 minutes of `iat`. Basic HTTP authentication is not supported. Tokens can be
+    revoked from the web interface or REST API.'
+pagination_info:
+- information_source; https://buildkite.com/docs/apis/rest-api:
+  - Pagination uses query string parameters page and per_page to control which page
+    and how many results per page to retrieve. The API returns a Link header with
+    rel="next" and rel="last" to indicate the next page URL and last page URL respectively.
+  - Pagination uses the `Link` HTTP response header containing `next`, `prev`, `first`,
+    and `last` relations with full URLs. Extract the URL from the appropriate relation
+    and make the next request to that URL to navigate pages.
+  - Use `page` (optional, default 1) and `per_page` (optional, default 30) query parameters
+    to paginate list endpoints. Response includes `total_count` header indicating
+    total results; continue requesting with incremented `page` value until results
+    are exhausted.
+- information_source; https://buildkite.com/docs/apis/rest-api/artifacts:
+  - Use page query parameter (default 1) and per_page query parameter (default 30,
+    max 100) to paginate through artifacts. Response includes page, total_pages, and
+    total_count fields to determine pagination state and construct subsequent requests.
+possible_base_urls:
+- information_source; https://buildkite.com/docs/apis:
+  - https://api.buildkite.com
+  - https://api.buildkite.com/v2
+possible_endpoints:
+- information_source; https://buildkite.com/docs/apis:
+  - GET https://api.buildkite.com/v2/user
+- information_source; https://buildkite.com/docs/apis/agent-api:
+  - GET https://agent.buildkite.com
+  - GET https://agent.buildkite.com/v3/metrics
+- information_source; https://buildkite.com/docs/apis/rest-api:
+  - DELETE /v1/organizations/{org.slug}/agents/{id}
+  - GET https://api.buildkite.com
+  - GET https://api.buildkite.com/v2/access-token
+  - GET https://api.buildkite.com/v2/organizations/my-great-org/pipelines/my-pipeline/builds
+  - GET https://api.buildkite.com/v2/organizations/my-org/pipelines/my-pipeline/builds
+  - GET https://api.buildkite.com/v2/user
+  - POST /v1/organizations/{org.slug}/agents

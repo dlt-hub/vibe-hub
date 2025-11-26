@@ -1,0 +1,57 @@
+auth_info:
+- information_source; https://www.digital.govt.nz/dmsdocument/231~api-guidelines-part-b-api-security-2022/html:
+  - Access tokens are used for API authorization in this OAuth2-based flow. Bank control
+    issues auth tokens and ID tokens to the Broker, which then exchanges the auth
+    token for an access token. The Broker subsequently includes the access token in
+    requests to the Bank for payment operations and other API calls.
+  - Authorization uses OAuth2 with scope-based access control. Scopes are defined
+    by the client application developer and passed as a scope parameter to the authorization
+    server with the authorization code token. Scopes are embedded in the access token
+    and limit what operations the client can perform, such as read or write access.
+    Scope identifiers follow a URL format, for example https://api.nzbn.govt.nz/auth/pbd.readwrite
+    for read-write access to primary business data or read-only equivalents.
+  - Mutual TLS certificate binding for OAuth access tokens. OAuth authorization servers
+    bind access tokens to client mutual-TLS certificates, and resource servers validate
+    that presented tokens were issued to the client presenting them. Additionally,
+    OAuth 2.1 requires PKCE for authorization code flow clients, exact string matching
+    for redirect URIs, and omits implicit and resource owner password credential grants.
+  - OpenID Connect authentication runs on top of OAuth 2.0 and requires TLS/MTLS for
+    all communication. Authentication uses ID tokens (JWTs signed by the authorization
+    server) obtained through OAuth 2.0 grant flows with the scope parameter set to
+    "openid", plus additional scopes like "profile" to request specific user claims/attributes.
+    The ID token and access token are used to call the Userinfo endpoint to retrieve
+    user claims, with tokens required to be signed for authentication and integrity.
+  - RFC 6750 specifies that bearer tokens are used in HTTP requests to access OAuth
+    2.0 protected resources. Bearer tokens should be sent in the Authorization header
+    and must be protected via TLS 1.2 or higher (RFC 8996 deprecates TLS 1.0 and 1.1).
+    RFC 7009 describes a token revocation endpoint where clients must validate their
+    credentials before revoking access or refresh tokens. RFC 7519 defines JWT as
+    a means to represent claims between parties, encoded as JSON and digitally signed
+    or integrity protected.
+pagination_info:
+- information_source; https://www.digital.govt.nz/dmsdocument/232~api-guidelines-part-c-api-development-2022/html:
+  - Pagination uses a page query parameter (required, starting at page 1). Responses
+    include pageSize, page, totalItems, totalPages, and _links array with rel values
+    (first, prev, next, last) containing href URLs for navigation. Stop paginating
+    when page equals totalPages or when next link is absent.
+  - Pagination uses query arguments limit and start to control result sets. Response
+    includes _links array with rel="next" and rel="prev" containing href URLs with
+    updated limit and start parameters for navigating to subsequent and previous pages.
+possible_base_urls:
+- information_source; https://www.digital.govt.nz/dmsdocument/231~api-guidelines-part-b-api-security-2022/html:
+  - https://api.nzbn.govt.nz
+- information_source; https://www.digital.govt.nz/dmsdocument/232~api-guidelines-part-c-api-development-2022/html:
+  - http://api.example.govt.nz/v1/example-service/search
+possible_endpoints:
+- information_source; https://www.digital.govt.nz/dmsdocument/231~api-guidelines-part-b-api-security-2022/html:
+  - GET /userinfo
+- information_source; https://www.digital.govt.nz/dmsdocument/232~api-guidelines-part-c-api-development-2022/html:
+  - DELETE https://api.example.govt.nz/passengers/123
+  - DELETE https://api.example.govt.nz/passengers/12345/flights/1w3r4y6u
+  - GET /claims
+  - GET /customers/{customerId}
+  - GET https://api.example.govt.nz/crown-property/0219c539-5885-4ab6-a55b-b0de7537c426
+  - GET https://api.example.govt.nz/groups/search?status=active,inactive&sort=name,status
+  - GET https://api.example.govt.nz/passengers/12345/1w3r4y6u
+  - GET https://api.example.govt.nz/passengers/12345/flights
+  - GET https://api.example.govt.nz/providers/123

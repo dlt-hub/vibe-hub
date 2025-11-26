@@ -1,0 +1,79 @@
+auth_info:
+- information_source; https://doc.toasttab.com/doc/devguide/apiDeveloperPortal.html:
+  - Client ID and Client secret are required credentials for API access. Authentication
+    uses these credentials to obtain an access token. Scopes control access to specific
+    Toast APIs and endpoints. Client secret can be rotated to terminate existing credentials
+    and create new ones.
+- information_source; https://doc.toasttab.com/doc/devguide/apiDeveloperPortalCustomIntegrations.html:
+  - The Toast API uses OAuth2-style authentication with client credentials. You need
+    Client ID and Client secret from the Credentials page to obtain authentication
+    tokens. Access to specific APIs and endpoints is controlled by scopes associated
+    with your client credentials, which can be viewed and managed on the Scopes page.
+    Client secrets can be rotated to invalidate existing credentials and generate
+    new ones for security purposes.
+- information_source; https://doc.toasttab.com/doc/devguide/apiAnalyticsAccessCreatingCredentials.html:
+  - API credentials consist of Client ID and Client secret, which are used to request
+    authentication tokens. The Client secret is a private string that verifies the
+    partner application identity to the Toast service API. Credentials can be viewed
+    in JSON format and included in token requests. The Client secret can only be viewed
+    once and should be rotated periodically for security; rotating it will invalidate
+    tokens until new ones are generated.
+- information_source; https://doc.toasttab.com/doc/devguide/authentication.html:
+  - 'The Toast API uses Bearer token authentication sent in the Authorization header.
+    Include the authentication token as `Authorization: Bearer <token>` in HTTP requests.
+    Additionally, include the Toast system GUID for the restaurant in the `Toast-Restaurant-External-ID`
+    HTTP header field (e.g., `Toast-Restaurant-External-ID: 47286e0a4-4fef-9230-b3dae11e7a9`).'
+  - 'Toast API uses client credentials authentication. Send a POST request to `/authentication/login`
+    with a JSON body containing clientId, clientSecret, and userAccessType set to
+    TOAST_MACHINE_CLIENT. The response provides an authentication token for subsequent
+    API calls.
+
+
+    Message body parameters: clientId (your Toast API client identifier), clientSecret
+    (your Toast API client secret), userAccessType (must be set to TOAST_MACHINE_CLIENT).
+    Content-Type header must be application/json.'
+pagination_info:
+- information_source; https://doc.toasttab.com/doc/devguide/apiResponseDataPagination.html:
+  - Page token pagination uses the Toast-Next-Page-Token response header field to
+    identify the next set of objects. Include this token value as the optional pageToken
+    query parameter in subsequent requests to retrieve the next page of results.
+  - Use query parameters page (required, starting at 1) and pageSize (required, max
+    100) to request fixed-size paginated responses. Continue requesting with incremented
+    page numbers until the response contains fewer objects than pageSize, indicating
+    the final page.
+- information_source; https://doc.toasttab.com/doc/devguide/apiOrdersGetDetailedInfoAboutMultipleOrders.html:
+  - Pagination uses query parameters page and pageSize to request specific pages.
+    Response includes Link headers with rel="next" and rel="prev" containing full
+    URLs for navigation, and pagination header fields indicating current position
+    and totals.
+  - The `/ordersBulk` endpoint uses Link header pagination with `page` and `pageSize`
+    query parameters. The response includes Link headers with rel="first", rel="self",
+    rel="prev", and rel="next" containing full URLs for navigating pages.
+  - Use `pageSize` query parameter (max 100, required) to control number of Order
+    objects returned per request. Use `page` query parameter (sequence number, starting
+    at 1) to specify which page to retrieve. Response includes Link header fields
+    following RFC 5988 standard with next, prev, and first links (but not last) to
+    navigate pages.
+possible_base_urls:
+- information_source; https://doc.toasttab.com/doc/devguide/apiAnalyticsMetricsReportingDataRetrieveData.html:
+  - https://[toast-api-hostname]/era/v1/metrics
+- information_source; https://doc.toasttab.com/doc/devguide/apiAnalyticsMetricsReportingDataAggregation.html:
+  - https://[toast-api-hostname]/era/v1/metrics
+possible_endpoints:
+- information_source; https://doc.toasttab.com/doc/devguide/authentication.html:
+  - POST https://doc.toasttab.com/authentication/login
+- information_source; https://doc.toasttab.com/doc/devguide/apiRateLimiting.html:
+  - GET /ordersBulk
+- information_source; https://doc.toasttab.com/doc/devguide/apiDeprecatedApiFunctions.html:
+  - GET /orders
+  - POST https://[toast-api-hostname]/usermgmt/v1/oauth/token
+- information_source; https://doc.toasttab.com/doc/devguide/apiAnalyticsMetricsReportingDataOverview.html:
+  - GET /era/v1/metrics/{reportRequestGuid}
+  - POST /era/v1/metrics
+  - POST /era/v1/metrics/{timeRange}
+- information_source; https://doc.toasttab.com/doc/devguide/apiAnalyticsMetricsReportingDataRetrieveData.html:
+  - GET https://[toast-api-hostname]/era/v1/metrics/{reportRequestGuid}
+- information_source; https://doc.toasttab.com/doc/devguide/apiAnalyticsMetricsReportingDataAggregation.html:
+  - GET https://[toast-api-hostname]/era/v1/metrics/{reportRequestGuid}
+- information_source; https://doc.toasttab.com/doc/devguide/apiAnalyticsCheckReportingDataOverview.html:
+  - GET /era/v1/check/{reportRequestGuid}

@@ -1,0 +1,45 @@
+auth_info:
+- information_source; https://developer.telenor.no/api/communication/mobiltbedriftsnett/:
+  - OAuth2 is required for authentication. Clients must authenticate as either a company
+    machine user (API User) or end user. After authentication, clients must request
+    user information from the catalog/userInfo endpoint, obtain a token from the status/token
+    endpoint, and then authenticate to the CSTA Interface at /csta/authentication/token
+    to access enterprise monitoring capabilities. Refer to https://developer.telenor.no/oauth/
+    for OAuth implementation details.
+- information_source; https://developer.telenor.no/minbedrift-sdk/guides/mobile-order/:
+  - 'Credentials are passed to the CustomMobileOrderSubscription.GetInstance() method
+    using four parameters: clientId, clientSecret, username, and password. These appear
+    to be stored in string variables and used to initialize the subscription client,
+    which then authenticates subsequent API calls. The exact mechanism for how these
+    credentials are transmitted in requests (headers, body, query parameters) is not
+    specified in the provided documentation excerpt.'
+  - 'The API uses OAuth2 client credentials flow with username and password. Authentication
+    requires four credentials: clientId, clientSecret, username, and password, which
+    are passed to the CustomMobileOrderSubscription initialization method to obtain
+    authorization for subsequent API calls.'
+  - The authentication uses OAuth2 Resource Owner Password Credentials flow. Initialize
+    the MobileOrderSdk with SetApiClientAndResourceOwnerCredentials method passing
+    clientId, clientSecret, username, and password as parameters. These credentials
+    are used internally by the SDK to obtain and manage access tokens for API requests.
+pagination_info:
+- information_source; https://developer.telenor.no/minbedrift-sdk/guides/mobile-order/:
+  - Use 'pageSize' and 'page' query parameters to paginate organizations. Responses
+    include HTTP headers 'X-total-count' (total organizations found) and 'X-count'
+    (organizations returned in current response).
+  - Use the 'pageSize' and 'page' query parameters to control pagination. Responses
+    include HTTP headers 'X-total-count' for total organizations found and 'X-count'
+    for organizations returned in the current response.
+possible_base_urls:
+- information_source; https://developer.telenor.no/api/communication/mobiltbedriftsnett/:
+  - https://developer.telenor.no/oauth/
+- information_source; https://developer.telenor.no/minbedrift-sdk/guides/mobile-order/:
+  - https://developer.telenor.no
+possible_endpoints:
+- information_source; https://developer.telenor.no/api/communication/mobiltbedriftsnett/:
+  - GET /catalog/userInfo
+  - GET /status/token
+  - GET https://developer.telenor.no/oauth/
+  - POST /csta/authentication/token
+- information_source; https://developer.telenor.no/minbedrift-sdk/guides/mobile-order/:
+  - GET .../organizations/v1/organizations
+  - POST /corporate-mobile-subscriptions/v2/orders

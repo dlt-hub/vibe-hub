@@ -1,0 +1,45 @@
+auth_info:
+- information_source; https://docs.evcc.io/en/docs/devices/chargers:
+  - The Volttime charger integration requires a personal access token for authentication.
+    Provide the token value in the token field of the configuration; obtain it from
+    https://developer.volttime.com/api-reference/authentication#personal-access-tokens.
+    Additionally, a sponsor token is required for this integration.
+  - The provided text contains OAuth2 authentication information for the Viessmann
+    API. To obtain an access token, perform a POST request to https://iam.viessmann-climatesolutions.com/idp/v3/token
+    with parameters redirect_uri, code_verifier, and code. Use the returned access_token
+    value in the Authorization header as "Bearer $VIESSMANN_TOKEN" when making API
+    requests to https://api.viessmann-climatesolutions.com/iot/v1/equipment/installations.
+    The installation ID is then extracted from the JSON response.
+  - Volt Time One requires an API token for authentication. The token is a personal
+    access token obtained from https://developer.volttime.com/api-reference/authentication#personal-access-tokens
+    and must be provided in the token configuration parameter. Additionally, the serial_number
+    parameter is required to identify the specific charger device.
+- information_source; https://docs.evcc.io/en/docs/devices/heating:
+  - The Viessmann API uses OAuth2 authorization code flow with PKCE. Obtain an access
+    token by POST to https://iam.viessmann-climatesolutions.com/idp/v3/token with
+    grant_type=authorization_code, client_id, redirect_uri, code_verifier, and code
+    parameters. Then include the access token in the Authorization header as Bearer
+    token when calling API endpoints like https://api.viessmann-climatesolutions.com/iot/v1/equipment/installations.
+  - Uses OAuth2 with PKCE flow. Credentials are provided via environment variables
+    VIESSMANN_USER, VIESSMANN_PASS, and VIESSMANN_CLIENT_ID. Basic auth (user:pass)
+    is sent to the authorization endpoint at iam.viessmann-climatesolutions.com/idp/v3/authorize
+    with parameters client_id, redirect_uri, scope (IoT User offline_access), response_type=code,
+    code_challenge, and code_challenge_method=S256. The authorization code is extracted
+    and then exchanged for a token via POST request with Content-Type application/x-www-form-urlencoded.
+possible_base_urls:
+- information_source; https://docs.evcc.io/docs/tariffs:
+  - https://api.allinpower.nl
+- information_source; https://docs.evcc.io/en/docs/tariffs:
+  - https://api.allinpower.nl/troodon/api/p/spot_market/prices/
+possible_endpoints:
+- information_source; https://docs.evcc.io/docs/tariffs:
+  - GET https://api.allinpower.nl/troodon/api/p/spot_market/prices/?product_type=ELK
+- information_source; https://docs.evcc.io/en/docs/tariffs:
+  - GET https://api.allinpower.nl/troodon/api/p/spot_market/prices/?product_type=ELK
+- information_source; https://docs.evcc.io/en/docs/devices/chargers:
+  - GET https://api.viessmann-climatesolutions.com/iot/v1/equipment/installations?includeGateways=true
+  - POST https://iam.viessmann-climatesolutions.com/idp/v3/token
+- information_source; https://docs.evcc.io/en/docs/devices/heating:
+  - GET https://api.viessmann-climatesolutions.com/iot/v1/equipment/installations
+  - POST https://iam.viessmann-climatesolutions.com/idp/v3/authorize
+  - POST https://iam.viessmann-climatesolutions.com/idp/v3/token

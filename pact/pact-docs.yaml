@@ -1,0 +1,40 @@
+auth_info:
+- information_source; https://wilsonmar.github.io/cloud-foundry/:
+  - UAA uses the OAuth 2.0 protocol for authentication and authorization. Tokens are
+    passed around as unique identifiers that provide both authentication credentials
+    and authorization permissions. Users manage settings via the cf CLI tool or UAA
+    Command Line Interface (UAAC) depending on the hosting provider, and must log
+    in using cf login to authenticate with the Cloud Foundry endpoint.
+- information_source; https://wilsonmar.github.io/gcp/:
+  - Authentication using OAuth2 (JWT) with JSON is required. Refer to https://cloud.google.com/docs/authentication
+    for detailed implementation.
+  - Google STS API uses a token exchange flow where third-party credentials (like
+    OIDC JWTs) are exchanged for short-lived Google Cloud access tokens. The exchange
+    is performed via POST to https://sts.googleapis.com/v1/token with a JSON body
+    containing audience (the Workload Identity Pool Provider resource name), grantType
+    set to "urn:ietf:params:oauth:grant-type:token-exchange", and subjectToken (the
+    third-party JWT). The response returns a short-lived access token for Google Cloud
+    resources.
+- information_source; https://wilsonmar.github.io/microsoft-ai/:
+  - The LUIS API requires an API key for authentication. The ApiKey parameter must
+    be provided when running LUIS containers via the Billing configuration, and the
+    AppID must be included in the prediction endpoint URL path at the /luis/v3.0/apps/{APP_ID}/slots/production/predict
+    or /luis/v2.0 endpoints. Additionally, a Starter Key provides 1000 prediction
+    endpoint requests per month for free.
+possible_base_urls:
+- information_source; https://wilsonmar.github.io/cloud-foundry/:
+  - https://api.cf.us10.hana.ondemand.com
+  - https://api.lyra-836.appcloud.swisscom.com
+possible_endpoints:
+- information_source; https://wilsonmar.github.io/cloud-foundry/:
+  - GET https://api.cf.us10.hana.ondemand.com
+  - GET https://api.lyra-836.appcloud.swisscom.com
+  - GET https://api.ng.bluemix.net
+  - GET https://api.run.pivotal.io
+- information_source; https://wilsonmar.github.io/gcp/:
+  - POST https://sts.googleapis.com/v1/token
+- information_source; https://wilsonmar.github.io/microsoft-ai/:
+  - GET http://localhost:5000/luis/v2.0
+  - GET http://localhost:5000/luis/v2.0/apps/{APP_ID}
+  - GET http://localhost:5000/luis/v3.0/apps/{APP_ID}/slots/production/predict
+  - GET https://api.bing.microsoft.com/

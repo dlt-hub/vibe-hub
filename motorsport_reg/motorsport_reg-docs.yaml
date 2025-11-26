@@ -1,0 +1,43 @@
+auth_info:
+- information_source; https://api.motorsportreg.com/:
+  - Access Tokens sent to `/rest/tokens/access` endpoint with an X-Organization-Id
+    header. Alternatively, use administrative username and password authentication.
+    Each request must include an X-Organization-Id header containing the 35-character
+    unique organization ID. Custom API credentials are deprecated.
+  - 'All requests requiring authentication must use Basic Authentication. Include
+    an Authorization header with the value Basic followed by a Base64-encoded string
+    of username:password (e.g., Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==).
+    Requests without valid credentials return 401 Unauthorized; requests with valid
+    credentials but insufficient authorization return 403 Forbidden.'
+  - 'HTTP Basic Authentication is required. Credentials are provided using the `-u
+    userid:password` flag in curl (or equivalent HTTP Basic Auth header `Authorization:
+    Basic base64(userid:password)`). The same credentials apply to PUT, DELETE, and
+    POST requests, including when tunneling PUT/DELETE through POST via the `_method`
+    query parameter.'
+  - OAuth 1.0a is the preferred authentication method. Register your application by
+    contacting MotorsportReg, then obtain a Request Token from /rest/tokens/request,
+    direct users to https://www.motorsportreg.com/index.cfm/event/oauth for authorization,
+    and exchange it for an Access Token at /rest/tokens/access. Alternatively, use
+    administrative username and password credentials. Some resources require an X-Organization-Id
+    header.
+  - OAuth token-based authentication is required for most endpoints. Pass the OAuth
+    access token in the Authorization header using the Bearer scheme (per RFC 5849).
+    Some endpoints like the token exchange require only request signing with no authentication.
+    The X-Organization-Id header may be needed for organization-specific requests,
+    which can be obtained from the GET /rest/me endpoint to identify user organizations.
+possible_base_urls:
+- information_source; https://api.motorsportreg.com/:
+  - https://api.motorsportreg.com
+  - https://api.motorsportreg.com/rest
+possible_endpoints:
+- information_source; https://api.motorsportreg.com/:
+  - DELETE /rest/discounts
+  - DELETE /rest/events/{event_id}/attendees/{attendee_id}
+  - DELETE /rest/events/{event_id}/attendees/{attendee_id}/checkin
+  - DELETE /rest/logbooks/{logbook_entry_id}
+  - DELETE /rest/members/{member_id}
+  - DELETE /rest/members/{member_id}/credits/{credit_id}
+  - DELETE https://api.motorsportreg.com/rest/calendars.json
+  - DELETE https://api.motorsportreg.com/rest/calendars/*event_id*.json
+  - GET /rest/calendars
+  - GET /rest/calendars/organization/{organization_id}

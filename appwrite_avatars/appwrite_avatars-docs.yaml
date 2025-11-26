@@ -1,0 +1,63 @@
+auth_info:
+- information_source; https://appwrite.io/docs/apis/rest:
+  - Appwrite supports two authentication methods. For API key authentication, include
+    the X-Appwrite-Project header with your project ID and X-Appwrite-Key header with
+    your API key. For JWT authentication, include the X-Appwrite-Project header with
+    your project ID and X-Appwrite-JWT header with a JWT token obtained from the Create
+    JWT endpoint, which allows server applications to act on behalf of authenticated
+    users.
+  - 'Appwrite uses multiple authentication methods via HTTP headers. For server-to-server
+    requests, include the required X-Appwrite-Project header with your project ID,
+    and optionally X-Appwrite-Key with your API key for service-to-service authentication
+    or X-Appwrite-JWT with a JWT token for user authentication. For client integrations,
+    create account sessions via POST to the Account API endpoint, which returns Set-Cookie
+    headers that persist the session as secured cookies for subsequent requests. Include
+    Content-Type: application/json with requests, and optionally X-Appwrite-Response-Version
+    for API versioning and X-Fallback-Cookies for fallback cookie handling.'
+  - Session-based authentication uses cookies set in the Set-Cookie response headers
+    (a_session_61e71ec784ab035f7259_legacy and a_session_61e71ec784ab035f7259) which
+    are then sent in subsequent requests via the Cookie header along with the X-Appwrite-Project
+    header containing the project ID. Server integrations use API key authentication
+    by passing the X-Appwrite-key header with an API key value that has appropriate
+    scopes.
+  - X-Appwrite-Project header (required) must contain your Appwrite project ID. X-Appwrite-Key
+    header (optional) must contain your API key for server-side authentication. Both
+    headers are sent with multipart form data requests for file uploads, along with
+    required Content-Type and Content-Range headers that specify the multipart boundary
+    and byte range information.
+- information_source; https://appwrite.io/docs/products/auth/oauth2:
+  - Appwrite uses OAuth2 for authentication. Set your API endpoint and project ID
+    via setEndpoint() and setProject(), then call createOAuth2Session() with an OAuth
+    provider (e.g., OAuthProvider.GITHUB) and desired scopes (e.g., 'repo', 'user').
+    For React Native/Expo, configure the URL scheme as "appwrite-callback-<PROJECT_ID>"
+    in app.json, generate a deep link with makeRedirectUri(), pass it to createOAuth2Token()
+    to get a login URL, open it in a browser, listen for the redirect callback, and
+    create a session with the returned secret.
+pagination_info:
+- information_source; https://appwrite.io/docs/references/cloud/client-web/account:
+  - Use limit and offset query parameters for pagination on the GET /account/logs
+    endpoint. The queries parameter accepts an array of query strings where only limit
+    and offset methods are supported to control page size and starting position.
+- information_source; https://appwrite.io/threads/1136317870092062881:
+  - The new version uses the queries parameter for pagination. Use queries[]=limit(100)
+    to set the result limit, and queries[]=cursorAfter(documentId) to paginate using
+    cursor-based navigation instead of the older cursor parameter syntax.
+possible_base_urls:
+- information_source; https://appwrite.io/docs/apis/rest:
+  - https://cloud.appwrite.io
+- information_source; https://appwrite.io/docs/products/auth/oauth2:
+  - https://<REGION>.cloud.appwrite.io/v1
+possible_endpoints:
+- information_source; https://appwrite.io/docs/apis/rest:
+  - GET /v1/account
+  - GET /v1/tablesdb/{databaseId}/tables/{tableId}/rows
+  - POST /v1/account/sessions/email
+  - POST /v1/storage/buckets/default/files
+- information_source; https://appwrite.io/docs/products/auth/oauth2:
+  - GET https://<REGION>.cloud.appwrite.io/v1
+  - PATCH /account/sessions/{sessionId}
+- information_source; https://appwrite.io/docs/references/1.6.x/server-rest/databases:
+  - DELETE /databases/{databaseId}/collections/{collectionId}
+  - DELETE /v1/databases/{databaseId}
+  - DELETE /v1/databases/{databaseId}/collections/{collectionId}
+  - DELETE /v1/databases/{databaseId}/collections/{collectionId}/attributes/{key}

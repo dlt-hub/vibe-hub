@@ -1,0 +1,77 @@
+auth_info:
+- information_source; https://techdocs.algosec.com/en/asms/latest/asms-help/content/api-guide/afa-rest-web-services.htm:
+  - Authentication for AlgoSec Firewall Analyzer APIs uses session-based authentication.
+    After logging in, you receive a sessionID value in the login response, which must
+    be passed as the session parameter in each subsequent API request. Alternatively,
+    you can retrieve your AlgoSec Session ID and PHP Session ID by hovering on the
+    AFA home page and typing 'session!' to view session details in a popup.
+- ? information_source; https://techdocs.algosec.com/en/asms/latest/asms-help/content/api-guide/businessflow-rest-web-services.htm
+  : - Authentication is through a session cookie. After logging in via the login method,
+      extract the JSESSIONID from the response body and include it in all subsequent
+      REST requests using the Cookie header with format "JSESSIONID=<jsessionid>".
+      All requests must also include the Content-Type header set to "application/json".
+    - The API uses HTTP Basic Authentication for login, followed by session-based
+      cookie authentication. Send username and password via HTTPBasicAuth to the /login
+      endpoint, then extract the jsessionid from the JSON response and include it
+      as a JSESSIONID cookie in subsequent requests.
+- information_source; https://techdocs.algosec.com/en/asms/latest/asms-help/content/api-guide/authenticating.htm:
+  - The FireFlow REST API uses cookie-based authentication. Send a POST request to
+    /FireFlow/api/authentication/authenticate with username and password in the JSON
+    body to obtain a sessionId, faSessionId, and phpSessionId. Use the sessionId to
+    manually create a cookie that must be included in all subsequent API requests.
+- information_source; https://techdocs.algosec.com/en/asms/latest/asms-help/content/api-guide/logging-in_1.htm:
+  - 'The API supports two authentication approaches: (1) Cookie-based session authentication
+    via a login endpoint that returns a JSESSIONID, which must be included in a Cookie
+    header for subsequent requests, or (2) Basic authentication with a single request
+    using an Authorization header containing base64-encoded username:password credentials.
+    All requests must include the Content-Type header set to application/json. For
+    cookie-based auth, POST to /login with Authorization header Basic <base64(username:password)>,
+    receive JSESSIONID in response body, then include Cookie: JSESSIONID=<jsessionid>
+    in all following requests. For single-request basic auth, include Authorization:
+    Basic <base64(username:password)> directly without logging in first.'
+pagination_info:
+- information_source; https://techdocs.algosec.com/en/asms/a32.60/asms-help/content/api-guide/managing-issues.htm:
+  - Pagination uses query parameters size (required, default 0) and page (required,
+    default 0 for first page) to specify page size and page number. The response includes
+    a content array and various paging elements following the Spring framework Page
+    object structure; see Spring documentation for navigation details.
+- information_source; https://techdocs.algosec.com/en/asms/a32.60/asms-help/content/api-guide/networkobject_search_get.htm:
+  - Request parameters include page (integer, number of pages in response) and size
+    (integer, number of results per page). Use page and size as query parameters to
+    paginate through results; increment page to retrieve subsequent pages.
+  - The API uses offset-based pagination with page and size query parameters. The
+    page parameter (default 0) specifies the page number, and size parameter (default
+    50) specifies the number of results per page. The response does not include explicit
+    pagination fields like next, has_more, or total_count in the documented response
+    parameters.
+- information_source; https://techdocs.algosec.com/en/asms/a32.60/asms-help/content/api-guide/retrieving-service-objects.htm:
+  - Use query parameters size (optional, default 10) and page (optional, default 1)
+    to paginate results. Response includes totalPages, totalElements, currPageNumber,
+    and currPageElements to track pagination state. Construct next request by incrementing
+    page parameter until currPageNumber reaches totalPages.
+- information_source; https://techdocs.algosec.com/en/asms/a32.60/asms-help/content/api-guide/nat-rules_get.htm:
+  - Pagination uses optional query parameters pageNumber (default 0 for first page)
+    and pageSize (default 50) to request specific pages. The response includes totalPages,
+    pageNumber, and pageSize fields to indicate pagination state and construct subsequent
+    requests.
+possible_base_urls:
+- information_source; https://techdocs.algosec.com/en/asms/a32.60/asms-help/content/api-guide/api_introduction.htm:
+  - https://<ASMS IP address>/algosec/swagger/swagger-ui.html
+- information_source; https://techdocs.algosec.com/en/asms/latest/asms-help/content/api-guide/api_introduction.htm:
+  - /api/v1
+possible_endpoints:
+- information_source; https://techdocs.algosec.com/en/asms/a32.60/asms-help/content/api-guide/api_introduction.htm:
+  - GET /api/v1/devices
+  - GET /api/v1/devices/{deviceName}?displayName=true
+- information_source; https://techdocs.algosec.com/en/asms/latest/asms-help/content/api-guide/api_introduction.htm:
+  - GET /api/v1/devices
+  - GET /api/v1/devices/{deviceName}?displayName=true
+  - GET https://<ASMS IP address>/algosec/swagger/swagger-ui.html
+- ? information_source; https://techdocs.algosec.com/en/asms/latest/asms-help/content/api-guide/businessflow-rest-web-services.htm
+  : - GET https://<algosec_server>/BusinessFlow/rest/v1/applications/?page_number=1
+    - GET https://{asms_ip}/BusinessFlow/rest/v1/applications/
+    - POST https://{asms_ip}/BusinessFlow/rest/v1/login
+- information_source; https://techdocs.algosec.com/en/asms/latest/asms-help/content/api-guide/authenticating.htm:
+  - POST /FireFlow/api/authentication/authenticate
+- information_source; https://techdocs.algosec.com/en/asms/latest/asms-help/content/api-guide/logging-in_1.htm:
+  - POST /login

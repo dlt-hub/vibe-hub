@@ -1,0 +1,50 @@
+auth_info:
+- information_source; https://docs.pypi.org/trusted-publishers/using-a-publisher/:
+  - 'PyPI uses OIDC (OpenID Connect) token exchange for authentication. First, obtain
+    an OIDC token by sending a bearer token in the Authorization header to the ACTIONS_ID_TOKEN_REQUEST_URL
+    endpoint with audience parameter set to "pypi". Exchange this OIDC token for an
+    API token by sending a POST request to https://pypi.org/_/oidc/mint-token with
+    the token in the JSON request body as {"token": "..."}. The resulting API token
+    is then used as the password parameter in PyPI publish operations, typically via
+    the TWINE_PASSWORD environment variable or the password field in gh-action-pypi-publish.'
+  - PyPI uses OIDC token exchange for authentication. Generate an OIDC token by running
+    `python -m id pypi` (or `python -m id testpypi` for TestPyPI), then exchange it
+    for a short-lived API token via POST to `https://pypi.org/_/oidc/mint-token` (or
+    `https://test.pypi.org/_/oidc/mint-token` for TestPyPI) with JSON body containing
+    the token field. The resulting API token is used with twine via environment variables
+    TWINE_USERNAME set to `__token__` and TWINE_PASSWORD set to the token value.
+  - 'The authentication uses OIDC (OpenID Connect) token exchange. Retrieve an OIDC
+    token from GitHub Actions using the ACTIONS_ID_TOKEN_REQUEST_TOKEN header and
+    ACTIONS_ID_TOKEN_REQUEST_URL environment variable with audience parameter (audience=pypi
+    for PyPI, audience=testpypi for TestPyPI), then exchange it with PyPI via POST
+    request to get a short-lived API key for use with tools like twine. The GitHub
+    Actions workflow requires id-token: write permissions.'
+  - The authentication uses OIDC (OpenID Connect) tokens exchanged for short-lived
+    API tokens. The OIDC token is retrieved from GitHub Actions via the Authorization
+    header with bearer token scheme using the ACTIONS_ID_TOKEN_REQUEST_TOKEN environment
+    variable, then exchanged at the PyPI OIDC endpoint for an API token. The resulting
+    API token is passed to twine via TWINE_USERNAME set to __token__ and TWINE_PASSWORD
+    set to the API token value.
+- information_source; https://docs.pypi.org/api/upload/:
+  - The Upload API requires HTTP Basic Authentication. Credentials (username and password)
+    must be sent in the Authorization header using the Basic scheme, encoded in base64
+    format as "username:password". This is the standard authentication method used
+    by tools like twine to upload distributions to PyPI.
+possible_base_urls:
+- information_source; https://docs.pypi.org/trusted-publishers/using-a-publisher/:
+  - https://pypi.org
+  - https://pypi.org/_/oidc/mint-token
+possible_endpoints:
+- information_source; https://docs.pypi.org/trusted-publishers/using-a-publisher/:
+  - GET https://pypi.org/_/oidc/audience
+  - POST https://pypi
+  - POST https://pypi.org/_/oidc/mint-token
+- information_source; https://docs.pypi.org/api/index-api/:
+  - GET /simple/
+  - GET /simple/<project>/
+  - GET /simple/beautifulsoup4/
+  - GET https://pypi.org/simple/
+- information_source; https://docs.pypi.org/api/json/:
+  - GET /pypi/<project>/<version>/json
+  - GET /pypi/<project>/json
+  - GET /pypi/<project_name>/json

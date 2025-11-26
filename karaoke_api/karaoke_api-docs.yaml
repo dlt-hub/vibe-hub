@@ -1,0 +1,66 @@
+auth_info:
+- information_source; https://karaoke-api-doc.stingray.com/api/v1/:
+  - 'Authorization token invalid or expired is mentioned in 401 responses, and the
+    Log play endpoint explicitly lists two authorization methods: X-API-KEY and Bearer.
+    The X-API-KEY scheme requires sending an API key (likely via the X-API-Key header),
+    and the Bearer scheme requires sending a bearer token in the Authorization header.
+    Both methods are accepted for authenticating requests to the play-log endpoint.'
+  - Stingray Karaoke API uses two authentication methods. First, supply an X-API-KEY
+    header with your developer-provided API key. Second, call the Device login endpoint
+    with X-API-KEY authorization to obtain a JWT bearer token, then use that token
+    in the Authorization header as "Bearer <token>" for subsequent requests.
+- information_source; https://karaoke-api-doc.stingray.com/docs/introduction/getting-started:
+  - 'The Karaoke API requires two authentication headers: X-API-KEY header with an
+    api_key value, and Authorization header with a Bearer token (access_token). Access
+    tokens are generated through a token generation process and must be included as
+    Bearer credentials in requests.'
+  - 'The REST Karaoke API uses two authentication mechanisms: a bearer token passed
+    in the Authorization header and an API key passed in the X-API-KEY header. Replace
+    {access_token} with your actual access token in the Authorization: Bearer {access_token}
+    header for GET requests, and include both X-API-KEY: {api_key} and Authorization:
+    Bearer {access_token} headers for POST requests.'
+  - 'The Stingray Karaoke API uses Bearer Token authentication combined with an API
+    key. To obtain a token, submit a POST login request with device information (device_id,
+    country_code, language_code, and optionally client_ip and account_id) to the authentication
+    endpoint. The API returns a Bearer token which must be included in the Authorization
+    header as "Authorization: Bearer {token}" for all subsequent API requests. Additionally,
+    the X-API-KEY header must be set to your API key value in every request.'
+pagination_info:
+- information_source; https://karaoke-api-doc.stingray.com/docs/introduction/getting-started:
+  - 'The API uses query parameters for pagination: `page` (page number, starting at
+    0) and `size` (number of results per page). These are optional parameters used
+    in GET requests to retrieve paginated resources like songs and artists.'
+- information_source; https://karaoke-api-doc.stingray.com/api/v3/:
+  - Offset-based pagination is used with limit and offset query parameters. Limit
+    (max 100, default 10) specifies maximum elements returned, and offset (max 9999,
+    default 0) specifies the starting index. Response includes items array, size,
+    offset, and total fields to indicate pagination state.
+  - Offset-limit pagination with limit parameter (integer, max 100, default 10) controlling
+    maximum elements returned and offset parameter (integer, max 9999, default 0)
+    specifying the starting index. Response contains items array; construct next request
+    by incrementing offset by limit value until fewer than limit items are returned.
+  - Pagination is controlled by limit (query parameter, max 100, default 10) and offset
+    (query parameter, max 9999, default 0). Use offset to move through pages by incrementing
+    it by the limit value; stop when fewer items than limit are returned.
+  - Pagination uses limit (query parameter, integer, default 10, max 100) and offset
+    (query parameter, integer, default 0, max 9999) for requesting pages. Response
+    includes items array, size, offset, and total fields to indicate pagination state
+    and construct subsequent requests.
+possible_base_urls:
+- information_source; https://karaoke-api-doc.stingray.com/api/v1/:
+  - https://karaoke-api-service-prod.stingray.com/v1
+- information_source; https://karaoke-api-doc.stingray.com/docs/introduction/getting-started:
+  - https://karaoke-api-service-prod.stingray.com/
+possible_endpoints:
+- information_source; https://karaoke-api-doc.stingray.com/api/v1/:
+  - GET https://karaoke-api-service-prod.stingray.com/v1/artists
+  - POST https://karaoke-api-service-prod.stingray.com/v1/play-log
+- information_source; https://karaoke-api-doc.stingray.com/docs/introduction/getting-started:
+  - GET /artists
+  - GET /artists/{id}/
+  - GET /artists/{id}/songs
+  - GET /songs
+  - GET /songs/{id}
+  - GET https://karaoke-api-service-prod.stingray.com/v1/artists
+  - POST /login
+  - POST https://karaoke-api-service-prod.stingray.com/v1/play-log

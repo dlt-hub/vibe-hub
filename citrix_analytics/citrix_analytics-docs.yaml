@@ -1,0 +1,56 @@
+auth_info:
+- information_source; https://docs.citrix.com/en-us/performance-analytics/api/citrix-analytics-odata-api.html:
+  - Authentication uses a bearer token passed in the Authorization header with the
+    scheme "CwsAuth bearer=". Additionally, the Citrix-CustomerId header must be included
+    with the customer ID value.
+  - Authorization header using CwsAuth scheme with bearer token format. Additionally,
+    Citrix-CustomerId header with customer ID value is required. Token format is JWT-based
+    (RS256 algorithm). Both headers must be included in requests.
+  - Authorization header using CwsAuth scheme with bearer token format. Additionally,
+    Citrix-CustomerId header with customer ID value is required. Token format is bearer=<JWT_token>
+    in the Authorization header.
+  - Authorization header with CwsAuth bearer token scheme. Include Citrix-CustomerId
+    header with customer ID value. Token format is JWT-like and passed as bearer=<token>
+    in Authorization header.
+  - Citrix Analytics ODATA API uses Citrix Cloud bearer token authentication. Obtain
+    the token by sending a POST request to https://api.cloud.com/cctrustoauth2/{customerid}/tokens/clients
+    with grant_type=client_credentials, client_id, and client_secret in the request
+    body as application/x-www-form-urlencoded, then use the returned token in subsequent
+    API requests as a bearer token.
+pagination_info:
+- information_source; https://docs.citrix.com/en-us/performance-analytics/api/citrix-analytics-odata-api.html:
+  - Pagination uses OData protocol with $skip and $top query parameters. The response
+    includes @odata.nextLink field containing the URL for the next page of results.
+    Use the nextLink URL to retrieve subsequent pages until no nextLink is present.
+  - The API uses OData pagination with a default limit of 1000 rows per response.
+    Use the `$top` query parameter to set a custom row limit. The response includes
+    a next page link at the bottom when more results exist; follow this link to retrieve
+    subsequent pages.
+  - Use the `$top` query parameter to limit result rows (default is 1000). The response
+    includes a next page link in the `@odata.nextLink` field; follow this link to
+    retrieve subsequent pages until no `@odata.nextLink` is present.
+- information_source; https://docs.citrix.com/en-us/performance-analytics/api/citrix-analytics-odata-api:
+  - Pagination uses $skip and $top query parameters. The response includes @odata.nextLink
+    field containing the URL for the next page of results. Use the nextLink value
+    to fetch subsequent pages until no nextLink is returned.
+  - The API uses OData pagination with a default limit of 1000 rows per request. Use
+    the `$top` query parameter to control result rows, and a `@odata.nextLink` field
+    in the response provides the URL for the next page of results.
+possible_base_urls:
+- information_source; https://docs.citrix.com/en-us/performance-analytics/api/citrix-analytics-odata-api.html:
+  - https://api.cloud.com
+  - https://api.cloud.com/casodata
+possible_endpoints:
+- information_source; https://docs.citrix.com/en-us/performance-analytics/api/citrix-analytics-odata-api.html:
+  - GET /sessions
+  - GET https://api.cloud.com/casodata/$metadata
+  - GET https://api.cloud.com/casodata/sessions
+  - GET https://api.cloud.com/casodata/sessions?year=2023&month=04&day=14&$filter=sessionKey%20eq%20'009e7f0f-5707-4083-934f-24d8ad5e91f8'
+  - GET https://api.cloud.com/casodata/sessions?year=2023&month=04&day=14&$skip=100&$top=100
+  - POST https://api.cloud.com/cctrustoauth2/{customerid}/tokens/clients
+- information_source; https://docs.citrix.com/en-us/performance-analytics/api/citrix-analytics-odata-api:
+  - GET https://api.cloud.com/casodata/$metadata
+  - GET https://api.cloud.com/casodata/sessions
+  - POST https://api.cloud.com/cctrustoauth2/{customerid}/tokens/clients
+- information_source; https://docs.citrix.com/en-us/performance-analytics/api/data-export-to-power-bi:
+  - GET https://api.cloud.com/casodata

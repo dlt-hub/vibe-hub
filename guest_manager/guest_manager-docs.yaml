@@ -1,0 +1,56 @@
+auth_info:
+- information_source; https://api.guestmanager.com/:
+  - 'API key authentication using a Token scheme. Send the API key in the Authorization
+    header as "Authorization: Token YOUR_API_KEY". The guest_token returned in order
+    responses must be retained and used for subsequent updates to that order.'
+  - 'API requests require a Token-based authentication scheme. Include the token in
+    the Authorization header as "Authorization: Token {token_value}" where {token_value}
+    is your API token.'
+  - API requests require token-based authentication. Include the Authorization header
+    with the value "Token" followed by your API token (e.g., "Token abcedfg"). The
+    token must be sent in the Authorization header for all requests to the API.
+  - 'API uses token-based authentication via the Authorization header. Include the
+    header Authorization: Token <token_value> with each request, where the token value
+    is provided by the API.'
+  - Authentication is done through the Authorization request header with the format
+    Token <api_key>, where the API key is obtained from the company dashboard Config
+    menu. API keys have read, write, or both permissions and are rate-limited to 300
+    requests per minute per IP address.
+pagination_info:
+- information_source; https://api.guestmanager.com/:
+  - All GET collection endpoints use query parameter pagination with page[number]
+    (default 1) and page[size] (default 10, max 100, though some resources like events
+    cap at 50). The response includes meta.page with number, size, next, prev, total,
+    last, first, out_of_range fields, plus meta.links.next and meta.links.self URLs.
+    Stop paginating when meta.page.last is true or next is null.
+  - Collection endpoints return paginated results with records in a top-level `data`
+    key and pagination details in a `meta` key. Request parameters for paging are
+    standardized across list endpoints, though specific parameter names and pagination
+    field details are not provided in this excerpt.
+  - Pagination uses URL-based links in the response metadata. The response includes
+    meta[links][next], meta[links][prev], meta[links][first], and meta[links][last]
+    as URLs for navigation, with null values indicating unavailable pages. The meta[page][out_of_range]
+    boolean indicates if the requested page number is invalid.
+  - Pagination uses `page[size]` (query parameter, optional, default 10, max 100)
+    to specify records per request and `page[number]` (query parameter, optional,
+    default 1) to specify which page to request. The response includes a `meta` object
+    containing pagination details for navigating pages.
+  - Pagination uses a page-based scheme with `page[size]` and `page[number]` parameters
+    passed in the request body. The `page` object contains `size` (items per page)
+    and `number` (page number) to control pagination.
+possible_base_urls:
+- information_source; https://api.guestmanager.com/:
+  - http://app.guestmanager.com/api/public/v2
+  - http://app.guestmanager.test:3000/api/public/v2
+possible_endpoints:
+- information_source; https://api.guestmanager.com/:
+  - DELETE https://app.guestmanager.com/api/public/v2/orders/{order-id}/line_items/{id}
+  - DELETE https://app.guestmanager.com/api/public/v2/ticket_types/{id}
+  - DELETE https://app.guestmanager.com/api/public/v2/tickets/{id}
+  - GET /api/public/enterprise/v1/companies
+  - GET /api/public/v2/events
+  - GET /events
+  - GET /orders
+  - GET /orders/{id}/poll?guest_token=xyz
+  - GET /tickets
+  - GET http://app.guestmanager.test:3000/api/public/v2/events

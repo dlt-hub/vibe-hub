@@ -1,0 +1,48 @@
+auth_info:
+- information_source; https://api-docs.home-connect.com/authorization/:
+  - Access tokens are obtained via an OAuth2 token endpoint using either authorization
+    code grant or device flow. Client credentials (client_id and client_secret) must
+    be provided in the request body with grant_type parameter, or alternatively in
+    the HTTP Basic Auth header, but not both. The Content-Type header must be application/x-www-form-urlencoded.
+  - 'Device Flow OAuth2 authentication. Client polls the token endpoint with device_code
+    and client credentials (client_id, client_secret) to obtain access tokens. Credentials
+    are sent in the POST request body using application/x-www-form-urlencoded format
+    with parameters: grant_type=urn:ietf:params:oauth:grant-type:device_code, device_code,
+    client_id, and client_secret.'
+  - 'Home Connect uses OAuth2 authorization code flow for authentication. To obtain
+    an access token, POST to https://api.home-connect.com/security/oauth/token with
+    Content-Type application/x-www-form-urlencoded and include required body parameters:
+    grant_type set to authorization_code, code from the authorization request, client_id
+    (64 characters from app registration), and client_secret (64 characters from app
+    registration). Optional parameters include redirect_uri (required if used in authorization
+    request) and code_verifier (required if PKCE is enabled or if code_challenge was
+    used in authorization request).'
+  - OAuth2 Bearer token authentication with refresh token flow. Access tokens expire
+    in 86400 seconds (24 hours) and must be refreshed via POST to https://api.home-connect.com/security/oauth/token
+    with grant_type=refresh_token, refresh_token (required), client_id (recommended,
+    64 chars), and client_secret (recommended, 64 chars). Response includes access_token,
+    id_token, refresh_token, expires_in, scope, and token_type=Bearer. Send credentials
+    in request body as application/x-www-form-urlencoded.
+  - OAuth2 Device Authorization Grant flow. Send a POST request to https://api.home-connect.com/security/oauth/token
+    with Content-Type application/x-www-form-urlencoded containing grant_type set
+    to urn:ietf:params:oauth:grant-type:device_code or device_code, the device_code
+    from the preceding authorization request, required client_id (64 characters from
+    app registration), and optional but recommended client_secret (64 characters from
+    app registration) in the request body to obtain an access token.
+possible_base_urls:
+- information_source; https://api-docs.home-connect.com/authorization/:
+  - https://api.home-connect.com/security/oauth/authorize
+  - https://api.home-connect.com/security/oauth/token
+possible_endpoints:
+- information_source; https://api-docs.home-connect.com/authorization/:
+  - GET https://api.home-connect.com/security/oauth/authorize
+  - POST https://api.home-connect.com/security/oauth/token
+- information_source; https://api-docs.home-connect.com/programs-and-options/:
+  - GET /api/homeappliances/{haId}/programs/active/options/BSH.Common.Option.Duration
+  - GET /api/homeappliances/{haId}/programs/active/options/BSH.Common.Option.FinishInRelative
+  - GET /api/homeappliances/{haId}/programs/active/options/BSH.Common.Option.StartInRelative
+  - GET /api/homeappliances/{haId}/programs/active/options/ConsumerProducts.CleaningRobot
+  - GET /api/homeappliances/{haId}/programs/active/options/ConsumerProducts.CleaningRobot.Option.CleaningMode
+  - GET /api/homeappliances/{haId}/programs/active/options/ConsumerProducts.CleaningRobot.Option.ReferenceMapId
+  - GET /api/homeappliances/{haId}/programs/active/options/ConsumerProducts.CleaningRobot.Option.SuctionPower
+  - GET /api/homeappliances/{haId}/programs/active/options/ConsumerProducts.CoffeeMaker.Option.BeanAmount

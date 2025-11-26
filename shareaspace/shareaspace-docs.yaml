@@ -1,0 +1,50 @@
+auth_info:
+- information_source; https://docs.shareaspace.com/developer/rest-api/rest-api-usage/batch-operation-api.html:
+  - OAuth2 password grant flow with HTTP Basic authentication. Client credentials
+    (clientId, clientSecret) are sent as Basic auth header. User credentials (userName,
+    password) and grant_type "password" with scope "All" are sent in the POST body
+    to the /AuthorizationServer/sasweb/oauth/token endpoint. The response contains
+    the access token.
+  - The API uses Bearer token authentication passed in the Authorization header. The
+    access token is provided as a parameter to the batch commit function and set via
+    the Authorization header with the scheme "Bearer". The batch endpoint is accessed
+    at {baseAddress}/api/space/{spaceId}/batch with a POST request containing JSON
+    operations in the request body.
+  - The batch API request uses the Authorization and SAs.InformationFilter headers
+    from the main batch request itself, so these headers do not need to be duplicated
+    in individual operations. Individual operations can include Etag and SAs-UOIVersion
+    headers as applicable per the API route and HTTP verb.
+- information_source; https://docs.shareaspace.com/sas/security/authentication-authorization.html:
+  - ShareAspace uses OAuth 2.0 for authorization combined with an identity provider
+    for authentication, issuing JSON Web Tokens (JWT) for REST API authorization.
+    Authentication methods include developer login (testing only), email authentication
+    with sign-in codes, and OpenID Connect integration with external identity providers
+    as an alternative to ShareAspace's built-in Identity Server and Authorization
+    Server.
+- information_source; https://docs.shareaspace.com/about/changelog-1-7.html:
+  - 'Bearer token authentication is required. Include the Authorization header with
+    the value Bearer followed by a JWT token (e.g., Authorization: Bearer eyQWE...)
+    in all DELETE requests to the soft delete and tombstone delete endpoints.'
+pagination_info:
+- information_source; https://docs.shareaspace.com/about/changelog-1-7.html:
+  - The `softTypeCompare` API endpoint supports pagination via an optional `pageNumber`
+    path parameter (starting at 0) to load specific pages when comparing references
+    between two SoftType instances. The resource link for navigation is provided as
+    a HAET in the response.
+possible_base_urls:
+- information_source; https://docs.shareaspace.com/about/changelog-1-7.html:
+  - https://FQDN/api/space/ref1/defaultValues
+  - https://server.machine.net/api/collection/backgroundWork/{work id}
+possible_endpoints:
+- information_source; https://docs.shareaspace.com/developer/rest-api/rest-api-usage/batch-operation-api.html:
+  - POST /api/space/{spaceId}/batch
+  - POST {baseAddress}/AuthorizationServer/sasweb/oauth/token
+  - POST {baseAddress}/api/space/{spaceId}/batch
+- information_source; https://docs.shareaspace.com/about/changelog-1-7.html:
+  - DELETE /api/space/{spaceId}/defaultValues/{softTypeId}/{objectId}
+  - DELETE api/space/ref1/defaultValues/
+  - DELETE https://{fqdn}/api/space/{spaceId}/plm/{typeId}/{objectId}
+  - DELETE https://{fqdn}/api/space/{spaceId}/softtype/{definitionId}/{objectId}
+  - GET /admin/reqeustRatePolicy
+  - GET /api/collection/space
+  - GET /collection/backgroundWork/{work id}

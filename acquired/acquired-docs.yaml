@@ -1,0 +1,35 @@
+auth_info:
+- information_source; https://docs.acquired.com/docs/authentication-3:
+  - Access tokens expire after 1 hour and must be refreshed by obtaining a new access_token
+    as per step 2 when a 401 Unauthorized error is received. The API uses app_id and
+    app_key credentials that are managed through the Hub's API Access section, where
+    merchants can create and manage multiple app_id values under a single merchant
+    profile.
+  - Acquired.com uses OAuth 2.0 with bearer token authentication. Obtain an access
+    token by sending your app_id and app_key credentials to the login endpoint (https://test-api.acquired.com/v1/login
+    for QA or https://api.acquired.com/v1/login for production), then pass the returned
+    access token in the HTTP Authorization header as a bearer token for subsequent
+    API requests. Access tokens are valid for 1 hour and must be refreshed after expiration.
+    Your IP address must be whitelisted to authenticate successfully.
+  - To authenticate with the API, obtain an app_id and app_key from Hub Settings >
+    API Access, then POST these credentials to the /login endpoint in a JSON body
+    with fields "app_id" and "app_key". The response contains an access_token with
+    token_type "Bearer" that expires in 3600 seconds; include this token in the Authorization
+    header for subsequent API requests. When receiving a 401 Unauthorized response,
+    obtain a new access_token by repeating the login request.
+pagination_info:
+- information_source; https://docs.acquired.com/docs/faster-payments-1:
+  - Use offset and limit query parameters to control pagination on the GET /v1/payees
+    endpoint. The response includes meta.count and meta.offset fields. Specify which
+    fields to return using the filter parameter.
+possible_base_urls:
+- information_source; https://docs.acquired.com/docs/authentication-3:
+  - https://api.acquired.com/v1
+  - https://test-api.acquired.com/v1
+possible_endpoints:
+- information_source; https://docs.acquired.com/docs/authentication-3:
+  - POST https://api.acquired.com/v1/login
+  - POST https://test-api.acquired.com/v1/login
+- information_source; https://docs.acquired.com/docs/faster-payments-1:
+  - GET /v1/payees
+  - POST /pay-out

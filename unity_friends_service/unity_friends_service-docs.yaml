@@ -1,0 +1,39 @@
+auth_info:
+- information_source; https://services.docs.unity.com/friends/v1/:
+  - The endpoint requires Client authorization. The response includes a JWT token
+    in the "token" field and a channel name in the "channel" field that should be
+    used together for subscribing to notifications about relationship and presence
+    changes.
+- information_source; https://services.docs.unity.com/player-auth/v1/:
+  - Authentication uses session tokens passed in the request body. The session token
+    (e.g., "5eb26a338a232") must be sent in a POST request body along with a nonce
+    parameter. Additionally, the ProjectId header is required. An idToken (JWT format)
+    is returned in the response and should be stored for subsequent authenticated
+    requests.
+  - 'Client authorization is required. Send the Authorization header with a Bearer
+    token (format: "Bearer <token>"). Additionally, include the ProjectId as a required
+    header parameter. The idProvider path parameter is also required to specify which
+    external identity provider to unlink from.'
+  - Client authorization required. Send the ProjectId in the ProjectId header and
+    a Bearer token in the Authorization header. The endpoint accepts username and
+    password in the request body to update the player password, returning an idToken
+    and expiresIn upon success.
+  - Custom ID Sign In requires an access token passed in the request body as the "accessToken"
+    field. The endpoint is limited to 500 RPS per IP address and requires Admin authorization.
+possible_base_urls:
+- information_source; https://services.docs.unity.com/friends/v1/:
+  - https://social.services.api.unity.com
+  - https://social.services.api.unity.com/v1/relationships
+possible_endpoints:
+- information_source; https://services.docs.unity.com/friends/v1/:
+  - GET https://social.services.api.unity.com/v1/notifications/auth
+  - POST https://social.services.api.unity.com/v1/presence
+  - POST https://social.services.api.unity.com/v1/relationships
+- information_source; https://services.docs.unity.com/player-auth/v1/:
+  - DELETE /v1/authentication/unlink/{idProvider}
+  - POST https://player-auth.services.api.unity.com/v1/authentication/code-link/confirm
+  - POST https://player-auth.services.api.unity.com/v1/authentication/code-link/sign-in/{CodeLinkSessionId}
+  - POST https://player-auth.services.api.unity.com/v1/authentication/link/{idProvider}
+  - POST https://player-auth.services.api.unity.com/v1/authentication/session-token
+  - POST https://player-auth.services.api.unity.com/v1/authentication/usernamepassword/sign-up
+  - POST https://player-auth.services.api.unity.com/v1/authentication/usernamepassword/update-password

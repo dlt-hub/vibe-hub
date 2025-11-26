@@ -1,0 +1,64 @@
+auth_info:
+- information_source; https://www.ntop.org/guides/ntopng/advanced_features/authentication.html:
+  - 'Token-based authentication is required, sent via the Authorization header with
+    the format "Authorization: Token <token_value>". The token value is a string like
+    "39ca319a42..." and must be included in the HTTP request header for API access.'
+- information_source; https://www.ntop.org/guides/ntopng/api/rest/api_v1.html:
+  - Basic HTTP authentication is required using username and password credentials
+    passed via the -u flag in curl, formatted as username:password (e.g., admin:admin).
+    This applies to all API endpoints.
+  - The REST API Token is a required string parameter for infrastructure instance
+    operations. It must be provided to authenticate requests; missing or invalid tokens
+    result in error code -36 (INFRASTRUCTURE_INSTANCE_EMPTY_TOKEN). The exact parameter
+    name and transmission method (header, query parameter, or request body field)
+    are not explicitly specified in this documentation excerpt.
+- information_source; https://www.ntop.org/guides/ntopng/api/rest/api_v2.html:
+  - Basic authentication is required using username and password passed via the `-u`
+    flag in curl, formatted as `username:password`. In Python, this translates to
+    using the `auth` parameter with a tuple of (username, password) in requests, or
+    by manually setting the `Authorization` header with a Base64-encoded "Basic username:password"
+    value.
+  - POST /lua/pro/rest/v2/check/infrastructure/config.lua requires a REST API token
+    passed as a query parameter named token to authenticate requests to ntopng infrastructure
+    instances.
+pagination_info:
+- information_source; https://www.ntop.org/guides/ntopng/api/rest/api_v1.html:
+  - Pagination uses query parameters currentPage (page number) and perPage (items
+    per page), with optional sortColumn (column to sort by) and sortOrder (sorting
+    direction) parameters. Response structure for pagination fields/navigation is
+    not described in the provided documentation.
+  - 'Pagination uses query parameters: currentPage (page number, optional), perPage
+    (items per page, optional), sortColumn (column to sort by, optional string), and
+    sortOrder (sorting direction, optional string). An all parameter (optional boolean)
+    can be used to retrieve all hosts at once, bypassing pagination.'
+- information_source; https://www.ntop.org/guides/ntopng/api/rest/api_v2.html:
+  - Pagination for GET /lua/rest/v2/get/interface/alert/list.lua uses start (query
+    parameter, starting record offset) and length (query parameter, maximum number
+    of records per request) to control pagination.
+  - Pagination is controlled by start and length query parameters. start specifies
+    the starting record offset, and length specifies the maximum number of records
+    to return per request. Response structure for navigation is not documented in
+    the provided material.
+  - Pagination is implemented using start (integer query parameter for starting record
+    offset) and length (integer query parameter for maximum number of records per
+    request). The endpoint returns paginated SNMP device alert records; construct
+    subsequent requests by incrementing the start parameter value by the length value
+    to retrieve the next page.
+possible_base_urls:
+- information_source; https://www.ntop.org/guides/ntopng/advanced_features/authentication.html:
+  - http://localhost:3000
+- information_source; https://www.ntop.org/guides/ntopng/api/rest/api_v1.html:
+  - /lua/rest/v1/add/host/pool.lua
+possible_endpoints:
+- information_source; https://www.ntop.org/guides/ntopng/advanced_features/authentication.html:
+  - GET http://localhost:3000/lua/locale.lua
+- information_source; https://www.ntop.org/guides/ntopng/api/rest/api_v1.html:
+  - DELETE lua/rest/v1/delete/ntopng/user.lua
+  - GET /lua/pro/rest/v1/edit/snmp/device/device.lua
+  - GET /lua/pro/rest/v1/get/db/flows.lua
+  - GET /lua/pro/rest/v1/get/db/topk_flows.lua
+  - GET /lua/pro/rest/v1/get/infrastructure/instance.lua
+  - GET /lua/rest/v1/add/host/pool.lua
+  - GET /lua/rest/v1/add/network/pool.lua
+  - GET /lua/rest/v1/bind/host/pool/member.lua
+  - GET /lua/rest/v1/delete/endpoints.lua

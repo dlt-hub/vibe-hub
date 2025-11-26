@@ -1,0 +1,50 @@
+auth_info:
+- information_source; https://cognitohq.com/docs/guides/authenticating:
+  - 'Request signing using HMAC-SHA256 with three required headers. Construct a signature
+    string from the lowercased HTTP method and path (request-target), Date header,
+    and Digest header (SHA-256 of request body in base64). Sign this string with your
+    organization''s API secret using HMAC-SHA256, base64-encode the result, and send
+    in the Authorization header with format: Signature keyId="your-api-key",algorithm="hmac-sha256",headers="(request-target)
+    date digest",signature="your-signature". Also include Date header (RFC format)
+    and Digest header (SHA-256=base64-encoded-body-hash).'
+- information_source; https://cognitohq.com/docs/flow/webhooks:
+  - HMAC-SHA256 signature-based authentication using HTTP Signature scheme. Construct
+    a signing string from request method (lowercase), URI path, Date header, and Digest
+    header (SHA-256 of body), then compute Base64-encoded HMAC-SHA256 digest using
+    an api_secret key. Include the signature in the Authorization header following
+    HTTP Signature specification with headers parameter listing "(request-target)
+    date digest".
+pagination_info:
+- information_source; https://cognitohq.com/docs/reference:
+  - Pagination uses link-based navigation with next and previous fields in the response
+    links object, both of which are nullable strings containing HTTP/HTTPS URLs to
+    the next or previous page of results respectively.
+  - The API uses link-based pagination with a `next` field in the `links` object of
+    the response. To paginate, use the URL provided in the `next` field to fetch the
+    subsequent page of results. A `previous` field is also available for navigating
+    backwards. Pagination continues until `next` is null.
+  - The API uses link-based pagination with next and previous fields in a links object
+    within the response. The next field contains a URL to the next page of results
+    if one exists, and previous contains a URL to the previous page if not on the
+    first page. Construct subsequent requests by using the URL from the next field
+    until it returns null, indicating the last page.
+  - The response includes pagination via a "links" object containing "previous" and
+    "next" fields with full URLs to navigate between pages. Use the URL in the "next"
+    field to fetch the next page of results, and the "previous" field for the prior
+    page.
+possible_base_urls:
+- information_source; https://cognitohq.com/docs/reference:
+  - http://cognitohq.com
+  - https://api.cognitohq.com
+possible_endpoints:
+- information_source; https://cognitohq.com/docs/reference:
+  - GET /programs/{id}
+  - GET /screenings/{id}
+  - GET /screenings/{id}/history
+  - GET /screenings/{id}/hits
+  - GET /screenings/{id}/reviews
+  - GET /users/{id}
+  - GET https://api.cognitohq.com/screenings
+  - GET https://sandbox.cognitohq.com/screenings
+  - PATCH /entity-screenings/{id}
+  - PATCH /screenings/{id}

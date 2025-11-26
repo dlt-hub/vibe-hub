@@ -1,0 +1,55 @@
+auth_info:
+- ? information_source; https://docs.terminalfour.com/documentation/developer-resources/up-and-running-with-the-web-services-api/up-and-running-with-terminalfour-web-services-api-part-2/
+  : - Bearer token authentication is required. After connecting and authenticating
+      via the Connect and Authenticate requests, you receive a JSESSIONID and a Bearer
+      token. The Bearer token must be included in subsequent API requests; if the
+      session expires, you can reconnect to obtain a new Bearer token.
+- ? information_source; https://docs.terminalfour.com/documentation/developer-resources/up-and-running-with-the-web-services-api/up-and-running-with-terminalfour-web-services-api-part-1/
+  : - API Key authentication is used, sent in the Authorization header. The API key
+      value is stored in a variable and inherited from the parent collection's authorization
+      settings, eliminating the need to add it to individual requests. The header
+      key is set to 'Authorization' and the authorization type at the collection level
+      is 'API Key'.
+- ? information_source; https://docs.terminalfour.com/documentation/developer-resources/up-and-running-with-the-web-services-api/up-and-running-with-terminalfour-web-services-api-part-1/831/
+  : - Basic Auth is required for the initial login with a TERMINALFOUR local account
+      username and password. Upon successful authentication, an authenticityToken
+      is returned and stored in the `session_auth_token` variable. A JSESSIONID cookie
+      is also created. For subsequent API requests, a bearer token must be obtained
+      via an Authenticate request that includes the `session_auth_token` parameter.
+    - This API uses a multi-step OAuth2 implicit flow with Basic authentication. First,
+      send Basic auth with base64-encoded "username:password" in the Authorization
+      header to obtain a session authenticity token. Then make a GET request to the
+      authorize-implicit/decision endpoint with the session_authenticity_token query
+      parameter; T4 responds with a SET-COOKIE header containing JSESSIONID. Finally,
+      use the accessToken from the JSON response in subsequent requests by sending
+      it as "Bearer {accessToken}" in the Authorization header, along with the JSESSIONID
+      cookie in all subsequent requests.
+- ? information_source; https://docs.terminalfour.com/documentation/developer-resources/up-and-running-with-the-web-services-api/up-and-running-with-terminalfour-web-services-api-part-1/828/
+  : - 'Basic authentication using username:password is required for initial login.
+      After authentication, obtain a session_authenticity_token and use it in a GET
+      request to the authorize-implicit/decision endpoint with client_id=site_manager_client
+      and oauthDecision=allow. The response sets a JSESSIONID cookie via SET-COOKIE
+      header. Extract the access_token from the JSON response and use it for subsequent
+      API requests by sending Authorization: Bearer {access_token} header along with
+      the JSESSIONID cookie in all requests.'
+possible_base_urls:
+- ? information_source; https://docs.terminalfour.com/documentation/developer-resources/up-and-running-with-the-web-services-api/up-and-running-with-terminalfour-web-services-api-part-2/
+  : - https://webapi.terminalfour.com/
+- ? information_source; https://docs.terminalfour.com/documentation/developer-resources/up-and-running-with-the-web-services-api/up-and-running-with-terminalfour-web-services-api-part-3/
+  : - https://webapi.terminalfour.com/
+possible_endpoints:
+- ? information_source; https://docs.terminalfour.com/documentation/developer-resources/up-and-running-with-the-web-services-api/up-and-running-with-terminalfour-web-services-api-part-2/
+  : - GET /hierarchy/{id}/mirrors/{language}
+    - GET /hierarchy/{id}/{language}
+    - POST https://webapi.terminalfour.com/
+    - PUT /hierarchy/{id}/{language}
+- ? information_source; https://docs.terminalfour.com/documentation/developer-resources/up-and-running-with-the-web-services-api/up-and-running-with-terminalfour-web-services-api-part-1/831/
+  : - GET {base}/rs/about
+    - GET {context-url}/rs/authorize-implicit/decision
+- ? information_source; https://docs.terminalfour.com/documentation/developer-resources/up-and-running-with-the-web-services-api/up-and-running-with-terminalfour-web-services-api-part-1/828/
+  : - GET {base}/rs/about
+    - GET {context-url}/rs/authorize-implicit/decision
+- ? information_source; https://docs.terminalfour.com/documentation/developer-resources/up-and-running-with-the-web-services-api/up-and-running-with-terminalfour-web-services-api-part-1/831/Web-Services-Collection-8.3.4.postman_collection.json
+  : - POST {{url}}/authorize-implicit/decision
+- ? information_source; https://docs.terminalfour.com/documentation/developer-resources/up-and-running-with-the-web-services-api/up-and-running-with-terminalfour-web-services-api-part-3/
+  : - POST /contenttype/

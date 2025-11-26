@@ -1,0 +1,55 @@
+auth_info:
+- information_source; https://build.avax.network/llms-full.txt:
+  - API key authentication is required for all requests. Pass your API key in the
+    `x-glacier-api-key` header of each HTTP request. API keys are generated from the
+    AvaCloud portal and are used to track rate limits associated with your account
+    plan.
+  - API key authentication. The apiKey parameter is passed directly to the Avalanche
+    SDK constructor during initialization and is used to authenticate requests to
+    the API.
+  - 'Authorization header using Bearer token. The API key is provided via the ONESIGNAL_API_KEY
+    environment variable and sent as Authorization: Bearer {ONESIGNAL_API_KEY}. Additionally,
+    app_id must be included in the request body and is provided via the APP_ID environment
+    variable.'
+  - The API accepts an optional apikey parameter in the request body, but it is not
+    required for contract verification on Snowtrace. If provided, use any placeholder
+    value. For Hardhat verification, store your wallet seed phrase in a .env.json
+    file under the MNEMONIC key, though this is used for deployment rather than API
+    authentication itself.
+  - The Avalanche SDK requires an API key passed as the apiKey parameter when instantiating
+    the Avalanche client object. This API key is used to authenticate requests to
+    the Avalanche data API endpoints.
+pagination_info:
+- information_source; https://build.avax.network/llms-full.txt:
+  - Pagination uses a nextPageToken field in responses. Include the nextPageToken
+    value as the pageToken query parameter in subsequent requests to retrieve the
+    next page of results. When nextPageToken is absent from the response, there are
+    no more pages to retrieve.
+  - Pagination uses pageSize (optional, controls results per page) as a request parameter
+    and nextPageToken in the response to navigate to subsequent pages. Use the returned
+    nextPageToken value in the next request to fetch the following page, continuing
+    until no nextPageToken is returned.
+  - The `avax.getUTXOs` method supports cursor-based pagination using `startIndex`
+    (containing address and utxo fields) as the pagination cursor and `limit` (number,
+    default appears to be 100 or similar) to control page size. The response returns
+    `endIndex` with the same structure to use as the next `startIndex`, and `numFetched`
+    to indicate results returned; continue paginating by using the previous response's
+    `endIndex` as the next request's `startIndex` until `numFetched` is less than
+    the requested `limit`.
+possible_base_urls:
+- information_source; https://build.avax.network/llms-full.txt:
+  - 127.0.0.1:9650/ext/bc/C/admin
+  - 127.0.0.1:9650/ext/bc/C/avax
+possible_endpoints:
+- information_source; https://build.avax.network/docs/api-reference/health-api:
+  - GET /health
+  - GET /health?tag=
+- information_source; https://build.avax.network/llms-full.txt:
+  - GET /api/faucet/status/:requestId
+  - GET /api/paywall
+  - GET /api/premium
+  - GET http://localhost:9650/ext/health
+  - GET https://api.avax-test.network/ext/bc/C/rpc
+  - GET https://api.avax.network/ext/bc/C/rpc
+  - GET https://glacier-api.avax.network/v1/chains
+  - GET https://glacier-api.avax.network/v1/webhooks:getSharedSecret

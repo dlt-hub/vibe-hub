@@ -1,0 +1,41 @@
+auth_info:
+- information_source; https://docs.pexip.com/api_client/api_rest.htm:
+  - 'PIN-based access control is used for conference joins: provide a "pin" HTTP header
+    with the conference PIN, or "none" if joining as a Guest when PIN is not required
+    for Guests; a 403 Forbidden error is returned if the PIN is incorrect or missing.
+    For SSO-protected conferences, the response includes available Identity Providers
+    (IdPs) with name, img, and uuid fields; subsequent requests must include the chosen_idp
+    field, and the response provides a redirect_url with a Base64-encoded SAML AuthNRequest
+    for IdP authentication.'
+  - SAML and OpenID Connect authentication is used. After redirecting to an Identity
+    Provider (Microsoft Entra ID or similar) and completing authentication, a SAML
+    Assertion or OpenID Connect JWT is returned to Infinity API for verification.
+    Upon successful verification, a token is issued that must be sent as the sso_token
+    parameter in subsequent request_token calls. Tokens can be refreshed via the refresh_token
+    POST endpoint to obtain a new token with an updated expiration time.
+  - Session token authentication is required. Pass the session token as a query parameter
+    named "token" in the URL (e.g., ?token=<token_id>) when connecting to the EventSource
+    endpoint at /api/client/v2/conferences/<conference_alias>/events. Alternatively,
+    the token can be sent as a custom header if the client supports it.
+- information_source; https://docs.pexip.com/api_manage/using.htm:
+  - OAuth and LDAP can be used independently or together for authentication. Any access
+    not using OAuth requires HTTP Basic Authentication over HTTPS, where credentials
+    are the admin web username and password for the Management Node (default username
+    is admin). When using the requests library in Python, pass the username and password
+    as a tuple to the auth parameter.
+possible_base_urls:
+- information_source; https://docs.pexip.com/api_client/api_rest.htm:
+  - https://<node_address>/api/client/v2
+  - https://<node_address>/api/client/v2/conferences/<conference_alias>/events?token=<token_id>
+possible_endpoints:
+- information_source; https://docs.pexip.com/api_client/api_rest.htm:
+  - GET /api/client/v2/conferences/<conference_alias>/available_layouts
+  - GET /api/client/v2/conferences/<conference_alias>/available_pinning_configs
+  - GET /api/client/v2/conferences/<conference_alias>/theme/<resource path>
+  - GET https://<node_address>/api/client/v2/conferences/<conference_alias>/events?token=<token_id>
+  - GET https://<node_address>/api/client/v2/status
+  - GET https://{worker}/api/client/v2/conferences/{conference_alias}/layout_svgs
+  - POST /api/client/v2/conferences/<conference_alias>/breakoutbuzz
+  - POST /api/client/v2/conferences/<conference_alias>/breakouts
+  - POST /api/client/v2/conferences/<conference_alias>/breakouts/<breakout_uuid>/clearbreakoutbuzz
+  - POST /api/client/v2/conferences/<conference_alias>/breakouts/<breakout_uuid>/disconnect

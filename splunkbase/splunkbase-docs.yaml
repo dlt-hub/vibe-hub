@@ -1,0 +1,60 @@
+auth_info:
+- information_source; https://dev.splunk.com/enterprise/reference/splunkbase/sbreleaseapiref:
+  - Authentication occurs over SSL using HTTP Basic authentication. Credentials must
+    be sent in the Authorization header using the format "Basic base64(username:password)".
+    Only the user who uploaded the package can view its status.
+  - Authentication uses HTTP Basic Authentication over SSL with your Splunkbase (splunk.com)
+    credentials. You must be logged in as the user who uploaded the release package.
+    Provide credentials using the curl -u flag or equivalent Authorization header
+    with base64-encoded username:password.
+  - Basic authentication is required using username and password credentials passed
+    via the -u flag in curl (or Authorization header with base64-encoded credentials).
+    Authentication is mandatory; requests without credentials return HTTP 403. Failed
+    authentication or lack of permission to upload to the specified app also returns
+    HTTP 403.
+- information_source; https://dev.splunk.com/enterprise/reference/appinspect/appinspectapiepref:
+  - 'Bearer token (JWT) authentication is required for all AppInspect endpoints. Obtain
+    a JWT token from Splunk.com via the login endpoint at https://api.splunk.com/2.0/rest/login/splunk
+    using basic auth (username and password), then include the token in the Authorization
+    header as "Authorization: Bearer <auth_token>" for subsequent requests. A 401
+    response with code "authorization_header_missing" is returned if the Authorization
+    header is absent, or code "Unauthorized" if the token is invalid.'
+  - 'Bearer token (JWT) authentication is required. Send the JWT token obtained from
+    splunk.com in the Authorization header as a Bearer token (format: Authorization:
+    Bearer <jwt_token>).'
+pagination_info:
+- information_source; https://dev.splunk.com/enterprise/reference/dsp-onprem/api/ingest/v1beta2:
+  - Pagination uses limit and offset query parameters. The limit parameter specifies
+    the maximum number of results to return, and the offset parameter specifies the
+    starting position. Continue paginating by incrementing offset until fewer results
+    than limit are returned or no results are returned.
+- information_source; https://dev.splunk.com/enterprise/reference/dsp-onprem/api/streams/v3beta1:
+  - Pagination is implemented using offset and limit query parameters. The response
+    includes an items array containing the paginated results and a total field indicating
+    the total number of items available. Use limit to control page size and offset
+    to navigate through pages.
+  - Pagination uses offset (integer) and pageSize (integer) query parameters to control
+    which results are returned in the response.
+  - Pagination uses offset and pageSize query parameters. offset specifies the starting
+    position (integer), and pageSize specifies the number of results per page (integer).
+    Both are optional query parameters for the GET /connections endpoint.
+  - Pagination uses query parameters offset (integer) and size (integer) to control
+    which results are returned. The response structure is not shown, so the exact
+    fields for navigating to the next page cannot be determined from this documentation.
+possible_base_urls:
+- information_source; https://dev.splunk.com/enterprise/reference/splunkbase/sbreleaseapiref:
+  - https://splunkbase.splunk.com/api/v1
+  - https://splunkbase.splunk.com/api/v1/
+possible_endpoints:
+- information_source; https://dev.splunk.com/enterprise/reference/splunkbase/sbreleaseapiref:
+  - GET https://splunkbase.splunk.com/api/v1/package/<package ID>/
+  - GET https://splunkbase.splunk.com/api/v1/package/PACKAGEID/
+  - POST https://splunkbase.splunk.com/api/v1/app/<APPID>/new_release/
+- information_source; https://dev.splunk.com/enterprise/reference/appinspect/appinspectapiepref:
+  - GET /2.0/rest/login/splunk
+  - GET /v1/app/report/{request_id}
+  - GET /v1/app/validate/status/{request_id}
+  - GET /v1/info
+  - GET /v1/ping
+  - GET https://api.splunk.com/2.0/rest/login/splunk
+  - GET https://appinspect.splunk.com/v1/app/report/{request_id}

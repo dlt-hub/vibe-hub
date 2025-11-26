@@ -1,0 +1,44 @@
+auth_info:
+- information_source; https://developer.stamps.com/rest-api/reference/:
+  - 'API users must be authorized through SERA (Production or Staging) to access this
+    endpoint. Users can only reprint labels originally printed from their own user
+    account. The documentation references "Authorizations: SERA (Production) SERA
+    (Staging)" but does not specify the exact authentication mechanism, headers, or
+    parameters required to authenticate requests.'
+  - 'Authentication uses a sign-in flow with separate staging and production endpoints.
+    Credentials are obtained by signing in at the authentication endpoint (staging:
+    https://signin.testing.stampsendicia.com or production: https://signin.stampsendicia.com),
+    then used to access the SERA API at the respective environment base URL (staging:
+    https://api.testing.stampsendicia.com/sera or production: https://api.stampsendicia.com/sera).
+    The documentation does not specify the exact header names, parameter names, or
+    token format for subsequent API requests.'
+  - OAuth2 authorization code flow is used. Applications must register a redirect_uri
+    in advance to obtain a Client ID. After receiving an authorization code, call
+    the /oauth/token endpoint to get an access_token and refresh_token. Include the
+    access_token in the Authorization header as "Bearer {access_token}" for all SERA
+    API calls. When the access_token expires, use the refresh_token to call /oauth/token
+    again for a new access_token.
+  - SERA authentication is required. The API uses SERA (Production at api.stampsendicia.com/sera
+    and Staging at api.testing.stampsendicia.com/sera) as the authorization scheme.
+    Specific header names, token formats, or credential passing methods are not detailed
+    in this documentation excerpt.
+  - SERA uses OAuth 2.0 protocol for authentication. All requests must be made over
+    HTTPS with TLS v1.2 or higher. POST requests require an Idempotency-key header
+    containing a randomly-generated version-4 UUID to prevent duplicate processing
+    within a 24-hour window.
+possible_base_urls:
+- information_source; https://developer.stamps.com/rest-api/reference/:
+  - https://api.stampsendicia.com/sera
+  - https://api.stampsendicia.com/sera/v1
+possible_endpoints:
+- information_source; https://developer.stamps.com/rest-api/reference/:
+  - DELETE https://api.stampsendicia.com/sera/v1/carriers/{carrier}
+  - DELETE https://api.stampsendicia.com/sera/v1/pickups/{pickup_id}
+  - DELETE https://api.testing.stampsendicia.com/sera/v1/carriers/{carrier}
+  - DELETE https://api.testing.stampsendicia.com/sera/v1/pickups/{pickup_id}
+  - GET /account
+  - GET /rates
+  - GET /v1/balance
+  - GET /v1/security_questions
+  - GET https://api.stampsendicia.com/sera/v1/account
+  - GET https://api.stampsendicia.com/sera/v1/balance

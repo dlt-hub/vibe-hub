@@ -1,0 +1,63 @@
+auth_info:
+- information_source; https://www.gate.com/docs/developers/apiv4/:
+  - API authentication requires an API key and secret to generate HMAC signatures.
+    Include the API key in the `X-Gate-Access-Key` header and pass a computed signature
+    via the `X-Gate-Access-Sign` header. The signature is generated using HMAC-SHA512
+    with the HTTP method, request path, query parameters, body, and a timestamp. Include
+    the timestamp in the `X-Gate-Access-Time` header. Refer to the Authentication
+    section for the gen_sign implementation details.
+  - API authentication requires an API key and secret used to generate HMAC signatures.
+    The `gen_sign` function creates signed headers for requests by computing an HMAC-SHA512
+    signature over the HTTP method, request path, query parameters, and body. Include
+    the resulting signature headers (generated via `gen_sign`) in all requests to
+    the API endpoint. Store credentials in `key` and `secret` variables corresponding
+    to your API key and secret respectively.
+  - 'API authentication uses HMAC-SHA512 signature scheme. Send three headers: KEY
+    (API key), Timestamp (Unix timestamp), and SIGN (HMAC-SHA512 signature of the
+    request string). The signature is computed from method, URL path, query parameters,
+    SHA512 hash of request body, and timestamp, then signed with your API secret using
+    HMAC-SHA512.'
+  - API key and HMAC-SHA256 signature authentication is required. Include the API
+    key and a computed signature in request headers via the gen_sign function, which
+    takes the HTTP method, request path, and query parameters to generate authentication
+    headers.
+  - API key and HMAC-SHA256 signature authentication is required. Include the signature
+    in request headers via the gen_sign function, which signs the HTTP method, request
+    path, query parameters, and request body. Refer to the Authentication section
+    for gen_sign implementation details.
+pagination_info:
+- information_source; https://www.gate.com/docs/developers/apiv4/:
+  - Page and limit query parameters are used for pagination. Page is an optional integer(int32)
+    for the page number, and limit is an optional integer for the maximum number of
+    results per page. The response includes currency and balance fields, but no explicit
+    next/previous navigation fields are documented.
+  - Page number is controlled by page query parameter (optional, integer). Limit query
+    parameter (optional, integer) controls maximum number of results per request.
+    Response structure for pagination fields is not specified in the provided documentation.
+  - Pagination uses limit (query parameter, optional, controls maximum number of results)
+    and offset (query parameter, optional, list offset starting from 0) parameters
+    to navigate through results.
+  - Pagination uses limit (query parameter, optional, integer) to specify maximum
+    number of records returned per request. The from and to query parameters (optional,
+    int64) filter results by timestamp range but do not control pagination directly.
+  - Pagination uses limit (query parameter, optional, maximum number of records) and
+    offset (query parameter, optional, list offset starting position) to navigate
+    through settlement history results.
+possible_base_urls:
+- information_source; http://www.gate.com/docs/apiv4/en/index.html:
+  - https://testnet.gate.com
+  - https://www.gate.com
+possible_endpoints:
+- ? information_source; https://www.gate.com/announcements/article/45318/gate-announcement-on-adjustment-of-spot-trade-record-fields
+  : - GET /spot/my_trades
+    - GET /spot/trades
+- information_source; https://www.gate.com/docs/apiv4/ws/index.html:
+  - GET /api/v4/spot/order_book
+  - GET https://api.gateio.ws/api/v4/spot/order_book
+- information_source; https://www.gate.com/docs/developers/apiv4/:
+  - DELETE /account/stp_groups/{stp_id}/users
+  - DELETE /api/v4/delivery/usdt/orders
+  - DELETE /delivery/{settle}
+  - DELETE /delivery/{settle}/orders
+  - DELETE /delivery/{settle}/orders/{order_id}
+  - DELETE /delivery/{settle}/price_orders

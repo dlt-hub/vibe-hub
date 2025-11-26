@@ -1,0 +1,36 @@
+auth_info:
+- information_source; https://ipfscluster.io/documentation/reference/api/:
+  - 'The REST API supports both Basic and JWT token authentication. Basic Authentication
+    credentials are stored in the service.json configuration file under basic_auth_credentials.
+    JWT token authentication requires sending an Authorization: Bearer <JWT-token>
+    header; the access token is obtained by querying POST /token endpoint using Basic
+    Auth credentials (username and password from basic_auth_credentials). The JWT
+    token is tied to the requesting user and signed using their password; revocation
+    requires changing or removing the original Basic Auth credentials and restarting
+    ipfs-cluster-service.'
+- information_source; https://ipfscluster.io/documentation/reference/pinsvc_api/:
+  - JWT token authentication is required. Tokens are generated via POST /token endpoint.
+    Tokens should be sent in the Authorization header as Bearer tokens per the IPFS
+    Pinning Service API specification.
+  - JWT token authentication is used to access the pinning service API. Tokens are
+    generated via POST /token endpoint using Basic Authentication (username:password),
+    which returns a JSON response with a "token" field. The JWT token is then passed
+    as the secret access token when adding the pinning service. JWT tokens are tied
+    to the user and signed with their password; revocation requires changing or removing
+    the Basic Auth credentials in the basic_auth_credentials setting for the pinsvc
+    API section and restarting ipfs-cluster-service.
+possible_base_urls:
+- information_source; https://ipfscluster.io/documentation/reference/pinsvc_api/:
+  - http://clusterip:9097
+possible_endpoints:
+- information_source; https://ipfscluster.io/documentation/reference/api/:
+  - DELETE /peers/{peerID}
+  - GET /allocations
+  - GET /allocations/{cid}
+  - GET /id
+  - GET /peers
+  - GET /pins
+  - GET /pins/{cid}
+  - GET /version
+  - POST /add
+  - POST /pins/{cid}

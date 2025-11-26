@@ -1,0 +1,33 @@
+auth_info:
+- information_source; https://api.getinvoice.co/docs/auth:
+  - Bearer token authentication is used. Send the current access token in the Authorization
+    header as "Bearer {token}" to the GET endpoint https://api.getinvoice.co/v1/token/refresh
+    to refresh and receive a new access token; the previous token is then invalidated.
+    The response includes a new refresh_token, token type as bearer, and expiry timestamp.
+  - The API uses a two-step authentication flow. First, call the authenticate endpoint
+    with an api_key query parameter to receive a JWT bearer token with an expiry timestamp.
+    Then, include this token in the Authorization header as "Bearer {token}" for subsequent
+    requests. When the token expires, use the refresh_token from the authentication
+    response to obtain a new token, which invalidates the previous one.
+  - The Invoice API uses JSON Web Tokens (JWT) for authentication. You must first
+    obtain an access token by making a POST request to https://api.getinvoice.co/v1/authenticate
+    with your api_key in the JSON request body. The returned token value must then
+    be included as an Authorization header in all subsequent API requests.
+possible_base_urls:
+- information_source; https://api.getinvoice.co/:
+  - https://api.getinvoice.co
+- information_source; https://api.getinvoice.co/docs/auth:
+  - https://api.getinvoice.co
+possible_endpoints:
+- information_source; https://api.getinvoice.co/docs/auth:
+  - GET https://api.getinvoice.co/v1/
+  - GET https://api.getinvoice.co/v1/token/refresh
+  - POST https://api.getinvoice.co/v1/authenticate
+- information_source; https://api.getinvoice.co/docs/invoice:
+  - DELETE https://api.getinvoice.co/v1/invoice/{id}
+  - GET https://api.getinvoice.co/v1/invoice/all
+  - GET https://api.getinvoice.co/v1/invoice/not-paid/{id}
+  - GET https://api.getinvoice.co/v1/invoice/paid/{id}
+  - GET https://api.getinvoice.co/v1/invoice/{id}
+  - POST https://api.getinvoice.co/v1/invoice/add
+  - POST https://api.getinvoice.co/v1/invoice/record-payment
