@@ -1,0 +1,46 @@
+auth_info:
+- information_source; https://www.azurecitadel.com/arc/servers/identity/proctor/:
+  - 'The authentication uses a two-step challenge-response flow with Azure metadata
+    service. First, make an unauthenticated request to the metadata endpoint with
+    the Metadata: true header to retrieve a challenge token path from the Www-Authenticate
+    response header. Then, read the challenge token file (requires root/sudo access)
+    and send it as a Basic authorization header in a second request to obtain the
+    final access token for management.azure.com.'
+- information_source; https://www.azurecitadel.com/rest-api/theory/:
+  - If authentication is required then a bearer token will be included in an Authorization
+    header. The header should contain the bearer token value for authenticated requests
+    to the API endpoint.
+- information_source; https://www.azurecitadel.com/terraform/azapi/rest-api/:
+  - Use the `az rest` command to automatically handle access tokens. The command uses
+    Azure CLI's built-in authentication to obtain and inject Bearer tokens in the
+    Authorization header for Azure Resource Manager API calls. No manual token management
+    or explicit credential passing is required when authenticated via `az login`.
+- information_source; https://www.azurecitadel.com/vm/identity/:
+  - 'Azure managed identity authentication using IMDS (Instance Metadata Service).
+    Request an OAuth2 access token from the IMDS endpoint at http://169.254.169.254/metadata/identity/oauth2/token
+    with api-version=2018-02-01 and resource parameter set to the target resource
+    URI. Include the Metadata: true header. Use the returned access_token in the Authorization:
+    Bearer header for subsequent API calls to Azure management or data plane endpoints.'
+  - 'Azure managed identity authentication via IMDS. Request an access token from
+    the Instance Metadata Service endpoint at http://169.254.169.254/metadata/identity/oauth2/token
+    with api-version=2018-02-01 and resource=https://management.azure.com/, passing
+    the Metadata: true header. Include the returned access_token in subsequent API
+    calls as a Bearer token in the Authorization header.'
+possible_base_urls:
+- information_source; https://www.azurecitadel.com/arc/servers/identity/proctor/:
+  - http://127.0.0.1:40342/metadata/identity/oauth2/token
+- information_source; https://www.azurecitadel.com/rest-api/cli/:
+  - https://management.azure.com
+possible_endpoints:
+- information_source; https://www.azurecitadel.com/rest-api/cli/:
+  - DELETE https://management.azure.com/subscriptions/{subscriptionId}/resourcegroups/myResourceGroup?api-version=2021-04-01
+  - GET https://management.azure.com/subscriptions/{subscriptionId}/resourcegroups/myResourceGroup?api-version=2021-04-01
+  - PATCH /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}
+  - PUT https://management.azure.com/subscriptions/{subscriptionId}/resourcegroups/myResourceGroup?api-version=2021-04-01
+- information_source; https://www.azurecitadel.com/vm/identity/:
+  - GET http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fmanagement.azure.com%2F
+  - GET http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net
+  - GET http://169.254.169.254/metadata/instance?api-version=2020-09-01
+  - GET https://$vault.vault.azure.net/secrets/$secret?api-version=7.1
+  - GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources?api-version=2020-06-01
+  - GET https://management.azure.com/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/resources

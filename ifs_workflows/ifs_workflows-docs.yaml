@@ -1,0 +1,47 @@
+auth_info:
+- information_source; https://dsj23.me/2024/07/24/authenticating-rest-api-calls-in-ifs-workflows/:
+  - Basic authentication uses a base64-encoded concatenation of username and password
+    sent in the Authorization header as "Basic " + base64(username:password). Bearer
+    token authentication follows OAuth2 Client Credentials flow, requiring a token
+    request with client_id, client_secret, and scope parameters to obtain a token
+    that is then sent in the Authorization header as "Bearer " + token.
+  - 'HTTP authentication is handled via the Authorization header. For basic authentication,
+    credentials (username:password) must be base64-encoded and sent as Authorization:
+    Basic [BASE64_encoded_credentials]. The IFS REST Call workflow delegate accepts
+    an optional Headers parameter where you can include the Authorization header with
+    either basic authentication or bearer token format, configured manually within
+    the workflow using a Script delegate to encode credentials as needed.'
+  - IFS Rest API uses OAuth2 with client credentials grant type. Create an auth body
+    with client_id, client_secret, grant_type set to 'client_credentials', and scope
+    set to 'openid', then POST to the token endpoint (typically https://YourDomain.ifs.cloud/auth/realms/YourSystemID/protocol/openid-connect/token)
+    to obtain an access token. Include the token in subsequent API requests using
+    the Authorization header with format 'Bearer {token}'.
+  - OAuth2 client credentials flow is used to obtain a bearer token. Send a POST request
+    with client_id, client_secret, grant_type set to 'client_credentials', and scope
+    'openid' in the request body. Extract the access_token from the JSON response
+    and use it in the Authorization header as 'Bearer {access_token}'.
+  - Service User Authentication uses OAuth2 Client Credentials Flow to obtain an access
+    token from IFS Cloud. The token is then used in REST API calls via the Authorization
+    header as a Bearer token, allowing requests to be made as a service user rather
+    than a logged-in user.
+possible_base_urls:
+- information_source; https://dsj23.me/2024/07/24/authenticating-rest-api-calls-in-ifs-workflows/:
+  - https://YourDomain.ifs.cloud/auth/realms/YourSystemID/protocol/openid-connect/token
+- ? information_source; https://dsj23.me/2025/07/22/ifs-cloud-workflow-example-checking-the-weather-forecast-%f0%9f%8c%a4%ef%b8%8f/
+  : - https://api.met.no/weatherapi/locationforecast/2.0/compact
+possible_endpoints:
+- information_source; https://dsj23.me/2024/07/24/authenticating-rest-api-calls-in-ifs-workflows/:
+  - POST https://YourDomain.ifs.cloud/auth/realms/YourSystemID/protocol/openid-connect/token
+- ? information_source; https://dsj23.me/2025/07/22/ifs-cloud-workflow-example-checking-the-weather-forecast-%f0%9f%8c%a4%ef%b8%8f/
+  : - GET https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${varLat}&lon=${varLon}
+- information_source; https://dsj23.me/2024/02/05/ifs-workflows-think-big-start-small/:
+  - GET /SupplierHandling.svc/SupplierInfoGeneralSet/IfsApp.SupplierHandling.SupplierInfoGeneral_Default()
+- information_source; https://dsj23.me/2024/09/04/start-ifs-cloud-workflow-using-rest-api/:
+  - GET {{ifs_url}}/main/ifsapplications/projection/engine-rest/process-definition
+  - POST /main/ifsapplications/projection/engine-rest/process-definition/key/TEST_WF/start
+  - POST {{ifs_url}}/main/ifsapplications/projection/engine-rest/process-definition/key/{key}/start
+- information_source; https://dsj23.me/2024/11/07/quick-tips-for-ifs-cloud-integration-development-and-troubleshooting/:
+  - POST https://xxxx-yyyyy-zzzz.mock.pstmn.io/post
+- information_source; https://dsj23.me/2021/01/08/ifs-authentication-flow-with-oauth-and-openid-connect/:
+  - GET {{IFS_URL}}/main/ifsapplications/projection/v1/PartHandling.svc/PartCatalogSet(PartNo='TEST1')
+  - GET {{OPENID_CONNECT_URL}}/.well-known/openid-configuration

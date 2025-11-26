@@ -1,0 +1,75 @@
+auth_info:
+- information_source; https://docs.pretix.eu/dev/api/fundamentals.html:
+  - Token-based API key authentication is required. Send the API key in the Authorization
+    header as "Token YOUR_API_KEY". File uploads require the same authorization method
+    and user that will use the file ID, and file IDs are valid for 24 hours. The X-Idempotency-Key
+    header is optional for POST, PUT, PATCH, DELETE requests and must not be reused
+    after 24 hours; if a duplicate key is sent while pending, you receive a 409 Conflict
+    and should retry after five seconds.
+- information_source; https://docs.pretix.eu/dev/api/ratelimit.html:
+  - 'All authenticated requests to pretix API are rate limited at 360 requests per
+    minute, with the limit scope depending on the authentication method used: per
+    device for device authentication, per organizer account for token-based authentication,
+    or per organizer and OAuth application combination for OAuth. Rate limit violations
+    return HTTP 429 with a Retry-After header indicating seconds to wait before retrying.'
+- information_source; https://docs.pretix.eu/dev/api/tokenauth.html:
+  - API token authentication is required for all requests to the pretix API. Include
+    the token in the Authorization header with the format "Token {api_token}", where
+    the token is a long alphanumeric string generated in the pretix dashboard and
+    cannot be retrieved again after creation.
+  - 'Token-based authentication uses team-level API tokens obtained from the pretix
+    web interface. Send the token in the Authorization header as a Bearer token with
+    each API request.
+
+
+    To use an API token, include it in the Authorization header of your HTTP requests
+    in the format: Authorization: Bearer YOUR_API_TOKEN. The token is created at the
+    organizer team level in the pretix web interface and inherits the permissions
+    of that team.'
+- information_source; https://docs.pretix.eu/dev/api/oauth.html:
+  - 'Authorization header using Bearer tokens. Access tokens are obtained via POST
+    /api/v1/oauth/token with grant_type and credentials, then sent as "Authorization:
+    Bearer {access_token}". Refresh tokens can be used to obtain new access tokens
+    at the same endpoint with grant_type=refresh_token. Tokens can be revoked via
+    GET /api/v1/oauth/revoke_token endpoint.'
+pagination_info:
+- information_source; https://docs.pretix.eu/dev/api/resources/checkinlists.html:
+  - Pagination uses limit and offset query parameters (both optional). The response
+    includes count (total results), next (URL to next page or null), previous (URL
+    to previous page or null), and results array. Stop paginating when next is null.
+- information_source; https://docs.pretix.eu/dev/api/fundamentals.html:
+  - Most lists are paginated with response fields count (total results), next and
+    previous (URLs to next/previous pages, or null if unavailable), and results (list
+    of objects, default 50 per page). You can specify a lower pagination size via
+    query parameter, and navigate by following the next/previous URLs.
+- information_source; https://docs.pretix.eu/dev/api/resources/organizers.html:
+  - The API uses offset-based pagination with a page query parameter (default 1) to
+    navigate results. The response includes count, next, previous, and results fields,
+    where next and previous are null values or URLs to navigate pages; stop paginating
+    when next is null.
+- information_source; https://docs.pretix.eu/dev/api/resources/events.html:
+  - This endpoint uses cursor-based pagination with response fields. The response
+    includes count, next, previous, and results fields. Use the next field value to
+    request the next page; when next is null, there are no more pages.
+- information_source; https://docs.pretix.eu/dev/api/resources/subevents.html:
+  - 'Pagination uses offset-based parameters: query parameters `limit` (optional,
+    controls page size) and `offset` (optional, controls starting position). Response
+    includes `count` (total items), `next` (URL for next page or null), `previous`
+    (URL for previous page or null), and `results` (array of items). Stop paginating
+    when `next` is null.'
+possible_base_urls:
+- information_source; https://docs.pretix.eu/dev/api/resources/checkinlists.html:
+  - https://api.example.com/api/v1
+  - https://pretix.eu
+possible_endpoints:
+- information_source; https://docs.pretix.eu/dev/api/resources/checkinlists.html:
+  - DELETE /api/v1/organizers/(*organizer*)/events/(*event*)/checkinlist/(*id*)/
+  - GET /api/v1/organizers/(*organizer*)/events/(*event*)/checkinlists/
+  - GET /api/v1/organizers/(*organizer*)/events/(*event*)/checkinlists/(*id*)/
+  - GET /api/v1/organizers/(*organizer*)/events/(*event*)/checkinlists/(*id*)/status/
+  - GET /api/v1/organizers/(*organizer*)/events/(*event*)/checkinlists/(*list*)/positions/
+  - GET /api/v1/organizers/(*organizer*)/events/(*event*)/checkinlists/(*list*)/positions/(*id*)/
+  - GET /api/v1/organizers/(organizer)/events/(event)/checkinlists/(list)/positions/(id)/
+  - GET /api/v1/organizers/bigevents/events/sampleconf/checkinlists/1/positions/
+  - GET /api/v1/organizers/{organizer}/events/{event}/checkinlists/
+  - GET /api/v1/organizers/{organizer}/events/{event}/checkinlists/{list}/positions/{id}/download/pdf/

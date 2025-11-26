@@ -1,0 +1,50 @@
+auth_info:
+- information_source; https://developer.opentext.com/ce/products/appenhancer:
+  - AppEnhancer Web Server supports JWT (JSON Web Token) authentication as the primary
+    method, replacing older Basic authentication. Additionally, OAuth tokens are supported
+    as an alternative, allowing clients to obtain Access and ID tokens through standard
+    authentication flows with external identity providers.
+- information_source; https://developer.opentext.com/cloud-platform/documentation/application-administration:
+  - OAuth2 with authorization_code grant type is required. Click the Authorize button
+    in the Administration API Swagger and complete authorization using the organization
+    credentials. The organizationId parameter must be provided in the request path
+    to retrieve tenant information.
+- information_source; https://developer.opentext.com/cloud-platform/documentation/authentication:
+  - Thrust Services APIs use OAuth 2.0 authentication. Requests require a valid bearer
+    token in the Authorization header. To obtain a token, you need a Client ID and
+    Client secret created in Admin Center. The token endpoint is either https://<REGION>.api.opentext.com/organizations/<ORGANIZATION
+    ID>/oauth2/token or https://<REGION>.api.opentext.com/tenants/<TENANT ID>/oauth2/token
+    depending on whether the API operates at organization or tenant level. The authorization
+    endpoint follows the same pattern with /oauth2/auth instead of /oauth2/token.
+    Store credentials securely as they cannot be retrieved if lost and must be regenerated.
+- ? information_source; https://developer.opentext.com/cloud-platform/documentation/saas-application-extension-developer-concepts-overview
+  : - 'The API uses confidential client authentication with three required credentials:
+      Tenant ID, Confidential Client ID, and Secret. These must be entered in an authorization
+      form, with attention to matching the correct regional API endpoint (e.g., au.api.opentext.com
+      for Australia). Organization-level Extension Apps should be used for API authentication
+      rather than tenant-level service clients.'
+- ? information_source; https://developer.opentext.com/ce/products/content-management/documentation/content-server-rest-api-implementation-notes/1
+  : - You can authenticate via the Content Server Auth call using POST api/v1/auth
+      or via OTDS. The documentation does not provide specific details about required
+      headers, parameters, token formats, or credential fields needed for these authentication
+      methods.
+possible_base_urls:
+- information_source; https://developer.opentext.com/cloud-platform/documentation/authentication:
+  - https://<REGION>.api
+  - https://<REGION>.api.opentext.com/organizations/<ORGANIZATION ID>/oauth2/auth
+possible_endpoints:
+- information_source; https://developer.opentext.com/cloud-platform/documentation/application-administration:
+  - GET /organizations/{organizationid}/tenants
+- information_source; https://developer.opentext.com/cloud-platform/documentation/authentication:
+  - POST https://<REGION>.api.opentext.com/organizations/<ORGANIZATION ID>/oauth2/auth
+  - POST https://<REGION>.api.opentext.com/organizations/<ORGANIZATION ID>/oauth2/token
+  - POST https://<REGION>.api.opentext.com/tenants/<TENANT ID>/oauth2/token
+- ? information_source; https://developer.opentext.com/cloud-platform/documentation/saas-application-extension-developer-concepts-overview
+  : - GET /v3/files
+- ? information_source; https://developer.opentext.com/ce/products/content-management/documentation/content-server-rest-api-implementation-notes/1
+  : - GET v1/nodes/id/nodes
+    - GET v2/nodes/id/nodes
+    - PUT v2/nodes/{id}
+- ? information_source; https://developer.opentext.com/ce/products/content-management/documentation/content-server-rest-api-implementation-notes/2
+  : - DELETE /nodes/{id}/categories/{category_id}
+    - DELETE /nodes/{id}/categories/{category_id}/inheritance

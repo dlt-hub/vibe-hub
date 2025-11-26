@@ -1,0 +1,70 @@
+auth_info:
+- information_source; https://docs.oxfordsemantic.tech/3.1/programmatic-access-APIs.html:
+  - 'The RESTful API uses basic HTTP authentication. Include an Authorization header
+    with the value "Basic" followed by a base64-encoded string of "role_name:password"
+    (e.g., "Authorization: Basic QWxhZGRpbjpPcGVuU2VzYW1l" for role "Aladdin" with
+    password "OpenSesame"). This header must be included with each request since the
+    API is stateless. If no Authorization header is present, the request is processed
+    with default role "guest" and password "guest"; the guest role can be deleted
+    to prevent anonymous access.'
+- information_source; https://docs.oxfordsemantic.tech/5.2/programmatic-access-APIs.html:
+  - Authentication uses an Authorization header with the format "RDFox" followed by
+    a token (e.g., "RDFox 11111222223333344444"). Include this Authorization header
+    in requests to authenticate with the RDFox API.
+  - 'RDFox supports two authentication methods: basic authentication using role name
+    and password, or RDFox authentication scheme using an Authorization header with
+    the format "Authorization: RDFox <token>" where the token is obtained when the
+    connection is created. The role name in basic auth must match the connection''s
+    associated role, and the password must be valid at request time.'
+  - 'The API uses HTTP Basic Authentication. Credentials are sent in the Authorization
+    header as a Base64-encoded string in the format "Basic base64(username:password)".
+    For example, "Authorization: Basic dXNlcjE6dXNlcjE=" represents the credentials
+    for user1. The authenticated role can change its password via a PUT request to
+    /password with the old and new passwords separated by a newline character in the
+    request body.'
+  - The API uses role-based authentication via the Authorization header (basic auth)
+    to specify a role name and password when creating a connection. If no Authorization
+    header is provided, the guest role is used. After connection creation, subsequent
+    requests must include the connection ID as a query parameter (connection=<ID>)
+    and can optionally use the RDFox-Authentication-Token header returned in the connection
+    response for additional authentication verification.
+pagination_info:
+- information_source; https://docs.oxfordsemantic.tech/3.1/programmatic-access-APIs.html:
+  - 'Cursor-based pagination is used where a POST request to `/cursors` with optional
+    `limit=n` parameter (default returns all answers) creates a cursor and returns
+    the first batch of results. The cursor location is provided in the `Location`
+    response header, and subsequent requests fetch additional batches using the cursor
+    ID. An `X-Cursor-Exhausted: true` header indicates no more results are available.'
+  - Cursors are used to paginate through query results. Create a cursor with a limit
+    parameter (e.g., limit=10) in the request, retrieve cursor information via GET
+    to access the position property, and use the cursor ID in subsequent requests
+    to fetch additional result pages. Close the cursor with DELETE when done.
+  - Pagination is supported via `offset=m;limit=n` request parameters, as described
+    in Section 8.10 for SPARQL query evaluation. The documentation references Section
+    8.10 for details on how these parameters work.
+  - 'The API supports two pagination approaches: offset/limit parameters (offset=m;limit=n)
+    for standard query result pagination, and explicit cursors managed via the /cursors
+    endpoint under transactions. Cursors maintain position and can be listed; each
+    cursor has an ID and is user-owned, with 401 Unauthorized returned if accessed
+    by a different user than the creator.'
+  - 'The API uses cursor-based pagination for query results. Clients POST to a cursor
+    endpoint with an optional `limit` query parameter (default: all remaining answers)
+    to fetch the next batch of answers in a specified format via `Accept` header.
+    Pagination ends when the response includes `X-Cursor-Exhausted: true` header with
+    `204 No Content` status code, at which point the cursor is automatically deleted.'
+possible_base_urls:
+- information_source; https://docs.oxfordsemantic.tech/3.1/programmatic-access-APIs.html:
+  - http://localhost
+  - http://localhost/datastores
+possible_endpoints:
+- information_source; https://docs.oxfordsemantic.tech/3.1/programmatic-access-APIs.html:
+  - DELETE /content
+  - DELETE /datastores/myStore
+  - DELETE /datastores/myStore/content
+  - DELETE /datastores/myStore/datasources/mySource
+  - DELETE /datastores/myStore/stats/column-counts
+  - DELETE /datastores/myStore/transactions/TX101
+  - DELETE /datastores/myStore/transactions/TX101/cursors/CRS101
+  - DELETE /datastores/myStore/tupletables/myTable
+  - GET /content
+  - GET /datastores

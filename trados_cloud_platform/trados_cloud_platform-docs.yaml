@@ -1,0 +1,30 @@
+auth_info:
+- information_source; https://eu.cloud.trados.com/lc/api-docs/authentication:
+  - The Trados Cloud Platform API uses Bearer token authentication obtained from Auth0.
+    The access token is provided in the `access_token` property of the Auth0 response
+    and must be included in the `Authorization` header as `Bearer {{access_token}}`.
+    Additionally, the `X-LC-Tenant` header with the tenant ID must be provided in
+    every request. Tokens expire after the duration specified in the `expires_in`
+    property (in seconds) and should be cached and reused; applications should request
+    fresh tokens before expiry and limit token requests to a maximum of 16 per day.
+  - Trados Cloud Platform API uses OAuth2 client credentials flow via Auth0. To obtain
+    a bearer token, POST to https://sdl-prod.eu.auth0.com/oauth/token with client_id,
+    client_secret, grant_type set to "client_credentials", and audience set to "https://api.sdl.com".
+    The response contains access_token (valid for expires_in seconds) and token_type
+    "Bearer". Use the access_token in the Authorization header as "Bearer {access_token}"
+    for API requests.
+- information_source; https://eu.cloud.trados.com/lc/extensibility-docs/ca24im2xg3ra8-trados-cloud-platform-api:
+  - The Trados Cloud Platform API uses client credentials (clientId and clientSecret)
+    for authentication. These credentials are obtained when an app is installed and
+    can be exchanged for a token as documented in the Trados Cloud Platform API authentication
+    guide. Access is controlled through scopes specified in the app descriptor (such
+    as TENANT for edit permissions or TENANT_READ for read-only access), which must
+    be approved by an administrator during installation. The Account ID is extracted
+    from the request authentication header token.
+possible_base_urls:
+- information_source; https://eu.cloud.trados.com/lc/api-docs/authentication:
+  - https://api.sdl.com
+  - https://eu.cloud.trados.com
+possible_endpoints:
+- information_source; https://eu.cloud.trados.com/lc/api-docs/authentication:
+  - POST https://sdl-prod.eu.auth0.com/oauth/token

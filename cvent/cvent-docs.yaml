@@ -1,0 +1,67 @@
+auth_info:
+- information_source; https://developers.cvent.com/docs/rest-api/tutorials/developer-quickstart:
+  - Cvent REST API uses OAuth 2.0 with the client credentials flow. To authenticate,
+    POST to {hostName}/ea/oauth2/token with Content-Type application/x-www-form-urlencoded
+    header, Authorization Basic header containing base64-encoded client credentials,
+    grant_type=client_credentials in the body, and your client_id in the body. The
+    response provides a Bearer Token used for subsequent API requests. Scopes like
+    event/contact control access to specific data domains and must be assigned to
+    your application during setup.
+- information_source; https://developers.cvent.com/docs/rest-api/guides/compliance-guide:
+  - Grant your workspace and application the communications:read and communications:write
+    scopes to interact with the Compliance APIs. The API requires scope-based authorization
+    where these two scopes must be assigned to enable access to compliance endpoints
+    for retrieving and configuring communication logs.
+- information_source; https://developers.cvent.com/docs/rest-api/guides/obfuscation-guide:
+  - Access token authentication is required. The `{accessToken}` must be retrieved
+    from a prior Authentication request and used in API calls. Contact read and write
+    permissions are required for obfuscation operations; if a 403 error occurs, verify
+    these scopes are enabled in your workspace and application configuration.
+  - 'Access tokens are required and must be sent in the Authorization header as a
+    Bearer token. The access token is obtained through an Authentication request (details
+    at the linked Authentication section). Include the token in all API requests using
+    the header format: Authorization: Bearer {accessToken}.'
+  - 'Authentication uses Bearer tokens passed in the Authorization header. The access
+    token must be retrieved from a prior Authentication request and included as Authorization:
+    Bearer {accessToken} in all API requests.'
+pagination_info:
+- information_source; https://developers.cvent.com/docs/rest-api/guides/compliance-guide:
+  - Use query parameters page and per_page to paginate through messages. The GET /logs/communication/messages
+    endpoint returns paginated results; specify page (starting at 1) and per_page
+    to control pagination. The POST /logs/communication/messages/filter endpoint also
+    supports pagination with these same parameters for filtered message retrieval.
+  - Use the `before` and/or `after` query parameters in the List Communication endpoint
+    to retrieve communications during a given period. Messages are stored for 30 days
+    only, so retrieve data regularly to ensure retention.
+- information_source; https://developers.cvent.com/docs/legacy-api/csn/planner-guide/searching-rfps:
+  - Pagination uses limit (integer, number of records requested) and searchAfter (UUID,
+    used to retrieve subsequent result sets). The searchAfter value from a previous
+    response is passed in the next request to continue pagination.
+- information_source; https://developers.cvent.com/docs/legacy-api/jifflenow-api/meeting/meetings-list-meeting-centric:
+  - Meetings List API uses offset-based pagination with query parameters page (required,
+    default 1) and per_page (required, default 10) to control pagination. The response
+    includes page numbers and total entries to help determine when pagination is complete.
+- information_source; https://developers.cvent.com/docs/legacy-api/jifflenow-api/meeting/meetings-list-user-centric:
+  - Pagination uses optional query parameters api_params[page] (default 1) and api_params[per_page]
+    (default 10) to control page number and users per page. The response structure
+    does not explicitly show pagination metadata fields like total_count or has_more,
+    so stopping condition is unclear from this documentation.
+possible_base_urls:
+- information_source; https://developers.cvent.com/docs/rest-api/guides/vevent-integration:
+  - https://developers.cvent.com
+- information_source; https://developers.cvent.com/docs/legacy-api/csn/planner-guide/rfp-objects:
+  - https://api.cvent.com/rfp/v1/planner
+possible_endpoints:
+- information_source; https://developers.cvent.com/docs/rest-api/tutorials/developer-quickstart:
+  - POST {hostName}/ea/oauth2/token
+- information_source; https://developers.cvent.com/docs/rest-api/guides/compliance-guide:
+  - GET /logs/communication/messages
+  - GET /logs/communications/configuration
+  - GET https://developers.cvent.com/documentation#tag/Compliance/operation/getCommunicationLogMessages
+  - GET https://developers.cvent.com/documentation#tag/Compliance/operation/getConfiguration
+  - POST /logs/communication/messages/filter
+  - POST https://developers.cvent.com/documentation#tag/Compliance/operation/updateConfiguration
+  - PUT /logs/communications/configuration
+- information_source; https://developers.cvent.com/docs/rest-api/guides/obfuscation-guide:
+  - GET {hostName}/{version}/contacts/obfuscate/{obfuscateId}/status
+  - GET {hostName}/{version}/contacts/{id}/obfuscate

@@ -1,0 +1,48 @@
+auth_info:
+- information_source; https://docs.cbioportal.org/deployment/docker/:
+  - 'The `/api/cache` endpoint requires an API key passed in the `X-API-KEY` header.
+    The API key value is configured in the application.properties file. Send a DELETE
+    request to `http://localhost:8080/api/cache` with the header `X-API-KEY: my-secret-api-key-value`
+    where the value matches your configured key.'
+- ? information_source; https://docs.cbioportal.org/deployment/authorization-and-authentication/authenticating-users-via-tokens/
+  : - Bearer token authentication is required. Include the Authorization header with
+      the format "Bearer <token>" in all requests. Tokens have configurable expiration
+      periods (e.g., 30 or 300 days) and per-user limits. Missing or invalid tokens
+      return HTTP 401.
+    - 'Data access tokens are obtained by logging into cBioPortal and downloading
+      from the "Data Access Token" menu option. The token is then presented with each
+      web service request using the Authorization header with Bearer scheme. Include
+      the token in requests as: Authorization: Bearer <token_value>. For uuid and
+      jwt token methods, tokens include creation_date and expiration_date fields that
+      must be managed by the client.'
+- ? information_source; https://docs.cbioportal.org/deployment/authorization-and-authentication/keycloak-api-access-and-user-creation/
+  : - Keycloak OpenID Connect OAuth2 authentication is used. To obtain an access token,
+      send a POST request to https://<KEYCLOAK_HOST>/auth/realms/<REALM>/protocol/openid-connect/token
+      with Content-type application/x-www-form-urlencoded body containing client_id,
+      client_secret, and grant_type parameters. Then include the returned access token
+      in the Authorization header as Bearer ${ACCESS_TOKEN} for subsequent API requests.
+      Access tokens expire after 300 seconds by default.
+    - Keycloak uses OAuth2 client credentials flow for API authentication. Obtain
+      a ClientId and Secret from the realm-management client credentials tab, then
+      exchange them for an access token by posting client_id, client_secret, and grant_type=client_credentials
+      as x-www-form-urlencoded data to the Keycloak token endpoint, and include the
+      resulting access token in subsequent API requests.
+possible_base_urls:
+- information_source; https://docs.cbioportal.org/web-api-and-clients/:
+  - https://www.cbioportal.org/api/v3
+- information_source; https://docs.cbioportal.org/architecture-overview/:
+  - https://www.cbioportal.org/api
+possible_endpoints:
+- information_source; https://docs.cbioportal.org/deployment/docker/:
+  - DELETE http://localhost:8080/api/cache
+- ? information_source; https://docs.cbioportal.org/deployment/authorization-and-authentication/authenticating-users-via-tokens/
+  : - GET /api/studies
+    - GET https://www.cbioportal.org/api/studies
+- ? information_source; https://docs.cbioportal.org/deployment/authorization-and-authentication/keycloak-api-access-and-user-creation/
+  : - GET https://<KEYCLOAK_HOST>/auth/admin/realms/<REALM>/users
+    - POST https://<KEYCLOAK_HOST>/auth/realms/<REALM>/protocol/openid-connect/token
+- information_source; https://docs.cbioportal.org/deployment/customization/caching/:
+  - DELETE http://my-portal-url.org/api/cache
+  - DELETE http://my-portal-url.org/api/cache/{studyId}
+- information_source; https://docs.cbioportal.org/file-formats/:
+  - GET https://cdd.cbioportal.mskcc.org/swagger-ui.html

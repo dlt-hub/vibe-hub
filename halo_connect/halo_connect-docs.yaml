@@ -1,0 +1,70 @@
+auth_info:
+- information_source; https://docs.haloconnect.io/halo-cloud/fhir-api/overview/:
+  - Halo Cloud API requires authentication via a Halo Cloud subscription. Access to
+    PMS databases is managed by the respective PMS provider, and integrators must
+    have database credentials created for their access requirements. For the FHIR
+    API specifically, integrators need database credentials that grant access to the
+    necessary database tables for each FHIR resource they wish to use.
+- information_source; https://docs.haloconnect.io/halo-cloud/getting-started/:
+  - Authentication with the Integrator API requires including your subscription key
+    as an HTTP header named `Ocp-Apim-Subscription-Key`. The subscription key must
+    be kept secret and stored securely; Halo Connect staff will never request it.
+    If compromised, contact support immediately. The Desktop API uses a separate authentication
+    mechanism that is configured via the Integrator API and requires a cloud presence
+    capable of fetching, forwarding, and renewing authorization tokens.
+- information_source; https://docs.haloconnect.io/halo-cloud/troubleshooting/:
+  - Subscription key authentication is required. Send the API subscription key via
+    the header (exact header name not specified in this excerpt, but context suggests
+    a standard API key header). Verify the subscription key matches the environment
+    (Stage vs Production) and that the IP address is allowlisted; invalid credentials
+    return 401, access restrictions return 403.
+- information_source; https://docs.haloconnect.io/api-reference/integrator-openapi.html:
+  - API Key authentication is required, supported via either a header (ApiKeyHeader)
+    or query parameter (ApiKeyQuery). The exact header name and parameter name are
+    not specified in this documentation excerpt.
+  - API key authentication is required, provided either as a header (ApiKeyHeader)
+    or as a query parameter (ApiKeyQuery). The exact header name and parameter name
+    are not specified in the documentation provided.
+pagination_info:
+- information_source; https://docs.haloconnect.io/halo-cloud/sql-passthrough/examples/:
+  - The results object contains pagination information for the Get Query Results endpoint,
+    specifically the pageNumber field which is used to paginate through query results.
+- information_source; https://docs.haloconnect.io/halo-cloud/fhir-api/capabilities/:
+  - Pagination uses query parameters _count (page size) and _offset (number of resources
+    to skip), both optional. The Bundle response includes a link array with relation
+    types (self, next, previous) containing URLs for navigating pages; construct subsequent
+    requests using the next or previous URL from the response. Stop paginating when
+    no next link is present.
+  - Pagination uses query parameters _count (page size) and _offset (starting position).
+    The response Bundle includes a total field for total results and a link array
+    with relation types (self, next, previous) containing full URLs for navigation.
+    Stop paginating when the next link is absent.
+  - Pagination uses query parameters _count (page size) and _offset (starting position).
+    The response includes a link object with URLs for next and previous pages. Stop
+    paginating when _count is less than _offset or when no next link is provided.
+- information_source; https://docs.haloconnect.io/halo-cloud/fhir-api/examples/:
+  - Pagination uses `_count` (page size, query parameter) and `_offset` (starting
+    position, query parameter). The response Bundle includes a `link` array with `relation`
+    and `url` fields; use the `next` relation's URL to fetch the next page. Stop when
+    no `next` link is present.
+possible_base_urls:
+- information_source; https://docs.haloconnect.io/halo-cloud/fhir-api/overview/:
+  - https://api.stage.haloconnect.io/integrator/sites/{haloGuid}/fhir/R4
+- information_source; https://docs.haloconnect.io/halo-cloud/getting-started/:
+  - https://api.stage.haloconnect.io/integrator/sites/{haloGUID}
+possible_endpoints:
+- information_source; https://docs.haloconnect.io/halo-cloud/fhir-api/overview/:
+  - GET {baseUrl}/{resourceType}
+  - GET {baseUrl}/{resourceType}/{resourceId}
+  - GET {baseUrl}/{resourceType}?{searchParameters}
+  - POST {baseUrl}/{resourceType}
+  - POST {baseUrl}/{resourceType}/_search
+- information_source; https://docs.haloconnect.io/halo-cloud/getting-started/:
+  - GET https://api.stage.haloconnect.io/integrator/sites/{haloGUID}
+- information_source; https://docs.haloconnect.io/halo-cloud/advanced/:
+  - GET /api-reference/integrator-openapi.html#tag/Halo-sites/operation/getSites
+- information_source; https://docs.haloconnect.io/halo-cloud/sql-passthrough/examples/:
+  - GET sites/{HaloGUID}/queries/{queryID}
+- information_source; https://docs.haloconnect.io/halo-cloud/fhir-api/capabilities/:
+  - GET /api-reference/integrator-openapi.html#tag/Halo-sites/operation/getSite
+  - GET https://api.haloconnect.io/integrator/sites/{haloGuid}/fhir/R4/Patient

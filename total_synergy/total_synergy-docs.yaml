@@ -1,0 +1,57 @@
+auth_info:
+- information_source; https://developers.totalsynergy.com:
+  - OAuth2 authorization code flow with application credentials and token refresh.
+    Initial authentication requires applicationKey, ApplicationSecret, code, and grant_type
+    "authorization_code" posted to https://api.totalsynergy.com/api/v2/Oauth2/RefreshAccessToken.
+    The server returns an access token with an expiry date and a refreshToken lasting
+    1 month. For all subsequent API calls, include the access token in the request
+    header named "access-token". To refresh the access token, POST applicationKey,
+    ApplicationSecret, refreshToken, and grant_type "authorization_code" to the same
+    refresh endpoint.
+  - Synergy API uses OAuth 2.0 for authentication. To authenticate, first obtain a
+    token request code by redirecting users to https://app.totalsynergy.com/OAuth2/Authorize
+    with query parameters ApplicationKey, RedirectUri, and tenant, then extract the
+    code from the redirect response. Next, POST to https://api.totalsynergy.com/api/v2/Oauth2/GetAccessToken
+    with a JSON body containing applicationKey, ApplicationSecret, code, and grant_type
+    to retrieve the access token. Use this access token in subsequent API requests.
+- information_source; https://developers.totalsynergy.com/:
+  - OAuth2 authorization_code flow is required. Exchange applicationKey, applicationSecret,
+    and authorization code for an access token by POSTing to https://api.totalsynergy.com/api/v2/Oauth2/RefreshAccessToken
+    with grant_type "authorization_code". Include the resulting access token in the
+    "access-token" header for all subsequent API calls. Refresh tokens last 1 month
+    and can be used to obtain new access tokens by POSTing applicationKey, applicationSecret,
+    refreshToken, and grant_type to the same endpoint.
+  - Synergy API uses OAuth 2.0 for authentication. To authenticate, first obtain a
+    token request code by redirecting the user to https://app.totalsynergy.com/OAuth2/Authorize
+    with query parameters ApplicationKey, RedirectUri, and tenant, then extract the
+    code from the redirect response. Next, POST to https://api.totalsynergy.com/api/v2/Oauth2/GetAccessToken
+    with a JSON body containing applicationKey, ApplicationSecret, code, and grant_type
+    to retrieve the access token, which should be performed server-side using your
+    application secret key.
+pagination_info:
+- information_source; https://developers.totalsynergy.com/Documentation/Projects:
+  - Pagination is controlled by currentPage (required, integer, default 1) and pageSize
+    (required, integer, default 10) query parameters. The response includes currentPage,
+    pageSize, totalPages, and hasNext fields; continue paginating by incrementing
+    currentPage until hasNext is false or currentPage exceeds totalPages.
+  - Use query parameters page and pageSize to paginate results. The response includes
+    a paged list of projects with pagination metadata. Construct subsequent requests
+    by incrementing the page parameter value.
+possible_base_urls:
+- information_source; https://developers.totalsynergy.com:
+  - https://api.totalsynergy.com/api/v2
+  - https://api.totalsynergy.com/api/v2/
+possible_endpoints:
+- information_source; https://developers.totalsynergy.com:
+  - POST https://api.totalsynergy.com/api/v2/Oauth2/GetAccessToken
+  - POST https://api.totalsynergy.com/api/v2/Oauth2/RefreshAccessToken
+  - POST https://api.totalsynergy.com/api/v2/Timers
+  - POST https://app.totalsynergy.com/OAuth2/Authorize
+- information_source; https://developers.totalsynergy.com/:
+  - POST https://api.totalsynergy.com/api/v2/Oauth2/GetAccessToken
+  - POST https://api.totalsynergy.com/api/v2/Oauth2/RefreshAccessToken
+  - POST https://api.totalsynergy.com/api/v2/Timers
+  - POST https://app.totalsynergy.com/OAuth2/Authorize
+- information_source; https://developers.totalsynergy.com/Documentation/Projects:
+  - GET /api/v2/Organisation/{Slug}/Projects/{Id}
+  - GET https://api.totalsynergy.com/api/v2/Organisation/{Slug}/Projects

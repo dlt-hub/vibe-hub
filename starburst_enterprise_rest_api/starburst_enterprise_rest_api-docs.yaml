@@ -1,0 +1,61 @@
+auth_info:
+- information_source; https://docs.starburst.io/latest/starburst-rest-api.html:
+  - 'Basic authentication is required using base64-encoded username:password credentials
+    passed in the Authorization header. The X-Trino-Role header is optional for setting
+    user roles, with sysadmin role requiring explicit specification.
+
+
+    Authorization header: "Authorization: Basic <base64(username:password)>"
+
+    X-Trino-Role header: "X-Trino-Role: system=ROLE{rolename}" (optional, required
+    only for sysadmin role)'
+  - 'The API supports two authentication methods: Basic authentication using username
+    and password sent as an Authorization header with Base64-encoded credentials,
+    or Bearer token authentication using an Authorization header with a Bearer token
+    value. Authorization is controlled via the X-Trino-Role header, which must specify
+    the system role in the format "system=ROLE{roleName}" to define which privileges
+    apply to API requests.'
+  - 'The REST API supports Basic authentication and Bearer token authentication via
+    the Authorization header. For Basic auth, send the Authorization header with base64-encoded
+    username:password (format: Authorization: Basic <base64(username:password)>).
+    For Bearer tokens, use Authorization: Bearer <token>. A user with the sysadmin
+    role is required to use the REST API.'
+- information_source; https://docs.starburst.io/starburst-galaxy/developer-tools/api/:
+  - API authentication requires a token created in the Starburst Galaxy UI under Access
+    > API auth token. The token must be included in API requests and operations are
+    restricted by the role assigned to that token, which determines what account-level
+    and cluster-level privileges are available.
+  - The Starburst Galaxy API uses authentication tokens sent over TLS/HTTPS. Each
+    token is associated with a role and its privileges integrated with the access
+    control system, and tokens expire after 10 minutes.
+pagination_info:
+- information_source; https://docs.starburst.io/448-e/api/index.html:
+  - The API uses cursor-based pagination with a nextPageToken field returned in the
+    response. Use the nextPageToken value from the current response as the cursor
+    parameter in the next request to retrieve the next page of results. Stop paginating
+    when nextPageToken is not returned or is null.
+- information_source; https://docs.starburst.io/latest/develop/client-protocol.html:
+  - If the `nextUri` field is present in the `QueryResults` JSON response from a POST
+    to `/v1/statement`, there are more results to fetch. The client should loop executing
+    GET requests to the `nextUri` value until `nextUri` is absent from the response,
+    indicating query completion.
+  - Use POST to /v1/statement with SQL query in body to initiate queries. If more
+    results exist, the response includes a nextUri URL attribute; follow this nextUri
+    with GET requests to retrieve subsequent result batches. Stop paginating when
+    nextUri is absent from the response.
+possible_base_urls:
+- information_source; https://docs.starburst.io/latest/data-engineering/cost-and-performance/set-mode-ws.html:
+  - http://sep.example.com:8080/ext/faster
+  - https://sep.example.com/ext/faster
+possible_endpoints:
+- information_source; https://docs.starburst.io/448-e/api/index.html:
+  - DELETE /api/v1/dataProduct/domain/{dataDomainId}
+  - DELETE /api/v1/dataProduct/tags/{tagId}
+  - DELETE /api/v1/dataProduct/tags/{tagId}/products/{dataProductId}
+  - DELETE /roles/{roleId}
+  - GET /api/v1/dataProduct/catalogs
+  - GET /api/v1/dataProduct/domains/{dataDomainId}
+  - GET /api/v1/dataProduct/openApi
+  - GET /api/v1/dataProduct/products/{dataProductId}/workflows/delete
+  - GET /api/v1/dataProduct/products/{dataProductId}/workflows/publish
+  - GET /api/v1/dataProduct/tags/products/{dataProductId}

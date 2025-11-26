@@ -1,0 +1,49 @@
+auth_info:
+- information_source; https://www.gridgain.com/docs/gridgain8/latest/developers-guide/restapi:
+  - REST API authentication uses query parameters to provide credentials and obtain
+    a session token. Send an authenticate request with ignite.login=[user] and ignite.password=[password]
+    query parameters to the /ignite endpoint with cmd=authenticate, or include these
+    parameters with any REST command. The API returns a sessionToken in the JSON response
+    that can be used for subsequent requests within that session. Authentication is
+    per-node, so credentials must be obtained separately for each node in a cluster.
+- information_source; https://www.gridgain.com/docs/gridgain9/latest/developers-guide/rest/security:
+  - Basic Authentication and Bearer token authentication are supported. Basic Authentication
+    requires a Base64-encoded username:password string sent in the Authorization header
+    on each request. Bearer token authentication uses OAuth 2.0-style token issuance;
+    tokens are sent in the Authorization header. Both methods require authentication
+    to be enabled in cluster configuration.
+  - JWT Bearer token authentication. Obtain a token by POST to /management/v1/authentication/login
+    with username and password in JSON body. Include the returned JWT token in the
+    Authorization header as "Bearer <token>" for all subsequent requests. Tokens expire
+    per cluster security config and can be revoked via DELETE endpoints /management/v1/authentication/jwt
+    or /management/v1/authentication/jwt/{token}, requiring REVOKE_TOKEN permission.
+  - 'The API supports two authentication methods. Basic Authentication requires sending
+    a Base64-encoded string of username:password in the Authorization header on each
+    request. JWT Bearer Authentication (recommended for production) requires first
+    obtaining a token by POSTing username and password as JSON to the /management/v1/authentication/login
+    endpoint, then using that token in subsequent requests. For Basic auth, send "Authorization:
+    Basic <base64(username:password)>" header. For JWT, send "Authorization: Bearer
+    <token>" header after retrieving the token from the login endpoint.'
+- information_source; https://www.gridgain.com/docs/nebula/rest/rest-api:
+  - Authenticate using HTTP Basic Auth with your Nebula credentials (email as username
+    and password). Send the credentials in the Authorization header using the format
+    username:password encoded in base64, or use the -u flag in curl.
+possible_base_urls:
+- information_source; https://www.gridgain.com/docs/gridgain8/latest/developers-guide/restapi:
+  - http://localhost:8080
+- information_source; https://www.gridgain.com/docs/gridgain8/latest/getting-started/quick-start/restapi:
+  - http://localhost:8080/ignite
+possible_endpoints:
+- information_source; https://www.gridgain.com/docs/gridgain8/latest/developers-guide/restapi:
+  - GET http://[host]:[port]/ignite?cmd=version&ignite.login=[user]&ignite.password=[password]
+  - GET http://localhost:8080/ignite
+  - GET https://[host]:[port]/ignite?cmd=authenticate&ignite.login=[user]&ignite.password=[password]
+  - POST http://localhost:8080/ignite
+- information_source; https://www.gridgain.com/docs/gridgain8/latest/getting-started/quick-start/restapi:
+  - GET http://localhost:8080/ignite?cmd=get&key=1&cacheName=myCache
+  - GET http://localhost:8080/ignite?cmd=getorcreate&cacheName=myCache
+  - GET http://localhost:8080/ignite?cmd=put&key=1&val=Hello_World!&cacheName=myCache
+  - GET http://localhost:8080/ignite?cmd=version
+  - POST http://localhost:8080/ignite?cmd=put&cacheName=myCache
+- information_source; https://www.gridgain.com/docs/gridgain9/latest/developers-guide/rest/security:
+  - DELETE /management/v1/authentication/jwt

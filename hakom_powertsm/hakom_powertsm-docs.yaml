@@ -1,0 +1,50 @@
+auth_info:
+- information_source; https://documentation.hakom.at/powertsm/3.10.3/English/open-api-reference:
+  - OAuth2.0 and OpenID Connect are used for authentication. The endpoint GET /auth/current-id
+    retrieves the id token for the current user, indicating that bearer token authentication
+    via the Authorization header is required for authenticated requests.
+  - The service supports OAuth2.0 and OpenID Connect authentication. Users authenticate
+    through configured identity providers, with a built-in HAKOM provider offering
+    token generation via POST /auth/providers/hakom/token and authorization via GET
+    /auth/providers/hakom/authorize. The OpenID Connect discovery document is available
+    at GET /auth/providers/hakom/.well-known/openid-configuration. Specific token
+    content for the current user can be retrieved from GET /auth/current-id. User
+    sessions are managed through interactive authentication endpoints and sign-out
+    at GET /auth/providers/{provider}/interactive/signout.
+- information_source; https://documentation.hakom.at/powertsm/3.10.3/English/what-is-webtsm-services-api:
+  - The WebTSM Services API uses OAuth 2.0 for authentication. Clients must obtain
+    an access token through the OAuth 2.0 flow and include it in requests to authenticate
+    with the service.
+- information_source; https://documentation.hakom.at/powertsm/3.10.3/English/basic-authentication:
+  - Basic authentication is enabled by default (controlled by EnableBasicAuthentication
+    setting in HAKOM.Config). Credentials are sent using the Basic scheme with username
+    and password; passwords are stored as SHA-256 hashes in the ACL_USER table with
+    fields PASSWORD (uppercase hex hash) and OSUSERNAME. Users can change passwords
+    via PUT /auth/providers/hakom/users/{ID|name}/password. User roles are managed
+    through ACL_ROLE and ACL_USERROLE tables, with an "Administrator" role required
+    for certain operations like deletions.
+- information_source; https://documentation.hakom.at/powertsm/3.10.3/English/token-authentication-1:
+  - OAuth2 client credentials flow with token endpoint at https://webtsm.hakom.at/v3/auth/providers/hakom/token.
+    Send POST request with Content-Type application/x-www-form-urlencoded containing
+    response_type=token, client_id, client_secret, and grant_type=client_credentials
+    in the request body. The response includes access_token (valid for 3600 seconds),
+    token_type (Bearer), and id_token. Use the access_token by passing it in the Authorization
+    header as "Bearer [YOUR ACCESS TOKEN]" for API requests. You must also add a redirect_uri
+    parameter to the URL.
+possible_base_urls:
+- information_source; https://documentation.hakom.at/powertsm/3.10.3/English/open-api-reference:
+  - https://api.powertsm.com/api
+- information_source; https://documentation.hakom.at/powertsm/3.10.3/English/version-information:
+  - baseUrl/extensions/grafana/annotationpayloadconverter
+possible_endpoints:
+- information_source; https://documentation.hakom.at/powertsm/3.10.3/English/open-api-reference:
+  - DELETE /auth/providers/hakom/users/{ID}
+  - DELETE /auth/providers/hakom/users/{ID}/roles/{rolename}
+  - DELETE /auth/providers/hakom/users/{name}
+  - DELETE /authorization/repositories/{repository}/{rule}
+  - DELETE /hooks/{GUID}
+  - DELETE /repositories/{repository}/attributes/{ID}
+  - DELETE /repositories/{repository}/attributes/{name}
+  - DELETE /repositories/{repository}/deletedtimeseries
+  - DELETE /repositories/{repository}/timeseries/archive
+  - DELETE /repositories/{repository}/timeseries/quotation

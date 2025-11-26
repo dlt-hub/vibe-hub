@@ -1,0 +1,61 @@
+auth_info:
+- information_source; https://api.nicejob.com/docs/reference/rest:
+  - 'OAuth2 authentication is required. The flow involves three steps: redirect the
+    user to https://api.nicejob.com/oauth/authorize to obtain consent and receive
+    an authorization code, then POST that code to https://api.nicejob.com/oauth/token
+    to get an access token and refresh token. Additional endpoints available are https://api.nicejob.com/oauth/revoke
+    for token revocation and https://api.nicejob.com/oauth/introspect for token introspection.'
+  - 'OAuth2 authorization code flow with refresh tokens. Authorization code is obtained
+    via redirect to `https://api.nicejob.com/oauth/authorize`, then exchanged at `POST
+    https://api.nicejob.com/oauth/token` using `grant_type: "authorization_code"`
+    to get a refresh token. The refresh token is then sent to the same token endpoint
+    with `grant_type: "refresh_token"` to obtain an access token valid for 24 hours.
+    Refresh tokens do not expire and can be revoked via POST to the revocation endpoint.
+    Webhooks use `client_credentials` grant type instead.'
+  - Scopes required for accessing review endpoints. The API uses scope-based authorization
+    where the "reviews" scope is required to retrieve Review and ReviewInsights entities.
+    Specific scope requirements are referenced but not detailed in this excerpt.
+  - 'Scopes required: payments scope. The API uses scope-based authorization where
+    the "payments" scope is required to access payment endpoints. Credentials should
+    be passed according to the standard OAuth2 bearer token pattern in the Authorization
+    header.'
+  - The NiceJob API uses OAuth 2.0 with client_credentials grant type for authentication.
+    Access tokens are scoped and restricted to permitted scopes that can be viewed
+    in your app's credentials; each endpoint specifies its required scope(s). Unauthorized
+    requests, including those with expired access tokens, return a 401 status code.
+pagination_info:
+- information_source; https://api.nicejob.com/docs/reference/rest:
+  - Cursor-based pagination is used for listing webhooks. The optional query parameter
+    cursor (string) is passed in the query string to retrieve paginated results, with
+    each response returning up to 20 items. Use the cursor value from the response
+    to request the next page.
+  - Cursor-based pagination is used for the List Invoices endpoint. The optional query
+    parameter cursor is passed to retrieve paginated results, with responses returning
+    up to 20 items per request. The documentation does not specify how to obtain the
+    next cursor value from the response or when to stop paginating.
+  - Pagination uses cursor-based navigation. List requests return a cursor field in
+    the response which is null when no more results are available. Use the cursor
+    value to fetch the next page of results in subsequent requests.
+  - Pagination uses cursor-based navigation. The optional query parameter cursor is
+    passed in the query string to retrieve paginated Case entities. Use the cursor
+    value from the previous response to fetch the next page of results.
+  - Pagination uses limit of 20 items per response. No explicit pagination parameters
+    (page, offset, cursor, limit) are documented in the request. No pagination navigation
+    fields (next, has_more, total_count) are mentioned in the response structure.
+possible_base_urls:
+- information_source; https://api.nicejob.com/docs/changelog:
+  - https://api.nicejob.com
+- information_source; https://api.nicejob.com/docs/reference/rest:
+  - https://api.nicejob.com
+possible_endpoints:
+- information_source; https://api.nicejob.com/docs/reference/rest:
+  - DELETE https://api.nicejob.com/v2/webhooks/:id
+  - GET https://api.nicejob.com/oauth/authorize
+  - GET https://api.nicejob.com/v2/bookings/:id
+  - GET https://api.nicejob.com/v2/bookings?person_id=$PERSON_ID&cursor=$CURSOR
+  - GET https://api.nicejob.com/v2/cases
+  - GET https://api.nicejob.com/v2/cases/:id
+  - GET https://api.nicejob.com/v2/cases?person_id=$PERSON_ID&cursor=$CURSOR
+  - GET https://api.nicejob.com/v2/employees/:id
+  - GET https://api.nicejob.com/v2/employees?email=$EMAIL&cursor=$CURSOR
+  - GET https://api.nicejob.com/v2/invoices/:id

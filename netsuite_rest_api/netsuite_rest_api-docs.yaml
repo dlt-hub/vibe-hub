@@ -1,0 +1,55 @@
+auth_info:
+- information_source; https://www.houseblend.io/articles/netsuite-customer-portal-oauth2-integration:
+  - NetSuite uses OAuth2 (authorization code flow, not implicit flow or PKCE) requiring
+    a server to secure the client secret. A critical permission requirement is "Log
+    in using OAuth 2.0 Tokens" on the user role, and integration record scopes must
+    be explicitly enabled (e.g., "RESTlets" scope for RESTlet access). Tokens expire
+    after two weeks requiring re-authentication. Missing permissions or disabled scopes
+    result in errors like "INSUFFICIENT_PERMISSION" or "INVALID_LOGIN_ATTEMPT".
+  - 'NetSuite uses OAuth2 for REST API authentication. The portal application is registered
+    as an OAuth2 client in NetSuite and follows the authorization code flow: redirect
+    users to NetSuite''s authorization endpoint at `.../oauth2/authorize.nl`, exchange
+    the returned authorization code at the token endpoint `.../oauth2/v1/token` for
+    access and refresh tokens, then include the access token in subsequent REST API
+    requests. OAuth2 is available only for REST web services and RESTlet endpoints,
+    not SOAP.'
+  - NetSuite uses OAuth2 for authorization. The flow requires redirecting users to
+    NetSuite's authorization endpoint with client_id, redirect_uri, and response_type=code
+    parameters. After user consent, NetSuite returns an authorization code to your
+    callback URL, which your backend exchanges for an access_token and refresh_token
+    by POSTing to NetSuite's token endpoint with client_id, client_secret, grant_type=authorization_code,
+    and code. The access_token is then used in subsequent API requests (typically
+    in the Authorization header as "Bearer <access_token>") to call NetSuite REST
+    APIs. Administrators can configure whether users consent once or each time; if
+    set to once, reauthorization may be seamless if the user's session remains valid.
+  - OAuth2 authorization code flow is used to obtain per-customer access tokens. The
+    portal backend exchanges an authorization code from NetSuite's OAuth2 endpoint
+    for an access token, then uses that token to call NetSuite's REST APIs (SuiteTalk
+    REST). Tokens are scoped and tied to user roles to enforce access control at the
+    user/role level. REST Web Services and OAuth 2.0 must be enabled in NetSuite Setup
+    under Company > Enable Features and Manage Authentication respectively.
+  - 'OAuth2 bearer token authentication is required. Include the access token in the
+    Authorization header as `Authorization: Bearer <access_token>` when calling NetSuite
+    REST APIs. Access tokens expire after one hour and must be refreshed by sending
+    a POST request to the token endpoint with `grant_type=refresh_token` and the `refresh_token`
+    parameter, using the same Basic Auth credentials (client ID and secret). Refresh
+    tokens themselves expire after 7 days, requiring full re-authorization through
+    the login flow if expired. If a refresh attempt returns an `invalid_grant` error,
+    the user must re-authorize.'
+possible_base_urls:
+- information_source; https://www.houseblend.io/articles/netsuite-customer-portal-oauth2-integration:
+  - https://<ACCOUNT_ID>.suitetalk.api.netsuite.com/services/rest/record/v1
+  - https://api.netsuite.com/services/oauth2/authorize.nl
+possible_endpoints:
+- information_source; https://www.houseblend.io/articles/netsuite-customer-portal-oauth2-integration:
+  - GET .../record/v1/customer/123
+  - GET /services/rest/record/v1/salesOrder
+  - GET https://.../oauth2/authorize.nl
+  - GET https://.../record/v
+  - GET https://<ACCOUNT_ID>.suitetalk.api.netsuite.com/services/rest/record/v1/customer/<internalId>
+  - POST /oauth2/v1/token
+  - POST https://.../oauth2/v1/token
+- information_source; https://www.houseblend.io/articles/netsuite-power-bi-integration:
+  - GET /record/v1/customer
+  - GET https://<account>.suitetalk.api.netsuite.com/services/rest/record/v1/customer
+  - POST /record/v1/customer

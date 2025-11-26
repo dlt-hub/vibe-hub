@@ -1,0 +1,37 @@
+auth_info:
+- information_source; https://docs.evergreen-ils.org/docs/latest/integrations/restful_api.html:
+  - Evergreen ILS RESTful API requires an authentication token passed as eg_auth_token
+    parameter to OpenSRF methods. The token must be included in method parameters
+    when calling endpoints like user retrieval functions, and serves as the authorization
+    credential for accessing patron and other protected resources.
+  - Obtaining an Evergreen auth token requires sending an HTTP GET request to the
+    /self/auth path with credentials passed either as a standard HTTP Basic authorization
+    header (with optional third component for login type) or through query parameters
+    (specific parameter names are in the API specification document).
+  - The API requires an authentication token passed as the `eg_auth_token` parameter.
+    The token must be provided to access the endpoint, and the username is supplied
+    as a path parameter.
+  - 'The API supports three security methods for authentication and authorization:
+    Basic Authentication and Parameter Security for the specialized authentication
+    endpoint, while all other endpoints default to Bearer Authentication (though Bearer,
+    Cookie, and Parameter authentication are generally usable for most endpoints).
+    Rate limits are applied based on endpoint type and user context: authentication
+    endpoints use 100 requests per second by default, while other endpoints use 1
+    request per second per known user, 1 request per second per IP address if user
+    is unknown, or 1 request per second globally if neither is available.'
+  - The API uses a two-step authentication process. First, obtain an Evergreen auth
+    token by sending credentials via HTTP Basic auth header (with optional login type
+    component) or query parameters u, p, and t, requesting the response as plain text
+    or JSON via the Accept header. Then, use the returned token in subsequent requests
+    via HTTP Bearer authentication header, or alternatively pass it as a query parameter
+    ses, or in cookies eg.auth.token, ses, or eg.api.token.
+possible_base_urls:
+- information_source; https://docs.evergreen-ils.org/docs/latest/integrations/restful_api.html:
+  - https://<hostname>/openapi3/v0
+possible_endpoints:
+- information_source; https://docs.evergreen-ils.org/docs/latest/integrations/restful_api.html:
+  - GET /patrons/by_barcode/:barcode
+  - GET /patrons/by_barcode/:barcode/id
+  - GET /patrons/by_username/:username
+  - GET /patrons/by_username/:username/id
+  - GET /self/auth

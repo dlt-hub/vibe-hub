@@ -1,0 +1,78 @@
+auth_info:
+- information_source; https://fusionauth.io/articles/oauth/modern-guide-to-oauth:
+  - 'Authorization Code Grant is the primary OAuth2 flow for user-involved scenarios.
+    It requires three key components: an Authorize endpoint (where users log in via
+    browser), an Authorization code (random ASCII string returned after login), and
+    a Token endpoint (API where the backend exchanges the authorization code for tokens).
+    PKCE can be layered on top for additional security. Resource Owner Password Credentials
+    grant uses username and password directly but should only be used with high trust
+    or legacy migrations. Client Credentials grant allows applications to act on their
+    own behalf without user interaction by obtaining tokens directly.'
+  - OAuth2 Client Credentials grant is used to obtain access tokens for service-to-service
+    authentication. Submit form data with client_id, client_secret, and grant_type
+    set to client_credentials to the token endpoint. The client_id and client_secret
+    can be sent in the request body or via Basic access authorization in the Authorization
+    header. Use the resulting access token in the Authorization header with Bearer
+    scheme when calling APIs.
+  - 'The API uses bearer token authentication passed in the request headers under
+    an auth object. The client sends an accessToken in the format auth: { ''bearer'':
+    accessToken } to the /send endpoint. The microservice verifies the incoming access
+    token via verifyAccessToken(), retrieves stored WUPHF tokens (accessToken and
+    refreshToken) from the database based on userId, and forwards both tokens to the
+    external WUPHF API in the same auth header structure. The clientId is ''9b893c2a-4689-41f8-91e0-aecad306ecb6''
+    and clientSecret is ''setec-astronomy''. Bearer tokens are extracted from requests
+    using the express-bearer-token middleware.'
+  - The Introspection endpoint (an OAuth 2.0 extension) and UserInfo endpoint (OIDC-defined)
+    are used to retrieve token and user information respectively. The Introspection
+    endpoint returns JWT claims about the access token itself, including active status,
+    granted scopes, and client_id, while UserInfo returns user information for whom
+    the access token was issued. Both endpoints require network requests and accept
+    an access token to return their respective information.
+  - The WUPHF API requires bearer token authentication. Send the access token and
+    refresh token in the request headers under an `auth` object with keys `bearer`
+    and `refresh`, respectively. Tokens are stored server-side in a database and retrieved
+    per user when making API calls.
+pagination_info:
+- information_source; https://fusionauth.io/docs/apis/login:
+  - Pagination uses `search.startRow` (integer, defaults to 0) and `search.numberOfResults`
+    (integer, defaults to 25) in the request body. Increment `startRow` by `numberOfResults`
+    for subsequent requests. Set `retrieveTotal` to true to get total possible results
+    in the response.
+  - This API allows you to search and paginate through Login Records using offset-based
+    pagination. Use the `numberOfResults` parameter to specify the number of records
+    per page and `startRow` to specify the starting index for pagination; the response
+    includes `total` to indicate the total number of records available.
+  - Use offset-based pagination with query parameters startRow (offset, defaults to
+    0) and numberOfResults (page size, defaults to 25). Increment startRow by numberOfResults
+    for subsequent requests. Set retrieveTotal to true to get total possible results
+    in the response.
+- information_source; https://fusionauth.io/docs/apis/users:
+  - 'Pagination uses offset-based parameters: `numberOfResults` (query parameter,
+    optional, defaults to 10) controls page size, and `startRow` (query parameter,
+    optional, defaults to 0) specifies the starting offset. The response includes
+    `total` field indicating total matching records and `users` array containing the
+    current page results; construct next request by incrementing `startRow` by `numberOfResults`
+    until `startRow` >= `total`.'
+  - The API uses offset-based pagination for retrieving recent logins. Request parameters
+    include limit (query, optional, defaults to 10, controls maximum logins per request)
+    and offset (query, optional, defaults to 0, incremented by the limit value to
+    paginate through results). The response does not explicitly describe pagination
+    fields, but the offset parameter is used to navigate pages by incrementing it
+    by the limit value on subsequent requests.
+possible_base_urls:
+- information_source; https://fusionauth.io/articles/oauth/modern-guide-to-oauth:
+  - https://api.getwuphf.com
+  - https://api.third-party-provider.com
+possible_endpoints:
+- information_source; https://fusionauth.io/articles/oauth/modern-guide-to-oauth:
+  - POST /api/todos/complete/:id
+  - POST https://api.getwuphf.com/send
+  - POST https://api.third-party-provider.com/profile/friends
+  - POST https://wuphf-microservice.twgtl.com/send
+- information_source; https://fusionauth.io/docs/apis/authentication:
+  - GET /api/prometheus/metrics
+  - GET /api/status
+  - GET /api/user
+  - GET https://example.fusionauth.io/api/user
+  - GET https://local.fusionauth.io/api/prometheus/metrics
+  - GET https://local.fusionauth.io/api/scim/resource/v2/Users

@@ -1,0 +1,63 @@
+auth_info:
+- information_source; https://developer.sosinventory.com/apidoc:
+  - 'To access the v2 API, you must obtain an access token from the Authentication
+    section. Include the access token in the Authorization header with the format
+    "Authorization: Bearer {access_token}" when making API requests to api.sosinventory.com.
+    All requests require this bearer token authentication.'
+- information_source; https://developer.sosinventory.com/apidoc/authentication:
+  - 'OAuth2 authorization code flow with access tokens. After obtaining an authorization
+    code (valid 24 hours, single-use) via redirect, exchange it for an access token
+    by POSTing to https://api.sosinventory.com/oauth2/token with grant_type=authorization_code,
+    client_id, client_secret, code, and redirect_uri in the request body (Content-Type:
+    application/x-www-form-urlencoded). The response contains access_token (bearer
+    token, valid 90 days), token_type=bearer, expires_in, and refresh_token. Use the
+    access_token in subsequent API requests; refresh before expiry using the refresh_token.
+    API access privileges match the authorizing user; create a dedicated SOS user
+    account with limited permissions if needed.'
+  - SOS Inventory API uses OAuth2 authorization code flow. Direct users to https://api.sosinventory.com/oauth2/authorize
+    with response_type=code, client_id=[your client ID], and redirect_uri=[your https
+    callback URL]. Obtain client_id and client_secret from the MY APPS section of
+    the Developer Portal. The access privileges granted will match the authorizing
+    user's permissions in the application.
+  - The API uses OAuth2 bearer token authentication. Include the access token in the
+    Authorization header as "Bearer [access_token]" for API requests. To refresh an
+    expired access token, POST to https://api.sosinventory.com/oauth2/token with Content-Type
+    application/x-www-form-urlencoded and body parameters grant_type=refresh_token
+    and refresh_token=[refresh_token], which returns a new access_token, token_type
+    (bearer), expires_in (seconds), and refresh_token in the JSON response.
+pagination_info:
+- information_source; https://developer.sosinventory.com/apidoc/Lot:
+  - Pagination uses start (cursor for row number, optional) and maxresults (optional,
+    default 200, maximum 200) query parameters. Response includes count (results returned)
+    and totalCount (total matching records). To get the next page, increment start
+    by the current maxresults value.
+- information_source; https://developer.sosinventory.com/apidoc/Process:
+  - 'Pagination uses two query parameters: start (cursor indicating row number in
+    full result set, optional) and maxresults (maximum results per call, optional,
+    default 200, maximum 200). The API limits results to 200 per call; to retrieve
+    the next page, set start to the row number where the next page begins (for example
+    start=201 after retrieving 200 results).'
+- information_source; https://developer.sosinventory.com/apidoc/References:
+  - Pagination uses optional query parameters start (cursor for row number in full
+    result set) and maxresults (max results per call, default 200, maximum 200). Response
+    includes count (results returned) and totalCount (total matching records). To
+    get next page, set start to the row number where you want to continue (for example
+    start=201 after retrieving first 200 results).
+possible_base_urls:
+- information_source; https://developer.sosinventory.com/apidoc:
+  - https://api.sosinventory.com
+- information_source; https://developer.sosinventory.com/apidoc/Lot:
+  - https://api.v2/lot
+possible_endpoints:
+- information_source; https://developer.sosinventory.com/apidoc/Lot:
+  - DELETE /api/v2/lot/:id
+  - GET /api/v2/lot
+  - GET /api/v2/lot/:id
+  - POST /api/v2/lot
+  - PUT /api/v2/lot/:id
+- information_source; https://developer.sosinventory.com/apidoc/Process:
+  - DELETE /api/v2/process/:id
+  - GET /api/v2/process
+  - GET /api/v2/process/:id
+  - POST /api/v2/process
+  - PUT /api/v2/process/:id

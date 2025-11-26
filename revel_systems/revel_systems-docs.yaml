@@ -1,0 +1,62 @@
+auth_info:
+- information_source; https://developer.revelsystems.com/revelsystems/docs/api-platform-authentication:
+  - Bearer token authentication is used for API requests. To obtain a token, make
+    a POST request to the token endpoint with grant_type "client_credentials", client_id,
+    client_secret, and audience "https://api.revelsystems.com". Include the Client-Id
+    header (merchant's Revel URL without ".revelup.com") to differentiate merchants.
+    Tokens must be regenerated every 24 hours. Use the Bearer token in the Authorization
+    header for all subsequent API calls.
+  - OAuth2 client credentials flow is used for authentication. To obtain a bearer
+    token, make a POST request to https://authentication.revelup.com/oauth/token with
+    a JSON body containing grant_type set to "client_credentials", your client_id,
+    client_secret, and audience set to "https://api.revelsystems.com". The returned
+    token should then be used as a Bearer token in subsequent API requests.
+- information_source; https://developer.revelsystems.com/revelsystems/docs/callback-mechanism:
+  - 'Authentication requires three headers: Authorization Bearer token in the Authorization
+    header, Client-Id in the Client-Id header, and optionally Callback-Url in the
+    Callback-Url header for asynchronous requests.'
+  - The API supports an optional callback mechanism where clients can provide a callback
+    URL via the `Callback-Url` HTTP header. The callback URL must accept POST requests
+    and return a 2xx status code. If the API Gateway fails to deliver the callback
+    response, it will retry up to 3 times for specific HTTP status codes (429, 500,
+    502, 503, 504). This mechanism is used for responses larger than 10MB, requests
+    exceeding 29 seconds, or asynchronous response handling, and is only supported
+    on specific endpoints.
+  - The API uses Bearer token authentication with a Client-Id header. Send requests
+    with the Authorization header set to "Bearer <token>" and the Client-Id header
+    set to "<client-id-goes-here>". The response includes a Correlation-Id header
+    for tracking.
+pagination_info:
+- information_source; https://developer.revelsystems.com/revelsystems/docs/callback-mechanism:
+  - Pagination uses limit and offset parameters in the query string. The response
+    includes a meta object with limit (default 20), offset (default 0), total_count,
+    next, and previous fields to navigate pages. Use offset to request subsequent
+    pages and stop when next is null.
+- information_source; https://developer.revelsystems.com/revelsystems/docs/webhooks:
+  - Pagination uses optional query parameters page (page number) and pageSize (number
+    of items per page). Response includes pageSize, page, totalItems, and totalPages
+    fields to indicate pagination state and construct subsequent requests.
+  - 'Pagination uses optional query parameters: page (string, a reference to the page)
+    and pageSize (integer, number of items per page). Response structure for pagination
+    fields is not detailed in the provided documentation.'
+  - Use query parameters page and pageSize to paginate through message logs. The page
+    parameter accepts a cursor string (returned as next_page in the response), and
+    pageSize specifies the number of items per page. When next_page is null or absent,
+    pagination is complete.
+possible_base_urls:
+- information_source; https://developer.revelsystems.com/revelsystems/docs/api-platform-authentication:
+  - https://api.qa.revelup.io/
+  - https://api.revelsystems.com
+possible_endpoints:
+- information_source; https://developer.revelsystems.com/revelsystems/docs/api-platform-authentication:
+  - POST https://authentication.qa.revelup.com/oauth/token
+  - POST https://authentication.revelup.com/oauth/token
+- information_source; https://developer.revelsystems.com/revelsystems/docs/callback-mechanism:
+  - GET https://api.revelsystems.com/reports/product_mix
+  - GET https://api.revelsystems.com/reports/productcomponent/data.json
+  - GET https://api.revelsystems.com/reports/sales_summary/json
+  - GET https://api.revelsystems.com/resources/BankDrop
+  - GET https://api.revelsystems.com/resources/BusinessActionLog
+  - GET https://api.revelsystems.com/resources/DeclaredTips
+  - GET https://api.revelsystems.com/resources/GiftCard
+  - GET https://api.revelsystems.com/resources/Modifier

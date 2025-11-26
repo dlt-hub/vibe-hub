@@ -1,0 +1,70 @@
+auth_info:
+- information_source; https://indigo-iam.github.io/docs/v/current/user-guide/api/oauth-token-exchange.html:
+  - 'Access tokens are obtained via OAuth2 token exchange and passed in the Authorization
+    header as a Bearer token. The token is retrieved from an endpoint response, stored
+    in an environment variable (SUBJECT_TOKEN), and sent as "Authorization: Bearer
+    $SUBJECT_TOKEN" to access protected APIs. Token exchange allows an actor (identified
+    by ACTOR_ID and ACTOR_SECRET environment variables) to exchange a subject token
+    for a new token with different scopes and audience (AUDIENCE environment variable)
+    to access downstream services on behalf of the user.'
+  - OAuth2 Token Exchange grant type with basic authentication. The client authenticates
+    using HTTP basic auth with ACTOR_ID as username and ACTOR_SECRET as password,
+    then exchanges a subject token for an access token by sending a POST request with
+    grant_type=urn:ietf:params:oauth:grant-type:token-exchange, audience, subject_token,
+    and scope parameters to the IAM token endpoint. The response includes an access_token
+    with token_type Bearer that is sent in the Authorization header as "Bearer <access_token>"
+    to invoke downstream services.
+- information_source; https://indigo-iam.github.io/docs/v/current/admin-guide/health_endpoints.html:
+  - Sending basic authentication, the endpoint returns a response with more details.
+    Basic auth credentials (username and password) are sent via the Authorization
+    header using the format "Basic base64(username:password)". Administrator users
+    receive detailed health information, while anonymous requests receive only a status
+    summary.
+- information_source; https://indigo-iam.github.io/docs/v/current/user-guide/api/scim-api.html:
+  - 'Access to the SCIM API requires OAuth authorization with a bearer token sent
+    in the Authorization header. The token must have either the scim:read scope for
+    read access or the scim:write scope for write access. The Authorization header
+    format is "Authorization: Bearer {token}" where {token} is the OAuth access token.'
+  - POST `/scim/Users` requires either `ROLE_ADMIN` role or `scim:write` scope. The
+    authorization mechanism is role-based access control (RBAC) or scope-based, likely
+    implemented via OAuth2 or a similar token-based system where the token or authenticated
+    session carries role/scope information.
+pagination_info:
+- information_source; https://indigo-iam.github.io/docs/v/current/user-guide/api/scim-api.html:
+  - Pagination uses startIndex (1-based, default 1) and count (max results per page)
+    query parameters. Response includes itemsPerPage, totalResults, and startIndex
+    fields. To paginate, increment startIndex by itemsPerPage for the next request
+    until startIndex plus itemsPerPage exceeds totalResults.
+- information_source; https://indigo-iam.github.io/docs/v/current/user-guide/api/tokens-api.html:
+  - Pagination uses `count` (integer, max results per page) and `startIndex` (integer,
+    1-based index of first result). Response includes `totalResults`, `itemsPerPage`,
+    and `startIndex` fields. Increment `startIndex` by `itemsPerPage` to fetch the
+    next page until `startIndex` plus `itemsPerPage` exceeds `totalResults`.
+- information_source; https://indigo-iam.github.io/docs/v/current/user-guide/api/group-requests.html:
+  - 'Pagination uses offset-based parameters: startIndex (1-indexed starting position)
+    and itemsPerPage (results per page) are included in the response along with totalResults
+    (total count). To paginate, adjust startIndex in subsequent requests; continue
+    until startIndex plus itemsPerPage exceeds totalResults.'
+  - Returns a paginated list of group requests with optional filtering by username,
+    group name, or request status. Use query parameters page and size to control pagination,
+    where page is the page number (starting from 0 or 1, default unspecified) and
+    size is the number of results per page (default unspecified). The response includes
+    pagination metadata to navigate through pages.
+possible_base_urls:
+- information_source; https://indigo-iam.github.io/docs/v/current/user-guide/api/oauth-token-exchange.html:
+  - https://app.example.org/api
+  - https://task-app.example.org/api
+possible_endpoints:
+- information_source; https://indigo-iam.github.io/docs/v/current/user-guide/api/oauth-token-exchange.html:
+  - GET http://tasks.example.org/api
+  - GET https://task-app.example.org/api
+  - POST $IAM_TOKEN_ENDPOINT
+- information_source; https://indigo-iam.github.io/docs/v/current/admin-guide/health_endpoints.html:
+  - GET /health
+- information_source; https://indigo-iam.github.io/docs/v/current/user-guide/api/scim-api.html:
+  - DELETE /scim/Groups
+  - DELETE /scim/Groups/{id}
+  - DELETE /scim/Users
+  - DELETE /scim/Users/{id}
+  - GET /scim/Groups
+  - GET /scim/Groups/{id}

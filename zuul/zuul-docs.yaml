@@ -1,0 +1,67 @@
+auth_info:
+- information_source; https://cdn.maingear.com/project/zuul-ci.org/www/docs/zuul/13.0.0/_sources/client.rst.txt:
+  - The Zuul Admin Client can generate JWT authentication tokens using the create-auth-token
+    command. When an authenticator with a signing secret is configured in zuul.conf,
+    tokens are created with user, tenant, and expiration parameters, and the token
+    value is returned as a Bearer token for use in the Authorization header when querying
+    protected REST API endpoints. The token includes an iat claim and optionally a
+    zuul.admin claim with the tenant name.
+- information_source; https://zuul-ci.org/docs/zuul/4.0.0/discussion/tenant-scoped-rest-api.html:
+  - JWT tokens are required for authentication. Tokens must be sent in the Authorization
+    header using the Bearer scheme. The JWT must include authorization claims that
+    specify tenant and project access permissions, and may include extra authentication
+    claims for additional context.
+  - Tenant-scoped REST API endpoints require a JWT bearer token passed in the Authorization
+    header. The token should follow RFC 7519 standard and include a zuul.admin claim
+    for authorization information, with short time-to-live (10 minutes or less) and
+    minimal scope (ideally single tenant) to mitigate security risks.
+- information_source; https://zuul-ci.org/docs/zuul/4.0.0/reference/developer/specs/tenant-scoped-admin-web-API.html:
+  - Authentication uses Bearer tokens sent via the Authorization header. On 401 responses,
+    a WWW-Authenticate header is returned with realm "zuul.openstack.org" and error
+    details including error and error_description fields indicating issues like expired
+    tokens.
+  - Bearer token authentication using JWT. Clients must include a valid JWT in requests
+    to the REST API, typically in the Authorization header as a bearer token. Tokens
+    should have a short time-to-live (30 minutes or less recommended). JWT validation
+    is performed server-side, and tokens may include a zuul.admin claim to override
+    predefined authorizations.
+pagination_info:
+- information_source; https://zuul-ci.org/docs/zuul/6.1.0/rest-api.html:
+  - 'Pagination uses two optional query parameters: limit (default 50, controls result
+    count per request) and skip (controls number of results to skip, enabling offset-based
+    pagination).'
+  - 'The endpoint supports offset-based pagination using query parameters: limit (default
+    50) to specify the number of results per request, and skip to specify how many
+    results to skip. The response returns a list of buildsets; continue paginating
+    by incrementing the skip value until fewer than limit results are returned.'
+- information_source; https://zuul-ci.org/docs/zuul/8.3.1/rest-api.html:
+  - Pagination uses limit and skip query parameters. limit sets the maximum number
+    of results returned (default 50), and skip specifies how many results to skip.
+    Construct subsequent requests by incrementing skip by the number of results received
+    until fewer results than limit are returned.
+  - 'The /api/tenant/{tenant}/builds endpoint supports offset-based pagination using
+    query parameters: limit (default 50) controls the number of results per request,
+    and skip specifies how many results to skip before returning data.'
+  - The API uses offset-based pagination with query parameters limit (default 50)
+    to control page size and skip to specify the number of results to skip. There
+    are no response fields indicating pagination state or how to construct subsequent
+    requests.
+possible_base_urls:
+- information_source; https://zuul-ci.org/docs/zuul/4.0.0/reference/developer/specs/tenant-scoped-admin-web-API.html:
+  - https://zuul.openstack.org
+- information_source; https://zuul-ci.org/docs/zuul/6.1.0/rest-api.html:
+  - https://example.com
+possible_endpoints:
+- information_source; https://zuul-ci.org/docs/zuul/4.0.0/discussion/tenant-scoped-rest-api.html:
+  - GET /api/user/authorizations
+  - POST /api/tenant/{tenant}/project/{project}/autohold
+  - POST /api/tenant/{tenant}/project/{project}/dequeue
+  - POST /api/tenant/{tenant}/project/{project}/enqueue
+- information_source; https://zuul-ci.org/docs/zuul/4.0.0/reference/developer/specs/tenant-scoped-admin-web-API.html:
+  - GET /api/user/authorizations
+  - POST /api/tenant/{tenant}/project/{project}/autohold
+  - POST /api/tenant/{tenant}/project/{project}/dequeue
+  - POST /api/tenant/{tenant}/project/{project}/enqueue
+- information_source; https://zuul-ci.org/docs/zuul/6.1.0/rest-api.html:
+  - GET /api/tenant/{tenant}/badge
+  - GET /api/tenant/{tenant}/builds
