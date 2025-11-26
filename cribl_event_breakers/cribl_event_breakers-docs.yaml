@@ -1,0 +1,57 @@
+auth_info:
+- information_source; https://sandbox.cribl.io/coursedocs/rest/docs/7_pagination:
+  - 'Bearer tokens are required for authentication on protected REST API endpoints.
+    Include the token in the Authorization header with the format "Authorization:
+    Bearer {token}", where {token} is your actual bearer token value.'
+- information_source; https://sandbox.cribl.io/coursedocs/rest/docs/8_authentication:
+  - Bearer token authentication is required. Obtain a token by sending a POST request
+    to the `/login` endpoint with JSON body containing username and password fields,
+    then provide the token in the Authorization header of subsequent requests to private
+    endpoints.
+  - The API uses bearer token authentication. First, obtain a token by sending a POST
+    request to the login endpoint with JSON body containing username and password
+    fields. The response returns a token field with a bearer token that expires in
+    5 minutes. Include this token in the Authorization header as "Bearer <token>"
+    for all subsequent private endpoint requests. If you receive a 401 Unauthorized
+    response, regenerate the token.
+pagination_info:
+- information_source; https://sandbox.cribl.io/coursedocs/rest/docs/7_pagination:
+  - Pagination uses RFC 5988 Web Linking with Link headers containing rel="next" and
+    rel="self". Response includes pagination object with size, limit, offset, and
+    total fields. Navigate pages using the next link from the Link header until no
+    further next link is returned or next link matches the self link.
+  - Pagination uses an offset-based scheme with query parameter `offset` set to the
+    value of the `next` response attribute. The response body contains `next` (next
+    page offset) and `more` (boolean flag), with pagination stopping when `more ===
+    false`. Additionally, some endpoints return pagination info in response headers
+    via a `nextLink` header containing the next page URL.
+  - The API uses offset-based pagination with query parameters `size`, `limit`, and
+    `offset`. The response includes a `pagination` object with `next` and `previous`
+    fields containing the relative path for the next/previous page. Stop paginating
+    when the `next` field is no longer returned in the response.
+  - The API uses offset-based pagination with response body indicators. The `offset`
+    query parameter controls pagination (optional, starting at 0), and the response
+    contains a `pagination` object with `next` (next offset value) and `more` (boolean
+    indicating if more pages exist). Continue paginating by using the `next` value
+    as the `offset` parameter in subsequent requests until `more` returns false.
+  - Use query parameter `page` (zero-based index) and `limit` for page size. Response
+    contains `pagination.page`, `pagination.size`, and `pagination.total` fields.
+    Increment `page` until calculated page number exceeds total pages based on item
+    count and page size.
+possible_base_urls:
+- information_source; https://sandbox.cribl.io/coursedocs/rest/docs/7_pagination:
+  - http://rest-server
+  - http://rest-server/page
+possible_endpoints:
+- information_source; https://sandbox.cribl.io/coursedocs/rest/docs/7_pagination:
+  - GET http://rest-server/page
+  - GET http://rest-server/response/body
+  - GET http://rest-server/response/body/more
+  - GET http://rest-server/response/body/more?offset=20
+  - GET http://rest-server/response/body?size=25&limit=5&offset=10
+  - GET http://rest-server/response/body?size=25&limit=5&offset=15
+  - GET http://rest-server/response/body?size=25&limit=5&offset=20
+  - GET http://rest-server/response/body?size=25&limit=5&offset=5
+  - GET http://rest-server/response/headers
+- information_source; https://sandbox.cribl.io/coursedocs/rest/docs/8_authentication:
+  - GET http://rest-server/private/test

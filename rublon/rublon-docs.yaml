@@ -1,0 +1,75 @@
+auth_info:
+- information_source; https://rublon.com/doc/rest-api/:
+  - API requests to Rublon require two authentication mechanisms. First, include your
+    system token in the request body as the "systemToken" field. Second, generate
+    an X-Rublon-Signature header by signing the request (signature generation method
+    not specified in this excerpt). Additionally, after user MFA completion, use the
+    access token returned in the callback parameter "rublonToken" along with the system
+    token to finalize the transaction via the /api/transaction/credentials endpoint.
+  - 'Requests to this endpoint require two authentication credentials in the request:
+
+
+    1. systemToken in the JSON request body: a 32-character hex string (example: "F950953E5454435B9A59E3125F9E7879")
+
+    2. X-Rublon-Signature header: a generated signature that must be computed and
+    included in the request headers'
+  - Rublon API uses HMAC SHA-256 signature-based authentication. Generate an HMAC
+    SHA-256 hash of the JSON request body using your application's secret key, then
+    include the resulting hash in the X-Rublon-Signature header. The API will reject
+    requests with a missing or invalid X-Rublon-Signature header by responding with
+    InvalidSignatureException. Additionally, include your systemToken in the request
+    body.
+  - 'The API uses two authentication mechanisms: a system token passed in the request
+    body as "systemToken" parameter, and request signing via the X-Rublon-Signature
+    header. Additionally, an accessToken is required in the request body for transaction
+    confirmation endpoints, which is obtained from prior API responses or from the
+    TransactionConfirmedEvent. All requests must include Content-Type: application/json
+    and Accept: application/json headers.'
+- information_source; https://rublon.com/doc/admin-api/:
+  - 'System Token and HMAC-SHA256 signature are required for Rublon Admin API authentication.
+    Include three headers in every request: X-Rublon-System-Token with your saved
+    System Token, X-Rublon-Signature containing an HMAC-SHA256 hash of the concatenated
+    HTTP method, full URL, request body, and X-Date value (using your Secret Key as
+    the HMAC key), and X-Date with the current UTC date in format like ''Tue, 15 Nov
+    1994 08:12:31 GMT''. Also include Accept: application/json header to request JSON
+    responses.'
+pagination_info:
+- information_source; https://rublon.com/doc/admin-api/:
+  - The /api/admin/users endpoint uses offset-based pagination with a perPage query
+    parameter (default 20, max 100) to control page size. Responses include a meta
+    object with current_page, last_page, total, per_page, from, and to fields to navigate
+    pages. The /api/admin/logs/ endpoints use cursor-based pagination instead.
+- information_source; https://rublon.com/doc/admin-api-use-cases/:
+  - Pagination uses a cursor-based scheme. Requests include perPage parameter (set
+    to 100) in the body, and responses return next_cursor at the end when more results
+    exist; insert this cursor value in the next request's body to fetch the next batch
+    of logs.
+  - Pagination uses query parameters current_page, per_page, and from/to range indicators
+    in the response meta object. The meta object includes current_page, last_page,
+    per_page (default 20), total count, and from/to fields to indicate the data range
+    returned.
+  - 'Pagination uses query parameters page (optional, defaults to 1) and per_page
+    (optional, defaults to 20). Response includes meta fields: current_page, last_page,
+    total, per_page, from, and to. Stop paginating when current_page equals last_page.'
+  - 'The GET api/admin/users endpoint uses perPage parameter in the request body to
+    control page size (example shows perPage: 30). The response structure for pagination
+    fields is not documented in this excerpt, so pagination navigation details cannot
+    be determined.'
+possible_base_urls:
+- information_source; https://rublon.com/doc/rest-api/:
+  - https://core.rublon.net
+  - https://core.rublon.net/ws/socket.io
+possible_endpoints:
+- information_source; https://rublon.com/doc/rest-api/:
+  - POST /api/transaction/methodSSH
+  - POST https://core.rublon.net/api/transaction/confirmCode
+  - POST https://core.rublon.net/api/transaction/confirmSecurityKeySSH
+  - POST https://core.rublon.net/api/transaction/credentials
+  - POST https://core.rublon.net/api/transaction/deny/[Transaction ID]
+  - POST https://core.rublon.net/api/transaction/init
+  - POST https://core.rublon.net/api/transaction/methodSSH
+- information_source; https://rublon.com/doc/admin-api/:
+  - GET /api/admin/users
+  - GET api/admin/logs/
+- information_source; https://rublon.com/doc/admin-api-use-cases/:
+  - DELETE https://core.rublon.net/api/admin/aliases/{userAliasId}

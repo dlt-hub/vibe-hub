@@ -1,0 +1,68 @@
+auth_info:
+- ? information_source; https://www.stainless.com/sdk-api-best-practices/what-is-openapi-spec-a-guide-to-rest-api-documentation
+  : - 'The documentation mentions that endpoints are secured using a `BearerAuth`
+      scheme defined in `components/securitySchemes`. The top-level `security` key
+      applies this scheme to the entire API, requiring an `Authorization: Bearer <token>`
+      header for authentication.'
+    - 'Your spec''s security definitions can generate a remote MCP server that implements
+      standard OAuth flows. The example OpenAPI spec for an invoicing API uses BearerAuth
+      as the security scheme defined at the global level under the security key, meaning
+      all endpoints require bearer token authentication. The token should be sent
+      in the Authorization header as a Bearer token (format: Authorization: Bearer
+      <token>).'
+- ? information_source; https://www.stainless.com/sdk-api-best-practices/how-authentication-works-in-rest-api-methods-and-workflows
+  : - Bearer token authentication using an API key. The API key is passed in the Authorization
+      header as "Bearer ${API_KEY}" and is read from the process.env.EXAMPLE_API_KEY
+      environment variable. Alternatively, SDKs can read the API key from process.env.MY_API_KEY
+      by default or accept it explicitly via the apiKey parameter during client initialization.
+    - 'This documentation describes three authentication methods: Bearer tokens (JWTs)
+      sent in the Authorization header, OAuth 2.0 as an authorization framework for
+      third-party access, and Basic Authentication using Base64-encoded credentials
+      in the Authorization header. For Bearer tokens, include the token as "Authorization:
+      Bearer <token>". For Basic Authentication, send "Authorization: Basic <Base64-encoded
+      username:password>". OAuth 2.0 involves an Authorization Server issuing access
+      tokens through flows like Authorization Code with PKCE, which the client then
+      uses in subsequent requests.'
+- information_source; https://www.stainless.com/sdk-api-best-practices/how-do-rest-apis-work-the-developer-guide-explained:
+  - Servers need to know who is making a request. Common authentication schemes include
+    sending an API key or a Bearer token in the Authorization header. Modern SDKs
+    simplify this by letting you set the key once during client initialization, often
+    reading it securely from an environment variable.
+pagination_info:
+- ? information_source; https://www.stainless.com/sdk-api-best-practices/how-to-implement-rest-api-pagination-offset-cursor-keyset
+  : - Pagination uses `limit` and `offset` as query parameters. The `limit` parameter
+      controls page size with a reasonable default and maximum, while `offset` specifies
+      the starting position (e.g., `offset=40` with `limit=20` fetches items 41-60).
+      The response includes `total` for total item count, `next_url` and `prev_url`
+      for navigation links constructed with updated limit and offset values.
+- ? information_source; https://www.stainless.com/sdk-api-best-practices/what-is-openapi-spec-a-guide-to-rest-api-documentation
+  : - The /invoices GET endpoint uses query parameters limit (integer, default 20)
+      and starting_after (string) for pagination. The response returns a paginated
+      list of invoices, with starting_after used as a cursor to fetch subsequent pages.
+- information_source; https://www.stainless.com/sdk-api-best-practices/how-do-rest-apis-work-the-developer-guide-explained:
+  - Pagination uses query parameters like limit and offset or a cursor to fetch data
+    in chunks with GET requests.
+- information_source; https://www.stainless.com/sdk-api-best-practices/openapi-path-vs-query-vs-header-parameters-examples:
+  - Pagination uses standard query parameters like `limit` and `after_cursor` defined
+    in the OpenAPI spec. SDKs provide auto-pagination helpers that automatically fetch
+    subsequent pages, allowing iteration through datasets without manual cursor management.
+possible_base_urls:
+- ? information_source; https://www.stainless.com/sdk-api-best-practices/what-is-openapi-spec-a-guide-to-rest-api-documentation
+  : - https://api.example.com/v1
+    - https://api.yourcompany.com/v1
+possible_endpoints:
+- ? information_source; https://www.stainless.com/sdk-api-best-practices/what-is-openapi-spec-a-guide-to-rest-api-documentation
+  : - GET https://api.example.com/v1/todos
+    - GET https://api.yourcompany.com/v1/invoices
+- ? information_source; https://www.stainless.com/sdk-api-best-practices/how-authentication-works-in-rest-api-methods-and-workflows
+  : - POST https://api.example.com/v1/widgets
+- information_source; https://www.stainless.com/sdk-api-best-practices/how-do-rest-apis-work-the-developer-guide-explained:
+  - GET https://api.example.com/v1/users/123
+  - GET https://api.github.com/repos/{owner}/{repo}/issues/{issue_number}
+- information_source; https://www.stainless.com/sdk-api-best-practices/what-are-endpoints-in-rest-api-definition-and-guide:
+  - GET /repos/{owner}/{repo}/issues
+  - GET /users/{username}/repos
+  - GET https://api.github.com/users/stainless-api/repos
+- information_source; https://www.stainless.com/sdk-api-best-practices/what-are-rest-api-calls-and-how-do-they-work-a-guide:
+  - DELETE /orders/99
+  - GET /products

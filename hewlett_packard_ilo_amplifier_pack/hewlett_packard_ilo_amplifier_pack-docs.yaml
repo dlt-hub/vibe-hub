@@ -1,0 +1,40 @@
+auth_info:
+- information_source; https://hewlettpackard.github.io/iLOAmpPack-Redfish-API-Docs/:
+  - Authentication is required for all Redfish API resources except the root `/redfish/v1/`
+    endpoint. Basic Authentication is supported using HTTP Basic Auth with username
+    and password credentials passed via the Authorization header in the format "Basic
+    base64(username:password)". Unauthenticated requests to protected resources return
+    HTTP 401 Unauthorized with error code "Base.1.1.NoValidSession".
+  - Basic authentication is required. Credentials are passed as username and password
+    using HTTP Basic Auth (the `-u` flag in curl or the `username` and `password`
+    parameters in the redfish Python client). The iLO Amplifier Pack server URL is
+    the base endpoint, typically in the form https://{iLOAmpServer}.
+  - Session-based authentication is used. After login via POST to SessionService/Sessions
+    with username and password credentials, the server returns an X-Auth-Token header
+    value that must be included in subsequent requests as the X-Auth-Token header.
+    A session cookie (HttpOnly; Secure) is also set and should be maintained for the
+    session.
+  - The API uses HTTP Basic Authentication. Provide username and password to the redfish_client
+    constructor with parameters username and password, then call the login method
+    with auth="basic" to establish a session before making requests.
+  - 'To create a session, POST a JSON object to `/redfish/v1/SessionService/Sessions/`
+    with `Content-Type: application/json` header. The response includes an `X-Auth-Token`
+    header containing your session token and a `Location` header with the session
+    URI. Include the `X-Auth-Token` value as a header in all subsequent requests.
+    To log out, DELETE the session URI from the `Location` header.'
+possible_base_urls:
+- information_source; https://hewlettpackard.github.io/iLOAmpPack-Redfish-API-Docs/:
+  - /redfish/v1
+  - /redfish/v1/EventService
+possible_endpoints:
+- information_source; https://hewlettpackard.github.io/iLOAmpPack-Redfish-API-Docs/:
+  - DELETE /redfish/v1/SessionService/Sessions/{item}/
+  - GET /job URI
+  - GET /redfish/v1
+  - GET /redfish/v1/
+  - GET /redfish/v1/Registries
+  - GET /redfish/v1/SessionService
+  - GET /redfish/v1/Systems
+  - GET /redfish/v1/Systems/E1E4C0C1/PCIeDevices
+  - GET /redfish/v1/Systems/E1E4C0C1/Processors
+  - GET /redfish/v1/Systems/E1E4C0C1/Storage

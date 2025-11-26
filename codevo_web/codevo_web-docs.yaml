@@ -1,0 +1,51 @@
+auth_info:
+- information_source; https://codevoweb.com/building-a-rust-api-with-unit-testing-in-mind/:
+  - The API uses token-based authentication via cookies or Authorization headers.
+    Tokens are decoded to extract a user ID, which is verified against the database.
+    User access is controlled by role-based authorization, where the user's role must
+    match allowed roles to proceed; otherwise a 403 Forbidden error is returned. If
+    no token is found, a 401 Unauthorized error is returned.
+- information_source; https://codevoweb.com/implement-jwt-authentication-in-sveltekit-api-routes/:
+  - 'JWT is used for authentication. A token is created and returned in the JSON response.
+    Additionally, two cookies are set: a ''token'' cookie containing the JWT (httpOnly,
+    secure in production, path ''/api'', maxAge based on JWT_EXPIRES_IN environment
+    variable in seconds), and a ''logged-in'' cookie set to ''true'' (httpOnly false,
+    same path and maxAge). The JWT_EXPIRES_IN environment variable controls token
+    expiration in seconds.'
+  - JWT-based authentication is required. The auth token is retrieved from cookies
+    or the Authorization header, then verified using verifyJWT to extract the sub
+    claim. The sub value is used to look up the user in the database. Invalid or missing
+    tokens, or non-existent users, return 401 Unauthorized errors.
+  - The API uses JWT (JSON Web Token) authentication. After logging in via POST to
+    `/api/auth/login` with email and password in the JSON body, you receive a JWT
+    token in the response. Access protected routes by sending the token either as
+    a Bearer token in the Authorization header or via cookies with subsequent requests
+    to endpoints like GET `/api/users/me`.
+pagination_info:
+- information_source; https://codevoweb.com/build-a-crud-django-rest-api-using-django-rest-framework/:
+  - 'The API supports pagination via query parameters: page and limit in the URL query
+    string to control paginated results from the GET /api/feedbacks endpoint. No response
+    fields or stopping conditions are specified.'
+- information_source; https://codevoweb.com/how-to-build-a-simple-api-in-sveltekit/:
+  - Use query parameters page (required, starts at 1) and limit (required, default
+    10) to paginate feedback results. The response includes paginated feedback items;
+    construct the next request by incrementing the page parameter until no more results
+    are returned.
+possible_base_urls:
+- information_source; https://codevoweb.com/build-a-crud-django-rest-api-using-django-rest-framework/:
+  - http://localhost:8000
+  - http://localhost:8000/api
+possible_endpoints:
+- information_source; https://codevoweb.com/build-a-crud-django-rest-api-using-django-rest-framework/:
+  - DELETE http://localhost:8000/api/feedbacks/{feedback_id}
+  - GET http://localhost:8000/api/feedbacks
+  - PATCH http://localhost:8000/api/feedbacks/{feedback_id}
+  - POST http://localhost:8000/api/feedbacks/
+- information_source; https://codevoweb.com/build-a-simple-api-with-rust-and-actix-web/:
+  - DELETE /todos/{id}
+  - PATCH /api/todos/{id}
+  - PATCH http://localhost:8000/api/todos/{id}
+  - POST http://localhost:8000/api/todos
+- information_source; https://codevoweb.com/building-a-rust-api-with-unit-testing-in-mind/:
+  - POST /api/auth/login
+  - POST /api/auth/logout

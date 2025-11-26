@@ -1,0 +1,61 @@
+auth_info:
+- information_source; https://academy.shade.inc/developers/using-the-api/using-the-api:
+  - 'API keys are required for all non-public endpoints. Generate an API key in the
+    app settings under "My account" > "API keys". The API key must be sent in the
+    Authorization header as `Authorization: sk_...` where the value is the generated
+    key string. The API key inherits all permissions of the account it was created
+    on.'
+  - Shade uses the Authorization header for authentication. Send a secret key directly
+    in the Authorization header with the format "sk_<your key>" (no "Bearer" prefix
+    needed). Include this header in all requests to the API.
+- information_source; https://academy.shade.inc/developers/synchronizing-file-state:
+  - API key authentication is required. Obtain an API key, then use it to redeem a
+    ShadeFS JWT by making a GET request to `GET https://api.shade.inc/workspaces/drives/{drive_id}/shade-fs-token`.
+    The JWT returned is valid for 5 minutes and should be used for subsequent authenticated
+    requests.
+- information_source; https://academy.shade.inc/developers/writing-your-own-uploader:
+  - All calls require a ShadeFS token obtained via an API key. First, get the token
+    by sending your API key in the Authorization header to the ShadeFS token endpoint,
+    then use that token (a JWT) in subsequent requests. The token has an expiration
+    time in the exp field that must be checked before each use to avoid using expired
+    credentials.
+- information_source; https://academy.shade.inc/developers/using-the-api/metadata-guide:
+  - 'API key authentication is required and must be sent in the Authorization header
+    for all requests to the Shade API. The header format is Authorization: YOUR_API_KEY,
+    where YOUR_API_KEY is your actual API key value.'
+pagination_info:
+- information_source; https://academy.shade.inc/developers/search:
+  - Pagination uses either offset or page (mutually exclusive) as query parameters.
+    offset defaults to 0 if neither parameter is provided. limit controls results
+    per page. Response structure for pagination fields is not documented.
+  - Pagination uses either offset or page parameter (query parameters, optional, mutually
+    exclusive). offset defaults to 0 if neither provided. page defaults to 0 if neither
+    provided. limit parameter controls results per page, defaults to 100. Stop paginating
+    when no more results are returned.
+  - The request body includes `offset`, `page`, and `limit` parameters. `offset` is
+    an integer for the starting position, `page` is an integer for the page number,
+    and `limit` is an integer (default 100) for the number of results per page. The
+    response is a downloadable file without explicit pagination fields; pagination
+    is controlled entirely through request parameters.
+  - Use either offset (defaults to 0) or page (defaults to 0) to navigate results,
+    with limit controlling results per page (defaults to 100). The response structure
+    for pagination is not explicitly detailed in this excerpt.
+possible_base_urls:
+- information_source; https://academy.shade.inc/developers/using-the-api/using-the-api:
+  - https://api.shade.inc
+- information_source; https://academy.shade.inc/developers/synchronizing-file-state:
+  - https://api.shade.inc
+possible_endpoints:
+- information_source; https://academy.shade.inc/developers/using-the-api/using-the-api:
+  - DELETE https://api.shade.inc
+  - GET https://api.shade.inc
+  - GET https://api.shade.inc/dynamic-views/<the view id>/exports/csv
+  - GET https://api.shade.inc/workspaces
+  - PATCH https://api.shade.inc
+  - POST https://api.shade.inc
+  - PUT https://api.shade.inc
+- information_source; https://academy.shade.inc/developers/synchronizing-file-state:
+  - GET https://api.shade.inc/workspaces/drives/{drive_id}/shade-fs-token
+- information_source; https://academy.shade.inc/developers/writing-your-own-uploader:
+  - GET https://api.shade.inc/workspaces/drives/{driveId}/shade-fs-token
+  - POST https://fs.shade.inc/{driveId}/fs/mkdir

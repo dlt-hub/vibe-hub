@@ -1,0 +1,33 @@
+auth_info:
+- information_source; https://tableau.github.io/server-client-python/docs/api-ref:
+  - ConnectionCredentials class supports embedding passwords in workbook and data
+    source publish requests. Use the `ConnectionCredentials(name, password, embed=True,
+    oauth=False)` constructor where `name` is the username, `password` is the connection
+    password, `embed` is a boolean to embed the password in the published resource,
+    and `oauth` is a boolean to specify OAuth authentication for the connection.
+  - Personal access token authentication requires passing a token name and token value
+    to the PersonalAccessTokenAuth class, along with a site_id parameter for Tableau
+    Cloud. The authentication token is managed by calling auth.sign_in with a TableauAuth
+    object, which keeps you signed in for 240 minutes until auth.sign_out is called.
+  - The TSC library uses the TableauAuth class for authentication. Create an instance
+    with username, password, and optional site_id (corresponding to contentUrl in
+    the REST API), then pass it to the Auth.sign_in method. The site_id is the URL
+    segment following /site/ in the Tableau Server URL, or use an empty string for
+    the default site.
+  - 'The Tableau Server Client supports two authentication methods: TableauAuth using
+    username and password, or PersonalAccessTokenAuth using a personal access token
+    name and token value. Both require a site_id parameter (contentUrl), which can
+    be an empty string for the default site on Tableau Server but must be provided
+    for Tableau Cloud. Authentication is performed by instantiating the appropriate
+    auth class and calling server.auth.sign_in() with the auth object.'
+  - Username and password authentication via the TableauAuth object. Create a TableauAuth
+    instance with username and password strings, then pass it to server.auth.sign_in()
+    to authenticate. The sign_in method handles token acquisition; sign_out() invalidates
+    the token. The switch_site() method allows switching between sites without reauthentication
+    on the same server.
+possible_base_urls:
+- information_source; https://tableau.github.io/server-client-python/docs/api-ref:
+  - https://MY-SERVER
+possible_endpoints:
+- information_source; https://tableau.github.io/server-client-python/docs/api-ref:
+  - GET https://MY-SERVER/api/2.5/serverinfo

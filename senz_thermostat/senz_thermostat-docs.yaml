@@ -1,0 +1,41 @@
+auth_info:
+- information_source; https://api.senzthermostat.nvent.com:
+  - 'OAuth 2.0 authentication with three supported flows: Implicit, Authorization
+    Code, and Hybrid. Implicit flow requires ClientID and scopes (openid, restapi)
+    with tokens transmitted via browser. Authorization Code flow requires ClientID,
+    ClientSecret, and scopes (openid, restapi, optionally offline_access) for back-channel
+    token retrieval. Hybrid flow (recommended for native/desktop/mobile apps) requires
+    ClientID, ClientSecret in back-channel requests, and scopes (openid, restapi,
+    optionally offline_access for refresh tokens). The offline_access scope is optional
+    but required to obtain refresh tokens in Authorization Code and Hybrid flows.'
+  - OAuth2 Authorization Code flow is used to obtain access tokens from the Identity
+    Server at https://id.senzthermostat.nvent.com. The access token is then used to
+    authenticate requests to the RestAPI at https://api.senzthermostat.nvent.com.
+    Tokens include audience, client_id, and scope claims. Access tokens can be refreshed
+    using refresh tokens obtained during the initial authentication code exchange.
+  - OAuth2 and OpenID Connect authentication is used for SignalR notifications in
+    the same way as the RestAPI. The client must obtain an access token via OAuth2/OpenID
+    Connect and pass it during SignalR connection establishment. The code example
+    references oidc-client-js library for token management, with configuration requiring
+    authority URL and client_id parameters.
+  - 'OAuth2 authentication is used with three token types: id_token (identity information),
+    access_token (bearer token, 1 hour expiration), and refresh_token (long-lived,
+    15 days expiration). The implicit grant type requires ClientID and scopes (including
+    openid) for browser-based applications, with tokens transmitted via the browser
+    and refresh tokens not supported in this flow.'
+  - OAuth2 authorization code and implicit grant flows are used. Access tokens are
+    obtained during initial authentication and must be used to access protected REST
+    API endpoints. Refresh tokens (with longer expiry, typically 14 days) can be exchanged
+    for new access tokens to maintain indefinite access. The integrator receives both
+    access and refresh tokens in the initial auth call, with expiry information included.
+possible_base_urls:
+- information_source; https://api.senzthermostat.nvent.com:
+  - https://api.senzthermostat.nvent.com
+  - https://id.senzthermostat.nvent.com
+possible_endpoints:
+- information_source; https://api.senzthermostat.nvent.com:
+  - GET https://api.senzthermostat.nvent.com/swagger
+  - GET https://id.senzthermostat.nvent.com/.well-known/openid-configuration
+- information_source; https://api.senzthermostat.nvent.com/:
+  - GET https://api.senzthermostat.nvent.com/swagger
+  - GET https://id.senzthermostat.nvent.com/.well-known/openid-configuration

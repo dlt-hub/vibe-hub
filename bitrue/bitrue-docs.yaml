@@ -1,0 +1,64 @@
+auth_info:
+- information_source; https://www.bitrue.com/api-docs:
+  - API key authentication is required for certain endpoints. The API key is passed
+    via the X-CH-APIKEY header. For TRADE and USER_DATA endpoints, an additional HMAC
+    SHA256 signature must be included in the X-CH-SIGN header, using the API secret
+    as the key.
+  - 'HMAC SHA256 signature-based authentication using API-KEY and API-Secret. Include
+    three required headers: X-CH-TS with unix timestamp in milliseconds, X-CH-SIGN
+    with the signature computed as HMAC-SHA256(API-Secret, timestamp + method + requestPath
+    + body), and optionally X-CH-RECVWINDOW for request validity window in milliseconds
+    (defaults to 5000). Method must be uppercase (GET/POST), requestPath is the endpoint
+    path like /sapi/v1/order, and body is the request body string for POST requests
+    only. Server rejects requests where timestamp is more than 1 second in the future
+    or outside the recvWindow tolerance.'
+- information_source; https://www.bitrue.com/api_docs_includes_file/delivery/index.html:
+  - API Key and HMAC SHA256 signature authentication required. Send apiKey in the
+    X-API-KEY header and compute HMAC-SHA256 signature of the request timestamp, HTTP
+    method, endpoint path, and JSON body using your secretKey, then include the signature
+    in the request. Include a recvWindow parameter (recommended 5000ms or less) to
+    specify request validity window.
+  - API key is passed in the `X-CH-APIKEY` header. HMAC SHA256 signature is computed
+    from timestamp + method + requestPath + body, then sent in the `X-CH-SIGN` header.
+    Timestamp in unix milliseconds goes in the `X-CH-TS` header. Requests are valid
+    within recvWindow milliseconds (default 5000) of the timestamp, and server time
+    must not be more than 1 second ahead of client time.
+  - API keys are passed via the `X-CH-APIKEY` header. For TRADE and USER_DATA endpoints,
+    requests must be signed using HMAC SHA256 with the API-Secret as the key. The
+    signature is computed from timestamp + method + requestPath + body, then sent
+    in the `X-CH-SIGN` header. API keys and secret keys are case sensitive.
+pagination_info:
+- information_source; https://www.bitrue.com/api_docs_includes_file/delivery/index.html:
+  - 'Pagination uses optional query parameters: endIdx (float, returns data before
+    specified timestamp) and pageSize (float, max 300, specifies number of records
+    per request). Response structure not fully detailed, but endIdx appears to control
+    pagination position by timestamp.'
+  - Pagination uses query parameters page (optional, default 1) and limit (optional,
+    default 10, maximum 200). The response returns data in an array field but does
+    not include explicit pagination metadata like next, total_count, or has_more,
+    so pagination state must be inferred from result count relative to the limit parameter.
+  - The `/dapi/v1/klines` endpoint has a `limit` parameter (integer, optional, default
+    100, max 300) that controls pagination by specifying the number of candlestick
+    records returned per request. No response fields or headers indicate how to fetch
+    subsequent pages.
+- information_source; https://www.bitrue.com/api_docs_includes_file/futures/index.html:
+  - Pagination uses optional query parameters endIdx (timestamp threshold for data
+    before that point) and pageSize (specifies number of results, up to 300 maximum).
+    Response structure not detailed, but endIdx appears to be used for iterating through
+    historical data by setting it to earlier timestamps.
+possible_base_urls:
+- information_source; https://www.bitrue.com/api-docs:
+  - https://api.bitrue.com
+  - https://fapi.bitrue.com/fapi/v1
+possible_endpoints:
+- information_source; https://www.bitrue.com/api_docs_includes_file/delivery/index.html:
+  - DELETE /user_stream/api/v1/listenKey/{listenKey}
+  - GET /dapi/v1/klines
+  - GET /dapi/v2/commissionRate
+  - GET /dapi/v2/forceOrdersHistory
+  - GET /dapi/v2/futures_transfer_history
+  - GET /dapi/v2/leverageBracket
+  - GET /dapi/v2/myTrades
+  - GET /dapi/v2/openOrders
+  - GET /dapi/v2/order
+  - POST /sapi/v1/order

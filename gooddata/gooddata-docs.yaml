@@ -1,0 +1,66 @@
+auth_info:
+- information_source; https://www.gooddata.com/docs/cloud/api-and-sdk/api/api_reference_all/:
+  - API tokens are created via POST request to /api/v1/entities/users/{userId}/apiTokens
+    and returned with a bearerToken attribute in the response. The bearer token should
+    be used in subsequent requests, typically in the Authorization header as "Bearer
+    {token}".
+  - Authentication type for data sources is specified via the "authenticationType"
+    field set to "USERNAME_PASSWORD", with credentials provided through "clientId"
+    and "clientSecret" fields in the data source configuration object.
+  - Client-based authentication for data sources is supported through multiple mechanisms
+    sent in the request body. The authentication fields include username and password
+    for basic database authentication, clientId and clientSecret for OAuth2 or similar
+    client credential flows, token for token-based authentication, and privateKey
+    with optional privateKeyPassphrase for key-pair authentication. All credentials
+    are passed as string fields in the JSON request payload to the test endpoint.
+  - OAuth2 and SAML authentication configuration is supported. OAuth2 requires oauthClientId,
+    oauthClientSecret, oauthIssuerId, and oauthIssuerLocation parameters in the request
+    body. SAML authentication uses samlMetadata parameter. Additional OAuth2 options
+    include oauthCustomScopes (array of scope strings), oauthCustomAuthAttributes
+    (custom attributes object), and oauthSubjectIdClaim (claim name for subject ID,
+    default "oid"). Custom claim mapping is available via customClaimMapping parameter.
+  - 'OAuth2 configuration is required for identity provider setup. Credentials are
+    passed in the request body as JSON fields: oauthClientId, oauthClientSecret, oauthIssuerId,
+    and oauthIssuerLocation. Additional OAuth parameters include oauthCustomScopes
+    (array), oauthSubjectIdClaim, and oauthCustomAuthAttributes (object). SAML configuration
+    via samlMetadata is also supported as an alternative auth method.'
+pagination_info:
+- information_source; https://www.gooddata.com/docs/cloud/api-and-sdk/api/api_reference_all/:
+  - 'Pagination is controlled by query parameters: page (zero-based index, default
+    0) and size (page size, default 20). The response includes data array with paginated
+    results; continue requesting with incremented page values until fewer than size
+    results are returned.'
+  - Pagination is controlled via query parameters page[number] and page[size], with
+    response metadata in meta.page containing number, size, totalElements, and totalPages.
+    The links object provides a next URL for subsequent pages; stop paginating when
+    next is absent or all totalElements are retrieved.
+  - Pagination is implemented using query parameters page (zero-based index, default
+    0) and size (page size, default 20). The response includes a data array containing
+    the paginated results. Continue paginating by incrementing the page parameter
+    until fewer than size results are returned.
+  - Pagination is supported via offset and limit query parameters. offset (integer,
+    optional) specifies the starting position, and limit (integer, optional) specifies
+    the maximum number of items to return per request. The response does not include
+    explicit pagination state fields; continue requesting with incremented offset
+    values until fewer items than limit are returned.
+  - 'Pagination uses offset-based parameters in the response: page.number (current
+    page starting at 0), page.size (items per page), page.totalElements (total items),
+    page.totalPages (total pages in meta object), and links.next (URL for next page).
+    Construct subsequent requests using the next link or increment page.number until
+    it reaches totalPages.'
+possible_base_urls:
+- information_source; https://www.gooddata.com/docs/cloud/api-and-sdk/api/api_reference_all/:
+  - http://example.com
+  - https://api.example.com/api/v1
+possible_endpoints:
+- information_source; https://www.gooddata.com/docs/cloud/api-and-sdk/api/api_reference_all/:
+  - DELETE /api/v1/actions/organization/automations/unsubscribe
+  - DELETE /api/v1/actions/workspaces/{workspaceId}/ai/memory/{memoryId}
+  - DELETE /api/v1/entities/colorPalettes/{id}
+  - DELETE /api/v1/entities/cspDirectives/{id}
+  - DELETE /api/v1/entities/dataSources/{id}
+  - DELETE /api/v1/entities/jwks/{id}
+  - DELETE /api/v1/entities/llmEndpoints/{id}
+  - DELETE /api/v1/entities/notificationChannels/{id}
+  - DELETE /api/v1/entities/organizationSettings/{id}
+  - DELETE /api/v1/entities/themes/{id}

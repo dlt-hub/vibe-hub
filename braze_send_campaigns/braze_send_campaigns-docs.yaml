@@ -1,0 +1,43 @@
+auth_info:
+- information_source; https://www.braze.com/docs/api/endpoints/messaging/send_messages/post_send_triggered_campaigns/:
+  - 'Authorization requires a Bearer token passed in the Authorization header. The
+    token value is your REST API key, formatted as Authorization: Bearer YOUR-REST-API-KEY.'
+  - 'The API requires Bearer token authentication. Include the header `Authorization:
+    Bearer YOUR-REST-API-KEY` in all requests, where `YOUR-REST-API-KEY` is your Braze
+    REST API key.'
+  - To use this endpoint, you need an API key with the `campaigns.trigger.send` permission.
+    The API key should be included in your request headers as the standard Braze authentication
+    mechanism (typically in the `Authorization` header or as a query parameter depending
+    on your Braze SDK/client implementation).
+- information_source; https://www.braze.com/docs/user_guide/getting_started/b2b_use_cases/lead_scoring/:
+  - The API uses OAuth 2.0 client credentials flow for authorization. Include the
+    Authorization header with value Bearer {{result.access_token}}, where the access
+    token is retrieved by making a POST request to https://[instance].my.salesforce.com/services/oauth2/token
+    with client_id, client_secret, and grant_type=client_credentials in the request
+    body. The token response field access_token should be extracted and used in the
+    Bearer token.
+- information_source; https://www.braze.com/docs/user_guide/getting_started/b2b_use_cases/b2b_salesforce_sales_cloud/:
+  - OAuth2 authentication is required. Collect your client_id and client_secret from
+    Salesforce. Use the OAuth2 token endpoint at https://[instance_name].my.salesforce.com/services/oauth2/token
+    to retrieve access tokens, which are then used in webhook requests to Salesforce
+    Sales Cloud for creating and updating leads.
+possible_base_urls:
+- information_source; https://www.braze.com/docs/api/endpoints/messaging/send_messages/post_send_triggered_campaigns/:
+  - https://rest.iad-01.braze.com
+- information_source; https://www.braze.com/docs/user_guide/getting_started/b2b_use_cases/b2b_salesforce_sales_cloud/:
+  - https://[insert_instance_name].my.salesforce.com/services/data/v60.0/sobjects/Lead/
+possible_endpoints:
+- information_source; https://www.braze.com/docs/api/endpoints/messaging/send_messages/post_send_triggered_campaigns/:
+  - POST /campaigns/trigger/send
+  - POST /canvas/trigger/send
+  - POST https://rest.iad-01.braze.com/campaigns/trigger/send
+- information_source; https://www.braze.com/docs/user_guide/getting_started/b2b_use_cases/lead_scoring/:
+  - PATCH https://[instance].salesforce.com/services/data/v57.0/sobjects/Lead/{{${user_id}}}
+- information_source; https://www.braze.com/docs/user_guide/getting_started/b2b_use_cases/b2b_salesforce_sales_cloud/:
+  - PATCH https://[insert_instance_name].my.salesforce.com/services/data/v60.0/sobjects/Lead/{{${user_id}}}
+  - POST https://[insert_instance_name].my.salesforce.com/services/data/v60.0/sobjects/Lead/
+  - POST https://[insert_instance_name].my.salesforce.com/services/oauth2/token
+- information_source; https://www.braze.com/docs/user_guide/engagement_tools/messaging_fundamentals/localization/:
+  - GET https://api.crowdin.com/api/project/braze-test/export-file?key=you_api_key&language={{${language}}}&file=test.json&export_translated_only=1
+  - GET https://sheetdb.io/api/v1/[sheet_id]/search?language={{${language}}}
+  - GET https://www.transifex.com/api/2/project/example/resource/example/translation/{{${language}}}/strings

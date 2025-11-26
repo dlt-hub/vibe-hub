@@ -1,0 +1,68 @@
+auth_info:
+- information_source; https://restfulapi.net/security-essentials/:
+  - API keys should be sent in request headers rather than URL query parameters. The
+    correct approach is to include the API key as a header (e.g., Authorization header
+    with a bearer token, or a custom header like X-API-Key) rather than exposing it
+    in the URL query string, since URLs may be logged in web server access logs. Generate
+    unique token IDs that can be easily reset instead of including usernames and passwords
+    directly.
+  - HTTP Basic Auth with a randomly generated access token delivered in the username
+    field over HTTPS. The token should never be exposed in URLs; instead, send it
+    via the Authorization header using Basic Auth encoding (base64(token:password)
+    or base64(token:)).
+- information_source; https://restfulapi.net/resource-naming/:
+  - Login is performed by POST-ing credentials to /auth, and logout by DELETE-ing
+    to /auth or using /auth?action=logout. Session management supports user-specific
+    endpoints like /user/{user_id}/auth to retrieve session history and /user/{user_id}/auth?active=yes
+    to list currently active sessions. The documentation does not specify the exact
+    credential format, header names, or authentication scheme required.
+  - The documentation excerpt describes a RESTful API authentication approach using
+    HTTP Basic Auth for initial credential exchange and bearer tokens for subsequent
+    requests. Clients authenticate at the /authenticate endpoint with HTTP Basic Auth
+    credentials to obtain a bearer token, then include this token with each subsequent
+    request. The token is self-contained, includes user authentication info, has limited
+    validity, and can be refreshed using the expiring token before it expires. An
+    alternative pattern suggests POST /auth for login and DELETE /auth for logout
+    operations.
+pagination_info:
+- information_source; https://restfulapi.net/api-pagination-sorting-filtering/:
+  - Pagination uses Link headers with rel="self", rel="first", rel="prev", rel="next",
+    and rel="last" to navigate pages. Query parameters page and size control pagination,
+    with default size of 10 books per response. Construct subsequent requests using
+    the URLs provided in Link headers.
+  - Pagination uses query parameters page (0-indexed) and size (items per page, default
+    20). Link header provides navigation with rel="self", rel="first", rel="next",
+    and rel="last" containing full URLs for each page. Stop paginating when the current
+    page is the last page. Optional orderBy parameter accepts comma-separated field
+    names with optional asc/desc suffixes for sorting.
+  - Pagination uses query parameters page (zero-indexed) and size (items per page)
+    in the request URL. The response includes Link headers with rel values of self,
+    first, next, last, and prev (when available) containing full URLs for navigation.
+    The size parameter is flexible; servers honor smaller requests but may paginate
+    larger requests internally using server defaults.
+  - Pagination uses query parameters page and size to request specific pages. Response
+    includes Link header with rel="first", "prev", "next", "last" URLs, plus headers
+    X-Total-Items, X-Page, X-Page-Size, X-Total-Pages. Response body contains page
+    object with size, totalElements, totalPages, number fields. Stop paginating when
+    reaching the last page or when next link is absent.
+- information_source; https://restfulapi.net/rest-api-design-tutorial-with-example/:
+  - Use query parameters startIndex (offset, starting at 0) and size (page size, example
+    20 records) to paginate collections. Response structure for pagination fields
+    is not specified in this documentation.
+possible_base_urls:
+- information_source; https://restfulapi.net/hateoas/:
+  - http://api.domain.com/management/departments
+  - http://api.domain.com/management/departments/10/employees
+possible_endpoints:
+- information_source; https://restfulapi.net/hateoas/:
+  - GET http://api.domain.com/management/departments
+  - GET http://api.domain.com/management/departments/10/employees
+  - GET http://api.domain.com/management/employees
+  - POST /questions
+  - PUT /questions/10
+- information_source; https://restfulapi.net/resource-naming/:
+  - DELETE /auth
+  - DELETE /auth/{auth_id}
+  - GET .../managed-devices?name=NOKIA
+  - GET /api-path/users/byEmail={email}
+  - GET /api-path/users/id

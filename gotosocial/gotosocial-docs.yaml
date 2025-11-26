@@ -1,0 +1,49 @@
+auth_info:
+- information_source; https://docs.gotosocial.org/en/latest/api/swagger/:
+  - Most of the GoToSocial API endpoints require a user-level OAuth token. For detailed
+    authentication information, see the authentication documentation at the provided
+    link.
+- information_source; https://docs.gotosocial.org/en/latest/api/authentication/:
+  - Bearer token authentication is required. Send the access token in the Authorization
+    header as "Bearer YOUR_ACCESS_TOKEN" when making API requests to endpoints like
+    GET /api/v1/notifications.
+  - GoToSocial uses OAuth 2.0 for authorization. Register an application to obtain
+    client_id and client_secret, then authorize via browser at https://instance/oauth/authorize
+    with query parameters client_id, redirect_uri (urn:ietf:wg:oauth:2.0:oob), response_type
+    (code), and scope (e.g. read). Scopes restrict token permissions; versions below
+    0.19.0 grant full permissions including admin actions. Exchange the authorization
+    code for an access token in subsequent steps.
+  - OAuth2 authorization code flow is used. Exchange client_id, client_secret, and
+    authorization code at the token endpoint to obtain an access_token. Include the
+    access_token in the Authorization header as "Bearer YOUR_ACCESS_TOKEN" for all
+    subsequent API requests.
+  - The API uses OAuth2 authentication. To authenticate, first register an application
+    via POST to /api/v1/apps with client_name, redirect_uris (use "urn:ietf:wg:oauth:2.0:oob"
+    for out-of-band flow), and scopes parameters in JSON body. This returns credentials
+    used to request an OAuth token. Scopes control permissions; use the minimum required
+    (e.g., "read" for read-only access).
+pagination_info:
+- information_source; https://docs.gotosocial.org/en/latest/federation/actors/:
+  - Use the `page=true` query parameter to access paginated outbox items. The response
+    includes a `first` field pointing to the first page URL. Dereference the `first`
+    page URL to retrieve items; subsequent pagination details are implied by the ActivityPub
+    OrderedCollection specification.
+possible_base_urls:
+- information_source; https://docs.gotosocial.org/en/latest/api/authentication/:
+  - https://example.org/api/v1
+  - https://example.org/api/v1/accounts/verify_credentials
+possible_endpoints:
+- information_source; https://docs.gotosocial.org/en/latest/admin/domain_permission_subscriptions:
+  - GET /api/v1/instance/domain_blocks
+  - GET /api/v1/instance/peers?filter=suspended
+  - GET https://peepee.poopoo.example.org/api/v1/instance/domain_blocks
+- information_source; https://docs.gotosocial.org/en/latest/user_guide/importing_posts/:
+  - POST /v1/statuses/create
+- information_source; https://docs.gotosocial.org/en/latest/admin/domain_permission_subscriptions/:
+  - GET /api/v1/instance/domain_blocks
+  - GET /api/v1/instance/peers?filter=suspended
+  - GET https://peepee.poopoo.example.org/api/v1/instance/domain_blocks
+- information_source; https://docs.gotosocial.org/en/latest/federation/actors/:
+  - GET https://example.org/users/whatever/inbox
+  - GET https://example.org/users/whatever/outbox
+  - POST https://example.org/users/whatever/inbox

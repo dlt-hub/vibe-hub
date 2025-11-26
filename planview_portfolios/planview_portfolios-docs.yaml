@@ -1,0 +1,49 @@
+auth_info:
+- information_source; https://sqlkover.com/extracting-data-from-the-planview-portfolios-rest-api-using-adf-introduction/:
+  - The Planview Portfolios REST API uses OAuth authentication. A Web activity must
+    fetch an OAuth token before making REST API requests. The token is then used to
+    authenticate subsequent API calls to retrieve work data for projects. Project
+    IDs are obtained from the WorkDimension table in the OData feed, which is queried
+    separately to populate the list of projects to iterate through.
+- information_source; https://sqlkover.com/planview-portfolios-rest-api-with-adf-fetching-the-access-token/:
+  - Planview Portfolios uses OAuth 2.0 with the client credentials grant type. To
+    obtain an access token, send a POST request to the OAuth endpoint with grant_type
+    set to "client_credentials", client_id, and client_secret as parameters or in
+    the request body. The client_id and client_secret are created by a Planview administrator
+    in the OAuth Clients menu, and the resulting token inherits the permissions of
+    the user who created the client.
+- information_source; https://sqlkover.com/execute-fabric-data-pipeline-from-azure-data-factory/:
+  - Fabric REST API authentication requires either a service principal or managed
+    identity of the ADF instance (managed identity preferred). The service principal
+    or managed identity must be added to a security group in Azure Entra ID, that
+    group must be enabled in the Fabric Admin portal for REST API access, and the
+    principal must be added as a contributor to the workspace. Authentication is performed
+    using the service principal or managed identity credentials to obtain an access
+    token for the Fabric REST API endpoint.
+- information_source; https://sqlkover.com/call-a-fabric-rest-api-from-azure-data-factory/:
+  - The API uses managed identity authentication with a POST method to https://api.fabric.microsoft.com.
+    A custom header is required (shown in the referenced image, but the specific header
+    name and value are not legible in the provided text). The managed identity handles
+    credential acquisition automatically without requiring explicit API keys or tokens
+    to be manually configured.
+  - The Fabric REST APIs require Azure managed identity authentication within a security
+    group that has been granted API access in the Fabric Admin portal. The managed
+    identity must be added to the target Fabric workspace with appropriate role-based
+    permissions (contributor for creating resources, viewer for listing). Requests
+    are made to endpoints like https://api.fabric.microsoft.com/v1/workspaces/{workspaceId}/lakehouses
+    with the managed identity providing the bearer token via Azure's standard token
+    acquisition mechanism.
+possible_base_urls:
+- information_source; https://sqlkover.com/planview-portfolios-rest-api-with-adf-fetching-the-access-token/:
+  - https://myaccount.pvcloud.com/myserver/public-api/v1/oauth/token
+- information_source; https://sqlkover.com/execute-fabric-data-pipeline-from-azure-data-factory/:
+  - https://api.fabric.microsoft.com/v1
+possible_endpoints:
+- information_source; https://sqlkover.com/planview-portfolios-rest-api-with-adf-fetching-the-access-token/:
+  - POST https://myaccount.pvcloud.com/myserver/public-api/v1/oauth/token
+- information_source; https://sqlkover.com/execute-fabric-data-pipeline-from-azure-data-factory/:
+  - POST https://api.fabric.microsoft.com/v1/workspaces/{workspaceID}/items/{pipelineID}/jobs/instances?jobType=Pipeline
+  - POST https://api.fabric.microsoft.com/v1/workspaces/{workspaceId}/items/{itemId}/jobs/instances?jobType=Refresh
+- information_source; https://sqlkover.com/call-a-fabric-rest-api-from-azure-data-factory/:
+  - POST https://api.fabric.microsoft.com
+  - POST https://api.fabric.microsoft.com/v1/workspaces/{workspaceId}/lakehouses

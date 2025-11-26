@@ -1,0 +1,65 @@
+auth_info:
+- information_source; https://docs.efsta.net/efr/architecture:
+  - The efsta Cloud Installation uses API key and API secret credentials to obtain
+    an OAuth token. The partner identifies with an API key and API secret when sending
+    data to specific endpoints to retrieve the OAuth token for subsequent requests.
+- information_source; https://docs.efsta.net/efr/getting-started:
+  - 'OAuth2 client credentials flow using either HTTP Basic Authentication or request
+    body credentials. Authorize with ApiKey and ApiSecret to obtain access_token and
+    refresh_token. Send access_token in subsequent requests (header format not specified
+    in excerpt). When access_token expires (HTTP 401 with error invalid_token), use
+    refresh_token to request new tokens. If refresh_token also expires, re-authenticate
+    with ApiKey and ApiSecret. Access tokens valid for 1 hour, refresh tokens for
+    7 days.
+
+
+    Method 1 uses POST /auth/token with Authorization header set to Basic base64(ApiKey:ApiSecret),
+    Content-Type application/x-www-form-urlencoded, and body parameters grant_type=client_credentials,
+    TaxId, TL, TT.
+
+
+    Method 2 uses POST /auth/token with Content-Type application/x-www-form-urlencoded
+    and body parameters grant_type=client_credentials, client_id=ApiKey, client_secret=ApiSecret.'
+  - OAuth2 client credentials flow with Bearer token authentication. POST to /auth/token
+    with form-urlencoded body containing grant_type=client_credentials, client_id
+    (ApiKey), client_secret (ApiSecret), and scope parameters TaxId, TL, TT. Response
+    includes access_token (Bearer type, 3600s expiry), refresh_token, and api_key.
+    Refresh tokens obtained via grant_type=refresh_token with same TaxId, TL, TT scope
+    parameters. Access tokens are scoped to the TaxId, TL, and TT used during issuance.
+  - The API uses Bearer token authentication obtained via OAuth2-style token endpoint.
+    Request tokens by sending credentials (API key and secret) via Basic Auth or in
+    the request body to the token endpoint, which returns an access_token with expiry
+    information and a refresh_token. Include the access token in the Authorization
+    header as "Bearer [ACCESS_TOKEN]" for all subsequent API requests. The refresh_token
+    can be used to obtain a new access_token when the current one expires.
+- information_source; https://docs.efsta.net/efr/api/additional-functions:
+  - Local operation only (localhost) or Profile.Password authorization required. When
+    not accessing from localhost, provide Profile.Password authorization credentials
+    to authenticate the /retrieve request.
+pagination_info:
+- information_source; https://docs.efsta.net/efr/api/additional-functions:
+  - The `/retrieve` endpoint uses sequential query-based pagination with `last` (required,
+    starting SQ position) and optional `endSQ` (end point) parameters in the query
+    string. Clients paginate by sending the last processed SQ value as the `last`
+    parameter in subsequent requests, continuing until reaching `endSQ` or no more
+    records are available.
+possible_base_urls:
+- information_source; https://docs.efsta.net/efr/api/rule-set/:
+  - http://localhost:5618/register
+- information_source; https://docs.efsta.net/efr/architecture:
+  - '[public IP]:5618/register'
+possible_endpoints:
+- information_source; https://docs.efsta.net/efr/api/rule-set/:
+  - GET http://localhost:5618/register
+  - POST http://localhost:5618/register
+- information_source; https://docs.efsta.net/efr/architecture:
+  - POST [public IP]:5618/register
+- information_source; https://docs.efsta.net/efr/getting-started:
+  - GET /state
+  - POST /auth/token
+- information_source; https://docs.efsta.net/efr/api/:
+  - GET /last
+  - GET /peri/print/state
+  - GET /render
+  - GET /render/escpos
+  - GET /render/pdf

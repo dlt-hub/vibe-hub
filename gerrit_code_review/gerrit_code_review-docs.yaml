@@ -1,0 +1,75 @@
+auth_info:
+- information_source; https://gerrit-review.googlesource.com/Documentation/rest-api.html:
+  - Access tokens are passed as query parameters in the request URL. In the example
+    shown, the access_token parameter is set to "secret" and must be included in the
+    query string (e.g., `?access_token=secret`). This is the authentication mechanism
+    for API requests to this service.
+  - All REST endpoints support anonymous access by default. Authenticated access requires
+    prefixing the endpoint URL with `/a/` and using HTTP basic authentication with
+    tokens from user account settings. Alternatively, an authorization cookie can
+    be passed via the `access_token` query parameter. For mutations via CORS, include
+    a valid XSRF token in the `X-Gerrit-Auth` request header, or use `access_token`
+    in the URL to bypass XSRF requirements.
+- information_source; https://gerrit-review.googlesource.com/Documentation/dev-rest-api.html:
+  - Authentication is required to access the Gerrit REST API. HTTP Basic Authentication
+    should be used, sending credentials via the Authorization header with the format
+    "Basic base64(username:password)". Alternatively, HTTP Digest Authentication or
+    LDAP credentials can be used depending on the Gerrit server configuration. For
+    automated access, an HTTP password can be generated in the user settings and used
+    with Basic Authentication. Some endpoints may also support cookie-based authentication
+    if the user is already logged into the Gerrit web interface.
+  - 'Basic HTTP authentication is required for APIs. Provide username and password
+    via the --user flag (format: username:password), where the password should be
+    one of the user''s authentication tokens. Alternatively, credentials can be read
+    from .netrc or _netrc file using the -n flag.'
+- information_source; https://gerrit-review.googlesource.com/Documentation/config-gerrit.html:
+  - 'The system supports multiple authentication methods for Git over HTTP and REST
+    API requests: HTTP (tokens with fallback to HTTP passwords), LDAP (LDAP password
+    only), OAUTH (OAUTH authentication only), or HTTP_LDAP (tokens checked first,
+    then LDAP password). When using LDAP or HTTP_LDAP, Git clients must configure
+    http.cookieFile and http.saveCookies set to true to maintain HTTP session cookies
+    and avoid repeated LDAP authentication overhead. Authentication tokens have a
+    configurable maximum lifetime (minimum 1 minute, expressed with unit suffixes
+    like m, min, minute, minutes).'
+pagination_info:
+- information_source; https://gerrit-review.googlesource.com/Documentation/rest-api-accounts.html:
+  - 'Pagination uses the `n` query parameter to limit results (default 10 for suggestions),
+    and the `S` or `start` query parameter to skip accounts. When results exceed the
+    limit or internal cap, the last account object includes `_more_accounts: true`
+    to indicate additional results exist.'
+- information_source; https://gerrit-review.googlesource.com/Documentation/rest-api-changes.html:
+  - Query parameter `q` specifies the search string for reviewer suggestions, and
+    optional `n` parameter limits results (default 10). Optional `exclude-groups`
+    parameter excludes groups from results. Response returns a list of SuggestedReviewerInfo
+    objects.
+  - The `GET /changes/` endpoint supports pagination via the `n` query parameter to
+    limit returned results, and an optional `no-limit` parameter to remove the default
+    limit and return all results (not supported for anonymous requests). Results are
+    sorted by last update time, most recently updated first.
+  - 'Use the `n` query parameter to limit results, and the `S` or `start` query parameter
+    to skip changes. If `_more_changes: true` is set in the last change object, more
+    results exist; supply `start` with the appropriate offset value to retrieve the
+    next batch.'
+- information_source; https://gerrit-review.googlesource.com/Documentation/rest-api-groups.html:
+  - The `/groups/` endpoint uses offset-based pagination with `limit` (default/example
+    25, controls number of results per request) and `start` (optional, integer offset
+    to skip groups from the beginning of the list). Construct subsequent requests
+    by incrementing the `start` parameter value.
+possible_base_urls:
+- information_source; https://gerrit-review.googlesource.com/Documentation/dev-rest-api.html:
+  - http://localhost:8080
+- information_source; https://gerrit-review.googlesource.com/Documentation/rest-api-config.html:
+  - http://gerrit
+possible_endpoints:
+- information_source; https://gerrit-review.googlesource.com/Documentation/rest-api.html:
+  - DELETE /changes/myProject~master~I8473b95934b5732ac55d26311a706c9c2bde9940
+  - GET /Documentation/
+  - GET /changes/myProject~master~I8473b95934b5732ac55d26311a706c9c2bde9940/suggest_review
+  - GET /changes/myProject~master~I8473b95934b5732ac55d26311a706c9c2bde9940/suggest_reviewers
+  - GET /changes/myProject~master~I8473b95934b5732ac55d26311a706c9c2bde9940/suggest_reviewers?q=J
+  - GET /changes/myProject~master~I8473b95934b5732ac55d26311a706c9c2bde9940/suggest_reviewers?trace&q=J
+  - GET /changes/myProject~master~I8473b95934b5732ac55d26311a706c9c2bde9940/suggest_reviewers?trace=issue/123&q=J
+  - GET /projects/
+- information_source; https://gerrit-review.googlesource.com/Documentation/project-configuration.html:
+  - DELETE /projects/{project-id}/branches/{branch-id}
+  - GET /projects/{project-id}/branches

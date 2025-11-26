@@ -1,0 +1,43 @@
+auth_info:
+- information_source; https://hadoop.apache.org/docs/r3.0.0/hadoop-project-dist/hadoop-hdfs/WebHDFS.html:
+  - 'Delegation token authentication is used for WebHDFS operations. Tokens are passed
+    as a query parameter named token in requests to the WebHDFS endpoint, for example
+    in a PUT request to cancel a delegation token: http://<HOST>:<PORT>/webhdfs/v1/?op=CANCELDELEGATIONTOKEN&token=<TOKEN>.
+    The token parameter contains the delegation token value required for authentication.'
+  - Delegation tokens are passed as query parameters in WebHDFS requests. To renew
+    a delegation token, submit an HTTP PUT request to the WebHDFS endpoint with the
+    token parameter set to the delegation token value. The token is specified via
+    the query parameter named "token" in the URL.
+- information_source; https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/WebHDFS.html:
+  - Delegation tokens are passed as a query parameter named token in WebHDFS requests.
+    The token value is appended to the operation URL (e.g., ?op=CANCELDELEGATIONTOKEN&token=<TOKEN>),
+    and the server validates the token for authorization; see DelegationTokenAuthenticator
+    for token acquisition and management details.
+  - Delegation tokens are used for authentication in WebHDFS. To authenticate, pass
+    a delegation token via the query parameter `token=<TOKEN>` in HTTP requests to
+    WebHDFS endpoints. Tokens can be renewed with a PUT request to `op=RENEWDELEGATIONTOKEN&token=<TOKEN>`
+    or cancelled with `op=CANCELDELEGATIONTOKEN&token=<TOKEN>`.
+- information_source; https://hadoop.apache.org/docs/stable/hadoop-yarn/hadoop-yarn-site/ResourceManagerRest.html:
+  - All delegation token requests must be carried out on a Kerberos authenticated
+    connection using SPNEGO. The token to be cancelled or renewed is specified by
+    setting a header. Operations on non-Kerberos connections will result in a FORBIDDEN
+    response, and only the renewer specified when creating the token can renew it.
+possible_base_urls:
+- information_source; https://hadoop.apache.org/docs/r3.0.0/hadoop-project-dist/hadoop-hdfs/WebHDFS.html:
+  - http://<HOST>:<PORT>/webhdfs/v1
+- information_source; https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/WebHDFS.html:
+  - http://<HOST>:<PORT>/webhdfs/v1
+possible_endpoints:
+- information_source; https://hadoop.apache.org/docs/r3.0.0/hadoop-project-dist/hadoop-hdfs/WebHDFS.html:
+  - PUT http://<HOST>:<PORT>/webhdfs/v1/?op=CANCELDELEGATIONTOKEN&token=<TOKEN>
+  - PUT http://<HOST>:<PORT>/webhdfs/v1/?op=RENEWDELEGATIONTOKEN&token=<TOKEN>
+- information_source; https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/WebHDFS.html:
+  - GET /webhdfs/v1/?op=CANCELDELEGATIONTOKEN&token=<TOKEN>
+  - PUT http://<HOST>:<PORT>/webhdfs/v1/?op=CANCELDELEGATIONTOKEN&token=<TOKEN>
+  - PUT http://<HOST>:<PORT>/webhdfs/v1/?op=RENEWDELEGATIONTOKEN&token=<TOKEN>
+- information_source; https://hadoop.apache.org/docs/stable/hadoop-yarn/hadoop-yarn-site/ResourceManagerRest.html:
+  - DELETE http://rm-http-address:port/ws/v1/cluster/delegation-token
+  - GET http://rm-http-address:port/ws/
+  - GET http://rm-http-address:port/ws/v1/cluster/
+  - GET http://rm-http-address:port/ws/v1/cluster/apps
+  - GET http://rm-http-address:port/ws/v1/cluster/apps/application_1326821518301_0005

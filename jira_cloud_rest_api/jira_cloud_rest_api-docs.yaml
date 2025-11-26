@@ -1,0 +1,82 @@
+auth_info:
+- information_source; https://docs.atlassian.com/software/jira/docs/api/REST/1000.824.0/:
+  - JIRA Cloud REST API uses JWT (JSON Web Tokens) for authentication when integrating
+    via Atlassian Connect add-ons. The add-on exchanges a security context with the
+    application to create and validate JWT tokens that are embedded in API calls.
+    For details on implementation, refer to the Atlassian Connect authentication documentation.
+  - JWT tokens embedded in API calls for Atlassian Connect authentication. For direct
+    REST API integration, use OAuth 1.0a (recommended, token-based) or Basic HTTP
+    authentication (username and password, less secure). Browser-based requests can
+    use cookie-based authentication established by JIRA login. The `/auth/1/session`
+    resource supports POST for session management.
+- information_source; https://docs.atlassian.com/jira/REST/cloud/:
+  - 'Basic authentication is used for ad-hoc API calls. Send HTTP Basic Auth credentials
+    (username and password encoded in Base64) in the Authorization header with the
+    format "Authorization: Basic <base64-encoded-credentials>". Operations require
+    specific permissions granted through groups, project roles, issue roles, or directly
+    to users; common permissions include site administration, Jira administration,
+    and project administration.'
+  - Jira Cloud REST API supports three authentication approaches depending on app
+    type. Forge apps use OAuth 2.0 scopes for REST API calls to /rest/api/3/<resource-name>.
+    Connect apps use JWT-based authentication built into Connect libraries with authorization
+    via scopes or user impersonation, calling https://<site-url>/rest/api/3/<resource-name>.
+    Other integrations use OAuth 2.0 authorization code grants (3LO) with scopes,
+    calling https://api.atlassian.com/ex/jira/<cloudId>/rest/api/3/<resource-name>.
+    Specific scope requirements are indicated per operation as "App scope required"
+    or "OAuth scopes required".
+  - Jira Cloud REST API v3 uses OAuth2-based authentication for Forge apps. Credentials
+    are managed through REST API scopes defined in your app configuration. For Forge
+    apps, authentication is handled automatically by the Jira platform; you do not
+    manually pass credentials in requests. Specific scope requirements depend on which
+    API endpoints your app accesses.
+pagination_info:
+- information_source; https://docs.atlassian.com/jira/REST/cloud/:
+  - startAt and maxResults are query parameters for pagination, where startAt is the
+    index of the first item (default 0) and maxResults is the maximum items per page
+    with operation-specific limits. Responses include total (total item count across
+    all pages, may change) and isLast (boolean indicating if current page is last),
+    though these fields are not returned for all operations. Stop paginating when
+    isLast is true or when the returned page is empty.
+- information_source; https://docs.atlassian.com/jira/REST/1000.1000.0/:
+  - JIRA uses offset-based pagination with startAt and maxResults query parameters.
+    The response includes startAt (current offset), maxResults (items per page), total
+    (total count, may change or be omitted), and values (result array). Clients construct
+    subsequent requests by incrementing startAt by maxResults; each API may have different
+    limits on maxResults.
+- information_source; https://docs.atlassian.com/jira/REST/1000.1001.0/:
+  - JIRA uses offset-based pagination with startAt (default 0, indicates first item
+    position) and maxResults (controls results per page, API-specific limits) query
+    parameters. Responses return a JSON object containing startAt, maxResults, total
+    (total entities across all pages, may change or be omitted), and values array
+    with results. Clients construct subsequent requests by incrementing startAt; stop
+    when the values array is empty or startAt exceeds total.
+- information_source; https://docs.atlassian.com/jira/REST/1000.1003.0/:
+  - JIRA uses offset-based pagination with startAt and maxResults query parameters.
+    Responses include startAt, maxResults, total, and values array. startAt indicates
+    the first item position, maxResults controls results per page (API-specific limits
+    apply), and total shows total entities across all pages but may change between
+    requests. Clients should paginate by incrementing startAt until the page is empty.
+- information_source; https://docs.atlassian.com/jira/REST/1000.1005.0/:
+  - JIRA uses offset-based pagination with startAt and maxResults query parameters.
+    The response includes startAt (starting item index), maxResults (items per page),
+    total (total count across all pages, may change and is optional), and values (array
+    of results). Clients construct subsequent requests by incrementing startAt by
+    maxResults to fetch the next page; stop when the values array is empty or startAt
+    exceeds total.
+possible_base_urls:
+- information_source; https://docs.atlassian.com/jira/REST/1000.1007.0/:
+  - https://developer.atlassian.com
+  - https://docs.atlassian.com/jira/REST/schema/error-collection
+possible_endpoints:
+- information_source; https://docs.atlassian.com/jira/REST/1000.1009.0/:
+  - DELETE /rest/api/2//userProperties
+  - GET /rest/api/2//userProperties
+  - GET /rest/api/2/application-properties
+  - GET /rest/api/2/mypermissions
+  - GET /rest/api/2/permissions
+  - POST /auth/1/session
+  - POST /rest/api/2//userProperties
+  - PUT /rest/api/2/application-properties/{id}
+- information_source; https://docs.atlassian.com/jira/REST/1000.101.0/:
+  - GET /rest/api/2//mypermissions
+  - GET /rest/api/2//permissions

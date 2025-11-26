@@ -1,0 +1,68 @@
+auth_info:
+- information_source; https://devnet.logianalytics.com/hc/en-us/articles/4415511936407-REST-API-Documentation:
+  - The API requires an access_token request header obtained via POST user/login endpoint,
+    which is mandatory for all requests except the login endpoint itself. Additionally,
+    current_tenant header is required if the logged in user is a tenant user, and
+    selected_tenant header can be used by system users to specify a particular tenant
+    context.
+- information_source; https://devnet.logianalytics.com/hc/en-us/articles/4415492760599-User-APIs:
+  - User credentials (userName and password) are sent in the request body as JSON
+    fields for authentication. Upon successful authentication, the API returns an
+    AccessToken in the response data field, which is used for subsequent authenticated
+    requests. The token appears to be a base64-encoded string (e.g., "3AfY....yKg==")
+    that should be included in subsequent API calls for authorization.
+- information_source; https://devnet.logianalytics.com/hc/en-us/articles/4415511948823-Export-APIs:
+  - The API uses bearer token authentication via an access_token field. Include the
+    access_token value obtained from authentication in the request body as a JSON
+    field named "access_token". The current_tenant field should also be included in
+    the request body, typically as an empty string if not applicable.
+pagination_info:
+- information_source; https://devnet.logianalytics.com/hc/en-us/articles/4415511936407-REST-API-Documentation:
+  - 'Based on the provided documentation excerpt, here is the pagination information:
+
+
+    The GET fusion/{report_id}/{report_part_id}/(pageIndex)/(pageSize) endpoint uses
+    path parameters pageIndex and pageSize to control pagination, where pageSize specifies
+    the number of records per page and pageIndex specifies which page to retrieve.'
+  - 'Based on the provided input, I can identify one pagination parameter:
+
+
+    The GET report/reportPart/{report_part_id}/(report_id) endpoint accepts an optional
+    query parameter page with a value to paginate results.
+
+
+    However, the documentation excerpt does not provide details about response fields,
+    stopping conditions, or how to construct subsequent requests, so the pagination
+    mechanism is incompletely described.'
+- information_source; https://devnet.logianalytics.com/hc/en-us/articles/4415504641943-Data-Model-APIs:
+  - Pagination uses pageIndex (1-based, required) and pageSize (required) as request
+    parameters. Response includes pageIndex, pageSize, total (total records), skipItems,
+    and isLastPage (boolean indicating final page); continue requesting with incremented
+    pageIndex until isLastPage is true.
+  - Request uses QuerySourcePagedRequest object with pagination parameters. Response
+    returns PagedResult object containing results array and pagination metadata. Exact
+    parameter and field names not specified in excerpt, refer to QuerySourcePagedRequest
+    and PagedResult documentation for details.
+- information_source; https://devnet.logianalytics.com/hc/en-us/articles/4415492732439-Report-Designer-Details-APIs:
+  - Pagination is used in the POST report/advancedSearch endpoint. The request body
+    includes pageSize (default 10) and pageIndex (default 1) parameters to control
+    pagination. The response returns pageIndex, pageSize, and total fields indicating
+    the current page, page size, and total number of results, allowing clients to
+    calculate subsequent pages.
+possible_base_urls:
+- information_source; https://devnet.logianalytics.com/hc/en-us/articles/4415511936407-REST-API-Documentation:
+  - https://devnet.logianalytics.com
+- information_source; https://devnet.logianalytics.com/hc/en-us/articles/4415492759191-System-DB-and-License-APIs:
+  - /api
+possible_endpoints:
+- information_source; https://devnet.logianalytics.com/hc/en-us/articles/4415511936407-REST-API-Documentation:
+  - DELETE /advancedSetting/category/{category_id}
+  - DELETE /copyManagement/workspace/{workspace_id}
+  - DELETE /user/{user_id}
+  - DELETE connection/{connection_id}
+  - DELETE dashboard/category/{dashboard_category_id}
+  - DELETE dashboard/{dashboard_id}
+  - DELETE dataModel/querySourceField/{query_source_field_id}
+  - DELETE dataModel/relationship/{relationship_id}
+  - DELETE report/category/{report_category_id}
+  - DELETE report/history/{report_id}/(version)

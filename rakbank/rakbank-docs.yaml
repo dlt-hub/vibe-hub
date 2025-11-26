@@ -1,0 +1,45 @@
+auth_info:
+- information_source; https://developer.rakbank.ae/sb/api/customer-signin-oauth-api:
+  - OAuth 2.0 Authorization Code Grant flow is used for bank linkage. Customers authenticate
+    on the Digital Banking site, receive an auth code at the redirect URL, then exchange
+    it for a short-lived access token and long-lived refresh token. The access token
+    is passed in the Authorization header for subsequent API calls.
+- information_source; https://developer.rakbank.ae/sb/api/basics:
+  - Bearer token authentication is required. Pass the access token in the Authorization
+    header using the format "Bearer <token>" when invoking the API.
+  - RAKBANK Open APIs use OAuth 2.0 or API key authentication depending on the endpoint.
+    For OAuth, register an application to obtain a client ID and client secret, then
+    call the OAuth API endpoint with the appropriate grant type and scope to generate
+    an access token. Pass the access token in the Authorization header as "Bearer
+    <access_token>". For APIs where OAuth does not apply, pass both client ID and
+    client secret in HTTP headers. Refer to the Security section of each API's documentation
+    for specific security definitions, OAuth endpoints, grant types, and scopes applicable
+    to that API.
+  - RAKBANK Open APIs use OAuth2 bearer tokens for authentication. Invalid or expired
+    OAuth tokens result in 401 Unauthorized responses, and tokens lacking required
+    scopes result in 403 Forbidden responses. Send the OAuth token in the request
+    headers; exact header name and token acquisition details are not specified in
+    this excerpt.
+- information_source; https://developer.rakbank.ae/sb/api/environments:
+  - OAuth2 authentication is used for this API. The OAuth2 Authorize call is made
+    to https://tpa.rakbank.ae/rb/api, while other Open API calls use https://api.rakbank.ae/rb/api.
+    Client credentials will be provided after testing and certification completion.
+    Store API endpoints as configurable values for environment switching.
+possible_base_urls:
+- information_source; https://developer.rakbank.ae/sb/api/environments:
+  - https://api.rakbank.ae/rb/api
+  - https://tpa.rakbank.ae/rb/api
+possible_endpoints:
+- information_source; https://developer.rakbank.ae/sb/api/digital-banking-beneficiaries:
+  - GET /customers/{customer_id_type}:{customer_id}/beneficiaries
+  - GET /customers/{customer_id_type}:{customer_id}/beneficiaries/{beneficiary_id}
+- information_source; https://developer.rakbank.ae/sb/api/customer-signin-oauth-api:
+  - DELETE /oauth2/issued
+  - GET /oauth2/authorize
+  - GET /oauth2/issued
+  - POST /oauth2/authorize
+  - POST /oauth2/introspect
+  - POST /oauth2/revoke
+  - POST /oauth2/token
+- information_source; https://developer.rakbank.ae/sb/api/partner-beneficiary-management:
+  - DELETE /customers/{customer_id_type}:{customer_id}/beneficiaries/{beneficiary_id}

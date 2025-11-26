@@ -1,0 +1,46 @@
+auth_info:
+- information_source; https://documentation.open-xchange.com/7.10.5/middleware/:
+  - OAuth 2.0 is supported as an authorization mechanism. The OX App Suite can act
+    as an OAuth 2.0 provider (since v7.8.0) and also supports external authorization
+    servers that issue JSON Web Tokens (JWT) or opaque access tokens. OAuth 2.0 provider
+    functionality is enabled via the `com.openexchange.oauth.provider.enabled` property,
+    and the provider mode is configured through `com.openexchange.oauth.provider.mode`.
+    Specific endpoints and required permission scopes for OAuth-protected API calls
+    are documented in the current API documentation. External Identity & Access management
+    systems like Keycloak are supported for token validation.
+- information_source; https://documentation.open-xchange.com/8/middleware/calendar/iTip.html:
+  - Authentication is done via basic auth, as configured via the com.openexchange.rest.services.basic-auth.login
+    configuration parameter. Credentials are sent in the Authorization header using
+    the standard HTTP Basic Authentication scheme (base64-encoded username:password).
+- information_source; https://documentation.open-xchange.com/appsuite/releases/8.34/helmdocs/switchboard.html:
+  - The switchboard service authenticates with App Suite using token-based authentication
+    via the redeemToken API. A secret must be created at `/opt/open-xchange/etc/tokenlogin-secrets`
+    and made available to the switchboard pod; the service injects brand information
+    into a JWT token, which is only included if the `io.ox/core//brand` setting is
+    configured as a protected setting by the administrator.
+- information_source; https://documentation.open-xchange.com/components/middleware/http/7.10.0/index.html:
+  - A system must register itself at the server and identify using a key configured
+    at the Open-Xchange server for internal communication. Sessions can be acquired
+    via token exchange (acquireToken action) and redeemed on another system (redeemToken
+    action), with the session optionally containing the user's password. The system
+    must provide its configured key to authenticate itself during token redemption
+    and secret refresh operations.
+  - 'All three requests require a session parameter passed as a query parameter: `session=...`.
+    This session token must be obtained through prior authentication (typically via
+    login) and included in every API call to maintain the authenticated state.'
+possible_base_urls:
+- information_source; https://documentation.open-xchange.com/8/middleware/calendar/iTip.html:
+  - http://appsuite.example.com/chronos/v1/itip/pushmail
+possible_endpoints:
+- information_source; https://documentation.open-xchange.com/8/middleware/calendar/iTip.html:
+  - POST http://appsuite.example.com/chronos/v1/itip/pushmail
+- information_source; https://documentation.open-xchange.com/components/middleware/http/7.10.0/index.html:
+  - DELETE /fileaccount
+  - GET /ajax/fileservice?action=get&id=boxcom&session=...
+  - GET /ajax/oauth/accounts?action=all&serviceId=com.openexchange.oauth.boxcom&session=...
+  - GET /attachment?action=document
+  - GET /attachment?action=get
+  - GET /attachment?action=updates
+  - GET /config/{path}
+  - GET /config?action=get_property
+  - GET /fileaccount?action=get

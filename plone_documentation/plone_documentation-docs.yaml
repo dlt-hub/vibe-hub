@@ -1,0 +1,65 @@
+auth_info:
+- information_source; https://6.docs.plone.org/plone.restapi/docs/source/index.html:
+  - 'Plone REST API uses HTTP Basic Authentication for requests. Credentials are passed
+    via the --user flag in curl (format: username:password) or as an Authorization
+    header with base64-encoded credentials. A basic authorization token must be obtained
+    before making authenticated requests to the API.'
+- information_source; https://6.docs.plone.org/plone.restapi/docs/source/introduction.html:
+  - 'Basic authentication is used for API access. Include an Authorization header
+    with the value "Basic" followed by a base64-encoded string of "username:password".
+    For example, use Authorization: Basic YWRtaW46c2VjcmV0 where the encoded part
+    represents admin:secret credentials.'
+- information_source; https://6.docs.plone.org/plone.restapi/docs/source/usage/authentication.html:
+  - 'Bearer token authentication is required, passed in the Authorization header as
+    "Bearer <JWT_token>". Additionally, users must have the "plone.restapi: Use REST
+    API" permission, and specific Plone permissions (View, Add portal, etc.) depending
+    on the operation.'
+  - 'Bearer token authentication is required. Include the token in the Authorization
+    header using the Bearer scheme: Authorization: Bearer <token>. The token is a
+    JWT that must be obtained prior to making requests.'
+  - Bearer token authentication using JWT. Credentials are sent in the Authorization
+    header with the format "Bearer {token}". Tokens expire after 12 hours and must
+    be renewed by POSTing to the @login-renew endpoint with the current token in the
+    Authorization header.
+pagination_info:
+- information_source; https://6.docs.plone.org/plone.restapi/docs/source/usage/batching.html:
+  - Pagination uses hypermedia links in the response. Query parameters `b_size` (batch
+    size, default 25) and `b_start` (first item offset) control pagination. Response
+    includes `@id`, `first`, `prev`, `next`, and `last` links to navigate pages; use
+    these links or construct new requests with updated `b_start` values to move through
+    batches.
+  - Pagination uses query parameters b_size (batch size) and b_start (start offset)
+    to request pages. Responses include a batching object with @id, first, last, prev,
+    and next links for navigation, plus items_total for total count. The batching
+    object is omitted if results fit in a single page.
+- information_source; https://6.docs.plone.org/plone.restapi/docs/source/endpoints/groups.html:
+  - The endpoint supports a limit parameter with a default maximum of 25 groups at
+    a time. The query parameter filters groups where groupname starts with the provided
+    value. No explicit pagination mechanism such as page numbers, cursors, or next/previous
+    links is described.
+- information_source; https://6.docs.plone.org/plone.restapi/docs/source/endpoints/registry.html:
+  - The API uses offset-based pagination with the b_start query parameter. The response
+    includes a batching object with first, last, and next URLs containing b_start
+    values to navigate pages, with a default page size of 25 items.
+  - The registry records listing uses batching to access all records. See the Batching
+    documentation for details on pagination parameters and response fields used to
+    navigate through batched results.
+possible_base_urls:
+- information_source; https://6.docs.plone.org/plone.restapi/docs/source/index.html:
+  - https://demo.plone.org/++api++
+- information_source; https://6.docs.plone.org/plone.restapi/docs/source/usage/authentication.html:
+  - http://nohost/plone
+possible_endpoints:
+- information_source; https://6.docs.plone.org/plone.restapi/docs/source/index.html:
+  - GET https://demo.plone.org/++api++
+  - POST https://demo.plone.org/++api++
+- information_source; https://6.docs.plone.org/plone.restapi/docs/source/introduction.html:
+  - GET /
+  - GET /plone/front-page
+- information_source; https://6.docs.plone.org/plone.restapi/docs/source/usage/authentication.html:
+  - GET (requires `View` permission)
+  - GET http://nohost/plone/
+  - POST (requires `Add portal content` permission)
+  - POST /@login
+  - POST /plone/@login
+  - POST /plone/@login-renew

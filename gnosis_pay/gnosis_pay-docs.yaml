@@ -1,0 +1,26 @@
+auth_info:
+- information_source; https://docs.gnosispay.com/api-reference/intro:
+  - Bearer token authentication is required. Generate a token using the Authentication
+    Helper App, then paste it into the Authorization Header field for API requests.
+  - Most API endpoints require authentication with a JWT obtained via Sign-In with
+    Ethereum (SIWE). The JWT token should be sent with API requests; a helper app
+    is provided in the documentation to generate tokens and sign Safe transactions.
+- information_source; https://docs.gnosispay.com/auth:
+  - Authentication uses Sign-In with Ethereum (SIWE) with JWT tokens. Submit a POST
+    request to /api/v1/auth/challenge with JSON body containing message, signature,
+    and ttlInSeconds fields. Upon successful verification, a jwt is returned and must
+    be included in the Authorization header as "Bearer {jwt}" for all subsequent API
+    requests. The jwt remains valid for up to 24 hours based on ttlInSeconds parameter
+    (minimum 1 hour), and each authentication attempt requires a unique nonce. Ensure
+    the SIWE message domain and uri fields are not set to 127.0.0.1 or localhost to
+    avoid firewall blocks.
+possible_base_urls:
+- information_source; https://docs.gnosispay.com/api-reference/intro:
+  - https://api.gnosispay.com
+- information_source; https://docs.gnosispay.com/auth:
+  - https://api.gnosispay.com/api/v1
+possible_endpoints:
+- information_source; https://docs.gnosispay.com/auth:
+  - GET /api/v1/auth/nonce
+  - POST /api/v1/auth/challenge
+  - POST /api/v1/auth/verify-siwe-signature

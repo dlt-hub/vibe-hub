@@ -1,0 +1,54 @@
+auth_info:
+- information_source; https://zellowork.com/api.htm:
+  - 'API authentication requires three steps: first obtain a security token using
+    user/gettoken with API_KEY (defined in common_params.cfg.php as an alpha-numeric
+    sequence), username, and password; then call user/login with the token to authenticate
+    and receive a Session ID; use the Session ID for all subsequent API calls, and
+    call user/logout to end the session.'
+  - Authentication is required via a session ID parameter. The sid (Session ID) must
+    be obtained from a gettoken call and then passed as a GET query parameter named
+    sid in subsequent requests. For example, requests should include ?sid={sid} where
+    sid is the session ID value received from the gettoken endpoint.
+  - Authentication is required via a session ID. The sid (Session ID) parameter must
+    be passed as a GET query parameter in requests. This session ID is obtained from
+    a prior gettoken call. The sid parameter is required for all documented endpoints
+    (channel/delete, channel/roleslist, and others).
+  - 'Authentication uses a session-based approach where the client must first call
+    gettoken to receive a session ID (sid) and token, then include the sid as a query
+    parameter in subsequent requests. The initial authentication requires an MD5 hash
+    computed as md5(md5(user_password) + token + api_key).
+
+
+    Key details: Session ID is passed as the sid query parameter in GET requests.
+    The token is obtained from the gettoken endpoint response. The API key and user
+    password are used only during initial token acquisition to compute the authentication
+    hash.'
+  - Authentication uses session-based tokens. A Session ID (sid) must be obtained
+    from a gettoken call and then passed as a GET query parameter (sid={sid}) in subsequent
+    API requests.
+pagination_info:
+- information_source; https://zellowork.com/api.htm:
+  - The endpoint uses offset-based pagination with start (0-based starting index,
+    optional, defaults to 0) and max (optional maximum results per request, defaults
+    to system page size usually 100) as query parameters. The response includes total
+    (total number of users) and returned (number of users in current response) fields
+    to indicate pagination state.
+  - Use query parameters max (optional, maximum number of results) and start (optional,
+    index of first result) to paginate through channels. The response returns a channels
+    array; construct subsequent requests by incrementing start by max until fewer
+    results than max are returned.
+possible_base_urls:
+- information_source; https://zellowork.com/api.htm:
+  - https://mesh.zellowork.com
+possible_endpoints:
+- information_source; https://zellowork.com/api.htm:
+  - GET /channel/add/name/{name}[/shared/{shared}][/invisible/{invisible}][/tags/{tags}]?sid={sid}
+  - GET /channel/get[/name/{name}][/max/{max}][/start/{start}][/tags/{tags}][/search/{search}]?sid={sid}
+  - GET /channel/roleslist/name/{name}?sid={sid}
+  - GET /history/getmedia/key/{key}?sid={sid}
+  - GET /location/get?sid={sid}
+  - GET /location/getuser/{username}
+  - GET /location/getuser/{username}/history
+  - GET /user/get[/login/{login}][/gateway/{gateway}][/max/{max}][/start/{start}]?sid={sid}
+  - GET /user/gettoken
+  - GET /user/logout?sid={sid}

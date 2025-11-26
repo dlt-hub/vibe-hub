@@ -1,0 +1,71 @@
+auth_info:
+- information_source; https://uselocaly.com/en-US/docs/api/:
+  - 'Include your API key in the Authorization header using Bearer token format. Send
+    requests with the header Authorization: Bearer YOUR_API_KEY and set Content-Type
+    to application/json. The API key must be obtained from your Localy account.'
+- information_source; https://uselocaly.com/en-US/docs/quick-start/:
+  - The API key must be provided as an environment variable named USELOCALY_API_KEY.
+    This key is used to authenticate requests to the Uselocaly translation API, though
+    the exact mechanism for including it in API calls is not explicitly detailed in
+    the provided documentation.
+  - The Uselocaly API uses Bearer token authentication. The API key must be passed
+    in the Authorization header as `Bearer ${process.env.USELOCALY_API_KEY}`, where
+    the token value is read from the USELOCALY_API_KEY environment variable. This
+    header is required for all requests to the backend loadPath endpoint.
+- information_source; https://uselocaly.com/en-US/docs/installation/:
+  - 'Authentication uses a Bearer token passed in the Authorization header. The API
+    key must be provided via the USELOCALY_API_KEY environment variable and sent as
+    Authorization: Bearer ${USELOCALY_API_KEY} in the customHeaders of requests to
+    the Uselocaly API endpoint.'
+- information_source; https://uselocaly.com/en-US/docs/api/authentication/:
+  - 'API key authentication is required via the Authorization header using Bearer
+    token scheme. Include the API key as Authorization: Bearer qla_project_dev_YOUR_API_KEY
+    in request headers. Store the API key in the environment variable LOCALY_API_KEY
+    and never hardcode it. Create separate keys for different environments and rotate
+    them regularly. Rate limiting is applied based on plan tier with limits returned
+    in X-RateLimit-Limit and X-RateLimit-Remaining response headers.'
+pagination_info:
+- information_source; https://uselocaly.com/en-US/docs/api/:
+  - List endpoints support pagination using query parameters page (required, starting
+    at 1) and limit (required, default 10). Response includes pagination object with
+    total (total items), page (current page), limit (items per page), and totalPages
+    (total number of pages). Increment page parameter to retrieve subsequent pages
+    until page equals totalPages.
+  - Use query parameters page (default 1) and limit (default 10) to paginate results.
+    Response includes total (total items), page (current page), limit (items per page),
+    and totalPages (total number of pages). Increment page parameter to fetch subsequent
+    pages until page equals totalPages.
+- information_source; https://uselocaly.com/en-US/docs/api/translations/:
+  - 'Pagination uses query parameters page (number, default: 1) and limit (number,
+    default: 100) to request pages. The response includes meta fields: total (total
+    translations), page (current page), limit (results per page), and totalPages (total
+    number of pages). Continue paginating by incrementing the page parameter until
+    page reaches totalPages.'
+  - The GET /translations endpoint uses offset-based pagination with page (number,
+    default 1) and limit (number, results per page, default 100) as query parameters
+    to control pagination.
+- information_source; https://uselocaly.com/docs/api/translations:
+  - Pagination uses query parameters page (default 1) and limit (default 100) to control
+    results per page. The response structure for indicating pagination state or navigation
+    is not documented.
+possible_base_urls:
+- information_source; https://uselocaly.com/en-US/docs/api/:
+  - https://api.uselocaly.com/v1
+- information_source; https://uselocaly.com/en-US/docs/quick-start/:
+  - https://api.uselocaly.com/{{org}}/{{project}}/{{lng}}
+possible_endpoints:
+- information_source; https://uselocaly.com/en-US/docs/api/:
+  - POST https://api.uselocaly.com/v1/translations
+- information_source; https://uselocaly.com/en-US/docs/quick-start/:
+  - GET https://api.uselocaly.com/{{org}}/{{project}}/{{lng}}
+- information_source; https://uselocaly.com/en-US/docs/installation/:
+  - GET https://api.uselocaly.com/{{org}}/{{project}}/{{lng}}
+- information_source; https://uselocaly.com/en-US/docs/api/authentication/:
+  - GET https://api.uselocaly.com/v1/translations/:orgSlug/:projectSlug/:locale
+- information_source; https://uselocaly.com/en-US/docs/api/translations/:
+  - DELETE /translations/:orgSlug/:projectSlug/:locale/:key
+  - GET /translations/:orgSlug/:projectSlug/:locale
+  - GET /translations/:orgSlug/:projectSlug/:locale/:key
+  - GET /translations/:orgSlug/:projectSlug/:locale/export
+  - POST /translations/:orgSlug/:projectSlug/:locale/import
+  - POST /translations/:orgSlug/:projectSlug/:locale/publish

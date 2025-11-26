@@ -1,0 +1,63 @@
+auth_info:
+- information_source; https://docs.ripple.com/payments-direct-2/api-docs/best-practices/authentication/:
+  - Ripple Payments API uses Bearer Token Authorization for all operations except
+    authentication. Include a valid access token in the Authorization header with
+    the format "Bearer {access_token}". Access tokens are valid for 1 hour as specified
+    by the expires_in field in the authentication response. Do not cache tokens client-side
+    to avoid double caching issues; if cached, clear within the expiration time specified
+    by the exp claim in the JWT.
+  - Use OAuth2 client credentials grant to obtain access tokens. Send a POST request
+    to https://api.ripple.com/v2/oauth/token with Content-Type application/json containing
+    grant_type set to "client_credentials", your client_id, client_secret, and audience
+    field formatted as "urn:ripplexcurrent-{ENVIRONMENT_STRING}:{YOUR_TENANT_ID}"
+    where ENVIRONMENT_STRING is either "test" or "prod". The returned access token
+    is then used with subsequent API calls.
+- information_source; https://docs.ripple.com/payments-direct/api-docs/auth-proxy/reference/:
+  - OAuth2 authorization code flow with client credentials. Send POST request to /oauth/token
+    with client_id, client_secret, audience, and grant_type parameters. Response includes
+    access_token (bearer token), token_type, scope, and expires_in. Use the access_token
+    as a bearer token in subsequent requests.
+  - OAuth2 client credentials flow with JWT bearer tokens. Obtain an access token
+    by sending client_id, client_secret, audience (urn:ripplexcurrent-prod:{YOUR_TENANT_ID}),
+    and grant_type (client_credentials) to the token endpoint. Use the returned access_token
+    as a Bearer token in the Authorization header for API requests. Token type is
+    Bearer and includes scopes like identities:create, identities:read, identities:write,
+    quote_collections:write, payments:accept, payments:read, routing_table:lookup.
+    Tokens expire in 3600 seconds.
+  - The Authentication API uses OAuth2-style credential exchange. To obtain an access
+    token, send a POST request with client_id and client_secret in the JSON request
+    body; the API returns an access_token field that must be included in subsequent
+    API calls. Client credentials are generated via the Ripple Payments UI under Settings
+    > Administration > API Credentials.
+pagination_info:
+- information_source; https://docs.ripple.com/payments-direct/api-docs/best-practices/pagination/:
+  - Pagination uses a query parameter `page` (default value 0) to request specific
+    pages. The response includes `first` and `last` boolean fields to indicate pagination
+    boundaries, `number` for the current page, and `numberOfElements` for items in
+    the current page. A `size` query parameter controls page size. Stop paginating
+    when `last` is true.
+  - 'Response includes pagination fields: first (boolean), last (boolean), number
+    (page index starting at 0), numberOfElements (items in current page), size (page
+    size), totalElements (total items across all pages), and totalPages (total pages).
+    Implement pagination by incrementing the page parameter by 1 with each request
+    until last=true.'
+  - Ripple Payments API uses offset-based pagination with query parameters page and
+    size. The page parameter (default 0) indicates the starting point, and size parameter
+    (default 5) controls batch size. The response includes a last field; when last=false,
+    more results exist and you should increment page to fetch the next batch. Stop
+    paginating when last=true.
+possible_base_urls:
+- information_source; https://docs.ripple.com/payments-direct-2/api-docs/best-practices/authentication/:
+  - https://api.ripple.c
+  - https://api.ripple.com/v2
+possible_endpoints:
+- information_source; https://docs.ripple.com/payments-direct-2/api-docs/best-practices/authentication/:
+  - GET https://api.ripple.com/v2/payments/{YOUR_PAYMENT_ID}
+  - POST https://api.ripple.com/v2/oauth/token
+- information_source; https://docs.ripple.com/payments-direct/api-docs/auth-proxy/reference/:
+  - GET https://auth-test.rnc.ripplenet.com/oauth/token/test
+  - POST /oauth/token
+- information_source; https://docs.ripple.com/payments-direct/api-docs/best-practices/pagination/:
+  - GET /v4/payments
+  - GET {ripplepayments_base_url}/v4/payments
+  - GET {ripplepayments_base_url}/v4/payments?page=X

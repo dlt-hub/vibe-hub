@@ -1,0 +1,63 @@
+auth_info:
+- information_source; https://openbankinguk.github.io/read-write-api-site3/v4.0/profiles/read-write-data-api-profile.html:
+  - Authorization header is mandatory for all request types (POST, GET, DELETE, PUT)
+    and supports OAuth 2.0 / OIDC with Basic or Bearer authentication schemes. Additionally,
+    optional FAPI headers include x-fapi-auth-date (HTTP-date format), x-fapi-customer-ip-address
+    (PSU IP), and x-fapi-interaction-id (RFC4122 UID for correlation).
+  - Authorization header missing or invalid token results in 401 Unauthorized response.
+    Token must have correct scope or security policies will be violated resulting
+    in 403 Forbidden. The API requires an Authorization header with a valid token
+    for authentication.
+  - Authorization header with Bearer token is required. Send the token in the Authorization
+    header as "Bearer Az90SAOJklae". Additionally, include required headers x-fapi-auth-date,
+    x-fapi-customer-ip-address, and x-fapi-interaction-id with appropriate values.
+  - Authorization header with OAuth 2.0 access tokens. Specific scopes and grant types
+    are defined per API endpoint. TPPs must use variable-length storage for authorization
+    codes, access tokens, and refresh tokens as lengths may change over time. Fine-grained
+    permissions are managed via intents (account-access-consent, funds-confirmation-consents,
+    payment order consents) created using client credentials grant, with the intent-id
+    passed to the PSU for consent authorization.
+  - 'Bearer token authentication is required. Send the token in the Authorization
+    header as "Bearer Az90SAOJklae". Additionally, include the following headers in
+    requests: x-fapi-auth-date (timestamp), x-fapi-customer-ip-address (client IP),
+    and x-fapi-interaction-id (unique request identifier). The x-fapi-interaction-id
+    must also be returned in the response.'
+pagination_info:
+- information_source; https://openbankinguk.github.io/read-write-api-site3/v4.0/profiles/read-write-data-api-profile.html:
+  - Pagination uses a query parameter pg (page number) in the request URL. The response
+    includes a Meta.TotalPages field indicating total pages, and a Links section with
+    Self, First, Last, and Next URLs for navigation. Stop paginating when the Next
+    link is absent or when pg reaches TotalPages.
+  - Pagination uses a query parameter pg to specify the page number. Response includes
+    Next and Prev fields containing full URLs to navigate pages, TotalPages indicating
+    total page count, and FirstAvailableDateTime and LastAvailableDateTime providing
+    transaction date range metadata.
+  - Pagination uses query parameter pg to specify the page number. The response includes
+    Links object with Self, First, Last, and Next URLs for navigation, and Meta object
+    with TotalPages field indicating total number of pages. Continue paginating by
+    following the Next URL until it is no longer present.
+- information_source; https://openbankinguk.github.io/read-write-api-site3/v4.0/profiles/read-write-data-api-profile:
+  - Pagination uses a query parameter pg (page number) in the URL. The response includes
+    a Links object with Self, First, Last, and Next URLs for navigation, and a Meta
+    object containing TotalPages. Construct subsequent requests using the Next URL
+    from Links until no Next link is present.
+  - Pagination uses a query parameter pg (page number) in the request URL. The response
+    includes a Meta.TotalPages field indicating total pages, and a Links object containing
+    Self, First, Last, and Next URLs for navigation. Stop paginating when the Next
+    link is absent or pg reaches TotalPages.
+possible_base_urls:
+- information_source; https://openbankinguk.github.io/read-write-api-site3/v4.0/profiles/read-write-data-api-profile.html:
+  - https://api.alphabank.com/open-banking/v4.0/aisp
+  - https://api.alphabank.com/open-banking/v4.0/aisp/accounts/22289/transactions
+possible_endpoints:
+- information_source; https://openbankinguk.github.io/read-write-api-site3/v4.0/profiles/read-write-data-api-profile.html:
+  - GET /accounts
+  - GET /accounts/1000/standing-orders
+  - GET /accounts/22289/transactions
+  - GET /accounts/22289/transactions?pg=2
+  - GET /accounts/{AccountId}
+  - GET /accounts/{AccountId}/transactions
+  - GET /bulk
+  - GET /domestic-payments/1001
+  - GET /domestic-scheduled-payments/1002
+  - GET /standing-orders

@@ -1,0 +1,41 @@
+auth_info:
+- information_source; https://dev.emby.media/doc/restapi/Emby-Connect.html:
+  - Emby Connect uses a two-stage token exchange process. First, authenticate with
+    Emby Connect using X-Application and X-Connect-UserToken headers to retrieve an
+    AccessKey per server. Then exchange that AccessKey with each Emby Server by sending
+    a GET to /Connect/Exchange with X-Emby-Token set to the AccessKey and X-Emby-Authorization
+    header, receiving back a LocalUserId and AccessToken for use on that server's
+    other endpoints.
+  - 'Emby Connect uses two authentication methods. For username/password login, POST
+    to https://connect.emby.media/service/user/authenticate with JSON body containing
+    nameOrEmail and rawpw fields, and X-Application header (format: AppName/AppVersion);
+    the response includes ConnectAccessToken and ConnectUserId. For subsequent API
+    calls, include X-Application and X-Connect-UserToken headers with the ConnectUserToken
+    value.'
+- information_source; https://dev.emby.media/doc/restapi/User-Authentication.html:
+  - Authentication is performed by POSTing to /Users/Authenticatebyname with the password
+    sent as pw in the request body. The response includes an AccessToken property
+    that must be included in all subsequent requests using the X-Emby-Token header.
+    A 401 response indicates the token has been revoked and the user should be redirected
+    to login. Tokens can be invalidated by POSTing to /Sessions/Logout. For multi-server
+    applications, store the token with the server's Id to ensure the correct token
+    is sent to each server.
+- information_source; https://dev.emby.media/doc/restapi/index.html:
+  - 'Emby Server API supports two authentication methods: User Authentication (username
+    and password login) and API Key Authentication (static token). The specific implementation
+    details for headers, parameter names, and token formats are documented in separate
+    User Authentication and API Key Authentication pages.'
+possible_base_urls:
+- information_source; https://dev.emby.media/doc/restapi/Emby-Connect.html:
+  - https://connect.emby.media
+  - https://dev.emby.media
+possible_endpoints:
+- information_source; https://dev.emby.media/doc/restapi/Emby-Connect.html:
+  - GET /Connect/Exchange?format=json&ConnectUserId={ConnectUserId}
+  - GET https://connect.emby.media/service/servers?userId={ConnectUserId}
+  - POST https://connect.emby.media/service/user/authenticate
+- information_source; https://dev.emby.media/doc/restapi/User-Authentication.html:
+  - GET /Users/Public
+  - GET /Users/{Id}/Images/{Type}
+  - POST /Sessions/Logout
+  - POST /Users/AuthenticateByName

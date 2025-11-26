@@ -1,0 +1,81 @@
+auth_info:
+- information_source; https://developer.mautic.org:
+  - All Mautic API endpoints require either an OAuth1a signature or OAuth2 access
+    token for authorization. As of Mautic 2.3.0, Basic Authentication is also supported.
+    OAuth errors return a JSON object with "error" and "error_description" fields,
+    while system errors return a JSON object with an "error" object containing "message"
+    and "code" fields. The Mautic version is included in all API response headers
+    under the header name "Mautic-Version" in semantic versioning format.
+  - Mautic uses OAuth2 for authentication. Applications can obtain access tokens via
+    the Client Credentials grant (for app-only access) or by refreshing tokens using
+    a refresh_token grant type. To refresh, POST to oauth/v2/token with parameters
+    client_id, client_secret, grant_type set to refresh_token, refresh_token, and
+    redirect_uri. The response includes access_token, expires_in, token_type (bearer),
+    scope, and refresh_token. Refresh tokens are valid for 14 days by default and
+    configurable in Mautic's Configuration. Applications should handle 400 Bad Response
+    errors by redirecting users back through authorization.
+  - 'Mautic uses OAuth2 with three supported grant types: authorization_code, refresh_token,
+    and client_credentials. For authorization_code flow, redirect users to GET /oauth/v2/authorize
+    with query parameters client_id, grant_type set to authorization_code, redirect_uri
+    (URL encoded), response_type set to code, and an optional state parameter for
+    CSRF protection. After user authorization, Mautic redirects to your redirect_uri
+    with code and state query parameters appended. Access tokens are obtained and
+    validated using methods like validateAccessToken(), accessTokenUpdated(), and
+    getAccessTokenData(). Store and manage the returned access token data for authenticated
+    requests.'
+  - 'OAuth 1.0a authentication is required. Credentials are sent in the Authorization
+    header with the following parameters: oauth_consumer_key (consumer key), oauth_token
+    (access token), oauth_signature (HMAC-SHA1 base64-encoded signature of request),
+    oauth_nonce (unique string), oauth_signature_method (typically HMAC-SHA1), oauth_timestamp,
+    and oauth_callback. The signature is computed using a composite key formatted
+    as CLIENT_SECRET&TOKEN_SECRET, where TOKEN_SECRET is empty for /oauth/v1/request_token,
+    the oauth_token_secret from /oauth/v1/request_token for /oauth/v1/access_token,
+    and the oauth_token_secret from /oauth/v1/access_token for all other endpoints.'
+  - 'OAuth 1.0a authentication is required. The flow involves three steps: (1) obtain
+    a request token via POST to /oauth/v1/request_token with consumer key and signature,
+    (2) redirect user to login endpoint with the request token, receiving oauth_token
+    and oauth_verifier in callback, (3) exchange for access token via POST to /oauth/v1/access_token
+    with Authorization header containing OAuth parameters including oauth_consumer_key,
+    oauth_token, oauth_verifier, oauth_signature (HMAC-SHA1), oauth_nonce, oauth_timestamp,
+    and oauth_callback. The oauth_token_secret from step two is used in signature
+    generation. All OAuth parameters go in the Authorization header using the format:
+    Authorization: OAuth param1="value1", param2="value2", etc.'
+pagination_info:
+- information_source; https://developer.mautic.org:
+  - 'Pagination for listing form submissions uses query parameters: start (offset),
+    limit (page size), orderBy (sort field), and orderByDir (sort direction). Response
+    includes total (total count) and submissions array. Use start and limit to navigate
+    pages; stop when returned submissions count is less than limit or start exceeds
+    total.'
+  - 'Pagination is supported via query parameters: start (starting row, optional)
+    and limit (number of entities to return, optional). The response returns the same
+    notification properties as the Get Notification endpoint. Stop paginating when
+    fewer results than the limit are returned.'
+  - Pagination is supported via the start and limit query parameters. start specifies
+    the starting row (0-indexed) and limit specifies the maximum number of entities
+    to return per request. The response structure does not explicitly indicate total
+    count or next page information, so continue paginating by incrementing start by
+    the limit value until fewer than limit results are returned.
+  - Pagination uses limit (default 25), page (starting at 1), total (total records),
+    and maxPages (maximum page number). Increment page parameter to retrieve subsequent
+    pages until page equals maxPages.
+  - Pagination uses limit and page query parameters. The response includes total (total
+    count), page (current page number), limit (results per page, default 25), and
+    maxPages (total pages available). Continue paginating by incrementing the page
+    parameter until page equals maxPages.
+possible_base_urls:
+- information_source; https://developer.mautic.org:
+  - https://your-mautic.com
+  - https://your-mautic.com/api
+possible_endpoints:
+- information_source; https://developer.mautic.org:
+  - DELETE /assets/ID/delete
+  - DELETE /campaigns/ID
+  - DELETE /campaigns/ID/delete
+  - DELETE /categories/ID/delete
+  - DELETE /companies/ID/delete
+  - DELETE /contacts/ID/delete
+  - DELETE /contacts/batch/delete
+  - DELETE /dynamiccontents/ID/delete
+  - DELETE /emails/ID/delete
+  - DELETE /fields/company/ID/delete

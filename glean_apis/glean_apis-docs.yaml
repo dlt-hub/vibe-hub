@@ -1,0 +1,42 @@
+auth_info:
+- information_source; https://docs.glean.com/connectors/custom/glean-apis:
+  - 'Glean provides three token types for API authentication: Indexing API tokens
+    (with configurable rotation period, IP restrictions, data source-specific or global
+    permissions, and expiry date), Client tokens (scoped to single user or globally,
+    with configurable scopes for Chat/Answers/Search requests and expiry date), and
+    Authentication Token API keys (for creating authentication tokens on behalf of
+    users, with only one active key allowed at a time). The documentation does not
+    specify exact header names, parameter names, or how to send these tokens in requests.'
+- information_source; https://docs.glean.com/connectors/custom/troubleshooting:
+  - Authorization uses Bearer token authentication. Include the token in the Authorization
+    header as "Bearer <YOUR_TOKEN_HERE>" for API requests to the Glean indexing API
+    endpoints.
+- information_source; https://docs.glean.com/connectors/native/egnyte/home:
+  - OAuth 2.0 authentication is required. Admin credentials are needed to log into
+    Egnyte and initiate the OAuth 2.0 flow. The setup process redirects to Egnyte
+    for OAuth login and consent, after which Glean receives authorization to index
+    content and manage crawls. Your Egnyte instance domain in the format https://yourdomain.egnyte.com
+    must be provided during configuration.
+- information_source; https://docs.glean.com/connectors/native/salesforce/about:
+  - 'Glean authenticates to Salesforce using OAuth2 bearer tokens. The Authorization
+    header with "Authorization: Bearer" scheme is required for API endpoints including
+    /services/data/v62.0 for queryAll, sobjects crawling, and object descriptions.
+    OAuth2 token acquisition flows use /services/oauth2/authorize and /services/oauth2/token
+    endpoints during initial setup.'
+  - Glean requires the Salesforce admin to authenticate and set up a token during
+    setup. Glean uses the Salesforce REST API (v62.00 by default) via SOQL queries
+    to ingest data, with all data stored in the customer's cloud environment.
+possible_base_urls:
+- information_source; https://docs.glean.com/connectors/custom/troubleshooting:
+  - https://domain-be.glean.com/api/index/v1
+- information_source; https://docs.glean.com/connectors/native/egnyte/home:
+  - https://yourdomain.egnyte.com
+possible_endpoints:
+- information_source; https://docs.glean.com/connectors/custom/troubleshooting:
+  - POST https://domain-be.glean.com/api/index/v1/debug/{datasource}/document
+  - POST https://domain-be.glean.com/api/index/v1/debug/{datasource}/user
+- information_source; https://docs.glean.com/connectors/native/salesforce/about:
+  - GET /services/data/v62.0
+  - GET /services/oauth2/aut
+  - GET /services/oauth2/tok
+  - GET /services/oauth2/use
