@@ -1,0 +1,54 @@
+auth_info:
+- information_source; https://mempool.space/docs/api/rest:
+  - Authentication for this endpoint requires sending an API key in the X-Mempool-Auth
+    header. The header name is X-Mempool-Auth and the value should be your authentication
+    token (example shown is "stacksats").
+  - Authentication is required via the X-Mempool-Auth header. Pass the authentication
+    token (e.g., "stacksats") in the X-Mempool-Auth request header to access the acceleration
+    history endpoint.
+  - 'Authentication uses a custom header named X-Mempool-Auth. The header value contains
+    a user authentication token (example shown: "stacksats"). This header must be
+    included in requests to private accelerator endpoints like /api/v1/services/accelerator/balance
+    and /api/v1/services/accelerator/accelerate.'
+  - The Accelerator API uses an optional custom header `X-Mempool-Auth` for authentication.
+    Send the header with a value like "stacksats" to receive customized estimation
+    results; requests without this header still work but return generic estimates.
+  - X-Mempool-Auth header authentication is required. Send the header X-Mempool-Auth
+    with value stacksats in POST requests to the accelerator cancel endpoint.
+pagination_info:
+- information_source; https://mempool.space/docs/api/rest:
+  - Pagination is available for the GET Block Transactions endpoint using the optional
+    path parameter start_index to specify the beginning transaction position; responses
+    return up to 25 transactions per request, and subsequent requests should increment
+    start_index by 25 to fetch the next batch until fewer than 25 transactions are
+    returned.
+  - Ten channels are returned per request. Use the `:index` query parameter for paging
+    to retrieve additional channels. The exact mechanics of how `:index` values are
+    constructed or incremented are not specified in the provided documentation.
+  - Use the `after_txid` query parameter to paginate through confirmed transactions
+    beyond the first 25 returned. Pass a transaction ID from the response as `after_txid`
+    in the next request to fetch the subsequent batch of confirmed transactions.
+  - Use the last txid from the previous response as a query parameter in the next
+    request to paginate through confirmed transactions. The endpoint returns 25 transactions
+    per page, sorted newest first, and pagination continues until no more transactions
+    are returned.
+- information_source; https://mempool.space/signet/docs/api:
+  - Returns 25 transactions per page by default. Pagination is controlled by specifying
+    the last txid seen in the previous response as a query parameter in the next request
+    to retrieve additional transactions.
+possible_base_urls:
+- information_source; https://mempool.space/docs/api/rest:
+  - https://mempool.space
+  - https://mempool.space/api
+possible_endpoints:
+- information_source; https://mempool.space/docs/api/rest:
+  - GET /api/address/:address
+  - GET /api/address/:address/txs
+  - GET /api/address/:address/txs/chain
+  - GET /api/address/:address/txs/mempool
+  - GET /api/address/:address/utxo
+  - GET /api/block/:hash
+  - GET /api/block/:hash/header
+  - GET /api/block/:hash/raw
+  - GET /api/block/:hash/status
+  - GET /api/block/:hash/txids

@@ -1,0 +1,42 @@
+auth_info:
+- information_source; https://docs.interop.io/manager/authentication/auth0/index.html:
+  - Auth0 authentication is used for the io.Manager Admin UI and server. Set environment
+    variables REACT_APP_AUTH to "auth0", REACT_APP_AUTH0_CLIENT_ID with the Auth0
+    application client ID, REACT_APP_AUTH0_DOMAIN with your Auth0 account domain URL,
+    and REACT_APP_AUTH0_AUDIENCE with the resource URL for the access token. Optionally
+    set REACT_APP_AUTH0_CACHE_LOCALSTORAGE to "true" to store tokens in local storage.
+    On the server side, configure auth with issuer URL, base URL, and token signing
+    algorithm (RS256), and define exclusive admin users in the auth_exclusive_users
+    array. Users must have the GLUE42_SERVER_ADMIN role to access the Admin UI.
+  - The io.Manager Server uses Auth0 for authentication. Set auth_method to "auth0"
+    and provide auth_auth0 object with audience (resource URL), issuerBaseURL (issuer
+    URL for token validation), and tokenSigningAlg (token signing algorithm, e.g.
+    "RS256"). Use auth_exclusive_users array to specify users granted the GLUE42_SERVER_ADMIN
+    role for Admin UI access.
+- information_source; https://docs.interop.io/manager/configuration/platform/index.html:
+  - Basic authentication with username and password properties, or token-based authentication
+    using a bearer token in the `token.bearer` property. Tokens provided directly
+    cannot be refreshed; use the `getHeaders` property of the manager object for token
+    refresh capability.
+  - 'The io.Manager API uses Bearer token authentication. Provide a licenseKey in
+    the config object and implement a getHeaders callback function that returns an
+    object with an Authorization header containing a Bearer token (format: "Bearer
+    {token}"). The callback is invoked on every request to io.Manager, allowing you
+    to refresh and retrieve valid access tokens dynamically. The returned headers
+    are merged with existing request headers.'
+possible_base_urls:
+- information_source; https://docs.interop.io/manager/authentication/auth0/index.html:
+  - https://example.auth0.com
+  - https://example.com
+possible_endpoints:
+- information_source; https://docs.interop.io/manager/changelog/manager/index.html:
+  - GET /db
+  - GET /db-connectivity
+  - GET /server/info
+  - GET /v2/server/info
+  - POST /apps
+  - POST /apps/:name
+  - POST /layouts
+  - POST /users/:name/layouts
+  - POST /v2/apps/add
+  - POST /v2/apps/add-or-update

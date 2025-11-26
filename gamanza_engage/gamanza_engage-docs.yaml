@@ -1,0 +1,33 @@
+auth_info:
+- information_source; https://docs.gamanzaengage.com/docs-api/intro/index.html:
+  - The Platform API Gateway requires OAuth 2 Client Credentials Grant authentication,
+    which must be created via the admin dashboard. The Frontend API Gateway requires
+    player identity token validation through an operator-implemented API endpoint.
+    Specific header names, parameter details, and token acquisition mechanics are
+    not provided in this excerpt.
+- ? information_source; https://docs.gamanzaengage.com/docs-api/platform-rest-api/risk/risk-rest-api-gamanza-engage-risk-module
+  : - OAuth 2.0 authentication is required using the client credentials flow. Obtain
+      an access token from the token URL at https://platform.gamanzaengage.com/oauth/token
+      (or similar OAuth2 endpoint as specified in platform authorization documentation),
+      then include the token in the Authorization header as a Bearer token for all
+      API requests to the Risk Rest API.
+- information_source; https://docs.gamanzaengage.com/docs/intro/index.html:
+  - OAuth 2.0 using the client_credentials grant type is required for platform integrations.
+    Applications request an access token to access their own resources, not on behalf
+    of a user. The Client Credentials flow should be used to obtain the access token,
+    which is then sent in subsequent API requests.
+  - Player authentication uses JWT identity tokens sent to the PEP Frontend API Gateway.
+    Call POST `{gamanza_engage_fe_api_url}/api/auth/v1/player` with identityToken
+    (player's sessionID or accessToken) and clientId (your API client ID) in the request
+    body. The gateway validates the token by calling your Operators API endpoint POST
+    `{operators_api_url}/api/auth/v1/player` with the identityToken parameter, which
+    must return playerId and optional expiresAt (RFC 3339 format) on success (HTTP
+    200).
+possible_base_urls:
+- information_source; https://docs.gamanzaengage.com/docs/intro/index.html:
+  - '{gamanza_engage_fe_api_url}/api/auth/v1/player'
+  - '{operators_api_url}/api/auth/v1/player'
+possible_endpoints:
+- information_source; https://docs.gamanzaengage.com/docs/intro/index.html:
+  - POST {gamanza_engage_fe_api_url}/api/auth/v1/player
+  - POST {operators_api_url}/api/auth/v1/player

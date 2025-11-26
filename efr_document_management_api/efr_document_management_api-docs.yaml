@@ -1,0 +1,47 @@
+auth_info:
+- information_source; https://developer.linkhealth.com/apps/marketplace/docs/case-advisor-case-management:
+  - 'The Case Management API uses OAuth 2.0 Client Credentials Grant flow. To authenticate,
+    first POST to https://api-gateway.linkhealth.com/oauth/token with grant_type=client_credentials,
+    client_id=caseadvisor-casemanagement-prod, and client_secret (your secret value).
+    The response includes an access_token with 7200 second expiration and a refresh_token.
+    For API calls, embed the access token in the Authorization header as "Authorization:
+    Bearer {access_token}". Reuse tokens across multiple requests until near expiry
+    before requesting a new token.'
+- information_source; https://developer.linkhealth.com/apps/marketplace/docs/o360-clinical-interface-gateway:
+  - Authentication is handled via OAuth 2.0 and transport is secured via TLS 1.2.
+  - CLIaaS APIs use OAuth 2.0 with client credentials grant type. Retrieve an access
+    token by sending a POST request to the token URL (https://gateway.optuminsightplatform.com/oauth/token
+    for production or https://gateway-nonprod.optuminsightplatform.com/oauth/token
+    for non-production) with grant_type=client_credentials, client_id, and client_secret
+    as form-urlencoded parameters. Include the retrieved access token as a Bearer
+    token in the Authorization header for all subsequent API requests.
+  - Tokens are generated via OAuth2 at either https://gateway-nonprod.optuminsightplatform.com/oauth/token
+    (non-prod) or https://gateway.optuminsightplatform.com/oauth/token (prod), and
+    the same token should be reused for one hour across all eNLP API requests. Token
+    generation is rate-limited to 25 tokens per minute. Client ID must follow the
+    format enlp-coder-[Client Name] for production (e.g. enlp-coder-opas) or enlp-coder-nonprod-[Client
+    Name] for non-production environments (e.g. enlp-coder-nonprod-opas). Refer to
+    LINK API documentation at https://developer.linkhealth.com/api-gateway-how-to
+    and https://developer.linkhealth.com/api-gateway-faq for implementation best practices.
+- information_source; https://developer.linkhealth.com/apps/marketplace/docs/edi-claim-api-intake:
+  - OAuth2 client credentials flow is used to obtain a bearer token. POST to the token
+    endpoint with grant_type=client_credentials, client_id, and client_secret in the
+    request body (application/x-www-form-urlencoded). The response contains access_token,
+    expires_in (3600 seconds), refresh_token, and token_type (bearer). Include the
+    access_token in the Authorization header as "Bearer $access_token" for API requests.
+    Also include the account header with the account value. Tokens are valid for up
+    to 7200 seconds; reuse tokens across multiple requests rather than requesting
+    a new token per call.
+possible_base_urls:
+- information_source; https://developer.linkhealth.com/apps/marketplace/docs/case-advisor-case-management:
+  - https://api-gateway.linkhealth.com/caseadvisor-casemanagement/api/Assessment/GetAssessmentDetails
+  - https://api-gateway.linkhealth.com/oauth/token
+possible_endpoints:
+- information_source; https://developer.linkhealth.com/apps/marketplace/docs/case-advisor-case-management:
+  - POST https://api-gateway.linkhealth.com/caseadvisor-casemanagement/api/Assessment/GetAssessmentDetails
+  - POST https://api-gateway.linkhealth.com/oauth/token
+- information_source; https://developer.linkhealth.com/apps/marketplace/docs/o360-clinical-interface-gateway:
+  - POST https://gateway-nonprod.optuminsightplatform.com/oauth/token
+  - POST https://gateway.optuminsightplatform.com/oauth/token
+- information_source; https://developer.linkhealth.com/apps/marketplace/docs/edi-claim-api-intake:
+  - POST https://transactionintegrity.optum.com/api/v2/validation-submissions

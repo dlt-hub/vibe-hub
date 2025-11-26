@@ -1,0 +1,58 @@
+auth_info:
+- information_source; https://abconnect.docs.apiary.io/:
+  - 'AB Connect API uses HMAC-SHA256 signature-based authentication. Credentials include
+    a partner ID and partner key provided by AB. The signature is computed as base64-encoded
+    HMAC-SHA256 of a message containing Unix timestamp (expires) and optional user
+    ID, separated by newline. Send authentication via query parameters: partner.id
+    (partner ID), auth.signature (computed signature), and optionally user.id (partner-defined
+    string for access control).'
+  - 'Authentication uses HMAC-SHA256 signature-based requests. Credentials are passed
+    as query parameters: partner.id (partner identifier), auth.signature (HMAC-SHA256
+    hash of message in base64), auth.expires (expiration timestamp), and optionally
+    user.id (user identifier). The signature is computed by HMAC-SHA256 hashing a
+    message string using a partner key, then base64-encoding the result. All parameters
+    are URL-encoded and appended to the request URL as query string parameters.'
+  - 'Authentication uses HMAC-SHA256 signature-based scheme. Credentials include partner
+    ID and partner key provided by AB. The signature is computed from a message containing
+    auth expiration timestamp (seconds since epoch), optional user ID, and HTTP method
+    (e.g., "GET"), then base64-encoded and URL-encoded. Send as query parameters:
+    partner.id, partner.auth_expires, partner.user_id (optional), and partner.signature.'
+pagination_info:
+- information_source; https://abconnect.docs.apiary.io/:
+  - AB Connect uses limit and offset pagination. The limit parameter (query string,
+    optional, defaults to 10, capped at 100 maximum) controls page size. The offset
+    parameter (query string) specifies the starting position. Response includes links
+    object with next, previous, first, and last URLs for navigation; stop paginating
+    when next link is absent.
+  - AB Connect v4.1 uses offset-based pagination with `limit` and `offset` query parameters.
+    The `limit` parameter sets page size (default 10, capped at 100 maximum), and
+    `offset` parameter specifies the starting position in the result set. Facet data
+    does not support paging. When requesting facets with over 10,000 values, only
+    the first 10,000 are returned.
+  - Pagination uses an offset-based scheme with a query parameter offset. The response
+    includes links object with next and last fields containing full URLs for subsequent
+    pages. Stop paginating when the next link is absent.
+  - Pagination uses limit (query parameter, default/example 25) and offset (query
+    parameter, default 0) to control page size and starting position. Response includes
+    links object with next/self URLs and meta object containing offset, limit, and
+    count fields; construct next request using the next URL or increment offset by
+    limit until offset reaches or exceeds total count.
+  - Pagination uses offset-based navigation with query parameters. Request parameter
+    limit (optional, controls page size) and offset (optional, default 0) control
+    pagination. Response includes links object with first, prev, self, next, and last
+    URLs that automatically reflect the current limit and offset values. Navigate
+    pages by following the provided link URLs.
+possible_base_urls:
+- information_source; https://abconnect.docs.apiary.io/:
+  - https://api.abconnect.instructure.com/rest/v4.1
+  - https://api.abconnect.instructure.com/rest/v4.1/standards
+possible_endpoints:
+- information_source; https://abconnect.docs.apiary.io/:
+  - GET https://api.abconnect.instructure.com/rest/v4.1/<object>
+  - GET https://api.abconnect.instructure.com/rest/v4.1/<object>?...&limit=25
+  - GET https://api.abconnect.instructure.com/rest/v4.1/<object>?limit=25
+  - GET https://api.abconnect.instructure.com/rest/v4.1/<object>?limit=25&offset=248950
+  - GET https://api.abconnect.instructure.com/rest/v4.1/<object>?offset=10
+  - GET https://api.abconnect.instructure.com/rest/v4.1/<object>?offset=20
+  - GET https://api.abconnect.instructure.com/rest/v4.1/<object>?offset=248960
+  - GET https://api.abconnect.instructure.com/rest/v4.1/standards

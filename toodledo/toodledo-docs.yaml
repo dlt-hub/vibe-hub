@@ -1,0 +1,77 @@
+auth_info:
+- information_source; https://api.toodledo.com/3/upgrade.php:
+  - Authentication is done with OAuth2. This is much more secure and you no longer
+    need to store user passwords. Limited access to the API can be requested to give
+    customers more trust.
+- information_source; https://api.toodledo.com/3/account/doc_sync.php:
+  - Each user is allowed to request 10 access tokens per hour via the "/account/token.php"
+    API call, with each token valid for 2 hours. Additionally, each authenticated
+    user is allowed 100 API calls per access token, totaling 1,000 API calls per hour
+    per user. Tokens should be cached and reused until expiration; exceeding these
+    limits will result in blocked requests or error messages.
+- information_source; https://api.toodledo.com/3/playground.php:
+  - The Toodledo API uses OAuth 2.0 authorization code flow. To authenticate, first
+    obtain an authorization code by redirecting to https://api.toodledo.com/3/account/authorize.php
+    with response_type=code, client_id (your AppID), state (random string), and scope
+    parameters. Exchange this code for an access_token by making a request to https://api.toodledo.com/3/account/token.php
+    with grant_type=authorization_code, code, and client_secret (obtained during registration).
+    Use the resulting access_token in subsequent API calls; the authorization code
+    expires in 1 minute.
+- information_source; https://api.toodledo.com/3/account/index.php:
+  - Access tokens expire after 2 hours and can be refreshed using a refresh token.
+    To obtain a new access token, make a POST request to /3/account/token.php over
+    SSL with basic authentication (Authorization header using base64-encoded credentials).
+    Required parameters are grant_type set to "refresh_token" and refresh_token with
+    the previously obtained refresh token value. Optional parameters include vers,
+    os, device, and f for response format.
+  - Bearer token authentication with refresh token flow. Access tokens expire in 7200
+    seconds and are sent in Authorization headers as "Bearer {access_token}". Refresh
+    tokens are valid for 30 days and can only be used once; when refreshing, save
+    the new access_token and refresh_token and discard old ones. If refresh_token
+    becomes invalid, request user re-authorization. Token endpoint returns error code
+    102 for expired or invalid tokens.
+pagination_info:
+- information_source; https://api.toodledo.com/3/tasks/index.php:
+  - 'Pagination uses offset-based parameters: "start" (number of records to skip,
+    default 0) and "num" (number of records to return, default and max 1000). Use
+    start and num together to paginate results; continue requesting with incremented
+    start values until fewer than num records are returned.'
+  - The API uses an "after" query parameter (Unix timestamp) to paginate tasks. The
+    response includes "num" (count of returned items) and "total" (total available
+    items) fields. Subsequent requests should use the modified timestamp of the last
+    item as the next "after" value to retrieve additional tasks.
+- information_source; https://api.toodledo.com/3/notes/index.php:
+  - Use the "num" query parameter (default and max 1000) combined with "start" parameter
+    to paginate results. Response includes "num" field indicating records returned
+    and "total" field for total count.
+- information_source; https://api.toodledo.com/3/outlines/index.php:
+  - 'The API uses offset-based pagination with two query parameters: start (number
+    of records to skip, default 0) and num (number of records to return, default and
+    max 1000). Use start and num together to paginate results, incrementing start
+    by num for each subsequent request until fewer than num records are returned.'
+- information_source; https://api.toodledo.com/3/lists/index.php:
+  - The API uses offset-based pagination with start and num parameters. start (default
+    0) specifies records to skip, and num (default and max 1000) specifies how many
+    records to return. Increment start by num to fetch subsequent pages until fewer
+    than num records are returned.
+possible_base_urls:
+- information_source; https://api.toodledo.com/3/upgrade.php:
+  - https://www.toodledo.com
+- information_source; https://api.toodledo.com/3/playground.php:
+  - https://api.toodledo.com
+possible_endpoints:
+- information_source; https://api.toodledo.com/3/playground.php:
+  - GET https://api.toodledo.com/3/account/authorize.php
+  - POST https://api.toodledo.com/3/account/token.php
+- information_source; https://api.toodledo.com/3/account/index.php:
+  - GET https://api.toodledo.com/3/account/authorize.php
+  - POST https://api.toodledo.com/3/account/token.php
+- information_source; https://api.toodledo.com/3/account/doc_info.php:
+  - GET http://api.toodledo.com/3/account/get.php
+  - GET https://api.toodledo.com/3/account/get.php
+  - POST https://api.toodledo.com/3/account/get.php
+- information_source; https://api.toodledo.com/3/folders/index.php:
+  - GET http://api.toodledo.com/3/folders/get.php
+  - POST http://api.toodledo.com/3/folders/add.php
+- information_source; https://api.toodledo.com/3/contexts/index.php:
+  - GET http://api.toodledo.com/3/contexts/get.php

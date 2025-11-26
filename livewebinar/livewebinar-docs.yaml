@@ -1,0 +1,33 @@
+auth_info:
+- information_source; https://www.livewebinar.com/faq/integrations/how-to-use-livewebinar-api:
+  - LiveWebinar API uses OAuth2 authorization flow for web application integration
+    or JWT for server-to-server integration. Register your app at https://app.livewebinar.com/api-apps
+    to obtain App Client ID, Client Secret, and Redirect URL, then direct users to
+    https://app.livewebinar.com/auth/login for authorization.
+  - OAuth2 authorization code flow is used. User is redirected to https://app.livewebinar.com/auth/oauth2/authorize
+    with query parameters client_id, redirect_uri, response_type=code, and optional
+    state. After user authorizes, they are redirected back with an authorization code.
+    Exchange this code for access_token and refresh_token by POST to https://api.archiebot.com/api/oauth/access_token
+    with Content-Type header application/vnd.archiebot.v1+json and body parameters
+    grant_type=authorization_code, client_id, and client_secret.
+  - OAuth2 authorization_code grant flow is used. Exchange authorization code for
+    access_token and refresh_token via POST to https://api.archiebot.com/api/oauth/access_token/refresh
+    with client_id, client_secret, grant_type set to authorization_code, code, and
+    redirect_uri. Store access_token and refresh_token; use access_token in subsequent
+    API requests. When access_token expires (indicated by expires_id), use refresh_token
+    to obtain new tokens at the same endpoint. Include access_token in requests to
+    protected endpoints like GET https://api.archiebot.com/api/me and PUT https://api.archiebot.com/api/users/:user_id.
+possible_base_urls:
+- information_source; https://www.livewebinar.com/faq/integrations/how-to-use-livewebinar-api:
+  - https://api.archiebot.com
+  - https://api.archiebot.com/api/me
+possible_endpoints:
+- information_source; https://www.livewebinar.com/faq/integrations/how-to-use-livewebinar-api:
+  - DELETE https://api.archiebot.com/api/widgets/:widget_id
+  - GET https://api.archiebot.com/api/me
+  - GET https://app.livewebinar.com/auth/login
+  - GET https://app.livewebinar.com/auth/oauth2/authorize?client_id=33385&redirect_uri=https%3A%2F%2Fyourwebsite.com%2F&response_type=code&state=123abc
+  - POST https://api.archiebot.com/api/oauth/access_token
+  - POST https://api.archiebot.com/api/oauth/access_token/refresh
+  - PUT https://api.archiebot.com/api/users/:user_id
+  - PUT https://api.archiebot.com/api/widgets/:widget_id

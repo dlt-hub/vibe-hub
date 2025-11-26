@@ -1,0 +1,51 @@
+auth_info:
+- information_source; https://classic.yarnpkg.com/en/package/axios:
+  - Bearer token authentication via the Authorization header. Set the AUTH_TOKEN value
+    in the Authorization header (e.g., `instance.defaults.headers.common['Authorization']
+    = AUTH_TOKEN;`) for requests to be authenticated.
+  - HTTP Basic authentication is supported via the auth object with username and password
+    properties, which automatically sets the Authorization header. For Bearer tokens
+    and other auth schemes, use custom Authorization headers instead.
+  - axios supports setting a default Authorization header globally via `axios.defaults.headers.common['Authorization']`
+    with an AUTH_TOKEN value, which will be sent with all requests. Alternatively,
+    custom instance defaults can be configured per domain to avoid sending credentials
+    to unintended hosts.
+- information_source; https://classic.yarnpkg.com/en/package/@octokit/core:
+  - Authentication is optional for public REST API endpoints but required for GraphQL
+    queries. Pass a token via the `auth` option in the Octokit constructor (personal
+    access token, OAuth token, installation access token, or JWT for GitHub App).
+    The `Authorization` header is automatically set based on token type. Alternatively,
+    use a custom authentication strategy by setting `options.authStrategy`.
+  - Authentication is passed to the Octokit constructor via the `auth` option. For
+    REST API requests, provide a personal access token created at https://github.com/settings/tokens/new?scopes=repo.
+    For GraphQL requests, pass the token as the `auth` parameter. The default authentication
+    strategy is `@octokit/auth-token`. Tokens are sent as bearer credentials in request
+    headers by the underlying request library.
+pagination_info:
+- information_source; https://classic.yarnpkg.com/en/package/@octokit/plugin-paginate-rest:
+  - The `per_page` query parameter defaults to 30 and accepts up to 100 to retrieve
+    large datasets efficiently. An optional `mapFunction` can transform each page
+    response and accepts a `done` callback to terminate pagination early.
+  - Use per_page query parameter (optional, defaults to 30, max 100) to control page
+    size. Pagination is indicated by a Link header in responses from "List ..." endpoints;
+    use octokit.paginate() to automatically handle pagination across all pages.
+possible_base_urls:
+- information_source; https://classic.yarnpkg.com/en/package/axios:
+  - https://api.example.com
+- information_source; https://classic.yarnpkg.com/en/package/@octokit/core:
+  - https://github.acme-inc.com/api/v3
+possible_endpoints:
+- information_source; https://classic.yarnpkg.com/en/package/axios:
+  - GET /user/12345
+- information_source; https://classic.yarnpkg.com/en/package/@octokit/core:
+  - GET /app/installations
+  - GET /orgs/{org}/repos
+- information_source; https://classic.yarnpkg.com/en/package/@octokit/plugin-paginate-rest:
+  - GET /repos/{owner}/{repo}/issues
+  - GET /repos/{owner}/{repo}/stargazers
+- information_source; https://classic.yarnpkg.com/en/package/@octokit/auth-app:
+  - GET /app
+  - GET /app/installations
+  - GET /user
+  - POST /application/{client_id}/token
+  - POST /repos/{owner}/{repo}/issues

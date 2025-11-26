@@ -1,0 +1,55 @@
+auth_info:
+- information_source; https://api.tradevine.com/Help/Index:
+  - POST v1/User/AuthenticateUser accepts email and password in the request body to
+    authenticate a user and returns user details. GET v1/User requires authentication
+    to retrieve all users granted access to the organisation, though the specific
+    auth mechanism (header name, token format, or parameter name) is not detailed
+    in this excerpt.
+- information_source; https://api.tradevine.com/Help/api-overview/authentication-authorisation.html:
+  - OAuth 1.0 protocol is used for authentication. Access tokens must be provided
+    on every API call. For personal use, generate tokens once in Tradevine. The documentation
+    references a DevDefined.OAuth library for implementation details and a sample
+    application for usage examples.
+  - Tradevine API uses two authentication approaches depending on use case. For single-account
+    personal use, generate static tokens in Tradevine and include them in API calls.
+    For multi-user third-party applications, implement 3-legged OAuth by calling RequestToken
+    endpoint at https://api.tradevine.com/v1/RequestToken, redirecting user to https://nz.tradevine.com/API/v1/Authorise
+    for authorization, then exchanging credentials at AccessToken endpoint https://api.tradevine.com/v1/AccessToken
+    to obtain permanent access token and token secret for future requests. All calls
+    must use HTTPS with minimum TLS 1.2.
+pagination_info:
+- information_source; https://api.tradevine.com/Help/Index:
+  - Pagination for both PurchaseOrder and SalesOrder endpoints uses query parameters
+    pageNumber and pageSize to request specific pages. The response returns a paged
+    list of orders, though specific response fields indicating total count, has_more,
+    or next page information are not detailed in this documentation excerpt.
+  - Pagination is supported via query parameters pageNumber and pageSize in the GET
+    v1/ShippingTemplate endpoint. The documentation does not specify default values,
+    maximum limits, or response fields indicating pagination state such as total count
+    or whether more pages exist.
+  - Pagination uses pageNumber and pageSize query parameters. pageNumber specifies
+    which page to retrieve, and pageSize specifies how many results per page. Both
+    are optional parameters in the GET v1/PurchaseOrder endpoint.
+  - Pagination uses query parameters pageNumber and pageSize in the GET v1/ProductInventory/GetProductsByWarehouse
+    endpoint to retrieve paged lists of products by warehouse.
+  - The GET v1/Product endpoint uses query parameter pagination with pageNumber and
+    pageSize parameters. The response is a paged list of products. Exact details about
+    response fields indicating pagination state or how to determine when to stop paginating
+    are not provided in the documentation excerpt.
+possible_base_urls:
+- information_source; https://api.tradevine.com/Help/Index:
+  - v1/
+- information_source; https://api.tradevine.com/Help/api-overview/authentication-authorisation.html:
+  - https://api.tradevine.com/v1
+possible_endpoints:
+- information_source; https://api.tradevine.com/Help/Index:
+  - DELETE v2/ShippingTemplate/{shippingTemplateId}
+  - GET /v1/PurchaseOrder?pageNumber={pageNumber}&pageSize={pageSize}&status={status}&createdFrom={createdFrom}&createdTo={createdTo}&modifiedFrom={modifiedFrom}&modifiedTo={modifiedTo}&orderNumber={orderNumber}
+  - GET v1/PackList/{id}
+  - GET v1/Product
+  - GET v1/Product/{id}
+  - GET v1/Product?pageNumber={pageNumber}&pageSize={pageSize}&textExactMatch={textExactMatch}&code={code}&name={name}&alternateCode={alternateCode}&barcode={barcode}&isArchived={isArchived}&quantityInStockMin={quantityInStockMin}&quantityInStockMax={quantityInStockMax}&includeSupplierDetails={includeSupplierDetails}&label={label}&withoutLabel={withoutLabel}
+  - GET v1/ProductInventory/GetProductsByWarehouse?warehouseCode={warehouseCode}&pageNumber={pageNumber}&pageSize={pageSize}&productCode={productCode}
+  - GET v1/PurchaseOrder/{id}
+  - GET v1/PurchaseOrder?pageNumber={pageNumber}&pageSize={pageSize}&status={status}&createdFrom={createdFrom}&createdTo={createdTo}&modifiedFrom={modifiedFrom}&modifiedTo={modifiedTo}&orderNumber={orderNumber}
+  - GET v1/SalesOrder/{id}

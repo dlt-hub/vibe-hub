@@ -1,0 +1,29 @@
+auth_info:
+- information_source; https://api-docs.geozilla.com/:
+  - Bearer token authentication is required for device endpoints. Send the token in
+    the Authorization header as "Bearer {token}". The /api/device/event endpoint for
+    pushing location data requires the "device:push-event" scope permission.
+  - OAuth2 client credentials flow is used to obtain access tokens. Send a POST request
+    to /auth/token with grant_type set to "client_credentials", along with client_id,
+    client_secret, and scope parameters in the request body (application/x-www-form-urlencoded).
+    The response contains an access_token with token_type "Bearer" and expires_in
+    value in seconds. Use the returned access_token in the Authorization header as
+    "Bearer {access_token}" for subsequent API requests that require authentication,
+    such as device linking operations which require the "device:linking" scope.
+  - 'The API uses OAuth 2.0 with two grant types. For authorization code grant, exchange
+    an authorization code for an access token by sending a POST request to /auth/token
+    with form-encoded parameters: code, grant_type (value "authorization_code"), client_id,
+    client_secret, and redirect_uri. The response includes access_token, refresh_token,
+    token_type ("Bearer"), and expires_in. For client credentials grant, use grant_type
+    "client_credentials" for machine-to-machine requests. All authenticated API requests
+    use Bearer token authentication with JWT format in the Authorization header.'
+possible_base_urls:
+- information_source; https://api-docs.geozilla.com/:
+  - https://iot.geozilla.com
+possible_endpoints:
+- information_source; https://api-docs.geozilla.com/:
+  - GET https://iot.geozilla.com/api/device/{vendorId}/{deviceId}
+  - POST /api/device/event
+  - POST https://iot.geozilla.com/api/device/link
+  - POST https://iot.geozilla.com/api/device/unlink
+  - POST https://iot.geozilla.com/auth/token

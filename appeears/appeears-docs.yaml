@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://appeears.earthdatacloud.nasa.gov/api/:
+  - Authentication is required for downloading files from bundles using a bearer token
+    passed in the Authorization header. The token should be provided as the value
+    of the Authorization header in the GET request to the bundle download endpoint.
+    The product API endpoints do not require authentication.
+  - 'Authentication requires HTTP Basic Authentication with NASA Earthdata Login credentials
+    to obtain a Bearer token via the login service. The Bearer token is then sent
+    in the Authorization header for all subsequent secure API requests. The token
+    expires approximately 48 hours after acquisition, and programs should handle HTTP
+    403 Forbidden responses by acquiring a new token.
+
+
+    Key details: Use HTTP Basic Auth (username:password) to POST to the login endpoint
+    and receive a token in the response. For all subsequent requests to secure endpoints,
+    include the header Authorization: Bearer {token}. Monitor for HTTP 403 status
+    to detect token expiration and refresh as needed.'
+  - 'Authentication to the status API requires a Bearer token passed in the Authorization
+    header. Obtain the token from the login endpoint, then include it in all requests
+    as Authorization: Bearer {token}.'
+  - 'Authentication uses Bearer tokens passed in the Authorization header. Obtain
+    a token from the authentication endpoint, then include it in requests as Authorization:
+    Bearer {token}.'
+  - Authorization header with bearer token is required. Send the token in the Authorization
+    header as "Bearer your-token" where your-token is obtained from a prior authentication
+    request.
+pagination_info:
+- information_source; https://appeears.earthdatacloud.nasa.gov/api/:
+  - Pagination uses limit and offset query parameters. The limit parameter specifies
+    the number of results per page, and offset specifies the starting position. Both
+    are optional query parameters passed in the request URL.
+  - The API uses cursor-based pagination with query parameters `limit` (maximum results
+    per request, required) and `offset` (number of results to skip, required). Pagination
+    ends when the number of results returned is less than the specified `limit` value.
+  - Use page and limit query parameters for pagination. The page parameter specifies
+    the page number (starting at 0), and limit specifies results per page. Response
+    includes total field for total count and data array for results.
+possible_base_urls:
+- information_source; https://appeears.earthdatacloud.nasa.gov/api/:
+  - https://appeears.earthdatacloud.nasa.gov/api
+possible_endpoints:
+- information_source; https://appeears.earthdatacloud.nasa.gov/api/:
+  - DELETE https://appeears.earthdatacloud.nasa.gov/api/task/{task_id}
+  - GET /quality/{product_id}/{quality_layer}
+  - GET /quality/{product_id}/{quality_layer}/{quality_value}
+  - GET /status/{task_id}
+  - GET /task/{task_id}
+  - GET https://appeears.earthdatacloud.nasa.gov/api/bundle/{0}
+  - GET https://appeears.earthdatacloud.nasa.gov/api/bundle/{task_id}
+  - GET https://appeears.earthdatacloud.nasa.gov/api/bundle/{task_id}/{file_id}
+  - GET https://appeears.earthdatacloud.nasa.gov/api/product
+  - GET https://appeears.earthdatacloud.nasa.gov/api/product/{product_id}

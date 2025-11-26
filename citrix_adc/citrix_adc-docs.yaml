@@ -1,0 +1,45 @@
+auth_info:
+- information_source; https://developer-docs.netscaler.com/en-us/adc-nitro-api/13/performing-basic-netscaler-operations.html:
+  - Authentication uses a cookie-based token scheme. Include the NITRO_AUTH_TOKEN
+    value in the Cookie header with the format Cookie:NITRO_AUTH_TOKEN=<tokenvalue>
+    for all requests.
+  - Authentication uses a session token passed via cookie. Include the request header
+    Cookie:NITRO_AUTH_TOKEN=<tokenvalue> where tokenvalue is the authentication token
+    obtained from a prior login session.
+  - NITRO uses session-based authentication with Citrix ADC credentials. Establish
+    a session by POST to /nitro/v1/config/login with a JSON body containing username
+    and password fields in a login object; the response includes a session ID that
+    must be sent in the request header of all subsequent operations. Alternatively,
+    you can authenticate per-request by including X-NITRO-USER and X-NITRO-PASS headers
+    instead of maintaining a session. Session timeout defaults to 30 minutes (or user-configured
+    value if restricted timeout is enabled, minimum 15 minutes). Use HTTPS for secure
+    communication. Administrative permissions are determined by the user account's
+    assigned roles.
+  - The Citrix ADC API uses token-based authentication. After login, clients receive
+    a NITRO_AUTH_TOKEN that must be sent in the Cookie header as "Cookie:NITRO_AUTH_TOKEN=<tokenvalue>"
+    for subsequent authenticated requests. The token is obtained from the login endpoint
+    response and used to maintain the session until logout.
+  - The Citrix ADC NITRO API uses session-based authentication. Log in by calling
+    the login method with username and password to obtain a NITRO_AUTH_TOKEN, which
+    is returned in the Set-Cookie response header and must be included in subsequent
+    requests. The session timeout can be specified in seconds (example shows 3600
+    seconds for 60 minutes). For Python SDK, create a nitro_service object with the
+    appliance IP and protocol, then call login(username, password, timeout_seconds).
+    The token is managed automatically by the SDK for subsequent API calls.
+possible_base_urls:
+- information_source; https://developer-docs.netscaler.com/en-us/adc-nitro-api/13/performing-basic-netscaler-operations.html:
+  - http://10.102.29.30/nitro/v1/config/login
+  - http://10.102.29.60/nitro/v1/config
+possible_endpoints:
+- information_source; https://developer-docs.netscaler.com/en-us/adc-nitro-api/13/performing-basic-netscaler-operations.html:
+  - POST http://10.102.29.30/nitro/v1/config/login
+  - POST http://10.102.29.60/nitro/v1/config/login
+  - POST http://192.0.0.33/nitro/v1/config/loginnextfactorresponse
+  - POST http://<Citrix-ADC-IP-address(NSIP)>/nitro/v1/config/logout
+  - POST http://<Citrix-ADC-IP-address(NSIP)>/nitro/v1/config/nsconfig?action=save
+  - POST http://<Citrix-ADC-IP-address(NSIP)>/nitro/v1/config/nsfeature?action=enable
+  - POST http://<Citrix-ADC-IP-address(NSIP)>/nitro/v1/config/nsmode?action=enable
+  - POST http://<Citrix-ADC-IP-address(NSIP)>/nitro/v1/config/systemsession?action=kill
+- information_source; https://developer-docs.netscaler.com/en-us/nextgen-api/getting-started-guide.html:
+  - DELETE mgmt/api/nextgen/v1/groups/apps-admin-grp/roles/apps-admin-role
+  - GET /mgmt/api/nextgen/v1/<resource_type>

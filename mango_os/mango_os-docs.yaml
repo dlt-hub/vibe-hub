@@ -1,0 +1,26 @@
+auth_info:
+- information_source; https://docs-v3.mango-os.com/mango-rest-api-authentication:
+  - Mango v3 uses cookie-based session authentication with CSRF protection. Login
+    via POST to /rest/v2/login with JSON body containing username and password fields.
+    The server responds with Set-Cookie headers for MANGO8080 (session cookie, HttpOnly)
+    and XSRF-TOKEN (CSRF token). For subsequent requests, send the MANGO8080 cookie
+    in the Cookie header and include the XSRF-TOKEN value in both the Cookie header
+    (XSRF-TOKEN=value) and the X-XSRF-TOKEN request header (must match for CSRF validation).
+  - 'Session-based authentication uses cookies (MANGO8080 session cookie and XSRF-TOKEN)
+    passed in Cookie headers, with the XSRF token also sent in the X-XSRF-TOKEN header.
+    Alternatively, JWT token-based authentication is available by including the token
+    in the Authorization header with the Bearer scheme (Authorization: Bearer <token>),
+    which does not require session cookies or XSRF tokens.'
+  - 'The API uses Bearer token authentication. Include the JWT token in the Authorization
+    header as "Authorization: Bearer {token}" where the token is a JSON Web Token
+    (JWT) signed with ES512 algorithm containing claims like sub, exp, id, v, and
+    typ.'
+possible_base_urls:
+- information_source; https://docs-v3.mango-os.com/mango-rest-api-authentication:
+  - http://localhost:8080/rest/v1
+  - http://localhost:8080/rest/v2
+possible_endpoints:
+- information_source; https://docs-v3.mango-os.com/mango-rest-api-authentication:
+  - GET /rest/v1/users/current
+  - GET http://localhost:8080/rest/v1/users/current
+  - POST /rest/v2/login

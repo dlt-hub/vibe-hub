@@ -1,0 +1,68 @@
+auth_info:
+- information_source; https://api.buda.com/:
+  - 'Buda.com uses API-KEY and API-SECRET authentication for private routes. Generate
+    an API-KEY and API-SECRET from the account settings at https://www.buda.com/manejar_api_keys.
+    Never share your API-SECRET.
+
+
+    To authenticate, sign all private requests by creating a nonce (integer, must
+    be greater than the previous nonce; timestamp is recommended), then generate a
+    signature string with the format "{METHOD} {path} {base64_encoded_body} {nonce}"
+    where path includes query string but not host, base64_encoded_body is the request
+    body encoded in Base64 (empty for GET requests), and nonce is the integer. The
+    signature is computed from this string using your API-SECRET (the documentation
+    cuts off but indicates HMAC is used based on context). Send the API-KEY, nonce,
+    and signature in request headers when calling private routes.'
+  - HMAC authentication is required. Use the BudaHMACAuth class with api_key and secret
+    parameters passed to the auth argument in requests library calls. The authentication
+    mechanism is implemented as a custom auth handler that signs requests with HMAC.
+  - The API uses HMAC authentication. Credentials are passed via a BudaHMACAuth object
+    initialized with api_key and secret parameters, which is then supplied to the
+    auth argument in requests.post() calls. The HMAC auth scheme signs requests to
+    authenticate cryptocurrency withdrawal and address operations.
+  - 'The API uses HMAC-SHA384 authentication. Generate an HMAC signature by hashing
+    a string (containing the HTTP method, endpoint, nonce, and payload) with your
+    API-SECRET, encode it as hexadecimal, then include three headers in your request:
+    X-SBTC-APIKEY (your API key), X-SBTC-NONCE (a unique timestamp), and X-SBTC-SIGNATURE
+    (the generated HMAC signature).'
+  - The API uses OAuth for secure and standardized authorization. OAuth allows users
+    to securely authorize third-party applications to access their data without sharing
+    full credentials. For additional details, contact api.support@buda.com.
+pagination_info:
+- information_source; https://api.buda.com/:
+  - "Esta llamada usa paginaci\xF3n. Consulta la secci\xF3n de paginaci\xF3n en la\
+    \ documentaci\xF3n para detalles sobre c\xF3mo paginar resultados en el endpoint\
+    \ GET /markets/<market_id>/orders."
+  - 'Pagination uses optional URL parameters: timestamp (Unix time, optional) to specify
+    a starting point, and limit (optional) to control the number of trades returned
+    per request. The response includes a timestamp field indicating the data''s reference
+    time; use this value as the timestamp parameter in subsequent requests to fetch
+    earlier trades.'
+  - Pagination uses query parameters per (default 20, max 300) and page (default 1).
+    Responses include a meta object with total_pages, total_count, and current_page
+    fields. Iterate from page 1 to total_pages to retrieve all results, preferably
+    with per set to 300 for efficiency.
+  - Use the query parameter `page` to request specific pages. The response includes
+    a `pagination` object with fields `current_page`, `total_pages`, `per_page`, and
+    `total_count` to indicate pagination state and construct subsequent requests.
+- information_source; https://api.buda.com/en/:
+  - Pagination uses a page-based scheme with `page` parameter (starting at 1) and
+    `page_size` up to 300. The response includes a `meta` object with `total_pages`,
+    `total_count`, and `current_page` fields to track pagination state and determine
+    when to stop iterating.
+possible_base_urls:
+- information_source; https://api.buda.com/:
+  - https://api.buda.com
+  - https://www.buda.com/api/v2
+possible_endpoints:
+- information_source; https://api.buda.com/:
+  - DELETE /api/v2/orders
+  - GET /api/v2/tickers
+  - GET /balances
+  - GET /balances/<currency>
+  - GET /currencies/<cur
+  - GET /currencies/<currency>/deposits
+  - GET /currencies/<currency>/fees/<transaction_type>
+  - GET /currencies/<currency>/withdrawals
+  - GET /currencies/{currency}/banks
+  - GET /markets

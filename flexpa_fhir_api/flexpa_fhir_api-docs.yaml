@@ -1,0 +1,48 @@
+auth_info:
+- information_source; https://www.flexpa.com/docs/records:
+  - 'ACCESS_TOKEN must be passed as a Bearer token in the Authorization header. Send
+    requests to the Flexpa FHIR API with the header Authorization: Bearer flexpa-link-access-token,
+    where the token value is obtained from the Flexpa Link flow.'
+  - 'API calls to Flexpa''s FHIR endpoints require a bearer token passed in the Authorization
+    header. The access token is obtained through Flexpa Link and should be sent as
+    Authorization: Bearer flexpa-link-access-token in requests to https://api.flexpa.com/fhir
+    endpoints.'
+  - API keys must be base64 encoded and passed in the Authorization header for authentication.
+    The endpoint supports refresh token grant flow with grant_type=refresh_token.
+    Client credentials are required and invalid_client errors indicate incorrect API
+    keys. The refresh token parameter is passed in the request and invalid_grant errors
+    indicate an expired or incorrect refresh token.
+  - 'API requests require Bearer token authentication. Include the access token in
+    the Authorization header as `Authorization: Bearer $ACCESS_TOKEN`, where ACCESS_TOKEN
+    is a flexpa-link-access-token value.'
+  - 'Access to the Provider Directory requires an Application Access Token obtained
+    through the Token Endpoint. Authentication uses an Authorization: Bearer header
+    with the Application Access Token. Additionally, the _project parameter with static
+    value 01956cb0-e18e-747a-8dba-265e83e1ade2 must be included in requests to search
+    the provider directory.'
+pagination_info:
+- information_source; https://www.flexpa.com/docs/records:
+  - Pagination uses query parameters _count (page size) and _offset (starting position).
+    The response includes a link array with objects containing relation and url fields;
+    use the url from the object with relation "next" to fetch the next page, "previous"
+    for the prior page, or "first" for the initial page.
+  - The `_count` parameter limits the number of results per page. Use `_total` query
+    parameter with values none, accurate, or estimate to control total count behavior
+    in responses. Refer to the Pagination documentation for complete pagination details.
+possible_base_urls:
+- information_source; https://www.flexpa.com/docs/network:
+  - https://api.flexpa.com
+  - https://api.flexpa.com/endpoints
+possible_endpoints:
+- information_source; https://www.flexpa.com/docs/network:
+  - GET https://api.flexpa.com/endpoints
+  - GET https://api.flexpa.com/organizations
+- information_source; https://www.flexpa.com/docs/records:
+  - GET /fhir/Patient/$PATIENT_ID/$everything
+  - GET /fhir/[Resource]
+  - GET /fhir/[Resource]/:id
+  - GET /fhir/[Resource]?_total=[none|accurate|estimate]
+  - GET /fhir/metadata
+  - GET https://api.flexpa.com/fhir/Condition?_count=3
+  - GET https://api.flexpa.com/fhir/ExplanationOfBenefit
+  - GET https://api.flexpa.com/fhir/ExplanationOfBenefit?patient=$PATIENT_ID&_total=accurate

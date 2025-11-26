@@ -1,0 +1,51 @@
+auth_info:
+- information_source; https://docs.loopreturns.com/api-reference/authentication:
+  - Loop provides two authentication methods. For most endpoints, use API key authentication
+    by including your API key in the X-Authorization header. OAuth 2.0 is required
+    only for the Label API and Webhooks API. API keys are created in the Loop Admin
+    console.
+  - 'OAuth2 authorization code flow is required. Include the authorization header
+    with Bearer token format: "Authorization: Bearer ACCESS_TOKEN". Scopes follow
+    the pattern resource:action (e.g., labels:read, labels:write, label_requests:read,
+    label_requests:write, developer_tools). Verify redirect_uri matches exactly what
+    was registered, including trailing slashes. Double-check client_secret if receiving
+    401 errors from the token endpoint. Always validate the state parameter to prevent
+    CSRF attacks.'
+  - 'The API uses two authentication methods: API key authentication via the X-Authorization
+    header for most endpoints, and OAuth 2.0 for the Label API and Webhooks API. For
+    API keys, include the key in the X-Authorization header; invalid or missing keys
+    return a 401 Unauthorized response. For OAuth 2.0, use the authorization code
+    flow with the OAuth server at https://oauth.loopre... to obtain an access token.'
+  - This API uses OAuth 2.0 authorization code flow. To authenticate, initiate authorization
+    by redirecting users to the OAuth endpoint with client_id, redirect_uri, scope
+    (labels:read labels:write offline_access), state, organization, and audience parameters.
+    After user approval, exchange the returned authorization code for an access token
+    by posting to https://oauth.loopreturns.com/oauth/token with grant_type set to
+    authorization_code, along with code, redirect_uri, client_id, and client_secret
+    in the request body. The client_secret must be kept secure and only used server-side.
+- information_source; https://docs.loopreturns.com/api-reference/latest/return-actions/process-return:
+  - API requests require an X-Authorization header containing an API key. Pass the
+    api-key value in the X-Authorization header as a required string parameter for
+    all authenticated requests.
+pagination_info:
+- information_source; https://docs.loopreturns.com/api-reference/pagination:
+  - Pagination uses query parameters `paginate=true`, `pageSize` (integer, controls
+    results per page), and `cursor` (for cursor-based navigation). Responses include
+    `nextPageUrl` and `previousPageUrl` string fields containing complete URLs to
+    fetch subsequent or previous pages; iterate by following these URLs until they
+    are absent.
+possible_base_urls:
+- information_source; https://docs.loopreturns.com/api-reference/authentication:
+  - https://api.loopretu
+  - https://api.loopreturns.com
+possible_endpoints:
+- information_source; https://docs.loopreturns.com/api-reference/authentication:
+  - GET https://api.loopreturns.com/api/v1/auth/me
+  - POST https://oauth.loopreturns.com/oauth/token
+- information_source; https://docs.loopreturns.com/api-reference/latest/return-actions/process-return:
+  - POST https://api.loopreturns.com/api/v1/warehouse/return/{return_id}/process
+- information_source; https://docs.loopreturns.com/api-reference/pagination:
+  - GET https://api.loopreturns.com/api/{version}/warehouse/return/list
+- information_source; https://docs.loopreturns.com/integration-guides/return-actions:
+  - GET /return-actions/returns/{return_id}/notes
+  - POST /return-actions/returns/{return_id}/notes

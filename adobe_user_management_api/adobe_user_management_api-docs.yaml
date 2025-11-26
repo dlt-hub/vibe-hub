@@ -1,0 +1,66 @@
+auth_info:
+- information_source; https://adobe-apiplatform.github.io/umapi-documentation/en/RefOverview.html:
+  - Access tokens valid for 24 hours must be sent in the Authorization header for
+    all User Management API calls. Additionally, include your API key (received from
+    Adobe I/O Console) with the access token. Tokens can be obtained by creating a
+    JWT and exchanging it for an access token via the User Management Walkthrough
+    process.
+- information_source; https://adobe-apiplatform.github.io/umapi-documentation/en/api/ActionsRef.html:
+  - Supply the x-api-key header with your API key and the Authorization header with
+    a Bearer token containing your access token. Both headers are required for requests
+    to the Action API.
+  - 'The API requires two authentication headers: X-Api-Key header with the API key
+    from Adobe IO Console, and Authorization header with a Bearer token (OAuth token
+    generated from JWT exchange, typically starting with ''ey''). The orgId path parameter
+    is also required to identify the organization.'
+  - The API uses bearer token authentication. Send the access token in the Authorization
+    header as "Bearer <token>". A 401 Unauthorized response with WWW-Authenticate
+    header indicates invalid or expired token or invalid organization. A 403 Forbidden
+    response indicates missing API key or insufficient permissions. Service Account
+    Integration certificates can also expire, causing 400 errors.
+- information_source; https://adobe-apiplatform.github.io/umapi-documentation/en/api/getUser.html:
+  - 'The API requires two headers for authentication: Authorization header with a
+    Bearer token (format: Bearer ey...) and X-Api-Key header with your API key (88ce03094fe74f4d91c2538217d007fe
+    is an example format). Both headers must be included in every request to the usermanagement.adobe.io
+    endpoint.'
+pagination_info:
+- information_source; https://adobe-apiplatform.github.io/umapi-documentation/en/RefOverview.html:
+  - Pagination is used for retrieving users and groups. The Get all users endpoint
+    uses a page parameter in the URL path (users/{orgId}/{page}), and the Get all
+    user groups endpoint uses a similar structure (groups/{orgId}/{page}). Refer to
+    the linked documentation pages for details on page numbering, response fields
+    indicating next/previous pages, and stopping conditions.
+- information_source; https://adobe-apiplatform.github.io/umapi-documentation/en/api/getUsersWithPage.html:
+  - Pagination uses a page number in the path segment; retrieve page 0 for the first
+    page, page 4 for the fifth page, etc. Additional query parameters like domain
+    and directOnly can be combined with pagination but do not affect the pagination
+    mechanism itself.
+  - The endpoint uses path-based pagination with a page parameter in the URL path
+    GET /v2/usermanagement/users/{orgId}/{page}. Each call returns a maximum of 2000
+    entries per page, and you make multiple paginated calls to retrieve the full user
+    list. The domain query parameter can filter results by specified domain.
+  - 'Use page index in URL path: `/users/{orgId}/{pageIndex}` where pageIndex starts
+    at 0. Response includes `lastPage` boolean field; stop when `lastPage` is true.
+    Increment pageIndex by 1 to fetch subsequent pages.'
+  - Use the query parameter `page` (optional, integer) to request specific pages.
+    The response includes headers X-Total-Count, X-Page-Count, X-Current-Page, and
+    X-Page-Size for pagination state. Stop paginating when the response field `lastPage`
+    is true.
+possible_base_urls:
+- information_source; https://adobe-apiplatform.github.io/umapi-documentation/en/RefOverview.html:
+  - https://usermanagement.adobe.io/v2/usermanagement/
+- information_source; https://adobe-apiplatform.github.io/umapi-documentation/en/api/ActionsRef.html:
+  - https://usermanagement.adobe.io/v2/usermanagement/action/{myOrgID}
+possible_endpoints:
+- information_source; https://adobe-apiplatform.github.io/umapi-documentation/en/RefOverview.html:
+  - GET /getUser.html
+  - GET /getUsersByGroup.html
+  - GET /getUsersWithPage.html
+  - GET /groups/{orgId}/{page}
+  - GET /users/{orgId}/{page}/{groupName}
+  - GET https://usermanagement.adobe.io/v2/usermanagement/various endpoints
+  - POST /action
+  - POST /action/{orgId}
+  - POST https://usermanagement.adobe.io/v2/usermanagement/action/{orgId}
+- information_source; https://adobe-apiplatform.github.io/umapi-documentation/en/api/ActionsRef.html:
+  - POST https://usermanagement.adobe.io/v2/usermanagement/action/{myOrgID}

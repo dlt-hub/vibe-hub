@@ -1,0 +1,59 @@
+auth_info:
+- ? information_source; https://developer.aitrios.sony-semicon.com/en/docs/developer-edition/console-v2/console-rest-api-user-guide
+  : - Access tokens are obtained through a client credentials flow using client_id
+      and client_secret, with the portal_endpoint and expiry_time specified during
+      token acquisition. The access token is then passed in REST API requests via
+      the Authorization header as a Bearer token in the format 'Bearer {access_token}'.
+    - Authorization uses Bearer token authentication. The access token must be passed
+      in the Authorization header as 'Bearer {access_token}'. The console_endpoint,
+      access_token, and device_id are required parameters for making authenticated
+      REST API calls to retrieve and update device configurations.
+    - 'Bearer token authentication is required. Pass the access token in the Authorization
+      header as "Bearer {access_token}". The access_token parameter is formatted into
+      the header value directly (e.g., headers = {''Authorization'': ''Bearer eyJhbGc...''}).'
+    - Bearer token authentication is required. Pass the access token in the Authorization
+      header as "Bearer {access_token}". The access_token parameter must be obtained
+      separately and provided to the function.
+    - Bearer token authentication is required. Pass the access token in the Authorization
+      header as "Bearer {access_token}". The access_token parameter must be provided
+      and formatted in the Authorization header of HTTP requests.
+pagination_info:
+- ? information_source; https://developer.aitrios.sony-semicon.com/en/docs/developer-edition/console-v2/console-rest-api-user-guide
+  : - Pagination uses a limit query parameter (e.g., limit=1) in the request URL.
+      The response contains a deploys array with deployment records that can be filtered
+      by this limit parameter.
+- ? information_source; https://developer.aitrios.sony-semicon.com/docs/developer-edition/console-v2/console-rest-api-specification/
+  : - The response includes a continuation_token field that can be used for pagination.
+      Use the continuation_token value from one response as the continuation_token
+      parameter in the next request to retrieve additional pages of firmwares. Stop
+      paginating when no continuation_token is returned.
+- ? information_source; https://developer.aitrios.sony-semicon.com/docs/developer-edition/console-v2/console-rest-api-specification
+  : - Pagination uses a continuation_token field in the response. Include the continuation_token
+      value from the previous response as a query parameter in the next request to
+      retrieve the next set of results. When no continuation_token is returned, all
+      results have been retrieved.
+- ? information_source; https://developer.aitrios.sony-semicon.com/en/docs/developer-edition/console-v2/console-rest-api-specification/
+  : - Pagination uses a continuation_token field in the response. To get the next
+      page, pass the continuation_token value from the current response as a query
+      parameter in the next request. Stop paginating when no continuation_token is
+      returned.
+    - continuation_token is returned in the response. Use this token value as a query
+      parameter in subsequent requests to retrieve the next page of results. Stop
+      paginating when continuation_token is not present or null in the response.
+possible_base_urls:
+- ? information_source; https://developer.aitrios.sony-semicon.com/en/docs/developer-edition/console-v2/console-rest-api-user-guide
+  : - '{console_endpoint}'
+- ? information_source; https://developer.aitrios.sony-semicon.com/docs/developer-edition/console-v2/console-rest-api-user-guide
+  : - '{console_endpoint}/files'
+possible_endpoints:
+- ? information_source; https://developer.aitrios.sony-semicon.com/en/docs/developer-edition/console-v2/console-rest-api-user-guide
+  : - GET {console_endpoint}/devices/{device_id}
+    - GET {console_endpoint}/devices/{device_id}/deploys?limit=1
+    - GET {console_endpoint}/images/devices/directories?device_id={device_id}
+    - GET {console_endpoint}/images/devices/{device_id}/directories/{sub_directory_name}
+    - PATCH {console_endpoint}/devices/{device_id}/modules/{module_id}/property
+    - POST /deploy_configs
+    - POST /files
+    - POST /models
+    - POST /models/{model_id}
+    - POST {console_endpoint}/deploy_configs/{config_id}/apply

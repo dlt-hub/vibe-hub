@@ -1,0 +1,58 @@
+auth_info:
+- information_source; https://www.paessler.com/support/prtg/api/v2/overview/index.html:
+  - 'Most endpoints require authentication via one of three methods: credentials (username/password
+    sent to POST /session), API key (created in Account Settings | My Account), or
+    single sign-on if configured. After authentication, protected endpoints (marked
+    with lock symbols) become accessible.'
+  - PRTG API v2 uses bearer token authentication. Obtain a token by sending a POST
+    request to the /session endpoint with a JSON body containing username and password
+    fields. The returned token must be included in the Authorization header as "Bearer
+    <token>" for all subsequent API requests. Single sign-on (SSO) is available in
+    the Swagger UI but is not suitable for scripting or automation.
+  - The PRTG API v2 uses bearer token authentication. Obtain a bearer token by sending
+    a POST request to the `/session` endpoint with a JSON body containing username
+    and password fields. Include the token in the Authorization header with the format
+    "Bearer <token>" for subsequent API requests. API keys can also be created through
+    the PRTG UI or the API key endpoint and used as bearer tokens with the same Authorization
+    header format.
+- information_source; https://www.paessler.com/manuals/prtg/add_an_auto-discovery_group:
+  - 'PRTG REST API supports four authentication methods: None (default), Basic authentication
+    (username and password), Bearer authentication (OAuth2 bearer token), or Session-based
+    authentication (login path with optional basic auth header). For Basic auth, send
+    credentials via username and password fields. For Bearer auth, include the bearer
+    token in the Authorization header. For Session-based auth, configure a login endpoint
+    (GET or POST to a specified path), optionally with basic authentication header
+    using placeholders %restusername and %restpassword, and the resulting session
+    token is used for subsequent requests.'
+  - The API supports OAuth2 bearer token authorization, transmitted either via HTTP
+    header or cookie. For header-based auth, specify a custom header name (case-sensitive,
+    e.g., X-Authenticate); for cookie-based auth, specify a custom cookie name (case-sensitive).
+    Placeholders %restplaceholder1 through %restplaceholder4 can be used to inject
+    credential values into request URLs, POST bodies, and custom headers.
+pagination_info:
+- information_source; https://www.paessler.com/support/prtg/api/v2/overview/index.html:
+  - Pagination uses `limit` (max objects per request, default/omit returns up to 3,000)
+    and `offset` (zero-based starting position) query parameters. Response headers
+    include `Link` (RFC5988 format with rel="previous" and rel="next" URLs), `X-Result-Count`
+    (items in current response), and `X-Total-Count` (total available items). Construct
+    next request using the next URL from Link header or increment offset by limit
+    value.
+  - Pagination uses the `limit` query parameter to control page size, with response
+    headers `X-Result-Count` indicating returned items and `X-Total-Count` indicating
+    total available items. The `Link` HTTP header with rel values enables automatic
+    pagination following in clients like PowerShell's `-FollowRelLink` option.
+possible_base_urls:
+- information_source; https://www.paessler.com/support/prtg/api/v2/overview/index.html:
+  - https://prtg.example.com/api/v2
+possible_endpoints:
+- information_source; https://www.paessler.com/support/prtg/api/v2/overview/index.html:
+  - DELETE /experimental/devices/{id}
+  - DELETE /experimental/groups/{id}
+  - DELETE /experimental/probes/{id}
+  - DELETE /experimental/sensors/{id}
+  - GET /api/v2/devices
+  - GET /api/v2/devices/40
+  - GET /api/v2/devices/40?include=intervalgroup
+  - GET /api/v2/devices/40?include=intervalgroup,inheritance
+  - GET /channels
+  - GET /channels/data

@@ -1,0 +1,65 @@
+auth_info:
+- information_source; https://webtranslateit.com/docs/api:
+  - 'Authentication is performed using API tokens, with each project having two unique
+    tokens available in project settings: a read-write token for all API endpoints
+    and a read-only token restricted to GET requests on Project, File, and Statistics
+    APIs. Tokens are sent as authentication credentials to access the API over HTTPS
+    at https://webtranslateit.com/api/.'
+- information_source; https://webtranslateit.com/docs/api/string:
+  - API token authentication is required and must be included in the URL path as a
+    path segment replacing `api_token`. The token should be placed in the URL structure
+    like `https://webtranslateit.com/api/projects/{api_token}/strings.json` where
+    `{api_token}` is your actual API token value.
+  - Read-only and read-write Project API keys are required to access this endpoint.
+    The API key is passed as part of the URL path in the project_token parameter within
+    the endpoint `/api/projects/:project_token/strings.format`. The format can be
+    xml, json, or yaml.
+  - The API uses a read-write Project API key passed as a URL path segment in the
+    format /api/projects/:project_token/strings/:string_id. The API key (referred
+    to as project_token, api_token, or sekret in examples) is embedded directly in
+    the URL path rather than sent as a header or query parameter.
+  - The API uses an api_token passed as a URL path parameter in the format /api/projects/:api_token/strings.
+    The token serves as the authentication credential and must be included in the
+    request URL path.
+pagination_info:
+- information_source; https://webtranslateit.com/docs/api/string:
+  - Pagination uses a Link header with rel values (next, prev, first, last) containing
+    URLs for navigation. Request pagination via optional query parameter page (e.g.,
+    ?page=3). Follow the URL in the Link header with rel="next" to get the next page;
+    stop when rel="next" is absent.
+  - This resource is paginated with 250 strings per page by default. Use the optional
+    query parameter `?page` (1-based numbering) to request specific pages. Pagination
+    information is provided in the Link header following RFC 5988, which includes
+    rel="next" and rel="last" to navigate pages.
+- information_source; https://webtranslateit.com/en/docs/api/string:
+  - Pagination uses a Link header with page query parameter. Request pages via ?page=N
+    in the query string. Response Link header contains rel="next", rel="prev", rel="first",
+    and rel="last" values with URLs for navigating pages. Follow the URL in the appropriate
+    rel link to move between pages.
+  - This resource uses page-based pagination with 250 strings per page by default.
+    Use the `?page` query parameter (1-based, optional, defaults to page 1) to request
+    specific pages. Pagination information is provided in the Link header following
+    RFC 5988, which contains rel="next" and rel="last" links to navigate pages.
+- information_source; https://webtranslateit.com/docs/api/term_base:
+  - Pagination uses a `page` query parameter to specify the page number. The response
+    includes a `Link` header with rel="next", rel="prev", rel="first", and rel="last"
+    URLs for navigation. Each page returns 250 results.
+possible_base_urls:
+- information_source; https://webtranslateit.com/docs/api:
+  - https://webtranslateit.com/api/
+- information_source; https://webtranslateit.com/changelog/posts/405-filter-segments-with-or-logic-using-the-label-api:
+  - https://webtranslateit.com/api/projects/YOUR_API_KEY/strings.json
+possible_endpoints:
+- information_source; https://webtranslateit.com/changelog/posts/405-filter-segments-with-or-logic-using-the-label-api:
+  - GET /api/projects/:project_api_key/strings.json?filters[label]=|[bug-fix,new-feature]
+  - GET https://webtranslateit.com/api/projects/YOUR_API_KEY/strings.json
+- information_source; https://webtranslateit.com/docs/api/string:
+  - DELETE /api/projects/:project_token/strings/:string_id
+  - GET /api/projects/:project_token/strings.json
+  - GET /api/projects/:project_token/strings.xml
+  - GET /api/projects/:project_token/strings.yaml
+  - GET https://webtranslateit.com/api/projects/api_token/strings.json
+  - PATCH https://webtranslateit.com/api/projects/sekret/strings/1234
+  - POST /api/projects/:api_token/strings
+- information_source; https://webtranslateit.com/en/docs/api/string:
+  - DELETE /api/projects/:project_token/strings/:string_id

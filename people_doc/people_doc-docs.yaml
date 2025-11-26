@@ -1,0 +1,65 @@
+auth_info:
+- information_source; https://doc.people-doc.com/client/auth/oauth.html:
+  - OAuth2 authentication is required. Use HTTP Basic Authentication with your APPLICATION_ID
+    and APPLICATION_SECRET to POST to the token endpoint and obtain an OAuth token.
+    The CLIENT_ID is also needed as a prerequisite credential from the IPM team.
+  - OAuth2 token-based authentication with token renewal and revocation capabilities.
+    Tokens expire as indicated by the expires_in attribute in the response. To revoke
+    a token, POST to the /api/v2/client/revoke_token endpoint using HTTP Basic Auth
+    with APPLICATION_ID and APPLICATION_SECRET as credentials, and include the token
+    parameter in the request body as application/x-www-form-urlencoded data. When
+    tokens expire, request a new one using the OAuth token request flow.
+  - UKG HR Service Delivery uses OAuth 2.0 with client credentials grant type. To
+    authenticate, send a POST request with Basic Authentication using APPLICATION_ID
+    and APPLICATION_SECRET to the /api/v2/client/tokens endpoint with grant_type=client_credentials,
+    scope=client, and client_id parameters. The response contains an access_token
+    with token_type "bearer" and expires_in seconds; use this bearer token in the
+    Authorization header for all subsequent API calls.
+  - UKG HR Service Delivery uses bearer token authentication. Include the access_token
+    in the Authorization header as "Bearer $ACCESS_TOKEN" with all API requests. The
+    token has an expiration time specified in seconds via the expires_in field, and
+    you should implement a refresh mechanism to renew the token before it expires
+    to avoid breaking your API flow.
+- information_source; https://doc.people-doc.com/client/guides/datasets/index.html:
+  - Authorization uses OAuth 2.0 bearer tokens. Include the token in the Authorization
+    header as "Bearer $OAUTHTOKEN" where $OAUTHTOKEN is replaced with an actual OAuth
+    access token.
+pagination_info:
+- information_source; https://doc.people-doc.com/client/api/index-v2.html:
+  - Pagination uses cursor-based navigation via the cursor query parameter. Response
+    headers include Next-Cursor and Previous-Cursor values, and a Link header following
+    RFC 5988 with rel="previous" and rel="next" links containing the cursor values
+    for constructing subsequent requests.
+  - Pagination uses offset and limit query parameters. The offset parameter specifies
+    the starting position (default 0), and limit specifies the maximum number of results
+    per page (default 25, maximum 100). Responses include total field indicating total
+    available results, and has_more boolean indicating if additional pages exist.
+- information_source; https://doc.people-doc.com/client/api/peopledoc/sign.html:
+  - The API uses offset-based pagination with a page GET parameter (optional) that
+    returns 20 results per page. The documentation does not specify response fields
+    indicating total pages, next page, or when to stop paginating, so the exact stopping
+    condition is unclear from the provided text.
+  - The API uses offset-based pagination with next_page and prev_page fields in the
+    response containing full URLs to the next and previous pages. The page parameter
+    is passed as a query string parameter (e.g., page=2, page=3). Stop paginating
+    when next_page is null or absent.
+possible_base_urls:
+- information_source; https://doc.people-doc.com/client/auth/oauth.html:
+  - https://$ENV_URL/api/v2
+- information_source; https://doc.people-doc.com/client/guides/datasets/index.html:
+  - https://apis.REGION.people-doc.com/api/v2/client
+possible_endpoints:
+- information_source; https://doc.people-doc.com/client/auth/oauth.html:
+  - POST $BASE_URL/api/v2/client/tokens
+  - POST https://$ENV_URL/api/v2/client/revoke_token
+  - POST https://doc.people-doc.com/client-api/
+- information_source; https://doc.people-doc.com/client/guides/webhooks/index.html:
+  - POST /webhooks/{id}/tests
+- information_source; https://doc.people-doc.com/client/guides/datasets/index.html:
+  - GET https://apis.REGION.people-doc.com/api/v2/client/datasets/{id}/values/{code}
+  - PUT /datasets/{id}/values/france.paris
+  - PUT /datasets/{id}/values/{code}
+  - PUT https://apis.REGION.people-doc.com/api/v2/client/datasets/company_offices
+  - PUT https://apis.REGION.people-doc.com/api/v2/client/datasets/{id}/values/{code}
+- information_source; https://doc.people-doc.com/client/api/index-v2.html:
+  - GET $BASE_URL/api/v2/client/RESOURCES

@@ -1,0 +1,49 @@
+auth_info:
+- information_source; https://docs.authgear.com/customization/custom-ui/implement-authentication-flow-api-using-php:
+  - The API uses a multi-step authentication flow where credentials are submitted
+    via POST request body. The login request requires Content-Type and Accept headers
+    set to application/json. User email and password are sent in the batch_input array
+    with identification set to "email" and authentication set to "primary_password".
+    The response contains a state_token and finish_redirect_uri that must be used
+    to complete the authentication flow.
+- information_source; https://docs.authgear.com/how-to-guide/custom-ui/authentication-flow-api:
+  - The authentication flow uses a stateful token-based approach. Each request includes
+    a state_token in the request body to maintain session state across multiple authentication
+    steps. The state_token is obtained from the previous response and passed forward
+    in subsequent requests along with authentication data (such as identification
+    type, login_id, and authenticator credentials) in the input field.
+- information_source; https://docs.authgear.com/reference/apis:
+  - OAuth 2.0 and OpenID Connect (OIDC) is used for authentication. The UserInfo endpoint
+    at /oauth2/userinfo is a protected resource that requires a valid Access Token
+    presented by the client. Configuration endpoints at /.well-known/openid-configuration
+    and /.well-known/oauth-authorization-server provide authorization endpoint, token
+    endpoint, and JWKs endpoint URLs. The Admin API at /_api/admin/graphql requires
+    authentication (specific method not detailed in this excerpt).
+  - The resolver endpoint at `/_resolver/resolve` checks access tokens or cookies
+    in request headers and adds `x-authgear-` headers to the response. The exact authentication
+    mechanism and required header/parameter names are not specified in this excerpt;
+    refer to the linked specs at https://github.com/authgear/authgear-server/blob/master/docs/specs/api-resolver.md
+    for complete auth details.
+- information_source; https://docs.authgear.com/reference/apis/authentication-flow-api:
+  - State tokens are used to track and continue authentication flows. After each successful
+    API response, a state_token is returned in the result object and must be included
+    in the body of subsequent requests to the /api/v1/authentication_flows/states/input
+    endpoint to progress through the authentication flow. The state token is passed
+    as a JSON field named "state_token" in the request body along with the required
+    input data for each step.
+possible_base_urls:
+- information_source; https://docs.authgear.com/reference/apis/authentication-flow-api:
+  - https://project.authgear.cloud
+  - https://your-project.authgear.cloud
+possible_endpoints:
+- information_source; https://docs.authgear.com/reference/apis:
+  - GET /.well-known/oauth-authorization-server
+  - GET /.well-known/openid-configuration
+  - GET /_api/admin/users/export/{Task ID}
+  - GET /_api/admin/users/import/{ID}
+  - GET /oauth2/userinfo
+  - POST /_api/admin/graphql
+  - POST /_api/admin/users/export
+  - POST /_api/admin/users/import
+  - POST /_resolver/resolve
+  - POST /api/v1/authentication_flows

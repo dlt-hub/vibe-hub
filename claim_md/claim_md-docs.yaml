@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://api.claim.md:
+  - AccountKey is required in the request body as a string parameter for authentication.
+    This key must be obtained from Claim.MD and sent with each API request to authorize
+    access to claim appeal operations.
+  - Claim.MD API requires an AccountKey parameter sent in the request body (application/x-www-form-urlencoded
+    format) for authentication. The AccountKey serves as the API credential needed
+    to access the uploadlist endpoint and other services.
+  - Receive delayed claim status updates by periodically calling this service. Authentication
+    requires an AccountKey (Claim.MD API Key) sent as a required form parameter in
+    the request body along with a required ResponseID parameter.
+  - The API requires an AccountKey parameter sent in the request body as form-encoded
+    data. This AccountKey appears to be associated with an account and is necessary
+    for authenticating requests to endpoints like /services/appeal/ and /services/payerlist/.
+  - The API requires an AccountKey parameter sent in the request payload (application/x-www-form-urlencoded
+    format). This appears to be an API key or account identifier that must be included
+    with each request to authenticate.
+pagination_info:
+- information_source; https://api.claim.md:
+  - Pagination uses an optional Page parameter in the request body (string type, up
+    to 500 results per page). Response structure for navigation fields is not explicitly
+    documented in the provided excerpt.
+  - Use ResponseID from the response as the ResponseID parameter in the next request
+    to retrieve subsequent updates. The last_responseid attribute in the result indicates
+    the most recent response ID. Max 20,000 results per request.
+  - Use the Page parameter (request body, optional) to paginate results when more
+    than 100 ERA records exist. Store the last_eraid value from responses and pass
+    it in the ERAID parameter for subsequent requests to retrieve only new remittances.
+- information_source; https://api.claim.md/:
+  - Pagination uses an optional Page parameter in the request body to retrieve up
+    to 500 results per page. The documentation does not specify response fields indicating
+    total pages, next page, or when to stop paginating.
+  - The ERA List service uses offset-based pagination with a Page parameter in the
+    request body to retrieve results when more than 1000 records exist. Additionally,
+    store the "last_eraid" value from responses and pass it as the ERAID parameter
+    to fetch only new remittances since the last query.
+possible_base_urls:
+- information_source; https://api.claim.md:
+  - https://svc.claim.md
+  - https://www.claim.md
+possible_endpoints:
+- information_source; https://api.claim.md:
+  - POST /services/appeal/
+  - POST /services/archive/
+  - POST /services/elig/
+  - POST /services/eligdata/
+  - POST /services/enroll/
+  - POST /services/era835/
+  - POST /services/eradata/
+  - POST /services/eralist/
+  - POST /services/erapdf/
+  - POST /services/modify/

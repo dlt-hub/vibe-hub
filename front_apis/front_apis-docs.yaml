@@ -1,0 +1,40 @@
+auth_info:
+- information_source; https://dev.frontapp.com/docs/authentication:
+  - 'The Core API uses Bearer token authentication sent in the Authorization header.
+    Tokens can be obtained either through API tokens generated in settings or via
+    OAuth implementation. For each request, include the Authorization header with
+    the format "Authorization: Bearer [TOKEN]".'
+- information_source; https://dev.frontapp.com/docs/creating-a-partner-channel:
+  - Front uses bearer token authentication in the OAuth flow for channel identification.
+    During authorization, Front POSTs to your webhook URL with a bearer token in the
+    request header. Your system must verify the token, store the channel_id from the
+    payload, associate it with the token owner, and respond within 7 seconds with
+    a 200 status containing type "success" and a webhook_url for receiving future
+    messages from Front.
+  - Requests to Front must be authenticated using a bearer token in the Authorization
+    header. The bearer token is generated using your application secret key, application
+    UID, and the channel ID.
+  - 'Requests to the Sync inbound message and Sync outbound message endpoints require
+    authentication using a bearer token in the Authorization header. Generate an API
+    token through the steps described in the documentation section above, then include
+    it as Authorization: Bearer YOUR_API_TOKEN in request headers.'
+  - Webhook requests from Front include signature validation using HMAC SHA256. Extract
+    the X-Front-Signature and X-Front-Request-Timestamp headers from incoming requests.
+    Concatenate the timestamp and JSON request body (delimited by a colon; use the
+    string "undefined" for GET/DELETE requests) and compute an HMAC SHA256 hash using
+    your App Channel Secret Key. Verify the computed hash matches the X-Front-Signature
+    header value. Also check that X-Front-Request-Timestamp is recent (recommend rejecting
+    if older than 5 minutes) to prevent replay attacks.
+possible_base_urls:
+- information_source; https://dev.frontapp.com/docs/authentication:
+  - https://api2.frontapp.com
+- information_source; https://dev.frontapp.com/docs/creating-a-partner-channel:
+  - https://api2.frontapp.com
+possible_endpoints:
+- information_source; https://dev.frontapp.com/docs/authentication:
+  - GET https://api2.frontapp.com/conversations/cnv_123/drafts
+- information_source; https://dev.frontapp.com/docs/creating-a-partner-channel:
+  - GET https://api2.frontapp.com/messages/alt:uid:{uid}
+  - POST /channels/incoming_messages/sync
+  - POST /channels/outgoing_messages/sync
+  - POST Webhook URL

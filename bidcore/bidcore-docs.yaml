@@ -1,0 +1,65 @@
+auth_info:
+- information_source; https://docs.bidcore.iponweb.com/api/workflow.html:
+  - OAuth2 password grant flow authentication. POST to https://uauth.iponweb.com/oauth2/token/
+    with Content-Type application/x-www-form-urlencoded and payload containing grant_type="password",
+    username (BidCore login), password (BidCore password), and scope="service_id=my.bidcore.iponweb.com".
+    Response includes access_token and token_type="Bearer". Use the access_token as
+    a Bearer token in subsequent API requests.
+  - The API uses OAuth2 password grant flow for authentication. To obtain an access
+    token, make a POST request to https://uauth.iponweb.com/oauth2/token/ with grant_type=password,
+    username, password, and scope parameters in the request body. The returned access
+    token must then be passed in request headers for subsequent API requests. Permanent
+    tokens can also be generated and used directly in request headers.
+  - To authenticate with the Workflow API, obtain a permanent OAuth2 access token
+    from the IPONWEB single sign-on portal at https://uauth.iponweb.com/uauth/settings/#sso
+    by selecting OAuth2 Access Token and creating a new permanent token with the scope
+    my.bidcore.iponweb.com. Send the token in API requests as a Bearer token in the
+    Authorization header.
+- information_source; https://docs.bidcore.iponweb.com/public-features/shared/reporting-api.html:
+  - 'All POST requests to u-Slicer endpoints require three fields in the JSON request
+    body: slicer_name (customer-specific instance name), project_name (customer-specific
+    project name), and token (authorization token obtained from https://uauth.iponweb.com/uauth/settings/
+    using the uslicer.iponweb.com scope). The token is passed as a field in the request
+    payload, not as a header.'
+  - OAuth2 password grant flow is required. Make a POST request to https://uauth.iponweb.com/oauth2/token/
+    with grant_type=password, username (IPONWEB LDAP login), password (IPONWEB LDAP
+    password), and scope=service_id=uslicer.iponweb.com. Use the returned access_token
+    in subsequent API requests.
+pagination_info:
+- information_source; https://docs.bidcore.iponweb.com/_static/workflow-api-2.html:
+  - Pagination for the "Get list of Deals" endpoint uses query parameters page (page
+    number) and page_size (number of items per page), both optional integers. The
+    response structure for pagination fields is not documented in the provided excerpt.
+  - Pagination information is present. The response includes previous and next objects,
+    a count field indicating total results, and a results array containing the paginated
+    data. Use the next and previous objects to navigate between pages; stop when next
+    is null or empty.
+  - Pagination is available for the "Get list of Mime Types" endpoint using query
+    parameters page (page number) and page_size (page size), both optional integers.
+    The response structure for paginated results is not explicitly detailed in the
+    documentation.
+  - Pagination is supported via query parameters page (page number) and page_size
+    (page size), both integers, for the "Get list of IAB Creative Attributes" endpoint.
+    The response structure and stopping condition are not documented.
+  - Pagination uses optional query parameters limit and offset (or similar) to control
+    page size and position. Response includes previous and next fields (containing
+    URLs or null) to navigate between pages, along with count for total results and
+    results array containing the data items.
+possible_base_urls:
+- information_source; https://docs.bidcore.iponweb.com/api/workflow.html:
+  - https://docs.bidcore.iponweb.com
+  - https://uauth.iponweb.com
+possible_endpoints:
+- information_source; https://docs.bidcore.iponweb.com/api/workflow.html:
+  - POST https://uauth.iponweb.com/oauth2/token/
+- information_source; https://docs.bidcore.iponweb.com/public-features/shared/reporting-api.html:
+  - POST https://uauth.iponweb.com/oauth2/token/
+  - POST https://uslicer.iponweb.com/API/v2/audience
+  - POST https://uslicer.iponweb.com/API/v2/export
+  - POST https://uslicer.iponweb.com/API/v2/info
+  - POST https://uslicer.iponweb.com/API/v2/query
+  - POST https://uslicer.iponweb.com/API/v2/time_series
+- information_source; https://docs.bidcore.iponweb.com/_static/workflow-api-2.html:
+  - DELETE https://demo.bidcore.iponweb.com/api/advertisers/{id}/
+  - DELETE https://demo.bidcore.iponweb.com/api/bundle_lists/{id}/
+  - DELETE https://demo.bidcore.iponweb.com/api/campaigns/{id}/

@@ -1,0 +1,41 @@
+auth_info:
+- information_source; https://docs.getivy.de/reference/authentication:
+  - Ivy authenticates API requests using an API Key passed in the X-Ivy-Api-Key header.
+    All requests must be made over HTTPS, and requests without authentication will
+    fail with a 401 error if the key is incorrect or outdated. Separate API Keys are
+    required for Sandbox mode (base URL https://api.sand.getivy.de) and Production
+    mode (base URL https://api.getivy.de).
+  - 'Ivy uses API key authentication for standard requests and HMAC-SHA256 signature
+    verification for webhooks. API requests require the X-IVY-API-KEY header with
+    your generated API key. Webhook requests from Ivy include an X-Ivy-Signature header
+    that must be validated using HMAC-SHA256 with your Webhook Signing Secret obtained
+    from the Ivy Dashboard.
+
+
+    For API requests: Include header X-IVY-API-KEY with your api-key value.
+
+
+    For webhook validation: Extract the X-Ivy-Signature header from incoming requests,
+    obtain your Webhook Signing Secret from the Ivy Dashboard, calculate HMAC-SHA256
+    using the request body and Webhook Signing Secret, then compare the calculated
+    signature against the X-Ivy-Signature header value to verify the request originates
+    from Ivy.'
+pagination_info:
+- information_source; https://docs.getivy.de/docs/accounts/transaction-list:
+  - Cursor-based pagination using startAfter parameter. Request body includes required
+    from and to timestamps (UTC), and optional startAfter string for cursor positioning.
+    Response provides nextCursor value and hasNext boolean; continue calling endpoint
+    with nextCursor as startAfter until hasNext is false.
+  - Use the optional query parameter cursor to paginate through transaction results.
+    The response includes paging.hasMore boolean to indicate if more data exists and
+    paging.nextCursor string value to use as the cursor parameter in the next request.
+    Stop paginating when paging.hasMore is false.
+possible_base_urls:
+- information_source; https://docs.getivy.de/reference/authentication:
+  - https://api.getivy.d
+  - https://api.sand.get
+possible_endpoints:
+- information_source; https://docs.getivy.de/docs/accounts/transaction-list:
+  - POST /api/service/transaction/list
+- information_source; https://docs.getivy.de/reference/authentication:
+  - GET https://api.sand.getivy.de/api/service/ping

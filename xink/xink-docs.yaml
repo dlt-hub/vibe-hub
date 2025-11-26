@@ -1,0 +1,51 @@
+auth_info:
+- information_source; https://support.xink.io/support/solutions/articles/1000224599-xink-api-reference:
+  - There is no dedicated authorization scope for image access. It is enough to provide
+    a token generated for valid client account. The documentation does not specify
+    the exact mechanism for how this token should be transmitted (header name, parameter
+    name, or format), so a complete auth implementation cannot be determined from
+    this excerpt.
+  - 'Xink uses OAuth2 with the ClientCredentialsGrant flow. Clients must obtain an
+    access token from the authorization server at https://auth.xink.io/OAuth/Token
+    by sending a POST request with grant_type set to "client_credentials", along with
+    client_id, client_secret, and desired scopes. The returned access token must then
+    be included in all subsequent API requests.
+
+
+    To set up credentials, create an API user in the Xink admin portal under Preferences
+    -> Admins with appropriate permissions and password. Required token request parameters
+    are: grant_type (must be "client_credentials"), client_id, client_secret, and
+    scope (space-separated list of required scopes, such as "employeeread"). The authorization
+    server URI is https://auth.xink.io and the token endpoint is /OAuth/Token.'
+pagination_info:
+- information_source; https://support.xink.io/support/solutions/articles/1000224599-xink-api-reference:
+  - Pagination uses offset and limit path parameters, both optional with defaults
+    of offset=0 and limit=500. Response includes Limit and Offset fields; iterate
+    by incrementing offset by the limit value until fewer items than limit are returned.
+  - Pagination uses path parameters offset (default 0) and limit (default 500) to
+    control results. The response includes Limit, Offset, and Items array fields.
+    Use the returned Offset and Limit values to construct subsequent requests until
+    fewer items than the limit are returned.
+  - Request uses path parameters offset (default 0) and limit (default 500) to paginate
+    through employees. Response returns Offset, Limit, and Items array; construct
+    next request by incrementing offset by the limit value to retrieve subsequent
+    pages.
+  - Use offset and limit path parameters for pagination. offset (default 0) specifies
+    the starting position, and limit (default 500) specifies the number of items per
+    page. This applies to employee/list, image/list, and signature/list endpoints.
+possible_base_urls:
+- information_source; https://support.xink.io/support/solutions/articles/1000224599-xink-api-reference:
+  - api/1.0/signature/
+  - https://auth.xink.io
+possible_endpoints:
+- information_source; https://support.xink.io/support/solutions/articles/1000224599-xink-api-reference:
+  - DELETE api/1.0/employees/{email}/sharesSignatureWith/{emailSharedWith}
+  - DELETE api/1.0/signature/
+  - DELETE api/1.0/signature/{id}
+  - GET api/1.0/account/info
+  - GET api/1.0/employee/list/{offset:int=0}/{limit:int=500}
+  - GET api/1.0/employee/{email}/field
+  - GET api/1.0/employee/{email}/fields
+  - GET api/1.0/employee/{email}/signatures
+  - GET api/1.0/employees/{email}/shared
+  - GET api/1.0/image/list/{offset:int=0}/{limit:int=500}

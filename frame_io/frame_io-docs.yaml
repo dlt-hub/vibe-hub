@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://developer.frame.io/api/reference/:
+  - API token-based authentication is required. Tokens are passed in requests and
+    must have appropriate scopes (e.g., comments.read) for the requested resource.
+    Invalid or insufficiently scoped tokens return 401 or 403 errors respectively.
+    All API calls are rate limited regardless of token type (Developer Token or OAuth
+    App).
+  - Frame.io API uses Bearer token authentication. Create a Developer Token in the
+    Developer Portal and send it in the Authorization header as "Bearer <DEV_TOKEN>"
+    with all requests. Invalid or missing tokens return a 401 Unauthorized error.
+- information_source; https://developer.frame.io/docs:
+  - Bearer token authentication is required. Include the developer token in the Authorization
+    header as "Bearer <DEV_TOKEN>". The token is obtained by signing into the Developer
+    Portal at developer.frame.io with Frame.io credentials and creating a Developer
+    Token. For OAuth2.0 applications, a separate OAuth2.0 flow is available for distribution.
+- information_source; https://developer.frame.io/docs/device-integrations/implementing-c2c-authentication-and-authorization:
+  - 'Frame.io uses OAuth 2.0 device authorization grant flow for authentication. In
+    Step 2, make a POST request to https://api.frame.io/v2/auth/token with form parameters:
+    client_id (from Step 1), device_code (returned previously), and grant_type set
+    to urn:ietf:params:oauth:grant-type:device_code. Poll this endpoint until the
+    user completes authorization; expect authorization_pending errors during polling
+    and expired_token if the code expires before user entry.'
+  - Frame.io uses OAuth2 device flow authentication. Request a device code via POST
+    to `/v2/auth/device/code` with form data (not JSON) containing client_id, client_secret,
+    and scope parameters. For URL code pairing, include headers x-client-version and
+    x-client-platypus-enabled set to true. The scope parameter should include required
+    permissions like asset_create and offline.
+pagination_info:
+- information_source; https://developer.frame.io/docs/getting-started/key-concepts:
+  - Pagination for resource collections is supported but specific parameters and response
+    fields are not detailed in this section. Additional documentation would be needed
+    to determine exact pagination mechanisms such as query parameters (page, limit,
+    offset, cursor) and response fields (next, has_more, total_count).
+possible_base_urls:
+- information_source; https://developer.frame.io/api/reference/:
+  - https://api.frame.io/v2
+- information_source; https://developer.frame.io/docs:
+  - https://api.frame.io/v2
+possible_endpoints:
+- information_source; https://developer.frame.io/api/reference/:
+  - GET https://api.frame.io/v2/me
+  - GET v2/Search
+  - GET v2/assets/:id
+  - GET v2/assets/:id/children
+  - POST v2/CommentsPresentation
+  - POST v2/assets
+  - PUT v2/assets/:id
+- information_source; https://developer.frame.io/docs:
+  - GET https://api.frame.io/v2/me
+- information_source; https://developer.frame.io/docs/device-integrations/implementing-c2c-authentication-and-authorization:
+  - POST https://api.frame.io/v2/auth/device/code
+  - POST https://api.frame.io/v2/auth/token

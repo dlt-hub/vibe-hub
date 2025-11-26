@@ -1,0 +1,46 @@
+auth_info:
+- information_source; https://www.scaledrone.com/blog/go-chat-app-tutorial-build-a-real-time-chat/:
+  - 'The authentication approach uses JSON Web Tokens (JWTs) signed with a Scaledrone
+    channel secret. Users authenticate by sending a POST request to the /auth endpoint,
+    which generates a JWT token containing standard claims like expiration time (exp).
+    The token is then passed to Scaledrone to establish precise access levels. Two
+    constants must be configured: scaledroneID (the channel ID from the Scaledrone
+    dashboard) and scaledroneSecret (the channel secret from the Scaledrone dashboard),
+    both used to sign and validate the JWT.'
+- information_source; https://www.scaledrone.com/docs/api-clients/rest:
+  - Whether REST requests need authentication depends on your channel's authentication
+    settings. If authentication is required, use the Basic Authorization header with
+    the format "Basic [base64-encoded-credentials]" as shown in the example "Basic
+    QWxhZijpbjpA..". For details on implementation, refer to the Basic Authentication
+    documentation.
+- information_source; https://www.scaledrone.com/docs/authentication:
+  - 'Scaledrone provides two authentication methods: Basic Authentication for REST
+    API, and JSON Web Tokens (JWT) for JavaScript clients or REST API. Authentication
+    is optional and can be enabled from the dashboard to control publishing messages
+    and subscribing to rooms. Specific header names, parameter formats, and token
+    acquisition details are documented in the Basic Authentication and JWT Authentication
+    sections respectively.'
+- information_source; https://www.scaledrone.com/docs/basic-authentication:
+  - 'Basic Authentication requires setting an Authorization header for REST API calls
+    by base64-encoding the channel_id and secret_key in the format "channelId:secretKey".
+    The header format is "Authorization: Basic <base64_encoded_string>". This method
+    cannot be used for JavaScript clients.'
+- information_source; https://www.scaledrone.com/docs/jwt-authentication:
+  - Both Socket connections and REST API can be authenticated using JSON Web Tokens
+    (JWT) encoded with HMAC SHA-256 (HS256) using your channel's secret. The JWT payload
+    must include the "client" claim (client ID from JavaScript client), "channel"
+    claim (channel ID), and "permissions" claim, with token expiration handled via
+    the standard "exp" JWT claim.
+possible_base_urls:
+- information_source; https://www.scaledrone.com/docs/api-clients/rest:
+  - https://api2.scaledrone.com
+- information_source; https://www.scaledrone.com/docs/jwt-authentication:
+  - https://api2.scaledrone.com
+possible_endpoints:
+- information_source; https://www.scaledrone.com/blog/go-chat-app-tutorial-build-a-real-time-chat/:
+  - GET /
+  - POST http://localhost:8080/auth
+- information_source; https://www.scaledrone.com/docs/api-clients/rest:
+  - POST https://api2.scaledrone.com/[channel_id]/[room_name]/publish
+- information_source; https://www.scaledrone.com/docs/jwt-authentication:
+  - POST https://api2.scaledrone.com/[channel_id]/[room_name]/publish

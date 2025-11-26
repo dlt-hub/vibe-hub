@@ -1,0 +1,64 @@
+auth_info:
+- information_source; https://cloud.scorm.com/docs/v2/guides/youtube_video_import/:
+  - 'Basic authentication is required. Send an Authorization header with the value
+    "Basic " followed by a base64-encoded string of "username:password". The example
+    shows the format: Authorization: Basic RTRDWE5SQkZFMDpTZWNyZXRLZXlBYUJiQ2NEZEVlRmZHZ0hoSWlKaktrTGxNbU5uT28='
+- information_source; https://cloud.scorm.com/docs/v2/guides/permission_based_authorization/:
+  - OAuth2 Bearer token authentication. Retrieve a token via OAuth2 client credentials
+    flow, then pass it in the Authorization header as "Bearer {token}". Tokens are
+    scoped (e.g., read:ping) and expire after 300 seconds; requests with expired tokens
+    will fail immediately.
+  - OAuth2 application token authentication. Send a POST request to the GetAppToken
+    endpoint with Basic Authentication (base64-encoded credentials in the Authorization
+    header) and include desired scopes and expiration time in the request body. The
+    response provides an access_token that must be included in subsequent API requests
+    to access resources limited by the specified scopes.
+  - Permission-based authorization in SCORM Cloud uses OAuth tokens for scoped, time-limited
+    access. OAuth tokens are generated using an App ID and Secret Key pair, and can
+    be used as an alternative to direct App ID/Secret Key authentication for requests
+    that require fine-grained permissions and expiring credentials.
+- information_source; https://cloud.scorm.com/docs/v2/knowledge_base/authentication_types/:
+  - 'SCORM Cloud supports two authentication methods: traditional App ID / Secret
+    Key pairs for full API access, and OAuth tokens with scope-based restrictions.
+    App ID / Secret Key pairs grant unrestricted create, read, update, and delete
+    permissions. OAuth tokens limit access by scope (e.g., read, read:registration)
+    and include an expiry time; scopes can be refined to specific services or actions.
+    OAuth tokens are optional but provide enhanced security through credential limitation.
+    Token revocation is not available, so set appropriate scopes and expiry times
+    before generation.'
+pagination_info:
+- information_source; https://cloud.scorm.com/docs/v2/reference/api_overview/:
+  - List endpoints return paginated results with a `more` key in the response. Use
+    the `more` value as a parameter in the next request to fetch subsequent pages.
+    Continue until no `more` token is returned, indicating the end of results.
+- information_source; https://cloud.scorm.com/docs/api_reference/v1/dispatch/:
+  - Use query parameter page (required, starts at 1) to request pages. Continue paginating
+    by incrementing page until an empty list is returned in the response.
+  - Use the query parameter page (starting at 1) to request pages of dispatch destinations.
+    Continue paginating by incrementing page until an empty list is returned, indicating
+    no more data.
+- information_source; https://cloud.scorm.com/docs/v2/reference/api_overview:
+  - List results are paginated with a `more` key returned in each page. Use the `more`
+    value as a parameter in the next request to fetch subsequent pages. Continue until
+    no `more` key is returned, indicating the end of results.
+possible_base_urls:
+- information_source; https://cloud.scorm.com/docs/v2/guides/youtube_video_import/:
+  - https://cloud.scorm.com/api/v2
+- information_source; https://cloud.scorm.com/docs/v2/guides/permission_based_authorization/:
+  - https://cloud.scorm.com/api/v2
+possible_endpoints:
+- information_source; https://cloud.scorm.com/docs/v2/guides/youtube_video_import/:
+  - GET https://cloud.scorm.com/api/v2/courses/importJobs/E4CXNRBFE0YoutubeImport
+  - POST https://cloud.scorm.com/api/v2/courses/importJobs/noUpload?courseId=YoutubeImport
+- information_source; https://cloud.scorm.com/docs/v2/guides/permission_based_authorization/:
+  - GET https://cloud.scorm.com/api/v2/ping
+  - POST https://cloud.scorm.com/api/v2/oauth/authenticate/application/token
+- information_source; https://cloud.scorm.com/docs/v2/reference/api_overview/:
+  - GET https://cloud.scorm.com/api/v2/ping
+  - POST /appManagement/token
+  - POST /oauth/authenticate/application/token
+- information_source; https://cloud.scorm.com/docs/v2/tutorials/getting_started/api_request/:
+  - GET https://cloud.scorm.com/api/v2/ping
+- information_source; https://cloud.scorm.com/docs/api_reference/v1/communication/:
+  - GET https://cloud.scorm.com/api
+  - GET https://cloud.scorm.com/api?method=rustici.debug.getTime

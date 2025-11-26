@@ -1,0 +1,56 @@
+auth_info:
+- information_source; https://developers.aprimo.com/docs/rest-api/dam/dam-intro:
+  - 'The API requires Bearer token authentication sent in the Authorization header.
+    Include the header `Authorization: Bearer {token}` in all requests. Additionally,
+    the `API-VERSION: 1` header is required.'
+- information_source; https://developers.aprimo.com/docs/deprecations-2025:
+  - Authorization Code with PKCE flow is now the standard for OAuth authentication.
+    The deprecated `/api/oauth/exchange-auth-code` route required client-id in headers
+    and X-Access-Token for access; this has been replaced by exchanging authorization
+    codes for API tokens via the `/login/connect/token` endpoint using the Authorization
+    Code with PKCE flow. Supported OAuth Flow Types are Client Credential, Resource
+    Owner Password, and Authorization Code with PKCE; deprecated flows (<None> and
+    Authorization Code Obsolete) must be migrated.
+  - OAuth2 with Authorization Code flow (legacy) or Authorization Code with PKCE flow
+    (current). Legacy flow uses POST /api/oauth/create-token with headers client-id,
+    authorization-code, and Authorization Basic auth containing Base64 encoded Client
+    ID and Client Secret. PKCE flow uses POST /login/connect/token with form parameters
+    grant_type=authorization_code, client_id, client_secret, code, redirect_uri, and
+    code_verifier. Both flows require initial user redirect to authorization endpoint
+    with client_id and redirect_uri parameters.
+  - Pagehook authentication uses OAuth2 code exchange or direct access token delivery.
+    In the legacy flow, the Pagehook receives an auth code via POST parameter `auth-code`,
+    exchanges it at `POST /api/oauth/create-token` using the registered Client ID,
+    then uses the resulting API token for Aprimo API calls. In the current flow, the
+    Pagehook directly receives an access token via POST parameter `access-token` in
+    the request body (content type application/x-www-form-urlencoded) and uses it
+    immediately to authenticate Aprimo API calls, eliminating the need for client
+    registration or code exchange.
+  - The Aprimo API uses OAuth2 token-based authentication. Pagehooks receive an access
+    token via POST request with content type application/x-www-form-urlencoded in
+    the parameter access-token=XXX. This token can then be used to authenticate subsequent
+    API calls to Aprimo endpoints as the user who triggered the action. No integration
+    registration or client credentials are required in the updated flow.
+pagination_info:
+- information_source; https://developers.aprimo.com/docs/rest-api/pm/pm-intro:
+  - 'Pagination uses optional query parameters: limit (to set page size, example shows
+    limit=20) and optionalParameters for pagination settings. The documentation references
+    pagination settings as query parameters but does not specify response fields,
+    stopping conditions, cursor behavior, or other pagination mechanics.'
+possible_base_urls:
+- information_source; https://developers.aprimo.com/docs/rest-api/dam/dam-intro:
+  - https://{aprimoDomain}.aprimo.com/uploads
+  - https://{aprimoDomain}.dam.aprimo.com/api/core
+possible_endpoints:
+- information_source; https://developers.aprimo.com/docs/rest-api/dam/dam-intro:
+  - GET https://{aprimoDomain}.dam.aprimo.com/api/core/
+  - GET https://{aprimoDomain}.dam.aprimo.com/api/core/record/{recordID}
+  - POST https://{aprimoDomain}.aprimo.com/uploads
+- information_source; https://developers.aprimo.com/docs/deprecations-2025:
+  - GET /api/oauth/authorize
+  - GET /api/oauth/authorize-authorization-code-flow
+  - GET /api/oauth/exchange-auth-code
+  - POST /api/oauth/create-native-token
+  - POST /api/oauth/create-token
+  - POST /api/oauth/exchange-auth-code
+  - POST /login/connect/token

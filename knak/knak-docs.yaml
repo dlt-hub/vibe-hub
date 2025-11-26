@@ -1,0 +1,64 @@
+auth_info:
+- information_source; https://enterprise.knak.io/docs/api:
+  - 'All requests require a Bearer token in the Authorization header. Tokens are obtained
+    through two methods that are referenced but not detailed in this excerpt. Send
+    the token as Authorization: Bearer <token> in request headers.'
+  - OAuth2 authorization code flow is required. Client must redirect users to obtain
+    an authorization code via client_id, redirect_uri, and response_type parameters,
+    then exchange the code for access_token and refresh_token by posting to /oauth/token
+    endpoint with grant_type=authorization_code, client_id, client_secret, redirect_uri,
+    and code in the request body, and include Bearer token in Authorization header.
+  - 'The webhook includes three required header parameters for authentication and
+    verification: knak-signature (a signature string for request verification), Knak-Version
+    (version identifier, example "1.0"), and Knak-Event-Type (event type identifier,
+    example "asset.sync_confirmation_responded"). These headers should be validated
+    to authenticate incoming webhook requests.'
+  - Webhooks are signed using SHA-256 HMAC with a secret generated in Knak. The signature
+    is included in the knak-signature header of each webhook request. You need to
+    obtain the secret from the Webhooks page in the Enterprise UI (stored in environment
+    variable WEBHOOK_SECRET) and verify the signature by computing HMAC-SHA256 of
+    the request body with the secret, then comparing it to the knak-signature header
+    value to confirm the request came from Knak.
+- information_source; https://enterprise.knak.io/docs/custom-validator-api:
+  - The API uses a custom HTTP security header for authentication. During Integration
+    Configuration in Knak, you specify a custom header name and value (referred to
+    as <security-header-name> and <security-header-value>), which must be included
+    in every request to your validation endpoint.
+pagination_info:
+- information_source; https://enterprise.knak.io/docs/api:
+  - Our API supports limit and offset pagination. Use the query parameters limit (optional,
+    default and maximum values not specified) and offset (optional) to request specific
+    pages of data. The response includes a total field indicating the total number
+    of records available. Continue paginating by incrementing offset until you retrieve
+    all records.
+  - Pagination uses a page query parameter (default page=1) to navigate results. Response
+    includes page (current page), last_page (total pages), per_page (items per page,
+    default 10), total (total items), and links array with url and label fields for
+    navigation.
+  - Pagination uses a page query parameter (e.g., page=1). Response includes links
+    object with first, last, prev, and next URLs, plus meta object with current_page,
+    last_page, per_page, total count, and a links array containing navigation URLs.
+    Stop paginating when reaching last_page.
+  - Pagination uses a page query parameter (page=2 in the example). The response includes
+    per_page (10 items per page), total (3 total items), to (current page end position),
+    and a path field with the next page URL. Stop paginating when reaching the total
+    item count.
+  - Pagination uses a page query parameter (starting at page 1). Response includes
+    meta.current_page, meta.last_page, meta.per_page (default 10), meta.total, and
+    links array with next page URLs. Stop paginating when current_page equals last_page.
+possible_base_urls:
+- information_source; https://enterprise.knak.io/docs/api:
+  - https://enterprise.knak.io
+  - https://enterprise.knak.io/api/published
+possible_endpoints:
+- information_source; https://enterprise.knak.io/docs/api:
+  - DELETE /v1/assets/{asset_id}/project-management-link
+  - DELETE https://enterprise.knak.io/api/published/v1/asset-folders/{asset_folder_id}
+  - DELETE https://enterprise.knak.io/api/published/v1/merge-tags/{merge_tag_id}
+  - DELETE https://enterprise.knak.io/api/published/v1/users/{user_id}
+  - GET https://enterprise.knak.io/api/published/v1/
+  - GET https://enterprise.knak.io/api/published/v1/asset-custom-fieldsets
+  - GET https://enterprise.knak.io/api/published/v1/asset-custom-fieldsets/{asset_custom_fieldset_id}/asset-custom-fields
+  - GET https://enterprise.knak.io/api/published/v1/asset-folders
+  - GET https://enterprise.knak.io/api/published/v1/assets
+  - GET https://enterprise.knak.io/api/published/v1/assets/{asset_id}

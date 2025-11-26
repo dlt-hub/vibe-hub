@@ -1,0 +1,38 @@
+auth_info:
+- information_source; http://www.upwork.com/developer/explorer/:
+  - The GraphQL API requires the X-Upwork-API-TenantId header to specify an Organization
+    context. The Authorization header is automatically provided by the system and
+    will be removed from the Request Headers section. If no Organization is selected,
+    the context defaults to the currently logged-in user.
+- information_source; https://www.upwork.com/developer/documentation/graphql/api/docs/index.html:
+  - Client Credentials OAuth2 grant type is used to obtain access tokens. Send a POST
+    request to https://www.upwork.com/api/v3/oauth2/token with parameters grant_type
+    set to "client_credentials", client_id, and client_secret. The response includes
+    an access_token field with token_type "Bearer" and expires_in value of 86400 seconds.
+    Use the returned access_token as a Bearer token in subsequent API requests. Refresh
+    Token Grant Type can be used to exchange an expired access token for a new one
+    without user interaction.
+  - 'OAuth 2.0 authentication is required. Include Authorization header with bearer
+    token format (Authorization: bearer oauth2v2_...). Each request also requires
+    X-Upwork-API-TenantId header to specify organization context; obtain the organizationId
+    value via company selector GraphQL query. Client credentials (client_id and client_secret)
+    are provided for each client identifier.'
+  - 'OAuth2 authorization code flow is used. After user authorization, exchange the
+    authorization code for an access token by POST to https://www.upwork.com/api/v3/oauth2/token
+    with required parameters: grant_type set to "authorization_code", client_id, client_secret,
+    code (authorization code from redirect), and redirect_uri. The endpoint returns
+    an access token with TTL.'
+  - 'To refresh an access token using the Refresh Token Grant Type, send a POST request
+    to https://www.upwork.com/api/v3/oauth2/token with the following required parameters
+    in the request body: grant_type set to "refresh_token", client_id with your application''s
+    Client ID, client_secret with your application''s Client Secret, and refresh_token
+    with a valid refresh token. The response returns a new access_token and refresh_token
+    along with the access token''s TTL.'
+possible_base_urls:
+- information_source; https://www.upwork.com/developer/documentation/graphql/api/docs/index.html:
+  - https://api.upwork.com/graphql
+  - https://www.upwork.com/api/v3
+possible_endpoints:
+- information_source; https://www.upwork.com/developer/documentation/graphql/api/docs/index.html:
+  - POST https://api.upwork.com/graphql
+  - POST https://www.upwork.com/api/v3/oauth2/token

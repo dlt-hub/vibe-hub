@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://docs.appmixer.com/6.0/5.1/component-definition/authentication:
+  - 'Appmixer supports four authentication mechanisms: API Key, Password, OAuth 1,
+    and OAuth 2. When the definition property is specified as a function, it receives
+    a context object containing credentials specific to the auth mechanism. For OAuth
+    1, context includes consumerKey, username, password, and consumerSecret; for OAuth
+    2, it includes clientId and clientSecret. All mechanisms include callbackUrl in
+    the context. The requestProfileInfo property can be defined as a function, object,
+    or URL string to retrieve user profile information using the provided credentials.'
+  - 'Asana uses OAuth 2.0 with refresh token flow. Access tokens are obtained via
+    POST to https://app.asana.com/-/oauth_token with grant_type=refresh_token, refresh_token,
+    redirect_uri, client_id, and client_secret passed as query parameters. The access
+    token is then sent as a bearer token in the Authorization header (format: bearer
+    {{accessToken}}) for API requests. Token expiration is provided in the expires_in
+    field of the response.'
+  - Freshdesk API uses HTTP Basic Authentication. The API key (obtained from Profile
+    settings) is sent as the username with password 'X' in either the Authorization
+    header as 'Basic base64(apiKey:X)' or via the auth parameter with user set to
+    the API key and password set to 'X'. The domain name is also required and used
+    to construct the API endpoint URL as https://{domain}.freshdesk.com/api/v2/agents/me
+    for validation.
+  - OAuth 1.0a authentication is used. The flow requires an accessToken and accessTokenSecret,
+    which are passed to the getProtectedResourceAsync method for API requests. Token
+    validation is performed by making a GET request to the Trello API endpoint https://api.trello.com/1/tokens/
+    with the accessToken parameter, and returns a 401 status code if the token is
+    invalid or expired. The accessToken and accessTokenSecret must be stored in the
+    context object for use in subsequent API calls.
+  - 'OAuth2 authentication is used. For Dropbox: authorization URL is https://www.dropbox.com/oauth2/authorize,
+    token endpoint is https://api.dropbox.com/oauth2/token, and the access token is
+    sent as a Bearer token in the Authorization header (format: "Bearer {{accessToken}}").
+    For Microsoft: scopes are [''offline_access'', ''user.read''] with space delimiter,
+    authorization URL is https://login.microsoftonline.com/common/oauth2/v2.0/authorize,
+    token endpoint is https://login.microsoftonline.com/common/oauth2/v2.0/token,
+    refresh token endpoint is https://login.microsoftonline.com/common/oauth2/v2.0/token,
+    and Bearer token validation uses GET request to https://graph.microsoft.com/v1.0/me
+    with bearer auth.'
+possible_base_urls:
+- information_source; https://docs.appmixer.com/6.0/5.1/component-definition/authentication:
+  - https://${context.domain}.freshdesk.com/api/v2
+  - https://acme.com
+possible_endpoints:
+- information_source; https://docs.appmixer.com/6.0/5.1/component-definition/authentication:
+  - GET https://${context.domain}.freshdesk.com/api/v2/agents/me
+  - GET https://acme.com/get-some-records/app_id={{appId}}
+  - GET https://api.apify.com/v2/users/{{apiUserId}}?token={{apiToken}}
+  - GET https://api.trello.com/1/members/me
+  - GET https://api.trello.com/1/tokens/{accessToken}
+  - GET https://app.asana.com/api/1.0/users/me
+  - GET https://graph.microsoft.com/v1.0/me
+  - GET https://trello.com/1/OAuthAuthorizeToken
+  - GET https://trello.com/1/OAuthGetAccessToken
+  - GET https://trello.com/1/OAuthGetRequestToken

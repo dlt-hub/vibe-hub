@@ -1,0 +1,51 @@
+auth_info:
+- information_source; https://api-docs.sitecore.com/:
+  - An access token and client ID are both required and sent with every request. The
+    access token can be created through the Content Hub interface or by requesting
+    one using the API itself.
+  - Authentication uses environment automation client credentials to generate a JSON
+    Web Token (JWT), or alternatively OAuth 2.0 authorization code flow via a registered
+    OAuth app. Client credentials must be created by an Organization Admin or Organization
+    Owner in the Sitecore Cloud Portal under SitecoreAI Deploy > Credentials > Environment.
+  - 'Edge Platform Admin API uses bearer token authentication. Generate the token
+    in Sitecore Cloud Portal under your profile > API tokens, then include it in the
+    Authorization header of every request as a bearer token.
+
+
+    Audit API requires an access token and client ID, both sent with every request.
+    The access token can be created through the Content Hub interface or requested
+    via the API itself. The server URL must be set in the {{server}} variable.'
+  - 'OAuth 2.0 authorization code flow using client credentials grant type. To authenticate,
+    POST to https://auth.sitecorecloud.io/oauth/token with form-encoded parameters:
+    client_id (your automation client ID), client_secret (your automation client secret),
+    grant_type set to "client_credentials", and audience set to "https://api.sitecorecloud.io".
+    The response contains an access_token (JWT) in the "access_token" field with token_type
+    "Bearer" and expires_in 86400 seconds (24 hours). Use the JWT as a Bearer token
+    in the Authorization header for API requests. Required scopes for Agent API are
+    xmcloud.cm:admin, personalize.exp:mng, personalize.tmpl:r, and personalize.pos:mng,
+    which must be requested from Sitecore Support during OAuth app registration. Cache
+    the JWT and request a new one if you receive 401 Unauthorized responses.'
+  - OAuth 2.0 with JSON web tokens (JWTs) is used for authorization. Create a Client
+    ID and Client Secret in the Sitecore Cloud Portal under Admin > Brand Kit keys
+    > Create credential. POST to https://auth.sitecorecloud.io/oauth/token with your
+    Client ID and Client Secret to obtain a JWT access token. Include the JWT in the
+    Authorization header as "Bearer {YOUR_JWT}" for all API requests. The JWT expires
+    in 24 hours; cache it to avoid repeated token requests, and request a new JWT
+    if you receive a 401 Unauthorized response.
+possible_base_urls:
+- information_source; https://api-docs.sitecore.com/:
+  - https://api-docs.sitecore.com/cdp/order-rest-api
+  - https://api-docs.sitecore.com/ch/jobs-api
+possible_endpoints:
+- information_source; https://api-docs.sitecore.com/:
+  - GET {YOUR_BASE_URL}/...
+  - GET {YOUR_BASE_URL}/v2/...
+  - GET {baseURL}/v2.1/orders
+  - POST https://auth.sitecorecloud.io/oauth/token
+- information_source; https://api-docs.sitecore.com/cdp/order-rest-api.md:
+  - DELETE /v2.1/orderConsumers/{orderConsumerRef}
+  - DELETE /v2.1/orderContacts/{orderContactRef}
+  - DELETE /v2.1/orderItems/{orderItemRef}
+  - DELETE /v2.1/orderItems/{orderItemRef}/extensions/{dataExtensionName}
+  - DELETE /v2.1/orderItems/{orderItemRef}/extensions/{dataExtensionName}/fields
+  - DELETE /v2.1/orders/{orderRef}

@@ -1,0 +1,67 @@
+auth_info:
+- information_source; https://docs.1brd.com/:
+  - Bearer Token authentication is used for SCIM API requests. To obtain the token,
+    create an API key in the Employee Referrals application's Integrations tab. Alternatively,
+    acquire an OAuth token by sending a POST request to https://auth.1brd.com/oauth/token
+    with Base64-encoded ClientId and Client Secret in the Authorization header using
+    Basic auth scheme, then use the returned access_token value. Include the Bearer
+    Token in the Authorization header of subsequent SCIM API requests to https://customer.services.1brd.com/api/customers/{COMPANY
+    ID}/scim/v2/. The COMPANY ID is found in the Company ID Information section of
+    the account preferences, Integrations tab, under API Key Management. OAuth token
+    response includes access_token, expires_in (in seconds), and scope fields (read
+    write).
+  - Bearer token authentication is required for SCIM provisioning requests. Include
+    the token in the Authorization header as "Bearer {token}" when making requests
+    to the SCIM endpoint at https://customer.services.1brd.com/api/customers/{COMPANY
+    ID}/scim/v2/.
+  - Bearer token authentication. Obtain an access token using your API key and secret,
+    then include it in the Authorization header as "Bearer youraccesstoken" for all
+    subsequent requests to /v1/ endpoints.
+  - The Employee Referrals API uses OAuth2 Client Credentials flow. To authenticate,
+    a Company Administrator must generate an API key and API secret from account settings.
+    Send a POST request to https://auth.1brd.com/oauth/token with Content-Type application/x-www-form-urlencoded,
+    grant_type=client_credentials, scope=read%20write, and an Authorization header
+    containing Basic {base64(apikey:apisecret)}. The response includes an access_token
+    with token_type bearer. Use this access_token in subsequent API requests to authenticate.
+  - 'Webhook endpoints may optionally be secured using Basic Authentication or OAuth
+    2.0 client credentials flow. Webhooks are sent as POST requests with JSON arrays
+    to your configured URL, and you can restrict acceptance to specific IP addresses:
+    52.57.76.133 and 52.57.83.207.'
+pagination_info:
+- information_source; https://docs.1brd.com/:
+  - Paginated responses use offset-based pagination with query parameters offset and
+    limit to control the page position and size. The response includes an items array
+    containing the collection elements, and pagination metadata fields such as href,
+    offset, limit, and total to indicate the current page state and total count. Stop
+    paginating when the number of returned items is less than the requested limit
+    or when offset plus limit exceeds total.
+  - Pagination uses limit and offset query parameters. limit controls the number of
+    results per request, and offset specifies the starting position. Refer to Pagination
+    documentation for specific details on default values, maximum limits, and response
+    structure.
+  - Pagination uses offset and limit query parameters for requests. Responses include
+    total for the total count, offset and limit for the current pagination state,
+    and first, next, and last fields containing URLs to navigate between pages.
+  - Pagination uses offset and limit query parameters. The response includes an href
+    field with the full paginated URL, and a total field indicating total results.
+    Use offset to navigate through pages by incrementing it based on the limit value.
+  - Pagination uses offset and limit query parameters. offset specifies the starting
+    position (default 0) and limit specifies the number of items per page (default
+    25 based on example). Construct subsequent requests by incrementing offset by
+    the limit value until fewer items than limit are returned.
+possible_base_urls:
+- information_source; https://docs.1brd.com/:
+  - https://api.1brd.com
+  - https://api.1brd.com/v1
+possible_endpoints:
+- information_source; https://docs.1brd.com/:
+  - DELETE /v1/companies/{companyId}/applications/{jobApplicationId}
+  - DELETE /v1/companies/{companyId}/job_brandings/{jobBrandingId}
+  - DELETE /v1/companies/{companyId}/jobs/{jobId}
+  - DELETE /v1/companies/{companyId}/users/profile
+  - DELETE /v1/companies/{companyId}/users/{email}
+  - DELETE https://customer.services.1brd.com/api/customers/{COMPANY ID}/scim/v2/Users/{id}
+  - GET /v1/companies/00000000-0000-0000-0000-000000000000/jobs/0a3f98fa-ef4f-457f-abb9-0a052d6ced5a
+  - GET /v1/companies/{companyId}/applications
+  - GET /v1/companies/{companyId}/applications/{applicationId}
+  - GET /v1/companies/{companyId}/applications/{jobApplicationId}

@@ -1,0 +1,59 @@
+auth_info:
+- information_source; https://spreecommerce.org/docs/api-reference/tutorials/quick-checkout-with-stripe:
+  - 'Authorization: Bearer token required in the Authorization header for all API
+    requests. The token is passed as a Bearer token in the HTTP Authorization header.'
+  - Bearer token authentication is required. Send the token in the Authorization header
+    as "Bearer <Token>" for API requests to endpoints like confirming payment intents
+    and updating checkout.
+- information_source; https://spreecommerce.org/docs/api-reference/storefront/authentication:
+  - For guest checkouts, pass the cart token received during cart creation in the
+    X-Spree-Order-Token header. For signed-in users, use OAuth2 with password grant
+    type by POSTing to /spree_oauth/token with grant_type=password, username, and
+    password parameters to obtain an access token, then use that token as a bearer
+    token in subsequent requests.
+  - OAuth2 password grant flow with token refresh. Send POST request to /spree_oauth/token
+    with grant_type=password, username, and password in form-encoded body to obtain
+    access_token and refresh_token. Use the refresh_token with grant_type=refresh_token
+    to obtain a new access_token before expiry (expires_in seconds). Use returned
+    access_token as Bearer token in Authorization header for API requests.
+- information_source; https://spreecommerce.org/docs/api-reference/storefront:
+  - OAuth2 password grant flow with token refresh. Obtain access_token by POSTing
+    to /spree_oauth/token with grant_type=password, username, and password as form
+    data. Use the returned access_token as a Bearer token in subsequent requests.
+    Refresh expired tokens by POSTing grant_type=refresh_token and the refresh_token
+    to the same endpoint. Tokens expire after the seconds specified in expires_in.
+pagination_info:
+- information_source; https://spreecommerce.org/docs/api-reference/pagination:
+  - Pagination uses query parameters page and per_page. The page parameter specifies
+    the page number (default appears to be 1), and per_page specifies records per
+    page with a maximum of 500 records per request. The response includes a meta node
+    containing pagination metadata. Both parameters are optional.
+  - Pagination uses query parameters per_page and page. The response includes a meta
+    node with count, total_count, and total_pages, plus a links node containing self,
+    next, prev, first, and last URLs that fully construct the next request.
+- information_source; https://spreecommerce.org/docs/api-reference/platform/addresses/return-a-list-of-addresses:
+  - Pagination uses query parameters page and per_page to control which page and how
+    many items per page to retrieve. The response includes next, prev, first, and
+    last fields containing full URLs for navigating between pages.
+possible_base_urls:
+- information_source; https://spreecommerce.org/docs/api-reference/pagination:
+  - https://demo.spreecommerce.org/api/v2/storefront
+- information_source; https://spreecommerce.org/docs/api-reference/filtering-and-sorting:
+  - https://demo.spreecommerce.org/api/v2/storefront
+possible_endpoints:
+- information_source; https://spreecommerce.org/docs/api-reference/pagination:
+  - GET https://demo.spreecommerce.org/api/v2/storefront/products
+- information_source; https://spreecommerce.org/docs/api-reference/filtering-and-sorting:
+  - GET https://demo.spreecommerce.org/api/v2/storefront/products
+- information_source; https://spreecommerce.org/docs/api-reference/fetching-multiple-resources:
+  - GET https://demo.spreecommerce.org/api/v2/storefront/products/classic-varsity-top
+- information_source; https://spreecommerce.org/docs/api-reference/tutorials/quick-checkout-with-stripe:
+  - PATCH <SHOP URL>/api/v2/storefront/checkout
+  - PATCH <SHOP URL>/api/v2/storefront/checkout/select_shipping_method
+  - POST <SHOP URL>/api/v2/storefront/checkout/validate_order_for_payment?skip_state=true
+  - POST <SHOP URL>/api/v2/storefront/stripe/payment_intents/<PAYMENT INTENT ID>/confirm
+- information_source; https://spreecommerce.org/docs/api-reference/storefront/authentication:
+  - POST http://localhost:3000/spree_oauth/token
+  - POST https://demo.spreecommerce.org/api/v2/storefront/cart
+- information_source; https://spreecommerce.org/docs/api-reference/storefront:
+  - POST http://localhost:3000/spree_oauth/token

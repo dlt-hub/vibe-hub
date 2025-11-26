@@ -1,0 +1,49 @@
+auth_info:
+- information_source; https://symfonycasts.com/screencast/symfony-security:
+  - Moodle uses cookie-based session authentication. After submitting credentials
+    via POST to the login endpoint, the server sets a MoodleSession cookie (e.g.,
+    mdnp02a6oa53uqnrs9fr25bdu2) that must be included in subsequent requests. Additionally,
+    a MOODLEID1 cookie is set for persistent identification across sessions. Both
+    cookies should be sent in the Cookie request header for authenticated requests.
+- information_source; https://symfonycasts.com/screencast/api-platform-security/access-token-authenticator:
+  - 'API tokens are passed as HTTP headers. The authentication mechanism is configured
+    in OpenAPI/Swagger via an `api_keys` entry named `access_token` with `type: header`,
+    meaning the token should be sent in a request header. The token is validated server-side
+    through an `AccessTokenHandlerInterface` implementation that checks token validity
+    and retrieves the associated user.'
+  - Authentication uses a Bearer token passed via the Authorization header. Configure
+    the token name as "access_token" with type "header" and name "Authorization".
+    Send requests with the Authorization header formatted as "Bearer {token}" where
+    {token} is your API token string. Invalid tokens return a 401 response with an
+    invalid_token error header and error_description.
+- information_source; https://symfonycasts.com/screencast/api-platform-security/open-api-decoration:
+  - The API uses HTTP Bearer token authentication. The security scheme is configured
+    as type 'http' with scheme 'bearer', and credentials are sent in the Authorization
+    header with the format 'Bearer {access_token}'. The token is named 'access_token'
+    in the security configuration.
+- information_source; https://symfonycasts.com/screencast/api-platform-security/security:
+  - API token authentication with scope-based access control. Tokens have specific
+    scopes (e.g., `SCOPE_TREASURE_CREATE`) that map to roles (e.g., `ROLE_TREASURE_CREATE`).
+    Access is granted via `is_granted()` expression language checks if the user either
+    logged in via login form (receiving `ROLE_FULL_USER` and inherited roles via `role_hierarchy`
+    in `security.yaml`) or authenticated with an API token containing the required
+    scope. The system supports fine-grained role-based authorization including ownership
+    checks for edit operations.
+possible_base_urls:
+- information_source; https://symfonycasts.com/screencast/symfony-security:
+  - http://moodle.test
+possible_endpoints:
+- information_source; https://symfonycasts.com/screencast/symfony-security:
+  - GET http://moodle.test/login/index.php
+  - GET http://moodle.test/login/index.php?testsession=2
+  - GET http://moodle.test/qsishenzhen/parent
+  - POST http://moodle.test/login/index.php
+- information_source; https://symfonycasts.com/screencast/api-platform2:
+  - GET /api/cities
+  - GET /average_weather/city
+- information_source; https://symfonycasts.com/screencast/api-platform2-extending:
+  - GET /api/menu-items/
+  - POST /api/menu-items
+  - POST /api/menu-items/
+- information_source; https://symfonycasts.com/screencast/vue/ajax:
+  - GET /api/products

@@ -1,0 +1,51 @@
+auth_info:
+- information_source; https://docs.apostrophecms.org/reference/api/authentication.html:
+  - 'API key authentication is configured via an `apiKeys` object in the `@apostrophecms/express`
+    module options, where each key maps to a user role. API keys can be sent either
+    as an `Authorization: ApiKey <key>` HTTP header or as an `apikey` or `apiKey`
+    query parameter. Bearer tokens are obtained by making a POST request to `/api/v1/@apostrophecms/login/login`
+    with `username` and `password` in the request body, and are intended for browser
+    and headless application use tied to a single user account.'
+  - API key authentication is supported via either the Authorization header with format
+    "ApiKey your-api-key-here" or via the apikey query parameter. The endpoint /api/v1/@apostrophecms/login/whoami
+    is used to retrieve current user information after authentication.
+  - Authentication uses username and password credentials sent in the POST request
+    body to the login endpoint. The server returns a token in the response, which
+    must then be included in all subsequent API requests via the Authorization header
+    as "Bearer {token}". The Authorization header is required for POST, PUT, PATCH,
+    and DELETE operations, and recommended for GET operations to access loginRequired
+    documents.
+  - 'Session-based authentication using HTTP cookies. The API returns a session cookie
+    via the Set-Cookie header after login, which should be automatically included
+    in subsequent requests. To end a session, send a POST request to /api/v1/@apostrophecms/login/logout
+    with credentials: ''include'' to include the session cookie.'
+  - 'The API supports two authentication methods: bearer tokens and session cookies.
+    For bearer tokens, send a POST request to `/api/v1/@apostrophecms/login/login`
+    with username and password, then include the returned token in the `Authorization`
+    header as `Bearer <token>`. For session cookies, include `session: true` in the
+    login request body and use `credentials: ''include''` to automatically persist
+    the cookie across requests. To log out, send a POST request to `/api/v1/login/logout`
+    with the same authorization header.'
+pagination_info:
+- information_source; https://docs.apostrophecms.org/reference/api/pieces.html:
+  - Use query parameters page (for page number) and perPage (for results per page)
+    to paginate results from GET /api/v1/:piece-name. The documentation does not specify
+    response fields indicating pagination state or how to determine when to stop paginating.
+possible_base_urls:
+- information_source; https://docs.apostrophecms.org/reference/api/authentication.html:
+  - http://example.net/api/v1
+- information_source; https://docs.apostrophecms.org/reference/api/i18n.html:
+  - https://apostrophecms.com
+possible_endpoints:
+- information_source; https://docs.apostrophecms.org/reference/api/authentication.html:
+  - POST /api/v1/@apostrophecms/login/login
+  - POST /api/v1/@apostrophecms/login/logout
+  - POST /api/v1/@apostrophecms/login/whoami
+  - POST /api/v1/login/logout
+  - POST http://example.net/api/v1/@apostrophecms/login/login
+- information_source; https://docs.apostrophecms.org/reference/api/i18n.html:
+  - GET /api/v1/@apostrophecms/i18n/locales
+  - POST /api/v1/@apostrophecms
+  - POST /api/v1/@apostrophecms/i18n/exist-in-locale
+  - POST /api/v1/@apostrophecms/i18n/locale
+  - POST https://example.net/api/v1/@apostrophecms/i18n/exist-in-locale

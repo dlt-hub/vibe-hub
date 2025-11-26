@@ -1,0 +1,66 @@
+auth_info:
+- information_source; https://developers.kakao.com/docs/latest/en/business-auth/rest-api:
+  - 'Kakao Business API uses OAuth2 authorization code flow for authentication. To
+    obtain a business token, send a POST request to https://kauth.kakao.com/oauth/business/token
+    with Content-Type header set to application/x-www-form-urlencoded;charset=utf-8
+    and request body parameters: grant_type (fixed value "authorization_code"), client_id
+    (Service app REST API key), code (Business authorization code), and redirect_uri
+    (callback URI). The response returns token_type (fixed as "Bearer"), access_token
+    (the business token to use in subsequent requests), and scope (granted permissions).
+    Use the returned access_token in the Authorization header as "Bearer {access_token}"
+    for authenticated requests.'
+  - Make a GET request including the service app's REST API key as a parameter to
+    initiate the business consent screen. The Kakao API server redirects the authorization
+    result as a query string to your registered redirect_uri, containing either a
+    code and state (success) or error and error_description (failure) that must be
+    checked and handled accordingly.
+  - Make a POST request to revoke a business token by including the business access
+    token in the Authorization header with Bearer scheme. The header name is Authorization
+    and the format is "Bearer {BUSINESS_ACCESS_TOKEN}".
+  - 'The API requires Bearer token authentication. Include the business access token
+    in the Authorization header as "Authorization: Bearer ${BUSINESS_ACCESS_TOKEN}".'
+  - 'The API uses Bearer token authentication. Include the business access token in
+    the Authorization header as "Authorization: Bearer ${BUSINESS_ACCESS_TOKEN}".
+    The token should be passed as an environment variable or configuration value named
+    BUSINESS_ACCESS_TOKEN.'
+pagination_info:
+- information_source; https://developers.kakao.com/docs/latest/en/kakaologin/rest-api:
+  - Use limit query parameter (optional, integer) to specify number of users per page,
+    from_id (optional, long) for starting service user ID, and order (optional, string)
+    for search direction. Response includes URLs for previous and next pages when
+    results span multiple pages.
+- information_source; https://developers.kakao.com/docs/latest/en/kakaotalk-social/rest-api:
+  - Use offset and limit query parameters to paginate. offset specifies the starting
+    position (default 0), limit specifies results per page (default 3 in examples).
+    Response contains elements array; construct next request by incrementing offset
+    by limit value and repeating the request.
+- information_source; https://developers.kakao.com/docs/latest/en/talkcalendar/rest-api:
+  - Pagination uses offset and limit query parameters. offset specifies the starting
+    position (default 0) and limit specifies the number of results per page (example
+    shows limit=4). Continue paginating by incrementing offset by the limit value
+    until fewer results than the limit are returned.
+  - Use the limit query parameter (optional) to control page size. The response includes
+    an after_url field for retrieving the next page; stop paginating when after_url
+    is not present in the response.
+- information_source; https://developers.kakao.com/docs/latest/ko/talkcalendar/rest-api:
+  - Pagination uses a limit parameter in the request body to specify page size, and
+    responses include an after field containing a URL for fetching the next page.
+    Continue paginating by requesting the after URL until no after field is returned
+    in the response.
+possible_base_urls:
+- information_source; https://developers.kakao.com/docs/latest/en/business-auth/rest-api:
+  - https://kapi.kakao.com
+  - https://kapi.kakao.com/v1/business/tokeninfo
+possible_endpoints:
+- information_source; https://developers.kakao.com/docs/latest/en/business-auth/rest-api:
+  - GET https://kapi.kakao.com/v1/business/tokeninfo
+  - GET https://kapi.kakao.com/v1/business/userinfo
+  - GET https://kauth.kakao.com/oauth/authorize
+  - POST https://kapi.kakao.com/v1/business/revoke
+  - POST https://kapi.kakao.com/v1/business/token/revoke
+  - POST https://kauth.kakao.com/oauth/business/token
+- information_source; https://developers.kakao.com/docs/latest/en/kakaologin/rest-api:
+  - GET https://kapi.kakao.c
+  - GET https://kapi.kakao.com/v1/oidc/userinfo
+  - GET https://kapi.kakao.com/v1/user/access_token_info
+  - GET https://kapi.kakao.com/v1/user/shipping_address

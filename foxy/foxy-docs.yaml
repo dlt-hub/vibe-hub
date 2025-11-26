@@ -1,0 +1,51 @@
+auth_info:
+- information_source; https://api.foxy.io/docs:
+  - The Foxy API uses OAuth 2.0 for authentication. An OAuth client must be created
+    to connect to the API. Refer to the Authentication guide for details on working
+    with OAuth 2.0 authentication.
+- information_source; https://api.foxy.io/docs/authentication/thirdparty:
+  - 'Foxy API uses OAuth 2.0 authorization code flow for authentication. To obtain
+    an access token, send a POST request to https://api.foxycart.com/token with grant_type=authorization_code,
+    code, and redirect_uri parameters, using HTTP Basic authentication with your client
+    credentials (client_id:client_secret base64-encoded in the Authorization header).
+    The response includes access_token, expires_in (seconds), token_type (Bearer),
+    scope, and refresh_token. For API calls, include the access_token in the Authorization
+    header as "Bearer {access_token}" along with the FOXY-API-VERSION: 1 header.'
+  - OAuth2 authorization code flow with Foxy Authorization Server. Client sends user
+    to https://auth.foxy.io/authorize with response_type=code, client_id, scope, and
+    state parameters. User approves and is redirected to your redirect_uri with a
+    single-use authorization code (valid 30 seconds, one-time use) and state parameter
+    in GET parameters. Exchange the code for access tokens via a subsequent request
+    to obtain credentials for API access.
+  - 'OAuth2 authorization code flow with token exchange. After receiving an authorization
+    code from the Foxy Authorization server, POST to the fx:token endpoint with www-form-url-encoded
+    data containing grant_type=refresh_token, refresh_token, client_id, and client_secret
+    to obtain access and refresh tokens. Include FOXY-API-VERSION: 1 header. Error
+    responses include access_denied, invalid_client, invalid_request, and invalid_scope
+    with specific actions required for each.'
+- information_source; https://api.foxy.io/docs/cheat-sheet:
+  - As an authenticated OAuth Client, you can access reporting endpoints and encode
+    operations by providing OAuth credentials. The specific header names, parameter
+    formats, and token acquisition details are not described in this excerpt.
+pagination_info:
+- information_source; https://api.foxy.io/docs/cheat-sheet:
+  - 'The API uses limit-offset pagination controlled by URL parameters limit (default
+    20, maximum 300) and offset. Navigation is provided via Link header rels: first,
+    prev, next, and last to move between pages of results.'
+- information_source; https://api.foxy.io/docs/tutorials/foxyclient:
+  - Pagination uses limit and offset query parameters to control page size and position.
+    Response includes returned_items, total_items, offset, and limit fields, plus
+    _links object with next and prev href URLs for navigating pages.
+possible_base_urls:
+- information_source; https://api.foxy.io/docs:
+  - https://api.foxy.io
+- information_source; https://api.foxy.io/docs/authentication/thirdparty:
+  - https://api.foxy.io
+possible_endpoints:
+- information_source; https://api.foxy.io/docs/authentication/thirdparty:
+  - GET https://auth.foxy.io/authorize
+  - GET https://www.example.com/oauth
+  - POST https://api.foxycart.com/token
+- information_source; https://api.foxy.io/docs/cheat-sheet:
+  - POST /rels/encode
+  - POST /rels/reporting

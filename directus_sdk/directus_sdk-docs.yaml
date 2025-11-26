@@ -1,0 +1,65 @@
+auth_info:
+- information_source; https://directus.io/docs/api:
+  - Authentication is achieved via access tokens, cookies or sessions. Specific details
+    on header names, parameter names, and implementation methods are not provided
+    in this excerpt.
+- information_source; https://directus.io/docs/api/authentication:
+  - All data in the platform is private by default. Authenticate using POST /auth/login
+    with email and password in the request body to obtain an access_token. The access_token
+    is then passed to subsequent API requests to access private data. Optionally,
+    include otp for multi-factor authentication and mode to specify whether the refresh_token
+    is returned in the JSON response or as an httpOnly cookie.
+  - The API uses JWT tokens for password reset authentication. The password reset
+    endpoint requires a one-time use JWT token passed in the request body under the
+    field name "token" to verify the user's identity before allowing them to set a
+    new password.
+  - The API uses JWT-based authentication with refresh tokens. To refresh an access
+    token, send a POST request to `/auth/refresh` with a JSON body containing `refresh_token`
+    (the JWT to refresh) and optionally `mode` (either JSON response or httpOnly cookie).
+    The response includes a new `access_token`, `expires` timestamp, and optionally
+    a new `refresh_token` depending on the mode parameter.
+  - The API uses JWT-based authentication. Login via POST /auth/login with email and
+    password parameters, receiving an access_token (valid for expires seconds) and
+    refresh_token in the response. Include the access_token in subsequent requests,
+    typically in the Authorization header as a Bearer token. Use the refresh_token
+    to obtain a new access_token when the current one expires.
+pagination_info:
+- information_source; https://directus.io/docs/api/collections:
+  - offset is an optional query parameter (integer) that specifies how many items
+    to skip when fetching data. The meta query parameter (string) controls what metadata
+    to return in the response. No explicit response pagination fields, next page indicators,
+    or stopping conditions are documented.
+- information_source; https://directus.io/docs/api/files:
+  - Pagination uses limit (integer query parameter controlling number of objects returned)
+    and offset (integer query parameter for how many items to skip). Construct subsequent
+    requests by incrementing the offset value.
+- information_source; https://directus.io/docs/api/items:
+  - limit and offset parameters enable pagination. limit (integer) controls the number
+    of objects returned per request, and offset (integer) specifies how many items
+    to skip. Use offset values incrementally to fetch subsequent pages until the desired
+    number of items is retrieved.
+- information_source; https://directus.io/docs/api/users:
+  - 'Pagination uses query parameters: page (integer, cursor for pagination often
+    used with limit), limit (integer, number of objects returned), and offset (integer,
+    items to skip). The response includes a meta field for metadata. Construct subsequent
+    requests by incrementing the page parameter or adjusting offset values.'
+  - page is a query parameter used as a cursor for pagination, often used in combination
+    with limit to control which page of results to retrieve.
+possible_base_urls:
+- information_source; https://directus.io/blog/rest-api:
+  - http://api.example.com
+- information_source; https://directus.io/docs/api/items:
+  - https://directus.example.com
+possible_endpoints:
+- information_source; https://directus.io/blog/rest-api:
+  - DELETE /api/users/1
+  - GET /api/users
+  - POST /api/users
+  - POST http://api.example.com/users
+  - PUT /api/users/1
+- information_source; https://directus.io/docs/api/authentication:
+  - GET /auth/oauth
+  - GET /auth/oauth/{provider}
+  - POST /auth/login
+  - POST /auth/logout
+  - POST /auth/password/request

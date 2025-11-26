@@ -1,0 +1,89 @@
+auth_info:
+- ? information_source; https://docs.intelepeer.com/Atmosphere/Content/Atmosphere-SMS-Messaging/Using-the-SMS-API-from-the-Atmosphere-Portal.htm
+  : - To use the SMS/MMS API, you must first generate an authentication token by calling
+      the IntelePeer Authentication API with your CPaaS Portal credentials (username
+      and password). All subsequent API requests must include this Authorization token
+      in the request headers. The token is obtained from the API Authentication endpoint
+      and is required for access to send SMS/MMS, receive SMS/MMS webhooks, and check
+      message status.
+- information_source; https://docs.intelepeer.com/Atmosphere/Content/Atmosphere-APIs/Authentication.htm:
+  - Authentication uses username and password credentials sent as JSON in the request
+    body to a POST endpoint at https://api.intelepeer.com/_rest/v4/app/sms/authenticate/get_portal_auth_token,
+    which returns a token in the JSON response under the key 'token'. The request
+    requires Content-Type and Accept headers set to application/json.
+  - 'Authentication uses username and password credentials sent in a JSON request
+    body to a token endpoint. The API returns a token in the response that should
+    be extracted and used for subsequent requests.
+
+
+    Endpoint: POST https://api.intelepeer.com/_rest/v4/app/sms/authenticate/get_portal_auth_token
+
+
+    Request body fields: username, password
+
+
+    Response field: token (extract this value from the JSON response)
+
+
+    Content-Type header: application/json
+
+
+    Accept header: application/json'
+  - 'Authentication uses username and password credentials sent in the request body
+    to the /authenticate endpoint. A successful POST request returns a token in the
+    response body that is used for subsequent API calls.
+
+
+    Endpoint: POST https://customer.intelepeer.com/_rest/v4/authenticate
+
+
+    Request body (JSON): username and password fields with user credentials.
+
+
+    Response on success (HTTP 200): token field containing the authentication token.
+
+
+    Headers required: Content-Type: application/json and Accept: application/json.
+
+
+    HTTP 401 response indicates unauthorized access, typically due to incorrect credentials
+    or user lacking API access permissions in the Customer Portal.'
+  - The API uses basic username and password authentication. Send a POST request to
+    the authentication endpoint with a JSON body containing "username" and "password"
+    fields, and include Content-Type and Accept headers set to application/json. The
+    response will provide an authentication token for subsequent API calls.
+pagination_info:
+- ? information_source; https://docs.intelepeer.com/Atmosphere/Content/Atmosphere-SMS-Messaging/SMS-APIs/SMS-Message-Management.htm
+  : - To send an SMS with delivery receipts, use the POST endpoint with optional dlr
+      parameter set to true. The dlroptions object allows configuring additional DLR
+      behavior, including include-accepted to generate an intermediary DLR when the
+      message is enqueued into the SMS network.
+- ? information_source; https://docs.intelepeer.com/Atmosphere/Content/Atmosphere-APIs/Voice-APIs/Toll-Free-Number-Management.htm
+  : - The API uses offset-based pagination with page and pageSize query parameters.
+      The page parameter (optional, default 1) specifies which page to retrieve, while
+      pageSize (optional, default 100, range 1-250) controls results per page. The
+      response includes an endpoints array; pagination continues by incrementing the
+      page parameter until fewer than pageSize results are returned.
+    - 'pageSize is an optional query parameter (default: 100, max: 100, min: 1) controlling
+      results per page. When more records are available, the API returns pageSize
+      + 1 records to indicate a next page exists, though no explicit next page token
+      or continuation mechanism is documented.'
+possible_base_urls:
+- ? information_source; https://docs.intelepeer.com/Atmosphere/Content/Atmosphere-SMS-Messaging/Using-the-SMS-API-from-the-Atmosphere-Portal.htm
+  : - https://api.intelepeer.com/_rest/v4/app/sms/mdr
+    - https://api.intelepeer.com/_rest/v4/app/sms/send
+possible_endpoints:
+- ? information_source; https://docs.intelepeer.com/Atmosphere/Content/Atmosphere-SMS-Messaging/Using-the-SMS-API-from-the-Atmosphere-Portal.htm
+  : - GET https://api.intelepeer.com/_rest/v4/app/sms/mdr
+    - POST https://api.intelepeer.com/_rest/v4/app/sms/send
+    - POST https://api.intelepeer.com/_rest/v4/my/did/sms/webhook
+- information_source; https://docs.intelepeer.com/Atmosphere/Content/Atmosphere-APIs/Authentication.htm:
+  - GET https://api.intelepeer.com/_rest/v4/app/sms/authenticate/get_portal_auth_token
+  - POST https://api.intelepeer.com/_rest/v4/app/sms/authenticate/get_portal_auth_token
+  - POST https://customer.intelepeer.com/_rest/v4/authenticate
+- information_source; https://docs.intelepeer.com/Atmosphere/Content/Atmosphere-Insights/How-Tos/How-to-Design-Query.htm:
+  - POST https://api.intelepeer.com
+- information_source; https://docs.intelepeer.com/Atmosphere/Content/Atmosphere-Insights/Insights-APIs/Overview.htm:
+  - GET /{guid}/status
+  - GET https://api.intelepeer.com/_rest/v4/dwh/Q
+  - GET https://api.intelepeer.com/_rest/v4/dwh/Q/{guid}
