@@ -1,0 +1,61 @@
+auth_info:
+- information_source; https://prestodb.io/docs/0.280/develop/client-protocol.html:
+  - Presto/Trino uses HTTP header-based authentication and session management. The
+    client must include the X-Presto-User header to specify the session user, and
+    may include X-Presto-Source, X-Presto-Catalog, and X-Presto-Schema headers for
+    query context. These headers are sent with each request and may be updated based
+    on response headers in subsequent requests.
+  - The Presto client uses HTTP header-based authentication. The caller may set the
+    header X-Presto-User to specify the username for the session. Response headers
+    from the initial POST to /v1/statement should be treated like browser cookies
+    and echoed back as request headers in subsequent client requests to maintain session
+    state.
+- information_source; https://prestodb.io/docs/current/connector/iceberg.html:
+  - Nessie catalog authentication supports multiple schemes configured via `iceberg.nessie.auth.type`.
+    Credentials can be provided as username/password via `iceberg.nessie.auth.username`
+    and `iceberg.nessie.auth.password`, or as a token via `iceberg.nessie.auth.token`.
+    The Nessie API endpoint is specified with `iceberg.nessie.uri`.
+- information_source; https://prestodb.io/docs/current/develop/client-protocol.html:
+  - The Presto client protocol requires setting the `X-Presto-User` header to specify
+    the username for the session when making POST requests to `/v1/statement`. Response
+    headers should be echoed back as request headers in subsequent requests, similar
+    to browser cookies.
+pagination_info:
+- information_source; https://prestodb.io/docs/0.280/develop/client-protocol.html:
+  - Pagination uses a `nextUri` field in the JSON response. If `nextUri` is present,
+    execute a GET request to that URI to fetch the next batch of results. Continue
+    looping GET requests to successive `nextUri` values until the field is absent,
+    indicating query completion. A DELETE to `nextUri` terminates the query.
+  - Pagination uses a cursor-based approach via the `nextUri` field in the `QueryResults`
+    response object. The client should execute GET requests to the `nextUri` URL returned
+    in each response and continue looping until `nextUri` is absent, indicating no
+    more results.
+  - Use POST to /v1/statement with query in body to start; response includes nextUri
+    field for fetching subsequent result batches via GET requests to that URI.
+- information_source; https://prestodb.io/docs/current/develop/client-protocol.html:
+  - A GET request to the `nextUri` attribute in the QueryResults response returns
+    the next batch of query results. A DELETE request to `nextUri` terminates the
+    running query. Continue paginating until `nextUri` is absent from the response.
+  - Pagination uses a cursor-based approach with the `nextUri` field. After a POST
+    to `/v1/statement`, if the response contains a `nextUri` link, the client should
+    execute a GET request to that URI and repeat until `nextUri` is absent from the
+    response, indicating query completion.
+possible_base_urls:
+- information_source; https://prestodb.io/docs/0.280/develop/client-protocol.html:
+  - https://prestodb.io/docs/0.280/develop/client-protocol.html
+- information_source; https://prestodb.io/docs/current/connector/iceberg.html:
+  - http://0.0.0.0:19120
+possible_endpoints:
+- information_source; https://prestodb.io/docs/0.280/develop/client-protocol.html:
+  - DELETE nextUri
+  - GET /v1/statement
+  - GET nextUri
+  - POST /v1/statement
+- information_source; https://prestodb.io/docs/current/connector/iceberg.html:
+  - GET /api/v1/config
+  - GET http://0.0.0.0:19120/api/v1/config
+  - GET http://localhost:19120/api/v1
+  - POST http://localhost:4317/
+- information_source; https://prestodb.io/docs/current/develop/client-protocol.html:
+  - DELETE (nextUri)
+  - DELETE nextUri

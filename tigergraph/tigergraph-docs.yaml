@@ -1,0 +1,75 @@
+auth_info:
+- information_source; https://docs.tigergraph.com/gsql-ref/4.2/querying/query-optimizer/stats-api:
+  - Basic authentication using username and password credentials. The curl example
+    shows `--user tigergraph:tigergraph` which sends credentials as HTTP Basic Auth
+    in the Authorization header.
+- information_source; https://docs.tigergraph.com/savanna/main/rest-api/authentication:
+  - 'TigerGraph Savanna REST APIs require authentication using API keys. Include the
+    API key in the request header as `x-api-key: <your-api-key>`.'
+- information_source; https://docs.tigergraph.com/tigergraph-server/4.2/API/:
+  - For requests sent to the GSQL server, TigerGraph user credentials must be provided.
+    The documentation indicates that credentials are required but does not specify
+    the exact authentication mechanism, header names, parameter names, or how credentials
+    should be formatted in the request.
+  - 'User credentials can be provided via four methods: curl `-u <user:password>`
+    option, JWT token in `Authorization: Bearer <JWT-token>` header (graph-specific
+    access), Basic auth in `Authorization: Basic <encoded-username-password>` header,
+    or GSQL secret in `Authorization: GSQL-Secret <gsql-secret>` header. If authentication
+    is enabled on the RESTPP server, a request token must be included in the request
+    header.'
+- information_source; https://docs.tigergraph.com/tigergraph-server/4.2/API/authentication:
+  - 'Authorization tokens are required for REST++ endpoints and should be included
+    in the HTTP Authorization header as a Bearer token. Use the header format "Authorization:
+    Bearer <token>" where the token is obtained through initial authentication and
+    expires after a default period of 1 month. Additionally, 3rd party JWT tokens
+    are supported. For GSQL Server requests, use HTTP Basic Authentication with the
+    curl -u option in the format username:password, or alternatively use a .netrc
+    file to avoid exposing credentials on the command line.'
+pagination_info:
+- information_source; https://docs.tigergraph.com/tigergraph-server/4.2/API/built-in-endpoints:
+  - limit is an optional query parameter that accepts an integer value to specify
+    the maximum number of edges returned per request. The response does not include
+    pagination fields like next or has_more, suggesting this endpoint returns all
+    matching results up to the limit without cursor-based or page-based navigation.
+- information_source; https://docs.tigergraph.com/tigergraph-server/4.2/API/gsql-endpoints:
+  - The documentation shows SCIM pagination with query parameters startIndex (starting
+    position) and itemsPerPage (results per page), and response fields totalResults
+    (total count), startIndex (current position), and itemsPerPage (page size). Stop
+    pagination when the number of returned resources is less than itemsPerPage or
+    when startIndex plus itemsPerPage exceeds totalResults.
+  - 'The response includes pagination fields: totalResults (total count), startIndex
+    (starting position, default 1), and itemsPerPage (items per page, default 100).
+    Use startIndex and itemsPerPage as query parameters to paginate through results;
+    continue requesting with incremented startIndex values until all results are retrieved
+    based on totalResults.'
+- information_source; https://docs.tigergraph.com/tigergraph-server/4.2/api/gsql-endpoints:
+  - 'The documentation shows pagination response fields: totalResults, startIndex,
+    itemsPerPage. Request parameters for pagination are not explicitly shown in this
+    excerpt, but the response structure indicates offset-based pagination where startIndex
+    indicates the current position and itemsPerPage specifies page size. To paginate,
+    use startIndex and itemsPerPage as query parameters in subsequent requests.'
+  - 'The response includes pagination fields: totalResults (total number of results),
+    startIndex (starting index for current page, default 1), and itemsPerPage (number
+    of items per page, default 100). These are returned in the response body to indicate
+    pagination state, though no explicit request parameters for controlling page number
+    or size are shown in the documentation excerpt.'
+possible_base_urls:
+- information_source; https://docs.tigergraph.com/gsql-ref/4.2/querying/query-optimizer/stats-api:
+  - http://localhost:14240/gsql/v1/stats/histogram
+- information_source; https://docs.tigergraph.com/savanna/main/rest-api/authentication:
+  - https://api.tgcloud.io/controller/v4
+possible_endpoints:
+- information_source; https://docs.tigergraph.com/gsql-ref/4.2/querying/query-optimizer/stats-api:
+  - DELETE :14240/gsql/v1/stats/histogram
+- information_source; https://docs.tigergraph.com/savanna/main/rest-api/authentication:
+  - GET https://api.tgcloud.io/controller/v4/v2/workgroups
+- information_source; https://docs.tigergraph.com/tigergraph-server/4.2/API/authentication:
+  - POST https://api.example.com/token
+- information_source; https://docs.tigergraph.com/tigergraph-server/4.2/API/built-in-endpoints:
+  - DELETE /restpp/graph/{graph_name}/delete_by_type/vertices/{vertex_type}
+  - DELETE /restpp/graph/{graph_name}/edges/{source_vertex_type}/{source_vertex_id}/{edge_type}/{target_vertex_type}/{target_vertex_id}
+  - DELETE /restpp/graph/{graph_name}/edges/{source_vertex_type}/{source_vertex_id}/{edge_type}/{target_vertex_type}/{target_vertex_id}/{discriminator}
+  - DELETE /restpp/graph/{graph_name}/vertices/{vertex_type}
+  - DELETE /restpp/graph/{graph_name}/vertices/{vertex_type}/{vertex_id}
+  - DELETE http://localhost:14240/restpp/graph/multiedge/edges/{source_vertex_type}/{source_vertex_id}/{edge_type}/{target_vertex_type}/{target_vertex_id}/{discriminator}
+  - DELETE http://localhost:14240/restpp/graph/socialNet/vertices/User/id1

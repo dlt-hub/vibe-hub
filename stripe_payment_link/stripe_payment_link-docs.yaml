@@ -1,0 +1,58 @@
+auth_info:
+- information_source; https://docs.stripe.com/api/v2/core/events/retrieve:
+  - Stripe API uses Bearer token authentication. Include the API key in the Authorization
+    header as "Bearer sk_test_..." or "Bearer sk_live_..." depending on your environment.
+    The Stripe-Version header specifies the API version being used.
+  - Stripe API uses Bearer token authentication. Send the API key in the Authorization
+    header as "Bearer sk_test_..." or "Bearer sk_live_..." depending on your environment.
+    Include the Stripe-Version header to specify the API version.
+  - Stripe API uses HTTP Basic Authentication with a secret API key. The secret key
+    (prefixed with `sk_test_` or `sk_live_`) is passed as the username in the Authorization
+    header using the format `username:password` where the password is empty, or equivalently
+    via the `-u` flag in curl as `key:`. The key should be kept secure and used only
+    on the server side.
+  - Stripe API uses HTTP Basic Authentication with the API key as the username and
+    an empty password. Send your secret key (e.g., sk_test_...) in the Authorization
+    header using the format username:password, where username is the API key and password
+    is empty. Alternatively, pass the API key with a colon appended as the -u parameter
+    in curl requests.
+  - 'Stripe API v2 uses Bearer token authentication. Include the API key as a Bearer
+    token in the Authorization header: `Authorization: Bearer sk_test_...` (your secret
+    key).'
+pagination_info:
+- information_source; https://docs.stripe.com/api/v2/core/events/retrieve:
+  - Use the limit query parameter to set page size and the page query parameter to
+    specify the requested page. The response includes next_page_url and previous_page_url
+    fields to navigate between pages.
+- information_source; https://docs.stripe.com/api/v2/core/event_destinations/update:
+  - Pagination uses query parameters limit (page size) and page (requested page as
+    string). Response includes next_page_url and previous_page_url fields to navigate
+    pages; stop when these fields are null.
+  - The API uses a simple pagination scheme with a has_more boolean field in the response
+    indicating whether additional elements exist. Paginated results are returned in
+    a data array, and pagination is controlled by request parameters (specific parameter
+    names not detailed in this excerpt).
+  - 'The response contains pagination fields: next_page_url and previous_page_url
+    are both null, indicating no additional pages exist for this list endpoint. Use
+    next_page_url value to request the next page if it is not null.'
+  - Use cursor-based pagination with the `next_page` field from the response. Pass
+    `next_page` value to subsequent requests to fetch the next page. Stop when `has_more`
+    is false. Optional `total_count` field available via expansion shows total matching
+    objects up to 10,000.
+possible_base_urls:
+- information_source; https://docs.stripe.com/api/v2/core/events/retrieve:
+  - https://api.stripe.com
+  - https://api.stripe.com/v1
+possible_endpoints:
+- information_source; https://docs.stripe.com/api/v2/core/events/retrieve:
+  - GET /api/charges/search
+  - GET /api/customers/search
+  - GET /api/subscriptions/search
+  - GET /v2/core/events
+  - GET https://api.stripe.com/v2/core/events
+  - GET https://api.stripe.com/v2/core/events/:id
+  - POST https://api.stripe.com/v1/customers
+  - POST https://api.stripe.com/v2/core/accounts
+  - POST https://api.stripe.com/v2/core/event_destinations/:id/ping
+- information_source; https://docs.stripe.com/api/v2/core/event_destinations/update:
+  - DELETE https://api.stripe.com/v2/core/event_destinations/:id

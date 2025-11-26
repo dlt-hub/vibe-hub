@@ -1,0 +1,57 @@
+auth_info:
+- information_source; https://fundraiseup.com/docs/nxt-api/:
+  - 'API key authentication using Bearer token in the Authorization header. Include
+    the API key as "Authorization: Bearer YOUR_API_KEY" in request headers. All requests
+    must use HTTPS. The API key should be created with minimum required permissions
+    (e.g., "Retrieve donation data") and stored securely like a password.'
+- information_source; https://fundraiseup.com/docs/rest-api-resources/?eco_budget=middle:
+  - "Authenticate to the API using HTTP Bearer authentication by including your API\
+    \ key in the Authorization header as \"Authorization: Bearer test_\u2026\". All\
+    \ requests must be made over HTTPS; requests without proper authentication or\
+    \ over HTTP will be rejected. Each API key is scoped to its account; parent accounts\
+    \ cannot create donations for subaccounts using the parent API key, but can export\
+    \ data for both parent and subaccounts."
+- information_source; https://fundraiseup.com/docs/seamless-donor-portal/:
+  - API key authentication is required. Generate an API key in Dashboard > Settings
+    > API keys with the "Generate Donor Portal access links" permission enabled. The
+    API key must be sent in the Authorization header (standard bearer token format)
+    when making requests to the donor portal access links endpoint. Parent account
+    API keys cannot be used for subaccounts; a separate API key must be generated
+    within the specific subaccount.
+pagination_info:
+- information_source; https://api.fundraiseup.com/v1/docs/:
+  - Cursor-based pagination is used with limit query parameter (default or specified
+    value) and starting_after query parameter. The starting_after parameter accepts
+    the last donation ID from the previous response to fetch the next page. Records
+    are returned in reverse chronological order, and pagination stops when no more
+    records are available or the desired date range is reached.
+- information_source; https://fundraiseup.com/docs/nxt-api/:
+  - Collection endpoints use limit, starting_after, and ending_before query parameters
+    for cursor-based pagination. The limit parameter controls page size, starting_after
+    and ending_before specify cursor positions to fetch records before or after a
+    given ID.
+- information_source; https://fundraiseup.com/docs/rest-api-resources/?eco_budget=middle:
+  - Cursor-based pagination using `starting_after` and `ending_before` parameters
+    (mutually exclusive). Request includes `limit` query parameter to control page
+    size. Response contains `data` array and `has_more` boolean field indicating whether
+    more records exist. Use the last record ID from the response as `starting_after`
+    value in the next request to fetch subsequent pages.
+possible_base_urls:
+- information_source; https://api.fundraiseup.com/v1/docs/:
+  - https://api.fundraiseup.com/v1
+- information_source; https://fundraiseup.com/docs/develop/:
+  - https://api.fundraiseup.com/v1
+possible_endpoints:
+- information_source; https://api.fundraiseup.com/v1/docs/:
+  - GET /v1/donations
+  - GET /v1/donations?limit=100&starting_after=LAST_DONATION_ID
+- information_source; https://fundraiseup.com/docs/develop/:
+  - GET https://api.fundraiseup.com/v1/docs/
+- information_source; https://fundraiseup.com/docs/nxt-api/:
+  - GET /v1/campaigns
+  - GET /v1/campaigns/{campaign_id}
+  - GET /v1/designations
+  - GET /v1/designations/{designation_id}
+  - GET /v1/donations
+  - GET /v1/donations/{donation_id}
+  - GET /v1/recurring_plans

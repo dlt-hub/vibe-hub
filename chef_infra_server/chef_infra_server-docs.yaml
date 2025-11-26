@@ -1,0 +1,71 @@
+auth_info:
+- information_source; http://man.hubwiz.com/docset/Chef.docset/Contents/Resources/Documents/docs.chef.io/auth.html:
+  - Chef Server API uses RSA-based request signing for authentication. Each request
+    requires an Authorization header with the format "Chef VERSION" followed by a
+    signature computed from the request method, path, body, and timestamp, signed
+    with the client's private key. The signature is Base64-encoded and includes the
+    client name. Required headers are Authorization (containing the signature), X-Ops-Timestamp,
+    X-Ops-UserId (client name), X-Ops-Sign (algorithm identifier), and X-Ops-Content-Hash
+    (SHA1 hash of request body). Requests must target organization-specific endpoints
+    using the path pattern /organizations/ORG_NAME.
+  - The Chef client authenticates to the Chef server using client key-based authentication.
+    The config.rb file specifies the node_name (username), client_key path (private
+    key file in PEM format), and chef_server_url. Credentials are loaded from environment
+    variables OPSCODE_USER, USER, HOME, and ORGNAME, with the validation_client_name
+    and validation_key used for node registration. The client key is typically stored
+    at ~/.chef/{user}.pem and the validation key at ~/.chef/{orgname}-validator.pem.
+- information_source; https://docs.chef.io/automate/api/:
+  - 'Authorization is managed through Chef Automate''s role-based access control (RBAC)
+    system. Specific authorization actions are required for different operations:
+    "infra:nodeManagers:list" for searching nodes and "infra:nodeManagers:rerun" for
+    connecting to a node manager. These actions are enforced server-side and do not
+    require explicit credentials in individual API requests; authentication is handled
+    through the Chef Automate session or API token established with the main API endpoint.'
+  - Authorization is required with the action compliance:reports:list. This indicates
+    role-based access control where the authenticated user must have permissions for
+    the "compliance:reports:list" action to export reports.
+- information_source; https://docs.chef.io/release_notes_automate/:
+  - Authorization coverage has been added to all public API endpoints. The introspection
+    API endpoint at GET /admin/introspect allows checking current user permissions
+    on HTTP endpoints exposed by the Automate 2 gateway, and individual endpoints
+    can be checked via HTTP POST by passing the endpoint path as a JSON body with
+    the field "path".
+pagination_info:
+- information_source; https://docs.chef.io/automate/api/:
+  - Pagination uses page_number (integer, zero-indexed origin) and size (integer,
+    maximum page size) parameters in the request body. Default limit is 100 results
+    per response.
+  - Pagination uses query parameters pagination.page (integer, page number) and pagination.size
+    (integer, amount per page). The NodeExport endpoint explicitly does not support
+    pagination.
+  - 'Pagination uses query/body parameters: page (integer, 0-indexed offset) and per_page
+    (integer, number of results per page). Response includes control_elements array;
+    continue paginating by incrementing page parameter until fewer results than per_page
+    are returned.'
+  - Request body includes page (integer, 0-indexed) and per_page (integer, number
+    of results per page) parameters for pagination. Maximum 100 results allowed; sum
+    of from+size must be less than 100, with default 10 results returned per request.
+    Response structure not explicitly detailed for pagination fields like next or
+    has_more.
+  - The API supports pagination through query parameters page (integer, default 0)
+    and per_page (integer) in the request body. However, the documentation explicitly
+    states that this endpoint "Supports filtering, but not pagination or sorting,"
+    indicating pagination parameters may be present but are not functionally supported
+    for this specific endpoint.
+possible_base_urls:
+- information_source; http://man.hubwiz.com/docset/Chef.docset/Contents/Resources/Documents/docs.chef.io/auth.html:
+  - api.opscode.com
+  - https://api.opscode.com/organizations/my_org
+possible_endpoints:
+- information_source; http://man.hubwiz.com/docset/Chef.docset/Contents/Resources/Documents/docs.chef.io/auth.html:
+  - GET /organizations/NAME/nodes
+  - GET /organizations/NAME/roles
+  - GET https://api.opscode.com/organizations/my_org
+- information_source; https://docs.chef.io/automate/api/:
+  - DELETE https://automate.chef.io/api/v0/compliance/profiles/{owner}/{name}/version/{version}
+  - DELETE https://automate.chef.io/api/v0/secrets/id/{id}
+  - DELETE https://automate.chef.io/apis/iam/v2/policies/{id}/members
+  - DELETE https://automate.chef.io/apis/iam/v2/tokens/{id}
+  - GET https://automate.chef.io/api/v
+  - GET https://automate.chef.io/api/v0/cfgmgmt/nodes
+  - GET https://automate.chef.io/api/v0/cfgmgmt/suggestions

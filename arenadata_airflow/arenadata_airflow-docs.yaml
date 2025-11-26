@@ -1,0 +1,77 @@
+auth_info:
+- information_source; https://docs.arenadata.io/en/ADH/current/how-to/airflow/airflow-rest-api.html:
+  - Airflow REST API uses HTTP Basic Authentication. Credentials are sent via the
+    --user flag in curl (or Authorization header) with format username:password, for
+    example "admin:admin".
+  - 'Basic authentication is required for Airflow REST API requests. Credentials are
+    passed using the curl --user flag in the format "username:password", which translates
+    to the Authorization header with base64-encoded credentials (e.g., Authorization:
+    Basic base64(username:password)).'
+- information_source; https://docs.arenadata.io/en/ADH/current/how-to/hdfs/connect.html:
+  - WebHDFS REST API supports multiple authentication methods depending on security
+    configuration. For basic access, pass the username as a query parameter in the
+    format user.name=<USER>&. For Kerberos SPNEGO, use curl with --negotiate and -u
+    options. For Hadoop delegation tokens, pass the token in place of the username
+    as a query parameter. If SSL is enabled, use swebhdfs instead of webhdfs in the
+    URL scheme.
+- information_source; https://docs.arenadata.io/en/ADH/current/how-to/trino/openapi-connector/options.html:
+  - The OpenAPI connector supports multiple authentication types that can be configured
+    via the `authentication.type` parameter. Possible values are none, http, api_key,
+    or oauth. The specific authentication credentials and details are determined by
+    the OpenAPI specification referenced in the spec-location parameter, but the exact
+    header names, parameter names, token formats, and credential handling methods
+    depend on how each authentication type is defined within that specification.
+  - 'This documentation describes configuration parameters for a REST API connector
+    (appears to be Trino/Presto) that supports multiple authentication types. The
+    system allows configuration of HTTP basic auth, bearer token auth, API key auth,
+    and OAuth2 with client credentials or username/password flows.
+
+
+    Configuration parameters for authentication:
+
+    - authentication.type: Set to `none`, `http`, `api_key`, or `oauth`
+
+    - For HTTP basic auth: authentication.scheme set to `basic`, with authentication.username
+    and authentication.password
+
+    - For HTTP bearer token: authentication.scheme set to `bearer`, with authentication.bearer-token
+    value
+
+    - For API key auth: authentication.api-key-name (header/parameter name) and authentication.api-key-value
+    (the key value)
+
+    - For OAuth: authentication.client-id and authentication.client-secret for client
+    credentials flow, or authentication.username and authentication.password for resource
+    owner password credentials flow'
+pagination_info:
+- information_source; https://docs.arenadata.io/en/ADH/current/how-to/flink/flink-sql.html:
+  - Use the `nextResultUri` field from the response to fetch subsequent result batches.
+    When `resultType` is `PAYLOAD`, a `nextResultUri` is provided pointing to the
+    next batch at `/v1/sessions/{sessionHandle}/operations/{operationHandle}/result/{resultNumber}`.
+    Stop pagination when `resultType` becomes `EOS`, indicating all results have been
+    served.
+- information_source; https://docs.arenadata.io/en/ADH/current/how-to/solr/solr-indexing.html:
+  - Pagination uses the `start` query parameter (optional, default 0) to specify the
+    offset position in results, and the `rows` query parameter (optional, default
+    typically 10) to specify the number of documents per page. The response includes
+    `numFound` (total matching documents), `start` (current offset), and `docs` array;
+    iterate by incrementing `start` by `rows` value until `start + docs.length >=
+    numFound`.
+possible_base_urls:
+- information_source; https://docs.arenadata.io/en/ADH/current/how-to/airflow/airflow-rest-api.html:
+  - http://<server-address>:<port>/api/v1
+  - http://localhost:8080/api/v1
+possible_endpoints:
+- information_source; https://docs.arenadata.io/en/ADH/current/how-to/airflow/airflow-rest-api.html:
+  - GET /api/v1/pools
+  - GET http://<server-address>:<port>/api/v1/dags
+- information_source; https://docs.arenadata.io/en/ADH/current/how-to/flink/flink-sql.html:
+  - GET http://<sql-gateway-host>:8083/v1/info
+  - GET http://<sql-gateway-host>:8083/v1/sessions/{sessionHandle}/operations/{operationHandle}/result/0
+  - POST http://<sql-gateway-host>:8083/v1/sessions
+  - POST http://<sql-gateway-host>:8083/v1/sessions/{sessionHandle}/heart
+  - POST http://<sql-gateway-host>:8083/v1/sessions/{sessionHandle}/heartbeat
+  - POST http://<sql-gateway-host>:8083/v1/sessions/{sessionHandle}/operations/{operationHandle}/query
+  - POST http://<sql-gateway-host>:8083/v1/sessions/{sessionHandle}/statements/
+- information_source; https://docs.arenadata.io/en/ADH/current/how-to/hdfs/connect.html:
+  - DELETE http://<HOST>:<HTTP_PORT>/webhdfs/v1/<PATH>?<AUTH>op=<COMMAND>

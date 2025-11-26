@@ -1,0 +1,46 @@
+auth_info:
+- information_source; https://docs.absuite.net/Online-Services/REST-API.html:
+  - All REST requests require HTTPS protocol. The Authorization header must contain
+    an OAuth2 bearer token acquired from APS. The Content-Type header is typically
+    set to application/json. The Host header specifies the server domain or IP address.
+    Request body format depends on the specific API operation and is specified in
+    the service's REST API documentation.
+  - Alliance Online Services (AOS) REST APIs use OAuth2-style authentication coordinated
+    through Alliance Passport Services (APS). Client applications must register with
+    APS to obtain credentials (client id/secret), then exchange those for an access
+    token. The access token is sent in the HTTP Authorization header of subsequent
+    REST API requests, where the token's claims are validated by the service for both
+    authentication and authorization.
+  - Authorization code grant and client credentials grant (OAuth 2.0) are supported.
+    For authorization code grant, exchange the authorization code obtained in step
+    1 (via code query parameter) for an access token by sending an HTTPS POST request
+    to the /token endpoint with code and client_secret (required for web applications)
+    in the request body. For client credentials grant, non-interactive clients send
+    client credentials directly to the /token endpoint to obtain an access token without
+    user delegation.
+  - OAuth2 Authorization Framework is used for client authentication. Web/confidential
+    clients must securely maintain and present credentials (client ID and secret)
+    during APS authentication to acquire an access token. Native/public clients use
+    delegated authorization with signed-in user identity. Client applications must
+    be registered with APS in an Online Business Tenant before runtime, with permission
+    requests configured for accessing REST APIs and IAM Role-Based Access Control
+    settings established for authorization.
+  - 'OAuth2 authorization code grant flow is used for interactive clients. First,
+    request an authorization code from the /authorize endpoint using query parameters:
+    client_id (application GUID), redirect_uri (URL-encoded registered redirect URI
+    that must match exactly), and resource (URL-encoded REST API identifier URI).
+    The authorization code is returned in the code query parameter of a 302 redirect
+    to your redirect_uri. Then exchange the authorization code for an access token
+    at the /token endpoint (details for this exchange are referenced but not fully
+    shown in this excerpt).'
+possible_base_urls:
+- information_source; https://docs.absuite.net/Online-Services/REST-API.html:
+  - https://fenix-alliance.com
+possible_endpoints:
+- information_source; https://docs.absuite.net/Online-Services/REST-API.html:
+  - GET /API/v2/subscriptions
+  - GET /api/v2/subscriptions
+  - GET /authorize
+  - POST /token
+  - PUT /API/v2/subscriptions
+  - PUT /api/v2/subscriptions/d0928ef4-84b0-4710-9a8e-e34c82ccc917

@@ -1,0 +1,41 @@
+auth_info:
+- information_source; https://docs.machinemetrics.com/docs/guides/authentication/auth-overview:
+  - Bearer token authentication using an API key. Include the API key in the Authorization
+    header as "Bearer INSERT_API_KEY_HERE" for all requests to both REST endpoints
+    and GraphQL. The header name is "Authorization" (case-insensitive in examples)
+    and the format is "Bearer " followed by your API key value.
+  - The MachineMetrics API uses API Key authentication via Bearer token. Include an
+    Authorization header with the value "Bearer API-KEY" in all requests. API Keys
+    can be created multiple times with separate scopes for different use cases, and
+    scopes can be adjusted anytime after key creation.
+- information_source; https://docs.machinemetrics.com/docs/rest/:
+  - Bearer token authentication is required. Send the token in the Authorization header
+    as "Bearer {token}".
+  - JWT tokens are used for CSV report access. Send a GET request to `/user-token`
+    to receive a JWT response, then append the token as a query parameter `token={{JWT}}`
+    to CSV endpoint URLs like `https://api.machinemetrics.com/csv/production/{{resourceId}}?token={{JWT}}`.
+    The API also uses bearerAuth authorization scheme.
+  - 'The API uses JWT (JSON Web Token) authentication for CSV download requests. To
+    access CSV reports, first request a report endpoint with csv: true in the request
+    body to receive a JWT token and download URL with expiration date. Then append
+    the JWT token as a query parameter to the download URL like this: https://exampleUrl?token={{JWT}}.
+    Additionally, a token query parameter (string type) is required for CSV quality
+    results endpoints.'
+possible_base_urls:
+- information_source; https://docs.machinemetrics.com/docs/guides/authentication/auth-overview:
+  - https://api.machinemetrics.com
+- information_source; https://docs.machinemetrics.com/docs/rest/:
+  - https://api-demo.machinemetrics.com
+possible_endpoints:
+- information_source; https://docs.machinemetrics.com/docs/guides/authentication/auth-overview:
+  - GET https://api.machinemetrics.com/reports
+  - GET https://api.machinemetrics.com/reports/production
+  - POST https://api.machinemetrics.com/graphql
+  - POST https://api.machinemetrics.com/reports/production
+- information_source; https://docs.machinemetrics.com/docs/rest/:
+  - GET https://api-demo.machinemetrics.com/csv/downtime/{resourceId}
+  - GET https://api-demo.machinemetrics.com/csv/production/{resourceId}
+  - GET https://api-demo.machinemetrics.com/csv/quality/{resourceId}
+  - GET https://api-demo.machinemetrics.com/erp/jobdispatch/{erpRunId}
+  - GET https://api-demo.machinemetrics.com/machines/{machineRef}/scheduled-time
+  - GET https://api-demo.machinemetrics.com/user-token

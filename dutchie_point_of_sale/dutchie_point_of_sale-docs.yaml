@@ -1,0 +1,56 @@
+auth_info:
+- information_source; https://api.pos.dutchie.com/:
+  - All requests require HTTP Basic Authentication with username set to the location
+    API key and password set to the integrator key.
+- information_source; https://api.pos.dutchie.com/swagger/v001/swagger.json:
+  - '"Customer" role authorization required for customer data operations.'
+  - '"Customer" role authorization required for customer data operations. Results
+    are automatically filtered by the authenticated user''s location based on their
+    authorization context.'
+  - '"Inventory" or "Cultivation" role authorization required for plant data access.
+    Results are automatically filtered to the authenticated location, meaning the
+    API uses role-based access control tied to the user''s assigned roles and location
+    context.'
+  - '"Inventory" role authorization is required to access strain data. Results are
+    automatically filtered to the authenticated location, and only active strains
+    are returned.'
+pagination_info:
+- information_source; https://api.pos.dutchie.com/:
+  - Use the `page` query parameter (optional, default 1) to request specific pages.
+    The response includes `total_count`, `page`, `page_size`, and `has_more` fields
+    to indicate pagination state and navigate through results. Continue requesting
+    with incremented `page` values until `has_more` is false.
+- information_source; https://api.pos.dutchie.com/swagger/v001/swagger.json:
+  - Pagination uses PageNumber (starting at 0) and PageSize parameters to control
+    page access and items per page. Continue requesting with incremented PageNumber
+    values until an empty array [] is returned to detect end of data; no metadata
+    fields like total_count or has_more are provided.
+  - Pagination uses PageNumber (starting at 0, incremented sequentially) and optional
+    PageSize (default 1000, max 10000) query parameters. Stop paginating when an empty
+    array is returned; no pagination metadata is included in responses.
+  - Pagination uses query parameters PageNumber (starting at 0, incremented sequentially)
+    and PageSize (maximum 10,000 customers per page). End of data is detected when
+    an empty array [] is returned in the response; no metadata fields like total_count
+    or has_more are provided. Continue requesting pages by incrementing PageNumber
+    until receiving an empty response.
+  - Use PageNumber query parameter starting at 0 for the first request and increment
+    it for subsequent requests. Response is an array of up to PageSize purchase orders
+    (default 1000) with no pagination metadata; stop when the returned array contains
+    fewer items than PageSize.
+possible_base_urls:
+- information_source; https://api.pos.dutchie.com/:
+  - https://api.pos.dutchie.com
+- information_source; https://api.pos.dutchie.com/swagger/v001/swagger.json:
+  - https://api.pos.dutchie.com
+possible_endpoints:
+- information_source; https://api.pos.dutchie.com/:
+  - GET /
+  - GET /Deliveries
+  - GET /customer-journal
+  - GET /customer/by-external-id
+  - GET /customer/sources
+  - GET /discounts
+  - GET /discounts/v2/list
+  - GET /drivers
+  - GET /employees
+  - GET /guestlist

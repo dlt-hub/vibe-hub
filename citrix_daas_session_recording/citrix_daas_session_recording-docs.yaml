@@ -1,0 +1,61 @@
+auth_info:
+- ? information_source; https://developer-docs.citrix.com/en-us/citrix-cloud/citrix-cloud-api-overview/get-started-with-citrix-cloud-apis.html
+  : - Citrix Cloud API uses three required headers for authentication and authorization.
+      The Authorization header must contain a CWSAuth bearer token in the format "CWSAuth
+      bearer=<token>". The Citrix-CustomerId header must contain the Citrix Cloud
+      customer ID. The Accept header should be set to "application/json". Credentials
+      should never be hardcoded; use environment variables or dedicated secrets management
+      tools instead, and rotate secrets regularly.
+    - OAuth 2.0 Client Credentials Grant is used to obtain a bearer token. POST to
+      https://api.cloud.com/cctrustoauth2/{customerid}/tokens/clients with form-urlencoded
+      body containing grant_type set to client_credentials, client_id, and client_secret.
+      Include Accept header as application/json and Content-Type header as application/x-www-form-urlencoded.
+      The response returns a bearer token for subsequent API requests. Use https://api.citrixcloud.jp
+      endpoint if account is in Japan region.
+    - OAuth2 bearer token authentication. Obtain an access token by posting client_id
+      and client_secret to the token endpoint, then include the token in the Authorization
+      header as "CwsAuth Bearer={access_token}" for all authorized API requests.
+    - Use CWSAuth bearer token authentication sent in the Authorization header, along
+      with the Citrix Cloud customer ID in the Citrix-CustomerId header. The Authorization
+      header format is "CWSAuth bearer=<token>" where <token> is your Citrix Cloud
+      bearer token, and Citrix-CustomerId must contain your Citrix Cloud customer
+      ID.
+    - Use CWSAuth bearer token authentication. Send the token in the Authorization
+      header as "CWSAuth bearer=<token>" and include the Citrix Cloud customer ID
+      in the Citrix-CustomerId header. Both headers are required for API requests.
+pagination_info:
+- ? information_source; https://developer-docs.citrix.com/en-us/citrix-cloud/citrix-cloud-api-overview/get-started-with-citrix-cloud-apis.html
+  : - 'The API uses cursor-based pagination with two query parameters: take (optional,
+      specifies count of items to retrieve) and continuation (optional, continuation
+      token for fetching next page). The response includes an items array; use the
+      continuation token from the response to request the next page by passing it
+      in the continuation query parameter.'
+- ? information_source; https://developer-docs.citrix.com/en-us/citrix-daas-service-apis/citrix-daas-rest-apis/how-to-use-paging-to-query-many-objects-through-multiple-api-calls.html
+  : - Pagination uses a continuation token model. The response includes a ContinuationToken
+      field; when not null, append it as a query parameter continuationtoken to the
+      request URI and fetch the next page. Combine Items from all pages until ContinuationToken
+      becomes null.
+    - Pagination uses a limit query parameter (default 1000) and a ContinuationToken
+      response field. To paginate, append "&continuationtoken=" with the ContinuationToken
+      value from the previous response to the request URI. Stop when ContinuationToken
+      is null.
+    - Use limit query parameter (set to 1000 in example) to control page size. Use
+      ContinuationToken from response to paginate through results by passing it in
+      subsequent requests; stop when ContinuationToken is null or absent.
+possible_base_urls:
+- ? information_source; https://developer-docs.citrix.com/en-us/citrix-cloud/citrix-cloud-api-overview/get-started-with-citrix-cloud-apis.html
+  : - https://api.citrixcloud.jp
+    - https://api.cloud.com
+possible_endpoints:
+- ? information_source; https://developer-docs.citrix.com/en-us/citrix-cloud/citrix-cloud-api-overview/get-started-with-citrix-cloud-apis.html
+  : - DELETE https://api.cloud.com/serviceprincipals/12345/secondarySecret
+    - DELETE https://api.cloud.com/serviceprincipals/{id}/secondarySecret
+    - GET https://api.citrixcloud.jp/serviceprincipals
+    - GET https://api.cloud.com/serviceprincipals
+    - POST https://api.citrixcloud.jp/cctrustoauth2/{customerid}/tokens/clients
+    - POST https://api.cloud.com/cctrustoauth2/{customerid}/tokens/clients
+    - POST https://api.cloud.com/serviceprincipals/{id}/$rotate
+- ? information_source; https://developer-docs.citrix.com/en-us/citrix-daas-service-apis/citrix-daas-rest-apis/how-to-use-paging-to-query-many-objects-through-multiple-api-calls.html
+  : - GET /ad/manage/Machines
+    - GET https://api.cloud.com/cvad/manage/Machines
+    - GET https://api.cloud.com/cvad/manage/Machines?limit=1000

@@ -1,0 +1,63 @@
+auth_info:
+- information_source; https://bitgetlimited.github.io/apidoc/en/broker/:
+  - 'API authentication uses HMAC-SHA256 signature-based authentication with three
+    required headers: ACCESS-KEY (your API key), ACCESS-SIGN (HMAC-SHA256 signature
+    of request content encoded in Base64), and ACCESS-PASSPHRASE (your API key passphrase).
+    The signature is built by concatenating timestamp (milliseconds since epoch),
+    HTTP method (uppercase), request path, query string, and request body, then encrypted
+    with your secret key using HMAC-SHA256 and Base64 encoded. Include Content-Type
+    header set to application/json for POST requests.'
+  - API key and secret key authentication. Requests require apiKey and secretKey credentials,
+    with permissions managed via perm field (e.g., read_only, contract_trade) and
+    IP whitelist restrictions via ip parameter.
+  - API key and secret key authentication. The apiKey (e.g., "bg_djwwwls98a1s0dLK3deq2")
+    and secretKey (e.g., "Sjwwwls98a1s0dLK3deq2") are used for request signing. Permissions
+    are specified via the perm field (comma-separated values like "read_only,contract_trade"),
+    and IP whitelisting is enforced via the ip parameter.
+  - API key authentication is required. Brokers must create an APIKey at https://www.bitget.com/account/newapi
+    after login, set an IP whitelist during creation, and use the APIKey to authenticate
+    requests. Sub-accounts can also have their own APIKeys created through the API
+    for placing orders and controlling permissions.
+  - 'API requests require four authentication headers: ACCESS-KEY (your API key),
+    ACCESS-SIGN (signature), ACCESS-PASSPHRASE (passphrase), and ACCESS-TIMESTAMP
+    (millisecond timestamp). The ACCESS-SIGN header must contain an HMAC-SHA256 signature
+    of the request.'
+pagination_info:
+- information_source; https://bitgetlimited.github.io/apidoc/en/broker/:
+  - Pagination uses optional query parameters pageSize (default 10, max 10) and lastEndId
+    (Long) to control requests. The response includes hasNextPage (boolean) and lastEndId
+    (Long) fields; when hasNextPage is true, use the returned lastEndId value in the
+    next request's lastEndId parameter to fetch the next page.
+- information_source; https://bitgetlimited.github.io/apidoc/en/margin/:
+  - Pagination uses optional query parameters pageNum and pageSize (both String type,
+    not required). The response returns data as an array but does not include pagination
+    metadata fields like total count, next page indicators, or instructions for constructing
+    subsequent requests.
+  - The API uses cursor-based pagination with pageSize and pageId parameters. pageSize
+    (optional, default 1) controls the number of results per page, and pageId (optional,
+    appears to be a cursor/minId) is used to fetch subsequent pages by passing the
+    minId value from the previous response.
+  - Use pageSize (optional, query parameter) and pageId (optional, query parameter,
+    represents minId from previous response) to paginate through isolated finance
+    history. Continue requesting with the minId returned in the previous response
+    until no more results are returned.
+  - pageSize (optional, query parameter, controls number of results per page) and
+    pageId (optional, query parameter, used for pagination via minId to retrieve subsequent
+    pages). The documentation does not specify response fields indicating next page
+    availability or how to determine when pagination ends.
+possible_base_urls:
+- information_source; https://bitgetlimited.github.io/apidoc/en/broker/:
+  - /api/broker/v1/account/sub-future-assets
+  - /api/broker/v1/account/sub-list
+possible_endpoints:
+- information_source; https://bitgetlimited.github.io/apidoc/en/broker/:
+  - GET /api/broker/v1/account/info
+  - GET /api/broker/v1/account/sub-email
+  - GET /api/broker/v1/account/sub-future-assets
+  - GET /api/broker/v1/account/sub-list
+  - GET /api/broker/v1/account/sub-spot-assets
+  - GET /api/broker/v1/manage/sub-api-list
+  - GET /api/broker/v1/subaccount-deposit
+  - GET /api/broker/v1/subaccount-transfer
+  - GET /api/broker/v1/subaccount-withdrawal
+  - GET https://api.bitget.com/api/broker/v1/subaccount-transfer

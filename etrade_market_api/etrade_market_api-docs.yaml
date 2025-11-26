@@ -1,0 +1,57 @@
+auth_info:
+- information_source; https://apisb.etrade.com/docs/api/authorization/request_token.html:
+  - Authorization API uses OAuth with request token flow. Send oauth_consumer_key
+    and oauth_timestamp as required headers. The request token obtained from GET https://api.etrade.com/oauth/request_token
+    expires after five minutes and must be used to direct the user to the authorization
+    page as part of the OAuth process.
+  - E*TRADE uses OAuth 1.0a for authentication. The Authorization header must include
+    oauth_consumer_key, oauth_signature (HMAC-SHA1), oauth_nonce, oauth_timestamp,
+    oauth_signature_method, and oauth_callback. The request token obtained from this
+    endpoint is valid for 5 minutes and is exchanged in subsequent OAuth flows to
+    obtain an access token.
+  - OAuth 1.0a authentication using HMAC-SHA1 signatures. Required headers include
+    oauth_consumer_key, oauth_token, oauth_timestamp, oauth_nonce, oauth_signature_method
+    (HMAC-SHA1 only), oauth_signature (generated from shared secret and token secret),
+    and oauth_callback (must be set to 'oob'). The oauth_timestamp must be accurate
+    within five minutes and oauth_nonce cannot be reused with the same timestamp.
+- information_source; https://apisb.etrade.com/docs/api/authorization/authorize.html:
+  - OAuth 1.0a flow requiring oauth_consumer_key and oauth_token headers. After user
+    authorization, the service redirects to a configured callback URL with an oauth_verifier
+    query parameter containing the verification code needed to complete the token
+    exchange.
+- information_source; https://apisb.etrade.com/docs/api/authorization/get_access_token.html:
+  - OAuth 1.0a authentication is required. Send an Authorization header with OAuth
+    parameters including oauth_consumer_key, oauth_token, oauth_signature_method set
+    to HMAC-SHA1, oauth_signature, oauth_nonce, oauth_timestamp, and oauth_verifier.
+    The response provides oauth_token and oauth_token_secret for subsequent requests.
+    Production tokens expire at midnight US Eastern time.
+pagination_info:
+- information_source; https://apisb.etrade.com/docs/api/account/api-transaction-v1.html:
+  - 'Use marker-based pagination: provide the marker value from the response in the
+    marker query parameter of the next request. Stop when moreTransactions is false.
+    The next URL is also provided in the response for convenience.'
+  - Use the count query parameter to set page size (default 25, max 100). Include
+    pageMarkers from the response in the next request to get subsequent pages. Stop
+    paginating when moreTransactions is false.
+possible_base_urls:
+- information_source; https://apisb.etrade.com/docs/api/market/api-quote-v1.html:
+  - https://api.etrade.com/v1/market/quote/{symbols}
+  - https://apisb.etrade.com/v1/market/quote/{symbols}
+possible_endpoints:
+- information_source; https://apisb.etrade.com/docs/api/market/api-quote-v1.html:
+  - GET https://api.etrade.com/v1/market/quote/{symbols}
+  - GET https://apisb.etrade.com/v1/market/quote/{symbols}
+- information_source; https://apisb.etrade.com/docs/api/authorization/request_token.html:
+  - GET https://api.etrade.com/oauth/request_token
+- information_source; https://apisb.etrade.com/docs/api/authorization/authorize.html:
+  - GET https://us.etrade.com/e/t/etws/authorize
+- information_source; https://apisb.etrade.com/docs/api/authorization/get_access_token.html:
+  - GET https://api.etrade.com/oauth/access_token
+- information_source; https://apisb.etrade.com/docs/api/authorization/renew_access_token.html:
+  - GET https://api.etrade.com/oauth/renew_access_token
+  - POST https://api.etrade.com/oauth/renew_access_token
+- information_source; https://apisb.etrade.com/docs/api/authorization/revoke_access_token.html:
+  - GET https://api.etrade.com/oauth/revoke_access_token
+  - POST https://api.etrade.com/oauth/revoke_access_token
+- information_source; https://apisb.etrade.com/docs/api/account/api-balance-v1.html:
+  - GET https://api.etrade.com/v1/accounts/vsnhtF7d9jXxBy6HyaAC4vQ/balance

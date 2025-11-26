@@ -1,0 +1,49 @@
+auth_info:
+- information_source; https://developer.genetec.com/r/en-us/genetec-clearidtm-developer-guide/making-api-calls-in-swagger-ui:
+  - Authentication with this API uses OAuth 2.0 with PKCE (Proof Key for Code Exchange).
+    Users authenticate via the Authorize button in Swagger UI, which initiates the
+    PKCE flow to securely obtain an access token that is automatically included in
+    subsequent API requests.
+  - OpenID Connect (OIDC) authentication is required. Use client_id "pkce_client"
+    with an empty client_secret, and the authorization server will issue a bearer
+    token after login. Include the bearer token in the Authorization header for subsequent
+    API calls.
+- ? information_source; https://developer.genetec.com/r/en-us/sample/genetec-clearidtm-developer-guide/authentication-of-the-clearid-api
+  : - ClearID uses OAuth2 with JWT bearer tokens for authentication. The clientId
+      and private key (serialized JSON Web Key) are used to sign a JWT token, which
+      is then exchanged for an access token via the STS URL at the `/connect/token`
+      endpoint. The accountId must be included in every API call. The access token
+      should be sent in the Authorization header as a bearer token to the Identity
+      Service API and other endpoints.
+    - 'Genetec ClearID uses OAuth 2.0 client credentials flow for authentication.
+      Send a POST request to the `/connect/token` endpoint with three form-encoded
+      parameters in the HTTP body: client_id, client_secret, and grant_type set to
+      "client_credentials". The response provides a bearer token for subsequent API
+      calls. Use Content-Type application/x-www-form-urlencoded for the token request,
+      and include the bearer token in the Authorization header for authenticated API
+      requests.'
+    - JWT assertion token authentication is used, where you sign a JWT with id, accountid,
+      kid, and key, then exchange it with STS for a Bearer access token. The token
+      response includes access_token, expires_in (maximum 3600 seconds), token_type
+      set to Bearer, and scope. Reuse tokens for at least 66% of their lifetime. JWT
+      claims must include correct exp (expiration), aud (audience), iss (issuer),
+      and sub (client ID) values, and the signature must be valid using the correct
+      secret/private key and algorithm.
+possible_base_urls:
+- information_source; https://developer.genetec.com/r/en-us/genetec-clearidtm-developer-guide/making-api-calls-in-swagger-ui:
+  - https://api.demo.clearid.io
+  - https://api.demo.clearid.io/identity/swagger
+possible_endpoints:
+- information_source; https://developer.genetec.com/r/en-us/genetec-clearidtm-developer-guide/making-api-calls-in-swagger-ui:
+  - GET /api/v2/accounts/{accountId}/identities
+- ? information_source; https://developer.genetec.com/r/en-us/sample/genetec-clearidtm-developer-guide/authentication-of-the-clearid-api
+  : - GET https://api-demo.clearid.io/identityrequest
+    - GET https://api.demo.clearid.io/identity
+    - POST /connect/token
+    - POST https://sts-demo.clearid.io/connect/token
+    - POST https://sts.au.clearid.io/connect/token
+    - POST https://sts.ca.clearid.io/connect/token
+    - POST https://sts.clearid.io/connect/token
+    - POST https://sts.eu.clearid.io/connect/token
+- information_source; https://developer.genetec.com/r/en-us/genetec-clearidtm-developer-guide/authentication-code-samples:
+  - GET https://api.demo.clearid.io/identity/api/v2/accounts/{clearid_accountid}/identities

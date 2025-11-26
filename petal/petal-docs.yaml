@@ -1,0 +1,42 @@
+auth_info:
+- information_source; https://docs.petal.build/petal-pro-documentation/fundamentals/rest-api:
+  - User can generate their own API token via the Sign In API call. The token is returned
+    in the Sign In response and must be provided with subsequent API calls to authenticate
+    requests. API calls protected by a token are user-specific; the token locks access
+    to that particular user's data. The "Register", "Send Instructions", and "Sign
+    In" calls do not require a token. Based on the Open API spec shown, the Sign In
+    endpoint accepts email and password in the request body as JSON and returns a
+    bearer token in the AuthResponse.
+- information_source; https://docs.petal.build/petal-pro-documentation/guides/creating-your-own-api:
+  - Authentication uses a bearer token mechanism via the "authorization" security
+    scheme. The token is sent in the request header as part of the standard bearer
+    token pattern (configured in `/lib/petal_pro_api/api_spec.ex`). All endpoints
+    in this controller are protected by this authentication requirement, indicated
+    by the `security [%{"authorization" => []}]` declaration.
+  - Bearer token authentication is required for API endpoints in the `:api_authenticated`
+    pipeline. The `put_bearer_token` helper function generates a token for a user
+    and injects an `authorization` header into the connection object, which the `:api_authenticated`
+    pipeline validates to authenticate requests.
+  - Bearer token authentication. Call `/api/sign-in` with email and password to receive
+    a token in the response body. Include this token as a bearer token in the Authorization
+    header for protected routes. Tokens are valid for thirty days by default.
+- information_source; https://docs.petal.build/petal-pro-documentation/fundamentals/users-and-authentication:
+  - Session-based authentication using a user_token stored in the session, retrieved
+    via get_user(session["user_token"]). Protected routes use a require_authenticated_user
+    plug/on_mount hook. Social login is handled via Ueberauth library supporting Google
+    and Github OAuth providers, with redirect URLs generated as Routes.user_ueberauth_path(@conn,
+    :request, "google") and Routes.user_ueberauth_path(@conn, :request, "github").
+possible_base_urls:
+- information_source; https://docs.petal.build/petal-pro-documentation/guides/creating-your-own-api:
+  - http://localhost:4000/dev/swaggerui
+possible_endpoints:
+- information_source; https://docs.petal.build/petal-pro-documentation/guides/creating-your-own-api:
+  - GET /api/user/:id
+  - GET /api/user/:id/orgs
+  - PATCH /api/user/:id/update
+  - POST /api/user/:id/change-password
+  - POST /api/user/:id/request-new-email
+- information_source; https://docs.petal.build/petal-pro-documentation/fundamentals/users-and-authentication:
+  - GET /auth
+  - GET /auth/:provider
+  - GET /auth/:provider/callback

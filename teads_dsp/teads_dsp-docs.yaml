@@ -1,0 +1,56 @@
+auth_info:
+- information_source; http://dev.zemanta.com/:
+  - 'OAuth2 client credentials flow. POST to https://oneapi.zemanta.com/o/token/ with
+    Authorization header using Basic auth (base64-encoded Client ID and Client Secret).
+    The response provides an access_token valid for 10 hours, which must be passed
+    to all subsequent REST API calls as Authorization: Bearer <access_token> header.
+    Cache and reuse tokens during their validity period.'
+  - Teads DSP REST API uses two-legged OAuth2 authentication with client credentials.
+    An access token must be acquired using client credentials and then passed to all
+    REST API calls in the Authorization header as "Bearer <access_token>".
+- information_source; https://dev.zemanta.com/one/api/:
+  - OAuth2 client credentials flow is used for authentication. Client ID and Client
+    Secret are created in the DSP application panel and exchanged for an access token
+    via POST to https://oneapi.zemanta.com/o/token/ with Content-Type application/x-www-form-urlencoded
+    and Authorization Basic header containing base64-encoded client_id:client_secret.
+    The returned access token must be passed as Authorization Bearer token header
+    to all REST API calls and is valid for 10 hours before requiring renewal.
+  - Teads DSP REST API uses two-legged OAuth2 with client credentials. Acquire an
+    access token using your client credentials, then pass it to all REST API calls
+    in the Authorization header as "Bearer <access_token>".
+pagination_info:
+- information_source; http://dev.zemanta.com/:
+  - Limit offset pagination uses offset and limit query parameters. offset specifies
+    the starting element position, limit sets maximum entries returned up to 1000
+    with default 100. The response includes count, next, previous URLs, and data array;
+    iterate by updating offset using the next URL until no next value is returned.
+  - Pagination uses marker-based navigation with limit control. The marker parameter
+    (optional, defaults to 0 for first page) specifies the primary key of the last
+    element from the previous page. The limit parameter (optional, default 100, max
+    1000) controls entries returned per request. Continue paginating by using the
+    marker value from the previous response in the next request.
+- information_source; https://dev.zemanta.com/one/api/:
+  - Limit offset pagination uses offset and limit query parameters. offset specifies
+    the starting element position, limit sets maximum entries returned up to 1000
+    with a default of 100. The response includes count, next, previous, and data fields;
+    use the next or previous URLs to navigate pages.
+  - The API uses marker-based pagination with optional limit control. The marker parameter
+    (optional, defaults to 0 for the first page) specifies the primary key of the
+    last element from the previous page, and limit (optional, default 100, max 1000)
+    controls the number of entries returned per request.
+possible_base_urls:
+- information_source; http://dev.zemanta.com/:
+  - https://dev.zemanta.com
+  - https://oneapi.zemanta.com
+possible_endpoints:
+- information_source; http://dev.zemanta.com/:
+  - DELETE /rest/v1/adgroups/{adGroupId}/bidmodifiers/
+  - GET /rest/v1/realtimestats/{?breakdown,marker,limit,accountId,campaignId,adGroupId,contentAdId}
+  - GET /rest/v1/{resourceListPath}/
+  - GET https://oneapi.zemanta.com/rest/v1/adgroups/{adGroupId}/bidmodifiers/{bidModifierId}
+  - GET https://oneapi.zemanta.com/rest/v1/geolocations/?keys=US,US-HI&types=COUNTRY,REGION&nameContains=United&limit=10&offset=0
+  - GET https://oneapi.zemanta.com/rest/v1/videoassets/{videoAssetId}
+  - GET https://oneapi.zemanta.com/rest/v1/{resourceListPath}/
+  - POST /rest/v1/videoassets/
+  - POST https://oneapi.zemanta.com/o/token/
+  - PUT /rest/v1/adgroups/{adGroupId}/bidmodifiers/

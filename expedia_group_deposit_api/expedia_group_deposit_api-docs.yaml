@@ -1,0 +1,70 @@
+auth_info:
+- information_source; https://developers.expediagroup.com/docs/fraud-prevention/api/authentication:
+  - Expedia Group travel platform APIs use OAuth2.0 token-based authentication. To
+    acquire a token, make a request to a special endpoint using HTTP Basic Auth with
+    your client ID as username and client secret as password. Then include the acquired
+    token with each API request for authorization. Tokens are opaque and include client
+    identity, assigned scopes, creation time, and expiration.
+  - Use HTTP Basic Authentication with client ID and secret as username and password
+    to POST to https://api.expediagroup.com/identity/oauth2/v3/token with grant_type=client_credentials.
+    This returns a token valid for 30 minutes that must be supplied in subsequent
+    API requests; missing, invalid, or expired tokens result in HTTP 403 errors.
+- information_source; https://developers.expediagroup.com/docs/products/rapid/lodging/content/content-pagination:
+  - The API uses a custom HMAC-based authentication scheme. Credentials are passed
+    in the Authorization header with the format "EAN APIKey={apiKey},Signature={signature},timestamp={timestamp}",
+    where the signature is computed using a shared secret and the apiKey and sharedSecret
+    are provided during client initialization.
+- information_source; https://developers.expediagroup.com/rapid/lodging/content/content-pagination:
+  - The API uses a custom signature-based authentication scheme. Credentials must
+    be sent in the Authorization header with the format "EAN APIKey={apiKey},Signature={signature},timestamp={timestamp}",
+    where the apiKey and sharedSecret are provided to construct the signature, and
+    the timestamp is included in the request. The sharedSecret is used to generate
+    the signature value.
+- ? information_source; https://developers.expediagroup.com/supply/lodging/docs/property_mgmt_apis/notifications/getting_started/api_intro/
+  : - 'Access tokens obtained through a prior OAuth2 or token acquisition flow must
+      be included in the Authorization header of every API request using the Bearer
+      scheme: Authorization: Bearer {token}. Tokens should be stored securely in-memory,
+      never exposed to users, and transmitted only over TLS via server-to-server communication;
+      the token contents must not be parsed as they are subject to change.'
+pagination_info:
+- information_source; https://developers.expediagroup.com/docs/products/rapid/lodging/content/content-pagination:
+  - Pagination uses Link headers with rel="next" containing the URL for the next page.
+    Continue following each returned Link header until no further Link header is returned,
+    which signals the end of the dataset. The Link header includes an expiration time
+    and must be followed before that time expires.
+  - The API uses cursor-based pagination via HTTP Link headers. The response contains
+    the first page of results with a Link header pointing to the next page URL. Follow
+    the Link header URL to retrieve subsequent pages.
+  - Use the `Link` response header to paginate through property data. The header contains
+    a link to the next page of results; follow this link to retrieve subsequent pages
+    until no `Link` header is present in the response.
+- information_source; https://developers.expediagroup.com/rapid/lodging/content/content-pagination:
+  - Pagination uses Link headers with rel="next" containing the URL for the next page.
+    Follow each returned Link header until no further Link header is returned, which
+    signals the end of the dataset. The Link header expires at a specified time and
+    must be followed before expiration.
+  - The API uses cursor-based pagination via the Link response header. The initial
+    request returns the first page of results, and the Link header contains a URL
+    with a token parameter that should be followed to retrieve the next page.
+possible_base_urls:
+- information_source; https://developers.expediagroup.com/docs/fraud-prevention/api/authentication:
+  - https://api.expediagroup.com/identity/oauth2/v3/token
+- information_source; https://developers.expediagroup.com/docs/products/rapid/lodging/content/content-pagination:
+  - https://api.ean.com
+possible_endpoints:
+- information_source; https://developers.expediagroup.com/docs/fraud-prevention/api/authentication:
+  - POST https://api.expediagroup.com/identity/oauth2/v3/token
+- information_source; https://developers.expediagroup.com/docs/products/rapid/lodging/content/content-pagination:
+  - GET https://api.ean.com
+  - GET https://api.ean.com/v3/properties/content
+- information_source; https://developers.expediagroup.com/rapid/lodging/content/content-pagination:
+  - GET https://api.ean.com
+  - GET https://api.ean.com/v3/properties/content
+- ? information_source; https://developers.expediagroup.com/supply/lodging/docs/property_mgmt_apis/notifications/getting_started/api_intro/
+  : - POST https://api.expediagroup.com/identity/oauth2/v3/token
+    - POST https://api.expediagroup.com/supply/lodging/graphql
+- ? information_source; https://developers.expediagroup.com/supply/lodging/docs/property_mgmt_apis/product/reference/amenity_resources/
+  : - GET https://services.expediapartnercentral.com/properties/{propertyId}/roomTypes/{roomTypeId}/amenities
+    - PUT https://services.expediapartnercentral.com/properties/{propertyId}/roomTypes/{roomTypeId}/amenities
+- ? information_source; https://developers.expediagroup.com/supply/lodging/docs/property_mgmt_apis/product/reference/ratethreshold_resources/
+  : - GET https://services.expediapartnercentral.com/properties/{propertyId}/roomTypes/{roomTypeId}/rateThresholds

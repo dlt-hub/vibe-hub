@@ -1,0 +1,74 @@
+auth_info:
+- information_source; https://developer.rubrik.com/Rubrik-Security-Cloud-API/authentication/:
+  - OAuth2 authorization code flow with PKCE is required. Exchange an authorization
+    code for an access token at the token endpoint using client_id, code_verifier,
+    and redirect_uri parameters. Authorization endpoint is at /oauth_authorize, token
+    endpoint at /api/oauth/token, with scope annapurna currently available. Use SHA256-based
+    PKCE with code_challenge_method S256.
+  - Service accounts authenticate using OAuth2 client credentials grant type. The
+    client application sends client_id and client_secret to the https://{RSC_FQDN}/api/client_token
+    endpoint as URL-encoded form data with grant_type=client_credentials, receives
+    an access_token in the JSON response, and uses that token for subsequent API calls.
+    Environment variables RSC_FQDN, RSC_CLIENT_ID, RSC_CLIENT_SECRET, and RSC_TOKEN
+    are used to store the FQDN, client credentials, and obtained access token respectively.
+  - The API uses OAuth2-style bearer token authentication. After obtaining an access
+    token from the authorization server (which includes client_id, access_token, and
+    expires_in fields), include the token in the Authorization header as "Bearer {access_token}"
+    for all subsequent API requests. Token expiration is configurable up to 24 hours
+    within RSC session security settings. Sessions can be revoked by sending a DELETE
+    request to the /api/session endpoint with the bearer token.
+- information_source; https://developer.rubrik.com/Rubrik-Security-Cloud-API/Data-Protection/Cloud/Job-Status/:
+  - The API uses Bearer token authentication. The access token must be passed in the
+    Authorization header as "Bearer $RSC_TOKEN" when making GraphQL requests. The
+    token value should be set in the RSC_TOKEN environment variable.
+- information_source; https://developer.rubrik.com/Rubrik-Security-Cloud-API/Data-Protection/Cloud/On-Demand-Backup/:
+  - 'Bearer token authentication is required. Send the token in the Authorization
+    header as "Authorization: Bearer $RSC_TOKEN" where RSC_TOKEN is an environment
+    variable containing the bearer token. The token is passed to the GraphQL endpoint
+    at https://example.my.rubrik.com/api/graphql.'
+pagination_info:
+- information_source; https://developer.rubrik.com/Rubrik-Security-Cloud-API/Data-Protection/Data-Center/VMware-vSphere/:
+  - The API uses cursor-based pagination with pageInfo fields. Request parameters
+    are not shown in this excerpt, but the response includes endCursor, hasNextPage,
+    hasPreviousPage, and startCursor in pageInfo. Use endCursor as the cursor parameter
+    in the next request when hasNextPage is true to retrieve subsequent pages.
+  - 'The response includes pagination fields: pageInfo contains endCursor, hasNextPage,
+    hasPreviousPage, and startCursor. Use endCursor in a subsequent query''s after
+    parameter to fetch the next page when hasNextPage is true; stop when hasNextPage
+    is false.'
+- information_source; https://developer.rubrik.com/Rubrik-Security-Cloud-API/Observability/Events/:
+  - 'The documentation describes pagination using cursor-based pagination. Request
+    pagination with the `first` parameter (for example `activityConnection(first:
+    1)` or `userAuditConnection`), and navigate pages using `pageInfo.endCursor` as
+    the cursor value in subsequent requests. Stop paginating when `pageInfo.hasNextPage`
+    is false.'
+- information_source; https://developer.rubrik.com/Rubrik-Security-Cloud-API/System-Settings/Certificate-Management/:
+  - The response includes pagination information via a pageInfo object containing
+    endCursor, startCursor, hasNextPage, and hasPreviousPage fields, indicating cursor-based
+    pagination. Use the endCursor value in subsequent requests to retrieve the next
+    page of results.
+- information_source; https://developer.rubrik.com/Rubrik-Security-Cloud-API/System-Settings/Users-and-Access/:
+  - The pagination uses cursor-based pagination with pageInfo containing hasNextPage
+    boolean and endCursor string. To get the next page, use the endCursor value as
+    the after parameter in a subsequent query request; stop when hasNextPage is false.
+possible_base_urls:
+- information_source; https://developer.rubrik.com/Rubrik-Security-Cloud-API/authentication/:
+  - https://$RSC_FQDN/api/client_token
+  - https://$RSC_FQDN/api/graphql
+possible_endpoints:
+- information_source; https://developer.rubrik.com/Rubrik-Security-Cloud-API/authentication/:
+  - DELETE https://$RSC_FQDN/api/session
+  - GET https://example.my.rubrik.com/oauth_authorize
+  - POST https://$RSC_FQDN/api/client_token
+  - POST https://$RSC_FQDN/api/graphql
+  - POST https://example.my.rubrik.com/api/oauth/token
+- information_source; https://developer.rubrik.com/Rubrik-Security-Cloud-API/Data-Protection/Cloud/Job-Status/:
+  - POST https://example.my.rubrik.com/api/graphql
+- information_source; https://developer.rubrik.com/Rubrik-Security-Cloud-API/Data-Protection/Cloud/On-Demand-Backup/:
+  - POST https://example.my.rubrik.com/api/graphql
+- information_source; https://developer.rubrik.com/Rubrik-Security-Cloud-API/Data-Protection/Cloud/AWS/EBS/:
+  - POST https://example.my.rubrik.com/api/graphql
+- information_source; https://developer.rubrik.com/Rubrik-Security-Cloud-API/Data-Protection/Cloud/AWS/EC2/:
+  - POST https://example.my.rubrik.com/api/graphql
+- information_source; https://developer.rubrik.com/Rubrik-Security-Cloud-API/Data-Protection/Cloud/AWS/RDS/:
+  - POST https://example.my.rubrik.com/api/graphql

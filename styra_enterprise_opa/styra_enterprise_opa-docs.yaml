@@ -1,0 +1,31 @@
+auth_info:
+- information_source; https://docs.styra.com/enterprise-opa/reference/configuration/using-secrets/from-hashicorp-vault:
+  - Bearer token authentication is used via the Authorization header. The token value
+    is retrieved from Vault using the `${vault(kv/data/logs:data/token)}` syntax,
+    which fetches credentials from a Vault key-value store at the path kv/data/logs
+    with the field data/token. The Authorization header must be set to "bearer {token}"
+    format. Overrides for http.send calls can dynamically inject or replace header
+    values including bearer tokens through ekm.vault.httpsend configuration keys.
+- information_source; https://docs.styra.com/das/policies/policy-authoring/test-policies:
+  - 'Bearer token authentication is required in the Authorization header. Include
+    the header ''authorization: bearer XXXXX'' where XXXXX is your bearer token. Additionally,
+    the ''styra-tenant'' header with your tenant name must be included in requests
+    to Styra APIs.'
+possible_base_urls:
+- information_source; https://docs.styra.com/enterprise-opa/reference/configuration/using-secrets/from-hashicorp-vault:
+  - https://myservice.corp.com/v1/logs
+- information_source; https://docs.styra.com/enterprise-opa/reference/configuration/data/http:
+  - https://internal.example.com/api/users
+possible_endpoints:
+- information_source; https://docs.styra.com/enterprise-opa/reference/configuration/using-secrets/from-hashicorp-vault:
+  - POST https://myservice.corp.com/v1/logs
+- information_source; https://docs.styra.com/apps:
+  - POST /v1/data/authz
+  - POST /v1/data/{path:.+}
+- information_source; https://docs.styra.com/apps/advanced-architecture:
+  - POST /documents/1/approve
+- information_source; https://docs.styra.com/enterprise-opa/reference/configuration/data/http:
+  - GET https://internal.example.com/api/users
+  - POST https://internal.example.com/api/users
+- information_source; https://docs.styra.com/das/policies/policy-authoring/test-policies:
+  - POST https://TENANT.styra.com/v1/systems/YYYYY/validate/compliance

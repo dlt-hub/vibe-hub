@@ -1,0 +1,65 @@
+auth_info:
+- information_source; https://nationbuilder.com/api_quickstart:
+  - OAuth 2.0 authorization code flow with client credentials. Exchange authorization
+    code for access token via POST to https://{slug}.nationbuilder.com/oauth/token
+    with JSON body containing grant_type (authorization_code), code, client_id, client_secret,
+    and redirect_uri. Response includes access_token (bearer token) and refresh_token.
+    Use access_token in query parameter access_token on API requests. Access tokens
+    expire after 24 hours and require refresh token flow implementation to obtain
+    new tokens.
+- information_source; https://support.nationbuilder.com/en/articles/9180281-api-authentication-quick-start-guide:
+  - 'NationBuilder uses OAuth2 with refresh token flow. To refresh an expired access
+    token, make a POST request to `https://{slug}.nationbuilder.com/oauth/token` with
+    form parameters: `grant_type=refresh_token`, `refresh_token=<your_refresh_token>`,
+    `client_id=<your_client_id>`, and `client_secret=<your_client_secret>`. The response
+    includes a new `access_token` (Bearer token type), `refresh_token`, `expires_in`
+    (seconds, default 86400), and `created_at` timestamp. You can either proactively
+    refresh before expiration using the `expires_in` value, or handle the 401 `token_expired`
+    error response when the token has already expired and then refresh.'
+  - OAuth2 authorization code flow is used. Exchange an authorization code for an
+    access token by posting to the token endpoint with grant_type=authorization_code,
+    client_id, client_secret, and redirect_uri. The response contains an access_token
+    with token_type bearer. Use the access token in subsequent API requests via the
+    access_token query parameter.
+- information_source; https://support.nationbuilder.com/en/articles/9559128-generating-api-tokens:
+  - NationBuilder API uses OAuth2 bearer token authentication. Access tokens are sent
+    in the Authorization header as "Bearer YOUR_ACCESS_TOKEN" and expire after 24
+    hours. To refresh an expired token, send a POST request to https://www.nationbuilder.com/oauth/token
+    with grant_type set to "refresh_token", along with your refresh_token, client_id,
+    and client_secret in the JSON request body.
+- information_source; https://support.nationbuilder.com/en/articles/9903805-api-authentication-guide:
+  - NationBuilder uses OAuth2 authorization code flow. Admins must log in and grant
+    application access to their nation. After authorization, exchange the code (via
+    POST to https://{slug}.nationbuilder.com/oauth/token with grant_type=authorization_code,
+    code, client_id, client_secret, and redirect_uri in JSON body) for an access token.
+    The code expires after 10 minutes. Obtain client_id, client_secret, and redirect_uri
+    from Settings > Developer > Your apps.
+pagination_info:
+- information_source; https://nationbuilder.com/donations_api:
+  - 'The response includes pagination fields: a "next" field containing the URL for
+    the next page of results (with query parameters including limit and succeeded_since),
+    and a "prev" field for the previous page (null when at the start). To paginate,
+    use the URL provided in the "next" field for subsequent requests until "next"
+    becomes null.'
+  - Use the `limit` query parameter (max 100, optional) to control page size. The
+    response includes `next` and `prev` fields containing full URLs with `__nonce`
+    and `__token` pagination tokens; use the `next` URL to fetch the next page, and
+    stop when `next` is null.
+possible_base_urls:
+- information_source; https://nationbuilder.com/api_quickstart:
+  - https://{slug}.nationbuilder.com/api/v1
+  - https://{slug}.nationbuilder.com/oauth/token
+possible_endpoints:
+- information_source; https://nationbuilder.com/api_quickstart:
+  - GET https://{slug}.nationbuilder.com/api/v1/people?access_token=...
+  - POST https://{slug}.nationbuilder.com/oauth/token
+- information_source; https://nationbuilder.com/donations_api:
+  - DELETE /api/v1/donations/:id
+  - GET /api/v1/donations
+  - GET /api/v1/donations/search
+  - GET https://foobar.nationbuilder.com/api/v1/donations
+  - GET https://foobar.nationbuilder.com/api/v1/donations/search
+  - POST /api/v1/donations
+  - PUT /api/v1/donations/:id
+- information_source; https://support.nationbuilder.com/en/articles/10857983-interactive-api-documentation-endpoint-explorer:
+  - GET https://nationbuilder.com/api/v2/reference

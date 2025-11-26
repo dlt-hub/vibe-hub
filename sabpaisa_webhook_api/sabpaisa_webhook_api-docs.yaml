@@ -1,0 +1,46 @@
+auth_info:
+- information_source; https://developer.sabpaisa.in/docs/webhook-api/:
+  - Merchant credentials provided by SabPaisa are required for authentication. Webhook
+    payloads are encrypted and must be decrypted using the same auth key, auth IV,
+    and algorithms provided by SabPaisa's payment gateway. Your webhook endpoint must
+    respond with a 200 OK status to acknowledge receipt.
+- information_source; https://developer.sabpaisa.in/docs/laravel/:
+  - Encryption-based request authentication using AES256-HMAC-SHA384. Merchants must
+    encrypt request data (encData) using an authKey and authIV via AES256HMACSHA384HEX
+    encryption, and decrypt callback responses (encResponse) using the same keys and
+    algorithm. The encrypted payload is sent as the encData parameter in requests
+    and received as encResponse in POST callbacks to the callbackUrl.
+- information_source; https://developer.sabpaisa.in/docs/java/:
+  - Requests and callbacks use AES256 encryption with HMAC-SHA384 authentication.
+    Encryption requires authKey and authIV parameters, and responses are sent as an
+    encResponse parameter via POST to the merchant's callbackUrl. Decryption uses
+    the same authKey and authIV to retrieve plaintext parameters separated by ampersands.
+- information_source; https://developer.sabpaisa.in/docs/net/:
+  - The API requires encrypted request data (encData parameter) containing client
+    credentials and transaction details. The encData string must include clientCode,
+    transUserName, and transUserPassword along with transaction parameters like payerName,
+    payerEmail, payerMobile, clientTxnId, amount, callbackUrl, and channelId. All
+    mandatory parameters must be present in the encrypted string or the request will
+    fail with a "Missed Mandatory parameter null" error.
+- information_source; https://developer.sabpaisa.in/docs/python/:
+  - The API uses encryption-decryption for request and response handling. Requests
+    must include an encData parameter containing encrypted data using the provided
+    authKey and authIV. Responses are sent via POST callback to the callbackUrl with
+    an encResponse parameter that must be decrypted using the same authKey and authIV.
+    Transaction IDs (TxnId) must be randomly generated for each transaction to avoid
+    duplicate transaction ID errors from the payment gateway.
+possible_base_urls:
+- information_source; https://developer.sabpaisa.in/docs/refund-api/:
+  - https://gateway.sabpaisa.in/sabpaisa/refund
+  - https://stage-gateway.sabpaisa.in/sabpaisa/refund
+possible_endpoints:
+- information_source; https://developer.sabpaisa.in/docs/refund-api/:
+  - POST https://gateway.sabpaisa.in/sabpaisa/refund
+  - POST https://stage-gateway.sabpaisa.in/sabpaisa/refund
+- information_source; https://developer.sabpaisa.in/docs/laravel/:
+  - POST /callbackUrl
+- information_source; https://developer.sabpaisa.in/docs/java/:
+  - POST callbackUrl
+- information_source; https://developer.sabpaisa.in/docs/node-js/:
+  - POST /callback
+  - POST callbackUrl

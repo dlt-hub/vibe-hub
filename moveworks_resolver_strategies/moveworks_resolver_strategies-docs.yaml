@@ -1,0 +1,47 @@
+auth_info:
+- information_source; https://help.moveworks.com/docs/acl-platform-permissions-update-set-module:
+  - The Scripted REST API requires authentication via an Authorization header. Requests
+    to endpoints like GET /api/488834/moveworks/base/version must include an Authorization
+    header (exact format not specified in documentation) to ensure only authorized
+    users can access the custom endpoints.
+  - The endpoint requires an Authorization header with credentials. The exact format
+    of the auth header value is not specified in the documentation provided, so the
+    specific scheme (Bearer token, API key, basic auth, etc.) cannot be determined
+    from this excerpt. Include the Authorization header in requests to the GET moveworks/acl/get_access_info
+    endpoint.
+  - To prevent unauthorized access to the Scripted REST API, a Moveworks ACL with
+    type execute is created and associated with the moveworks_user role. Access to
+    the API endpoint requires the moveworks_user role assignment.
+- information_source; https://help.moveworks.com/docs/update-set-modules:
+  - Authorization header is required for the `/acl/get_access_info` endpoint. Pass
+    credentials via the Authorization header in the request (exact header name and
+    format not specified in documentation).
+  - The Scripted REST API requires authentication via an ACL with type execute associated
+    with the moveworks_user role. For the web chat widget, JWT authentication is used
+    with a ServiceNow token provider specified by the moveworks.webchat.jwt_provider_sys_id
+    system property, and token lifetime is configured via moveworks.webchat.jwt_life_in_seconds.
+pagination_info:
+- information_source; https://help.moveworks.com/reference/data-api-overview:
+  - Data API uses OData pagination with a fixed page size of 500 records per page.
+    The response includes an `@odata.nextLink` field containing the exact URL for
+    the next request, which uses `$skip` and `$orderby` parameters to fetch subsequent
+    records. Pagination is complete when `@odata.nextLink` is absent from the response.
+possible_base_urls:
+- information_source; https://help.moveworks.com/docs/acl-platform-permissions-update-set-module:
+  - '{{snow_url}}/api/488834'
+- information_source; https://help.moveworks.com/docs/data-api:
+  - https://api.moveworks.ai/export/v1
+possible_endpoints:
+- information_source; https://help.moveworks.com/docs/acl-platform-permissions-update-set-module:
+  - GET /api/488834/moveworks/acl/get_access_info
+  - GET /api/488834/moveworks/base/version
+  - POST /api/488834/moveworks/dev_essentials/bypass
+  - POST {{snow_url}}/api/488834/moveworks/acl/config
+  - PUT /api/488834/moveworks/acl/config
+  - PUT /api/488834/moveworks/dev_essentials/bypass
+- information_source; https://help.moveworks.com/docs/data-api:
+  - GET https://api.moveworks.ai/export/v1/records/conversations
+- information_source; https://help.moveworks.com/docs/update-set-modules:
+  - GET /api/488834/moveworks/acl/get_access_info
+  - GET /api/488834/moveworks/base/version
+  - GET moveworks/acl/get_access_info

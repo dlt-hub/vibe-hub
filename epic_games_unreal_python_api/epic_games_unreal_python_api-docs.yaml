@@ -1,0 +1,51 @@
+auth_info:
+- information_source; https://dev.epicgames.com/community/learning/tutorials/ZdXD/call-rest-api-using-http-json-from-ue5-c:
+  - Space-Track.org REST API uses HTTP POST with form-encoded credentials. Authentication
+    requires sending identity and password as POST body parameters (identity=<username>&password=<password>)
+    along with the query, allowing login and data retrieval in a single call. The
+    Content-Type header must be set to application/x-www-form-urlencoded.
+- information_source; https://dev.epicgames.com/docs/game-services/connect/connect-reference:
+  - ID Tokens are JWTs obtained after EOS Connect authentication and must include
+    the `kid` parameter in the header. Backend services validate tokens using the
+    JWKS endpoint at https://api.epicgames.dev/auth/v1/oauth/jwks with standard JWT
+    libraries that support automatic JWKS caching.
+- information_source; https://dev.epicgames.com/docs/web-api-ref/authentication:
+  - OAuth 2.0 authentication with authorization code flow for server-side applications.
+    Client credentials (Client ID and Secret) are passed via Basic Authorization header
+    to the token endpoint at https://api.epicgames.dev/epic/oauth/v2/token. The server
+    exchanges an authorization code for an access token, then includes the access
+    token on all subsequent requests to Epic services. POST parameters include grant_type,
+    deployment_id, and scope. Token revocation uses https://api.epicgames.dev/epic/oauth/v2/revoke
+    per RFC 7009.
+  - OAuth2 authorization code flow with JWT access tokens. Client redirects user to
+    authorization endpoint with client_id, redirect_uri, response_type=code, and scope=basic_profile.
+    After user authenticates, authorization code is returned via redirect with optional
+    state parameter for CSRF protection. Exchange authorization code for access token
+    using authorization_code grant type. Access tokens are JWTs validated offline
+    using public keys from JWK Set endpoint at https://api.epicgames.dev/ (endpoint
+    URL appears truncated in documentation).
+  - OAuth2 password grant flow with Basic authentication. Send POST request to /epic/oauth/v2/token
+    with Authorization header using Basic auth (base64-encoded credentials), and include
+    grant_type, deployment_id, scope, username, and password in the request body as
+    form-urlencoded data. The response provides access_token, expires_in, expires_at,
+    account_id, client_id, and application_id. For token refresh, use grant_type=refresh_token
+    with refresh_token parameter in the request body.
+possible_base_urls:
+- information_source; https://dev.epicgames.com/docs/game-services/connect/connect-reference:
+  - https://api.epicgames.dev/auth/v1/oauth/jwks
+- information_source; https://dev.epicgames.com/docs/web-api-ref/authentication:
+  - https://api.epicgames.dev
+possible_endpoints:
+- information_source; https://dev.epicgames.com/docs/game-services/connect/connect-reference:
+  - GET https://api.epicgames.dev/auth/v1/oauth/jwks
+- information_source; https://dev.epicgames.com/docs/web-api-ref/authentication:
+  - GET https://api.epicgames.dev/
+  - GET https://api.epicgames.dev/epic/id/v2/accounts
+  - POST /epic/oauth/v2/token
+  - POST https://api.epicgames.dev/epic/oauth/v2/revoke
+  - POST https://api.epicgames.dev/epic/oauth/v2/token
+  - POST https://api.epicgames.dev/epic/oauth/v2/tokenInfo
+- information_source; https://dev.epicgames.com/docs/web-api-ref/connect-web-api:
+  - GET /user/v1/account
+  - GET /user/v1/product
+  - GET https://api.epicgames.dev/user/v1/accounts

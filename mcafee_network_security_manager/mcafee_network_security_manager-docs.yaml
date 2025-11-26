@@ -1,0 +1,43 @@
+auth_info:
+- ? information_source; https://docs.trellix.com/bundle/network-security-platform-9.2.x-manager-api-reference-guide/page/GUID-03879411-D0E1-41E5-A919-AFC3C01D7B39.html
+  : - 'Authentication uses a custom NSM-SDK-API header containing a base64-encoded
+      credential string. After initial authentication via the Session resource URL
+      (which returns user ID and session ID), these credentials must be passed in
+      the NSM-SDK-API header for all subsequent resource requests. TLS 1.2 is required
+      for all connections.
+
+
+      Header name: NSM-SDK-API
+
+      Example value format: base64-encoded string (e.g., QUJDM0FDOUFCMzlFRTMyMkMyNjFCNzMzMjcyRkM0OUY6MQ==)
+
+      Initial authentication: POST to Session resource URL to obtain user ID and session
+      ID
+
+      Subsequent requests: Include NSM-SDK-API header with credentials for validation
+      and authorization
+
+      Protocol requirement: TLS 1.2 only'
+    - The API uses a custom header-based authentication scheme. The NSM-SDK-API header
+      must contain a base64-encoded credential string in the format `<credential>:<token>`
+      (e.g., base64 encoding of `ABC3AC9AB39EE322C261B733272FC49F:1` becomes `QUJDM0FDOUFCMzlFRTMyMkMyNjFCNzMzMjcyRkM0OUY6MQ==`).
+      The user must have super user role in the Manager. Additionally, the Accept
+      header should be set to `application/vnd.nsm.v1.0+json` and Content-Type to
+      `application/json`, with exceptions for certain endpoints using `multipart/form-data;
+      boundary=<x>`.
+possible_base_urls:
+- ? information_source; https://docs.trellix.com/bundle/network-security-platform-9.2.x-manager-api-reference-guide/page/GUID-03879411-D0E1-41E5-A919-AFC3C01D7B39.html
+  : - https://<nsm_ip>/sdkapi
+    - https://<nsm_ip>/sdkapi/
+possible_endpoints:
+- ? information_source; https://docs.trellix.com/bundle/network-security-platform-9.2.x-manager-api-reference-guide/page/GUID-03879411-D0E1-41E5-A919-AFC3C01D7B39.html
+  : - GET /domain/sslconfiguration/exportresigncert
+    - GET https://<nsm_ip>/sdkapi/heartbeat
+    - POST /domain/<domain_id>/ exceptions/import
+    - POST /domain/<domain_id>/ firewallpolicy/import
+    - POST /domain/<domain_id>/ipsreconpolicy/import
+    - POST /domain/<domain_id>/malwarepolicy/import
+    - POST /sensor/<sensor_id>/action/sslkey
+    - POST https://<nsm_ip>/sdkapi/domainnameexceptions/import
+    - PUT /botnetdetectors/import/manual
+    - PUT /devicesoftware

@@ -1,0 +1,72 @@
+auth_info:
+- information_source; https://docs.openagentsbuilder.com/api/20-executing-flow/:
+  - API key authentication is required via Bearer token in the Authorization header.
+    Additionally, a database-id-hash header must be provided to reference your tenant/database.
+    An optional Agent-Session-Id header can be included to continue an existing session;
+    otherwise a new session is generated automatically.
+  - Authorization header using Bearer token scheme. Send the API key via the Authorization
+    header as "Bearer ${OPEN_AGENT_BUILDER_API_KEY}". Additionally, include the database-id-hash
+    header with the value "35f5c5b139a6b569d4649b788c1851831eb44d8e32b716b8411ec6431af8121d"
+    (or your actual hash). Both headers are required for API requests.
+- information_source; https://docs.openagentsbuilder.com/guides/5-integrating-with-the-website/:
+  - 'API Key authentication is required for advanced API access. Locate your API Key
+    (format: `ad_key_xxxxxxx`) in the API Access section of the dashboard, then authenticate
+    by adding the header `Authorization: Bearer ${OPEN_AGENTS_BUILDER_API_KEY}` to
+    HTTP requests. Additionally, include the header `x-database-hash` with the relevant
+    database/instance identifier (e.g., `524a624e60b83b6c2f1f63970c48aee0c2b83b33827fd4129f85a37e9e55`).'
+- information_source; https://docs.openagentsbuilder.com/api/0-creating-api-key/:
+  - 'The API uses Bearer token authentication with an API key and requires an additional
+    header for database identification. Set the environment variable OPEN_AGENTS_BUILDER_API_KEY
+    to your API key value (format: ad_key_eyJhbGciOiJIUzI1NiJ9...). Include two headers
+    in every request: Authorization header with value "Bearer {api_key}" and database-id-hash
+    header with your database hash value.'
+- information_source; https://docs.openagentsbuilder.com/api/1-working-with-api-client/:
+  - 'The client uses bearer token authentication with an API key. Requests automatically
+    include the Authorization header with the format Authorization: Bearer <API_KEY>.
+    Additionally, the client sends a Database-Id-Hash header for multi-tenant isolation.
+    The API key should be provided when initializing the client.'
+pagination_info:
+- information_source; https://docs.openagentsbuilder.com/api/10-agent-api/:
+  - Pagination uses query parameters limit and offset. The limit parameter specifies
+    the number of results per page, and offset specifies the starting position (e.g.,
+    ?limit=10&offset=0). The response returns an array of results, with offset used
+    to fetch subsequent pages by incrementing its value.
+  - Use query parameters limit (default 10) and offset (default 0) to paginate results.
+    The response returns an array of agent objects; construct subsequent requests
+    by incrementing offset by the limit value until fewer results than limit are returned,
+    indicating the final page.
+- information_source; https://docs.openagentsbuilder.com/api/11-result-api/:
+  - Pagination is supported for listing results with limit and offset query parameters.
+    Use GET /api/agent/[id]/result?limit=...&offset=... to retrieve paginated results
+    for a specific agent, where limit controls page size and offset controls the starting
+    position.
+  - Pagination uses limit and offset query parameters. limit specifies the number
+    of results per page (e.g., 10), offset specifies the starting position (e.g.,
+    0). Results can be ordered by userName, userEmail, createdAt, or updatedAt, with
+    createdAt as default. A query parameter enables partial string search across userEmail,
+    userName, or sessionId.
+- information_source; https://docs.openagentsbuilder.com/api/12-session-api/:
+  - Pagination uses limit and offset query parameters. The limit parameter controls
+    the number of results per page, offset specifies the starting position, and orderBy
+    controls sort order (userName, userEmail, createdAt, or updatedAt, defaulting
+    to updatedAt descending). The response returns a rows array containing SessionDTO
+    objects and a total field indicating the total number of results available.
+possible_base_urls:
+- information_source; https://docs.openagentsbuilder.com/api/20-executing-flow/:
+  - https://openagentsbuilder.com/api
+- information_source; https://docs.openagentsbuilder.com/guides/5-integrating-with-the-website/:
+  - https://app.openagentsbuilder.com/api/agent
+possible_endpoints:
+- information_source; https://docs.openagentsbuilder.com/api/20-executing-flow/:
+  - POST /api/agent/${agentId}/exec
+  - POST /api/agent/[id]/exec
+  - POST https://app.openagentsbuilder.com/api/agent/m8r22uvT2_KsMODoEw9ag/exec
+  - POST https://openagentsbuilder.com/api/agent/{agentId}/exec
+- information_source; https://docs.openagentsbuilder.com/guides/5-integrating-with-the-website/:
+  - GET https://app.openagentsbuilder.com/api/agent
+- information_source; https://docs.openagentsbuilder.com/tutorials/20-nda-analyzer/:
+  - GET /api/attachment/export
+  - GET /api/attachment/query
+  - GET /api/attachment/{id}
+  - GET /storage/attachment/{dbHash}/{id}
+  - PUT /api/attachment

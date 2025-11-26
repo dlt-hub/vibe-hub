@@ -1,0 +1,76 @@
+auth_info:
+- information_source; https://docs.hevodata.com/sources/engg-analytics/streaming/rest-api/:
+  - 'Hevo REST API Source supports multiple authentication methods: No Auth (default),
+    Basic Auth using HTTP Basic Authentication with username and password, and custom
+    headers for credentials. Select the appropriate method based on your REST API
+    Source requirements; if using custom headers, choose No Auth and specify credentials
+    in the headers section instead.'
+  - Hevo supports OAuth2 token exchange for REST API Sources, where client ID and
+    client secret must be manually entered and sent as form fields in the request
+    body. However, Hevo does not support OAuth flows requiring base64-encoded client
+    credentials in the Authorization header, which may cause token creation to fail
+    for such APIs.
+  - OAuth 2.0 authorization flow is required. Hevo uses access tokens obtained via
+    OAuth 2.0 to authenticate API requests. To configure OAuth, provide Client ID,
+    Client Secret, Auth URL (authorization server endpoint), Token URL (token exchange
+    endpoint), and optional Scopes (comma or space-delimited permissions list). The
+    access token is then used by Hevo to make authenticated API requests to your Source.
+- information_source; https://api-docs.hevodata.com/reference/response:
+  - The API uses API key and secret authentication. A 401 Unauthorized error indicates
+    an invalid API key and secret pair, and a 403 Forbidden error indicates the authenticated
+    user lacks permissions for the requested operation. The documentation references
+    an authentication section for base URLs and credential details.
+- information_source; https://api-docs.hevodata.com/reference/pagination:
+  - 'Authorization: Basic authentication scheme. Credentials are sent in the Authorization
+    header as a Base64-encoded string in the format "Basic <base64(username:password)>".
+    Example header: Authorization: Basic VFlZPK3SV1pJTTpJcENJVEU0QzM6K2RwNmNRT1VLEQ=='
+pagination_info:
+- information_source; https://docs.hevodata.com/sources/engg-analytics/streaming/rest-api/:
+  - Hevo maintains an offset to track pagination progress through REST API responses.
+    When Hevo reaches the last page (indicated by an empty string in the next page
+    pointer for session-based pagination), it flushes the offset and restarts from
+    the beginning on the next Pipeline run to capture new and updated data. Hevo does
+    not support session-based pagination schemes that return empty strings to signal
+    the end of data, causing offset resets and potential data re-ingestion.
+  - Pagination is supported only when the REST API Source accepts pagination method
+    information through Query Params. For POST methods, pagination parameters cannot
+    be specified in the request body or headers since the request body cannot be edited
+    during Pipeline runs; pagination is only supported via Query Params.
+- information_source; https://api-docs.hevodata.com/reference/pagination:
+  - Use cursor-based pagination with the `starting_after` query parameter. Include
+    `limit` to control page size. The response contains `pagination.starting_after`
+    (cursor for next page) and `pagination.count` (records returned). Stop when the
+    `pagination` object is absent from the response.
+- information_source; https://api-docs.hevodata.com/reference/getallpipelines:
+  - The API uses a limit query parameter to control pagination. The example shows
+    limit=20, indicating how many results to return per page. However, the documentation
+    chunk provided does not include details about response fields for navigation (such
+    as next, offset, total_count, or has_more) or how to retrieve subsequent pages.
+  - 'The API uses cursor-based pagination with two query parameters: starting_after
+    (string, optional) to specify the cursor position, and limit (int32, optional,
+    defaults to 20) to control the number of results per page. Use the starting_after
+    value from the response to fetch the next page.'
+possible_base_urls:
+- information_source; https://docs.hevodata.com/sources/engg-analytics/streaming/rest-api/:
+  - https://api.thedogapi.com/v1
+  - https://in.hevodata.com/rest-api/oauth
+possible_endpoints:
+- information_source; https://api-docs.hevodata.com/reference/pagination:
+  - GET https://asia.hevodata.com/api/public/v2.0/pipelines
+- information_source; https://api-docs.hevodata.com/reference/query-modes-for-pipelines:
+  - PUT https://us.hevodata.com/api/public/v2.0/pipelines/<pipeline_id>/objects/<object_name>/query-mode
+- information_source; https://api-docs.hevodata.com/reference/creating-destinations-with-hevo-api:
+  - POST https://us.hevodata.com/api/public/v2.0/destinations
+- information_source; https://api-docs.hevodata.com/reference/updating-the-destination-configuration:
+  - GET /reference/getdestination
+  - PUT https://us.hevodata.com/api/public/v2.0/destinations/110
+- information_source; https://api-docs.hevodata.com/reference/updating-transformation-code-using-hevo-api:
+  - PUT https://us.hevodata.com/api/public/v2.0/pipelines/329/transformations
+- information_source; https://api-docs.hevodata.com/reference/getpipeline:
+  - GET https://us.hevodata.com/api/public/v2.0/pipelines/{id}
+- information_source; https://api-docs.hevodata.com/reference/deletepipeline:
+  - DELETE https://us.hevodata.com/api/public/v2.0/pipelines/{id}
+- information_source; https://api-docs.hevodata.com/reference/updatesourceconfig:
+  - PUT https://us.hevodata.com/api/public/v2.0/destinations/{id}
+- information_source; https://api-docs.hevodata.com/reference/getpipelineobjectstats:
+  - GET https://us.hevodata.com/api/public/v2.0/pipelines/{id}/

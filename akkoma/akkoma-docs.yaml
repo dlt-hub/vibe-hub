@@ -1,0 +1,55 @@
+auth_info:
+- information_source; https://docs.akkoma.dev/stable-docs/configuration/cheatsheet/:
+  - 'Akkoma supports OAuth 2.0 as a provider with configurable token expiration and
+    refresh token handling. Clients authenticate using the Authorization header or
+    access_token URI parameter when accessing protected endpoints like GET /api/v1/accounts/verify_credentials.
+
+
+    Key OAuth 2.0 configuration parameters: token_expires_in (access token lifetime
+    in seconds), issue_new_refresh_token (whether to generate new refresh tokens),
+    clean_expired_tokens (background job to remove expired tokens, defaults to false).
+    OAuth endpoints: POST /api/v1/apps (create client app), GET/POST /oauth/authorize
+    (authorization form), POST /oauth/token (create/renew tokens), POST /oauth/revoke
+    (revoke tokens). Authentication on protected endpoints uses either Authorization
+    header or access_token query parameter.'
+- information_source; https://docs.akkoma.dev/stable/development/API/pleroma_api/:
+  - Authentication is required (admin) for these endpoints. The documentation does
+    not specify the exact mechanism for sending credentials (e.g., header name, parameter
+    name, or token format). Without details on how to pass admin authentication, the
+    specific implementation cannot be determined from this documentation.
+  - Requests can be authenticated with an OAuth token (RFC 6749), the _pleroma_key
+    cookie, or HTTP Basic Authentication. Authentication is optional for most endpoints
+    unless explicitly required per endpoint.
+  - 'The API uses token-based authentication. Authentication is required for certain
+    endpoints (marked as "Authentication: required" or "Authentication: required (admin)").
+    Send credentials via the Authorization header as a bearer token. Admin-level access
+    is needed for pack creation and management endpoints. The specific header name
+    and token format are not detailed in this documentation excerpt.'
+pagination_info:
+- information_source; https://docs.akkoma.dev/stable/development/API/pleroma_api/:
+  - The GET /api/v1/pleroma/emoji/pack endpoint supports pagination via query parameters
+    page (default 1) and page_size (default 30) to paginate through emoji files. The
+    response includes files_count indicating total emoji count in the pack.
+  - 'The `GET /api/v1/pleroma/emoji/packs/remote` endpoint supports pagination via
+    query parameters: `page` (page number, default 1) and `page_size` (page size,
+    default 50). The response is a JSON hashmap with pack names and contents; construct
+    subsequent requests by incrementing the page parameter.'
+  - page and page_size are query parameters for pagination. page defaults to 1 and
+    page_size defaults to 50. The response includes a count key for total pack count.
+    Use page and page_size to navigate through results.
+possible_base_urls:
+- information_source; https://docs.akkoma.dev/stable/development/API/pleroma_api/:
+  - https://docs.akkoma.dev/stable/development/API/pleroma_api
+possible_endpoints:
+- information_source; https://docs.akkoma.dev/stable-docs/configuration/cheatsheet/:
+  - GET /api/v1/accounts/verify_credentials
+  - GET /oauth/authorize
+  - POST /api/v1/apps
+  - POST /oauth/authorize
+  - POST /oauth/revoke
+  - POST /oauth/token
+- information_source; https://docs.akkoma.dev/stable/development/API/pleroma_api/:
+  - DELETE /api/v1/pleroma/aliases
+  - DELETE /api/v1/pleroma/emoji/pack?name=:name
+  - DELETE /api/v1/pleroma/emoji/packs
+  - DELETE /api/v1/pleroma/emoji/packs/files

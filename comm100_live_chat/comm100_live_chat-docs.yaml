@@ -1,0 +1,63 @@
+auth_info:
+- information_source; https://developer.comm100.com/x/docs/server-api-reference:
+  - 'Comm100 provides two authentication methods: API_key Authentication and OAuth
+    Authentication. For API_key Authentication, you must use your email and API_KEY
+    for each method call, sent via HTTP. The documentation references an Authentication
+    page with full details on both methods and how to send credentials.'
+- information_source; https://developer.comm100.com/x/docs/server-api-introduction:
+  - The Comm100 API uses an access token-based authentication system. Access tokens
+    are generated through a separate API request and must be included in subsequent
+    API calls. The API domain varies based on your platform (api1, api2, api3, or
+    api5 corresponding to portal domains), and all requests except token generation
+    must use the https://api[N].comm100.io/api/v3/ base URL with https protocol.
+  - The username or API key must be provided for authentication. A 401 Unauthorized
+    error is returned if the username or API key is invalid. The documentation does
+    not specify the exact header names, parameter names, or how to send these credentials
+    in requests.
+- information_source; https://developer.comm100.com/x/docs/server-api-authentication:
+  - OAuth2 password grant flow is used for authentication. To obtain an access token,
+    send a POST request to the /oauth/token endpoint with grant_type set to password,
+    along with email and password parameters. The response includes an access_token
+    with token_type bearer and an expires_in value in seconds. Use the access token
+    in the Authorization header as "Bearer {access_token}" when calling API endpoints.
+    Tokens expire and must be refreshed by requesting a new token.
+- information_source; https://developer.comm100.com/x/docs/server-api-livechat-auto-distribution:
+  - You need Manage Settings permission to update Auto Distribution.
+pagination_info:
+- information_source; https://developer.comm100.com/x/docs/server-api-livechat-chat:
+  - Pagination uses `pageIndex` (integer, optional, default 1) and `pageSize` (integer,
+    optional, default 50) as query string parameters. The response structure for indicating
+    total pages or a next page indicator is not described in the provided documentation.
+  - The API uses cursor-based pagination with response fields `previousPage` and `nextPage`
+    containing full URLs to navigate pages. The response also includes `totalCount`
+    for the total number of results. Construct the next request by using the URL provided
+    in the `nextPage` field; stop when `nextPage` is empty.
+- information_source; https://developer.comm100.com/x/docs/server-api-livechat-offline-message:
+  - Pagination uses query parameter pageIndex (optional, defaults to 1) to request
+    pages. Response includes total (total count), previousPage and nextPage (full
+    URLs for navigation), and an array of results. Stop paginating when nextPage is
+    empty.
+  - The API uses offset-based pagination with query parameters pageIndex (defaults
+    to 1) and pageSize (defaults to 50). The response includes total count, previousPage
+    and nextPage URLs for navigation, and an offlineMessages array containing the
+    paginated results.
+- information_source; https://developer.comm100.com/x/docs/server-api-global-setting-agent:
+  - Pagination uses a URL-based approach with count, nextPage, and previousPage fields
+    in the response. The nextPage field contains the full URL for the next page (including
+    pageIndex parameter), and pagination ends when nextPage is empty.
+possible_base_urls:
+- information_source; https://developer.comm100.com/x/docs/search:
+  - https://api1.comm100.io
+  - https://api1.comm100.io/FileService/v1
+possible_endpoints:
+- information_source; https://developer.comm100.com/x/docs/search:
+  - GET /api/v3/globalSettings/agents/{agentId}
+  - GET /api/v3/globalSettings/departments
+  - GET /api/v3/globalSettings/departments/{id}
+  - GET /api/v3/globalSettings/permissions
+  - GET /api/v3/globalSettings/roles
+  - GET /api/v3/globalSettings/roles/{roleId}/permissions
+  - GET /api/v3/livechat/agents/{id}
+  - GET /api/v3/livechat/campaigns/{campaignId}/invitation/autoInvitations
+  - GET /api/v3/livechat/campaigns/{campaignId}/invitation/autoInvitations/{id}
+  - GET /api/v3/livechat/settings

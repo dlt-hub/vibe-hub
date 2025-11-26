@@ -1,0 +1,47 @@
+auth_info:
+- information_source; https://devcenter.heroku.com/articles/add-on-partner-api-reference:
+  - Grant code exchange is required for add-on partners to interact with the Platform
+    API. Exchange the oauth_grant:code from the provision request for an access_token
+    and refresh_token by making a request to the token endpoint. The access_token
+    is used to authenticate subsequent Platform API requests and is scoped to the
+    specific add-on resource it was created for; use the refresh_token to obtain new
+    access_tokens when the current one expires. Each add-on resource requires its
+    own access_token, and all API responses will be scoped to that add-on resource.
+  - HTTP Basic Authentication is required. The Authorization header must contain "Basic"
+    followed by a base64-encoded string of "addon-slug:super-secret", where addon-slug
+    is the add-on partner identifier and super-secret is the shared secret credential
+    provided during partner setup.
+  - Heroku provides an OAuth access token for authenticating with the Platform API
+    for Partners during asynchronous deprovisioning workflows. The add-on must use
+    this OAuth access token to authenticate requests when performing deprovisioning
+    actions on the Heroku platform after receiving a deprovisioning request with the
+    X-Async-Deprovision-Allowed header set to true.
+  - OAuth2 authorization code flow is used to obtain access tokens. Exchange an authorization
+    code and client_secret via POST to /oauth/token with grant_type=authorization_code
+    to receive an access_token (expires in seconds specified by expires_in, default
+    28800), refresh_token (valid for add-on lifetime), and token_type Bearer. Use
+    the access_token in the Authorization header as "Bearer {access_token}" for Platform
+    API requests. Refresh tokens can be exchanged for new access tokens using the
+    client_secret.
+  - OAuth2 refresh token flow is used to obtain access tokens. Send a POST request
+    to id.heroku.com:443/oauth/token with grant_type=refresh_token, refresh_token,
+    and client_secret as form-encoded parameters. The response includes access_token
+    (expires in 28800 seconds by default), refresh_token, expires_in, and token_type.
+    Use the access_token in the Authorization header to access the Platform API scoped
+    to a single add-on resource.
+possible_base_urls:
+- information_source; https://devcenter.heroku.com/articles/add-on-partner-api-reference:
+  - api.heroku.com:443
+  - https://api.heroku.com
+possible_endpoints:
+- information_source; https://devcenter.heroku.com/articles/add-on-partner-api-reference:
+  - DELETE /heroku/resources/:resource_uuid
+  - GET https://api.heroku.com:443/addons/01234567-89ab-cdef-0123-456789abcdef
+  - PATCH /addons/01234567-89ab-cdef-0123-456789abcdef/config
+  - POST /addons/01234567-89ab-cdef-0123-456789abcdef/actions/deprovision
+  - POST /addons/01234567-89ab-cdef-0123-456789abcdef/actions/provision
+  - POST /heroku/resources
+  - POST /heroku/sso
+  - POST https://api.heroku.com:443/actions/deprovision
+  - POST https://id.heroku.com:443/oauth/token
+  - PUT /heroku/resources/:resource_uuid

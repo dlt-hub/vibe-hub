@@ -1,0 +1,68 @@
+auth_info:
+- information_source; https://www.glasscubes.com/collaboration/api-documentation/index.html:
+  - API uses token-based authentication with access and refresh tokens. Send the access_token
+    in the Authorization header for subsequent requests. Tokens expire after a specified
+    duration in seconds; use the refresh_token to obtain a new access_token when needed.
+    Authentication is performed via POST to /v2/auth/{cid}/passwd with email and password
+    credentials, returning access_token, refresh_token, and expiresIn in the response
+    body.
+  - Glasscubes uses OAuth2-style authentication with client credentials and user access
+    tokens. Register your application to obtain a client_id and client_secret, then
+    call the /auth/{cid}/passwd endpoint with the user's email and password (where
+    {cid} is the Account ID) to retrieve an access_token and refresh_token. Include
+    the access_token in subsequent API requests; tokens expire after 24 hours and
+    can be refreshed using the /auth/refresh endpoint with the refresh_token. Call
+    /auth/accounts with the user's email to obtain their Account ID.
+  - OAuth2 authorization code flow is used for authentication. Exchange an OAuth code
+    (received via redirect URL with query parameter aouthcode=xxxxx) for a Bearer
+    Token by posting to /v2/auth/code. The OAuth code is valid for 5 minutes and can
+    only be exchanged once. The response includes access_token, refresh_token, and
+    expiresIn fields. Use the access_token as a Bearer Token in subsequent requests.
+  - The API uses Bearer token authentication. Obtain an access_token and refresh_token
+    by calling the authAs endpoint (requires Admin permission and a user ID path parameter).
+    Use the access_token in subsequent API requests; tokens expire after the expiresIn
+    seconds value, at which point use the refresh_token to request a new access_token.
+    Send the Bearer token in the Authorization header for API calls.
+  - The API uses token-based authentication with access and refresh tokens. Clients
+    receive an access_token in the TokenResponse upon authentication, which is used
+    to authorize subsequent requests. The token expires after a specified duration
+    in seconds (expiresIn), and a refresh_token can be used to obtain a new access_token
+    when the current one expires. The API also supports SSO via SAML-compliant identity
+    providers.
+pagination_info:
+- information_source; https://www.glasscubes.com/collaboration/api-documentation/index.html:
+  - Pagination uses currentPage and nextPage integer fields in the response. To paginate,
+    pass the nextPage value as a query parameter in the next request; stop when nextPage
+    is not returned or is null.
+  - 'Pagination uses offset-based parameters: pass page (integer, optional) in the
+    request to retrieve paginated results, and the response includes page (current
+    page number) and moreAvailable (boolean indicating if more results exist). Continue
+    requesting with incremented page values until moreAvailable is false.'
+  - Pagination uses offset-based scheme with currentPage and nextPage integer fields
+    in the response. Request pagination via query parameters (exact names not specified
+    in provided text), and navigate by using the nextPage value from the response
+    to construct subsequent requests.
+  - 'Pagination uses optional query parameters: be (default 0) and count (default
+    30). The response includes nextPageFirst field; use its value as the be parameter
+    in the next request to retrieve subsequent results.'
+  - The /v2/search endpoint uses cursor-based pagination. Use the first query parameter
+    (optional, defaults to 0) to specify the starting position, and count (optional,
+    defaults to 30) to specify results per request. For subsequent requests, set first
+    to the previously returned SearchResults.nextPageFirst value. Continue paginating
+    until no nextPageFirst is returned in the response.
+possible_base_urls:
+- information_source; https://www.glasscubes.com/collaboration/api-documentation/index.html:
+  - /v2/user/follow/is
+  - /v2/user/notifications/read
+possible_endpoints:
+- information_source; https://www.glasscubes.com/collaboration/api-documentation/index.html:
+  - DELETE /readrequest
+  - DELETE /v2/account/team/{teamId}/remove/user
+  - DELETE /v2/cal/{commentId}/remove-comment
+  - DELETE /v2/file/approvals
+  - DELETE /v2/file/comment/{id}
+  - DELETE /v2/file/folder/{id}
+  - DELETE /v2/file/{id}
+  - DELETE /v2/file2/version/{id}
+  - DELETE /v2/irequest/{id}
+  - DELETE /v2/portfolio/{id}

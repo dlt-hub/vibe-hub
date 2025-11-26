@@ -1,0 +1,68 @@
+auth_info:
+- information_source; https://guides.rollout.com/crm-reference:
+  - 'Authorization uses a Bearer token scheme. Include the token in the Authorization
+    header as ''Authorization: Bearer YOUR_SECRET_TOKEN'' for all requests.'
+  - Bearer token authentication is required. Include the Authorization header with
+    the value "Bearer YOUR_SECRET_TOKEN" where YOUR_SECRET_TOKEN is replaced with
+    your actual secret token.
+- information_source; https://guides.rollout.com/documentation/getting-started/getting-your-api-key:
+  - Authentication uses JWT tokens signed with HS512. Generate tokens server-side
+    using the ROLLOUT_CLIENT_ID as the issuer claim and ROLLOUT_CLIENT_SECRET as the
+    signing key. Tokens must include iss, sub, iat, and exp claims, with expiration
+    set to 15 minutes. The Client Secret should never be exposed to the client; token
+    generation must occur on your server.
+- information_source; https://guides.rollout.com/documentation/getting-started/show-the-authentication-ui/react-17-and-newer:
+  - A token-based authentication approach is used where a token is fetched from your
+    server endpoint and passed to the RolloutLinkProvider component. The token should
+    be generated server-side using ROLLOUT_CLIENT_SECRET to keep the secret secure,
+    then provided to the client via a fetch call to your "/rollout-token" endpoint
+    that returns JSON with a "token" field.
+- information_source; https://guides.rollout.com/documentation/getting-started/making-api-requests:
+  - 'All API requests require two authentication components: a Bearer token in the
+    Authorization header (the authToken generated previously) and a credential ID
+    in the x-rollout-credential-id header (the Rollout-generated credential ID for
+    the user). The credential ID can be obtained either via the onCredentialAdded
+    hook callback when rendering Rollout Link authentication UI, or by querying the
+    https://universal.rollout.com/api/credentials endpoint with the Authorization
+    Bearer token header to retrieve the user''s credentials list and extracting the
+    id field from the response.'
+pagination_info:
+- information_source; https://guides.rollout.com/crm-reference:
+  - The /people endpoint uses query parameter pagination with next (string, optional),
+    offset (string or numeric, optional, default 0), and limit (number, optional).
+    The response includes a people array; use the next value from the response in
+    subsequent requests to paginate through results.
+- information_source; https://guides.rollout.com/tms-reference:
+  - 'Pagination uses optional query parameters: next (continuation token), offset
+    (starting position, default 0), and limit (number of results per page, default
+    0). Use the next value from the response to fetch subsequent pages; stop when
+    next is empty or null.'
+  - The /people endpoint uses offset-limit pagination with an optional next cursor.
+    Request parameters include offset (query, numeric string, default 0), limit (query,
+    numeric string, default 0), and next (query, string) for cursor-based navigation.
+    Response structure for pagination fields is not documented in the provided excerpt.
+  - 'The /people endpoint uses query parameter-based pagination with three parameters:
+    next (for pagination token), offset (for starting position), and limit (for result
+    count per page). Use the next value from the response to fetch subsequent pages.'
+- information_source; https://guides.rollout.com/los-reference:
+  - 'The /users endpoint supports cursor-based and offset-based pagination using query
+    parameters: next (string cursor for next page), offset (numeric, default 0), and
+    limit (number for page size). Use the next value from the response to request
+    subsequent pages, and stop when next is not returned or is empty.'
+possible_base_urls:
+- information_source; https://guides.rollout.com/crm-reference:
+  - https://crm.universal.rollout.com/api
+- information_source; https://guides.rollout.com/tms-reference:
+  - https://tms.universal.rollout.com/api
+possible_endpoints:
+- information_source; https://guides.rollout.com/crm-reference:
+  - DELETE /people/{id}/tags
+  - DELETE https://crm.universal.rollout.com/api/people/{id}
+  - GET https://crm.universal.rollout.com/api/people
+  - GET https://crm.universal.rollout.com/api/people/{id}
+  - POST /people/{id}/tags/apply
+  - POST /people/{id}/tags/delete
+  - POST https://crm.universal.rollout.com/api/people
+  - POST https://crm.universal.rollout.com/api/people/{id}/tags/apply
+  - POST https://crm.universal.rollout.com/api/people/{id}/tags/delete
+  - PUT https://crm.universal.rollout.com/api/people/{id}
