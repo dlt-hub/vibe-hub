@@ -1,0 +1,67 @@
+auth_info:
+- information_source; https://docs.lacunasoftware.com/en-us/articles/rest-pki/requesting-timestamps.html:
+  - 'Authentication uses a Bearer token passed in the Authorization header. Include
+    the header `Authorization: Bearer <token de acesso ao Rest PKI>` with each request
+    to the REST PKI API endpoint. The token must be obtained separately and represents
+    access credentials to the Rest PKI service.'
+  - Rest PKI uses bearer token authentication. Generate an access token from the Rest
+    PKI Control Panel, then send it in the Authorization header as "Bearer <token>"
+    for both TSP (Timestamp Protocol) and REST API communication.
+- information_source; https://docs.lacunasoftware.com/en-us/articles/rest-pki/core/on-premises/configure-timestamp.html:
+  - 'Timestamping configuration supports two authentication types. For OAuthBearerToken,
+    include the BearerToken value in the Authorization header as a bearer token. For
+    BasicAuthentication, use the Username and Password fields, which are Base64-encoded
+    and sent in the Authorization header.
+
+
+    Key fields: AuthenticationType (set to OAuthBearerToken or BasicAuthentication),
+    BearerToken (for OAuth), Username and Password (for basic auth). Configuration
+    is set in the Timestamp:Timestampers section with Url, AuthenticationType, and
+    appropriate credentials.'
+- information_source; https://docs.lacunasoftware.com/en-us/articles/rest-pki/core/on-premises/configure-oidc.html:
+  - Rest PKI Core uses OAuth2 client credentials flow via GrantID for authentication.
+    Configuration requires setting the OIDC Authority, API Endpoint, ClientAppId (restpkicore),
+    AppId (restpkicore-backend), and AppSecret (generated backend application secret)
+    either in configuration files under the [Oidc] section or as environment variables
+    prefixed with Oidc__ (e.g., Oidc__Authority, Oidc__AppSecret, Oidc__ClientAppId).
+- information_source; https://docs.lacunasoftware.com/en-us/articles/rest-pki/core/requesting-timestamps.html:
+  - 'API key authentication via HTTP header. Send requests with the Authorization
+    header set to `ApiKey YOUR_API_KEY`, where YOUR_API_KEY is the generated API key
+    value. This applies to both TSP protocol (POST to `https://restpkicore.yourcompany.com/tsp`)
+    and REST API (POST to `https://restpkicore.yourcompany.com/api/tsp`). For REST
+    API, also include `Content-Type: application/json` header. Optionally append `/TIER`
+    to the URL to specify a tier (e.g., `PkiBrazil` or `LacunaTest` for SaaS).'
+pagination_info:
+- information_source; https://docs.lacunasoftware.com/en-us/articles/signer/on-premises/administration.html:
+  - Cursor-based pagination is used with optional query parameter q for filtering.
+    Response includes totalCount field and nextCursor field; when nextCursor is null,
+    there are no more pages to retrieve.
+  - Offset-based pagination is used with optional limit (items per page) and offset
+    (page number) query parameters. Response includes nextCursor field; when nextCursor
+    is null, there are no more pages.
+  - Pagination uses limit (optional, items per page) and offset (optional, page number)
+    as query parameters. Response includes items array, totalCount field, and nextCursor
+    field (null when no more pages).
+  - limit (query parameter, optional) controls items per page; offset (query parameter,
+    optional) specifies page number. Response includes items array, totalCount field,
+    and nextCursor field (null when no more pages).
+possible_base_urls:
+- information_source; https://docs.lacunasoftware.com/en-us/articles/rest-pki/requesting-timestamps.html:
+  - https://pki.rest
+  - https://pki.rest/
+possible_endpoints:
+- information_source; https://docs.lacunasoftware.com/en-us/articles/rest-pki/requesting-timestamps.html:
+  - POST https://pki.rest/Api/TimestampPlans/a402df41-8559-47b2-a05c-be555bf66310/Issue
+  - POST https://pki.rest/tsp/a402df41-8559-47b2-a05c-be555bf66310
+- information_source; https://docs.lacunasoftware.com/en-us/articles/rest-pki/core/requesting-timestamps.html:
+  - POST https://restpkicore.yourcompany.com/api/tsp
+  - POST https://restpkicore.yourcompany.com/api/tsp/TIER
+  - POST https://restpkicore.yourcompany.com/tsp
+  - POST https://restpkicore.yourcompany.com/tsp/TIER
+- information_source; https://docs.lacunasoftware.com/en-us/articles/rest-pki/core/changelog.html:
+  - GET /api/system/manifest
+- information_source; https://docs.lacunasoftware.com/en-us/articles/pki-express/java/how-it-works.html:
+  - POST /pades-signature-express/complete
+  - POST /pades-signature-express/start
+- information_source; https://docs.lacunasoftware.com/en-us/articles/signer/on-premises/administration.html:
+  - DELETE /api/admin/organizations/{id}/users/{userID}

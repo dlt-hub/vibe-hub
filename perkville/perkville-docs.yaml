@@ -1,0 +1,59 @@
+auth_info:
+- information_source; https://www.perkville.com/developers/docs/v1/:
+  - 'Authentication for Perkville v1 API uses Basic Authentication with registered
+    Perkville email and password credentials passed with every request. All requests
+    must use HTTPS protocol.
+
+
+    To authenticate, encode the email and password as base64 in the Authorization
+    header using the format "Authorization: Basic base64(email:password)".'
+  - 'Authentication uses HTTP Basic Auth with email and password credentials. The
+    authenticated user must be a staff member of the requested business. Credentials
+    are passed via the `-u` flag in curl (e.g., `-u admin@example.org`) which translates
+    to an `Authorization: Basic` header with base64-encoded email:password.'
+  - 'Basic HTTP authentication is required. Credentials are passed using the `-u`
+    flag with the format `username:password` (in this case `employee@example.org`),
+    which translates to an `Authorization: Basic` header with base64-encoded credentials
+    in HTTP requests.'
+  - 'Basic authentication is required. Credentials are passed using the -u flag in
+    curl, which sends them as an HTTP Basic Auth header (Authorization: Basic base64(username:password)).
+    The username appears to be an email address (employee@example.org format) associated
+    with an admin of the applicable business.'
+  - Basic authentication is required. Credentials are passed via the `-u` flag in
+    curl (or as HTTP Basic Auth header), using the format `username:password` where
+    the username is a user email address. The authenticated user must have appropriate
+    access permissions relative to the USER_ID being queried.
+pagination_info:
+- information_source; https://www.perkville.com/developers/docs/v2/:
+  - Pagination uses keyset-based pagination with datetime ranges. Request parameters
+    include business_id (required), and either (from_datetime, to_datetime) or (last_mod_from_datetime,
+    last_mod_to_datetime) with NO offset. Retrieve the next page by using the last_mod_dt
+    or transaction_dt value from the previous page's final record as the new from_datetime
+    or last_mod_from_datetime in the next request.
+  - Pagination uses limit and offset parameters in the query string. The response
+    includes a meta object with limit and offset fields. Use the offset value from
+    the response to construct the next request; increment offset by the limit value
+    to fetch subsequent pages.
+  - Requests on resources returning multiple items use offset-based pagination with
+    a default page size of 20 items. Use the query parameter limit to set a custom
+    page size and offset to skip records, for example GET https://api.perkville.com/v2/businesses/?limit=10&offset=10
+    skips 10 records and returns 10 items. Note that offset=0 starts from the first
+    record.
+  - Requests returning multiple items are paginated to 20 items by default. Use the
+    limit query parameter to set a custom page size for returning more or fewer items.
+possible_base_urls:
+- information_source; https://www.perkville.com/developers/docs/v1/:
+  - https://api.perkville.com
+  - https://api.perkville.com/v1
+possible_endpoints:
+- information_source; https://www.perkville.com/developers/docs/v1/:
+  - GET .perkville.com/v1/business/4065/social.json
+  - GET /v1/business/{BUSINESS_ID}/connection
+  - GET /v1/business/{BUSINESS_ID}/connection/{USER_ID}
+  - GET /v1/business/{BUSINESS_ID}/connection/{USER_ID}/voucher/{VOUCHER_CODE}
+  - GET /v1/business/{BUSINESS_ID}/location/{LOCATION_ID}
+  - GET /v1/business/{BUSINESS_ID}/perk
+  - GET /v1/business/{BUSINESS_ID}/perk/{PERK_ID}
+  - GET /v1/business/{BUSINESS_ID}/social
+  - GET /v1/business/{BUSINESS_ID}/voucher
+  - GET /v1/business/{BUSINESS_ID}/voucher/{VOUCHER_CODE}

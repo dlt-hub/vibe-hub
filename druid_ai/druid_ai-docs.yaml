@@ -1,0 +1,49 @@
+auth_info:
+- information_source; https://docs.druidai.com/1385954/Content/How%20to/Start%20DRUID%20conversations%20by%20API.htm:
+  - Use Bearer token authentication. Include the token in the Authorization header
+    of your request. Obtain the token by generating a permanent token or using the
+    authentication endpoint (see Webhooks documentation). For DRUID versions prior
+    to 7.7, retrieve the token from Administration > Druid Services under 'Druid.Endpoints'.
+- information_source; https://docs.druidai.com/1385954/Content/Webhooks.htm:
+  - Bearer token authentication is used for API requests. Generate a permanent token
+    from the UI and include it in the Authorization header, or obtain a temporary
+    access token by posting username, password, and tenant name to the ExternalAuthenticate
+    endpoint at POST *.druidplatform.com/api/services/app/WebAPIService/ExternalAuthenticate,
+    which returns an accessToken in the response body to use as a bearer token.
+- information_source; https://docs.druidai.com/1385954/Content/How to/Authenticating Users in the DRUID Webchat.htm:
+  - DRUID API uses a short-lived token-based authentication scheme. The server must
+    send user metadata (domainUserName, firstName, lastName, email, masterId) in the
+    request body to obtain a token that expires in 30 minutes. This token is then
+    passed to the web page client via a queryParam named DruidToken in the DRUID Webchat
+    snippet initialization.
+  - The authentication flow uses a token passed via query parameters to the DRUID
+    API. Include the "x-api-key" header with the Client API Key value generated in
+    the DRUID Portal. Send an authenticated POST request to /GetAuthorizationContextByToken
+    with the token in the request body as a JSON object with the "token" field.
+- ? information_source; https://docs.druidai.com/1385954/Content/How to/Execute a
+    connector action from outside the DRUID Platform.htm
+  : - 'Access tokens are obtained via the ExternalAuthenticate API using username
+      and password credentials (example: username "oana" and password "Oana123!@#"),
+      which returns an access token valid for 30 minutes (1800 seconds). The access
+      token must be provided in the authorization section of the PerformOperations
+      request; pass it as an Authorization header with the Bearer scheme or in the
+      request''s authorization field as specified by the API client interface.'
+possible_base_urls:
+- information_source; https://docs.druidai.com/1385954/Content/How%20to/Start%20DRUID%20conversations%20by%20API.htm:
+  - https://druidendpoints.druidplatform.com
+- information_source; https://docs.druidai.com/1385954/Content/Webhooks.htm:
+  - '*.druidplatform.com/api/services/app/WebAPIService/ExternalAuthenticate'
+possible_endpoints:
+- information_source; https://docs.druidai.com/1385954/Content/How%20to/Start%20DRUID%20conversations%20by%20API.htm:
+  - POST https://druidendpoints.druidplatform.com/api/Druid/{botId}/StartFlow
+- information_source; https://docs.druidai.com/1385954/Content/Webhooks.htm:
+  - POST *.druidplatform.com/api/services/app/WebAPIService/ExternalAuthenticate
+- information_source; https://docs.druidai.com/1385954/Content/How to/Authenticating Users in the DRUID Webchat.htm:
+  - POST /GetAuthorizationContextByToken
+- ? information_source; https://docs.druidai.com/1385954/Content/How to/Execute a
+    connector action from outside the DRUID Platform.htm
+  : - POST *.druidplatform.com/api/services/app/WebAPIService/ExternalAuthenticate
+    - POST *.druidplatform.com/druidwebview/api/{tenant_ID}/DataSource/{bot_ID}/PerformOperations
+    - POST /PerformOperations
+- information_source; https://docs.druidai.com/1385954/Content/How to/Start DRUID conversations by API.htm:
+  - POST https://druidendpoints.druidplatform.com/api/Druid/{botId}/StartFlow

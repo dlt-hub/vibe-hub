@@ -1,0 +1,56 @@
+auth_info:
+- information_source; https://www.checklyhq.com/:
+  - 'API authentication can be configured at the check level using setup scripts.
+    In the setup script, you can fetch tokens dynamically and set them in request
+    headers. For example, retrieve a token via fetchToken() and assign it to the Authorization
+    header as Bearer token: request.headers.Authorization = `Bearer ${token}`. The
+    Authorization header is the standard location for passing authentication credentials
+    to API endpoints.'
+- information_source; https://www.checklyhq.com/docs/detect/synthetic-monitoring/api-checks/set-up-and-tear-down/:
+  - A static bearer token stored in the environment variable AUTH_SERVER_TOKEN is
+    sent in the authorization header to authenticate requests. Pass the token via
+    the authorization header as process.env.AUTH_SERVER_TOKEN when making HTTP requests
+    to the authentication server.
+  - Bearer token authentication via the Authorization header. The setup script retrieves
+    a token by calling getToken() and sets it in the request.headers['Authorization']
+    field as "Bearer {token}". The getToken() function reads the AUTH_SERVER_TOKEN
+    environment variable to authenticate requests to the token server.
+- information_source; https://www.checklyhq.com/docs/guides/monitoring-the-stripe-api/:
+  - 'GitHub GraphQL API uses bearer token authentication. Send your GitHub token in
+    the Authorization header as "Authorization: bearer <GITHUB_TOKEN>". The token
+    should be a valid GitHub personal access token or OAuth token with appropriate
+    permissions for the resources you''re querying.'
+  - 'Stripe API uses HTTP Basic Authentication with a secret API key. The API key
+    is passed as the username in the `-u` parameter (colon-separated format: `api_key:`),
+    with an empty password. For example, use `-u sk_SOME_KEY....:`
+    in curl, or set the Authorization header to `Basic base64(api_key:)` in other
+    HTTP clients.'
+pagination_info:
+- information_source; https://www.checklyhq.com/docs/guides/monitoring-the-stripe-api/:
+  - Pagination uses a limit query parameter to specify the number of results returned
+    per request. The API also supports filtering by creation date using the created
+    parameter, though the documentation does not explicitly describe response fields
+    for navigating between pages or indicate how to retrieve subsequent pages.
+  - Use `first` or `last` parameters in GraphQL queries to paginate results. `first`
+    requests forward pagination (with optional `after` cursor), `last` requests backward
+    pagination (with optional `before` cursor). Response includes `edges` array with
+    `node` objects and `pageInfo` containing `hasNextPage`, `hasPreviousPage`, `startCursor`,
+    and `endCursor` to construct subsequent requests.
+possible_base_urls:
+- information_source; https://www.checklyhq.com/docs/detect/synthetic-monitoring/api-checks/set-up-and-tear-down/:
+  - https://api.acme.com/v1
+  - https://api.checklyhq.com/v1/runtimes
+possible_endpoints:
+- information_source; https://www.checklyhq.com/docs/detect/synthetic-monitoring/api-checks/set-up-and-tear-down/:
+  - GET https://api.acme.com/v1/products
+  - GET https://api.checklyhq.com/v1/runtimes
+- information_source; https://www.checklyhq.com/docs/guides/monitoring-the-stripe-api/:
+  - GET https://api.stripe.com/v1/customers
+  - POST https://api.github.com/graphql
+  - POST https://api.stripe.com/v1/customers
+- information_source; https://www.checklyhq.com/docs/integrations/alerts/webhooks/:
+  - GET https://api.acme.com/events?from={{moment "last week" "X"}}&to={{moment "X"}}
+- information_source; https://www.checklyhq.com/docs/platform/secrets/:
+  - GET https://api.example.com/user/profile
+- information_source; https://www.checklyhq.com/docs/quickstarts/api-check/:
+  - GET https://mac-demo-repo.vercel.app/api/hello

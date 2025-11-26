@@ -1,0 +1,38 @@
+auth_info:
+- information_source; https://forwardforever.com/how-to-create-discord-bot-with-power-automate/:
+  - Bot token authentication via Authorization header. Include Authorization header
+    with value "Bot {token}" where {token} is the saved bot token. The token is placed
+    in the HTTP request header, not in query parameters or body.
+- information_source; https://forwardforever.com/how-to-use-service-principal-in-power-bi-admin-rest-api-in-power-automate/:
+  - 'Authorization header is constructed as: Authorization = token_type + " " + access_token.
+    The token_type and access_token values are obtained from a prior OAuth2 token
+    response. The space between token_type and access_token is required for the authorization
+    header to function in REST API calls.'
+  - Power BI REST API uses OAuth2 client credentials flow for authorization. To obtain
+    an access token, make a POST request to https://login.microsoftonline.com/{TenantId}/oauth2/token
+    with Content-Type header set to application/x-www-form-urlencoded. The request
+    body must include grant_type=client_credentials, resource=https://analysis.windows.net/powerbi/api,
+    client_id (your Application ID), client_secret (your Application Secret), and
+    scope=https://analysis.windows.net/powerbi/api/.default. The returned access token
+    is then used in subsequent API calls.
+- information_source; https://forwardforever.com/how-to-use-power-bi-rest-apis-without-a-service-principal/:
+  - Azure AD OAuth2 authentication is required. Configure the HTTP action with Base
+    Resource URL set to http://api.powerbi.com and Azure AD Resource URI set to https://analysis.windows.net/powerbi/api,
+    then sign in to establish the connection. The API will use the authenticated user's
+    credentials; service principals cannot be used as gateway admins for this endpoint.
+possible_base_urls:
+- ? information_source; https://forwardforever.com/connecting-to-external-non-microsoft-resources-from-a-static-ip-with-power-platform/
+  : - https://api.ipify.org
+- information_source; https://forwardforever.com/how-to-create-discord-bot-with-power-automate/:
+  - https://discordapp.com/api
+possible_endpoints:
+- ? information_source; https://forwardforever.com/connecting-to-external-non-microsoft-resources-from-a-static-ip-with-power-platform/
+  : - GET https://api.ipify.org?format=json
+- information_source; https://forwardforever.com/how-to-create-discord-bot-with-power-automate/:
+  - POST https://discordapp.com/api/channels/{channel.id}/messages
+- information_source; https://forwardforever.com/calling-an-api-using-entra-id-authentication-in-flow/:
+  - GET https://api.powerbi.com
+- information_source; https://forwardforever.com/how-to-use-service-principal-in-power-bi-admin-rest-api-in-power-automate/:
+  - POST https://login.microsoftonline.com/{TenantId}/oauth2/token
+- information_source; https://forwardforever.com/how-to-use-power-bi-rest-apis-without-a-service-principal/:
+  - GET https://api.powerbi.com/v1.0/myorg/gateways

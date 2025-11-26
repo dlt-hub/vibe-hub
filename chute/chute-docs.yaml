@@ -1,0 +1,55 @@
+auth_info:
+- information_source; https://chute.docs.apiary.io/:
+  - OAuth2 authorization code flow is used. Redirect users to https://api.getchute.com/auth/:account_type
+    with client_id parameter. After user authenticates, exchange the authorization
+    code for an access token by making a GET request to https://api.getchute.com/oauth/access_token
+    with query parameters client_id, client_secret, and code. Include the returned
+    access token in all API requests as described in the authenticated requests section.
+  - The API uses OAuth token-based authentication passed as a query parameter. Include
+    the oauth_token parameter in the request URL with your token value, for example
+    oauth_token=XYZ. A 401 Unauthorized response indicates authentication failed or
+    insufficient permissions.
+  - 'The Chute API uses OAuth token-based authentication. The OAuth token must be
+    passed as a query parameter named `oauth_token` in the request URL. All API requests
+    should be made to `https://api.getchute.com/v2` with the `Content-Type: application/json`
+    header for requests that include a JSON body.'
+  - The Chute API uses OAuth2 for authentication. Register an application to obtain
+    a client_id and client_secret, then acquire an access token for users. Include
+    the access token in requests either as an oauth_token query parameter (e.g., ?oauth_token=XYZ)
+    or via the Authorization header. Tokens provide limited, revocable access to specific
+    data types and are preferred over Basic Authentication.
+  - 'The Chute API uses OAuth2/OAuth token-based authentication. You can authenticate
+    by passing your oauth_token in one of three ways: as an Authorization header (Bearer
+    XYZ or OAuth XYZ), as a URL query parameter (bearer_token=XYZ or oauth_token=XYZ),
+    or in the JSON request body (bearer_token or oauth_token field). Each application
+    is assigned an oauth_token, client_id, and client_secret; typically only the oauth_token
+    is needed for authenticated requests.'
+pagination_info:
+- information_source; https://chute.docs.apiary.io/:
+  - Pagination uses `page` (query parameter, defaults to 1, optional) and `per_page`
+    (query parameter, defaults to 5, optional) to control which page is returned and
+    how many items appear per page.
+  - The API uses a pagination object returned in responses for resources that support
+    pagination. The pagination object contains next_page and previous_page URLs that
+    should be used directly to request subsequent pages instead of constructing URLs
+    manually, as some implementations use filters for better performance and to ensure
+    distinct result sets.
+  - The API uses two pagination schemes. Scheme 1 uses page parameter with next_page
+    and previous_page URLs in the response pagination object; stop when next_page
+    is null. Scheme 2 uses max_id and since_id filters for faster subsequent pagination,
+    also returning full URLs. Both return current_page, per_page (default 5), next_page,
+    and previous_page fields.
+possible_base_urls:
+- information_source; https://chute.docs.apiary.io/:
+  - https://api.getchute.com
+  - https://api.getchute.com/v2
+possible_endpoints:
+- information_source; https://chute.docs.apiary.io/:
+  - GET https://api.getchute.com/auth/:account_type
+  - GET https://api.getchute.com/oauth/access_token
+  - GET https://api.getchute.com/v2/albums
+  - GET https://api.getchute.com/v2/albums/abcqsrlx/assets
+  - GET https://api.getchute.com/v2/albums/anGkclym
+  - GET https://api.getchute.com/v2/albums/{album}/assets
+  - POST https://api.getchute.com/v2/albums
+  - PUT https://api.getchute.com/v2/albums/2474316

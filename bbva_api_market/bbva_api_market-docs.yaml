@@ -1,0 +1,37 @@
+auth_info:
+- information_source; https://www.bbvaapimarket.com/en/api-developers/api-calls/:
+  - 'BBVA uses a two-token authentication flow. The first token (token_1) is exchanged
+    for a second token (token_2) through an OTP verification process via browser redirect
+    to https://connect.bbva.com/otp?ticket=TICKET&back_url=OTP_URL, where TICKET is
+    obtained from the initial Postman request and OTP_URL is configured in your application.
+    After OTP validation, token_2 is returned in the callback URL. Subsequently, token_2
+    is sent as a JWT in the Authorization header (format: "jwt token_2") for API requests
+    to endpoints like https://apis.bbva.com/customers-sbx/v1/me-full with GET method,
+    along with Accept and Content-Type headers set to application/json.'
+  - OAuth2 authorization code flow with BBVA Connect. First, redirect user to https://connect.bbva.com/sandboxconnect
+    with client_id, response_type=code, and redirect_uri parameters. After user authentication
+    and scope approval, exchange the returned authorization code (valid for 30 seconds)
+    for an access_token by POST to https://connect.bbva.com/token with grant_type=authorization_code,
+    redirect_uri, and code parameters. Include the access_token in API requests via
+    Authorization header with value jwt ACCESS_TOKEN.
+  - The API uses JWT bearer token authentication. After obtaining token_2 through
+    an OTP verification flow, include it in the Authorization header as "jwt token_2"
+    when making API requests to https://apis.bbva.com/customers-sbx/v1/me-full. The
+    Authorization header must be set to the JWT token value, and Accept and Content-Type
+    headers should be set to application/json.
+- ? information_source; https://www.bbvaapimarket.com/en/api-world/security-mobile-apis-oauth-20-vs-basic-http-access-authentication/
+  : - OAuth 2.0 is the primary authentication method for mobile APIs, with HTTP basic
+      access authentication as an alternative. OAuth 2.0 uses token-based credential
+      exchange. HTTP basic access authentication uses username and password sent via
+      standard HTTP header fields, avoiding cookies, session IDs, or handshaking processes.
+possible_base_urls:
+- information_source; https://www.bbvaapimarket.com/en/api-developers/api-calls/:
+  - https://apis.bbva.com
+  - https://apis.bbva.com/customers-sbx/v1
+possible_endpoints:
+- information_source; https://www.bbvaapimarket.com/en/api-developers/api-calls/:
+  - GET https://apis.bbva.com/customers-sbx/v1/me-basic
+  - GET https://apis.bbva.com/customers-sbx/v1/me-full
+  - GET https://connect.bbva.com/otp
+  - GET https://connect.bbva.com/sandboxconnect
+  - POST https://connect.bbva.com/token

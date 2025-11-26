@@ -1,0 +1,62 @@
+auth_info:
+- information_source; https://foglamp-bridge.readthedocs-hosted.com/en/latest/rest_api_guide/02_RESTauthentication.html:
+  - 'Authentication is performed using a bearer token passed in the authorization
+    header. Include the header "authorization: <token>" in all requests. Administrative
+    operations require users with administrator privileges.'
+  - 'Authorization is required using a bearer token passed in the authorization header.
+    The token must be included as "authorization: <token>" in the request headers
+    for endpoints that require admin permissions or user access.'
+  - 'Bearer token authentication is required. Send the token in the `authorization`
+    header (format: `authorization: <token>`). Only admin users can perform certain
+    operations like creating users or terminating other users'' sessions.'
+  - The API uses token-based authentication obtained via login. Send username and
+    password as JSON to POST /flir/login to receive a token, then include the token
+    in the Authorization header for subsequent requests. Certificate-based authentication
+    is also supported by uploading a certificate to /flir/login. Tokens can be invalidated
+    via PUT /flir/logout or PUT /flir/{user_id}/logout.
+  - 'The API uses token-based authentication sent via the Authorization header. Clients
+    must include the header "authorization: <token>" in requests to authenticate.
+    Users can update their own information and change passwords, with admin users
+    having additional permissions to modify other user records.'
+pagination_info:
+- information_source; https://foglamp-bridge.readthedocs-hosted.com/en/v2.5.0/rest_api_guide/04_RESTuser.html:
+  - 'Pagination is controlled via query parameters: limit (optional, default 20) sets
+    the number of readings returned, skip (optional) offsets the result set, and seconds
+    or minutes (optional, mutually exclusive with limit/skip) specify time-based windows.
+    The response contains the requested readings but no explicit next/previous fields
+    or continuation tokens are mentioned.'
+  - 'Pagination uses optional query parameters: limit (default 20, number of readings),
+    skip (offset for readings), or alternatively seconds, minutes, or hours (time-based
+    limits that cannot be combined with limit/skip). The previous parameter works
+    with time-based limits to retrieve historical data by specifying how long ago
+    the returned data should end. Response is an array of JSON objects sorted in reverse
+    chronological order.'
+  - 'Pagination uses optional query parameters: limit (default 20, number of readings),
+    skip (offset for readings), or alternatively seconds/minutes/hours (time-based
+    limits, mutually exclusive with limit/skip). The previous parameter works with
+    time-based parameters to offset the data range backwards in time. Response is
+    an array of JSON reading objects in reverse chronological order with no explicit
+    pagination fields.'
+  - The API uses offset-based pagination for asset readings. Request parameters include
+    limit (optional, defaults to 20) to set the number of readings returned, and skip
+    (optional) to specify the number of assets to skip, used together to navigate
+    through results.
+  - Use query parameters limit (default 20, optional) to set maximum readings returned
+    and skip (optional) to offset results for pagination. The skip parameter works
+    with limit to retrieve specific ranges of historical readings.
+possible_base_urls:
+- information_source; https://foglamp-bridge.readthedocs-hosted.com/en/latest/rest_api_guide/02_RESTauthentication.html:
+  - http://localhost:8081
+  - http://localhost:8081/flir
+possible_endpoints:
+- information_source; https://foglamp-bridge.readthedocs-hosted.com/en/latest/rest_api_guide/02_RESTauthentication.html:
+  - DELETE http://localhost:8081/flir/admin/{user_id}/delete
+  - GET /flir/user
+  - GET http://localhost:8081/flir/ping
+  - POST /flir/admin/user
+  - POST /flir/login
+  - POST http://localhost:8081/flir/admin/user
+  - POST localhost:8081/flir/login
+  - PUT /flir/admin/user
+  - PUT /flir/logout
+  - PUT /flir/user

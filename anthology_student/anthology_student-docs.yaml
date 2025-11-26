@@ -1,0 +1,49 @@
+auth_info:
+- information_source; https://docs.anthology.com/docs/blackboard/rest-apis/getting-started/basic-authentication:
+  - 'Basic authentication is used to obtain an OAuth 2.0 access token by sending Base64-encoded
+    key:secret credentials via the Authorization header with the -u switch. The returned
+    access_token is then used in subsequent API requests via the Authorization header
+    with Bearer token_type, and tokens expire after 1 hour.
+
+
+    Exact details: Initial request uses Basic auth header with Base64-encoded credentials.
+    OAuth 2.0 response includes access_token, token_type (bearer), and expires_in
+    (3600 seconds). Subsequent requests use Authorization header with format "Bearer
+    {access_token}". Tokens are site-specific and one token per application per Learn
+    site; requesting a new token returns the existing one with updated expiry if not
+    expired.'
+  - OAuth 2.0 RFC Standard is used for authentication. Each developer receives a unique
+    key and secret for their application. To authenticate, make an HTTP POST request
+    to the REST-enabled Learn server to obtain an OAuth access token, which is valid
+    for one hour. Use this token in subsequent REST API calls via the Authorization
+    header until it expires. The Learn instance forwards the token request to Anthology's
+    Developer Portal, which validates the application registration and returns the
+    access token.
+  - The API uses OAuth2 with client credentials flow. To authenticate, first obtain
+    an access token by sending a POST request to `/learn/api/public/v1/oauth2/token`
+    with HTTP Basic authentication using your application key and secret (via the
+    -u flag or Authorization header with Base64-encoded "key:secret"). Then include
+    the token in subsequent requests using the Authorization header set to "Bearer
+    <access_token>". The grant_type parameter must be set to "client_credentials"
+    in the token request body.
+  - This API uses OAuth 2.0 with Basic authentication for token acquisition, followed
+    by Bearer token authentication for subsequent requests. To obtain an access token,
+    send a POST request with an Authorization header containing "Basic" followed by
+    a space and a base64-encoded string of "client_id:client_secret", and include
+    "grant_type=client_credentials" in the request body. The server returns an access_token
+    field in the response. Use this token in the Authorization header as "Bearer"
+    followed by a space and the token value for all subsequent REST API calls.
+- information_source; https://docs.anthology.com/docs/blackboard/uef/how-it-works:
+  - The REST API uses 3-Legged OAuth flow for authentication. After receiving a JWT
+    token from Learn via LTI, redirect the request to the REST API authentication
+    endpoint to obtain a bearer token. The token can be scoped using specific scope
+    values such as "*" for all scopes, "ultra:analytics-eve" for analytics events,
+    "ultra:help" for help provider functionality, or other available scopes depending
+    on the application integration needs.
+possible_base_urls:
+- information_source; https://docs.anthology.com/docs/blackboard/rest-apis/getting-started/basic-authentication:
+  - https://yourserver/learn/api/public/v1
+possible_endpoints:
+- information_source; https://docs.anthology.com/docs/blackboard/rest-apis/getting-started/basic-authentication:
+  - GET https://yourserver/learn/api/public/v1/users?query=userName
+  - POST https://<your server>/learn/api/public/v1/oauth2/token

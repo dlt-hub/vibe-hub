@@ -1,0 +1,57 @@
+auth_info:
+- information_source; https://gethelp.wildapricot.com/en/articles/182-using-wildapricot-s-api:
+  - Each WildApricot API call requires authentication information to verify your account,
+    with the specific method depending on whether you are accessing from a third-party
+    server/application or from a WildApricot site page. The documentation references
+    "API access options" for details on how to pass authentication credentials, but
+    the specific header names, parameter names, token formats, or credential passing
+    mechanisms are not provided in this excerpt.
+- information_source; https://gethelp.wildapricot.com/en/articles/484-api-authentication:
+  - OAuth 2.0 authentication using API key for server-to-server integration. POST
+    to oauth.wildapricot.org/auth/token with Authorization header containing Basic
+    auth of BASE64_ENCODED("APIKEY:YOUR_API_KEY"), and request body with grant_type=client_credentials&scope=auto.
+    The response returns an access token for API calls.
+  - OAuth2 authorization code flow is used. Client credentials (client_id and client_secret)
+    must be Base64-encoded and sent in the Authorization header as Basic auth when
+    exchanging an authorization code for a token via POST to oauth.wildapricot.org/auth/token.
+    The authorization code is obtained from the redirect_uri callback as a query parameter
+    named code. Required parameters for the initial authorization request include
+    client_id, scope, redirect_uri, and optional state parameter.
+  - The API uses OAuth2 Bearer token authentication. After obtaining an access_token
+    from the token endpoint, include it in requests via the Authorization header as
+    "Bearer {access_token}". Tokens expire after the seconds specified in expires_in;
+    refresh using POST /auth/token with grant_type=refresh_token, refresh_token parameter,
+    and Authorization header containing Basic auth with base64-encoded CLIENT_ID:CLIENT_SECRET
+    credentials. Available scopes include contacts_view, contacts_me, contacts_edit,
+    finances_view, and events_view per accountId.
+  - Wild Apricot API uses OAuth2 bearer token authentication. Obtain tokens via POST
+    to oauth.wildapricot.org/auth/token using Basic auth with client credentials and
+    grant_type=refresh_token parameter, then pass the token in the Authorization header
+    as "Bearer YOUR_TOKEN_HERE" for all API requests. Invalid or missing tokens result
+    in HTTP 401 Unauthorized responses.
+pagination_info:
+- information_source; https://gethelp.wildapricot.com/en/articles/502-contacts-admin-api-call:
+  - Pagination is being introduced to the Wild Apricot API as of November 1, 2025,
+    and contact records can be retrieved in sets or pages, but the documentation provided
+    does not specify the exact pagination parameters, response fields, or mechanics
+    for implementing pagination in API requests.
+possible_base_urls:
+- information_source; https://gethelp.wildapricot.com/en/articles/182-using-wildapricot-s-api:
+  - https://api.wildapricot.org
+- information_source; https://gethelp.wildapricot.com/en/articles/484-api-authentication:
+  - https://api.wildapricot.com
+possible_endpoints:
+- information_source; https://gethelp.wildapricot.com/en/articles/182-using-wildapricot-s-api:
+  - BATCH https://api.wildapricot.org
+  - GET https://api.wildapricot.org
+  - GET https://api.wildapricot.org/v2/Accounts
+- information_source; https://gethelp.wildapricot.com/en/articles/484-api-authentication:
+  - GET https://api.wildapricot.com/v2.1/accounts
+  - POST https://oauth.wildapricot.org/auth/token
+  - POST https://oauth.wildapricot.org/token
+- information_source; https://gethelp.wildapricot.com/en/articles/499-events-admin-api-call:
+  - GET https://api.wildapricot.org/{version}/Accounts/{accountID}/Events?$filter={filterCriteria}
+- information_source; https://gethelp.wildapricot.com/en/articles/502-contacts-admin-api-call:
+  - GET https://api.wildapricot.org/v1/Accounts/58293/Contacts?apikey=rktud7anqouibtdm1d4yhob9dgy&$filter=Balance
+    gt 100
+  - GET https://api.wildapricot.org/{version}/Accounts/{accountID}/Contacts?apikey={APIkey}&$filter={filterCriteria}

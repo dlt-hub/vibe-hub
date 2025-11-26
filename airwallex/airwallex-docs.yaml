@@ -1,0 +1,65 @@
+auth_info:
+- information_source; https://www.airwallex.com/docs/api:
+  - Airwallex uses API key and Client ID authentication for standard requests, sent
+    via the login endpoint at POST /api/v1/authentication/login. For embedded components,
+    use POST /api/v1/authentication/authorize. OAuth2 is also supported via the authorization
+    code grant type with PKCE extension for third-party resource access. All requests
+    must use HTTPS with PCI-DSS recommended TLS versions and cipher suites. API keys
+    and Client IDs are managed in the Airwallex Webapp and must not be shared publicly.
+  - 'Airwallex uses OAuth 2.0 for API authentication. Obtain an access token by exchanging
+    an authorization_code or refresh_token at the POST /oauth/token endpoint using
+    your client_id and client_secret (issued upon application registration). Include
+    the access token in the Authorization header of all API requests as "Authorization:
+    Bearer <access token>". API access is restricted to scopes specified during the
+    authorization request. Register your application by contacting strategic-partnerships@airwallex.com
+    to receive client credentials.'
+  - Airwallex uses a custom header-based authentication scheme. To authenticate, send
+    a POST request to the Authentication API endpoint with your Client ID and API
+    key in the request headers as x-client-id and x-api-key respectively. On success,
+    the response contains a token field with a JWT access token that can be used for
+    subsequent API calls.
+  - 'Partner Connections API requires bearer token authentication obtained from the
+    partner login endpoint. Include the access token in the Authorization header as
+    `Authorization: Bearer [access_token]` for all API requests to the Partner Connections
+    API endpoints.'
+  - To begin you will need to obtain an access token using your unique Client ID and
+    API key found in the API menu in the Airwallex Web Application. Call the Authentication
+    API endpoint with these credentials to receive an access token, which is then
+    used to reach all other API endpoints.
+pagination_info:
+- information_source; https://www.airwallex.com/docs/api:
+  - Pagination for GET /api/v1/global_accounts uses page parameter (replacing page_num)
+    in request payload. Response includes page_before and page_after fields (replacing
+    has_more) to indicate available pages for navigation.
+  - Pagination for GET /api/v1/transfers uses page parameter in request payload instead
+    of page_num, and response includes page_before and page_after fields instead of
+    has_more to indicate pagination state.
+  - 'Pagination parameters renamed on GET /api/v1/account_capabilities/funding_limits:
+    `pageNum` changed to `page_num` and `pageSize` changed to `page_size` (request
+    only). Billing search endpoints GET /api/v1/billing_customers and GET /api/v1/billing_transactions
+    have pagination updates for both request and response, but specific parameter
+    and field names are not detailed in this excerpt.'
+  - Pagination request parameter changed from `page_num` to `page` in request payload.
+    Response pagination fields changed from `has_more` to `page_before` and `page_after`.
+    These changes apply to all listed GET endpoints and are available generally from
+    this API version onward.
+  - This API supports keyset pagination using the `page_after` parameter. If the response
+    includes additional pages, the `has_more` field will be set to `true`. Use the
+    value of `page_after` from the response as the `page_after` parameter in the next
+    request; stop paginating when `has_more` is `false`.
+possible_base_urls:
+- information_source; https://www.airwallex.com/docs/api:
+  - /api/v1
+  - /api/v1/global_accounts/{id}/close
+possible_endpoints:
+- information_source; https://www.airwallex.com/docs/api:
+  - GET
+  - GET /
+  - GET /api/v
+  - GET /api/v1/
+  - GET /api/v1/account
+  - GET /api/v1/account/amendments/{amendment_id}
+  - GET /api/v1/account/wallet_info
+  - GET /api/v1/account_capabilities/funding_limits
+  - GET /api/v1/account_capabilities/{id}
+  - GET /api/v1/accounts
