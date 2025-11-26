@@ -1,0 +1,59 @@
+auth_info:
+- information_source; https://community.powerbi.com/t5/Desktop/How-to-Authenticate-a-REST-API-in-Power-BI/td-p/1883942:
+  - Bearer token authentication is used, passed in the Authorization header as "Bearer
+    " concatenated with an Access_Token() value. The token is included in the headers
+    parameter of Web.Contents() requests to the Power BI API endpoint.
+  - 'The API uses OAuth2 password grant flow authentication. Include the following
+    headers in your request: Accept set to application/json, Content-Type set to application/x-www-form-urlencoded,
+    grant_type set to password, username set to your Pulseway username, password set
+    to your Pulseway password, and tenant set to your Pulseway company tenant name.
+    These credentials should be sent as header parameters with the API request.'
+- information_source; https://community.powerbi.com/t5/Desktop/How-to-connect-to-JIRA-REST-API/td-p/2480628:
+  - Authorization uses HTTP Basic Authentication. Set the Authorization header to
+    "Basic " followed by a base64-encoded string of "your_email:jira_token" (with
+    a space between "Basic" and the encoded string).
+  - Jira REST API uses bearer token authentication. The personal access token must
+    be passed in the Authorization header as "Bearer " followed by the token value.
+    The token is obtained from the Jira website and should be stored securely. The
+    Accept header should be set to "application/json" for JSON responses.
+- information_source; https://community.powerbi.com/t5/Desktop/Pagination-of-a-REST-API-in-Power-Query-using-M/td-p/1901067:
+  - Bearer token authentication is required. Pass the token in the Authorization header
+    as "Bearer " & Token for all requests to the API endpoint.
+pagination_info:
+- information_source; https://community.powerbi.com/t5/Desktop/How-to-Authenticate-a-REST-API-in-Power-BI/td-p/1883942:
+  - The pagination uses OData conventions. Responses include an @odata.nextLink field
+    containing the full URL for the next page of results. Continue fetching pages
+    by following @odata.nextLink until it is null or absent, indicating the final
+    page. The baseUrl parameter initiates the first request with includeMetadata=true
+    as a query parameter.
+- information_source; https://community.powerbi.com/t5/Desktop/Pagination-of-a-REST-API-in-Power-Query-using-M/td-p/1901067:
+  - Pagination uses query parameters $skip and $top for offset-based pagination. $skip
+    specifies the number of records to skip (calculated as page index multiplied by
+    records per page), and $top specifies the maximum number of records to return
+    per page. The API endpoint /count returns TotalRecords, which is divided by RecordsPerPage
+    to determine the total number of pages needed.
+  - Use $skip and $top query parameters for pagination. $top specifies the number
+    of records per page (e.g., $top=10), and $skip specifies how many records to skip
+    before retrieving the next batch (e.g., $skip=30 for page 2 with 10 per page).
+    Combine them in the URL as ?$skip=0&$top=10, incrementing $skip by the $top value
+    for each subsequent page, and stop when fewer records than $top are returned.
+possible_base_urls:
+- information_source; https://community.powerbi.com/t5/Desktop/How-to-Authenticate-a-REST-API-in-Power-BI/td-p/1883942:
+  - https://api.powerbi.com/v1.0/myorg/admin/reports
+  - https://psa.pulseway.com/api
+possible_endpoints:
+- information_source; https://community.powerbi.com/t5/Desktop/How-to-Authenticate-a-REST-API-in-Power-BI/td-p/1883942:
+  - GET https://api.powerbi.com/v1.0/myorg/admin/reports?&includeMetadata=true
+- information_source; https://community.powerbi.com/t5/Desktop/How-to-connect-to-JIRA-REST-API/td-p/2480628:
+  - GET https://###JIRA API URL###/rest/api/latest/search
+- information_source; https://community.powerbi.com/t5/Desktop/Pagination-of-a-REST-API-in-Power-Query-using-M/td-p/1901067:
+  - GET https://psa.pulseway.com/api/servicedesk/tickets/
+  - GET https://psa.pulseway.com/api/servicedesk/tickets/count
+- information_source; https://community.powerbi.com/t5/Power-Query/Connecting-NewBook-REST-API-to-Power-BI/td-p/2071423:
+  - GET https://api.newbook.cloud/rest
+  - GET https://api.newbook.cloud/rest/
+  - POST https://api.newbook.cloud/rest
+  - POST https://api.newbook.cloud/rest/api_keys
+- ? information_source; https://community.powerbi.com/t5/Power-Query/How-to-Authenticate-to-a-REST-API-with-basic-Authentication-in/td-p/105202
+  : - GET https://apiURL/apps/api/batch-query/
+    - POST https://api.dropboxapi.com/2/files/list_folder

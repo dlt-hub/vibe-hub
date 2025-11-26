@@ -1,0 +1,66 @@
+auth_info:
+- information_source; https://fulfillment.github.io/api/:
+  - 'Authorizations: fdcAuth
+
+
+    This endpoint requires fdcAuth authorization. No further details about the fdcAuth
+    mechanism, credentials format, or how to provide it are specified in the provided
+    documentation.'
+  - OAuth v2.0 authentication with implicit or password grant types. Obtain client_id
+    and client_secret from your account executive. Send access_token in the Authorization
+    header as Bearer {access_token}. Use refresh_token from POST /oauth/access_token
+    to perpetuate access without storing passwords. Password grant requires username,
+    password, client_id, and client_secret. Store both access_token and refresh_token
+    for reuse; refresh the access_token when it expires using the refresh_token.
+  - OAuth2 password grant flow using client_id and client_secret credentials. Send
+    POST request to /oauth/access_token with username, password, grant_type set to
+    "password", client_id, and client_secret in JSON body. Response includes access_token
+    (Bearer token type), refresh_token, and expires_in. Use the access_token in subsequent
+    requests via fdcAuth authorization scheme.
+  - The API uses fdcAuth as the authorization scheme. This is a custom authentication
+    mechanism specific to FDC; however, the documentation does not provide explicit
+    details on how to implement fdcAuth, such as the header name, parameter name,
+    token format, or how to obtain credentials. To use this endpoint, you would need
+    to refer to additional FDC authentication documentation or contact FDC support
+    for the specific implementation details of fdcAuth.
+  - The API uses fdcAuth authorization. This is a named authorization scheme that
+    must be configured to access the endpoint. The specific implementation details
+    of fdcAuth (such as header name, token format, or credential location) are not
+    provided in this documentation excerpt.
+pagination_info:
+- information_source; https://fulfillment.github.io/api/:
+  - Pagination uses query parameters page (integer >= 1, default 1) and limit (integer
+    1-200, default 80), where page is a multiplier of limit to skip results. Response
+    includes meta.pagination with totalPages, currentPage, count, and total fields
+    to indicate pagination state.
+  - Pagination uses query parameters page (integer, >= 1, default 1) and limit (integer,
+    1-200, default 80). The page parameter multiplies the limit to determine how many
+    items to skip; construct subsequent requests by incrementing the page value until
+    all results are retrieved.
+  - Pagination uses query parameters page (integer, >= 1, default 1) and limit (integer,
+    1-200, default 80). The page parameter multiplies the limit to determine offset;
+    construct subsequent requests by incrementing page. Response includes meta and
+    data objects; stop when data array is empty or fewer items than limit are returned.
+  - Request uses page (query parameter, integer >= 1, default 1) and limit (query
+    parameter, integer 1-200, default 80) for pagination. Response includes meta.pagination
+    object with totalPages, currentPage, and count fields to indicate pagination state.
+  - Use query parameters page (integer >= 1, default 1) and limit (integer 1-200,
+    default 80) to paginate results. The page parameter is a multiplier of limit to
+    skip before returning results; increment page to retrieve subsequent pages until
+    no more results are returned.
+possible_base_urls:
+- information_source; https://fulfillment.github.io/api/:
+  - https://api.fulfillment.com/v2
+  - https://api.fulfillment.com/v2/accounting
+possible_endpoints:
+- information_source; https://fulfillment.github.io/api/:
+  - DELETE https://api.fulfillment.com/v2/orders/{id}
+  - GET /users/aboutMe
+  - GET https://api.fulfillment.com/v2/accounting
+  - GET https://api.fulfillment.com/v2/inventory
+  - GET https://api.fulfillment.com/v2/inventory/full
+  - GET https://api.fulfillment.com/v2/orders/simple
+  - GET https://api.fulfillment.com/v2/orders/{id}
+  - GET https://api.fulfillment.com/v2/returns
+  - GET https://api.fulfillment.com/v2/track/{trackingNumber}
+  - POST /oauth/access_token

@@ -1,0 +1,63 @@
+auth_info:
+- information_source; https://developers.phrase.com/en/api/strings/getting-started:
+  - The API requires HTTP Basic Authentication using either an email address or an
+    access token. Credentials are passed via the -u flag (which sets the Authorization
+    header with Base64-encoded credentials). Additionally, a User-Agent header with
+    contact information is mandatory; requests without it will receive a 400 Bad Request
+    response. The User-Agent format should be "Application Name (contact@example.com)"
+    or "Company Name Python Client (http://example.com/contact)".
+  - To authenticate a JSONP request to the Phrase API, send a valid access token as
+    the access_token query parameter in the request URL. For example, append ?access_token=ACCESS-TOKEN
+    to your request alongside other parameters like callback.
+- information_source; https://developers.phrase.com/en/api/strings/authentication:
+  - Phrase Platform API supports three authentication methods. First, Phrase Platform
+    JWT tokens generated via the platform authentication endpoint. Second, HTTP Basic
+    authentication using email and password credentials sent as username:password.
+    Third, OAuth access tokens that can be passed as the username in Basic auth format
+    (ACCESS_TOKEN:), sent via the Authorization header as "token ACCESS_TOKEN", or
+    sent as a query parameter named access_token. The query parameter method should
+    only be used when header or Basic auth is not possible.
+  - 'Phrase Platform API supports three authentication methods: Phrase Platform API
+    tokens (preferred), email and password, and OAuth access tokens. API tokens should
+    be sent as a Bearer token in the Authorization header. Email/password authentication
+    and OAuth token details are referenced but not fully detailed in this excerpt.
+    Consult the full Authentication documentation page for complete implementation
+    specifics on each method.'
+  - 'Two-Factor-Authentication (2FA) tokens must be sent via the X-PhraseApp-OTP header
+    when required by the API response. The API indicates 2FA is required by returning
+    an X-PhraseApp-OTP: required; :MFA-type header, where :MFA-type specifies the
+    token source (e.g., app for Authenticator applications). Include the 2FA token
+    in requests using the X-PhraseApp-OTP header with the token value, for example:
+    X-PhraseApp-OTP: MFA-TOKEN. Some endpoints also require an eight-digit account
+    ID parameter if the authenticated user belongs to multiple accounts, which can
+    be found in Translation Center.'
+pagination_info:
+- information_source; https://developers.phrase.com/en/api/strings/pagination:
+  - Endpoints returning lists use the query parameter page (starting from page 1)
+    to access further pages, with a default of 25 items per page. Some endpoints support
+    the per_page query parameter to customize page size.
+  - Use query parameter `page` (required, defaults to 1) to navigate pages, with optional
+    `per_page` parameter (max 100 items, default unspecified) to set page size. Response
+    includes Link header with rel="first", rel="prev", rel="next", and rel="last"
+    containing full pagination URLs for each direction; construct next request by
+    following the appropriate rel link URL.
+possible_base_urls:
+- information_source; https://developers.phrase.com/en/api/strings/getting-started:
+  - https://api.phrase.com/v2
+- information_source; https://developers.phrase.com/en/api/strings/authentication:
+  - https://api.phrase.com/v2
+possible_endpoints:
+- information_source; https://developers.phrase.com/en/api/strings/getting-started:
+  - GET https://api.phrase.com/v2/projects
+- information_source; https://developers.phrase.com/en/api/strings/authentication:
+  - GET https://api.phrase.com/v2/projects
+- information_source; https://developers.phrase.com/en/api/strings/pagination:
+  - GET https://api.phrase.com/v2/projects
+  - GET https://api.phrase.com/v2/projects/1234abcd1234abcdefefabcd1234efab/locales/en/download
+- information_source; https://developers.phrase.com/en/api/strings/usage-examples:
+  - GET /v2/projects/:project_id/keys
+  - GET /v2/projects/:project_id/translations
+  - GET https://api.phrase.com/v2/projects/:project_id/keys
+  - PATCH /v2/projects/:project_id/keys/tag
+  - PATCH /v2/projects/:project_id/keys/untag
+  - PATCH https://api.phrase.com/v2/projects/:project_id/keys/tag

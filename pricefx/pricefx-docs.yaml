@@ -1,0 +1,69 @@
+auth_info:
+- information_source; https://api.pricefx.com/rest-api/integration-guide/:
+  - 'JWT token in the Authorization header, and set the Content-Type header to application/json.
+    Include the JSON payload in the request body.
+
+
+    Based on the provided documentation chunk, here is the authentication information:
+
+
+    Include a JWT token in the Authorization header. Set the Content-Type header to
+    application/json when making POST requests to the /loaddata/P endpoint. The exact
+    header name is Authorization and it should contain the JWT token value.'
+  - JWT token-based authentication is required. Include the JWT token value in the
+    `X-PriceFx-jwt` header for all REST API requests. JWT tokens expire in 30 minutes;
+    the server auto-reissues a new token as an updated cookie around the 20-minute
+    mark, and clients should replace their token accordingly. Alternatively, a non-expiring
+    token can be obtained from the /accountmanager.getjsonwebtoken endpoint, though
+    this is less secure than time-limited tokens.
+  - Make a POST request to the /productmanager.fetchformulafilteredproducts endpoint
+    with a JWT token included in the Authorization header.
+  - Pricefx API uses JWT token-based authentication. First, obtain a JWT token by
+    sending a POST request with basic HTTP authentication (username and password).
+    Then, include the JWT token in the Authorization header as a Bearer token for
+    subsequent API requests.
+  - Use JWT token authentication obtained via Basic HTTP Authentication. Send a POST
+    request to /login/extended with Basic Authentication credentials to receive a
+    JWT token in the X-PriceFx-jwt cookie header, valid for 30 minutes. Include the
+    X-PriceFx-jwt header or cookie in subsequent API requests. The token auto-refreshes
+    after 20 minutes of the 30-minute expiration window.
+pagination_info:
+- information_source; https://api.pricefx.com/rest-api/integration-guide/:
+  - The documentation describes pagination using `startRow` and `endRow` parameters
+    in the request body. `startRow` specifies the starting index (default 0) and `endRow`
+    specifies the ending row number for the result set, allowing you to retrieve paginated
+    subsets of data from the `/productmanager.fetchformulafilteredproducts` endpoint.
+- information_source; https://api.pricefx.com/rest-api/filtering-sorting-pagination/:
+  - Pricefx REST API uses `startRow` and `endRow` parameters (both integers, optional)
+    in request bodies to paginate fetch-type commands. The response includes a `totalRows`
+    field; construct subsequent requests by setting `startRow` to the previous `endRow`
+    value. Maximum result size is 1 million rows, enforced for unbounded requests
+    or when endRow minus startRow exceeds that limit.
+- ? information_source; https://api.pricefx.com/openapi/reference/pricefx/operation/post-productmanager.fetchproductsetcompetition-label/
+  : - Pagination uses startRow and endRow parameters in the request body to define
+      the result set range. The response includes startRow and data array fields;
+      use startRow and endRow values to construct subsequent requests for retrieving
+      additional pages.
+- ? information_source; https://api.pricefx.com/openapi/reference/pricefx/operation/post-productmanager.fetchproductcompetition/
+  : - Pagination uses startRow and endRow parameters in the request body. startRow
+      defines the first row of the result set, endRow defines the last row (default
+      300). Use these parameters to implement paging by adjusting the row range in
+      successive requests.
+possible_base_urls:
+- information_source; https://api.pricefx.com/rest-api/:
+  - https://api.pricefx.com
+- information_source; https://api.pricefx.com/rest-api/integration-guide/:
+  - https://api.pricefx.com
+possible_endpoints:
+- information_source; https://api.pricefx.com/rest-api/integration-guide/:
+  - POST /accountmanager.getjsonwebtoken
+  - POST /integrate
+  - POST /loaddata/P
+  - POST /loaddata/{type_code}
+  - POST /login/extended
+  - POST /productmanager.fetchformulafilteredproducts
+  - POST /reference/pricefx/operation/post-productmanager.fetchformulafilteredproducts/
+- information_source; https://api.pricefx.com/rest-api/authentication/:
+  - DELETE /pricefx/{partition}/locker
+  - POST /accountmanager.getjsonwebtoken
+  - POST /login/extended

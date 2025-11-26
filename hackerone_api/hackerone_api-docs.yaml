@@ -1,0 +1,60 @@
+auth_info:
+- information_source; https://api.hackerone.com/customer-resources/:
+  - API authentication uses HTTP Basic Auth with API credentials. Send requests with
+    the Authorization header using the format `-u "<YOUR_API_USERNAME>:<YOUR_API_TOKEN>"`,
+    which encodes the username and token as base64 in the Authorization header. Program
+    Member permissions are required for accessing private program resources; insufficient
+    permissions result in a 403 Forbidden response.
+  - API authentication uses HTTP Basic Auth with credentials passed as a username
+    and token pair in the Authorization header. Send requests with the `-u` flag using
+    format `<YOUR_API_USERNAME>:<YOUR_API_TOKEN>`, which encodes to the Authorization
+    header as `Basic base64(username:token)`.
+  - API authentication uses HTTP Basic Auth with credentials passed as username and
+    token. Send your API username and token as the auth parameter in requests, formatted
+    as username:token (e.g., in Python using requests.auth tuple or curl -u flag).
+    The credentials are YOUR_API_USERNAME and YOUR_API_TOKEN.
+  - API authentication uses HTTP Basic Auth with credentials passed via the -u flag.
+    Send your API username and token as "YOUR_API_USERNAME:YOUR_API_TOKEN" in the
+    Authorization header (or use curl's -u parameter). The endpoint also requires
+    "Program Management" permission; insufficient permissions return a 403 Forbidden
+    response.
+  - API authentication uses HTTP Basic Auth with username and token credentials. Send
+    the username and token as base64-encoded credentials in the Authorization header
+    using the format username:token, or use the -u flag in curl with the format "<YOUR_API_USERNAME>:<YOUR_API_TOKEN>".
+pagination_info:
+- information_source; https://api.hackerone.com/customer-resources/:
+  - Pagination uses cursor-based pagination with page[number] and page[size] query
+    parameters. The response includes links.first and links.next URLs for navigation,
+    with a maximum of 100 results per page. Construct subsequent requests using the
+    next link URL until no next link is present.
+  - Pagination uses page[number] (query parameter, optional) to specify which page
+    to retrieve and page[size] (query parameter, optional) to specify the number of
+    objects per page. The response includes paginated asset tag objects.
+  - Pagination uses page[number] query parameter (e.g., page[number]=1, page[number]=2).
+    Response includes links.self, links.next, and links.last with full URLs for navigating
+    pages; construct subsequent requests using the next link URL until no next link
+    is present.
+  - Pagination uses query parameters page[number] (optional, page to retrieve) and
+    page[size] (optional, number of objects per page). Response structure for pagination
+    fields/navigation is not documented in this excerpt.
+  - Pagination uses query parameters page[number] (optional, page to retrieve) and
+    page[size] (optional, number of objects per page). The response contains paginated
+    credentials objects; however, specific response fields indicating navigation (such
+    as next, has_more, or total) are not detailed in this documentation excerpt.
+possible_base_urls:
+- information_source; https://api.hackerone.com/:
+  - https://api.hackerone.com
+- information_source; https://api.hackerone.com/customer-resources/:
+  - '-'
+possible_endpoints:
+- information_source; https://api.hackerone.com/customer-resources/:
+  - DELETE /credentials/{id}/
+  - DELETE /organizations/{organization_id}/members/{id}
+  - DELETE /programs/{program_id}/credential_inquiries/{credential_inquiry_id}/credential_inquiry_responses/{id}
+  - DELETE /programs/{program_id}/credential_inquiries/{id}
+  - DELETE /programs/{program_id}/structured_scopes/{id}
+  - DELETE /reports/{id}/disclosure_requests
+  - DELETE /reports/{id}/retests/cancel
+  - DELETE /reports/{report_id}/escalate
+  - DELETE https://api.hackerone.com/v1/credentials/{id}/
+  - DELETE https://api.hackerone.com/v1/organizations/{organization_id}/members/{id}

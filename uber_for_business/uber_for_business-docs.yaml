@@ -1,0 +1,71 @@
+auth_info:
+- information_source; https://developer.uber.com/docs/vouchers/guides/authentication:
+  - OAuth2 authentication using client credentials or authorization code grant types.
+    For client credentials, POST to https://auth.uber.com/oauth/v2/token with form-encoded
+    client_id, client_secret, grant_type set to client_credentials, and optional scope
+    parameter; returns Bearer token in access_token field. For authorization code
+    flow, use grant_type authorization_code with client_id, client_secret, redirect_uri,
+    code, and scope parameters. Rate limit is 100 token requests per hour for client
+    credentials; after 100 tokens, new tokens invalidate the oldest one.
+  - 'Uber uses OAuth2 for authentication with two grant types: client_credentials
+    or authorization_code. Tokens are obtained from https://auth.uber.com/oauth/v2/token
+    and passed in the Authorization header as Bearer tokens. Available scopes include
+    organizations.voucher_programs, organizations.voucher_programs.delegated, and
+    vouchers.redeem, which control permissions for voucher program and code management
+    operations.'
+- information_source; https://developer.uber.com/docs/vouchers/guides/webhooks:
+  - Webhook messages are signed using HMAC-SHA256. The X-Uber-Signature header contains
+    a hexadecimal HMAC signature of the webhook HTTP request body, computed using
+    the primary webhook URL's signing key as the HMAC key and SHA256 as the hash function.
+    Verify signatures in Python by computing hmac.new(client_secret, webhook_body,
+    hashlib.sha256).hexdigest() and comparing against the X-Uber-Signature header
+    value.
+- information_source; https://developer.uber.com/docs/vouchers/references/api/v1/sandbox-terminal_state_trip_run-post:
+  - OAuth 2.0 Bearer token authentication is required with the `organizations.voucher_programs`
+    scope. Send the access token in the `Authorization` header as `Bearer <access_token>`.
+- information_source; https://developer.uber.com/docs/vouchers/references/api/v1/sandbox-run-get:
+  - OAuth 2.0 Bearer token authentication is required. Send the access token in the
+    Authorization header as "Bearer <access_token>" and ensure the token has the organizations.voucher_programs
+    scope.
+pagination_info:
+- ? information_source; https://developer.uber.com/docs/vouchers/references/api/v1/organizations-organization_id-voucher-programs-voucher_program_id-guests-get
+  : - Pagination uses limit (query parameter, optional) to specify number of results
+      per page and page_token (query parameter, optional) to navigate pages. The response
+      includes a next_token field; use this value as the page_token parameter in the
+      next request to retrieve the following page.
+    - The response includes a `next_token` field with value "2" used for pagination.
+      To retrieve the next page, pass this token value as a query parameter in the
+      subsequent request. Continue paginating until no `next_token` is returned in
+      the response.
+    - Use query parameters limit (page size) and page_token (cursor) to paginate through
+      guests. The response includes a next_token field; pass this value as page_token
+      in the next request to retrieve the following page.
+- ? information_source; https://developer.uber.com/docs/vouchers/references/api/v1/organizations-organization_id-voucher-programs-search-post
+  : - Pagination uses offset and limit parameters in the request body. The limit parameter
+      (example value 10) specifies the number of results per page, and offset parameter
+      (example value 0) specifies the starting position. The response contains a results
+      array with the paginated data.
+    - Pagination uses offset and limit request parameters. The limit parameter (required,
+      int) specifies the number of results per page, and offset parameter (required,
+      int) specifies the starting position. The response includes voucher_program_id,
+      name, status, and other program fields, but no explicit next/previous fields
+      or has_more indicator are documented.
+possible_base_urls:
+- information_source; https://developer.uber.com/docs/guest-rides/introduction:
+  - https://api.uber.com/v1/guests/
+  - https://sandbox-api.uber.com/v1/guests/
+possible_endpoints:
+- information_source; https://developer.uber.com/docs/guest-rides/introduction:
+  - POST https://api.uber.com/v1/guests/
+  - POST https://sandbox-api.uber.com/v1/guests/
+- information_source; https://developer.uber.com/docs/drivers/introduction:
+  - GET /partners/me
+  - GET /partners/payments
+  - GET /partners/trips
+  - POST /token
+- information_source; https://developer.uber.com/docs/vouchers/guides/authentication:
+  - GET https://api.uber.com/v1.2/me
+  - POST https://auth.uber.com/oauth/v2/
+  - POST https://auth.uber.com/oauth/v2/token
+- information_source; https://developer.uber.com/docs/vouchers/guides/sandbox:
+  - GET /organizations/{organization_id}/voucher-programs/{voucher_program_id}

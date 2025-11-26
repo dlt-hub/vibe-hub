@@ -1,0 +1,50 @@
+auth_info:
+- information_source; https://www.skritter.com/api/v0/docs/authentication:
+  - Authorization code OAuth2 flow is used. The access token is obtained from the
+    response JSON and should be kept secure on the server side only. Client secret
+    must be protected and not exposed to user devices. Use authorization code grant
+    to keep the access token server-side. If handling user passwords to obtain tokens,
+    remove them from your system immediately after token acquisition and refresh as
+    needed.
+  - 'OAuth2 authentication with multiple grant types. Send grant_type (required, one
+    of: ''authorization_code'', ''refresh_token'', ''password'', ''client_credentials''),
+    client_id (required), and client_secret (required for ''password'' grant type,
+    optional for others; send via POST parameter or HTTP header). For ''authorization_code''
+    grant type, also send redirect_uri and code. For ''refresh_token'' grant type,
+    send refresh_token. For ''password'' grant type, send username and always provide
+    client_secret via HTTP header. POST to http://legacy.skritter.com/api/v0/oauth2/token.
+    Response includes access_token, token_type (always ''bearer''), state (if provided
+    in request), and user_id.'
+  - OAuth2 authorization code flow is used for websites. Redirect users to https://legacy.skritter.com/api/v0/oauth2/authorize,
+    then exchange the returned authorization code for an access token by POSTing to
+    https://legacy.skritter.com/api/v0/oauth2/token with grant_type set to 'authorization_code',
+    client_id (OAUTH_CLIENT_NAME), client_secret (OAUTH_CLIENT_SECRET from https://www.skritter.com/api/client/home),
+    redirect_uri (must match the initial redirect), and code (the authorization code
+    from the callback). The response contains an access_token field.
+  - 'OAuth2 token-based authentication with multiple grant types. Clients obtain access
+    tokens via POST to /token endpoint using grant_type parameter (password, refresh_token,
+    or client_credentials). Username and password are required for password grant
+    type. Client credentials (client-name and client-secret) must be provided either
+    as POST parameters or Base64-encoded in HTTP Authorization header with format
+    "basic: base64(client-name:client-secret)". Response includes access_token (bearer
+    type), refresh_token, expires_in (seconds), and token_type. Use the access_token
+    in subsequent API requests to fetch results.'
+  - 'Skritter uses OAuth2 bearer token authentication. Clients obtain tokens through
+    one of three methods: OAuth2 redirect flow (user redirected back with token),
+    password grant flow (submit user credentials directly to Skritter), or client
+    credentials flow (no specific user authorization). Once obtained, include the
+    token as the "bearer_token" parameter in requests or in an HTTP header. Tokens
+    should be refreshed periodically to maintain active authentication.'
+possible_base_urls:
+- information_source; https://www.skritter.com/api/v0/docs/authentication:
+  - http://legacy.skritter.com/api/v0
+  - https://legacy.skritter.com/api/v0
+possible_endpoints:
+- information_source; https://www.skritter.com/api/v0/docs/authentication:
+  - GET http://legacy.skritter.com/api/v0/oauth2/token
+  - GET https://legacy.skritter.com/api/v0/oauth2/authorize
+  - POST /token
+  - POST http://legacy.skritter.com/api/v0/oauth2/token
+  - POST https://legacy.skritter.com/api/v0/oauth2/token
+- information_source; https://www.skritter.com/api/v0/docs/endpoints/users:
+  - GET http://legacy.skritter.com/api/v0/users

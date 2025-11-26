@@ -1,0 +1,72 @@
+auth_info:
+- information_source; https://developer.sellercloud.com/dev-article/add-vendor-product/:
+  - 'Use Bearer Token authentication. Pass the token received from authentication
+    in the Authorization header as "Authorization: Bearer {token}". The token must
+    be obtained from the authentication endpoint before making API calls.'
+- information_source; https://developer.sellercloud.com/dev-article/authentication/:
+  - Authentication uses a two-step bearer token flow. First, POST a JSON request with
+    Username and Password fields to obtain an access_token. Then include the token
+    in the Authorization header as "Bearer {access_token}" for all subsequent API
+    requests. Tokens expire after 60 minutes and must be refreshed by obtaining a
+    new token. The Content-Type header must be set to application/json for the authentication
+    request.
+  - The SellerCloud REST API uses JSON Web Token (JWT) authentication. To authenticate,
+    send a POST request to [RestAPIEndpoint]/api/token with JSON content type containing
+    user credentials to obtain a JWT token, which must then be included in all subsequent
+    API calls. The token is digitally signed and follows RFC 7519 standard. It is
+    recommended to create separate user accounts for each integration.
+- information_source; https://developer.sellercloud.com/dev-article/create-new-customer/:
+  - The API requires authentication via a token. If the user is not authenticated
+    or provides an invalid token, the server returns a 401 status code. The documentation
+    does not specify the exact header name, parameter name, or method for submitting
+    the token.
+- information_source; https://developer.sellercloud.com/dev-article/create-new-purchase-order/:
+  - Use Bearer Token authentication. Pass the token received from token authentication
+    in the Authorization header as "Bearer {Token}". The token must be obtained through
+    the authentication process documented in the Authentication section before making
+    API calls.
+pagination_info:
+- information_source; https://developer.sellercloud.com/dev-article/get-all-inventory-by-view/:
+  - PageNumber (required integer) and pageSize (required integer) are query parameters
+    that control pagination. The response body contains an Items array with paginated
+    inventory data, but no explicit pagination metadata fields like next_page, has_more,
+    or total_count are documented to indicate when to stop paginating.
+- information_source; https://developer.sellercloud.com/dev-article/get-all-orders/:
+  - Pagination uses query parameters model.pageNumber (starting at 1) and model.pageSize
+    (set to 50 in example) to request specific pages of results. The response is a
+    GetAllResponse object containing the paginated data.
+- information_source; https://developer.sellercloud.com/dev-article/get-all-purchase-orders/:
+  - Pagination uses query parameters pageNumber (integer, required) and pageSize (integer,
+    required) to control which page and how many results per page are returned. The
+    endpoint example shows pageNumber=1&pageSize=1 format.
+- information_source; https://developer.sellercloud.com/dev-article/get-all-vendors/:
+  - pageNumber and pageSize are optional query parameters controlling pagination.
+    The response includes an Items array with paginated results and a TotalResults
+    field indicating the total count. Continue requesting with incremented pageNumber
+    values until all results are retrieved.
+- information_source; https://developer.sellercloud.com/dev-article/get-inventory-info-for-multiple-products/:
+  - Use query parameters pageNumber (integer, optional) and pageSize (integer, optional)
+    to control pagination. The response includes paginated inventory results based
+    on these parameters.
+possible_base_urls:
+- information_source; https://developer.sellercloud.com/dev-article/add-vendor-product/:
+  - https://tt.api.sellercloud.com/rest/api
+  - https://{your_server_id}.api.sellercloud.com/rest/api
+possible_endpoints:
+- information_source; https://developer.sellercloud.com/dev-article/add-vendor-product/:
+  - POST https://tt.api.sellercloud.com/rest/api/Vendors/{vendorId}/products
+  - POST https://{your_server_id}.api.sellercloud.com/rest/api/Vendors/{vendorId}/products
+- information_source; https://developer.sellercloud.com/dev-article/authentication/:
+  - POST /api/token
+- information_source; https://developer.sellercloud.com/dev-article/create-new-purchase-order/:
+  - POST https://tt.api.sellercloud.com/rest/api/PurchaseOrders
+  - POST https://{your_server_id}.api.sellercloud.com/rest/api/PurchaseOrders
+- information_source; https://developer.sellercloud.com/dev-article/create-new-sales-order/:
+  - POST https://{your_server_id}.api.sellercloud.com/rest/api/Orders/
+- information_source; https://developer.sellercloud.com/dev-article/create-warehouse-inventory-transfer-witr/:
+  - POST https://{your_server_id}.api.sellercloud.com/rest/api/WarehouseInventoryTransfers
+- information_source; https://developer.sellercloud.com/dev-article/delete-order/:
+  - DELETE https://tt.api.sellercloud.com/rest/api/Orders/{id}
+  - DELETE https://{your_server_id}.api.sellercloud.com/rest/api/Orders/{id}
+- information_source; https://developer.sellercloud.com/dev-article/get-all-inventory-by-view/:
+  - GET https://{your_server_id}.api.sellercloud.com/rest/api/Inventory/GetAllByView

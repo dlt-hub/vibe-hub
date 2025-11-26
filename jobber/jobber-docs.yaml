@@ -1,0 +1,48 @@
+auth_info:
+- information_source; https://developer.getjobber.com/docs/building_your_app/app_authorization:
+  - Access tokens expire after 60 minutes (default) and are sent in API requests.
+    When an access token expires, use the refresh token to obtain a new one by making
+    a POST request to /api/oauth/token with parameters client_id, client_secret, grant_type
+    set to "refresh_token", and the refresh_token value in the request body as application/x-www-form-urlencoded.
+    The refresh token expires if the app is disconnected, the client secret is rolled,
+    or the app connection is re-authorized after a scope change; if both tokens expire,
+    the OAuth flow must be restarted.
+  - Authorization Code Flow (OAuth2) is used for server-side applications where the
+    client secret can be maintained confidentially. The flow requires redirecting
+    users to https://api.getjobber.com/api/oauth/authorize with response_type=code,
+    client_id set to your Client ID from the Developer Center, redirect_uri set to
+    your callback URL (must be URL encoded and configured in Developer Center), and
+    an optional state parameter for security verification. After user authorization,
+    Jobber redirects back to your callback URL with an authorization code and the
+    state parameter (if provided).
+  - Jobber uses OAuth2 authorization code flow. In step 4, your application exchanges
+    an authorization code for an access token by making a POST request to https://api.getjobber.com/api/oauth/token
+    with Content-Type application/x-www-form-urlencoded, sending client_id, client_secret,
+    grant_type set to authorization_code, code (the authorization code from step 3),
+    and redirect_uri as form parameters. You must use HTTPS. The state parameter from
+    step 1 should be validated against the state returned in step 3's redirect.
+  - OAuth2 authorization code flow with access and refresh tokens. Access tokens are
+    sent in the Authorization header as "Bearer ACCESS_TOKEN" to authenticate API
+    requests to https://api.getjobber.com/api/graphql. Refresh tokens are used to
+    obtain new access tokens; token rotation behavior depends on configuration (OFF
+    returns same refresh token, ON returns new refresh token each time). Invalid tokens
+    return 401 "invalid_request" error. Disconnects invalidate all tokens and trigger
+    APP_DISCONNECT webhook.
+- information_source; https://developer.getjobber.com/docs/getting_started/:
+  - Jobber uses OAuth 2.0 for app authorization. Apps define scopes to control what
+    data they can read or write via the GraphQL API, and these scopes are shown to
+    users during the OAuth authorization screen. Access tokens obtained through the
+    OAuth 2.0 flow are valid for 60 minutes. Scopes can be freely edited while an
+    app is in Draft state, but published apps requiring additional scopes will require
+    users to re-authorize.
+possible_base_urls:
+- information_source; https://developer.getjobber.com/docs/building_your_app/app_authorization:
+  - https://api.getjobber.com
+  - https://api.getjobber.com/api/graphql
+possible_endpoints:
+- information_source; https://developer.getjobber.com/docs/building_your_app/app_authorization:
+  - GET https://api.getjobber.com/api/oauth/authorize
+  - POST https://api.getjobber.com/api/graphql
+  - POST https://api.getjobber.com/api/oauth/token
+- information_source; https://developer.getjobber.com/docs/using_jobbers_api/api_queries_and_mutations/:
+  - POST https://api.getjobber.com/api/graphql

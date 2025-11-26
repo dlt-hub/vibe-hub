@@ -1,0 +1,65 @@
+auth_info:
+- information_source; https://tango-controls.readthedocs.io/projects/rest-api/en/latest/general.html:
+  - 'All resources under api_version must be protected and require authentication.
+    The implementation should support standard WWW-Authenticate types, with Basic
+    authentication as an example. For Basic auth, unauthorized requests to protected
+    resources must return HTTP 401 and follow standard Web Basic Authorization mechanism.
+    The implementation should validate each request against TangoAccessControl. When
+    Basic auth is used, the server responds with WWW-Authenticate: Basic realm="Tango-Controls
+    Realm" header.'
+  - All resources under the API version must be protected and require authentication.
+    The documentation states that implementation must support HTTPS with a valid SSL
+    certificate (self-signed acceptable for development, properly signed for production).
+    Specific authentication scheme details, header names, or credential formats are
+    not provided in this excerpt.
+- information_source; https://tango-controls.readthedocs.io/projects/rest-api/en/stable/general.html:
+  - All resources under the API version must be protected and require authentication.
+    The implementation should use standard WWW-Authenticate types, such as Basic authentication,
+    where credentials are sent via the Authorization header with the scheme specified
+    in the WWW-Authenticate response header (e.g., Basic realm="Tango-Controls Realm").
+  - The Tango REST API uses HTTP Basic Authentication for protected resources. Unauthorized
+    requests to protected endpoints under rest/[api_version] must receive HTTP 401
+    Not Authorized responses and follow the standard Web Basic Authorization mechanism.
+    The implementation should validate each request against TangoAccessControl.
+  - "Unauthorized request \u2013 client has failed to provide valid credentials. The\
+    \ API returns HTTP 401 status code when authentication fails, but the documentation\
+    \ does not specify the exact authentication mechanism, header names, or credential\
+    \ format required."
+pagination_info:
+- information_source; https://tango-controls.readthedocs.io/projects/rest-api/en/latest/general.html:
+  - Pagination uses a Range header with the format range=offset-limit. For example,
+    range=0-25 retrieves the first 25 items. The server must respond with HTTP 416
+    if the range is not satisfiable.
+  - 'Pagination uses a range-based header approach. Client sends Range header with
+    range=start-end query parameter; server responds with Accept-Ranges: items and
+    X-size headers indicating collection size, plus Content-Range: items start-end/total
+    header. For example, range=10-20 returns items 10-20 with HTTP 206 status.'
+- information_source; https://tango-controls.readthedocs.io/projects/rest-api/en/stable/general.html:
+  - 'The API uses HTTP Range headers for pagination on collection resources. Clients
+    send a Range header with start-end values (e.g., range=10-20) to request a sub-collection.
+    The server responds with Accept-Ranges: items header, X-size header indicating
+    total collection size, and Content-Range header in the response. Stop paginating
+    when the requested range exceeds the total size indicated by X-size.'
+  - 'The API uses range-based pagination via a `range` query parameter in the format
+    `range=start-end` (e.g., `range=10-20`). The server responds with HTTP 206 and
+    includes a `Content-Range` header indicating the returned items and total count
+    (e.g., `Content-Range: items 10-20/26`). The server returns HTTP 416 if the requested
+    range is unsatisfiable.'
+possible_base_urls:
+- information_source; https://tango-controls.readthedocs.io/projects/rest-api/en/latest/general.html:
+  - /tango/rest/v1.0
+  - http://hzgcttest:8080/tango/rest/v1.0
+possible_endpoints:
+- information_source; https://tango-controls.readthedocs.io/en/9.3.7/development/advanced/rest-api.html:
+  - GET tango/rest/rc4/hosts/tango_host/10000
+  - GET tango/rest/rc4/hosts/tango_host/10000/devices/sys/tg_test/1/attributes/double_scalar/value
+  - PUT tango/rest/rc4/hosts/tango_host/10000/devices/sys/tg_test/1/commands/DevDouble
+- information_source; https://tango-controls.readthedocs.io/en/latest/tools/rest-api.html:
+  - GET tango/rest/rc4/hosts/tango_host/10000/devices/sys/tg_test/1/attributes/double_scalar/value
+  - PUT tango/rest/rc4/hosts/tango_host/10000/devices/sys/tg_test/1/commands/DevDouble
+- information_source; https://tango-controls.readthedocs.io/projects/rest-api/en/latest/general.html:
+  - GET /devices/sys/tg_test/1
+  - GET /devices/sys/tg_test/1/attributes/throw_exception
+  - GET /devices/sys/tg_test/1/attributes?filter=!info&filter=!properties
+  - GET /hosts/localhost/devices
+  - GET /hosts/localhost/devices/sys/tg_test/1/attributes/double_scalar_ro

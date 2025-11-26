@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://docs.sensu.io/sensu-go/latest/api/:
+  - API key authentication is used for Sensu API requests. Set the `SENSU_API_KEY`
+    environment variable with your API key value. API keys are cluster-wide resources
+    that can be generated using sensuctl or the POST core/v2/apikeys endpoint, and
+    they work independently of user passwords.
+  - API requests require the `Authorization` header with the value `Key $SENSU_API_KEY`,
+    where `$SENSU_API_KEY` is your Sensu API key. Pass this header with all requests
+    to authenticate.
+  - 'Bearer token authentication using access tokens retrieved from sensuctl config
+    file, sent in the Authorization header as "Authorization: Bearer <token>". Access
+    tokens expire after approximately 15 minutes and must be refreshed by running
+    sensuctl commands. Alternatively, persistent API keys (UUIDs) can be used for
+    authentication without token refresh requirements.'
+  - Sensu API requires authentication for most endpoints using either a JSON Web Token
+    (JWT) access token or an API key. The authentication environment variable is SENSU_API_KEY.
+    Exceptions include the authentication, health, metrics, ready, and version endpoints
+    which do not require auth.
+  - Sensu API uses bearer token authentication with JWT tokens. Access tokens are
+    sent in the Authorization header as "Bearer {token}" and expire after a set period.
+    When a token expires (resulting in 401 Unauthorized), obtain a new one by POST
+    to /auth/token with the expired access token in the Authorization header and the
+    refresh_token in the JSON request body, which returns a new access_token, expires_at
+    timestamp, and refresh_token.
+pagination_info:
+- information_source; https://docs.sensu.io/sensu-go/latest/api/:
+  - Pagination uses a `limit` query parameter to specify the number of results per
+    request and a `continue` query parameter to pass the continuation token. The response
+    header includes a `Sensu-Continue` token for fetching the next page; when this
+    header is absent, all results have been retrieved.
+- information_source; https://docs.sensu.io/sensu-go/latest/release-notes/:
+  - The Sensu API supports pagination using the `limit` and `continue` query parameters.
+    The `limit` parameter restricts the maximum number of objects returned per request,
+    while the `continue` parameter is used to retrieve subsequent pages of results
+    from large datasets.
+possible_base_urls:
+- information_source; https://docs.sensu.io/sensu-go/latest/api/:
+  - http://127.0.0.1:8080
+  - http://127.0.0.1:8080/api/core/v2
+possible_endpoints:
+- information_source; https://docs.sensu.io/sensu-go/latest/api/:
+  - GET http://127.0.0.1:8080/api/core/v2/namespaces/default/events
+  - GET http://127.0.0.1:8080/api/core/v2/users
+  - GET http://localhost:8080/auth
+  - PATCH http://127.0.0.1:8080/api/core/v2/users
+  - POST /api/core/v2/apikeys
+  - POST /auth/token
+  - POST http://127.0.0.1:8080/api/core/v2/namespaces/default/events
+  - POST http://127.0.0.1:8080/auth/token
+  - POST http://localhost:8080/auth
+- information_source; https://docs.sensu.io/sensu-go/latest/api/core/entities/:
+  - DELETE /api/core/v2/namespaces/default/entities/:entity

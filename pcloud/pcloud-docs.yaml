@@ -1,0 +1,38 @@
+auth_info:
+- information_source; https://arkoniak.github.io/PCloud.jl/dev/reference/:
+  - OAuth 2.0 authorization code flow is used to obtain bearer tokens. The app must
+    provide client_id and client_secret along with the authorization code received
+    from the redirect. The method returns an access_token of type bearer that can
+    be used for subsequent API calls.
+  - 'OAuth 2.0 authorization with two flows: Code flow returns a code via redirect_uri
+    that must be exchanged for a bearer token using oauth2_token method; Token (implicit)
+    flow returns the bearer token directly via redirect_uri. Required parameters are
+    client_id (app id) and response_type (either "code" or "token"). Optional parameters
+    include redirect_uri (where user is redirected after approval), state (opaque
+    data passed back), force_reapprove (boolean to force re-approval), and permissions
+    (comma-separated list for additional scopes). Code flow is recommended for server-based
+    apps; Token flow for client-side apps.'
+  - PCloud uses OAuth 2.0 for authentication. Clients must obtain an access token
+    through the OAuth 2.0 authorization flow (using the authorize and oauth2_token
+    methods) and include this token in requests to authenticate API calls.
+  - Token-based authentication is used. Clients must provide a valid `token` parameter
+    to authenticate requests. The token can be invalidated by calling the appropriate
+    endpoint, which returns an `auth_deleted` boolean indicating successful invalidation.
+    Tokens are associated with user accounts and contain metadata including tokenid,
+    device information, creation time, and expiration times (both absolute and inactivity-based).
+  - 'pCloud uses OAuth 2.0 with two flows. Code flow requires exchanging an authorization
+    code via oauth2_token method for a bearer token. Token flow directly returns an
+    access_token in the redirect URI fragment. Both flows pass a state parameter for
+    CSRF protection and return uid for the authenticated user.
+
+
+    Key parameters: authorization code is passed in query string as code parameter,
+    access_token is returned in URI fragment, token_type is always bearer, state parameter
+    must be included in both request and response for security.'
+possible_base_urls:
+- information_source; https://arkoniak.github.io/PCloud.jl/dev/reference/:
+  - https://docs.pcloud.com
+possible_endpoints:
+- information_source; https://arkoniak.github.io/PCloud.jl/dev/reference/:
+  - GET https://docs.pcloud.com/methods/oauth_2.0/authorize.html
+  - POST https://docs.pcloud.com/methods/oauth_2.0/oauth2_token

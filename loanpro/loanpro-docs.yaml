@@ -1,0 +1,62 @@
+auth_info:
+- information_source; https://loanpro.readme.io/docs/api-token-management:
+  - API tokens are used for authentication and must be included in requests. Tokens
+    are associated with Agent Users and inherit their Role-Based Access settings,
+    which control access to specific endpoints and HTTP methods. Tokens have a Status
+    field that must be "Active" to authenticate successfully; inactive tokens return
+    401 Authentication Error responses. The token itself is the authentication credential
+    used in API requests, and multiple tokens can be created per user though this
+    is not recommended. Tokens can be labeled, rotated, and managed through the Settings
+    > Company > API > Overview interface in the LoanPro environment.
+- information_source; https://loanpro.readme.io/docs/enumerated-values-index:
+  - 'Authorization: Bearer {token} header is required. Additionally, the Autopal-Instance-Id:
+    {Tenant ID} header must be included with requests. Both headers are standard for
+    LMS API calls to access enumerated value collections.'
+- information_source; https://loanpro.readme.io/docs/generate-a-swipe-processer-swp-token:
+  - 'To generate a swipe processor token, send a GET request to the `/api/v2/swipe-processor/new-secret`
+    endpoint with two required headers: `Authorization` containing your token and
+    `Secret` containing your secret. The response returns a `secret` field containing
+    the new swipe processor token, which must be stored and is later used to create
+    HMAC-SHA-512 hashes for authorizing card transactions. You can have up to two
+    valid tokens at a time; attempting to create a third will error.'
+- information_source; https://loanpro.readme.io/docs/create-an-issuer-card-program-and-line-of-credit-program:
+  - Authorization header with token value and Secret header with secret value are
+    required. Send both as HTTP headers in POST requests to the Secure Payments API.
+    The token and secret should be generated API keys from your account setup.
+  - 'Authorization is required via two headers: the Authorization header must contain
+    a token value (referenced as {token}), and the Secret header must contain a secret
+    value (referenced as {secret}). These credentials are passed in the request headers
+    for API authentication.'
+pagination_info:
+- information_source; https://loanpro.readme.io/docs/filtering-and-paginating-responses:
+  - The API uses OData pagination with $top parameter specifying the number of results
+    to return and $start parameter specifying where results should begin (for example
+    $start=20&$top=30). Pagination parameters are only supported at the root level,
+    not for nested associated entities.
+  - Use $top query parameter to set page size (maximum results returned). Use $skip
+    query parameter to skip a specified number of results, or $skiptoken to skip past
+    a specific entity ID (both non-inclusive). Combine with $filter parameter in OData
+    requests.
+possible_base_urls:
+- information_source; https://loanpro.readme.io/docs/odata-and-opensearch:
+  - https://loanpro.simnang.com/api/public/api/1/odata.svc
+- information_source; https://loanpro.readme.io/docs/filtering-and-paginating-responses:
+  - https://loanpro.simnang.com/api/public/api/1/
+possible_endpoints:
+- information_source; https://loanpro.readme.io/docs/odata-and-opensearch:
+  - GET https://loanpro.simnang.com/api/public/api/1/odata.svc/Loans({id})/StatusArchive
+  - POST https://loanpro.simnang.com/api/public/api/1/odata.svc/Loans()
+- information_source; https://loanpro.readme.io/docs/filtering-and-paginating-responses:
+  - GET /odata.sv
+  - GET /odata.svc/Loans(5919)/Payments
+  - GET https://loanpro.simnang.com/api/public/api/1/Loans/Autopal.Search()
+  - GET https://loanpro.simnang.com/api/public/api/1/odata.svc/Payments?$filter=entityId
+    eq 5919&$skip=50
+  - GET https://loanpro.simnang.com/api/public/api/1/odata.svc/Payments?$filter=entityId
+    eq 5919&$skiptoken=239898
+  - GET https://loanpro.simnang.com/api/public/api/1/odata.svc/Payments?$filter=entityId
+    eq 5919&$top=200
+- information_source; https://loanpro.readme.io/docs/adding-and-updating-nested-entities:
+  - PUT https://loanpro.simnang.com/api/public/api/1/odata.svc/Customers(1183)
+- information_source; https://loanpro.readme.io/docs/enumerated-values-index:
+  - GET https://loanpro.simnang.com/api/public/api/1/collections({group})/items

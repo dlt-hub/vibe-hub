@@ -1,0 +1,45 @@
+auth_info:
+- information_source; https://api.hustle.com/v3/docs/description.html:
+  - Authorization uses Bearer token authentication with JWTs. Pass the JWT token in
+    the Authorization header as "Bearer {token}" in all requests to the API.
+  - 'OAuth2 bearer token authentication is required. After obtaining an access token
+    (a JWT valid for 7200 seconds) from the token endpoint with client credentials
+    and desired scopes (e.g., "read:account write:account"), include it in the Authorization
+    header as "Authorization: Bearer <access-token>" for all API requests. Long-running
+    processes must handle token expiration by creating a new access token upon receiving
+    a 401 response and retrying the request.'
+  - Use Bearer token authentication by including the Authorization header with the
+    format "Bearer {JWT_token}" in all API requests to https://api.hustle.com/v2/.
+    The token is a JWT that must be obtained prior to making API calls.
+  - Use OAuth2 client credentials flow to obtain an access token. POST to https://api.hustle.com/v2/oauth/token
+    with Content-Type application/json containing grant_type "client_credentials",
+    client_id, and client_secret in the request body. The response includes an access_token
+    (JWT) and scope. Use the access_token in the Authorization header as a bearer
+    token for subsequent API requests.
+pagination_info:
+- information_source; https://api.hustle.com/v3/docs/description.html:
+  - Cursor-based pagination using query parameter cursor and optional limit parameter.
+    Response includes items array, cursor field for next page, and hasMore boolean
+    to indicate if more pages exist. Stop paginating when hasMore is false or cursor
+    is null.
+  - Responses returning lists use cursor-based pagination with items array, cursor
+    string field for the next page token, and hasMore boolean to indicate if more
+    results exist. Use the cursor value from the response in the next request to fetch
+    subsequent pages until hasMore is false.
+  - Responses use cursor-based pagination with items array, cursor string for the
+    next page, and hasMore boolean indicating end of list. Pass cursor as a query
+    parameter in subsequent requests; optionally pass limit query parameter (default
+    100, max 1000) to control results per page.
+possible_base_urls:
+- information_source; https://api.hustle.com/v3/docs/description.html:
+  - https://api.hustle.com/v1
+  - https://api.hustle.com/v2
+possible_endpoints:
+- information_source; https://api.hustle.com/v3/docs/description.html:
+  - GET /v3/integrations
+  - GET https://api.hustle.com/v1/docs
+  - GET https://api.hustle.com/v2/docs
+  - GET https://api.hustle.com/v2/organizations
+  - GET https://api.hustle.com/v3/organizations
+  - PATCH /v3/leads
+  - POST https://api.hustle.com/v2/oauth/token

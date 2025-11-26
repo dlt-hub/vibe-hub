@@ -1,0 +1,60 @@
+auth_info:
+- information_source; https://docs.subscribepro.com/technical/rest-api/:
+  - Access tokens are required and passed as query parameters named access_token in
+    API requests. The base URL for all calls is https://api.subscribepro.com/ and
+    rate limiting is 600 requests per minute per IP address.
+- information_source; https://docs.subscribepro.com/technical/rest-api/pagination/:
+  - The API requires an access token passed as a query parameter named `access_token`.
+    Include this parameter in your request URL, for example `?access_token=xyz`, to
+    authenticate with the Subscribe Pro API.
+- information_source; https://docs.subscribepro.com/technical/rest-api/authenticating-with-curl/:
+  - 'Authentication requires a Client ID and Client Secret obtained from System >
+    API Clients in your Subscribe Pro Environment. Two methods are supported: OAuth2
+    (client credentials grant) and HTTP Basic Authentication. For OAuth2, POST to
+    https://api.subscribepro.com/oauth/v2/token with grant_type=client_credentials,
+    client_id, and client_secret parameters to receive an access_token (86-character
+    alphanumeric string, 3600 second expiry) and refresh_token. The access_token is
+    then used as a bearer token for API requests.'
+- information_source; https://docs.subscribepro.com/technical/hosted-widgets/my-subscriptions-widget/implementing/:
+  - Access tokens obtained from the `/oauth/v2/token` endpoint must be passed as the
+    `apiAccessToken` parameter in the widget configuration object. The `environmentKey`
+    (from the `spreedly_environment_key` field in the token response) and `customerId`
+    are also required configuration values that should be determined server-side and
+    injected into the page template.
+  - Subscribe Pro uses OAuth2 with client credentials grant type for server-side authentication.
+    Call the /oauth/v2/token endpoint with HTTP Basic Auth using client_id and client_secret,
+    passing grant_type=client_credentials, scope=widget, and either customer_id or
+    customer_email as form data to obtain a bearer token valid for 3600 seconds scoped
+    to an individual customer.
+pagination_info:
+- information_source; https://docs.subscribepro.com/technical/rest-api/pagination/:
+  - 'Use query parameters `since_id` (optional integer, default null) to specify the
+    starting entity ID and `count` (optional integer, range 1-999, default 30) to
+    set page size. Pagination is offset-based: use the ID of the last returned record
+    as the next `since_id` value to fetch subsequent pages.'
+  - V3 API endpoints support pagination using query parameters page (integer, default
+    1) and itemsPerPage (integer, range 1-999, default 30). The default page size
+    is 30 records per page. Construct subsequent requests by incrementing the page
+    parameter value.
+possible_base_urls:
+- information_source; https://docs.subscribepro.com/technical/rest-api/:
+  - https://api.subscribepro.com/
+- information_source; https://docs.subscribepro.com/technical/rest-api/pagination/:
+  - https://api.subscribepro.com
+possible_endpoints:
+- information_source; https://docs.subscribepro.com/technical/rest-api/:
+  - GET https://api.subscribepro.com/services/v2/subscriptions.json
+- information_source; https://docs.subscribepro.com/technical/rest-api/pagination/:
+  - GET https://api.subscribepro.com/products
+- information_source; https://docs.subscribepro.com/technical/rest-api/authenticating-with-curl/:
+  - POST https://api.subscribepro.com/oauth/v2/token
+- information_source; https://docs.subscribepro.com/technical/hosted-widgets/my-subscriptions-widget/implementing/:
+  - POST /oauth/v2/token
+  - POST https://api.subscribepro.com/oauth/v2/token
+- information_source; https://docs.subscribepro.com/technical/rest-api/webhooks/schema/:
+  - GET https://api.subscribepro.com/services/v1/vault/transactions/{id}.{_format}/
+  - GET https://api.subscribepro.com/services/v2/customers/{id}.{_format}/
+  - GET https://api.subscribepro.com/services/v2/group-subscriptions/{id}.{_format}/
+  - GET https://api.subscribepro.com/services/v2/vault/paymentprofiles/{id}.{_format}/
+- information_source; https://docs.subscribepro.com/technical/rest-api/webhooks/security/:
+  - GET https://api.subscribepro.com/services/v2/webhook-events/{id}

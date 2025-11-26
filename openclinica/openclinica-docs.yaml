@@ -1,0 +1,55 @@
+auth_info:
+- information_source; https://docs.openclinica.com/3-1-technical-documents/:
+  - Different parts of the OpenClinica API use different security mechanisms. Session-based
+    authentication requires programmatic login to /pages/login/login before calling
+    the API. API Key authentication uses HTTP Basic Auth with the API key as the username
+    and no password required; the key is obtained via the getAccountByUserName API
+    endpoint. OAuth requires registering an application to receive a unique Client
+    ID and Client Secret, which should be kept confidential. Some APIs may also have
+    network or firewall-dependent security constraints. Each API method is labeled
+    with which authentication method(s) it supports.
+- information_source; https://docs.openclinica.com/3-1-technical-documents/rest-api-specifications/:
+  - OAuth 2.0 is used for authentication with OpenClinica RESTful APIs. The REST web
+    services rely on HTTP, SSL, XML, and OAuth 2.0 protocols to secure interactions
+    between systems, such as between the OpenClinica Rule Designer and OpenClinica
+    instances.
+- information_source; https://docs.openclinica.com/3-1-technical-documents/rest-api-specifications/openclinica-restful-urls/:
+  - These URLs do not support OAuth security authentication.
+- information_source; https://docs.openclinica.com/oc4/how-and-when-to-use-apis/:
+  - API users of OpenClinica need an authentication token to access API endpoints.
+    Obtain the token by making a POST request to https://{subdomain}.build.openclinica.io.
+    The documentation references a Swagger interface accessible through User > Administration
+    > Web Services Information for endpoint details, but specific token acquisition
+    parameters, header names, and response format are not provided in this excerpt.
+  - Authentication uses OAuth2 bearer token flow. Obtain a token by POST to https://{subdomain}.build.openclinica.io/user-service/api/oauth/token
+    with JSON body containing username and password fields. Supply the returned token
+    in the Authorization header as "Bearer {authentication token}" for all other API
+    calls. Tokens expire after 4 hours and are rate-limited to 2 calls per minute
+    per IP address; excessive calls receive 429 status and should be retried after
+    30-60 seconds.
+pagination_info:
+- information_source; https://docs.openclinica.com/oc4/how-and-when-to-use-apis/oc4-clinicaldata-import-crf-data/:
+  - Use POST to {serverName}/pages/auth/api/clinicaldata/import/xml with multipart/form-data.
+    Submit the XML file via the file parameter. For attachments, also submit a ZIP
+    file containing referenced files; in the XML, set the item's Value to the file
+    name for matching. The API returns a job that must be polled or checked via log
+    download to review import results.
+possible_base_urls:
+- information_source; https://docs.openclinica.com/3-1-technical-documents/:
+  - https://dev.openclinica.com
+- information_source; https://docs.openclinica.com/3-1-technical-documents/rest-api-specifications/:
+  - https://designer.openclinica.com
+possible_endpoints:
+- ? information_source; https://docs.openclinica.com/3-1-technical-documents/developing-openclinica/developing-openclinica-using-openrosa-api-openclinica-experimental/
+  : - GET /OpenClinica-web/rest2/openrosa/{studyOID}/formList
+    - GET /OpenClinica-web/rest2/openrosa/{studyOID}/formXml
+    - POST /OpenClinica-web/rest2/openrosa/{studyOID}/submission
+- information_source; https://docs.openclinica.com/3-1-technical-documents/rest-api-specifications/openclinica-restful-urls/:
+  - GET /OpenClinica/Clinical
+  - GET /OpenClinica/ClinicalData/html/view/S_CPCS/320999/SE_CPCS[1]/F_CPCS_1?tabId=1&exitTo=ViewStudySubject?id=1
+  - GET /OpenClinica/ClinicalData/html/view/{StudyOID}/{StudySubjectKey}/{StudyEventDefOID}[{StudyEventRepeatKey}]/{FormDefOID}?tabId={sectionNum}
+  - GET /OpenClinica/ClinicalData/{format}/{mode}/ODM_XML_PATH?OPTIONS
+  - GET /OpenClinica/ClinicalData/{format}/{mode}/{StudyOID}/{StudySubjectKey}/{StudyEventDefOID}[{StudyEventRepeatKey}]/{FormDefOID}?tabId={sectionNum}&exitTo={exitURL}
+- information_source; https://docs.openclinica.com/oc4/how-and-when-to-use-apis/:
+  - POST https://{subdomain}.build.openclinica.io
+  - POST https://{subdomain}.build.openclinica.io/user-service/api/oauth/token

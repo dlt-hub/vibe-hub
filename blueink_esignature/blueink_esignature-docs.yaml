@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://developer.blueink.com/docs/esignature-api/authentication/:
+  - 'All requests to the Blueink API require an Authorization header with the format
+    "Token <your-api-key>", where your-api-key is obtained from the Blueink Dashboard.
+    Include the header as Authorization: Token YOUR_API_KEY in each request.'
+- information_source; https://developer.blueink.com/docs/esignature-api/webhook/:
+  - 'Webhook requests use HMAC-SHA256 signature verification. The webhook secret (found
+    on the API screen) is used to compute an HMAC signature over a message constructed
+    as "v0:{x-blueink-request-timestamp}:{json_request_body}", then compared against
+    the signature sent in the request header.
+
+
+    To verify: obtain the webhook secret from your API screen, extract the x-blueink-request-timestamp
+    header value, compute HMAC-SHA256 using UTF-8 encoding with the secret as the
+    key and the constructed message as input, and compare the resulting hexdigest
+    (prefixed with "v0=") against the incoming webhook signature using constant-time
+    comparison.'
+- information_source; https://developer.blueink.com/docs/how-to-guides/send-envelope-with-uploaded-pdf/:
+  - API key authentication is required. Send the API key in the Authorization header
+    as a Bearer token in the format "Bearer your_api_key_here". The API key should
+    be stored in the API_KEY variable and passed to requests made to https://api.blueink.com/api/v2.
+  - 'API key authentication is required. Send the API key in the Authorization header
+    as a Bearer token: Authorization: Bearer your_api_key_here. The API key should
+    be stored in the API_KEY configuration variable and included with all requests
+    to the Blue Ink API v2 endpoint.'
+  - API key passed as Token in Authorization header. Send the API key in the Authorization
+    header with the format "Token {api_key}" where api_key is your Blueink API key
+    obtained from the Blueink Dashboard.
+pagination_info:
+- information_source; https://developer.blueink.com/docs/esignature-api/pagination/:
+  - 'Pagination uses Link header with rel="next", rel="prev", rel="first", rel="last"
+    URLs for navigation. Request parameters are page (1-indexed, required) and per_page
+    (optional, max 100, default 50). Response includes X-BlueInk-Pagination header
+    with format: current_page,total_pages,results_per_page,total_results.'
+possible_base_urls:
+- information_source; https://developer.blueink.com/docs/esignature-api/authentication/:
+  - https://api.blueink.com/api/v2
+- information_source; https://developer.blueink.com/docs/esignature-api/pagination/:
+  - https://api.blueink.com/api/v2
+possible_endpoints:
+- information_source; https://developer.blueink.com/docs/esignature-api/authentication/:
+  - GET https://api.blueink.com/api/v2/bundles/
+- information_source; https://developer.blueink.com/docs/esignature-api/changelog/:
+  - DELETE /webhooks/
+  - GET /bundles
+  - GET /bundles/
+  - GET /bundles/{bundleId}/
+  - GET /webhooks/
+  - POST /bundles/
+  - POST /bundles/[bundleId]/send/
+  - POST /bundles/create_from_envelope_template/
+  - POST /bundles/{bundleId}/send/

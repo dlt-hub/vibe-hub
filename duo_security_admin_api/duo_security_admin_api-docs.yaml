@@ -1,0 +1,68 @@
+auth_info:
+- information_source; https://duo.com/docs/adminapi:
+  - Duo Admin API uses HMAC-SHA1 signature-based authentication. Construct a canonical
+    ASCII string from date (RFC 2822 format, matching the Date header), HTTP method
+    (uppercase), API hostname (lowercase), request path, and URL-encoded parameters
+    (lexicographically sorted, blank line if no params), joined by newlines. Compute
+    HMAC-SHA1 of this string using your secret key, convert to hexadecimal ASCII,
+    and send via HTTP Basic Authentication with integration key as username and the
+    hex signature as password.
+  - HMAC-SHA1 based authentication using an integration key (ikey) and secret key
+    (skey). Credentials are sent via the Authorization header as Basic auth with the
+    format ikey:hmac_signature, along with a Date header. The HMAC is computed over
+    a canonical string containing the HTTP method, host, path, current date, and sorted
+    request parameters.
+  - HTTP Basic Authentication is required. Use the integration key as the username
+    and an HMAC-SHA1 signature as the password. The signature is computed over a canonical
+    string containing the date, HTTP method, host, path, and request parameters, then
+    base64-encoded for the Authorization header. Include a Date header with the current
+    time in RFC 2822 format. Signature validation is case-insensitive.
+  - Requires "Grant administrators - Read" or "Grant administrators - Write" API permission
+    to access the administrative units endpoint. Authentication is managed through
+    Duo's standard API authentication mechanism using integration credentials (integration_key
+    and secret_key) passed via HTTP request signing, though the specific header names
+    and request signing details are not provided in this excerpt.
+  - Requires "Grant administrators - Write" API permission to call this endpoint.
+    The specific mechanism for providing this permission (whether via header, query
+    parameter, or other means) is not detailed in the provided documentation excerpt.
+pagination_info:
+- information_source; https://duo.com/docs/adminapi:
+  - Offset-based pagination is supported with optional `limit` (default 100, max 500)
+    and `offset` (default 0) query parameters. The response includes `metadata.total_objects`
+    indicating total record count; construct subsequent requests by incrementing `offset`
+    by the `limit` value until all records are retrieved.
+  - Pagination uses offset and limit query parameters. The limit parameter (optional,
+    default 100, max 500) controls the number of records returned per request. The
+    offset parameter (optional, default 0) specifies the starting record position.
+    Continue paginating by incrementing offset while the response metadata contains
+    a next_offset value; stop when next_offset is absent.
+  - Pagination uses offset-based navigation with `mintime` parameter (Unix timestamp
+    in seconds, optional) to retrieve records; the response includes `metadata.next_offset`
+    for the next request and `metadata.total_objects` for total count. Up to 1000
+    earliest events are returned per call; use `mintime+1` to avoid duplicates when
+    paginating through logs.
+  - Pagination uses offset-based navigation. Request parameter mintime (optional,
+    Unix timestamp in seconds) filters records after a given time. Response includes
+    next_offset field in metadata to construct subsequent requests. Maximum 1000 earliest
+    events returned per call; iterate by passing next_offset value as mintime in subsequent
+    requests.
+  - Pagination uses optional `limit` and `offset` query parameters. `limit` sets the
+    maximum records returned (default 50, max 100), and `offset` specifies the starting
+    record position (default 0). The response is a JSON array; retrieve additional
+    results by incrementing the offset value.
+possible_base_urls:
+- information_source; https://duo.com/docs/adminapi:
+  - /admin/v2/policies/
+  - api-XXXXXXXX.duosecurity.com/admin/v1
+possible_endpoints:
+- information_source; https://duo.com/docs/adminapi:
+  - DELETE /admin/v
+  - DELETE /admin/v1/administrative_units/[admin_unit_id]
+  - DELETE /admin/v1/administrative_units/[admin_unit_id]/admin/[admin_id]
+  - DELETE /admin/v1/administrative_units/[admin_unit_id]/group/[group_id]
+  - DELETE /admin/v1/administrative_units/[admin_unit_id]/integration/[integration_key]
+  - DELETE /admin/v1/admins/[admin_id]
+  - DELETE /admin/v1/admins/[admin_id]/activation_link
+  - DELETE /admin/v1/admins/activations/[admin_activation_id]
+  - DELETE /admin/v1/branding/draft/users/[user_id]
+  - DELETE /admin/v1/bypass_codes/[bypass_code_id]

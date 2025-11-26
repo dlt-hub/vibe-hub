@@ -1,0 +1,59 @@
+auth_info:
+- information_source; https://developer.osf.io/:
+  - OAuth2 application credentials are used for authentication. The client_id (e.g.,
+    "client_abc123") is required as a path parameter to retrieve application details,
+    and the client_secret (e.g., "secret_123") is provided during application registration
+    for use in OAuth2 token exchange flows. The callback_url specifies where OAuth2
+    authorization responses are sent.
+  - OAuth2 applications can be managed via API endpoints. The client_id is required
+    as a path parameter for deactivating or resetting applications. Resetting an application
+    (POST to /applications/{client_id}/reset/) generates a new client_secret value
+    and revokes all associated tokens; this endpoint is deprecated in API v2.14+.
+  - To use Personal Access Token authentication, include an Authorization header with
+    the value Bearer <token>, where <token> is your Personal Access Token. The header
+    name is Authorization and the scheme is Bearer.
+  - To use a Personal Access Token, include an Authorization header with the value
+    Bearer <token>, where <token> is your token created from the OSF settings page.
+    Alternatively, the OSF supports OAuth 2.0 web application flow for third-party
+    applications, which requires registering a developer application in OSF settings
+    and following the OAuth 2.0 authorization code flow.
+  - User must be authenticated to access this endpoint. The documentation states that
+    the user must be authenticated and have permissions to view actions associated
+    with the respective resources. A 403 Forbidden response is returned if the user
+    does not have permission to view the review actions.
+pagination_info:
+- information_source; https://developer.osf.io/:
+  - 'Entity collection endpoints return paginated results with a maximum of 10 entities
+    per page. The response includes a `data` array of entities and a `links` object
+    containing pagination URLs: `next`, `prev`, `first`, and `last`. The `meta` object
+    provides `total` entity count and current results per page. When results fit one
+    page, `first`, `last`, `prev`, and `next` are null. Use the `next` link URL to
+    fetch the subsequent page.'
+  - Pagination is supported via the `links` key in responses, which contains links
+    for navigation as described in the [pagination documentation](https://developer.osf.io/#tag/Pagination).
+    The `data` key returns up to 10 nodes per request.
+  - Pagination uses a page query parameter (default 10 items per page). Response includes
+    links.next, links.prev, links.first, links.last URLs for navigation, plus links.meta.total
+    (total items) and links.meta.per_page (items per page).
+  - Pagination uses offset-limit style with total and per_page fields in the response.
+    The links object contains self, first, last, prev, and next fields for navigation,
+    where null values indicate unavailable pages. Stop paginating when next is null.
+  - Pagination uses the JSON:API specification with query parameters page (page number)
+    and per_page (number of actions per page). Response includes data, meta, and links
+    objects following JSON:API pagination format for navigating results.
+possible_base_urls:
+- information_source; https://developer.osf.io/:
+  - https://api.osf.io/v2
+  - https://api.osf.io/v2/
+possible_endpoints:
+- information_source; https://developer.osf.io/:
+  - DELETE https://api.test.osf.io/v2/applications/{client_id}/
+  - DELETE https://api.test.osf.io/v2/collections/{collection_id}/
+  - DELETE https://api.test.osf.io/v2/comments/{comment_id}/
+  - GET /collections
+  - GET https://api.osf.io/v2/actions/{action_id}
+  - GET https://api.osf.io/v2/citations/styles/
+  - GET https://api.osf.io/v2/nodes/
+  - GET https://api.osf.io/v2/providers/preprints/osf/
+  - GET https://api.test.osf.io/v2/
+  - GET https://api.test.osf.io/v2/actions/reviews/

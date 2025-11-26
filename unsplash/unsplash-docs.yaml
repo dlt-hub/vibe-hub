@@ -1,0 +1,57 @@
+auth_info:
+- information_source; https://help.unsplash.com/en/articles/2511245-unsplash-api-guidelines:
+  - Your application's Access Key and Secret Key must remain confidential and should
+    be kept secure, potentially using a proxy if accessing the API client-side. These
+    credentials are required for API authentication.
+- information_source; https://unsplash.com/documentation:
+  - 'Pass your application''s access key via the HTTP Authorization header as `Authorization:
+    Client-ID YOUR_ACCESS_KEY`, or alternatively via the `client_id` query parameter.
+    For user-specific actions, use OAuth2 bearer tokens obtained through the user
+    authentication workflow.'
+  - The API requires the `write_collections` scope to update collections. This indicates
+    OAuth2 authentication is required, where the client must have been granted the
+    `write_collections` scope during the OAuth2 authorization flow. The authenticated
+    user making the request must own the collection being updated.
+  - The Unsplash API requires the `write_collections` scope for operations that modify
+    collections. Authentication is needed to identify the logged-in user whose collections
+    are being modified. Credentials should be sent via the standard Authorization
+    header (typically as a Bearer token or OAuth2 access token with the `write_collections`
+    scope).
+  - The Unsplash API uses OAuth2 authentication with scopes. Requests require the
+    write_collections scope to modify collections (delete or add photos). Authentication
+    is passed via bearer token in the Authorization header, obtained through the OAuth2
+    flow with appropriate scopes for the requested operations.
+pagination_info:
+- information_source; https://unsplash.com/documentation:
+  - Page-based pagination with page (optional, defaults to 1) and per_page (optional)
+    query parameters. Response returns abbreviated photo objects; use GET /photos/:id
+    for full details.
+  - Pagination uses Link header with rel="first", rel="prev", rel="next", and rel="last"
+    to navigate pages. Response includes total (total results), total_pages (number
+    of pages), and results array. Construct next request using the URL from the Link
+    header with rel="next"; stop when rel="next" is absent.
+  - Pagination uses Link header with rel="first", rel="prev", rel="next", and rel="last"
+    to navigate pages. The page query parameter controls which page is requested,
+    with page=346 being the last page.
+  - Pagination uses Link header with rel="first", rel="prev", rel="next", rel="last"
+    to navigate pages. Response includes total (237), total_pages (12), and results
+    array. Request page via query parameter page (e.g., page=2) in the URL.
+  - Pagination uses page (page number) and per_page (items per page) as query parameters.
+    The response includes a Link header with rel="last" indicating the final page,
+    allowing clients to navigate through paginated collection results.
+possible_base_urls:
+- information_source; https://unsplash.com/documentation:
+  - https://api.unsplash.com
+  - https://images.unsplash.com
+possible_endpoints:
+- information_source; https://unsplash.com/documentation:
+  - DELETE /collections/:collection_id/remove
+  - DELETE /collections/:id
+  - GET /collections
+  - GET /collections/:id
+  - GET /collections/:id/photos
+  - GET /collections/:id/related
+  - GET /photos
+  - GET /photos/:id
+  - GET /photos/:id/download
+  - GET /photos/:id/statistics

@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://docs.wallaroo.ai/wallaroo-model-operations/wallaroo-model-operations-serve/:
+  - Authorization uses JWT tokens in the format 'Bearer ' + token, passed in the Authorization
+    header. The Content-Type and Accept headers specify the data format (pandas-records
+    JSON or Apache Arrow binary) for both request and response.
+  - 'Bearer token authentication. Call wl.auth.auth_header() to retrieve headers containing
+    an Authorization header with a Bearer token (format: ''Bearer exampleabcdefg'').
+    Include this Authorization header in all API requests, and set Content-Type to
+    ''application/json'' for POST requests with JSON bodies.'
+  - Wallaroo uses JWT bearer token authentication. Obtain the token via the Wallaroo
+    SDK's `wl.auth.auth_header()` method, which returns a dict with key `Authorization`
+    containing the value `Bearer <token>`. Include this header in all API requests
+    to the MLOps API endpoint at `https://{wallarooDomain}/v1/api`. Credentials are
+    loaded from the file path specified in environment variable `WALLAROO_SDK_CREDENTIALS`,
+    and the SDK client is initialized with `auth_type="user_password"`.
+- ? information_source; https://docs.wallaroo.ai/wallaroo-model-operations/wallaroo-model-operations-observe/wallaroo-model-operations-observability-tutorials/dashboard-metrics-classification/
+  : - Authentication is obtained by calling `wl.auth.auth_header()`, which returns
+      headers that are then passed to the HTTP request via the `headers` parameter
+      in `requests.get()`. The exact header name and format are not specified in this
+      code snippet, but the auth credentials are embedded in the headers dictionary
+      retrieved from the auth module.
+    - Retrieve the authentication bearer token using the Wallaroo SDK method wl.auth.auth_header(),
+      which returns headers containing the necessary authentication credentials. Pass
+      these headers in the HTTP request to the metrics API endpoint.
+pagination_info:
+- ? information_source; https://docs.wallaroo.ai/wallaroo-developer-guides/wallaroo-api-guide/wallaroo-mlops-api-essential-guide/wallaroo-mlops-api-essential-guide-pipeline-logs/
+  : - Pagination uses a cursor-based scheme. The request body includes a cursor parameter
+      populated from the x-iteration-cursor response header. Continue paginating while
+      the x-iteration-cursor header is present in the response; stop when the response
+      is an empty array or the header is absent.
+    - 'Pagination uses header-based navigation. The response includes x-iteration-cursor
+      header to retrieve the next page of results, and x-iteration-status header indicating
+      pagination state: "All" means no more pages, "SchemaChange" or "RecordLimited"
+      indicate more records available, and "ByteLimited" indicates the 100K pipeline
+      log limit was reached. Use the x-iteration-cursor value in the next request
+      to fetch subsequent pages.'
+possible_base_urls:
+- information_source; https://docs.wallaroo.ai/wallaroo-model-operations/wallaroo-model-operations-serve/:
+  - https://api.autoscale-uat-ee.wallaroo.dev/v1/api
+  - https://api.autoscale-uat-ee.wallaroo.dev/v1/api/pipelines/infer/vsnaapiinferenceexamplepipeline-260/vsnaapiinferenceexamplepipeline
+possible_endpoints:
+- ? information_source; https://docs.wallaroo.ai/20230201/wallaroo-developer-guides/wallaroo-api-guide/wallaroo-mlops-api-reference-guide/
+  : - POST /api/connections/delete
+    - POST /v1
+    - POST /v1/api/admin/get_pipeline_external_url
+    - POST /v1/api/admin/get_pipeline_internal_url
+    - POST /v1/api/assays/create
+    - POST /v1/api/assays/filter
+    - POST /v1/api/assays/get_assay_results
+    - POST /v1/api/assays/get_baseline
+    - POST /v1/api/assays/list
+    - POST /v1/api/assays/run_interactive

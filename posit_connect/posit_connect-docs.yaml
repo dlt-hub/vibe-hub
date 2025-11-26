@@ -1,0 +1,60 @@
+auth_info:
+- information_source; https://docs.posit.co/connect/admin/integrations/oauth-integrations/sharepoint/:
+  - The SharePoint Online integration requires OAuth2 authentication configured in
+    Microsoft Entra. For Viewer Integration, register an OAuth application in Microsoft
+    Entra with a redirect URI of `https://connect.example.org/__oauth__/integrations/callback`
+    (replace `connect.example.org` with your Connect server address); Azure will send
+    user credentials to this URI during the OAuth handshake, allowing Posit Connect
+    to obtain temporary access and refresh tokens. Service Account Integration is
+    also mentioned but details are incomplete in the provided text.
+- information_source; https://docs.posit.co/connect/cookbook/pagination/:
+  - Authentication uses an API key passed in the Authorization header. The header
+    must be set to "Key {connect_api_key}" where connect_api_key is obtained from
+    an environment variable. The API key is required for all requests to the Posit
+    Connect audit logs endpoint.
+  - Posit Connect uses API Key authentication. The API key is obtained from the CONNECT_API_KEY
+    environment variable and sent in the Authorization header with the format "Key
+    {api_key_value}". The server URL is obtained from the CONNECT_SERVER environment
+    variable.
+  - Posit Connect uses API Key authentication. The API key must be passed in the Authorization
+    header with the format "Key {api_key}". The server URL and API key are obtained
+    from the CONNECT_SERVER and CONNECT_API_KEY environment variables respectively.
+  - The API uses an API Key authentication scheme. Obtain the Connect server URL from
+    the CONNECT_SERVER environment variable and the API Key from the CONNECT_API_KEY
+    environment variable. Include the API Key in the Authorization header with the
+    format "Key {api_key}" when making requests to the API endpoints.
+pagination_info:
+- information_source; https://docs.posit.co/connect/cookbook/pagination/:
+  - Keyset (cursor) pagination is used for audit logs. Request the first page via
+    GET /v1/audit_logs with a limit parameter (default 25 entries per page). The response
+    includes a paging.next field containing the URL for the next page; continue paginating
+    by following this URL until paging.next is NULL.
+  - Pagination uses query parameters page_number and page_size. Requests are made
+    to GET /__api__/v1/users with page_size (e.g., 25) and page_number parameters.
+    The response contains a results array and current_page field. Increment page_number
+    until no results are returned to stop pagination.
+  - The `/v1/audit_logs` endpoint uses cursor-based pagination. Request the first
+    page with optional `limit` query parameter (default 25 records per page). The
+    response contains a `paging.next` field with the URL for the next page; continue
+    requesting until `paging.next` is null or empty.
+  - Use `page_size` query parameter (default 25) to control page size, and `current_page`
+    in the response to track pagination. Increment `current_page` and request the
+    next page; stop when the `results` array is empty.
+possible_base_urls:
+- information_source; https://docs.posit.co/connect/cookbook/pagination/:
+  - '{connect_server}/__api__/v1/audit_logs'
+  - '{connect_server}/__api__/v1/users'
+possible_endpoints:
+- information_source; https://docs.posit.co/connect/admin/integrations/oauth-integrations/security/:
+  - POST /v1/oauth/integrations/credentials
+- information_source; https://docs.posit.co/connect/cookbook/pagination/:
+  - GET /__api__/v1/users
+  - GET /v1/audit_logs
+  - GET /v1/users
+  - GET {connect_server}/__api__/v1/audit_logs
+- information_source; https://docs.posit.co/ide/server-pro/workbench_api/workbench_api.html:
+  - GET /api/get_sessions_jobs
+  - GET /api/launch_job
+  - GET /api/launch_session
+  - GET /api/resume_session
+  - POST /api/launch_job

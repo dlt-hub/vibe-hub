@@ -1,0 +1,37 @@
+auth_info:
+- information_source; https://support-developer.riotgames.com/hc/en-us/articles/22897607341075-OAuth-Client-Documentation:
+  - Authentication uses OAuth2 bearer tokens. Include the access token in the Authorization
+    header as "Bearer {accessToken}". When directing users to login, include the cpid
+    (current platform id) scope to ensure the OAuth access token is generated with
+    that scope, which enables the cpid field to be returned from userinfo requests
+    at https://auth.riotgames.com/userinfo.
+  - 'OAuth2 authorization code flow is required. Direct players to https://auth.riotgames.com/authorize
+    with client_id, redirect_uri, response_type=code, and scope=openid+offline_access.
+    Exchange the authorization code for an access token, then use the access token
+    in the Authorization header as Bearer token when calling account endpoints (e.g.,
+    GET https://americas.api.riotgames.com/riot/account/v1/accounts/me with header
+    Authorization: Bearer {accessToken}).'
+  - OAuth2 bearer token authentication is required. Direct users to login with the
+    cpid scope to obtain an access token. Include the token in the Authorization header
+    as "Bearer {accessToken}" when making requests to the account endpoint at https://americas.api.riotgames.com/riot/account/v1/accounts/me
+    (or europe/asia regional variants). The cpid scope ensures the cpid field is returned
+    from https://auth.riotgames.com/userinfo, which identifies the user's current
+    platform for routing subsequent requests to the appropriate regional DNS.
+possible_base_urls:
+- information_source; https://developer.riotgames.com/apis:
+  - https://developer.riotgames.com
+- information_source; https://support-developer.riotgames.com/hc/en-us/articles/22897607341075-OAuth-Client-Documentation:
+  - https://americas.api.riotgames.com
+possible_endpoints:
+- information_source; https://developer.riotgames.com/apis:
+  - GET /riot-id/{gameName}/{tagLine}
+  - GET /riot/account/v1/accounts/by-puuid/{puuid}
+  - GET /riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}
+  - GET /riot/account/v1/accounts/me
+  - GET /riot/account/v1/active-shards/by-game/{game}/by-puuid/{puuid}
+  - GET /riot/account/v1/region/by-game/{game}/by-puuid/{puuid}
+- information_source; https://developer.riotgames.com/docs/lol:
+  - GET /lobby-events/by-code/{tournamentCode}
+  - GET /lol/summoner/v4/summoners/by-name/{summonerName}
+  - GET /lol/summoner/v4/summoners/by-puuid/{encryptedPUUID}
+  - GET /lol/summoner/v4/summoners/{encryptedSummonerId}

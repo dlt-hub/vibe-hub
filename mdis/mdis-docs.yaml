@@ -1,0 +1,70 @@
+auth_info:
+- information_source; https://data.icdp-online.org/mdis-docs/guide/rest-api/:
+  - Authentication is handled by the Yii framework using HTTP Bearer authentication.
+    See vendor/yiisoft/yii2/filters/auth/HttpBearerAuth for implementation details
+    on how to send bearer tokens in request headers.
+  - 'Authentication is handled via username and password credentials. After successful
+    authentication, an OAuth2 Bearer token is granted that is valid for 1 day and
+    can be refreshed to extend validity. The Bearer token must be submitted in the
+    HTTP Authorization header of each API request using the format: Authorization:
+    Bearer <token>.'
+  - 'Submit a Bearer token in the Authorization HTTP header for each request using
+    the format `Authorization: Bearer <token>`, where `<token>` is your bearer token
+    value like `abEARERtOKENlOOKSlIKEtHIS`.'
+- information_source; https://data.icdp-online.org/mdis-docs/guide/developer/developer-form-filter.html:
+  - 'The API requires bearer token authentication. Send the token in the Authorization
+    header as "Authorization: Bearer YOUR_TOKEN" when making requests to the API endpoints.'
+- information_source; https://data.icdp-online.org/mdis-docs/guide/developer/:
+  - Authentication uses a Bearer token obtained via POST login. Send credentials to
+    `v1/auth/login` in a JSON body, extract the token from the response, and include
+    it in subsequent requests via the Authorization header as `Bearer {token}`. Store
+    the token (e.g., in sessionStorage) and append it to all API requests. Only one
+    active Bearer token per user is allowed; obtaining a new token invalidates any
+    previous token for that user.
+pagination_info:
+- information_source; https://data.icdp-online.org/mdis-docs/guide/developer/:
+  - Pagination uses query parameters per_page (items per page) and page (page number,
+    starting at 1). Response includes an items array containing the paginated results.
+    To get the next page, increment the page parameter and repeat the request.
+- information_source; https://data.icdp-online.org/mdis-docs/guide/rest-api/api-reference/global-index.html:
+  - Pagination uses per-page (integer, records per page) and page (integer, page number)
+    as query parameters. The response includes an items array containing the paginated
+    records, though specific fields indicating total count, has_more, or next page
+    navigation are not detailed in this documentation excerpt.
+- information_source; https://data.icdp-online.org/mdis-docs/guide/rest-api/api-reference/form-index.html:
+  - Use query parameters per-page (integer, number of records per page) and page (integer,
+    page number) to paginate results. The response contains an items array with the
+    paginated records.
+- information_source; https://data.icdp-online.org/mdis-docs/guide/rest-api/api-reference/file-index.html:
+  - 'The file-index API uses offset-limit pagination via query parameters: per-page
+    (number of records per page) and page (page number, starting from 1). The sort
+    parameter controls result ordering. The response contains an items array with
+    the paginated file records; continue fetching subsequent pages by incrementing
+    the page parameter until the items array is empty or contains fewer records than
+    per-page.'
+- information_source; https://data.icdp-online.org/mdis-docs/guide/rest-api/README-old.html:
+  - 'Pagination uses query parameters: per-page (optional, controls page size) and
+    page (optional, controls page number). The example shows per-page=1000&page=1,
+    indicating offset-based pagination where you increment the page parameter to retrieve
+    subsequent pages.'
+possible_base_urls:
+- information_source; https://data.icdp-online.org/mdis-docs/guide/developer/developer-form-filter.html:
+  - /api/v1/form
+  - /api/v1/form/filter-lists
+possible_endpoints:
+- information_source; https://data.icdp-online.org/mdis-docs/guide/developer/developer-form-filter.html:
+  - GET /api/v1/form/filter-lists
+  - GET /api/v1/form?name=files&filter[curator_contact_person_id]=33
+  - GET http://localhost:8080/api/v1/form/filter-lists?name=files&models=[{"model":"person","require":null}]
+- information_source; https://data.icdp-online.org/mdis-docs/guide/developer/:
+  - GET /api/v1/form
+  - POST https://data.icdp-online.org/mdis/demo/api/v1/auth/login
+  - POST v1/auth/login
+- information_source; https://data.icdp-online.org/mdis-docs/guide/rest-api/api-reference/auth-refresh.html:
+  - GET /api/v1/auth/refresh
+- information_source; https://data.icdp-online.org/mdis-docs/guide/rest-api/api-reference/global-index.html:
+  - GET /api/v1/global
+- information_source; https://data.icdp-online.org/mdis-docs/guide/rest-api/api-reference/global-create.html:
+  - POST /api/v1/global/
+- information_source; https://data.icdp-online.org/mdis-docs/guide/rest-api/api-reference/global-update.html:
+  - PUT /api/v1/global/<id:integer>

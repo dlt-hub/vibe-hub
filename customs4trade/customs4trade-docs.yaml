@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://api.customs4trade.com/swagger/1.0/swagger.json:
+  - CAS supports optional OAuth 2.0 client-credentials flow for notification endpoints.
+    When accessTokenUrl is provided, supply clientId, clientSecret, and optionally
+    scope and audience. CAS will retrieve an access token and include it in the Authorization
+    header using Bearer scheme when POSTing notifications to destinationUrl. If accessTokenUrl
+    is empty, POST requests are made without authorization.
+  - The API requires bearer token authentication passed in the Authorization header.
+    A 401 response indicates missing or invalid token, and a 403 response indicates
+    insufficient permissions for the token provided.
+- information_source; https://api.customs4trade.com/documentation/integration%20methods:
+  - Bearer token authentication is required via JWT. Obtain the token through the
+    Authentication endpoint (details at /documentation/authentication); the token
+    has a 1 hour lifetime and should be sent in the Authorization header. For FTPS
+    access to CAS, use username and password credentials provided by service desk
+    separately for acceptance (ftps://cas-ftp-acc.customs4trade.com:990) and production
+    (ftps://cas-ftp.customs4trade.com:990) environments.
+- information_source; https://api.customs4trade.com/documentation/authentication:
+  - CAS Service API uses OpenID Connect with OAuth 2.0 Client Credentials Grant for
+    authentication. The client application must authenticate with the authorization
+    server using Client Id and Client Secret to obtain an access token, then use that
+    token as a Bearer token in the Authorization header for API requests. The token
+    response includes an expires_in field (in seconds) indicating token expiration;
+    expired tokens result in 401 Unauthorized responses and require requesting a new
+    token using the same Client Credentials flow.
+  - 'OAuth 2.0 client credentials flow is used for API authentication. Obtain a bearer
+    token by making an application/x-www-form-urlencoded POST request to https://login.customs4trade.com/oauth2/v2.0/token
+    (production) or https://login-acc.customs4trade.com/oauth2/v2.0/token (acceptance)
+    with parameters: grant_type=client_credentials, client_id (provided by C4T onboarding),
+    client_secret (provided by C4T onboarding), and scope=https%3A%2F%2Fc4t{env}b2c.onmicrosoft.com%2F{client_id}.
+    The response includes an access token and expires_in field indicating validity
+    duration. Cache the token and include it as a Bearer token in the Authorization
+    header for all API requests. Refresh the token before expiry or when receiving
+    a 401 response. Decode the JWT or call v1/authorizationStatus to verify token
+    details including tenant ID, source system reference, and assigned scopes.'
+possible_base_urls:
+- information_source; https://api.customs4trade.com/swagger:
+  - https://www.customs4trade.com
+- information_source; https://api.customs4trade.com/swagger/1.0/swagger.json:
+  - https://www.customs4trade.com
+possible_endpoints:
+- information_source; https://api.customs4trade.com/swagger:
+  - DELETE /v1/subscriptions/{subscriptionId}
+  - DELETE /v1/{tenantId}/subscriptions/{subscriptionId}
+  - GET /v1/authorizationstatus
+  - GET /v1/certificates-of-origin/{certificateOfOriginId}/{attachmentId}
+  - GET /v1/certificates-of-origin/{certificateOfOriginId}/{attachmentId}/url
+  - GET /v1/declarations/search
+  - GET /v1/declarations/{declarationId}
+  - GET /v1/declarations/{declarationId}/attachments/{attachmentId}
+  - GET /v1/declarations/{declarationId}/attachments/{attachmentId}/url
+  - GET /v1/declarations/{declarationId}/attachments/{documentType}/{attachmentId}

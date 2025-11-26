@@ -1,0 +1,50 @@
+auth_info:
+- information_source; https://docs.manictime.com/server/api/cloud-authentication:
+  - 'Access tokens are obtained via OAuth2 OpenID Connect flow and must be included
+    in the Authorization header as a Bearer token with each API request. Access tokens
+    expire after one hour and can be refreshed using the refresh_token grant type
+    at the token_endpoint URL from the OpenID Connect configuration.
+
+
+    Include the access token in requests as: Authorization: Bearer <access_token>
+
+
+    The refresh flow uses grant_type=refresh_token parameter with the refresh_token
+    value obtained during initial authentication. The token_endpoint is retrieved
+    from the OpenID Connect configuration and supports scopes including openid, profile,
+    manictimeapi, and offline_access.'
+  - 'OAuth2 refresh token flow using POST to manictime.com/connect/token with application/x-www-form-urlencoded
+    body parameters. Required parameters: grant_type set to "refresh_token", refresh_token
+    (obtained from initial authentication), client_id (from API client management),
+    and client_secret (from API client management). Response returns access_token
+    with Bearer token_type, id_token, expires_in (3600 seconds), new refresh_token,
+    and scope "openid profile manictimeapi offline_access". Use the returned access_token
+    in Authorization header as "Bearer <access_token>" for subsequent API requests.'
+- information_source; https://docs.manictime.com/server/api/on-premise-authentication:
+  - 'Access token authentication is required for all API calls. Include the access
+    token in the Authorization header using the Bearer scheme: Authorization: Bearer
+    <access_token>. The Accept header should be set to application/vnd.manictime.v3+json.'
+  - 'OAuth2 password grant flow is used for authentication. First, make an unauthenticated
+    GET request to the API root to discover the token endpoint URL from the WWW-Authenticate
+    header and links response. Then POST to the token endpoint with grant_type=password,
+    username, and password as form-encoded body parameters to receive an access_token.
+    Include the access token in subsequent API calls using the Authorization header
+    with Bearer scheme: Authorization: Bearer <access_token>.'
+possible_base_urls:
+- information_source; https://docs.manictime.com/server/api/cloud-authentication:
+  - https://api.manictime.com/v1
+  - https://login.manictime.com
+possible_endpoints:
+- information_source; https://docs.manictime.com/server/api/cloud-authentication:
+  - GET https://api.manictime.com/v1/profile
+  - POST https://login.manictime.com/connect/token
+- information_source; https://docs.manictime.com/server/api/on-premise-authentication:
+  - GET http://localhost:8080/api
+  - GET http://localhost:8080/api/clientState
+  - GET http://localhost:8080/api/environments
+  - GET http://localhost:8080/api/screenshots
+  - GET http://localhost:8080/api/tagcombinationlist
+  - GET http://localhost:8080/api/timelines
+  - POST http://localhost:8080/api/token
+- information_source; https://docs.manictime.com/server/api/timeline-api:
+  - DELETE http://localhost:8080/api/timelines/ae35ba85-ed33-462d-8338-3ace1d77ba7b/activities/49

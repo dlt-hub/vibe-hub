@@ -1,0 +1,48 @@
+auth_info:
+- information_source; https://docs.appsmith.com/advanced-concepts/custom-authentication:
+  - The authentication uses OAuth2 with refresh token flow. Store and retrieve the
+    refresh token from appsmith.store.refreshtoken, send it to your token refresh
+    endpoint as a refreshtoken parameter in the request body, and update appsmith.store.accesstoken
+    with the new access token from the response. If the response includes a new refresh
+    token in the refreshtoken field, update appsmith.store.refreshtoken as well.
+- information_source; https://docs.appsmith.com/connect-data/reference/authenticated-api:
+  - Appsmith uses OAuth 2.0 authorization code flow to obtain access tokens for authenticating
+    requests to protected resources. Required parameters include Client ID (unique
+    application identifier from OAuth provider), Client secret (confidential string
+    from OAuth provider), and scopes (comma-separated permissions like profile, email).
+    The authorization server URL is used both for initial token acquisition and refreshing
+    expired tokens to maintain uninterrupted access without re-authentication.
+  - Appsmith uses OAuth2 with refresh tokens to manage access token expiration and
+    renewal. Key configurable parameters include token_access_type to specify short-lived
+    or long-lived tokens, Authorization expires in (seconds) to set custom expiry
+    duration when the OAuth provider doesn't specify it, Audience to identify the
+    resource server accepting the token, and Resource to specify the protected resource
+    server URL. The Send scope with refresh token parameter controls whether scopes
+    are included during token refresh operations.
+  - OAuth2 Authorization Code grant type with configurable credential handling for
+    refresh token requests. Client credentials (client ID and client secret) can be
+    sent either in the request body as form parameters or in the Authorization header
+    using Basic Authentication (base64-encoded "client_id:client_secret"). The Send
+    scope with refresh token setting determines whether original scopes are included
+    when requesting new access tokens via refresh token, as required by some OAuth
+    providers.
+pagination_info:
+- information_source; https://docs.appsmith.com/build-apps/how-to-guides/Server-side-pagination-in-table:
+  - Offset-based pagination uses pageSize and pageNo (or pageOffset) parameters to
+    fetch data. For databases, use LIMIT and OFFSET in queries with {{Table1.pageSize}}
+    and {{Table1.pageOffset}}. For REST APIs, pass page as a query parameter like
+    ?page={{Table1.pageNo}}. Cursor-based pagination uses previousPageVisited and
+    nextPageVisited reference properties to navigate datasets by unique identifiers.
+- information_source; https://docs.appsmith.com/connect-data/reference/confluence:
+  - Pagination for blog post results uses `start` (offset, default 0) and `limit`
+    (page size, default 25) parameters passed as an object to control batch fetching
+    of results.
+possible_base_urls:
+- information_source; https://docs.appsmith.com/build-apps/how-to-guides/Server-side-pagination-in-table:
+  - https://api.site.com
+possible_endpoints:
+- information_source; https://docs.appsmith.com/build-apps/how-to-guides/Server-side-pagination-in-table:
+  - GET https://api.site.com/users/
+- information_source; https://docs.appsmith.com/connect-data/reference/confluence:
+  - GET /wiki/rest/api/content/{id}/property
+  - GET /wiki/rest/api/space/{spaceKey}/content

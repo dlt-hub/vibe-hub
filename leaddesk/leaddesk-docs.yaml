@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://leaddesk.com/docs/get-started/:
+  - 'All requests to the Original API require two common parameters for authentication:
+    the auth parameter, which is a 32-character identification code provided by LeadDesk
+    customer support that must be sent as a GET parameter, and the mod and cmd parameters
+    that specify which module and command to execute. The auth code serves as the
+    API key credential for identifying the customer.'
+  - Authentication is performed via an auth query parameter containing a 32-character
+    hexadecimal string. The auth value must be passed as a query parameter in the
+    request URL, for example auth=11111222223333344444555556666677. If authentication
+    fails, an ERR_AUTHENTICATION error is returned.
+- information_source; https://leaddesk.com/docs/introduction-rest-api/:
+  - API uses OAuth2 with client credentials and username. The client_user grant type
+    requires POST to https://restapi-nor.leaddesk.com/stable/oauth/access-token with
+    JSON body containing grant_type set to "client_user", client_id, client_secret,
+    username, and leaddesk_client_id. The response includes access_token with Bearer
+    token type, expires_in (3600 seconds), and refresh_token. Expired access tokens
+    are refreshed via refresh_token grant type by sending the refresh_token in a POST
+    request to the same endpoint; refresh tokens eventually expire if not used.
+  - 'Bearer token authentication is required. Include the token in the Authorization
+    header as "Authorization: Bearer {token}" where the token is provided by the API
+    service. All requests must include this header to authenticate.'
+  - LeadDesk REST API uses OAuth 2 authentication with support for multiple grant
+    types. The password grant type requires POST to https://restapi-nor.leaddesk.com/stable/oauth/access-token
+    with content-type application/json containing grant_type set to "password", client_id,
+    client_secret, username, and password fields. The response returns an access_token
+    with token_type "Bearer" that should be used in subsequent requests. Use the Bearer
+    token in the Authorization header for API calls.
+pagination_info:
+- information_source; https://leaddesk.com/docs/introduction-rest-api/:
+  - Pagination uses query parameters per_page and page in GET requests. The response
+    contains a collection array with paginated items, a links object with next/previous
+    page URLs, and a meta object with total count information. Stop paginating when
+    next link is unavailable.
+possible_base_urls:
+- information_source; https://leaddesk.com/docs/get-started/:
+  - http://api.leaddesk.com
+- information_source; https://leaddesk.com/docs/introduction-rest-api/:
+  - https://restapi-nor.leaddesk.com/
+possible_endpoints:
+- information_source; https://leaddesk.com/docs/get-started/:
+  - GET http://api.leaddesk.com?auth=11111222223333344444555556666677&mod=contact&cmd=add
+- information_source; https://leaddesk.com/docs/introduction-rest-api/:
+  - DELETE https://restapi-nor.leaddesk.com/stable/products/12345
+  - DELETE https://restapi-nor.leaddesk.com/stable/users/123
+  - GET https://restapi-nor.leaddesk.com/stable/products/12345
+  - GET https://restapi-nor.leaddesk.com/stable/users
+  - GET https://restapi-nor.leaddesk.com/stable/users/12345
+  - GET https://restapi-nor.leaddesk.com/stable/users/12345/custom_fields
+  - GET https://restapi-nor.leaddesk.com/stable/users?per_page=50&page=5
+  - GET https://restapi-nor.leaddesk.com/v2/users
+  - POST https://restapi-nor.leaddesk.com/

@@ -1,0 +1,75 @@
+auth_info:
+- information_source; https://www.keycloak.org/securing-apps/javascript-adapter:
+  - Bearer token authentication is required. Include the access token in the Authorization
+    header as "Bearer {token}" when making requests to protected RESTful services.
+    The token is obtained after user authentication via Keycloak and should be refreshed
+    before use by calling the updateToken() method, as access tokens have short expiration
+    times by default.
+- information_source; https://www.keycloak.org/securing-apps/client-registration:
+  - 'The Keycloak Client Registration endpoints require bearer token authentication.
+    Send the token in the Authorization header as "Authorization: bearer <token>",
+    where the token is either an initial access token or a bearer token obtained through
+    OpenID Connect. The token must be included with POST requests to endpoints like
+    /realms/<realm>/clients-registrations/openid-connect, /realms/<realm>/clients-registrations/saml2-entity-descriptor,
+    or /realms/<realm>/clients-registrations/default.'
+- information_source; https://www.keycloak.org/securing-apps/client-registration-cli:
+  - 'Keycloak Client Registration CLI supports two authentication methods: role-based
+    access via user credentials (requiring realm-management roles like manage-clients,
+    view-clients, or create-client assigned in the Admin Console), or token-based
+    access using Initial Access Tokens or Registration Access Tokens issued by administrators.
+    Users without assigned roles must provide an Initial Access Token to authenticate;
+    attempting operations without proper credentials or tokens results in a 403 Forbidden
+    error.'
+- information_source; https://www.keycloak.org/securing-apps/token-exchange:
+  - Keycloak token exchange uses OAuth 2.0 token exchange flow. The requester client
+    authenticates to the Keycloak token endpoint using HTTP Basic authentication with
+    client credentials, sending a POST request to /realms/{realm}/protocol/openid-connect/token
+    with an Authorization header containing Basic base64-encoded client_id:client_secret.
+    The request body includes subject_token (the original access token to exchange)
+    and other token exchange parameters. Clients must be in the same realm to perform
+    token exchange.
+  - Keycloak token exchange uses OAuth2 client credentials with a custom grant type.
+    Send a POST request to the token endpoint with client_id, client_secret, grant_type
+    set to "urn:ietf:params:oauth:grant-type:token-exchange", subject_token (existing
+    token to exchange), requested_token_type, and audience (target client identifier)
+    as form-encoded body parameters. The authenticated client must have a Client Policy
+    permission configured in the Admin Console to authorize the token exchange, otherwise
+    a 403 Forbidden response is returned.
+pagination_info:
+- information_source; https://www.keycloak.org/docs/26.4.4/authorization_services/:
+  - Pagination for the "Getting permission tickets" endpoint uses query parameters
+    first (offset) and max (limit). Stop paginating when the number of returned results
+    is less than the max value.
+  - When querying permissions, use query parameters first and max to limit results
+    for pagination.
+- information_source; https://www.keycloak.org/docs/26.4.4/upgrading/:
+  - All Admin REST API endpoints that support pagination now have a default max results
+    of 100. To return more than 100 entries, explicitly specify the max parameter
+    with ?max=<RESULTS>.
+- information_source; https://www.keycloak.org/docs/latest/upgrading/index.html:
+  - All Admin REST API endpoints that support pagination now have a default max results
+    set to 100. To return more than 100 entries, explicitly specify the max results
+    using the query parameter `?max=<RESULTS>`.
+- information_source; https://www.keycloak.org/docs/latest/upgrading/:
+  - All Admin REST API endpoints that support pagination now have a default max results
+    set to 100. To return more than 100 entries, explicitly specify the max results
+    using the query parameter `?max=<RESULTS>`.
+possible_base_urls:
+- information_source; https://www.keycloak.org/server/hostname:
+  - https://admin.my.keycloak.org:8443
+  - https://my.keycloak.org
+possible_endpoints:
+- information_source; https://www.keycloak.org/observability/health:
+  - HEAD /health/ready
+  - HEAD http://localhost:9000/health/ready
+- information_source; https://www.keycloak.org/securing-apps/client-registration:
+  - GET /realms/<realm>/.well-known/openid-configuration
+  - POST /realms/<realm>/clients-registrations/openid-connect
+  - POST /realms/<realm>/clients-registrations/openid-connect/<client id>
+  - POST /realms/<realm>/clients-registrations/saml2-entity-descriptor
+  - POST http://localhost:8080/realms/master/clients-registrations/default
+- information_source; https://www.keycloak.org/securing-apps/token-exchange:
+  - POST /realms/test/protocol/openid-connect/token
+  - POST http://localhost:8080/realms/myrealm/protocol/openid-connect/token
+- information_source; https://www.keycloak.org/docs/26.4.4/server_admin/:
+  - DELETE authentication/config/ID

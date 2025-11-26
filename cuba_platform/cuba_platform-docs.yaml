@@ -1,0 +1,59 @@
+auth_info:
+- information_source; https://doc.cuba-platform.com/manual-6.4/rest_api_v2_ex_get_token.html:
+  - 'OAuth token required for REST API access (except anonymous endpoints). Obtain
+    token via POST to http://localhost:8080/app/rest/v2/oauth/token using basic authentication
+    with REST API client credentials. Send Authorization header with base64-encoded
+    string of cuba.rest.client.id and cuba.rest.client.secret (default: client:secret)
+    separated by colon. Request body must be application/x-www-form-urlencoded with
+    UTF-8 encoding and include required parameters (documentation truncated but indicates
+    additional form parameters needed).'
+  - OAuth2 Resource Owner Password Credentials flow using Basic authentication for
+    the client. Send a POST request to /oauth/token with Authorization header containing
+    Base64-encoded client credentials, and form-encoded body with grant_type set to
+    password, plus username and password. The response contains access_token (bearer
+    token), token_type, expires_in, and scope. Use the access_token value for subsequent
+    authenticated requests.
+- information_source; https://doc.cuba-platform.com/manual-6.5/rest_api.login.html:
+  - Login authentication is performed via GET or POST request to {host:port}/app-portal/api/login.
+    For GET requests, pass query parameters u (username), p (password), and optional
+    l (locale). For POST requests, send JSON with username, password, and optional
+    locale fields, or form-encoded data with the same field names. Successful login
+    returns authentication credentials for subsequent requests.
+  - The REST API uses username and password authentication sent in the request body.
+    Upon successful authentication, the service returns a userSessionId in the response
+    body with status 200, or status 401 if authentication fails. Users must have the
+    cuba.restApi.enabled permission to access the REST API login endpoint.
+- information_source; https://doc.cuba-platform.com/manual-6.7/rest_api_v2_custom_auth.html:
+  - REST API uses its own authentication mechanism that cannot be modified. To implement
+    custom authentication, create a REST controller with a custom URL. Custom mechanisms
+    can provide access tokens by key, link, LDAP login and password, or other methods
+    like OAuth tokens obtained via promo codes sent as GET request parameters.
+pagination_info:
+- information_source; https://doc.cuba-platform.com/restapi-7.1/:
+  - 'Pagination uses query parameters: limit (number of instances to return) and offset
+    (position of first record). No response pagination fields are mentioned; construct
+    subsequent requests by incrementing the offset parameter value.'
+- information_source; https://doc.cuba-platform.com/restapi-7.2:
+  - 'Pagination uses offset-limit scheme with query parameters: limit (number of instances
+    to return) and offset (position of first record). Both are optional parameters
+    specified in the query string. Stop paginating when the response contains fewer
+    instances than the limit value.'
+possible_base_urls:
+- information_source; https://doc.cuba-platform.com/manual-6.4/rest_api_v2_ex_get_token.html:
+  - http://localhost:8080/app/rest/v2/oauth/token
+- information_source; https://doc.cuba-platform.com/manual-6.5/rest_api.login.html:
+  - http://localhost:8080/app-portal/api
+possible_endpoints:
+- information_source; https://doc.cuba-platform.com/manual-6.4/rest_api_v2_ex_get_token.html:
+  - POST /oauth/token
+  - POST http://localhost:8080/app/rest/v2/oauth/token
+- information_source; https://doc.cuba-platform.com/manual-6.5/rest_api.login.html:
+  - GET {host:port}/app-portal/api/login
+  - POST {host:port}/app-portal/api/login
+- information_source; https://doc.cuba-platform.com/restapi-7.1/:
+  - GET /app/rest/facebook
+  - GET /auth-code
+  - GET http://localhost:8080/app/rest/auth-code?code=A325
+  - GET http://localhost:8080/app/rest/v2/entities/sales$Order
+  - GET http://localhost:8080/app/rest/v2/entities/sales$Order/{id}
+  - GET http://localhost:8080/app/rest/v2/entities/sec$Role

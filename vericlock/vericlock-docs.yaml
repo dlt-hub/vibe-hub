@@ -1,0 +1,35 @@
+auth_info:
+- information_source; https://www.vericlock.com/api/1.0/docs:
+  - 'All API requests require four authentication headers: vericlock_api_public_key
+    (your API public key in guid format), vericlock_domain (the unique part of your
+    access URL), vericlock_authtoken (guid authentication token from authentication
+    endpoint, required for all routes except authentication itself), and vericlock_signature
+    (HMAC signature). The HMAC signature is generated using the request path (the
+    part after hostname and /api prefix), your account''s 16-byte private key in binary
+    representation, and the request body string. Additionally, an optional idempotency_key
+    header can be provided for request caching with valid characters A-Za-z0-9 dash
+    hyphen underscore equals plus and forward slash, cached for 24 hours or longer
+    depending on the route.'
+  - Authenticate with VeriClock by sending a POST request to https://api.vericlock.com/1.0/auth
+    with user (employee email) and password in the JSON body. The response returns
+    an authToken that must be used for subsequent API calls.
+  - Authentication uses a token-based approach. After login, an authToken is returned
+    and must be included in subsequent requests via the HTTP header vericlock_authtoken.
+    The token invalidates on logout or due to inactivity.
+  - VeriClock API requires an API public key passed in the HTTP header vericlock_api_public_key
+    with each request. All API actions are performed in the context of a VeriClock
+    user and are restricted by that user's permissions; administrators have full access
+    while regular employees have limited access to specific operations like clocking
+    in/out.
+possible_base_urls:
+- information_source; https://www.vericlock.com/api/1.0/docs:
+  - https://api.vericlock.com
+  - https://api.vericlock.com/1.0/auth
+possible_endpoints:
+- information_source; https://www.vericlock.com/api/1.0/docs:
+  - GET https://api.vericlock.com
+  - GET https://api.vericlock.com/api/1.0/employee/:employeeGuid
+  - GET https://api.vericlock.com/api/1.0/group/:groupGuid
+  - POST https://api.vericlock.com
+  - POST https://api.vericlock.com/1.0/auth
+  - POST https://api.vericlock.com/api/1.0/logout

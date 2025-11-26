@@ -1,0 +1,63 @@
+auth_info:
+- information_source; https://coinbase-prod.mintlify.app/api-reference/v2/authentication:
+  - Bearer Tokens (JWTs) are required for server-to-server communication and must
+    be included in the Authorization header. They are generated using your Secret
+    API Key. Store your API key ID and Secret securely as environment variables rather
+    than in code, and use the CDP SDK for automatic Bearer Token generation, or manually
+    generate JWTs and export them as environment variables for REST API requests.
+  - 'Client API Key authentication uses the API key as a URL path segment. Include
+    the CLIENT_API_KEY (obtained from the API Keys dashboard and exported as an environment
+    variable) in the URL path: https://api.developer.coinbase.com/rpc/v1/base/${CLIENT_API_KEY}.
+    The Content-Type header must be set to application/json, and requests are made
+    via HTTP POST with JSON-RPC formatted request bodies.'
+  - The API uses Bearer token authentication via the Authorization header with a JWT.
+    For sensitive wallet write operations (POST, DELETE requests), an additional X-Wallet-Auth
+    header is required, which contains a Wallet Token (JWT) generated from your Wallet
+    Secret. The Wallet Secret is created in the Server Wallet dashboard and should
+    be kept secure like a password. Both the JWT in the Authorization header and the
+    Wallet Token in the X-Wallet-Auth header are used to authenticate requests, with
+    the latter specifically for wallet write operations on EVM and Solana APIs.
+  - Two authentication headers are required for wallet-authenticated endpoints. Include
+    a Bearer token in the Authorization header and a Wallet Authentication JWT in
+    the X-Wallet-Auth header. Environment variables JWT and WALLET_AUTH_JWT hold these
+    token values respectively.
+  - 'Use JWT (JSON Web Token) authentication. Generate a JWT with payload containing
+    iat, nbf, jti, and uris fields, signed with the WALLET_SECRET environment variable.
+    Include the token in requests via the Authorization header as a Bearer token.
+
+
+    Environment variables required: WALLET_SECRET, REQUEST_METHOD, REQUEST_HOST, REQUEST_PATH,
+    REQUEST_BODY. The JWT payload must include issued-at time (iat), not-before time
+    (nbf), unique JWT ID (jti), and request URIs (uris). For requests with bodies,
+    include a sorted JSON hash of the request body in the payload.'
+pagination_info:
+- information_source; https://coinbase-prod.mintlify.app/api-reference/rest-api/addresses/list-address-balances:
+  - The API uses cursor-based pagination for listing address balances. Request parameters
+    include an optional page query parameter (passed as next_page from the previous
+    response). The response includes has_more boolean to indicate if more results
+    exist, next_page string for the subsequent request, and total_count for the total
+    number of results.
+  - The endpoint uses cursor-based pagination with a page query parameter (max 5000
+    characters). The response includes has_more boolean, next_page cursor string for
+    subsequent requests, and total_count. Pass the next_page value as the page parameter
+    in the next request to retrieve more results; stop when has_more is false.
+possible_base_urls:
+- information_source; https://coinbase-prod.mintlify.app/api-reference/v2/authentication:
+  - https://api.cdp.coinbase.com
+  - https://api.cdp.coinbase.com/platform/v1
+possible_endpoints:
+- information_source; https://coinbase-prod.mintlify.app/api-reference/v2/authentication:
+  - POST /platform/v2/evm/accounts/0x742d35Cc6634C0532925a3b844Bc454e4438f44e/sign/transaction
+  - POST https://api.cdp.coinbase.com/platform/v1/networks/base-mainnet/assets/BTC
+  - POST https://api.developer.coinbase.com/rpc/v1/base/${CLIENT_API_KEY}
+- information_source; https://coinbase-prod.mintlify.app/get-started/demo-apps/app-examples/discord-bot-demo:
+  - POST DISCORD_WEBHOOK_URL
+- information_source; https://coinbase-prod.mintlify.app/onramp-&-offramp/offramp-apis/generating-offramp-url:
+  - GET https://pay.coinbase.com/v3/sell/input
+  - POST https://api.developer.coinbase.com/onramp/v1/token
+- information_source; https://coinbase-prod.mintlify.app/get-started/authentication/jwt-authentication:
+  - POST https://api.cdp.coinbase.com/platform/v1/networks/base-mainnet/assets/BTC
+- information_source; https://coinbase-prod.mintlify.app/get-started/authentication/cdp-api-keys:
+  - POST /platform/v2/evm/accounts/0x742d35Cc6634C0532925a3b844Bc454e4438f44e/sign/transaction
+  - POST https://api.cdp.coinbase.com/platform/v1/networks/base-mainnet/assets/BTC
+  - POST https://api.developer.coinbase.com/rpc/v1/base/${CLIENT_API_KEY}

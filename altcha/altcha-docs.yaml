@@ -1,0 +1,49 @@
+auth_info:
+- information_source; https://altcha.org/docs/v2/migration/turnstile/:
+  - Import the ALTCHA widget and include it in your form with a challengeurl parameter
+    that requires your API key. On the backend, verify the Base64-encoded payload
+    received from the widget using the altcha-lib library with your API key secret
+    (prefixed with "sec_"), or alternatively use the POST /v1/verify/signature endpoint
+    for verification.
+- information_source; https://altcha.org/docs/v2/server-integration:
+  - The POST /v1/verify/signature endpoint is public and does not require authentication.
+    Requests should be sent with Content-Type application/json header and a JSON body
+    containing the payload field to verify.
+- information_source; https://altcha.org/docs/v2/migration/recaptcha:
+  - The payload verification requires an API key secret obtained from your Sentinel
+    App. Pass the Base64-encoded payload and the secret (formatted as "sec_...") to
+    the verifyServerSignature function, or use the POST /v1/verify/signature endpoint
+    with these credentials for server-side verification.
+- information_source; https://altcha.org/docs/v2/migration/hcaptcha:
+  - 'The secret key used for server-side verification is provided as an API key secret
+    from your Sentinel App, passed as the `apiKeySecret` parameter (format: "sec_...")
+    to the verification function. This secret is used to verify the Base64-encoded
+    payload received from the widget.'
+- information_source; https://altcha.org/docs/v2/migration/turnstile:
+  - ALTCHA uses an API key-based authentication scheme. The API key is passed as a
+    query parameter in the challengeurl (challengeurl="https://sentinel.example.com/v1/challenge?apiKey={YOUR_API_KEY}"),
+    and server-side verification requires an API key secret (prefixed with "sec_")
+    that is used with the verifyServerSignature function to verify the Base64-encoded
+    payload received from the widget in the request body under the "altcha" field.
+possible_base_urls:
+- information_source; https://altcha.org/docs/v2/migration/turnstile/:
+  - https://sentinel.example.com/v1
+- information_source; https://altcha.org/docs/v2/server-integration:
+  - https://sentinel.example.com/v1/verify/signature
+possible_endpoints:
+- information_source; https://altcha.org/docs/v2/migration/turnstile/:
+  - GET https://sentinel.example.com/v1/challenge?apiKey={YOUR_API_KEY}
+  - POST /v1/verify/signature
+- information_source; https://altcha.org/docs/v2/server-integration:
+  - POST /v1/verify/signature
+  - POST https://sentinel.example.com/v1/verify/signature
+- information_source; https://altcha.org/docs/v2/migration/recaptcha:
+  - POST /v1/verify/signature
+- information_source; https://altcha.org/docs/v2/migration/hcaptcha:
+  - POST /v1/verify/signature
+- information_source; https://altcha.org/docs/v2/migration/turnstile:
+  - GET https://sentinel.example.com/v1/challenge?apiKey={YOUR_API_KEY}
+  - POST /v1/verify/signature
+- information_source; https://altcha.org/docs/v2/migration/open-source:
+  - GET https://sentinel.example.com/v1/challenge?apiKey={YOUR_API_KEY}
+  - POST /v1/verify/signature
