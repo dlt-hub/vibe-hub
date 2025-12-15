@@ -1,0 +1,217 @@
+resources:
+- name: characters
+  endpoint:
+    path: /api/v1/characters
+    method: GET
+    data_selector: data
+- name: chat_completions
+  endpoint:
+    path: /api/v1/chat/completions
+    method: POST
+    data_selector: choices
+    params: {}
+- name: image_generation
+  endpoint:
+    path: /api/v1/image/generations
+    method: POST
+    data_selector: data
+    params: {}
+- name: audio_synthesis
+  endpoint:
+    path: /api/v1/audio/speech
+    method: POST
+    data_selector: audio
+    params: {}
+- name: characters_list
+  endpoint:
+    path: /api/v1/characters/list
+    method: GET
+    data_selector: characters
+    params: {}
+- name: image_generation
+  endpoint:
+    path: /image/generate
+    method: POST
+    data_selector: images
+    params: {}
+- name: image_editing
+  endpoint:
+    path: /image/edit
+    method: POST
+    data_selector: edited_image
+    params: {}
+- name: image_upscaling
+  endpoint:
+    path: /image/upscale
+    method: POST
+    data_selector: upscaled_image
+    params: {}
+- name: text_to_speech
+  endpoint:
+    path: /audio/speech
+    method: POST
+    data_selector: audio
+    params: {}
+- name: embeddings
+  endpoint:
+    path: /embeddings
+    method: POST
+    data_selector: embedding
+    params: {}
+- name: api_keys
+  endpoint:
+    path: /api/v1/api_keys/generate_web3_key
+    method: GET
+    data_selector: data
+    params: {}
+- name: chat_completions
+  endpoint:
+    path: /chat/completions
+    method: POST
+    data_selector: choices
+    params: {}
+- name: chat_completions
+  endpoint:
+    path: /api/v1/chat/completions
+    method: POST
+    data_selector: choices
+    params: {}
+- name: generate_images
+  endpoint:
+    path: /api/v1/images/generations
+    method: POST
+    data_selector: data
+    params: {}
+- name: generate_images
+  endpoint:
+    path: /api/v1/image/generate
+    method: POST
+    data_selector: id
+    params: {}
+- name: upscale
+  endpoint:
+    path: /api/v1/image/upscale
+    method: POST
+    data_selector: response
+    params: {}
+- name: edit_image
+  endpoint:
+    path: /api/v1/image/edit
+    method: POST
+    data_selector: response
+    params: {}
+- name: image_styles
+  endpoint:
+    path: /api/v1/image/styles
+    method: GET
+    data_selector: data
+- name: speech
+  endpoint:
+    path: /api/v1/audio/speech
+    method: POST
+    data_selector: audio
+    params: {}
+- name: character
+  endpoint:
+    path: /api/v1/characters/{slug}
+    method: GET
+    data_selector: data
+    params: {}
+- name: rate_limit_logs
+  endpoint:
+    path: /api/v1/api_keys/rate_limits/log
+    method: GET
+    data_selector: data
+- name: rate_limits
+  endpoint:
+    path: /api/v1/api_keys/rate_limits
+    method: GET
+    data_selector: data
+- name: billing_usage
+  endpoint:
+    path: /api/v1/billing/usage
+    method: GET
+    data_selector: data
+    params:
+      limit: '200'
+      page: '1'
+notes:
+- HTTP Bearer authentication is required for all API requests.
+- Failed requests including 500 errors, 503 capacity errors, 429 rate limit errors
+  should be retried with exponential back off.
+- If a user generates more than 20 failed requests in a 30 second window, the API
+  will return a 429 error.
+- Models may be deprecated when a newer model offers a clear improvement.
+- Deprecation notices are published via the changelog and Discord server.
+- Venice does not store or log any prompt or model responses on our servers.
+- To generate an API key, you need to first obtain your validation token.
+- Instructions on generating your API key can be found [here](/overview/guides/generating-api-key).
+- Initial requests using response_format may take longer to generate a response.
+- For larger queries, the model can fail to complete if either max_tokens or model
+  timeout are reached, or if any rate limits are violated.
+- Incorrect schema format will result in errors on completion, usually due to timeout.
+- Although response_format ensures the model will output a particular way, it does
+  not guarantee that the model provided the correct information within.
+- API requests require HTTP Bearer authentication
+- API keys are secrets and should not be exposed in client-side code
+- The image can be provided either as a multipart form-data file upload or as a base64-encoded
+  string in a JSON request.
+- Using a scale of 1 with enhance enabled will only run the enhancer.
+- Converts text to speech using various voice models and formats.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '429: Too many failed attempts (> 20) resulting in a non-success status code. Please
+  wait 30s and try again.'
+- 'AUTHENTICATION_FAILED: Authentication failed'
+- 'AUTHENTICATION_FAILED_INACTIVE_KEY: Authentication failed - Pro subscription is
+  inactive. Please upgrade your subscription to continue using the API.'
+- 'INVALID_API_KEY: Invalid API key provided'
+- 'UNAUTHORIZED: Unauthorized access'
+- 'INVALID_REQUEST: Invalid request parameters'
+- 'INVALID_MODEL: Invalid model specified'
+- 'CHARACTER_NOT_FOUND: No character could be found from the provided character_slug'
+- 'INVALID_CONTENT_TYPE: Invalid content type'
+- 'INVALID_FILE_SIZE: File size exceeds maximum limit'
+- 'INVALID_IMAGE_FORMAT: Invalid image format'
+- 'CORRUPTED_IMAGE: The image file is corrupted or unreadable'
+- 'RATE_LIMIT_EXCEEDED: Rate limit exceeded'
+- 'MODEL_NOT_FOUND: Specified model not found'
+- 'INFERENCE_FAILED: Inference processing failed'
+- 'UPSCALE_FAILED: Image upscaling failed'
+- 'UNKNOWN_ERROR: An unknown error occurred'
+- '410 Gone: Request to a deprecated model.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '400: Bad Request'
+- '401: Unauthorized'
+- '402: Payment Required'
+- '415: Unsupported Media Type'
+- '429: Too Many Requests'
+- '500: Internal Server Error'
+- '503: Service Unavailable'
+- '504: Gateway Timeout'
+- 400 Bad Request
+- 401 Unauthorized
+- 402 Payment Required
+- 415 Unsupported Media Type
+- 429 Too Many Requests
+- 500 Internal Server Error
+- 503 Service Unavailable
+- '400 Bad Request: Invalid request format or parameters'
+- '401 Unauthorized: Invalid or missing authentication token'
+- '402 Payment Required: Payment issues'
+- '415 Unsupported Media Type: Invalid content type'
+- '429 Too Many Requests: Rate limit exceeded'
+- '500 Internal Server Error: Server encountered an error'
+- '503 Service Unavailable: Service is temporarily unavailable'
+- '401 Unauthorized: Bearer authentication header required'
+- '403: Forbidden'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.venice.ai
+  auth:
+    type: Bearer
+    location: header
+    header_name: Authorization
+source_metadata: null

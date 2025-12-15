@@ -1,0 +1,81 @@
+resources:
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: onboarding
+  endpoint:
+    path: /onboarding/api
+    method: POST
+    data_selector: spec_files
+- name: web_ui
+  endpoint:
+    path: /web_ui/api
+    method: GET
+    data_selector: commands
+- name: registry
+  endpoint:
+    path: /registry/api
+    method: GET
+    data_selector: flows
+- name: distributor
+  endpoint:
+    path: /distributor/api
+    method: PUT
+    data_selector: distribution_targets
+- name: anchors
+  endpoint:
+    path: /v1/dataspaces/{dataspace-name}/anchors
+    method: GET
+    data_selector: ArrayOfAnchors
+    params:
+      dataspace-name: required
+- name: cmHandleProperties
+  endpoint:
+    path: /components/schemas/cmHandleProperties
+    method: GET
+    data_selector: properties
+    params: {}
+notes:
+- WG Coordinators:@Ramki Krishnan
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Token Based Authentication is recommended
+- Use https for external communication for security reasons
+- DCAE Inventory is a composite API that relies on other APIs to obtain resources
+  on underlying components.
+- ErrorMessage is a common schema used for all error scenarios.
+- Changing the schema will introduce no changes at the client side.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 400 – Bad Request – The request was invalid or cannot be served.
+- 401 – Unauthorized – The request requires a user authentication
+- 403 – Forbidden – The server understood the request but is refusing it or the access
+  is not allowed.
+- 404 – Not found – There is no resource behind the URI.
+- 500 – Internal Server Error – API developers should avoid this error.
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://lf-onap.atlassian.net
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

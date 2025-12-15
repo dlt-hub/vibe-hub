@@ -1,0 +1,88 @@
+resources:
+- name: all
+  endpoint:
+    path: /v3/all
+    method: GET
+    data_selector: records
+- name: fullName
+  endpoint:
+    path: /v3/fullname
+    method: GET
+    data_selector: records
+- name: code
+  endpoint:
+    path: /v3/code
+    method: GET
+    data_selector: records
+- name: listCodes
+  endpoint:
+    path: /v3/listcodes
+    method: GET
+    data_selector: records
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: search_companies
+  endpoint:
+    path: /api/#companies-search
+    method: GET
+- name: search_companies_by_name
+  endpoint:
+    path: /api/#companies-search-by-name
+    method: GET
+- name: search_companies_by_domain
+  endpoint:
+    path: /api/#companies-fetch-by-domain
+    method: GET
+- name: fetch_similar_companies
+  endpoint:
+    path: /api/#companies-fetch-similar
+    method: GET
+- name: detect_employees
+  endpoint:
+    path: /api/#employees-detect
+    method: GET
+- name: enrich_business_email
+  endpoint:
+    path: /api/#emails-enrich-business
+    method: GET
+- name: search_cities
+  endpoint:
+    path: /api/#emails-enrich-business
+    method: GET
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.flethy.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.flethy.com/oauth/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

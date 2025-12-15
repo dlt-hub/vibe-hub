@@ -1,0 +1,187 @@
+resources:
+- name: TGP records
+  endpoint:
+    path: /customs/traders/goods-profiles/{eori}/records
+    method: GET
+    data_selector: records
+- name: HMRC online services
+  endpoint:
+    path: /log-in-register-hmrc-online-services
+    method: GET
+- name: Childcare account
+  endpoint:
+    path: /sign-in-childcare-account
+    method: GET
+- name: Agent Authorisation Request
+  endpoint:
+    path: /api/service/agent-authorisation
+    method: POST
+- name: Check Authorisation Status
+  endpoint:
+    path: /api/service/agent-authorisation/status
+    method: GET
+- name: Cancel Authorisation Request
+  endpoint:
+    path: /api/service/agent-authorisation/cancel
+    method: DELETE
+- name: hello_world
+  endpoint:
+    path: /hello/world
+    method: GET
+- name: hello_application
+  endpoint:
+    path: /hello/application
+    method: GET
+- name: hello_user
+  endpoint:
+    path: /hello/user
+    method: GET
+- name: test_user
+  endpoint:
+    path: /api-documentation/docs/api/service/api-platform-test-user/1.0
+    method: POST
+    data_selector: test_user_data
+    params: {}
+- name: create_goods_record
+  endpoint:
+    path: /api/service/trader-goods-profiles/1.0/goods-records
+    method: POST
+- name: get_tgp_records
+  endpoint:
+    path: /api/service/trader-goods-profiles/1.0/goods-records
+    method: GET
+- name: update_tgp_record
+  endpoint:
+    path: /api/service/trader-goods-profiles/1.0/goods-records/{recordID}
+    method: PATCH
+- name: remove_tgp_record
+  endpoint:
+    path: /api/service/trader-goods-profiles/1.0/goods-records/{recordID}
+    method: DELETE
+- name: request_advice
+  endpoint:
+    path: /api/service/trader-goods-profiles/1.0/goods-records/{recordID}/advice
+    method: POST
+- name: withdraw_advice_request
+  endpoint:
+    path: /api/service/trader-goods-profiles/1.0/goods-records/{recordID}/advice/withdraw
+    method: POST
+- name: goods_record
+  endpoint:
+    path: /customs/traders/goods-profiles/{eori}
+    method: PUT
+    data_selector: records
+    params: {}
+- name: good_records_by_eori
+  endpoint:
+    path: /customs/traders/goods-profiles/{eori}
+    method: GET
+    data_selector: records
+    params: {}
+- name: remove_goods_record
+  endpoint:
+    path: /customs/traders/goods-profiles/{eori}
+    method: PUT
+    data_selector: records
+    params: {}
+- name: get_single_goods_record
+  endpoint:
+    path: /customs/traders/goods-profiles/{eori}
+    method: GET
+    data_selector: records
+    params: {}
+- name: ask_advice
+  endpoint:
+    path: /customs/traders/goods-profiles/{eori}
+    method: PUT
+    data_selector: records
+    params: {}
+- name: withdraw_advice_request
+  endpoint:
+    path: /customs/traders/goods-profiles/{eori}
+    method: PUT
+    data_selector: records
+    params: {}
+- name: maintain_goods_profile
+  endpoint:
+    path: /customs/traders/goods-profiles/{eori}
+    method: PUT
+    data_selector: records
+    params: {}
+- name: goods_record
+  endpoint:
+    path: /customs/traders/goods-profiles-test-support/profiles/{eori}/records/{recordId}
+    method: PATCH
+    data_selector: TGP record was successfully patched
+    params: {}
+notes:
+- HMRC supports OAuth 2.0 for authenticating user restricted API requests
+- The Maintain TGP Profile can not be used to create new profiles in the production
+  environment.
+- This API is in Beta and may have breaking changes.
+- The TGP API must use the Trade Tariff commodities API and categorisation API to
+  retrieve and store information relevant to a goods movement.
+- You are required by law to submit header data for the VAT (MTD) and Income Tax Self
+  Assessment (MTD) APIs.
+- Most of our APIs use HTTP verbs and a RESTful interface.
+- API Platform does not support cross-origin resource sharing (CORS).
+- HTTPS certificates can change
+- IP addresses can change
+- OAuth flow can change
+- The HMRC API Platform does not support cross-origin resource sharing (CORS)
+- Sandbox applications that have not made an API call for 12 months will be deleted.
+- Remember to test failure cases by selecting 'Do not grant authority' after signing
+  in.
+- Test users that have not been used in testing for 90 days will be deleted.
+- All endpoints in the Trader Goods Profile API are user-restricted.
+- The access token lasts for 4 hours.
+- The refresh token can be used to obtain a new access token.
+- UserRestricted authorization required for all actions.
+errors:
+- '400: Bad Request'
+- '201: Created'
+- '204: No Content'
+- 'MISSING_CREDENTIALS: No OAuth token supplied for user-restricted or application-restricted
+  endpoint'
+- 'INVALID_CREDENTIALS: Invalid OAuth token supplied for user-restricted or application-restricted
+  endpoint (including expired token)'
+- 'UNAUTHORIZED: Other issue with authentication of the supplied OAuth token'
+- '400 Bad Request: Check your request data.'
+- '401 Unauthorized: Check your authentication details.'
+- '404 Not Found: Record not found.'
+- 'BAD_REQUEST: Bad request'
+- 'INVALID_REQUEST_PARAMETER: traderRef is not unique for all the provided trader''s
+  goods records'
+- 'INVALID_REQUEST_PARAMETER: Mandatory field goodsDescription was missing from body
+  or is in the wrong format'
+- 'invalid_request: client_id is required'
+- 'invalid_request: redirect_uri is required'
+- 'invalid_request: scope is required'
+- 'invalid_client: invalid client id or secret'
+- '401: Unauthorized'
+- '403: Forbidden; User was valid, but not allowed to perform this action'
+- '404: Maintain profile records not found to deactivate'
+- '500: Internal Server Error'
+- 403 Forbidden
+- 404 No record with the supplied record Id was found for this EORI number
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - OAuthClient
+  - OAuthClientRequest
+  - OAuthJSONAccessTokenResponse
+  - access token
+  - refresh token
+client:
+  base_url: https://test-api.service.hmrc.gov.uk
+  auth:
+    type: oauth2
+    flow: authorization_code
+    token_url: https://test-api.service.hmrc.gov.uk/oauth/token
+    client_id: YOUR-CLIENT-ID
+    client_secret: YOUR-CLIENT-SECRET
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/vnd.hmrc.1.0+json
+source_metadata: null

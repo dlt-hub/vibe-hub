@@ -1,0 +1,45 @@
+auth_info:
+- information_source; https://open.shopee.com/developer-guide/16:
+  - Access token based authentication is required. Common parameters include partner_id,
+    timestamp, access_token, shop_id, and sign. The access_token is passed as a query
+    parameter and the sign parameter appears to be an HMAC signature for request verification.
+    These credentials must be included with every API request.
+  - All API calls require partner_id, timestamp, and sign parameters. Shop and Merchant
+    APIs additionally require access_token and a shop_id or merchant_id respectively.
+    The sign parameter is computed (likely HMAC-based for request signing), and access_token
+    must be obtained separately for Shop and Merchant API endpoints. Public APIs do
+    not require an access_token. These parameters are typically sent as query parameters
+    for GET requests or in the request body for POST requests.
+  - Shopee API uses query parameter-based authentication for both GET and POST requests.
+    Required common parameters in the URL are partner_id, timestamp, shop_id, access_token,
+    and sign (HMAC signature). For POST requests, common parameters go in the URL
+    query string while request parameters go in the JSON request body. The access_token
+    is obtained via a refresh_token in the initial authentication flow.
+- information_source; https://open.shopee.com/developer-guide/20:
+  - Access tokens are obtained via OAuth2-style authorization code exchange. To get
+    an access token, make a POST request to the refresh token endpoint with public
+    parameters including sign (HMAC signature), partner_id, and timestamp. The sign
+    parameter is computed using partner_key and must be included in every request
+    along with partner_id and a Unix timestamp valid for 5 minutes.
+  - Authorization deauthorization URLs use query parameters for authentication. Production
+    environment uses partner_id=10090 with a signed request (sign parameter containing
+    HMAC signature), and sandbox uses partner_id=1000016 with the same signing mechanism.
+    The redirect parameter specifies the callback URL, timestamp parameter provides
+    request timing, and the sign parameter contains the cryptographic signature for
+    request validation.
+possible_base_urls:
+- information_source; https://open.shopee.com/developer-guide/16:
+  - https://openplatform.sandbox.test-stable.shopee.cn/
+  - https://openplatform.sandbox.test-stable.shopee.sg/
+possible_endpoints:
+- information_source; https://open.shopee.com/developer-guide/16:
+  - GET https://openplatform.sandbox.test-stable.shopee.cn/
+  - GET https://openplatform.sandbox.test-stable.shopee.sg/
+  - GET https://openplatform.shopee.cn/
+  - GET https://openplatform.shopee.com.br/
+  - GET https://partner.shopeemobile.com/
+  - GET https://partner.shopeemobile.com/api/v2/product/get_category
+  - POST https://openplatform.sandbox.test-stable.shopee.cn/
+  - POST https://openplatform.sandbox.test-stable.shopee.sg/
+  - POST https://openplatform.shopee.cn/
+  - POST https://openplatform.shopee.com.br/

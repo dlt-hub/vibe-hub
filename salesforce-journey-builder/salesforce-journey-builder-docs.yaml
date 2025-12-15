@@ -1,0 +1,69 @@
+resources:
+- name: Cases
+  endpoint:
+    path: /services/apexrest/Cases/
+    method: POST
+    data_selector: records
+- name: Case
+  endpoint:
+    path: /services/apexrest/Cases/{Record ID}
+    method: GET
+    data_selector: attributes
+- name: Cases
+  endpoint:
+    path: /services/apexrest/Cases
+    method: PATCH
+- name: account_description
+  endpoint:
+    path: /services/data/v{{version}}/sobjects/Account/describe
+    method: GET
+    data_selector: records
+- name: create_account
+  endpoint:
+    path: /services/data/v{{version}}/sobjects/Account
+    method: POST
+    data_selector: records
+- name: query_account
+  endpoint:
+    path: /services/data/v{{version}}/query
+    method: GET
+    data_selector: records
+    params:
+      q: SELECT Name FROM Account WHERE ShippingCity = 'Melbourne'
+- name: Cloud_News
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Cloud_News__e
+    method: GET
+    data_selector: records
+    params: {}
+- name: Cloud_News__e
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Cloud_News__e
+    method: POST
+    data_selector: success
+notes:
+- The URL mapping is case-sensitive and can contain a wildcard character (*)
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Account may return nulls in deeply nested fields
+- Salesforce stores high-volume platform events for 72 hours.
+- Standard volume events defined before Spring '19 are stored for 24 hours.
+- The event message is published asynchronously.
+- The Trailblazer Community will undergo maintenance on Saturday, November 15, 2025
+  and Sunday, November 16, 2025. Please plan your activities accordingly.
+- The documentation does not provide any information on how to access next page for
+  paginated response.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or session authentication'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.'
+- 'OPERATION ENQUEUED: The event has been queued for processing.'
+- 'INVALID_SESSION_ID: Session expired or invalid'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://MyDomain.my.salesforce.com
+  auth:
+    type: oauth2
+source_metadata: null

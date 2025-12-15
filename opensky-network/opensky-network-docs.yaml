@@ -1,0 +1,103 @@
+resources:
+- name: visible_aircraft
+  endpoint:
+    path: /
+    method: GET
+    data_selector: icao24
+- name: state_vectors
+  endpoint:
+    path: /all
+    method: GET
+    data_selector: state_vectors
+- name: received_messages
+  endpoint:
+    path: /track?icao24=xxx
+    method: GET
+    data_selector: messages
+- name: adsb_messages
+  endpoint:
+    path: /api/adsb/messages
+    method: GET
+    data_selector: records
+    params: {}
+- name: mode_s_messages
+  endpoint:
+    path: /api/mode_s/messages
+    method: GET
+    data_selector: records
+    params: {}
+- name: ADSBClient
+  endpoint:
+    path: /
+    method: POST
+    data_selector: messages
+    params: {}
+- name: aircraft
+  endpoint:
+    path: /aircraft
+    method: GET
+    data_selector: DataFrame
+- name: arrival
+  endpoint:
+    path: /arrival
+    method: GET
+    data_selector: DataFrame
+- name: departure
+  endpoint:
+    path: /departure
+    method: GET
+    data_selector: DataFrame
+- name: range
+  endpoint:
+    path: /range
+    method: GET
+    data_selector: Any
+- name: sensors
+  endpoint:
+    path: /sensors
+    method: GET
+    data_selector: set
+- name: states
+  endpoint:
+    path: /states
+    method: GET
+    data_selector: DataFrame
+- name: tracks
+  endpoint:
+    path: /tracks
+    method: GET
+    data_selector: DataFrame
+- name: trajectory
+  endpoint:
+    path: /trajectory
+    method: GET
+- name: planes
+  endpoint:
+    path: /planes
+    method: GET
+- name: sensors
+  endpoint:
+    path: /sensors
+    method: GET
+    data_selector: sensors
+    params: {}
+notes:
+- If a --serve-port option is set, a REST API is set on 0.0.0.0 on the port of your
+  choice.
+- By default, all the history remains accessible until the program exits but this
+  behaviour can drain your RAM memory quickly if you see many aircraft.
+- Log in to your OpenSky account and visit the Account page in order to create a new
+  API client and retrieve your client_id and client_secret.
+- Anonymous users can only get the most recent state vectors.
+- OpenSky users can retrieve data of up to 1 hour in the past.
+- The information to display is provided by the tangram REST API, which provides the
+  list of receivers and their positions on the /sensors endpoint.
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: http://0.0.0.0
+  paginator:
+    type: history
+    cursor_param: history-expire
+source_metadata: null

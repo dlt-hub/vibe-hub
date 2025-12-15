@@ -1,0 +1,44 @@
+resources:
+- name: nf_instances
+  endpoint:
+    path: /nf-instances
+    method: GET
+- name: NF Instance
+  endpoint:
+    path: /nf-instances/{nfInstanceID}
+    method: GET
+    data_selector: NFProfile
+- name: Subscription
+  endpoint:
+    path: /subscriptions/{subscriptionID}
+    method: PATCH
+    data_selector: SubscriptionData
+- name: NFProfile
+  endpoint:
+    path: /components/schemas/NFProfile
+    method: GET
+- name: profileChanges
+  endpoint:
+    path: /components/schemas/ChangeItem
+    method: GET
+notes:
+- If 'event' takes value 'NF_PROFILE_CHANGED', either 'nfProfile' or 'profileChanges'
+  (but not both) must be present.
+- If 'event' takes value 'NF_REGISTERED', then 'nfProfile' must be present.
+errors:
+- '400: Bad Request'
+- '401: Unauthorized'
+- '403: Forbidden'
+- '404: Not Found'
+- '429: Too Many Requests'
+- '500: Internal Server Error'
+- '503: Service Unavailable'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: /oauth2/token
+  auth:
+    type: oauth2
+    flow: clientCredentials
+    token_url: /oauth2/token
+source_metadata: null

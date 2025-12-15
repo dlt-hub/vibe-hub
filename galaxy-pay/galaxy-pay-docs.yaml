@@ -1,0 +1,205 @@
+resources:
+- name: fast_pay
+  endpoint:
+    path: /api/v1/transaction/pay
+    method: POST
+    data_selector: responseData
+    params: {}
+- name: Pay
+  endpoint:
+    path: /upc/payment-gateway/api-specification/payment/pay
+    method: POST
+- name: Pay with token
+  endpoint:
+    path: /upc/payment-gateway/api-specification/payment/pay-with-token
+    method: POST
+- name: Pay with create token
+  endpoint:
+    path: /upc/payment-gateway/api-specification/payment/pay-with-create-token
+    method: POST
+- name: Fast pay
+  endpoint:
+    path: /upc/payment-gateway/payment-solution/fast-pay
+    method: POST
+- name: pay_with_option
+  endpoint:
+    path: /payment/pay-with-option
+    method: POST
+- name: Pay with token
+  endpoint:
+    path: /upc/payment-gateway/api-specification/payment/pay-with-token
+    method: POST
+- name: Pay with create token
+  endpoint:
+    path: /upc/payment-gateway/api-specification/payment/pay-with-create-token
+    method: POST
+- name: QR Payment
+  endpoint:
+    path: /payment/qr
+    method: POST
+    data_selector: transaction
+    params: {}
+- name: payment
+  endpoint:
+    path: /api/v1/transaction/pay
+    method: POST
+    data_selector: responseData
+    params: {}
+- name: pay_with_token
+  endpoint:
+    path: /api/v1/transaction/pay
+    method: POST
+- name: pay_with_create_token
+  endpoint:
+    path: /api/v1/transaction/pay
+    method: POST
+    data_selector: responseData
+    params: {}
+- name: payment
+  endpoint:
+    path: /payment
+    method: POST
+    data_selector: JSON content
+- name: data_flight
+  endpoint:
+    path: /api/data_flight
+    method: POST
+    data_selector: extraData
+    params: {}
+- name: query_transaction
+  endpoint:
+    path: /upc/payment-gateway/api-specification/management/query-transaction
+    method: GET
+- name: refund_transaction
+  endpoint:
+    path: /upc/payment-gateway/api-specification/management/refund-transaction
+    method: GET
+- name: void_transaction
+  endpoint:
+    path: /upc/payment-gateway/api-specification/management/void-transaction
+    method: GET
+- name: capture_transaction
+  endpoint:
+    path: /upc/payment-gateway/api-specification/management/capture-transaction
+    method: GET
+- name: pay_with_option
+  endpoint:
+    path: /api/v1/transaction/payWithOption
+    method: POST
+    data_selector: responseData
+    params: {}
+- name: pay_with_qr
+  endpoint:
+    path: /api/v1/transaction/payWithQR
+    method: POST
+    data_selector: responseData
+    params: {}
+- name: checkout
+  endpoint:
+    path: /api/v1/transaction/checkout
+    method: POST
+    data_selector: responseData
+    params: {}
+- name: createPaymentLink
+  endpoint:
+    path: /api/v1/transaction/createPaymentLink
+    method: POST
+    data_selector: responseData
+    params: {}
+- name: international_card_brands
+  endpoint:
+    path: /upc/payment-gateway/appendix/international-card-brands
+    method: GET
+    data_selector: records
+    params: {}
+- name: qr_payment_providers
+  endpoint:
+    path: /upc/payment-gateway/qr-payment-providers
+    method: GET
+    data_selector: Service Provider (QR Payment)
+    params: {}
+- name: capture_transaction
+  endpoint:
+    path: /api/v1/transaction/capture
+    method: POST
+    data_selector: response
+    params: {}
+- name: query_transaction
+  endpoint:
+    path: /api/v1/transaction/query
+    method: POST
+    data_selector: responseData
+    params: {}
+- name: refund_transaction
+  endpoint:
+    path: /api/v1/transaction/refund
+    method: POST
+    data_selector: responseData
+    params: {}
+- name: void_transaction
+  endpoint:
+    path: /api/v1/transaction/void
+    method: POST
+    data_selector: response
+    params: {}
+notes:
+- Only apply for International card.
+- GALAXY PAY will provide APIKey & Salt.
+- Merchant does not need to handle or store any payment details, thus reducing PCI
+  compliance costs.
+- Integration process is simple and quick.
+- You do not need to handle or store any payment details, which may lower PCI compliance
+  costs.
+- Merchant must have already registered for PCI compliance, which is mandatory for
+  all entities seeking to store, process, and transmit cardholder data.
+- Uses Fast Pay API for direct payment method.
+- For integration on Android, you need to allow deeplink for E-Wallets (MoMo, ZaloPay).
+- Last updated 12 months ago
+- Request authenticate and signature are mandatory.
+- Only apply for Domestic or International card.
+- Request signature, created with SHA256 & Salt
+- Uses SHA256 with Salt for signature generation.
+- Additional data may be nullable.
+- Date formats should be checked for consistency.
+- Use to create a payment request with payment options
+- Request authenticate and signature are mandatory in the header.
+- The transaction must have been successfully completed within 1 year and fully captured
+  (applicable for international cards).
+- Refund transactions can be split into multiple requests, provided the total refund
+  amount does not exceed the original transaction amount.
+- Use to void a successful transaction.
+errors:
+- '400 Bad Request: Check request parameters and body'
+- '401 Unauthorized: Invalid API key or signature'
+- '500 Internal Server Error: Try again later'
+- '400 Bad Request: Check request parameters and data types.'
+- '401 Unauthorized: Verify apiKey and signature.'
+- '401 Unauthorized: Recheck API key or signature'
+- '400 Bad Request: Check request parameters or body'
+- '400 Bad Request: Check the request format.'
+- '401 Unauthorized: Check authentication credentials.'
+- '404 Not Found: Verify the endpoint path.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400: Bad Request (Due to missing required fields)'
+- '401: Unauthorized (Invalid API Key or Invalid Signature)'
+- '408: Transaction Expired'
+- '409: Transaction Duplicate'
+- '499: Transaction is cancelled by Customer'
+- '502: Bad Gateway (Cannot connect to Service Provider)'
+- '503: Service Unavailable (Cannot send request to Service Provider)'
+- '504: Request Timeout'
+- '505: Authentication Failure (3DS flow or Not Supporter)'
+- See Response Codes for more detail
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://uat-secure.galaxypay.vn
+  auth:
+    type: apikey
+    location: header
+    header_name: apiKey
+  headers:
+    signature: signature
+source_metadata: null

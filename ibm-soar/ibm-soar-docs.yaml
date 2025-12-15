@@ -1,0 +1,117 @@
+resources:
+- name: incidents
+  endpoint:
+    path: /incidents/query_paged
+    method: POST
+    data_selector: data
+    params: {}
+- name: case_comment
+  endpoint:
+    path: /resilient_lib/components/poller_common/SOARCommon/create_case_comment
+    method: POST
+    data_selector: response
+    params: {}
+- name: datatable_row
+  endpoint:
+    path: /resilient_lib/components/poller_common/SOARCommon/create_datatable_row
+    method: POST
+    data_selector: response
+    params: {}
+- name: soar_case
+  endpoint:
+    path: /resilient_lib/components/poller_common/SOARCommon/create_soar_case
+    method: POST
+    data_selector: response
+    params: {}
+- name: case
+  endpoint:
+    path: /resilient_lib/components/poller_common/SOARCommon/get_case
+    method: GET
+    data_selector: response
+    params: {}
+- name: case_artifacts
+  endpoint:
+    path: /resilient_lib/components/poller_common/SOARCommon/get_case_artifacts
+    method: GET
+    data_selector: response
+    params: {}
+- name: case_attachment
+  endpoint:
+    path: /resilient_lib/components/poller_common/SOARCommon/get_case_attachment
+    method: GET
+    data_selector: response
+    params: {}
+- name: case_attachments
+  endpoint:
+    path: /resilient_lib/components/poller_common/SOARCommon/get_case_attachments
+    method: GET
+    data_selector: response
+    params: {}
+- name: case_comments
+  endpoint:
+    path: /resilient_lib/components/poller_common/SOARCommon/get_case_comments
+    method: GET
+    data_selector: response
+    params: {}
+- name: case_tasks
+  endpoint:
+    path: /resilient_lib/components/poller_common/SOARCommon/get_case_tasks
+    method: GET
+    data_selector: response
+    params: {}
+- name: soar_case_search
+  endpoint:
+    path: /resilient_lib/components/poller_common/SOARCommon/get_soar_case
+    method: GET
+    data_selector: response
+    params: {}
+- name: soar_cases
+  endpoint:
+    path: /resilient_lib/components/poller_common/SOARCommon/get_soar_cases
+    method: GET
+    data_selector: response
+    params: {}
+- name: artifact_type
+  endpoint:
+    path: /resilient_lib/components/poller_common/SOARCommon/lookup_artifact_type
+    method: GET
+    data_selector: response
+    params: {}
+- name: incident_types
+  endpoint:
+    path: /resilient_lib/components/poller_common/SOARCommon/lookup_incident_types
+    method: GET
+    data_selector: response
+    params: {}
+- name: update_soar_case
+  endpoint:
+    path: /resilient_lib/components/poller_common/SOARCommon/update_soar_case
+    method: POST
+    data_selector: response
+    params: {}
+- name: template
+  endpoint:
+    path: custom_template.jinja
+    method: GET
+    data_selector: name
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Added a new configuration setting to app.config, called `heartbeat_timeout_threshold`.
+  It is a value in seconds between the current `HeartbeatTimeout` event and the first
+  `HeartbeatTimeout` event. If the time is greater than the `heartbeat_timeout_threshold`,
+  the resilient-circuits process stops.
+- Added new config `trap_exception` and if set to `True` a Function’s exception will
+  be ignored with the error sent as a Status Message and a default payload returned
+  like below, allowing the Workflow or Playbook to continue
+- If url is not a string, returns back the value given.
+- Commands that interact with the SOAR platform support the --config|-c argument,
+  which precedes the default location.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://<host>
+  auth:
+    type: apikey
+source_metadata: null

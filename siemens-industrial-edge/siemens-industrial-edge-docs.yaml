@@ -1,0 +1,75 @@
+resources:
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: app_project
+  endpoint:
+    path: /iem/app-project
+    method: GET
+    data_selector: records
+- name: catalog
+  endpoint:
+    path: /iem/catalog
+    method: GET
+    data_selector: records
+- name: device
+  endpoint:
+    path: /iem/device
+    method: GET
+    data_selector: records
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- SSL certificate problem
+- Uses OAuth2 authentication
+- The maximum size limit for a single request (no file) is 4 MB.
+- The connection timeout is 10 seconds.
+- Ensure to have the appropriate permissions for accessing the endpoints.
+- Uses OAuth2
+- Requires setup of connected app in api
+- Requires setup of connected app
+- User with access to IAM (a.k.a. Keycloak) required
+- User in Keycloak with the Role manage-identity-providers required
+- The onboarding is done by creating a one-time token inside the Industrial Edge Management;
+  the token is valid for 2h.
+- The connections from/to the Industrial Edge Management are encrypted.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '401 Unauthorized: Check your authentication credentials.'
+- '404 Not Found: Verify the endpoint URL.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://docs.eu1.edge.siemens.cloud
+  auth:
+    type: oauth2
+    flow: refresh_token
+source_metadata: null

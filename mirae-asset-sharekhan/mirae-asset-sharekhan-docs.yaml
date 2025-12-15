@@ -1,0 +1,81 @@
+resources:
+- name: market_info
+  endpoint:
+    path: /api/v1/market/info
+    method: GET
+    data_selector: data
+    params: {}
+- name: trading_api
+  endpoint:
+    path: /api/v1/trading
+    method: GET
+    data_selector: data
+    params: {}
+- name: stocks
+  endpoint:
+    path: /api/v1/stocks
+    method: GET
+    data_selector: data
+    params: {}
+- name: market_info
+  endpoint:
+    path: /market
+    method: GET
+    data_selector: data
+- name: account_info
+  endpoint:
+    path: /account
+    method: GET
+    data_selector: data
+- name: Equity Trading
+  endpoint:
+    path: /equity-trading-account
+    method: GET
+    data_selector: records
+- name: IPO
+  endpoint:
+    path: /ipo
+    method: GET
+    data_selector: records
+notes:
+- Trading API requires authentication setup.
+- Mirae Asset Sharekhan API is available for FREE. You don’t need to pay any additional
+  charges or subscription fee for using API.
+- OAuth2 authentication is required for access
+- Investment in securities market are subject to market risks, read all the related
+  documents carefully before investing.
+- Brokerage will not exceed SEBI prescribed limit.
+- Minimum security deposit shall be applicable to all prospects availing this offer.
+- Benefits of the offer; that is, waiver of Registration Fee is valid for up to 1
+  (One) segment only.
+- Offer valid up to August 31, 2025.
+- Requires setup of connected app in Sharekhan
+- API limits may apply based on usage
+- No need to issue cheques by investors while subscribing to IPO.
+- Prevent Unauthorized transactions in your account — Update your mobile numbers/email
+  IDs with your stock brokers.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+errors:
+- '401 Unauthorized: Check authentication details.'
+- '429 Too Many Requests: Rate limit exceeded.'
+- '401 Unauthorized: Check your OAuth token'
+- '404 Not Found: Verify the endpoint URL'
+- '429 Too Many Requests: Rate limit exceeded'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '429 Too Many Requests: Throttle API calls or reduce frequency'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://newtrade.sharekhan.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.api.sharekhan.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

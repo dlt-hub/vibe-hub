@@ -1,0 +1,63 @@
+auth_info:
+- information_source; https://huobiapi.github.io/docs/dm/v1/en/:
+  - Authentication uses HMAC-SHA256 signature-based request signing. Include AccessKeyId,
+    SignatureMethod=HmacSHA256, SignatureVersion=2, and Timestamp as query parameters.
+    Create a canonical string from HTTP method, host, path, and sorted query parameters,
+    then sign it with your API Secret Key using HmacSHA256, base64-encode the result,
+    and add the Signature parameter to the request URL.
+  - HMAC-SHA256 signature-based authentication. Required parameters include AccessKeyId,
+    SignatureMethod (HmacSHA256), SignatureVersion, Timestamp, and Signature. The
+    Signature is computed using HMAC-SHA256 over a formatted string containing the
+    HTTP method (GET), host (api.hbdm.com), path, and query parameters sorted by ASCII
+    order with URI encoding. Optional cid parameter for client requests; ticket parameter
+    also supported. All data is case-sensitive.
+- information_source; https://huobiapi.github.io/docs/spot/v1/cn/:
+  - API requests require HMAC-SHA256 signature-based authentication. For REST APIs,
+    include AccessKeyId, SignatureMethod (HmacSHA256), SignatureVersion (2), Timestamp,
+    and Signature as URL query parameters. For WebSocket, send the same parameters
+    in a JSON object with authType set to "api", using signatureVersion "2.1" instead.
+    The Signature parameter is computed from request data using your secret key and
+    must be URL-encoded for REST calls.
+- information_source; https://huobiapi.github.io/docs/spot/v1/en/:
+  - API Key Permission Trade is required. The endpoint uses standard API key authentication
+    where the API key must have Trade permission level. Rate limit is 2 requests per
+    2 seconds.
+  - 'API Key Permission required with Read access. Send requests to GET /v1/margin/accounts/balance
+    endpoint with API Key authentication (header-based, exact header name not specified
+    in excerpt). Optional parameters: symbol (string) and sub-uid (int) in query string.'
+pagination_info:
+- information_source; https://huobiapi.github.io/docs/dm/v1/en/:
+  - Pagination uses current_page and total_page fields in the response. Request the
+    next page by incrementing current_page parameter in the next request. Stop when
+    current_page exceeds total_page. total_size indicates total number of records.
+  - Pagination uses optional query parameters page_index (which page, default value
+    not specified) and page_size (default value not specified). Response includes
+    total_page, current_page, and total_size fields to indicate pagination state.
+  - Pagination uses query parameters current_page (required, int) and total_page (required,
+    int) in responses. Response includes total_size (int) for total result count.
+    Construct next request by incrementing current_page until it equals total_page.
+  - 'Responses include pagination fields: total_page (total pages), current_page (current
+    page number), and total_size (total items on current page). To paginate, construct
+    subsequent requests using the current_page value incremented by one until current_page
+    reaches total_page.'
+  - The endpoint supports pagination via the size parameter (query string, optional,
+    default 48) to control the number of records returned per request. The response
+    does not explicitly indicate pagination fields like next, has_more, or cursor,
+    so the pagination mechanism appears limited to controlling batch size rather than
+    supporting sequential page navigation.
+possible_base_urls:
+- information_source; https://huobiapi.github.io/docs/dm/v1/en/:
+  - https://api.example.com/api/v1/contract_account_info
+  - https://api.hbdm.com
+possible_endpoints:
+- information_source; https://huobiapi.github.io/docs/dm/v1/en/:
+  - GET /api/v1/contract_adjustfactor
+  - GET /api/v1/contract_api_state
+  - GET /api/v1/contract_contract_info
+  - GET /api/v1/contract_delivery_price
+  - GET /api/v1/contract_elite_account_ratio
+  - GET /api/v1/contract_elite_position_ratio
+  - GET /api/v1/contract_his_open_interest
+  - GET /api/v1/contract_hisorders
+  - GET /api/v1/contract_index
+  - GET /api/v1/contract_insurance_fund

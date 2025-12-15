@@ -1,0 +1,274 @@
+resources:
+- name: news
+  endpoint:
+    path: /news.json
+    method: GET
+    data_selector: news
+- name: project_wiki
+  endpoint:
+    path: /projects/:project_id/wiki
+    method: GET
+- name: wiki_pages
+  endpoint:
+    path: /projects/:project_id/wiki/pages
+    method: GET
+- name: wiki
+  endpoint:
+    path: /projects/:project_id/wiki
+    method: GET
+    data_selector: wiki
+    params: {}
+- name: wiki_pages
+  endpoint:
+    path: /projects/:project_id/wiki/pages
+    method: GET
+    data_selector: pages
+    params: {}
+- name: time_entries
+  endpoint:
+    path: /time_entries.xml
+    method: GET
+    data_selector: time_entries
+    params:
+      offset: ''
+      limit: ''
+      user_id: ''
+      project_id: ''
+      spent_on: ''
+- name: users
+  endpoint:
+    path: /users.json
+    method: POST
+    data_selector: user
+    params: {}
+- name: issues
+  endpoint:
+    path: /issues.json
+    method: GET
+    data_selector: issues
+    params: {}
+- name: projects
+  endpoint:
+    path: /projects.json
+    method: GET
+    data_selector: projects
+    params: {}
+- name: issues
+  endpoint:
+    path: /issues.json
+    method: GET
+    data_selector: issues
+    params:
+      limit: 25
+- name: projects
+  endpoint:
+    path: /projects.json
+    method: GET
+    data_selector: projects
+    params: {}
+- name: users
+  endpoint:
+    path: /users.json
+    method: GET
+    data_selector: users
+    params: {}
+- name: issues
+  endpoint:
+    path: /issues.json
+    method: GET
+    data_selector: issues
+    params:
+      limit: 25
+- name: users
+  endpoint:
+    path: /users.json
+    method: GET
+    data_selector: users
+    params: {}
+- name: projects
+  endpoint:
+    path: /projects.json
+    method: GET
+    data_selector: projects
+    params: {}
+- name: issues
+  endpoint:
+    path: /issues
+    method: GET
+    data_selector: issue
+    params: {}
+- name: users
+  endpoint:
+    path: /users
+    method: POST
+    data_selector: user
+    params: {}
+- name: issues
+  endpoint:
+    path: /issues
+    method: PUT
+    data_selector: issue
+- name: uploads
+  endpoint:
+    path: /uploads
+    method: POST
+    data_selector: upload
+- name: users
+  endpoint:
+    path: /users.json
+    method: POST
+    data_selector: user
+    params: {}
+- name: issues
+  endpoint:
+    path: /issues.json
+    method: GET
+    data_selector: issues
+    params:
+      limit: '25'
+- name: projects
+  endpoint:
+    path: /projects.json
+    method: GET
+    data_selector: projects
+    params: {}
+- name: issues
+  endpoint:
+    path: /issues.json
+    method: GET
+    data_selector: issues
+    params:
+      limit: '25'
+- name: projects
+  endpoint:
+    path: /projects.json
+    method: GET
+    data_selector: projects
+    params: {}
+- name: users
+  endpoint:
+    path: /users.json
+    method: GET
+    data_selector: users
+    params: {}
+- name: issues
+  endpoint:
+    path: /issues.xml
+    method: GET
+    data_selector: issues
+    params:
+      limit: '25'
+      offset: '0'
+- name: projects
+  endpoint:
+    path: /projects.xml
+    method: GET
+    data_selector: projects
+    params: {}
+- name: users
+  endpoint:
+    path: /users.xml
+    method: GET
+    data_selector: users
+    params: {}
+- name: issues
+  endpoint:
+    path: /issues/296.json
+    method: GET
+    data_selector: issue
+    params: {}
+- name: users
+  endpoint:
+    path: /users.json
+    method: POST
+    data_selector: user
+    params: {}
+- name: issues
+  endpoint:
+    path: /issues
+    method: GET
+    data_selector: issues
+- name: projects
+  endpoint:
+    path: /projects.xml
+    method: GET
+    data_selector: projects
+    params: {}
+- name: users
+  endpoint:
+    path: /users.:format
+    method: GET
+    data_selector: users
+    params:
+      status: '1'
+- name: create_user
+  endpoint:
+    path: /users.:format
+    method: POST
+    data_selector: user
+    params: {}
+- name: user_details
+  endpoint:
+    path: /users/:id.:format
+    method: GET
+    data_selector: user
+    params: {}
+notes:
+- To enable the API-style authentication, have to check Enable REST API in Administration->
+  Settings-> Authentication.
+- REST API may be disabled on demo.redmine.org.
+- Using login/password via HTTP Basic authentication
+- This should be considered experimental until further testing.
+- Users have an API token they can manage.
+- Unlike other collection API endpoints like projects and issues, the versions endpoint
+  does not currently seem to support pagination.
+- Wiki pages can now be retrieved, created, updated and deleted through the REST API.
+- For some versions of Redmine you can need some other extension of path /time_entries.xml,
+  e.g. 2.5 works with *.json
+- Authentication can be done using regular login/password or API key.
+- API key can be passed in as a key parameter or as a header.
+- Authentication can be done via HTTP Basic authentication or API key.
+- Use 'X-Redmine-Switch-User' header for user impersonation with administrator account.
+- Requires enabling REST API in Administration -> Settings -> API
+- It's required to set the Content-Type header according to the format of the data
+  you are sending.
+- Uses either HTTP Basic authentication or API key for authentication.
+- Requires enabling REST API in Administration settings.
+- Use 'X-Redmine-Switch-User' header for user impersonation with admin account
+- Default limit for collection resources is 25, maximum is 100
+- Use a valid API key for authentication
+- Check 'Enable REST API' in Administration settings
+- A POST request on Redmine 1.0.1-2 (Debian stable) does not work using the API key,
+  but does work with a login/passwd authentication
+- This endpoint requires admin privileges.
+errors:
+- 'Unauthorized: Same JSON response even with wrong credentials'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '422 Unprocessable Entity: time entry was not created due to validation failures'
+- '406 Not Acceptable: Ensure the Content-Type is set correctly.'
+- '412 Precondition Failed: User impersonation failed due to invalid login.'
+- '422 Unprocessable Entity: Uploaded file exceeds maximum allowed size.'
+- '422: Validation errors - check for missing required fields.'
+- '401: Unauthorized - ensure API key is provided correctly.'
+- '422 Unprocessable Entity: Invalid or missing attribute parameters'
+- '422: Request with invalid or missing attributes'
+- '401 Unauthorized: Check login credentials or API key'
+- '422: Validation errors'
+- '406: Not Acceptable'
+- '412: Precondition Failed'
+- '422 Unprocessable Entity: Check for missing required fields'
+- '401 Unauthorized: Ensure API key is valid'
+- '422: Invalid or missing attributes'
+- '201 Created: user was created'
+- '422 Unprocessable Entity: user was not created due to validation failures'
+- '401 Authorization Required: Check your credentials'
+auth_info:
+  mentioned_objects:
+  - API key
+  - X-Redmine-API-Key
+  - X-Redmine-Switch-User
+client:
+  base_url: https://www.redmine.org
+source_metadata: null

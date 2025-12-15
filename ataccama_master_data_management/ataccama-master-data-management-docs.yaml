@@ -1,0 +1,63 @@
+resources:
+- name: monitoring_projects
+  endpoint:
+    path: /monitoringProjects
+    method: POST
+    data_selector: edges
+    params: {}
+- name: RDM REST APIs
+  endpoint:
+    path: /rdm/rest/api
+    method: GET
+    data_selector: data
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: changelog
+  endpoint:
+    path: /changelog
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- This will give you all projects with all their configurations, all catalog items
+  and the applied DQ checks.
+- The REST endpoints follow a pattern using a fixed base path (/api/rest) on the default
+  port (8051) and use basic HTTP authentication.
+- DQ&C does not hold data; only metadata.
+- GraphQL is not an appropriate tool for tabular data access.
+- The latest version of RDM (14.3) includes a new feature called RDM REST APIs which
+  enables reading data from RDM without requiring any additional configuration.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Uses OAuth2 with refresh token — requires setup of connected app in Ataccama
+- Performance may degrade with large datasets
+- Some objects like Contact may return nulls in deeply nested fields
+- AI-powered data lineage with automated discovery and visualization.
+- Secure edge processing capabilities to protect data.
+errors:
+- '404: Not Found - Check the endpoint URL.'
+- 'TIMEOUT: Connection to the URL timed out.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://teranet.test.ataccama.online:8051/api/rest
+  auth:
+    type: basic
+source_metadata: null

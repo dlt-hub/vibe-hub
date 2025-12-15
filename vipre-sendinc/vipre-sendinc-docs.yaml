@@ -1,0 +1,67 @@
+resources:
+- name: devices
+  endpoint:
+    path: /devices
+    method: GET
+- name: events
+  endpoint:
+    path: /events
+    method: GET
+- name: sites
+  endpoint:
+    path: /sites
+    method: GET
+- name: threats
+  endpoint:
+    path: /threats
+    method: GET
+- name: incidents
+  endpoint:
+    path: /incidents
+    method: GET
+- name: account
+  endpoint:
+    path: /account.json
+    method: GET
+    data_selector: account
+- name: message
+  endpoint:
+    path: /message.json
+    method: POST
+    data_selector: message
+- name: retrieve_message
+  endpoint:
+    path: /message/{message_id}.json
+    method: GET
+    data_selector: message
+- name: download_attachment
+  endpoint:
+    path: /attachment/{X-Sendinc-Message-Id}/{attachment_id}.json
+    method: GET
+    data_selector: attachment
+notes:
+- SafeSend will work with any .NET CORE 8.0 capable web server
+- Microsoft requires the site where the add-in is hosted to be SSL-secured
+- Deploying the SafeSend web add-in can take up to 12 hours to propagate the network
+- Any changes made to Settings.json require the website to be restarted to take effect;
+  This should be done outside of normal operating hours to avoid potential service
+  interruptions
+- You'll need an FTP Client (like Filezilla) for the next part
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- The message body will be returned in HTML, even for messages that were submitted
+  in plain-text.
+- Some functionality is limited to only Sendinc Pro and Sendinc Corporate accounts.
+errors:
+- '504.0 GatewayTimeout: Refresh the browser window if this error occurs'
+- '401 Unauthorized: Couldn''t authenticate you'
+- '403 Forbidden: API Quota exceeded'
+- 421 4.7.1 Secure connection required
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://rest.sendinc.com
+  auth:
+    type: basic
+    location: header
+    header_name: Authorization
+source_metadata: null

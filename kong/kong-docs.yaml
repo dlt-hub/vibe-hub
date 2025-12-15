@@ -1,0 +1,66 @@
+resources:
+- name: delete_credentials
+  endpoint:
+    path: /consumers/:consumerId/jwt
+    method: DELETE
+    data_selector: credentials
+    params: {}
+- name: http_log_config
+  endpoint:
+    path: /
+    method: POST
+    data_selector: config
+    params: {}
+- name: runtime_groups
+  endpoint:
+    path: /v2/runtime-groups
+    method: GET
+- name: ui
+  endpoint:
+    path: /ui
+    method: GET
+    data_selector: records
+    params: {}
+- name: consumers
+  endpoint:
+    path: /consumers
+    method: GET
+    data_selector: data
+    params: {}
+- name: oauth2_token
+  endpoint:
+    path: /myapi21/oauth2/token
+    method: POST
+    data_selector: null
+    params: {}
+notes:
+- 'Proposed route for bulk deletion of JWT credentials: DELETE /consumers/:consumerId/jwt'
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- If I use the short name (postgresql), it does not work
+- If I use the FQDN (postgresql.something.whatever), it works
+- CoreDNS resolution works fine, so the issue is not here.
+- Uses a queuing mechanism to send logs asynchronously
+- When using Kong Konnect, the Admin API isn’t served on the same machine as the dataplane.
+- Kong isn’t built to play well with UIs and redirects.
+- Usage of the `preserve_host` attribute enables to keep the external Host in the
+  Location redirect header.
+- If the results fit within one page, all the results are in that page
+- If the results don’t fit within one page, you’ll get some of the results, and the
+  returned JSON will include a 'next' key
+errors:
+- 'HTTP 202: Accepted for background job of bulk deletion'
+- '[cosocket] DNS resolution failed: dns server error: 3 name error.'
+- 'client: 10.10.12.115, server: kong_prometheus_exporter, request: "GET /metrics
+  HTTP/1.1"'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'unsupported_grant_type: Invalid grant_type'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: http://host.docker.internal:6000/gateway/audit
+  headers:
+    Content-Type: application/json
+  paginator:
+    type: queue
+    queue_size: 1
+source_metadata: null

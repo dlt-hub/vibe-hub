@@ -1,0 +1,224 @@
+resources:
+- name: cometd
+  endpoint:
+    path: /cometd
+    method: GET
+    data_selector: ''
+    params: {}
+- name: cometd
+  endpoint:
+    path: /cometd/*
+    method: GET
+    data_selector: null
+    params: {}
+- name: oort
+  endpoint:
+    path: /oort
+    method: GET
+    data_selector: null
+    params:
+      oort.url: http://host:port/context/cometd
+- name: seti
+  endpoint:
+    path: /seti
+    method: GET
+    data_selector: null
+    params: {}
+- name: cometd
+  endpoint:
+    path: /cometd/*
+    method: GET
+    data_selector: records
+- name: cometd
+  endpoint:
+    path: /cometd/*
+    method: GET
+- name: oort
+  endpoint:
+    path: /context/cometd
+    method: GET
+- name: seti
+  endpoint:
+    path: /seti/all
+    method: GET
+- name: Oort Comet
+  endpoint:
+    path: /cometd/*
+    method: GET
+    data_selector: comets
+    params: {}
+- name: OortObject
+  endpoint:
+    path: /services/data/vXX.X/sobjects/OortObject
+    method: GET
+    data_selector: records
+    params: {}
+- name: OortService
+  endpoint:
+    path: /services/data/vXX.X/sobjects/OortService
+    method: GET
+    data_selector: records
+    params: {}
+- name: reload_extension
+  endpoint:
+    path: /dojox/cometd/reload.js
+    method: GET
+    data_selector: reload
+    params: {}
+- name: timestamp_extension
+  endpoint:
+    path: /dojox/cometd/timestamp.js
+    method: GET
+    data_selector: timestamp
+    params: {}
+- name: timesync_extension
+  endpoint:
+    path: /dojox/cometd/timesync.js
+    method: GET
+    data_selector: timesync
+    params: {}
+- name: EchoService
+  endpoint:
+    path: /cometd/*
+    method: GET
+    data_selector: service
+    params: {}
+- name: oort
+  endpoint:
+    path: /meta/handshake
+    method: GET
+    data_selector: ext.org.cometd.oort
+    params: {}
+- name: name_edit
+  endpoint:
+    path: /service/edit
+    method: POST
+    data_selector: result
+    params: {}
+- name: subscribe
+  endpoint:
+    path: /meta/subscribe
+    method: POST
+    data_selector: ''
+    params: {}
+- name: unsubscribe
+  endpoint:
+    path: /meta/unsubscribe
+    method: POST
+    data_selector: ''
+    params: {}
+- name: publish
+  endpoint:
+    path: /some/channel
+    method: POST
+    data_selector: ''
+    params: {}
+notes:
+- CometD is a scalable web event routing bus that allows low-latency, server-side,
+  event-driven web applications.
+- The CometD project provides Java and JavaScript libraries.
+- The JavaScript application configures the cometd object and starts the application.
+- Applications that need to perform time consuming tasks in server-side listeners
+  should do so in a separate thread to avoid blocking the processing of other incoming
+  messages.
+- There may be only one instance of Seti for each Oort.
+- The load-on-startup parameter of the SetiServlet must be greater than that of the
+  OortServlet.
+- SetiServlet does not have any configuration init parameter.
+- The URL of the server must be absolute and include the scheme, host, optionally
+  the port and the path of the server.
+- The CometD JavaScript implementation will transparently take care of converting
+  the scheme to 'ws' or 'wss' in case of usage of the WebSocket protocol.
+- Calling 'subscribe()' does not mean that you have completed the subscription with
+  the server when function returns.
+- Subscriptions may fail on the server or on the client.
+- Most browsers implement earlier drafts of the WebSocket protocol, leading to varying
+  support.
+- CometD falls back to long-polling if the websocket transport does not work.
+- Calling handshake() does not mean that you have completed the handshake with the
+  server when handshake() returns.
+- You can subscribe and unsubscribe only after the handshake is completed.
+- The log level can be set from 0 (off) to 3 (debug).
+- A non-blocking connector must be enabled in Tomcat 7 for proper operation.
+- Ensure that the Spring <listener> runs before the CometdServlet to avoid multiple
+  BayeuxServer instances.
+- Seti must be configured with an associated Oort instance, either via code or by
+  configuring a SetiServlet.
+- You must configure an org.cometd.oort.Seti instance with an associated org.cometd.oort.Oort
+  instance.
+- Uses JSON libraries for message conversion
+- Default implementation uses Jetty's JSON library
+- Oort clustering is not a high availability clustering solution.
+- Clients connect to multiple nodes for scalability.
+- Oort comets must know each other's URLs to connect and form a cloud.
+- Message forwarding is not bidirectional; if `cometA` forwards messages to other
+  comets it is not automatic that the other comets forward messages to `cometA`.
+- Forwarding of messages may be subject to temporary interruptions in case there is
+  a temporary network connectivity failure between two comets.
+- The message acknowledgement extension is not a fully persistent solution for lost
+  messages.
+- Seti allows you to associate a unique string representation of a user with one or
+  more ServerSessions.
+- The same userId may log in multiple times, so it is associated to multiple ServerSessions.
+- An extension is not a way to add business fields to a message, but rather a way
+  to process all messages.
+- If you do not have such concerns or requirements, you should not use the extensions,
+  as they add a minimal overhead without bringing value.
+- The reload extension allows CometD to load or reload a page without having to re-handshake.
+- The timestamp extension adds a timestamp to the message object for every message.
+- Internet Explorer does not define the window.console object as other browsers do.
+- Applications cannot create new meta channels.
+- Server-side listeners must handle time-consuming tasks in a separate thread.
+- 'The handshake might fail for several reasons: mistyped server URL, transport negotiation
+  failure, wrong authentication credentials, server crash, or network failure.'
+- 'It is not possible to subscribe to meta channels: the server replies with an error
+  message.'
+- You cannot (and it makes no sense to) publish messages to meta channels.
+- Remember to call endBatch() after calling startBatch().
+- You can optimize the three publishes using batching.
+- Client can use websocket transport before long-polling transport.
+- While Jetty is configured by default with a non-blocking connector that allows CometD
+  to run out of the box, Tomcat 7 is not, by default, configured with a non-blocking
+  connector.
+- Uses annotation processing for services
+- Client-side services do not have dependency injection support
+- By default, the BayeuxServer object has a default SecurityPolicy that allows almost
+  any operation.
+- Authorizers do not apply to meta channels, only to service channels and to broadcast
+  channels.
+- Uses OAuth2 for authentication.
+- The handshake message contains fields related to the Oort configuration.
+- OortService must be created at startup by subclassing it.
+- The reload extension allows CometD to load or reload a page without having to re-handshake
+  in the new (or reloaded) page, thereby resuming the existing CometD connection.
+- The timesync extension allows the client and server to exchange time information
+  on every handshake and connect message.
+- Bayeux supports bidirectional messaging between clients and servers.
+- Asynchronous events cannot be delivered from server to client unless a previously
+  issued request exists.
+- The Bayeux protocol may be used with no authentication or container supplied authentication.
+errors:
+- Cannot handshake with the server, alert user.
+- 'IllegalStateException: the servlet does not support async operations for this request'
+- 'Cannot connect to Oort comet: Check connection parameters.'
+- If the extension method returns null, the processing should stop.
+- Be very careful to use the CometD object to publish messages within the extension
+  exception handler.
+- '404 Not Found: Check the URL for the requested resource.'
+- '500 Internal Server Error: Check server logs for details.'
+- 'Unauthorized: Check authentication credentials.'
+- '401 Unauthorized: Check if the token is valid and has required scopes.'
+- 'Could not edit name, reason: {error_message}'
+- '404 Not Found: Not Found'
+auth_info:
+  mentioned_objects:
+  - OortMap
+  - OortList
+  - OortObject
+  - OortMasterService
+  - OortMasterLong
+client:
+  base_url: http://localhost:8080/cometd
+  headers:
+    logLevel: debug
+source_metadata: null

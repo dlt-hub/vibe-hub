@@ -1,0 +1,88 @@
+resources:
+- name: lambda
+  endpoint:
+    path: /node/lambda
+    method: POST
+- name: s3
+  endpoint:
+    path: /node/s3
+    method: POST
+- name: sqs
+  endpoint:
+    path: /node/sqs
+    method: POST
+- name: sns
+  endpoint:
+    path: /node/sns
+    method: POST
+- name: ssm
+  endpoint:
+    path: /node/ssm
+    method: POST
+- name: ephemeral
+  endpoint:
+    path: /node/ephemeral
+    method: POST
+- name: cloudwatch
+  endpoint:
+    path: /node/cloudwatch
+    method: POST
+- name: dynamo_db
+  endpoint:
+    path: /node/dynamo-db
+    method: POST
+- name: DynamoDB
+  endpoint:
+    path: /dynamodb
+    method: POST
+    data_selector: Records
+    params:
+      Operation: PutItem
+      Table ARN: ARN_of_the_table
+- name: Rekognition
+  endpoint:
+    path: /rekognition
+    method: POST
+    data_selector: Results
+    params:
+      Operation: DetectFaces
+      Source Image: source_image_name
+      Source Bucket: source_bucket_name
+- name: Salesforce
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Salesforce
+    method: GET
+- name: QuickBooks
+  endpoint:
+    path: /services/data/vXX.X/sobjects/QuickBooks
+    method: GET
+- name: GoogleDrive
+  endpoint:
+    path: /services/data/vXX.X/sobjects/GoogleDrive
+    method: GET
+- name: Log_Entry
+  endpoint:
+    path: /order
+    method: POST
+    data_selector: msg.payload
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Kumologica supports running serverlessly on Google Cloud Functions, Azure Functions,
+  and AWS Lambda.
+- To configure your flow to run as a NodeJS application, create a file `index.js`
+  in the root directory.
+- Ensure to have an HEC token generated for the node to connect with a given instance
+  of Splunk.
+errors:
+- SplunkConnectionError
+- SplunkInvalidTokenError
+- SplunkInvalidLogDataError
+- SplunkDataWriteError
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://docs.kumologica.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+source_metadata: null

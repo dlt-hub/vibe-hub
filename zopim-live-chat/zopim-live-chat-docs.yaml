@@ -1,0 +1,141 @@
+resources:
+- name: account_status
+  endpoint:
+    path: /account_status
+    method: GET
+- name: connection_status
+  endpoint:
+    path: /connection_status
+    method: GET
+- name: visitor_info
+  endpoint:
+    path: /visitor_info
+    method: GET
+- name: departments
+  endpoint:
+    path: /departments
+    method: GET
+- name: queue_position
+  endpoint:
+    path: /queue_position
+    method: GET
+- name: chat_info
+  endpoint:
+    path: /chat_info
+    method: GET
+- name: operating_hours
+  endpoint:
+    path: /getOperatingHours
+    method: GET
+- name: email_transcript
+  endpoint:
+    path: /sendEmailTranscript
+    method: POST
+- name: chat_history
+  endpoint:
+    path: /fetchChatHistory
+    method: GET
+- name: mark_as_read
+  endpoint:
+    path: /markAsRead
+    method: POST
+- name: reconnect
+  endpoint:
+    path: /reconnect
+    method: POST
+- name: end_chat
+  endpoint:
+    path: /endChat
+    method: POST
+- name: logout
+  endpoint:
+    path: /logout
+    method: POST
+- name: chat
+  endpoint:
+    path: /web-sdk
+    method: GET
+    data_selector: structured_msg
+    params: {}
+- name: visitor_info
+  endpoint:
+    path: /getVisitorInfo
+    method: GET
+    data_selector: VisitorInfo
+- name: chat_status
+  endpoint:
+    path: /getChatStatus
+    method: GET
+    data_selector: ChatInfo
+- name: operating_hours
+  endpoint:
+    path: getOperatingHours
+    method: GET
+    data_selector: OperatingHours
+- name: email_transcript
+  endpoint:
+    path: sendEmailTranscript
+    method: POST
+    data_selector: email
+- name: chat_history
+  endpoint:
+    path: fetchChatHistory
+    method: GET
+    data_selector: data
+    params: {}
+- name: mark_as_read
+  endpoint:
+    path: markAsRead
+    method: POST
+    data_selector: success
+- name: reconnect
+  endpoint:
+    path: reconnect
+    method: POST
+    data_selector: success
+- name: end_chat
+  endpoint:
+    path: endChat
+    method: POST
+    data_selector: success
+- name: logout
+  endpoint:
+    path: logout
+    method: POST
+    data_selector: success
+notes:
+- Some API calls are unavailable for accounts using the Lite package.
+- This function must be inserted immediately after the Zendesk Chat Script.
+- API calls to change verified visitor information (e.g., setName) will not work if
+  the visitor is authenticated.
+- This method might cause an exception to be thrown for accounts using Zendesk Agent
+  Workspace.
+- Structured messages can only be sent via Chat Conversation API.
+- Consider upgrading to the latest Web SDK version for new structured message types.
+- This method can still fail for authenticated visitors if the visitor does not have
+  past chats.
+- Ensure that you only allow the unauthenticated visitors to request for chat transcript
+  while a chat session is still active.
+errors:
+- '401 Unauthorized: Recheck JWT authentication.'
+- 'Validation error: API methods called with parameters that do not conform to the
+  desired format.'
+- Usage of an invalid Zendesk Chat account key may result in validation error.
+- 'NOT_SUPPORTED: File sending is not supported.'
+- 'NOT_ALLOWED: File sending is not allowed.'
+- 'CONN_ERROR: File sending failed due to connection error.'
+- 'INVALID_EXTENSION: File sending failed due to invalid file extension.'
+- 'EXCEED_SIZE_LIMIT: File sending failed, size exceeds limit.'
+- 'INTERNAL_ERROR: Zendesk Chat internal error occurred.'
+- 'UNKNOWN_ERROR: An unknown error occurred.'
+- '401 Unauthorized: This method is not available to visitors who are not currently
+  authenticated via JWT.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.zopim.com
+  auth:
+    type: jwt
+    jwt_fn: function(callback) { fetch('JWT_TOKEN_ENDPOINT').then(function(res) {
+      res.text().then(function(jwt) { callback(jwt); }); }); }
+source_metadata: null

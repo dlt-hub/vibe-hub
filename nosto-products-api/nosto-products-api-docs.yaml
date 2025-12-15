@@ -1,0 +1,136 @@
+resources:
+- name: products
+  endpoint:
+    path: /v1/products/upsert
+    method: POST
+    data_selector: records
+- name: View Category
+  endpoint:
+    path: /api/view-category
+    method: GET
+    data_selector: records
+- name: View Product
+  endpoint:
+    path: /api/view-product
+    method: GET
+    data_selector: records
+- name: Cart
+  endpoint:
+    path: /api/cart
+    method: GET
+    data_selector: records
+- name: Order
+  endpoint:
+    path: /api/order
+    method: POST
+    data_selector: records
+- name: cart_tagging
+  endpoint:
+    path: /cart/tagging
+    method: POST
+    data_selector: data
+- name: customer
+  endpoint:
+    path: /api/customer
+    method: POST
+    data_selector: customer_info
+- name: category_brand_tagging
+  endpoint:
+    path: /implementing-nosto/implement-on-your-website/manual-implementation/category-and-brand-tagging
+    method: GET
+    data_selector: tagging
+    params: {}
+- name: page_types
+  endpoint:
+    path: /tagging/page_types
+    method: GET
+    data_selector: page_types
+- name: redact_customer_data
+  endpoint:
+    path: /v1/customers/redact/{email}
+    method: DELETE
+    data_selector: response
+    params: {}
+- name: data_takeout
+  endpoint:
+    path: /v1/customers/takeout
+    method: POST
+- name: discontinue_products
+  endpoint:
+    path: /v1/products/discontinue
+    method: POST
+    data_selector: '[]'
+- name: recrawl_products
+  endpoint:
+    path: /products/recrawl
+    method: POST
+    data_selector: ''
+    params: {}
+notes:
+- Categories must always be delimited by a slash.
+- The Products API takes an array of product metadata and has no hard limit on the
+  number of items that you can specify and is only limited by the maximum size of
+  the payload of 2 MB.
+- Every Nosto account has a unique identifier known as accountID, which is required
+  in the implementation.
+- Uses OAuth2 with refresh token — requires setup of connected app in Nosto
+- Some objects may return nulls in deeply nested fields
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Both behavioral and transactional data needs to be sent manually.
+- If you happen to call the interface via HTTP using a valid API key, that API key
+  will be invalidated immediately.
+- Uses OAuth2 with refresh token — requires setup of connected app in nosto
+- The extension automatically adds product recommendation elements to the store when
+  installed.
+- Every time a product is updated in the store, the information is sent to Nosto over
+  an API.
+- Nosto has a time window of 30 minutes for cancelled orders be taken into account.
+- Nosto Plugin can be used with Shopware versions starting from 6.5.4.0
+- Nosto allows you to deliver every customer a personalized shopping experience through
+  recommendations based on their unique user behavior.
+- You need to have Nosto account configured and Nosto must be enabled in your storefront
+  in order to use the debug toolbar.
+- Nosto requires setup of connected app in Salesforce
+- JavaScript API works only in on-site context.
+- Using the API does not require authentication but requires that Nosto embed script
+  is included.
+- The script and the snippet should be added as high up in the <head> portion of the
+  page.
+- This needs to exist on every page.
+- The product ID of the product tagging, cart tagging and order tagging must match.
+  Failure to do so will lead to a mismatch in both attribution and statistics across
+  the Nosto product.
+- Customer information should be tagged if the customer is logged in.
+- Marketing permission is false by default unless explicitly set to true.
+- The product tagging must be server-side rendered as the Nosto crawler does not execute
+  Javascript.
+- Page type must always be lowercase.
+- When the search term exists as a part of the URL's query parameters, Nosto can be
+  configured to read the search term and you can skip the search term tagging.
+- When the search term exists as a part of the URL, Nosto is unable to read it from
+  the URL and you will need to tag as a part of the page source.
+- All requests to these endpoints are asynchronous and may take up to 24 hours for
+  the redaction process to complete.
+- All requests to this endpoint are asynchronous and simply enqueue the email address
+  for takeout.
+- It may take up to 24 hours for the takeout process to complete.
+- The Discontinue API takes an array of product metadata and has no hard limit on
+  the number of items that you can specify and is only limited by the maximum size
+  of the payload of 2 MB.
+- The Recrawl API takes an array of product ids and URLs and has no hard limit on
+  the number of items that you can specify.
+- You can recrawl as often as you need but bear in mind that every recrawl adds an
+  extra page load to your server.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.nosto.com
+  auth:
+    type: basic
+    location: header
+    header_name: Authorization
+source_metadata: null

@@ -1,0 +1,59 @@
+resources:
+- name: journey
+  endpoint:
+    path: /journey/rest/api
+    method: GET
+    data_selector: records
+    params: {}
+- name: contacts
+  endpoint:
+    path: /api/v1/contacts
+    method: GET
+    data_selector: data
+    params: {}
+- name: message_types
+  endpoint:
+    path: /message_types
+    method: GET
+    data_selector: records
+- name: action_blocks
+  endpoint:
+    path: /action_blocks
+    method: GET
+    data_selector: records
+- name: contacts
+  endpoint:
+    path: /contacts
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- '10 Sep 2024: Journey Rest API'
+- This is an Enterprise-only feature.
+- Some objects like Contact may return nulls in deeply nested fields
+- API provides access to user contact data
+- Token-based authentication ensures that each user request sent to a server is accompanied
+  by a signed token.
+- Some objects may return nulls in deeply nested fields
+- This integration is an example and a starting point - it is not production ready.
+- Custom integrations are greedy; they will make a call to your endpoint every time
+  a chat is loaded.
+- Data is encrypted in transit as we force SSL certifications for our API connections.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '400 Bad Request: Check your request parameters'
+- '401 Unauthorized: Verify your authentication credentials'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://whatsapp.turn.io
+  auth:
+    type: oauth2
+    flow: refresh_token
+source_metadata: null

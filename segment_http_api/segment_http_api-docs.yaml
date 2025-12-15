@@ -1,0 +1,50 @@
+auth_info:
+- information_source; https://segment.com/docs/connections/sources/catalog/libraries/server/http-api/:
+  - Access tokens obtained from OAuth applications can be reused until expiry. The
+    content-type header must be set to 'application/json' when sending data to Segment's
+    HTTP API. Rate limits of 1,000 requests per second apply per workspace, with rejected
+    requests returning HTTP 429 and Retry-After and X-RateLimit-Reset headers.
+  - 'Basic authentication requires base64-encoding credentials in the format "username:password"
+    (including the colon) and passing them in the Authorization header as "Authorization:
+    Basic <encoded_credentials>". OAuth2 authentication uses Bearer tokens obtained
+    from an Authorization Server; include the access token in the Authorization header
+    as "Authorization: Bearer <access_token>" and optionally include the write key
+    in the request payload as "writeKey". The Bearer token can be reused until expiration.'
+  - 'The Tracking API supports three authentication methods. writeKey authentication
+    sends the Write Key as a JSON field named "writeKey" in the request body, encrypted
+    over HTTPS, with no authentication header required. Basic authentication uses
+    HTTP Basic Auth with the Write Key as username and empty password, base64 encoded
+    and sent in the Authorization header as "Authorization: Basic {encoded_value}".
+    OAuth is also supported but details are not provided in this excerpt.'
+- information_source; https://segment.com/docs/api/config-api/:
+  - 'Config API uses bearer token authentication. Obtain an access token by contacting
+    Segment support, then include it in the Authorization header of requests as "Authorization:
+    Bearer $ACCESS_TOKEN". The token should be stored securely and cannot be retrieved
+    later if lost.'
+- information_source; https://segment.com/docs/api/config-api/authentication/:
+  - 'The Config API requires Bearer token authentication via the Authorization header.
+    Include the access token in requests as "Authorization: Bearer $ACCESS_TOKEN".
+    Different scopes control permissions; for example, the workspace:read scope only
+    allows read operations, and attempting write operations with insufficient scope
+    returns an "insufficient scope" error.'
+pagination_info:
+- information_source; https://segment.com/docs/api/config-api/api-design/:
+  - The List method uses cursor-based pagination with optional `page_size` query parameter
+    (defaults to 10 or 100 items). The response includes `next_page_token` field;
+    pass this value as `page_token` parameter in the next request to fetch subsequent
+    pages. When `next_page_token` is empty, pagination is complete.
+possible_base_urls:
+- information_source; https://segment.com/docs/connections/sources/catalog/libraries/server/http-api/:
+  - https://api.segment.io/v1
+  - https://api.segment.io/v1/track
+possible_endpoints:
+- information_source; https://segment.com/docs/connections/sources/catalog/libraries/server/http-api/:
+  - POST https://api.segment.io/v1/track
+- information_source; https://segment.com/docs/api/config-api/:
+  - GET https://platform.segmentapis.com/v1beta/workspaces
+- information_source; https://segment.com/docs/api/config-api/api-design/:
+  - DELETE <resource URL>
+  - PATCH <resource URL>
+  - POST <collection URL>
+- information_source; https://segment.com/docs/api/config-api/authentication/:
+  - GET https://platform.segmentapis.com/v1beta/workspaces

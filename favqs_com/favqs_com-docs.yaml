@@ -1,0 +1,61 @@
+auth_info:
+- information_source; https://favqs.com/api:
+  - 'An app token is required for most API calls (except Quote of the Day). Pass your
+    access token in the Authorization header using the format: Authorization: Token
+    token="YOUR_APP_TOKEN". The token value goes inside the token parameter within
+    the Authorization header.'
+  - Authentication uses session-based tokens. After user creation or login, a "User-Token"
+    is returned and must be included in the Authorization header (or as a custom header
+    named "User-Token") for subsequent requests that require authentication. The token
+    is a string value like "i4dwXAUNfSUEaTP90K5RWOWLap5cvc9mtjfpvA+c0uufP5GYnpYZUO4k5pTEpwsJHVHNhY5lbLn0cDRpiwsOKA==".
+    User login requires "login" and "password" fields in the request body. Session
+    logout is performed via DELETE /api/session. If no user session is found, error
+    code 20 is returned.
+  - 'Authorization header with app token: set Authorization header to Token token="YOUR_APP_TOKEN".
+    For user sessions, pass User-Token header with "USER_SESSION_TOKEN". Both use
+    the format Header: "value" where double quotes are optional.'
+  - To create a user session, POST to /api/session with a JSON body containing user.login
+    (username or email) and user.password. The response includes a User-Token header
+    value that must be added to the header for subsequent requests requiring user
+    authentication.
+- information_source; https://favqs.com/api/v1:
+  - 'A token is required to access the FavQs API (except for the Quote of the Day
+    endpoint). Pass your access token via the Authorization header with the format:
+    Authorization: Token token="YOUR_TOKEN". The token should be your application
+    token obtained from FavQs.'
+pagination_info:
+- information_source; https://favqs.com/api:
+  - The API returns paginated lists of quotes with 25 results per page. Use the "page"
+    query parameter (default 1) to request specific pages. The response includes "page"
+    (current page number) and "last_page" (boolean indicating if more pages exist);
+    stop paginating when last_page is true.
+  - The endpoint supports pagination via a page query parameter that specifies the
+    page number, with each page returning 25 activities. The response body contains
+    an activities array but does not explicitly show next/previous fields or total
+    count information in the provided documentation.
+  - The page parameter is a query parameter for pagination, returning 25 quotes per
+    page. The documentation does not specify response fields indicating total pages,
+    next page, or when to stop paginating.
+  - The response includes page and last_page fields. Use page value in subsequent
+    requests to navigate; stop when last_page is true. However, no explicit pagination
+    request parameter is documented.
+- information_source; https://favqs.com/api/v1:
+  - Use optional query parameter page for page number (25 quotes per page). Response
+    includes page field indicating current page and last_page boolean field; stop
+    paginating when last_page is true.
+possible_base_urls:
+- information_source; https://favqs.com/api:
+  - http://localhost:3000
+  - https://favqs.com
+possible_endpoints:
+- information_source; https://favqs.com/api:
+  - DELETE /api/activities/:activity_id
+  - DELETE /api/quotes/:quote_id
+  - DELETE /api/session
+  - GET /api/activities/
+  - GET /api/activities/followers/
+  - GET /api/activities/following/
+  - GET /api/qotd
+  - GET /api/quotes
+  - GET /api/quotes/:quote_id
+  - GET /api/typeahead

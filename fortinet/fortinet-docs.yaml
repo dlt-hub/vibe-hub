@@ -1,0 +1,126 @@
+resources:
+- name: webfilter_profile
+  endpoint:
+    path: /api/v2/cmdb/webfilter/profile/
+    method: GET
+- name: firewall_address
+  endpoint:
+    path: /api/v2/cmdb/firewall/address
+    method: GET
+- name: FortiGate
+  endpoint:
+    path: /t5/FortiGate/tkb-p/TKB20
+    method: GET
+    data_selector: records
+    params: {}
+- name: guest_wifi
+  endpoint:
+    path: /api/v2/cmdb/wireless-controller/wtp/
+    method: GET
+- name: user_group
+  endpoint:
+    path: /api/v2/cmdb/user/group/WiFi-xxxxxxxx/
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: api_user
+  endpoint:
+    path: /api-user
+    method: GET
+    data_selector: records
+- name: FortiClient
+  endpoint:
+    path: /forticlient
+    method: GET
+    data_selector: records
+- name: FortiManager
+  endpoint:
+    path: /fortimanager
+    method: GET
+    data_selector: records
+- name: StaticRoute
+  endpoint:
+    path: /api/v1.0/System/Network/StaticRoute
+    method: GET
+- name: firewall_vip
+  endpoint:
+    path: /api/v2/cmdb/firewall/vip/
+    method: GET
+- name: system_interface
+  endpoint:
+    path: /api/v2/monitor/system/interface
+    method: GET
+- name: system_config_backup
+  endpoint:
+    path: /api/v2/monitor/system/config/backup
+    method: GET
+    params:
+      scope: global
+- name: system_status
+  endpoint:
+    path: /api/v2/monitor/system/status
+    method: GET
+- name: system_status
+  endpoint:
+    path: /monitor/system/status
+    method: GET
+    data_selector: output
+    params: {}
+notes:
+- REST API tokens cannot be used when the FortiGate is in FIPS CC mode.
+- Check that trusted hosts are set in the admin and the API User.
+- Regenerate the API key if facing issues.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Error enabling token-based authentication for REST API
+- The API key is assigned by the FortiGate and is shown one-time in the GUI.
+- Some objects may return nulls in deeply nested fields
+- I cannot find anywhere to verify which api version my firewall is using
+- I am lacking information in the reference guide on whether I have to manually enable
+  the api or not
+- Official API documentation is paid.
+- You can generate the authentication token by accessing '/logincheck' on the FortiGate
+  device.
+errors:
+- '401 Unauthorized: Recheck API token.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '403 Forbidden: Wrong vdom.'
+- Failed api-key login attempt
+- 'HTTP 403 Forbidden: Check API key and vdom settings.'
+- <passwd> please input admin password
+- '401 Unauthorized: Check API key or authentication method.'
+- '302 Found: Redirect error, check the URL.'
+- '401 Authorization Required: Either you supplied the wrong credentials (e.g., bad
+  password), or your browser doesn''t understand how to supply the credentials required.'
+- 'Could not resolve host: POST'
+- Either you supplied the wrong credentials (e.g., bad password), or your browser
+  doesn't understand how to supply the credentials required.
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - logincheck
+client:
+  base_url: https://192.168.1.99
+  auth:
+    type: apikey
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+source_metadata: null

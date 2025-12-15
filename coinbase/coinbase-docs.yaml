@@ -1,0 +1,82 @@
+auth_info:
+- information_source; https://docs.cdp.coinbase.com/coinbase-app/authentication-authorization/api-key-authentication:
+  - Coinbase App APIs use JWT (JSON Web Token) authentication. Generate a JWT using
+    your API key name and private key (ECDSA algorithm required, Ed25519 not supported),
+    then include it in the Authorization header as a Bearer token for authenticated
+    requests. The private key is multi-line and newlines must be preserved; include
+    the request method and path when generating the JWT.
+  - JWT-based bearer token authentication. Generate a JWT using ES256 (ECDSA with
+    P-256 curve) algorithm with your API key and EC private key, then send it in the
+    Authorization header as "Bearer {JWT}". JWTs expire after 2 minutes and must be
+    regenerated for each unique API request. API key format is "organizations/{org_id}/apiKeys/{key_id}"
+    and the private key is in PEM format (-----BEGIN EC PRIVATE KEY-----).
+- information_source; https://docs.cdp.coinbase.com/exchange/rest-api/authentication:
+  - 'Authentication uses HMAC-SHA256 signature-based approach with four required headers:
+    CB-ACCESS-KEY (API key), CB-ACCESS-SIGN (HMAC-SHA256 signature of concatenated
+    timestamp, HTTP method uppercase, request path, and request body, base64-encoded),
+    CB-ACCESS-TIMESTAMP (Unix timestamp in seconds), and CB-ACCESS-PASSPHRASE (passphrase
+    string). The signature is computed by creating an HMAC using a base64-decoded
+    secret key, signing the message string, and base64-encoding the digest output.'
+  - 'Coinbase Exchange REST API uses HMAC-SHA256 signature-based authentication for
+    private endpoints. Requests require an API key, a timestamp, and a computed signature
+    sent in request headers.
+
+
+    To authenticate: generate an API key from your Coinbase Exchange account, include
+    the key in the request headers, add a CB-ACCESS-TIMESTAMP header with the current
+    Unix timestamp, compute an HMAC-SHA256 signature of the request (using the message
+    format: timestamp + HTTP method + request path + request body, signed with your
+    API secret), and send the signature in the CB-ACCESS-SIGN header. The API key
+    also has granular permissions that control which endpoints and operations are
+    allowed.'
+- information_source; https://docs.cdp.coinbase.com/api-reference/authentication:
+  - Coinbase CDP API uses JWT (JSON Web Token) authentication. Generate a JWT by signing
+    a request with an EC private key stored in the KEY_SECRET environment variable.
+    Required environment variables are KEY_NAME (the API key identifier in format
+    organizations/{org_id}/apiKeys/{key_id}), KEY_SECRET (EC private key with preserved
+    newlines), REQUEST_METHOD (HTTP verb), REQUEST_PATH (endpoint path), and REQUEST_HOST
+    (api.coinbase.com). Never hardcode the secret key; store it securely and retrieve
+    it from environment variables or secure storage.
+pagination_info:
+- information_source; https://docs.cdp.coinbase.com/prime/rest-api/pagination:
+  - Cursor pagination is used for array-returning endpoints. Request pagination with
+    the `cursor` query parameter. Response includes a pagination object with `cursor`
+    and `has_more` fields; use the returned `cursor` value in the next request when
+    `has_more` is true to continue paginating.
+  - Cursor-based pagination is used across relevant endpoints. Include the `cursor`
+    query parameter (optional) to navigate pages, and optionally specify `sort_direction`
+    query parameter (defaults to DESC). The JSON response includes a `pagination`
+    object with `next_cursor`, `sort_direction`, and `has_next` fields. To fetch the
+    next page, use the `next_cursor` value from the response as the `cursor` parameter
+    in the subsequent request. Stop paginating when `next_cursor` is empty.
+- information_source; https://docs.cdp.coinbase.com/exchange/rest-api/pagination:
+  - Coinbase Exchange uses cursor pagination with before and after cursors. Request
+    parameters before and after specify pagination direction, and response headers
+    CB-BEFORE and CB-AFTER provide cursor values for subsequent requests to fetch
+    pages before or after current results.
+- information_source; https://docs.cdp.coinbase.com/api-reference/authentication:
+  - pageToken and pageSize are used for pagination in the cdp_listBalances JSON-RPC
+    method. pageToken is a string parameter (empty string to start) that indicates
+    the current page position, and pageSize is an integer that specifies the number
+    of results per page. Use the pageToken returned in the response to request the
+    next page.
+possible_base_urls:
+- information_source; https://docs.cdp.coinbase.com/coinbase-app/advanced-trade-apis/rest-api:
+  - https://api.coinbase.com/api/v3/brokerage
+- information_source; https://docs.cdp.coinbase.com/coinbase-app/authentication-authorization/api-key-authentication:
+  - https://api.coinbase.com/api/v3
+possible_endpoints:
+- information_source; https://docs.cdp.coinbase.com/coinbase-app/advanced-trade-apis/rest-api:
+  - DELETE https://api.coinbase.com/api/v3/brokerage/{resource}
+  - GET https://api.coinbase.com/api/v3/brokerage/{resource}
+  - POST https://api.coinbase.com/api/v3/brokerage/{resource}
+  - PUT https://api.coinbase.com/api/v3/brokerage/{resource}
+- information_source; https://docs.cdp.coinbase.com/coinbase-app/authentication-authorization/api-key-authentication:
+  - GET https://api.coinbase.com/api/v3/brokerage/accounts
+  - GET https://api.coinbase.com/v2/accounts/f603f97c-37d7-4e58-b264-c27e9e393dd9/addresses
+- information_source; https://docs.cdp.coinbase.com/api-reference/authentication:
+  - POST https://api.cdp.coinbase.com/platform/v1/networks/base-mainnet/assets/BTC
+  - POST https://api.developer.coinbase.com/rpc/v1/base/${CLIENT_API_KEY}
+  - https://api.developer.coinbase.com/rpc/v1/base/${CLIENT_API_KEY}
+- ? information_source; https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/perpetuals/get-perpetuals-position
+  : - GET /api/v3/brokerage/intx/positions/{portfolio_uuid}/{symbol}

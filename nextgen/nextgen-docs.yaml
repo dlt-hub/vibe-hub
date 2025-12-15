@@ -1,0 +1,44 @@
+resources:
+- name: patient
+  endpoint:
+    path: /patients
+    method: GET
+    data_selector: records
+- name: provider
+  endpoint:
+    path: /providers
+    method: GET
+    data_selector: records
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Requires setup of connected app in healthfusion
+- Some responses may vary based on user permissions
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+errors:
+- '401 Unauthorized: Check token validity and scopes'
+- '404 Not Found: Verify the endpoint path'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://dev-cd.nextgen.com/api
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.healthfusion.com/
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

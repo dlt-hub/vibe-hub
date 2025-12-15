@@ -1,0 +1,64 @@
+resources:
+- name: database_driver_installation
+  endpoint:
+    path: /docs/configuration/databases/#installing-database-drivers
+    method: GET
+- name: supported_databases_and_dependencies
+  endpoint:
+    path: /docs/configuration/databases/#supported-databases-and-dependencies
+    method: GET
+- name: installing_drivers_in_docker_images
+  endpoint:
+    path: /docs/configuration/databases/#installing-drivers-in-docker-images
+    method: GET
+- name: connecting_to_mysql
+  endpoint:
+    path: /docs/configuration/databases/#connect-to-mysql
+    method: GET
+- name: logstash_all
+  endpoint:
+    path: /_aliases
+    method: POST
+    data_selector: actions
+    params: {}
+- name: time_zone
+  endpoint:
+    path: /
+    method: GET
+    data_selector: connect_args
+    params: {}
+- name: preferred_databases
+  endpoint:
+    path: /available
+    method: GET
+    data_selector: null
+    params: {}
+notes:
+- Elasticsearch has a default limit of 10000 rows.
+- The schema is not necessary in the connection string, as it is defined per table/query.
+- Make sure the user has privileges to access and use all required databases/schemas/tables/views/warehouses.
+- Admin must inform Superset what engine they want to connect to via /available endpoint.
+- 'Superset is Not a Database Firewall: Superset''s built-in checks provide a layer
+  of protection but cannot guarantee complete security against all database-level
+  threats.'
+- 'Configuration is Key: The effectiveness of Superset''s safeguards heavily depends
+  on proper configuration by the Superset administrator.'
+- Superset needs the style-src unsafe-inline CSP directive in order to operate.
+- Only scripts marked with a nonce can be loaded and executed.
+- 'Some dashboards load images using data URIs and require data: in their img-src.'
+- MapBox charts use workers and need to connect to MapBox servers in addition to the
+  Superset origin.
+- Cartodiagram charts request map data from external resources that can be edited
+  by users.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Increase the limit on your cluster.'
+- 'CSP policy not found: Superset will issue a warning with the security risks.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: http://{host}:9200/
+  auth:
+    type: basic
+    location: header
+    header_name: Authorization
+source_metadata: null

@@ -1,0 +1,49 @@
+auth_info:
+- information_source; https://developer.sma.de/api-access-control:
+  - Bearer token authentication is required. Send the access token in the Authorization
+    header as "Bearer {token}". Poll the bc-authorize endpoint with the loginHint
+    parameter to check authorization status, which returns states like pending, accepted,
+    rejected, expired, or revoked. Use grant_type refresh_token to obtain new AccessToken
+    and RefreshToken pairs for session maintenance.
+  - 'Client credentials OAuth2 flow is used. The client app requests a token from
+    the SMA authorization server by sending a POST request to auth.smaapis.de/oauth2/token
+    with parameters encoded as application/x-www-form-urlencoded, following RFC 6749
+    section 4.4. Token refresh is handled via grant_type: refresh_token to maintain
+    sessions. Back-channel authorization occurs at sandbox.smaapis.de/oauth2/v2/bc-authorize/{loginHint}
+    or async-auth.smaapis.de/oauth2/v2/bc-authorize/{loginHint}. Owner consent status
+    is retrieved via GET async-auth.smaapis.de/oauth2/v2/bc-authorize/consentinfo.'
+  - 'OAuth2 authorization code flow is used. Step 1: User is redirected to authorization
+    server, authenticates via browser cookie or login prompt, grants permission on
+    consent page, and is redirected back to client URI with authorization code and
+    state parameter in query string. Step 2: Client exchanges authorization code for
+    access token via POST request to auth.smaapis.de/oauth2/token with Content-Type
+    application/x-www-form-urlencoded, including client credentials (client_id and
+    client_secret are implied from the truncated "client_" parameter name shown).'
+  - 'OAuth2 authorization code flow is used. Step 1: redirect browser to auth.smaapis.de/oauth2/auth
+    with GET parameters client_id (your Client ID from SMA), response_type set to
+    "code", redirect_uri (your callback URI), and state (opaque value). Step 2: exchange
+    authorization code at apis.de/oauth2/token via back-channel request to obtain
+    access_token and refresh_token. Step 3: use grant_type refresh_token to maintain
+    sessions, and logout to prevent exceeding max session count.'
+  - OAuth2 with refresh token grant type. To obtain a new access token, POST to auth.smaapis.de/oauth2/token
+    with client_id, client_secret, grant_type set to "refresh_token", and refresh_token
+    in the request body (application/x-www-form-urlencoded). Use the access token
+    as a Bearer token in the Authorization header for resource API requests. Refresh
+    tokens can be invalidated by POSTing to auth.smaapis.de/oauth2/logout with the
+    same credentials and refresh_token.
+possible_base_urls:
+- information_source; https://developer.sma.de/api-access-control:
+  - https://apis.de/oauth2/token
+  - https://async-auth.smaapis.de
+possible_endpoints:
+- information_source; https://developer.sma.de/api-access-control:
+  - GET async-auth.smaapis.de/oauth2/v2/bc-authorize/{loginHint}
+  - GET auth.smaapis.de/oauth2/auth
+  - GET https://async-auth.smaapis.de/oauth2/v2/bc-authorize/consentinfo
+  - GET https://async-auth.smaapis.de/oauth2/v2/bc-authorize/{loginHint}
+  - GET https://sandbox.smaapis.de/oauth2/v2/bc-authorize/{loginHint}
+  - POST apis.de/oauth2/token
+  - POST auth.smaapis.de/oauth2/logout
+  - POST auth.smaapis.de/oauth2/token
+  - POST https://async-auth.smaapis.de/oauth2/v2/bc-authorize
+  - POST https://auth.smaapis.de/oauth2/token

@@ -1,0 +1,61 @@
+auth_info:
+- information_source; https://www.gate.io/docs/broker-api/broker/en/index.html:
+  - API authentication uses HMAC-SHA512 signing with three required headers. Include
+    your API key in the KEY header, a Unix timestamp in the Timestamp header, and
+    an HMAC-SHA512 signature in the SIGN header. The signature is computed by HMAC-SHA512
+    signing a string composed of the HTTP method, request path (prefix + url), query
+    parameters, SHA512 hash of the body, and timestamp, all separated by newlines,
+    using your API secret as the key.
+  - API key and HMAC-SHA512 signature authentication is required. Send the API key
+    in the `KEY` header, include a `Timestamp` header with the current Unix timestamp,
+    and compute an HMAC-SHA512 signature of the request method, path, query parameters,
+    SHA512-hashed body, and timestamp using your API secret, then send the signature
+    in the `SIGNATURE` header.
+  - API key and HMAC-SHA512 signature authentication required. Send the API key in
+    the URL path parameter `key`, and include a signature in request headers generated
+    by HMAC-SHA512 signing the HTTP method, request path, and query parameters using
+    your API secret.
+  - API key and secret are required for authentication. The credentials are used to
+    generate an HMAC signature that is added to request headers via a gen_sign function.
+    The signature is computed from the HTTP method, request path, query parameters,
+    and request body. Include the signed headers in all authenticated requests.
+  - API key and secret are required for authentication. The key pair must be maintained
+    securely without storing the secret in plain text. The broker uses its own key
+    pair with Broker permissions enabled for `/broker` interface operations, while
+    sub-accounts use their own generated key pairs for wallet and trading operations.
+    Authentication is performed using API key and secret via HMAC.
+pagination_info:
+- information_source; https://www.gate.io/docs/broker-api/broker/en/index.html:
+  - Pagination uses limit (query parameter, optional, controls maximum number of records
+    per request) and offset (query parameter, optional, list offset starting position)
+    for offset-based pagination. No response fields indicate pagination state or next
+    page information.
+  - Pagination uses limit (query parameter, optional, controls maximum number of results)
+    and offset (query parameter, optional, starting position for list). Provide limit
+    and offset values in subsequent requests to navigate pages.
+  - The offset parameter is a query parameter (integer, optional) that specifies the
+    list offset starting position for pagination. The response returns a list of BrokerSubAccount
+    objects, but no response pagination fields or navigation instructions are documented.
+- information_source; https://www.gate.io/tr/api2:
+  - Pagination uses a page query parameter (as shown in the example GET request with
+    ?page=1). The response includes a page field indicating the current page number.
+    To paginate, increment the page parameter in subsequent requests.
+  - The API uses offset-based pagination with a page parameter (String, optional,
+    starting from page 1) submitted as a POST request parameter. The response structure
+    for pagination fields is not documented in the provided excerpt.
+possible_base_urls:
+- information_source; https://www.gate.io/docs/broker-api/broker/en/index.html:
+  - /api/v4
+  - https://api.gateio.ws
+possible_endpoints:
+- information_source; https://www.gate.io/docs/broker-api/broker/en/index.html:
+  - DELETE /api/v4/broker/sub_account_keys/100010/bfc5f289273ea47b7cd41d9ce7e27a0d
+  - DELETE /broker/sub_account_keys/{sub_account_id}/{key}
+  - DELETE https://api.gateio.ws/api/v4/broker/sub_account_keys/{sub_account_id}/{key}
+  - GET /broker/info
+  - GET /broker/sub_account_keys/{sub_account_id}
+  - GET /broker/sub_account_keys/{sub_account_id}/{key}
+  - GET /broker/sub_account_transfers
+  - GET /broker/sub_accounts
+  - GET /broker/sub_accounts/{sub_account_id}
+  - GET https://api.gateio.ws/api/v4/broker/info

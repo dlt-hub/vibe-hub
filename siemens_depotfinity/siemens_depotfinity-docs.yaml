@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://developer.siemens.com/depotfinity/VDV261/vdv261_api.html:
+  - 'The API uses HTTP Basic authentication. The VDV261_TOKEN environment variable
+    must be set and passed in the Authorization header as "Authorization: Basic $VDV261_TOKEN".
+    The token should be base64-encoded credentials in the format typically used for
+    Basic auth.'
+  - The VDV-261 API uses HTTP Basic Authentication. Credentials consist of the Vehicle
+    Identification Number (VIN) as the username and a password obtained from Siemens
+    Regional Support. Encode both as base64 in the format "VIN:PASSWORD" and send
+    in the Authorization header as "Basic <base64_encoded_string>".
+pagination_info:
+- information_source; https://developer.siemens.com/guidelines/api-guidelines/rest/pagination.html:
+  - Cursor-based pagination uses opaque `cursor` query parameter and optional `limit`
+    query parameter for maximum page size. The response includes a `links.next` field
+    with the next page URL; pagination ends when `next` is absent. The `cursor` value
+    from the response should be used in the subsequent request's cursor parameter.
+  - Pagination links appear in a top-level `links` object with keys `first`, `last`,
+    `prev`, and `next` containing URLs to traverse paginated data. Cursor-based pagination
+    uses query parameters, with the cursor value from response links passed in subsequent
+    requests to fetch the next page.
+  - Pagination uses query parameters `size` (page size) and `number` (page number,
+    starting from 1). Response includes `meta.page` object with `totalPages`, `number`,
+    `size`, optionally `elements` (records in current page) and `totalElements` (total
+    records). Links object provides `next` and `prev` URLs for navigation; stop when
+    reaching the last page where `number` equals `totalPages`.
+  - Pagination uses query parameters number (page number, optional, defaults to 1)
+    and size (max page size, optional). Responses include links object with next,
+    prev, first, last URLs and meta.page object with totalPages, number (current page),
+    and elements (items on page). Stop paginating when next link is absent.
+  - The API uses offset-based pagination with query parameters limit (maximum page
+    size, optional) and offset (starting position, optional). Responses include links.next
+    containing the full URL for the next page and meta.page with totalElements, offset,
+    and elements count. Stop paginating when links.next is absent from the response.
+possible_base_urls:
+- information_source; https://developer.siemens.com/depotfinity/VDV261/vdv261_api.html:
+  - https://ev.eu.depot.emobility.io/vdv
+- information_source; https://developer.siemens.com/guidelines/api-guidelines/rest/pagination.html:
+  - https://api.example.com
+possible_endpoints:
+- information_source; https://developer.siemens.com/depotfinity/VDV261/vdv261_api.html:
+  - POST https://ev.eu.depot.emobility.io/vdv
+- information_source; https://developer.siemens.com/guidelines/api-guidelines/rest/pagination.html:
+  - GET /buildings
+  - GET /buildings?cursor=cXdlcnR5&limit=50
+  - GET /buildings?limit=100
+  - GET /buildings?limit=100&offset=100
+  - GET /buildings?size=100
+  - GET /buildings?size=100&number=3
+- ? information_source; https://developer.siemens.com/insights-hub/docs/apis/advanced-assetmanagement/api-assetmanagement-references-pagination.html
+  : - GET /aspecttype
+    - GET /assets
+    - GET /assets/{assetId}/aspects

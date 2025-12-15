@@ -1,0 +1,70 @@
+resources:
+- name: start_activity
+  endpoint:
+    path: /activities/start
+    method: POST
+    data_selector: body
+    params: {}
+- name: log_exception
+  endpoint:
+    path: /activities/log
+    method: POST
+    data_selector: body
+    params: {}
+- name: log_activity
+  endpoint:
+    path: /activities/log
+    method: POST
+    data_selector: body
+    params: {}
+- name: activities
+  endpoint:
+    path: /activities
+    method: POST
+    data_selector: status
+    params: {}
+- name: activities
+  endpoint:
+    path: /tracking-v2/activities
+    method: POST
+- name: activities
+  endpoint:
+    path: /activities
+    method: POST
+    data_selector: data
+notes:
+- 'Mandatory parameters include: AS-BusinessProcess, AS-BusinessTransaction, AS-CurrentStage,
+  AS-ResourceId, x-ms-workflow-resourcegroup-name, x-ms-workflow-subscription-id.'
+- Uses HTTP-Headers to send properties for tracking activities.
+- Tracking V2 APIs allow logging activities through a single API.
+- All properties needed for tracking must be sent in HTTP-Headers as Key-Value pairs.
+- To log the status of the stage, provide values for 'as-stagestatus'.
+- Mandatory properties are indicated by the true/false flag next to each property
+  name.
+- When a new activity comes the activity should contain values for all of the properties
+  which are marked and the value should match.
+- Even if one value doesn't match, then Atomic Scope will log the result as a new
+  transaction.
+errors:
+- 'Invalid Request : AS-ResourceId header is missing from the HTTP Request.'
+- 'Invalid Request: AS-ResourceId header is missing from the HTTP Request.'
+auth_info:
+  mentioned_objects:
+  - AS-ResourceId
+  - AS-BusinessProcess
+  - AS-BusinessTransaction
+  - AS-CurrentStage
+  - AS-StageStatus
+  - AS-Operation
+  - AS-PreviousStage
+  - AS-StartedOn
+  - AS-MainActivityId
+  - AS-StageActivityId
+  - AS-ArchiveMessage
+  - AS-ExceptionMessage
+  - AS-ExceptionCode
+client:
+  base_url: http://localhost/atomicscope/api/tracking-v2
+  headers:
+    Content-Type: text/plain
+source_metadata: null

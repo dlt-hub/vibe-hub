@@ -1,0 +1,95 @@
+resources:
+- name: search_issues
+  endpoint:
+    path: /rest/api/2/search
+    method: GET
+    data_selector: issues
+    params:
+      jql: project = TEST AND issueType = Bug
+      maxResults: 100
+      fields: key, status, assignee
+- name: search_issues_post
+  endpoint:
+    path: /rest/api/2/search
+    method: POST
+    data_selector: issues
+    params:
+      fields:
+      - assignee
+      - status
+      fieldsByKeys: true
+      jql: project = TEST AND issueType = Bug
+      maxResults: 1
+- name: expression_evaluate
+  endpoint:
+    path: /rest/api/3/expression/evaluate
+    method: POST
+- name: issue_retrieval
+  endpoint:
+    path: /rest/api/[2|3]/issue/{issueIdOrKey}
+    method: GET
+    data_selector: records
+    params: {}
+- name: issue_creation_update
+  endpoint:
+    path: /rest/api/[2|3]/issue
+    method: POST
+    data_selector: records
+    params: {}
+- name: issue_type_metadata
+  endpoint:
+    path: /rest/api/[2|3]/issuetype
+    method: POST
+    data_selector: records
+    params: {}
+- name: Deprecation Reports
+  endpoint:
+    path: /scriptrunner/latest/deprecation-reports
+    method: GET
+notes:
+- Deprecation of old endpoints after August 1st 2025.
+- The API requires setting maxResults (up to 5000) for bounded JQL queries.
+- The API doesn’t validate JQL queries automatically.
+- Atlassian’s platform changes require transition to native Forge events.
+- Some properties may be missing due to deprecation.
+- New example scripts available in-app for quicker access.
+- The transition to native Forge events is required due to Atlassian’s platform changes
+  and the deprecation of the old event model. These new Forge events have a different
+  structure and do not include all properties previously available. Some event properties
+  are now missing and cannot be retrieved from the Atlassian API.
+- Please ensure your custom scripts or Marketplace apps no longer reference deprecated
+  fields.
+- HAPI respects the permissions of the current user by default.
+- Some operations in Jira are restricted for Atlassian Connect apps.
+- ScriptRunner for Jira Cloud does not have the same feature set as the Server/Data
+  Center version.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Parent and child issue associations are being standardised for company-managed and
+  team-managed projects.
+- Deprecated fields include 'Epic Link' and 'Parent Link'.
+- Understanding the distinction between pre-defined Atlassian fields and custom fields
+  is crucial for handling rich text content.
+- There is no workaround for retrieving these properties via the Atlassian REST API.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400 Bad Request: Unbounded queries will return this error.'
+- Invalid queries will result in errors that must be handled manually.
+- 500 status code errors are automatically retried once.
+- 502, 503, and 504 errors are automatically retried three times.
+- 429 (Too Many Requests) error indicates that the system was under heavy load and
+  eventually hit Atlassian's rate limit.
+- 'No data found: Ensure the issue ID or key is valid.'
+- '400 Bad Request: Check the request format and parameters.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://developer.atlassian.com
+  headers:
+    Content-Type: application/json
+  paginator:
+    type: cursor
+    cursor_param: nextPageToken
+source_metadata: null

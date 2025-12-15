@@ -1,0 +1,64 @@
+auth_info:
+- information_source; https://docs.coveo.com/en/1525/:
+  - 'API key authentication is required. Send the API key in the X-Api-Key header
+    with each request. The header name is X-Api-Key and the value is your API key
+    string (example: Az4adfSyBhZX8fTThUJ4Kb2TC3Ax0RshgrZtUiqM).'
+  - API key authentication is used, passed as a query parameter named api_key. The
+    api_key value is provided by the user and included in requests as a query string
+    parameter, for example GET /users?api_key=YOUR_API_KEY_VALUE.
+  - 'Authentication uses a Bearer token passed in the Authorization header. The API
+    key is encrypted in the source configuration and replaced with the placeholder
+    @ApiKey at runtime. Coveo sends the request with the header Authorization: Bearer
+    [actual_api_key].
+
+
+    For custom headers like X-Api-Key, the API key is similarly configured in the
+    Authentication section and sent as a custom HTTP header in requests.'
+  - Authentication with an API key as a query parameter is required. Enter the API
+    key in the Authentication section of the Add a REST API source panel, then use
+    the @ApiKey placeholder in the source JSON configuration. When processed, Coveo
+    replaces @ApiKey with the actual key value and encrypts it. The query parameter
+    name is api_key.
+  - Authentication with an API key is supported through the Authentication section
+    of the REST API source panel. The API key should be entered in the Authentication
+    section, then referenced in the source JSON configuration using the @ApiKey placeholder.
+    When Coveo processes the configuration, it replaces the @ApiKey placeholder with
+    the actual encrypted key value, ensuring credentials are not stored in clear text.
+pagination_info:
+- information_source; https://docs.coveo.com/en/1525/:
+  - Offset-based pagination uses query parameters limit (page size) and start (offset
+    position, default 0), incrementing start by the limit value for each subsequent
+    page. URL-based pagination uses a nextPage field in the JSON response containing
+    the complete URL for the next page, which is used directly in the subsequent request
+    until no nextPage is returned.
+  - Page-based pagination uses OffsetType "page" with OffsetStart and PageSize properties,
+    incrementing a page number parameter per request. Offset-based pagination uses
+    OffsetType "item" with OffsetStart and PageSize, incrementing an offset parameter
+    by PageSize. URL-based and cursor-based pagination use OffsetType "url" or "cursor"
+    respectively, with PageSize and NextPageKey properties to construct subsequent
+    requests.
+  - Pagination uses a cursor-based approach with a Paging object containing PageSize
+    (required, number of items per page), NextPageKey (string identifying the pagination
+    token in responses), and OffsetType set to "cursor". The UsePayloadTokens parameter
+    indicates whether pagination tokens come from the response payload. Move to the
+    next page by extracting the NextPageKey value from the current response and using
+    it in the subsequent request.
+  - Pagination uses offset-based or page-based navigation. Configure `OffsetType`
+    as "page" or "offset", set `PageSize` for results per page, and use `Offset` parameter
+    name in query string. Set `FetchNextPageUntilNoResult` to true to fetch until
+    no results return, or alternatively use `TotalCountHeaderKey` or `TotalCountKey`
+    to determine total pages.
+  - 'Pagination uses offset-based parameters in the query string: the `Offset` parameter
+    specifies the query field name (e.g., "position"), and `OffsetStart` indicates
+    the starting index value. For POST requests with payload tokens, use `UsePayloadTokens`
+    to omit `Limit` and `Offset` from the query URL and instead pass a token (e.g.,
+    `nextPageId`) from the response in the request payload to fetch the next page.'
+possible_base_urls:
+- information_source; https://docs.coveo.com/en/1525/:
+  - http://example.com/api/item
+  - http://example.com/api/v1
+possible_endpoints:
+- information_source; https://docs.coveo.com/en/1525/:
+  - GET http://example.com/api/v1/users
+- information_source; https://docs.coveo.com/en/56/:
+  - POST https://myexamplecom.org.coveo.com/rest/search/v2/token?organizationId=myexamplecom

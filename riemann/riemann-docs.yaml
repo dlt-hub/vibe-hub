@@ -1,0 +1,249 @@
+resources:
+- name: rabbitmq-transport
+  endpoint:
+    path: /rabbitmq-transport
+    method: POST
+    data_selector: response
+    params:
+      host: localhost
+      port: 5672
+      riemann.exchange-settings:
+        name: riemann
+        auto-delete: true
+      riemann.routing-key: riemann.events
+- name: tcp-server
+  endpoint:
+    path: /tcp-server
+    method: POST
+    data_selector: response
+    params:
+      host: localhost
+      port: 5555
+- name: udp-server
+  endpoint:
+    path: /udp-server
+    method: POST
+    data_selector: response
+    params:
+      port: 5555
+- name: sse-server
+  endpoint:
+    path: /sse-server
+    method: POST
+    data_selector: response
+    params:
+      port: 5556
+- name: ws-server
+  endpoint:
+    path: /ws-server
+    method: POST
+    data_selector: response
+    params:
+      port: 5556
+- name: pipe
+  endpoint:
+    path: /pipe
+    method: GET
+    data_selector: streams
+- name: predict-linear
+  endpoint:
+    path: /predict-linear
+    method: GET
+    data_selector: streams
+- name: project
+  endpoint:
+    path: /project
+    method: GET
+    data_selector: streams
+- name: rate
+  endpoint:
+    path: /rate
+    method: GET
+    data_selector: streams
+- name: register
+  endpoint:
+    path: /register
+    method: GET
+    data_selector: streams
+- name: rollup
+  endpoint:
+    path: /rollup
+    method: GET
+    data_selector: streams
+- name: runs
+  endpoint:
+    path: /runs
+    method: GET
+    data_selector: streams
+- name: scale
+  endpoint:
+    path: /scale
+    method: GET
+    data_selector: streams
+- name: sdo
+  endpoint:
+    path: /sdo
+    method: GET
+    data_selector: streams
+- name: sflatten
+  endpoint:
+    path: /sflatten
+    method: GET
+    data_selector: streams
+- name: smap
+  endpoint:
+    path: /smap
+    method: GET
+    data_selector: streams
+- name: smapcat
+  endpoint:
+    path: /smapcat
+    method: GET
+    data_selector: streams
+- name: split
+  endpoint:
+    path: /split
+    method: GET
+    data_selector: streams
+- name: throttle
+  endpoint:
+    path: /throttle
+    method: GET
+    data_selector: streams
+- name: top
+  endpoint:
+    path: /top
+    method: GET
+    data_selector: streams
+- name: under
+  endpoint:
+    path: /under
+    method: GET
+    data_selector: streams
+- name: untag
+  endpoint:
+    path: /untag
+    method: GET
+    data_selector: streams
+- name: where
+  endpoint:
+    path: /where
+    method: GET
+    data_selector: events
+    params: {}
+- name: where*
+  endpoint:
+    path: /where*
+    method: GET
+    data_selector: events
+    params: {}
+- name: where-partition-clauses
+  endpoint:
+    path: /where-partition-clauses
+    method: GET
+    data_selector: clauses
+    params: {}
+- name: where-rewrite
+  endpoint:
+    path: /where-rewrite
+    method: GET
+    data_selector: rewritten
+    params: {}
+- name: window
+  endpoint:
+    path: /window
+    method: GET
+    data_selector: events
+    params: {}
+- name: with
+  endpoint:
+    path: /with
+    method: GET
+    data_selector: events
+    params: {}
+- name: logging
+  endpoint:
+    path: /etc/riemann/riemann.config
+    method: GET
+    data_selector: streams
+    params: {}
+- name: tcp_server
+  endpoint:
+    path: /etc/riemann/riemann.config
+    method: GET
+    data_selector: tcp-server
+    params:
+      host: 0.0.0.0
+      port: 5555
+- name: udp_server
+  endpoint:
+    path: /etc/riemann/riemann.config
+    method: GET
+    data_selector: udp-server
+    params:
+      host: 0.0.0.0
+      port: 5555
+- name: ws_server
+  endpoint:
+    path: /etc/riemann/riemann.config
+    method: GET
+    data_selector: ws-server
+    params:
+      host: 0.0.0.0
+- name: service
+  endpoint:
+    path: /service
+    method: GET
+    data_selector: events
+    params: {}
+- name: email
+  endpoint:
+    path: /riemann/email
+    method: POST
+    data_selector: events
+- name: graphite
+  endpoint:
+    path: /riemann/graphite
+    method: POST
+    data_selector: events
+- name: pagerduty
+  endpoint:
+    path: /riemann/pagerduty
+    method: POST
+    data_selector: events
+- name: kafka
+  endpoint:
+    path: /riemann/kafka
+    method: POST
+    data_selector: events
+- name: elasticsearch
+  endpoint:
+    path: /riemann/elasticsearch
+    method: POST
+    data_selector: events
+- name: influxdb
+  endpoint:
+    path: /riemann/influxdb
+    method: POST
+    data_selector: events
+notes:
+- Riemann config files are eval’d in the context of this namespace.
+- Riemann runs servers by default on TCP port 5555 and UDP port 5555.
+- To log to a file, configure logging with (logging/init {:file "/path/to/some/riemann.log"}).
+- Riemann supports bidirectional TLS auth as a part of its TCP protocol.
+- Riemann cannot shard your workload automatically.
+- Streams are functions that take an event.
+- Riemann emphasizes dropping old data rather than getting backed up or shutting down
+  entirely.
+- Riemann's config is a Clojure program which can be broken into smaller pieces using
+  functions.
+- Events are uniquely identified by host and service. Both allow null.
+- Riemann's components are all configured to work out-of-the-box on localhost
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://riemann.io
+  headers:
+    Accept: application/json
+source_metadata: null

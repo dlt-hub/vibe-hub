@@ -1,0 +1,55 @@
+auth_info:
+- information_source; https://developers.procore.com/reference/rest/authentication:
+  - Bearer token authentication is required. Send the access token in the Authorization
+    header as "Bearer REPLACE_BEARER_TOKEN". The token endpoint is at https://login.procore.com/oauth/token/info.
+    For revoking tokens via POST /oauth/revoke, the client_secret parameter is required
+    only for confidential applications, not for public applications using implicit
+    OAuth flow.
+  - OAuth 2.0 authorization code flow is used for authentication. Server apps request
+    authorization with response_type=code, client_id, and redirect_uri query parameters.
+    The authorization endpoint returns a temporary authorization code with 10 minute
+    expiration that is redirected to the specified redirect_uri. Client credentials
+    include client_id and client_secret obtained during application registration.
+  - OAuth 2.0 token endpoint for acquiring and refreshing access tokens. Send a POST
+    request to https://login.procore.com/oauth/token with a JSON body containing grant_type,
+    client_id, client_secret, code, redirect_uri, and refresh_token parameters as
+    needed depending on the OAuth flow scenario.
+  - 'OAuth2 bearer token authentication is required. Send the access token in the
+    Authorization header as "Authorization: Bearer <access_token>". The token is obtained
+    via OAuth2 token endpoint by providing client_id, client_secret, redirect_uri,
+    and grant_type, and includes refresh_token support for token renewal with expires_in
+    indicating token lifetime in seconds.'
+  - OAuth2 token revocation endpoint requiring client_id and client_secret in the
+    request body. The client_secret parameter is optional for public applications
+    using implicit flow but required for confidential applications. The token parameter
+    is always required. Additionally, the Procore-Company-Id header must be included
+    as a required integer identifier.
+pagination_info:
+- information_source; https://developers.procore.com/reference/rest/webhook-resources:
+  - Pagination uses query parameters page (integer) and per_page (integer) to request
+    specific pages. The response contains a data array of webhook resources, but no
+    pagination metadata fields or navigation instructions are documented.
+  - Use query parameters page (optional integer) and per_page (optional integer, default
+    10, minimum 1, maximum 100) to paginate results. The response contains a data
+    array of webhook resources.
+  - Use query parameters page (optional integer) and per_page (optional integer, default
+    10, minimum 1, maximum 100) to paginate results. The response includes a data
+    array; construct subsequent requests by incrementing the page parameter until
+    no more results are returned.
+possible_base_urls:
+- information_source; https://developers.procore.com/reference/rest/authentication:
+  - https://developers.procore.com
+  - https://login.procore.com
+possible_endpoints:
+- information_source; https://developers.procore.com/reference/rest/authentication:
+  - GET /oauth/authorize
+  - GET /oauth/token/info
+  - GET https://login.procore.com/oauth/token/info
+  - POST /oauth/revoke
+  - POST /oauth/token
+  - POST https://login.procore.com/oauth/revoke
+  - POST https://login.procore.com/oauth/token
+- information_source; https://developers.procore.com/reference/rest/webhook-resources:
+  - GET /rest/v1.0/webhooks/resources
+  - GET /rest/v2.0/companies/{company_id}/projects/{project_id}/webhooks/resources
+  - GET /rest/v2.0/companies/{company_id}/webhooks/resources

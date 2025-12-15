@@ -1,0 +1,107 @@
+resources:
+- name: messages
+  endpoint:
+    method: GET
+    data_selector: records
+- name: count_words
+  endpoint:
+    method: POST
+    params:
+      max_retries: 20
+      min_backoff: 15000
+      max_backoff: 604800000
+      time_limit: 600000
+      priority: 0
+- name: add
+  endpoint:
+    method: SEND
+    params:
+      store_results: true
+      result_ttl: 30000
+- name: results_middleware
+  endpoint:
+    path: dramatiq.results.Results
+    method: CLASS
+    data_selector: results
+- name: redis_backend
+  endpoint:
+    path: dramatiq.results.backends.RedisBackend
+    method: CLASS
+    data_selector: backend
+- name: memcached_backend
+  endpoint:
+    path: dramatiq.results.backends.MemcachedBackend
+    method: CLASS
+    data_selector: backend
+- name: stub_backend
+  endpoint:
+    path: dramatiq.results.backends.StubBackend
+    method: CLASS
+    data_selector: backend
+notes:
+- Messages sent to Dramatiq brokers are persisted to disk and survive across broker
+  reboots
+- Messages that have been pulled by workers but not processed are returned to the
+  broker on graceful shutdown
+- Currently, interrupts are only supported on CPython and are subject to the restrictions
+  of the GIL
+- The Prometheus client for Python is a bit finicky when it comes to exporting metrics
+  from a multi-process configuration
+- Uses RabbitMQ or Redis as message broker
+- Automatically retries failures with exponential backoff
+- Default time limit of 10 minutes per actor
+- Messages must be JSON-encodable
+- Scheduled messages should represent a small subset of all messages
+- Results expire after 10 minutes by default
+- Add result expires in 30 seconds
+- Getting a result raises ResultMissing when a result hasn't been stored yet or if
+  it has already expired
+- When block parameter is True, ResultTimeout is raised instead
+- When a message fails, getting a result raises ResultFailure
+- When a message is skipped via SkipMessage, None is stored as the result
+- If you have retries turned on for an actor that stores results, then the result
+  of a message may be delayed until its retries run out
+- RedisBackend is the recommended result backend as waiting for a result is resource
+  efficient
+- MemcachedBackend uses long polling to retrieve results
+- StubBackend is an in-memory result backend for use in unit tests
+errors:
+- 'Code 0: Returned when the process exits gracefully'
+- 'Code 1: Returned when the process is killed'
+- 'Code 2: Returned when a module cannot be imported or when a command line argument
+  is invalid'
+- 'Code 3: Returned when a broker connection cannot be established during worker startup'
+- 'Code 4: Returned when a PID file is set and Dramatiq is already running'
+- 'TimeLimitExceeded: Actor running longer than time limit is killed'
+- 'MissingSchema: Invalid URL format in requests'
+- 'ResultMissing: Result hasn''t been stored yet or has already expired'
+- 'ResultTimeout: Raised when block parameter is True'
+- 'ResultFailure: Raised when a message fails'
+- 'DramatiqError: Base class for all dramatiq errors'
+- 'BrokerError: Base class for broker-related errors'
+- 'DecodeError: Raised when a message fails to decode'
+- 'ActorNotFound: Raised when a message is sent to an actor that hasn''t been declared'
+- 'QueueNotFound: Raised when a message is sent to an queue that hasn''t been declared'
+- 'ConnectionError: Base class for broker connection-related errors'
+- 'ConnectionClosed: Raised when a broker connection is suddenly closed'
+- 'ConnectionFailed: Raised when a broker connection could not be opened'
+- 'RateLimitExceeded: Raised when a rate limit has been exceeded'
+- 'ResultError: Base class for result errors'
+- 'ResultMissing: Raised when a result can''t be found'
+- 'ResultTimeout: Raised when waiting for a result times out'
+- 'ResultFailure: Raised when getting a result from an actor that failed'
+- 'ResultMissing: When block is False and the result isn''t set'
+- 'ResultTimeout: When waiting for a result times out'
+- 'ResultFailure: actor raised Exception'
+auth_info:
+  mentioned_objects:
+  - Results
+  - ResultBackend
+  - RedisBackend
+  - MemcachedBackend
+  - StubBackend
+client:
+  base_url: amqp://node1.foo.net
+  headers:
+    Accept: application/json
+source_metadata: null

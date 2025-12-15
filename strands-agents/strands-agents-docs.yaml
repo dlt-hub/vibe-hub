@@ -1,0 +1,181 @@
+resources:
+- name: agent
+  endpoint:
+    path: /agent
+    method: GET
+    data_selector: records
+- name: conversation_manager
+  endpoint:
+    path: /conversation_manager
+    method: GET
+    data_selector: records
+- name: NullConversationManager
+  endpoint:
+    path: /strands/agent/conversation_manager/null_conversation_manager
+    method: GET
+    data_selector: records
+- name: SlidingWindowConversationManager
+  endpoint:
+    path: /strands/agent/conversation_manager/sliding_window_conversation_manager
+    method: GET
+    data_selector: records
+- name: SummarizingConversationManager
+  endpoint:
+    path: /strands/agent/conversation_manager/summarizing_conversation_manager
+    method: GET
+    data_selector: records
+- name: OllamaModel
+  endpoint:
+    path: /ollama
+    method: GET
+    data_selector: model
+    params: {}
+- name: OpenAIModel
+  endpoint:
+    path: /openai
+    method: GET
+    data_selector: model
+    params: {}
+- name: WriterModel
+  endpoint:
+    path: /writer
+    method: GET
+    data_selector: model
+    params: {}
+- name: FileSessionManager
+  endpoint:
+    path: /latest/documentation/docs/api-reference/session/#strands.session.file_session_manager
+    method: GET
+- name: RepositorySessionManager
+  endpoint:
+    path: /latest/documentation/docs/api-reference/session/#strands.session.repository_session_manager
+    method: GET
+- name: S3SessionManager
+  endpoint:
+    path: /latest/documentation/docs/api-reference/session/#strands.session.s3_session_manager
+    method: GET
+- name: SessionRepository
+  endpoint:
+    path: /latest/documentation/docs/api-reference/session/#strands.session.session_repository
+    method: GET
+- name: session_repository
+  endpoint:
+    path: /session_repository
+    method: GET
+- name: s3_session_manager
+  endpoint:
+    path: /s3_session_manager
+    method: GET
+- name: FunctionToolMetadata
+  endpoint:
+    path: /strands/tools/decorator.py
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: model
+  endpoint:
+    path: /models
+    method: GET
+    data_selector: models
+- name: weather
+  endpoint:
+    path: /weather
+    method: POST
+    data_selector: response
+    params: {}
+- name: weather_streaming
+  endpoint:
+    path: /weather-streaming
+    method: POST
+    data_selector: response
+    params: {}
+- name: weather
+  endpoint:
+    path: /weather
+    method: POST
+    data_selector: response
+    params: {}
+- name: weather_streaming
+  endpoint:
+    path: /weather-streaming
+    method: POST
+    data_selector: response
+    params: {}
+- name: Swarm
+  endpoint:
+    path: /latest/documentation/docs/api-reference/multiagent/#strands.multiagent.swarm.Swarm
+    method: GET
+    data_selector: parameters
+    params:
+      entry_point: None
+      max_handoffs: 20
+      max_iterations: 20
+      execution_timeout: 900.0
+      node_timeout: 300.0
+      repetitive_handoff_d: 0
+      repetitive_handoff_m: 0
+- name: invocations
+  endpoint:
+    path: /invocations
+    method: POST
+- name: ping
+  endpoint:
+    path: /ping
+    method: GET
+- name: agent
+  endpoint:
+    path: /agent
+    method: POST
+    data_selector: results
+    params: {}
+notes:
+- To run this example hello world agent you will need to set up credentials for our
+  model provider and enable model access.
+- Requires setup of connected app in api
+- Handles the extraction of metadata from Python functions including function name
+  and description from docstrings.
+- Application code is deployed only during the initial instance creation via user
+  data script
+- Updating the application requires implementing a custom update mechanism
+- Application is exposed directly on port 8000 without a load balancer
+- Swarms include several safety mechanisms to prevent infinite loops and ensure reliable
+  execution
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- AgentCore Runtime helps protect sensitive data with complete session isolation.
+- It supports all authentication methods, from OAuth tokens and API keys to IAM roles.
+- Keep your AgentCore Runtime and Strands packages updated for latest features and
+  security fixes
+- Strands supports many different model providers.
+- By default, agents use the Amazon Bedrock model provider with the Claude 4 model.
+- Agents display their reasoning and responses in real-time to the console by default.
+- 'Strands provides two main approaches to capture streaming events from an agent:
+  async iterators and callback functions.'
+- Python 3.10 or higher is required for running examples.
+- 'Use meaningful node IDs: Choose descriptive names for nodes'
+- 'Validate graph structure: The builder will validate entry points and warn about
+  potential issues'
+- 'Handle node failures: Consider how failures in one node affect the overall workflow'
+- 'Use conditional edges: For dynamic workflows based on intermediate results'
+- 'Consider parallelism: Independent branches can execute concurrently'
+- 'Nest multi-agent patterns: Use Swarms within Graphs for complex workflows'
+- 'Leverage multi-modal inputs: Use ContentBlocks for rich inputs including images'
+- 'Create custom nodes for deterministic logic: Use `MultiAgentBase` for business
+  rules and data processing'
+- 'Use `reset_on_revisit` for iterative workflows: Enable state reset when nodes are
+  revisited in cycles'
+- 'Set execution limits for cyclic graphs: Use `set_max_node_executions()` and `set_execution_timeout()`
+  to prevent infinite loops'
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - GraphNode
+  - GraphEdge
+  - GraphBuilder
+  - MultiAgentBase
+client:
+  base_url: https://strandsagents.com/latest/documentation/docs/api-reference/agent/
+  auth:
+    type: oauth2
+source_metadata: null

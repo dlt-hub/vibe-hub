@@ -1,0 +1,285 @@
+resources:
+- name: market_push_quotes
+  endpoint:
+    path: /api-doc/quote/push/streaming
+    method: GET
+    data_selector: data
+    params: {}
+- name: trade_events
+  endpoint:
+    path: /trade/streaming/
+    method: POST
+- name: market_push_quotes
+  endpoint:
+    path: /api-doc/quote/push/streaming
+    method: GET
+- name: get_token
+  endpoint:
+    path: /api-doc/quote/push/get-token
+    method: GET
+- name: subscribe
+  endpoint:
+    path: /api-doc/quote/push/subscribe
+    method: POST
+- name: unsubscribe
+  endpoint:
+    path: /api-doc/quote/push/unsubscribe
+    method: POST
+- name: Get Instruments
+  endpoint:
+    path: /api-doc/quote/get/instrument
+    method: GET
+- name: Get Trading Calendar
+  endpoint:
+    path: /api-doc/quote/get/get-trading-calendar
+    method: GET
+- name: Get Token
+  endpoint:
+    path: /api-doc/quote/push/get-token
+    method: GET
+- name: Subscribe
+  endpoint:
+    path: /api-doc/quote/push/subscribe
+    method: GET
+- name: Unsubscribe
+  endpoint:
+    path: /api-doc/quote/push/unsubscribe
+    method: GET
+- name: Market Push Quotes
+  endpoint:
+    path: /api-doc/quote/push/streaming
+    method: GET
+- name: instruments
+  endpoint:
+    path: /instrument/list
+    method: GET
+    data_selector: instruments
+    params:
+      symbols: required
+      category: required
+- name: candlesticks
+  endpoint:
+    path: /market-data/bars
+    method: GRPC
+    data_selector: bars
+    params:
+      symbol: required
+      category: required
+      timespan: required
+      count: '200'
+- name: market_snapshot
+  endpoint:
+    path: /market-data/snapshot
+    method: GRPC
+    data_selector: result
+    params:
+      symbols: required
+      category: required
+- name: order_book
+  endpoint:
+    path: /market-data/quotes
+    method: GET
+    data_selector: quotes
+    params:
+      symbol: single:AAPL
+      category: US_STOCK
+- name: tick
+  endpoint:
+    path: /market-data/tick
+    method: GET
+    data_selector: result
+    params:
+      symbol: single:AAPL
+      category: US_STOCK
+      count: '30'
+- name: trading_calendar
+  endpoint:
+    path: /trade/calendar
+    method: GET
+    data_selector: trade_day
+    params:
+      market: required
+      start: required
+      end: required
+- name: get_token
+  endpoint:
+    path: /market-data/streaming/token
+    method: gRPC
+- name: subscribe
+  endpoint:
+    path: /market-data/streaming/subscribe
+    method: gRPC
+    data_selector: subscription
+    params:
+      token: token
+      symbols: symbols
+      category: category
+      sub_types: sub_types
+- name: unsubscribe
+  endpoint:
+    path: /market-data/streaming/unsubscribe
+    method: gRPC
+    data_selector: No return value
+- name: account_list
+  endpoint:
+    path: /app/subscriptions/list
+    method: GET
+    data_selector: subscription_id
+    params:
+      subscription_id: ''
+- name: account_detail
+  endpoint:
+    path: /account/profile
+    method: GET
+    data_selector: account_profile
+    params:
+      account_id: '20150320010101001'
+- name: account_balance
+  endpoint:
+    path: /account/balance
+    method: GET
+    data_selector: records
+    params:
+      account_id: '20150320010101001'
+- name: account_positions
+  endpoint:
+    path: /account/positions
+    method: GET
+    data_selector: holdings
+    params:
+      account_id: account_id
+      page_size: page_size
+      last_instrument_id: last_instrument_id
+- name: place_order
+  endpoint:
+    path: /trade/order/place
+    method: POST
+    data_selector: data
+    params:
+      account_id: account_id
+      stock_order:
+        client_order_id: client_order_id
+        side: side
+        tif: tif
+        extended_hours_trading: extended_hours_trading
+        instrument_id: instrument_id
+        order_type: order_type
+        limit_price: limit_price
+        qty: qty
+        stop_price: stop_price
+        trailing_type: trailing_type
+        trailing_stop_step: trailing_stop_step
+- name: replace_order
+  endpoint:
+    path: /trade/order/replace
+    method: POST
+    data_selector: data
+    params:
+      account_id: String
+      stock_order:
+        client_order_id: String
+        side: String
+        tif: String
+        extended_hours_trading: Boolean
+        instrument_id: String
+        order_type: String
+        limit_price: String
+        qty: String
+        stop_price: String
+        trailing_type: String
+        trailing_stop_step: String
+- name: cancel_order
+  endpoint:
+    path: /trade/order/cancel
+    method: POST
+    data_selector: data
+    params:
+      account_id: account_id
+      client_order_id: client_order_id
+- name: day_orders
+  endpoint:
+    path: /trade/orders/list-today
+    method: GET
+    data_selector: orders
+    params:
+      account_id: '20150320010101001'
+      page_size: 10
+- name: opened_orders
+  endpoint:
+    path: /trade/orders/list-open
+    method: GET
+    data_selector: orders
+    params:
+      account_id: ''
+      page_size: 10
+      last_client_order_id: ''
+- name: query_order_detail
+  endpoint:
+    path: /trade/order/detail
+    method: GET
+    data_selector: items
+    params:
+      account_id: account_id
+      client_order_id: client_order_id
+- name: trade_instrument
+  endpoint:
+    path: /trade/instrument
+    method: GET
+    data_selector: response
+    params:
+      instrument_id: required
+- name: trade_events
+  endpoint:
+    path: /trade/events
+    method: POST
+    data_selector: payload
+    params: {}
+notes:
+- Webull provides a real-time quotes push service that supports TCP connection and
+  Websocket.
+- The market data request is not supported via Webull OpenAPI at the moment.
+- The OpenAPI service is currently suspended for new applications.
+- After the API application, Webull needs to review the application. It is estimated
+  that the process will take 1 to 2 working days at the earliest.
+- 'Frequency limit: The calling frequency of each App ID is limited to 60 times per
+  minute.'
+- Calling frequency of each App ID is limited to 60 times per minute.
+- 'Frequency limit: The calling frequency of each App ID is limited to one time per
+  second.'
+- The calling frequency of each App ID is limited to 30 times in 30 seconds.
+- 'Frequency limit: The calling frequency of each App ID is limited to 10 times per
+  minute.'
+- The subscription interface can only be used after establishing a long MQTT link.
+- Each App ID has a maximum of 1 push connection.
+- The unsubscribe interface can only be used after establishing a long MQTT link.
+- The authentication has already been encapsulated by Webull SDK, and no additional
+  processing is required.
+- The order interface must be successfully called before modifying the order.
+- Only the quantity and price are allowed to be modified.
+- Before calling this interface, you must have successfully called the corresponding
+  order interface.
+- The calling frequency of each App ID is limited to 1 time per second.
+- The calling frequency of each App ID is limited to 10 times in 30 seconds.
+- 'Frequency limit: The calling frequency of each App ID is limited to 10 times in
+  30 seconds.'
+errors:
+- 'AuthError: Authentication error'
+- 'NumOfConnExceed: Connection limit exceeded'
+- 'SubscribeExpired: Subscription expired'
+- 401 UNAUTHORIZED "app_id and account_id not related"
+- 'INVALID_TOKEN: 401 UNAUTHORIZED "app_id and account_id not related"'
+- 'INVALID_TOKEN: 401 UNAUTHORIZED ''app_id and account_id not related'''
+- 'TRADE_PLACE_ORDER_REPEAT: The order existed'
+- 'TRADE_WEBULL_REQUEST_PROCESSING: The order is processing, please try later'
+- 'INVALID_PARAMETER: page_size range must be [10,100]'
+- 'SYSTEM_ERROR: status 500 reading IOpenApiServiceFacade#getOrder(OpenApiOrderQueryParam)'
+- 'SYSTEM_ERROR: Required Integer parameter `instrument_id` is not present'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: usquotes-api.webullfintech.com:8883
+  auth:
+    type: mqtt
+    location: username
+    header_name: password
+source_metadata: null

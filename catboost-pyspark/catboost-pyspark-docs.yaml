@@ -1,0 +1,122 @@
+resources:
+- name: PoolLoadParams
+  endpoint:
+    path: /api/catboost/PoolLoadParams
+    method: GET
+    data_selector: records
+- name: QuantizationParams
+  endpoint:
+    path: /api/catboost/QuantizationParams
+    method: GET
+    data_selector: records
+- name: Pool
+  endpoint:
+    path: /api/catboost/Pool
+    method: GET
+    data_selector: records
+- name: pool
+  endpoint:
+    path: /api/python/api/catboost_spark.Pool
+    method: GET
+    data_selector: data
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: features
+  endpoint:
+    params:
+      featuresCol: features
+      labelCol: label
+      predictionCol: prediction
+      workerMaxFailures: 4
+      workerInitializationTimeout: datetime.timedelta(milliseconds=600000)
+- name: CatBoostRegressor
+  endpoint:
+    path: /api/python/api/catboost_spark.CatBoostRegressor
+    method: GET
+    data_selector: methods
+    params: {}
+- name: CatBoostRegressor
+  endpoint:
+    path: /api/catboost_spark/CatBoostRegressor
+    method: GET
+    data_selector: records
+    params: {}
+- name: CatBoostClassificationModel
+  endpoint:
+    path: /catboost/classification/model
+    method: GET
+    data_selector: model
+    params: {}
+notes:
+- CatBoost supports various parameters for model training and data processing.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Allow to write analytical and snapshot files during training. Enabled by default.
+- Use all the preceding rows in the fold for calculating the approximated values.
+  This mode is slower and in rare cases slightly more accurate.
+- This parameter can be used if the selected bootstrap type is Bayesian. Possible
+  values are in the range [0, +inf). The higher the value the more aggressive the
+  bagging is.Default value in 1.0.
+- The minimal number of trees that the best model should have. If set, the output
+  model contains at least the given number of trees even if the best model is located
+  within these trees. Should be used with the useBestModel parameter. No limit by
+  default.
+- The number of splits for numerical features. Allowed values are integers from 1
+  to 65535 inclusively. Default value is 254.
+- Timeout to wait while establishing socket connections between TrainingDriver and
+  workers.Default is 1 minute.
+- Default value for depth is 6.
+- Default value for diffusion temperature is 10000.
+- Default value for iterations is 1000.
+- Default value for L2 regularization term is 3.0.
+- Default value for fold length multiplier is 2.0.
+- Default value for fold permutation block is 1.
+- Default learning rate is 0.03 if not set explicitly.
+- Default logging level is 'Verbose'.
+- Default metric period is 1.
+- Default model shrink mode is 'Constant'.
+- Default nan mode is 'Min'.
+- Default value for odWait is 20.
+- Default penalties coefficient is 1.0.
+- Default random seed is 0.
+- Default random strength is 1.0.
+- Default value for randomStrength is 1.0
+- Default value for rsm is 1
+- Default value for samplingFrequency is 'PerTreeLevel'
+- Default value for samplingUnit is 'Object'
+- Default value for saveSnapshot period is 600 seconds
+- Default value for scoreFunction is 'Cosine'
+- Default value for trainDir is 'catboost_info'
+- Default value for workerInitializationTimeout is 10 minutes
+- Default value for workerMaxFailures is 4
+- Classification model trained by CatBoost. Use CatBoostClassifier to train it
+- Classification model trained by CatBoost.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Throttle API calls or reduce frequency
+- Break down filters or add selectivity
+- Recheck OAuth scopes or token expiration
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://catboost.ai
+  headers:
+    Accept: application/json
+source_metadata: null

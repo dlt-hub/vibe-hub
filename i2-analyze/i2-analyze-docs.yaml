@@ -1,0 +1,54 @@
+resources:
+- name: admin_config_reload
+  endpoint:
+    path: /api/v1/admin/config/reload
+    method: POST
+- name: processString
+  endpoint:
+    path: /ingestString
+    method: POST
+    data_selector: results
+    params:
+      cluster: default
+      meta: '{}'
+      content: ''
+- name: processRaw
+  endpoint:
+    path: /ingestFile
+    method: POST
+    data_selector: results
+    params:
+      cluster: default
+      meta: '{}'
+      content: ''
+notes:
+- The LTPA token in the cookie is valid for 2 hours.
+- If the user does not have the i2:Administrator permission, they may not access the
+  admin endpoints.
+- i2 Analyze supports authentication through registries like Active Directory or claims-based
+  authentication.
+- SPNEGO single sign-on allows users to access i2 Analyze without entering credentials
+  again.
+- When i2 Analyze is configured to use OIDC authentication, it is not compatible with
+  Analyst's Notebook clients earlier than version 10.0.2.
+- Endpoints support only POST methods.
+- Endpoints accept multi-part MIME content.
+- Results are returned in complex objects that contain fields like status and errorFound.
+- Deployment must be configured for TLS.
+- Ensure group names received from the identity provider align with the groups referenced
+  in your security schema.
+errors:
+- 'HTTP/1.1 403 Forbidden: User does not have necessary command access control permission
+  or token has expired.'
+- Mixed version deployments should be aligned as quickly as possible to ensure product
+  support.
+- 'errorFound: true if the processing cluster reports an error; false otherwise.'
+auth_info:
+  mentioned_objects:
+  - Active Directory
+  - Liberty user registry
+  - identity provider
+  - claims
+client:
+  base_url: https://opal.api.nharris.com
+source_metadata: null

@@ -1,0 +1,52 @@
+auth_info:
+- information_source; https://www.onemap.gov.sg/apidocs/:
+  - From 01 October 2025, Search API access requires token-based authentication. You
+    must register a token at the OneMap registration portal to use the Search API.
+    The documentation does not specify the exact header name, parameter name, or method
+    for sending the token in requests.
+- information_source; https://www.onemap.gov.sg/apidocs/authentication:
+  - Authentication is performed by sending a POST request to /api/auth/post/getToken
+    with email and password in the request body to obtain an access token valid for
+    3 days. The token is not required for map services. Required body parameters are
+    email (string, registered OneMap email) and password (string, OneMap password).
+    Token expiry is provided in UNIX format and does not auto-renew; re-authentication
+    is needed after expiration. Developers should securely store credentials and not
+    pass authentication data in plain text.
+  - Authentication uses email and password credentials sent in a JSON request body
+    to POST /api/auth/post/getToken. The response returns an access_token and expiry_timestamp;
+    credentials are provided via environment variables ONEMAP_EMAIL and ONEMAP_EMAIL_PASSWORD,
+    with required JSON fields email and password in the request body.
+- information_source; https://www.onemap.gov.sg/apidocs/docs/verifyingsearchapitoken:
+  - 'API requests require an Authorization header with a valid API token. The token
+    must be obtained by registering for an account. Send the token in the Authorization
+    header as Authorization: <valid_api_token>. Invalid or missing tokens will return
+    a 200 OK response with an error field indicating "Invalid authentication token."'
+  - Authentication is required via an API token passed in the Authorization header.
+    Tokens expire after 3 days and must be generated through account creation; missing
+    or invalid tokens return error responses with HTTP 200 status.
+pagination_info:
+- information_source; https://www.onemap.gov.sg/apidocs/docs/verifyingsearchapitoken:
+  - Pagination uses a pageNum query parameter (required, integer starting at 1) to
+    request specific pages. The response includes totalNumPages and pageNum fields
+    to indicate the total number of pages and current page number respectively, allowing
+    clients to iterate through results by incrementing pageNum until it reaches totalNumPages.
+  - 'The response objects include pagination fields: pageNum (the requested page number)
+    and totalNumPages (total number of pages available). Pagination is controlled
+    via the pageNum query parameter to request specific pages.'
+- information_source; https://www.onemap.gov.sg/apidocs/search:
+  - pageNum is an optional query parameter (integer) that specifies which page of
+    search results to retrieve. The response includes totalNumPages and pageNum fields
+    indicating the total number of pages and current page number; continue paginating
+    by incrementing pageNum until it reaches totalNumPages.
+possible_base_urls:
+- information_source; https://www.onemap.gov.sg/apidocs/:
+  - https://www.onemap.gov.sg/apidocs
+- information_source; https://www.onemap.gov.sg/apidocs/authentication:
+  - https://www.onemap.gov.sg
+possible_endpoints:
+- information_source; https://www.onemap.gov.sg/apidocs/authentication:
+  - POST https://www.onemap.gov.sg/api/auth/post/getToken
+- information_source; https://www.onemap.gov.sg/apidocs/docs/verifyingsearchapitoken:
+  - GET https://www.onemap.gov.sg/api/common/elastic/search
+- information_source; https://www.onemap.gov.sg/apidocs/search:
+  - GET /api/common/elastic/search

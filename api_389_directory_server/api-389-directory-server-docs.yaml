@@ -1,0 +1,148 @@
+resources:
+- name: Directory Server
+  endpoint:
+    path: /services/data/vXX.X/DirectoryServer
+    method: GET
+    data_selector: records
+- name: stack_trace
+  endpoint:
+    path: /usr/sbin/ns-slapd
+    method: GET
+    data_selector: stacktrace
+    params: {}
+- name: access_log
+  endpoint:
+    path: /usr/sbin/ns-slapd
+    method: GET
+    data_selector: access.buf
+    params: {}
+- name: LDAP
+  endpoint:
+    path: /ldap
+    method: GET
+    data_selector: entries
+    params: {}
+- name: plugin_transaction_support
+  endpoint:
+    path: /docs/389ds/design/plugin-transactions.html
+    method: GET
+- name: normalized_dn_cache
+  endpoint:
+    path: /docs/389ds/design/normalized-dn-cache.html
+    method: GET
+- name: configurable_allowed_sasl_mechanisms
+  endpoint:
+    path: /docs/389ds/design/sasl-mechanism-configuration.html
+    method: GET
+- name: sasl_mapping_improvements
+  endpoint:
+    path: /docs/389ds/design/sasl-mapping-improvements-1-dot-3-1.html
+    method: GET
+- name: configurable_sasl_buffer
+  endpoint:
+    path: /docs/389ds/design/sasl-buffer.html
+    method: GET
+- name: replication_retry_settings
+  endpoint:
+    path: /docs/389ds/design/replication-retry-settings.html
+    method: GET
+- name: instance_script_improvements
+  endpoint:
+    path: /docs/389ds/design/instance-script-improvements-1-dot-3-1.html
+    method: GET
+- name: access_log_analyzer_improvements
+  endpoint:
+    path: /docs/389ds/design/logconv-improvements-1-dot-3-1.html
+    method: GET
+- name: replication_protocol_timeout
+  endpoint:
+    path: /docs/389ds/design/replication-protocol-timeout.html
+    method: GET
+- name: password_administrators
+  endpoint:
+    path: /docs/389ds/design/password-administrator.html
+    method: GET
+- name: referential_integrity_plugin_and_replication
+  endpoint:
+    path: /docs/389ds/design/referint-replication-design.html
+    method: GET
+- name: memberof_plugin_skip_nested_groups
+  endpoint:
+    path: /docs/389ds/design/memberof-skip-nested.html
+    method: GET
+- name: index
+  endpoint:
+    path: /v1/index
+    method: GET
+    data_selector: Index Representation
+- name: suffix
+  endpoint:
+    path: /v1/suffix
+    method: GET
+    data_selector: Suffix Representation
+- name: replication
+  endpoint:
+    path: /v1/replication
+    method: GET
+    data_selector: Replica Representation
+- name: ldap_entry
+  endpoint:
+    path: /v1/ldap/{DN}
+    method: GET
+    data_selector: Entry Representation
+- name: ldap_entry
+  endpoint:
+    path: /ldap/entry
+    method: GET
+    data_selector: entries
+notes:
+- If the directory server crashes, the core file will be written to the log directory
+  for the server (/var/log/dirsrv/slapd-INSTANCENAME).
+- The core file will be named *core.PID* where *PID* is the process id of the crashed
+  server.
+- EDIT the stacktrace.DATE.txt file TO REMOVE/OBSCURE ANY SENSITIVE DATA before you
+  submit to the mail list or attach to a bug.
+- This is not a commercial product, but rather a development project.
+- EDIT the stacktrace.DATE.txt file TO REMOVE ANY SENSITIVE DATA before you submit
+  to the mail list or attach to a bug
+- You still need the debuginfo packages installed for this to work
+- If the server crashes before the buffer is flushed, the information about the operation
+  that caused the crash will not be written to the access log.
+- Disabling access log buffering may cause the server to slow down considerably, which
+  is not good in most production environments.
+- Directory server provides a centralized directory service for intranet, network,
+  and extranet information.
+- LDAP is a protocol for accessing online directory services.
+- Uses NSS for security, does not support OpenSSL or GnuTLS.
+- Must submit clear text passwords for LDAP operations.
+- The access log is buffered for performance reasons. Unfortunately, if the server
+  crashes before the buffer is flushed, the information about the operation that caused
+  the crash will not be written to the access log.
+- Make sure you used the correct version of the JRE that setup requested, and make
+  sure that you used a 'real' directory path to the JRE and not any symlinks.
+- Make sure you specify the path to the JRE and not the JDK.
+- You can either switch to a uni-processor kernel or install the Sun JDK 1.4.2_0x
+  where x is 5 or higher. (JDK 1.5 is not tested).
+- Do not use an absolute path to the startconsole script.
+- The server is multi-threaded and efficiently handles many simultaneous requests.
+- The server uses poll() on platforms where it is available.
+- The number of connections the server can handle is set by the maximum number of
+  descriptors minus the reserve descriptors.
+- The number of threads is set by the attribute nsslapd-threadnumber in cn=config.
+- The server creates a pool of operation threads.
+- This setting does not require a server restart to take effect.
+- Paged results control could be combined with the server side sorting.
+- Kerberos relies heavily on the fully qualified host and domain name (FQDN) for service
+  hosts and service principal names.
+- Kerberos will not work unless all servers and clients are in time sync.
+errors:
+- 'LDAP_CONNECTION_ERROR: Check server address and credentials'
+- 'INVALID_CREDENTIALS: Verify username and password'
+- 'LDAP_TIMELIMIT_EXCEEDED: Timelimit is hit in the search operation.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: http://httpd.apache.org
+  headers:
+    Accept: application/json
+source_metadata: null

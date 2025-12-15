@@ -1,0 +1,72 @@
+auth_info:
+- information_source; https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/:
+  - Basic authentication is required for the Jira REST API. Pass an auth filter to
+    restkit (or equivalent HTTP client) containing credentials, which will be sent
+    as HTTP Basic Auth headers with each request. The example shows using filters=[auth]
+    in a Resource call to handle credential transmission automatically.
+  - 'Basic authentication is required, using username and password provided via the
+    `-u` flag in curl format, which translates to the Authorization header with base64-encoded
+    credentials (e.g., `Authorization: Basic base64(username:password)`).'
+  - Basic authentication is used to authenticate API requests. Credentials are passed
+    via the `-u` flag in curl (username:password format) or as an Authorization header
+    with base64-encoded credentials. For example, `-u charlie:charlie` authenticates
+    as user "charlie" with password "charlie". In Python, this would be passed as
+    the `auth` parameter to requests using a tuple like `auth=('charlie', 'charlie')`.
+- information_source; https://developer.atlassian.com/server/jira/platform/basic-authentication/:
+  - 'Basic authentication is supported by sending a username and password with each
+    request. Construct the authorization header by Base64-encoding a string in the
+    format username:password, then send it as Authorization: Basic {encoded-string}.
+    Alternatively, use the -u username:password argument in cURL or equivalent in
+    other HTTP clients. OAuth is recommended as a more secure token-based alternative
+    to basic authentication.'
+- information_source; https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/:
+  - OAuth 2.0 is required for this Jira API endpoint. Use either classic scope read:jira-work
+    or granular scopes including read:issue-details:jira, read:field-default-value:jira,
+    read:field.option:jira, read:field:jira, and read:group:jira. For Connect apps,
+    use READ scope. Send the OAuth 2.0 access token in the Authorization header as
+    a Bearer token.
+pagination_info:
+- information_source; https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/:
+  - Pagination uses startAt (query parameter, optional, default 0) to specify the
+    starting index, maxResults (query parameter, optional, default 50) to limit results
+    per page, and total (response field) to indicate total available issues. Continue
+    paginating by incrementing startAt by maxResults until startAt plus returned results
+    equals total.
+  - The search endpoint uses offset-based pagination with startAt (query parameter,
+    default 0) and maxResults (query parameter, default 50) to request pages. The
+    response includes startAt, maxResults, and total fields to indicate pagination
+    state; construct the next request by incrementing startAt by maxResults until
+    startAt plus maxResults exceeds total.
+- information_source; https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/:
+  - The API uses cursor-based pagination with the query parameter nextPageToken (a
+    string) to retrieve subsequent pages. The response includes an isLast boolean
+    field to indicate when the final page is reached; continue paginating by passing
+    the nextPageToken value from the current response until isLast is true.
+  - Use the request body parameter nextPageToken (string) to paginate through search
+    results. The response includes a nextPageToken field; pass this value in the nextPageToken
+    parameter of the next request to retrieve subsequent pages. Stop paginating when
+    nextPageToken is absent or null in the response.
+  - maxResults and startAt are query/body parameters for pagination. maxResults (integer)
+    specifies the number of results per page, startAt (integer) specifies the starting
+    index for results. The response returns SearchResults containing the paginated
+    data; use the startAt value plus maxResults to construct the next request until
+    all results are retrieved.
+possible_base_urls:
+- information_source; https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/:
+  - http://localhost:8080/rest/api/2
+- information_source; https://developer.atlassian.com/server/jira/platform/basic-authentication/:
+  - http://localhost:8080
+possible_endpoints:
+- information_source; https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/:
+  - GET /rest/api/2/issue/{key}
+  - GET http://localhost:8080/rest/api/2/search
+  - GET http://localhost:8080/rest/api/2/search?jql=assignee=charlie+order+by+duedate
+- information_source; https://developer.atlassian.com/server/jira/platform/basic-authentication/:
+  - GET http://localhost:8080/rest/api/2/issue/createmeta
+- information_source; https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/:
+  - GET /rest/api/3/issue/picker
+  - GET /rest/api/3/issues/picker
+  - GET /rest/api/3/search
+  - GET /rest/api/3/search/jql
+  - POST /rest/api/3/issue/picker
+  - POST /rest/api/3/jql/match

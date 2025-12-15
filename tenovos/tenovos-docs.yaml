@@ -1,0 +1,56 @@
+auth_info:
+- information_source; https://api.tenovos.com/developer-portal/:
+  - Version 1.5 introduces OAuth 2.0 Authorization Code flow as an additional authentication
+    option. Version 2.x supports authentication with OAuth 2.0 or standard Tenovos
+    Auth. For specific implementation details including header names, parameter names,
+    and credential handling, refer to the respective version's full API reference
+    documentation.
+- information_source; https://api.tenovos.com/developer-portal/hermes/oauth/:
+  - Tenovos API uses OAuth 2.0 for authentication. Clients must obtain access tokens
+    from the OAuth 2.0 server and include them in requests to access protected resources
+    on behalf of the resource owner. The documentation references RFC 6749 for the
+    OAuth 2.0 specification and mentions various OAuth flows, though specific header
+    names, grant types, scopes, and token endpoint details are not provided in this
+    excerpt.
+- information_source; https://api.tenovos.com/developer-portal/training/authenticating/:
+  - Authorization header is required. Pass apiKey or accessToken in the authorization
+    header using the Bearer scheme. The request object must include endpointUrl, apiKey,
+    authorization, and accessToken parameters, with the authorization header formatted
+    as "Bearer {accessToken}" or equivalent API key authentication.
+  - 'Both the metadata template and security template functions require authentication
+    using two methods: an API key passed in the ''x-api-key'' header and an authorization
+    token passed in the ''Authorization'' header. The security template function also
+    accepts an optional accessToken parameter that can be included as a header.'
+  - Integration-specific username accounts (e.g., functional-api-cms, functional-api-piim)
+    must be assigned to roles and groups with appropriate permissions. Authentication
+    uses a POST request to the /auth/token endpoint with clientId, username, and password
+    in the JSON body, plus an x-api-key header. The endpoint returns an Authorization
+    Token valid for 60 minutes; implement error handling to detect unauthorized responses
+    and use the refresh token to renew the session. API response results are constrained
+    by the authenticated user account's permissions.
+pagination_info:
+- information_source; https://api.tenovos.com/openapi/reference/v1.5/operation/getEndpointSubscriptionsList/:
+  - The List Endpoints endpoint accepts optional query parameters before and after
+    (both string or null) to paginate through endpoints. The response is an array
+    of endpoint objects; use the before and after parameters to navigate pages, though
+    the exact semantics for constructing subsequent requests are not explicitly detailed
+    in the documentation.
+possible_base_urls:
+- information_source; https://api.tenovos.com/developer-portal/:
+  - https://api.tenovos.com
+- information_source; https://api.tenovos.com/faq/:
+  - https://api.tenovos.com
+possible_endpoints:
+- information_source; https://api.tenovos.com/developer-portal/training/authenticating/:
+  - GET ${endpointUrl}/metadata/template
+  - GET ${endpointUrl}/metadata/template/${templateId}
+  - GET ${endpointUrl}/metadata/vocabulary/${controlledVocabularyId}
+  - GET ${endpointUrl}/security/template
+  - GET /metadata/vocabulary/{controlledVocabularyId}
+  - POST /auth/token
+  - POST /search/keyword
+- information_source; https://api.tenovos.com/developer-portal/webhooks/authentication/:
+  - PUT https://enterprise.services.tenovos.io/content-store-v1/webhooks/endpoint/oauth/{endpointId}
+- information_source; https://api.tenovos.com/openapi/reference/v1.5/operation/getEndpointSubscriptionsList/:
+  - GET /webhooks/endpoint/list
+  - GET https://api.uat.tenovos.io/v1/webhooks/endpoint/list

@@ -1,0 +1,161 @@
+resources:
+- name: outbound_nc_models
+  endpoint:
+    path: /outbound_nc_models
+    method: GET
+    data_selector: models
+    params: {}
+- name: inbound_nc_models
+  endpoint:
+    path: /inbound_nc_models
+    method: GET
+    data_selector: models
+    params: {}
+- name: noise_filter
+  endpoint:
+    path: /createNoiseFilter
+    method: POST
+    data_selector: filterNode
+- name: bvc_configuration
+  endpoint:
+    path: /docs/background-voice-cancellation-integration
+    method: GET
+    data_selector: params
+    params: {}
+- name: session_stats
+  endpoint:
+    path: /docs/stats
+    method: GET
+    data_selector: sessionStats
+    params: {}
+- name: per_frame_stats
+  endpoint:
+    path: /docs/stats
+    method: GET
+    data_selector: perFrameStats
+    params: {}
+- name: KrispSDK
+  endpoint:
+    path: /krisp-sdk/constructor-arguments
+    method: GET
+    data_selector: params
+    params: {}
+- name: modelNC
+  endpoint:
+    path: /dist/models/c6.f.s.da1785.kef
+    method: GET
+    data_selector: undefined
+    params: {}
+- name: modelVAD
+  endpoint:
+    path: /dist/models/vad_2.0.0_1.0.kef
+    method: GET
+    data_selector: undefined
+    params: {}
+- name: KrispSDK
+  endpoint:
+    path: /sdk/krisp
+    method: POST
+    data_selector: params
+    params: {}
+- name: Krisp SDK
+  endpoint:
+    path: /docs/getting-started
+    method: GET
+- name: webrtc_hook
+  endpoint:
+    path: /hook/webrtc
+    method: POST
+    data_selector: integrationSteps
+    params: {}
+- name: WebRTC iOS Sample App
+  endpoint:
+    path: /samples/WebRTC-Sample-IOS
+    method: GET
+    data_selector: samples
+    params: {}
+- name: WebRTC JS Server
+  endpoint:
+    path: /samples/WebRTC-Sample-Server-JS
+    method: GET
+    data_selector: samples
+    params: {}
+- name: WebRTC Sample App
+  endpoint:
+    path: https://github.com/krispai/WebRTC-Integration/tree/main/samples/WebRTC-Sample-Krisp-Android
+    method: GET
+    data_selector: sample_app
+    params: {}
+notes:
+- Integrated in client apps (native and browser) and on server (Voice AI Agents)
+- Integrates into the local application’s audio path (e.g. WebRTC)
+- 'The SDK is designed to be deployed server-side and supports multiple language bindings:
+  Python, Node.js, Go, Rust, C++, C.'
+- Single-threaded execution will be the default in the next Server SDK release.
+- Krisp SDK integration guide published at https://docs.pipecat.ai/guides/features/krisp
+  is not compatible with the latest Krisp Server SDK and models.
+- BVC technology does not require user voice enrollment or training on user voice
+  data.
+- BVC technology is incompatible with Narrow Band devices with sampling rates of <=8KHz.
+- Accent Conversion (AC) requires no configuration or enrollment and is compatible
+  with all headsets used in call center environments.
+- Outbound models are optimized for a single main speaker and raw microphone inputs.
+- Inbound models tolerate voice degradations caused by lossy audio codecs.
+- CPU% is generally higher in JS SDK compared to native SDK. This is expected as the
+  code runs in the browser in different worker threads, which provides improved stability
+  and eliminates memory leaks.
+- 8K audio stream is not supported by the Safari browser due to the Apple WebKit limitations.
+- Ensure that the AudioContext sample rate is in the list of supported rates to avoid
+  issues such as noise cancellation malfunction or sound distortion.
+- Users can switch their audio devices in the middle of using the SDK, so it's essential
+  to handle new noise cancellation filter creation when the input source has changed.
+- 'Only in Chrome: When ''Echo Cancellation'' option is selected, in some Chrome versions
+  it’s processing aggressively and muffles speech.'
+- 'Only in Chrome: When using the AudioElement playback method, there may be voice
+  degradation when switching between devices.'
+- Randomly, after switching between built-in device microphones and headsets, there
+  may be BVC quality degradation with secondary voices passing.
+- Session stats can be retrieved at intervals defined by the sessionStatsIntervalMS
+  parameter.
+- Per-frame stats can be retrieved at intervals defined by the perFrameStatsCountInterval
+  parameter.
+- Noise suppression aggressiveness level in the range of [0, 100].
+- The VAD threshold is a configurable value that dictates when an audio signal is
+  classified as speech or silence.
+- To enable Debug Mode, simply switch the debugLogs flag when initializing the Krisp
+  SDK in your code.
+- Integrates Krisp's JS SDK for noise cancellation in web applications
+- By default Krisp filter is not enabled.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Only the microphone stream is tested, which means that the sound is captured using
+  the microphone only.
+- The most advanced and the most complicated solutions
+- Krisp SDK for native mobile applications is a C-library.
+- Krisp SDKs are deployed and in use globally across more than 200M end-user applications
+  and devices.
+- Some objects like Contact may return nulls in deeply nested fields
+- Current version 121 corresponds to Chrome version 121.
+- Ensure all dependencies are installed for successful operation.
+- You may manually build WebRTC with Audio Hook to allow sound stream modification
+  within the IOS app.
+- The last command may fail depending on XCode configuration and issues with the provisioning
+  profile.
+errors:
+- '400 Bad Request: Check the request parameters.'
+- '500 Internal Server Error: Try again later.'
+- 'MODEL_URL_FETCH_ERROR: Error fetching the model from URL'
+- 'MODEL_LOAD_ERROR: Error during model loading'
+- 'SAMPLING_RATE_NOT_SUPPORTED: Unsupported sampling rate'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Build may fail depending on XCode configuration and provisioning profile.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://krisp.ai
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+source_metadata: null

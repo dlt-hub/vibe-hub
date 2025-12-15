@@ -1,0 +1,87 @@
+resources:
+- name: JSON Validator Service
+  endpoint:
+    path: /validation/{{owner-name}}/{{workspace-name}}/{{rosetta-object-type}}
+    method: GET
+    data_selector: diagnostic errors
+    params: {}
+- name: Run Function Service
+  endpoint:
+    path: /run-function/{{owner-name}}/{{workspace-name}}/{{rosetta-function-type}}
+    method: GET
+    data_selector: results
+    params: {}
+- name: Regulation Report Service
+  endpoint:
+    path: /report/{{owner-name}}/{{workspace-name}}/{{namespace}}/{{regulatory-body}}/{{regulatory-corpus-list}}
+    method: GET
+    data_selector: results
+    params: {}
+- name: Ingestion Service
+  endpoint:
+    path: /ingest/{{owner-name}}/{{workspace-name}}/latest/{{ingestion-environment-name}}
+    method: POST
+    data_selector: mappingResults
+    params: {}
+- name: supported_synonyms
+  endpoint:
+    path: /api/ingest/supported-synonyms
+    method: GET
+    data_selector: records
+- name: ingest_json
+  endpoint:
+    path: /api/ingest/{{synonym}}
+    method: POST
+    data_selector: response
+- name: ingest_xml
+  endpoint:
+    path: /api/ingest/{{synonym}}
+    method: POST
+    data_selector: response
+- name: supported_report
+  endpoint:
+    path: /api/engine/reports/supported-report
+    method: GET
+    data_selector: records
+- name: run_report
+  endpoint:
+    path: /api/engine/reports/{{body}}/{{corpus1}}/{{corpus2}}
+    method: POST
+    data_selector: response
+- name: Workspace
+  endpoint:
+    path: /workspaces
+    method: GET
+    data_selector: workspaces
+    params: {}
+- name: Project
+  endpoint:
+    path: /projects
+    method: GET
+    data_selector: projects
+    params: {}
+notes:
+- The API must be used in conjunction with an API-KEY for access authorization.
+- All exported APIs communicate to the servers over HTTPS using SHA-256 with RSA Encryption.
+- The API will attempt to translate any document to the *{{synonym}}* format.
+- You can specify query parameters that will restrict the translation to only supported
+  schemas.
+- This project uses JDK 21.
+- Rosetta is a complete Software Development Kit (SDK or dev kit) for the Rune DSL.
+- Workspace exists not in the user's local browser but on a remote server and simply
+  rendered in their browser window.
+- The state of the Workspace evolves and the latest state gets automatically persisted
+  on the server.
+- If you are behind a corporate proxy then there are certain infrastructure requirements
+  that need to be fulfilled to get web sockets working.
+errors:
+- '429: Rate limit exceeded'
+- '400 Bad Request: Check the request parameters and body format.'
+- '404 Not Found: Verify the endpoint and resource existence.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://ui.rosetta-technology.io
+  headers:
+    Accept: application/json
+source_metadata: null

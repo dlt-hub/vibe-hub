@@ -1,0 +1,90 @@
+resources:
+- name: secure_file
+  endpoint:
+    path: /v1/secure-file/app/my-app/certificate.cer
+    method: POST
+    data_selector: file-content
+- name: Restore to an Existing Cerberus Environment
+  endpoint:
+    path: /rds/snapshots
+    method: GET
+    data_selector: snapshots
+    params: {}
+- name: Restore to a New Cerberus Environment
+  endpoint:
+    path: /environment.yaml
+    method: POST
+    data_selector: environmentConfig
+    params: {}
+- name: audit_data
+  endpoint:
+    path: /audit_data
+    method: GET
+    data_selector: records
+    params: {}
+- name: Cerberus Config bucket
+  endpoint:
+    path: /cerberus-config
+    method: GET
+    data_selector: configuration_files
+- name: Load Balancer log bucket
+  endpoint:
+    path: /load-balancer-logs
+    method: GET
+    data_selector: log_files
+notes:
+- Cerberus is a complete solution to manage API keys, passwords, certificates, etc.
+- 'Generally it does NOT make sense to store Lambda secrets in Cerberus for two reasons:
+  Cerberus cannot support the scale that lambdas may need, e.g. thousands of requests
+  per second; Lambdas will not want the extra latency needed to authenticate and read
+  from Cerberus.'
+- A better solution for Lambda secrets is using the encrypted environmental variables
+  feature provided by AWS.
+- Another option is to store Lambda secrets in Cerberus but only read them at Lambda
+  deploy time, then storing them as encrypted environmental variables, to avoid the
+  extra Cerberus runtime latency.
+- 'Excessive Polling: IPs making an excessive number of requests are automatically
+  blacklisted for a configurable interval.'
+- 'SSL Handshake Failure: This error may mean your client is not compatible with TLS1.2,
+  possibly due to being on an old version of Java or other older library.'
+- Cerberus is designed for storing application secrets such as passwords, API keys,
+  and certificates. It is not meant to be a general purpose Key/Value store for storing
+  any kind of data. It is not a replacement for applications like Cassandra, DynamoDB,
+  or Reddis.
+- When writing data to Cerberus the request body size should be less than 256 KB.
+- Cerberus lazily creates a KMS key for every unique configured IAM role the first
+  time they authenticate. By default Amazon limits the number of KMS keys per region
+  per account to 1000.
+- Creating a Cerberus environment is an automated processes and can be completed in
+  as little as 30 minutes.
+- Running Cerberus in its own account prevents services from being able to impersonate
+  each other.
+- AWS IAM KMS Authentication is deprecated. KMS Auth is Cerberus’s original AWS IAM
+  authentication mechanism.
+- The EC2 instance must be assigned an IAM role that has been given permissions to
+  at least one SDB in Cerberus.
+- Cerberus secrets are encrypted with the ‘AWS Encryption SDK’ using AES-GCM with
+  an HMAC-based extract-and-expand key derivation function (HKDF), signing, and a
+  256-bit encryption key.
+- Configuration is encrypted with the ‘AWS Encryption SDK’ using AES-GCM with an HMAC-based
+  extract-and-expand key derivation function (HKDF), signing, and a 256-bit encryption
+  key.
+errors:
+- '401: X-Cerberus-Token header is malformed or invalid.'
+- '404: Not found'
+- 'permission denied: The SDB you are trying to access may need permissions updated.'
+- 'Excessive Polling: IPs making an excessive number of requests are automatically
+  blacklisted for a configurable interval.'
+auth_info:
+  mentioned_objects:
+  - AWS IAM STS Authentication
+  - AWS IAM KMS Authentication
+  - User Authentication
+  - OneLogin
+  - Okta
+  - LDAP groups
+client:
+  base_url: http://169.254.169.254/latest/meta-data/
+  headers:
+    Accept: application/json
+source_metadata: null

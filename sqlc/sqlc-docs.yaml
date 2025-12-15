@@ -1,0 +1,324 @@
+resources:
+- name: plugin
+  endpoint:
+    path: /plugins
+    method: GET
+    data_selector: plugins
+    params: {}
+- name: environment_variable
+  endpoint:
+    path: /env
+    method: GET
+    data_selector: env
+    params: {}
+- name: projects
+  endpoint:
+    path: /projects
+    method: POST
+    data_selector: data
+- name: install_macos
+  endpoint:
+    path: /macos
+    method: GET
+    data_selector: brew install sqlc
+    params: {}
+- name: install_ubuntu
+  endpoint:
+    path: /ubuntu
+    method: GET
+    data_selector: sudo snap install sqlc
+    params: {}
+- name: install_go
+  endpoint:
+    path: /go_install
+    method: GET
+    data_selector: go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
+    params: {}
+- name: install_docker
+  endpoint:
+    path: /docker
+    method: GET
+    data_selector: docker pull sqlc/sqlc
+    params: {}
+- name: download_linux
+  endpoint:
+    path: /downloads/linux
+    method: GET
+    data_selector: https://downloads.sqlc.dev/sqlc_1.22.0_linux_amd64.tar.gz
+    params: {}
+- name: download_macos
+  endpoint:
+    path: /downloads/macos
+    method: GET
+    data_selector: https://downloads.sqlc.dev/sqlc_1.22.0_darwin_amd64.zip
+    params: {}
+- name: download_windows
+  endpoint:
+    path: /downloads/windows
+    method: GET
+    data_selector: https://downloads.sqlc.dev/sqlc_1.22.0_windows_amd64.zip
+    params: {}
+- name: authors
+  endpoint:
+    path: /authors
+    method: GET
+    data_selector: records
+    params: {}
+- name: authors
+  endpoint:
+    path: /authors
+    method: GET
+    data_selector: records
+- name: GetAuthor
+  endpoint:
+    path: SELECT * FROM authors WHERE id = ? LIMIT 1
+    method: SELECT
+    data_selector: one
+- name: ListAuthors
+  endpoint:
+    path: SELECT * FROM authors ORDER BY name
+    method: SELECT
+    data_selector: many
+- name: CreateAuthor
+  endpoint:
+    path: INSERT INTO authors (name, bio) VALUES (?, ?) RETURNING *
+    method: INSERT
+    data_selector: one
+- name: DeleteAuthor
+  endpoint:
+    path: DELETE FROM authors WHERE id = ?
+    method: DELETE
+    data_selector: exec
+- name: UpdateAuthor
+  endpoint:
+    path: UPDATE authors set name = ?, bio = ? WHERE id = ? RETURNING *
+    method: UPDATE
+    data_selector: one
+- name: authors
+  endpoint:
+    path: /authors
+    method: GET
+    data_selector: records
+- name: CreateAuthor
+  endpoint:
+    path: 'CREATE TABLE authors ( id SERIAL PRIMARY KEY, bio text NOT NULL ); -- name:
+      CreateAuthor :exec INSERT INTO authors (bio) VALUES ($1);'
+    method: exec
+    data_selector: null
+    params: {}
+- name: CreateAuthors
+  endpoint:
+    path: 'CREATE TABLE authors ( id SERIAL PRIMARY KEY, name text NOT NULL, bio text
+      NOT NULL ); -- name: CreateAuthors :copyfrom INSERT INTO authors (name, bio)
+      VALUES ($1, $2);'
+    method: copyfrom
+    data_selector: null
+    params: {}
+- name: InsertValues
+  endpoint:
+    path: 'CREATE TABLE foo (a text, b integer, c DATETIME, d DATE); -- name: InsertValues
+      :copyfrom INSERT INTO foo (a, b, c, d) VALUES (?, ?, ?, ?);'
+    method: copyfrom
+    data_selector: null
+    params: {}
+- name: UpdateAuthorBios
+  endpoint:
+    path: /UpdateAuthorBios
+    method: EXEC
+    data_selector: UpdateAuthorBios
+    params: {}
+- name: UpdateAuthor
+  endpoint:
+    path: /UpdateAuthor
+    method: EXEC
+    data_selector: UpdateAuthor
+    params: {}
+- name: DeleteAuthor
+  endpoint:
+    path: /DeleteAuthor
+    method: DELETE
+    data_selector: authors
+    params: {}
+- name: UpdateAuthorName
+  endpoint:
+    path: /author/update
+    method: UPDATE
+    data_selector: RETURNING
+    params: {}
+- name: UpdateAuthor
+  endpoint:
+    path: /author/update
+    method: UPDATE
+    data_selector: RETURNING
+    params: {}
+- name: authors
+  endpoint:
+    path: /authors
+    method: CREATE
+    data_selector: CREATE TABLE authors (id SERIAL PRIMARY KEY, birth_year int NOT
+      NULL); ALTER TABLE authors ADD COLUMN bio text NOT NULL; ALTER TABLE authors
+      DROP COLUMN birth_year; ALTER TABLE authors RENAME TO writers;
+    params: {}
+- name: post
+  endpoint:
+    path: /post
+    method: CREATE
+    data_selector: CREATE TABLE "public"."post" ("id" integer NOT NULL, "title" text
+      NULL, "body" text NULL, PRIMARY KEY ("id"));
+    params: {}
+- name: people
+  endpoint:
+    path: /people
+    method: CREATE
+    data_selector: CREATE TABLE people (id int);
+    params: {}
+- name: comment
+  endpoint:
+    path: /comment
+    method: CREATE
+    data_selector: CREATE TABLE comment (id int NOT NULL, text text NOT NULL);
+    params: {}
+- name: foo
+  endpoint:
+    path: /foo
+    method: CREATE
+    data_selector: CREATE TABLE foo (bar INT NOT NULL);
+    params: {}
+- name: ScoreAndTests
+  endpoint:
+    path: /students/test_scores
+    method: SELECT
+    data_selector: students.*, test_scores.*
+    params: {}
+- name: authors
+  endpoint:
+    path: postgresql/schema.sql
+    method: CREATE
+    data_selector: authors
+    params: {}
+- name: linting_queries
+  endpoint:
+    path: /linting-queries
+    method: GET
+    data_selector: queries
+    params: {}
+- name: running_lint_rules
+  endpoint:
+    path: /running-lint-rules
+    method: GET
+    data_selector: rules
+    params: {}
+- name: managed_databases
+  endpoint:
+    path: /managed_databases
+    method: POST
+    data_selector: database
+    params:
+      managed: 'true'
+- name: sqlc_diff
+  endpoint:
+    path: /sqlc/diff
+    method: POST
+    data_selector: output
+    params: {}
+- name: sqlc_vet
+  endpoint:
+    path: /sqlc/vet
+    method: POST
+    data_selector: output
+    params: {}
+- name: places
+  endpoint:
+    path: /datatypes/arrays
+    method: GET
+    data_selector: records
+- name: authors
+  endpoint:
+    path: /datatypes/dates-and-time
+    method: GET
+    data_selector: records
+- name: stores
+  endpoint:
+    path: /datatypes/enums
+    method: GET
+    data_selector: records
+- name: books
+  endpoint:
+    path: /datatypes/json
+    method: GET
+    data_selector: records
+- name: shapes
+  endpoint:
+    path: /datatypes/geometry
+    method: GET
+    data_selector: records
+- name: DeleteAuthor
+  endpoint:
+    path: ''
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: DeleteAllAuthors
+  endpoint:
+    path: ''
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: InsertAuthor
+  endpoint:
+    path: ''
+    method: INSERT
+    data_selector: ''
+    params: {}
+- name: ListAuthors
+  endpoint:
+    path: ''
+    method: SELECT
+    data_selector: ''
+    params: {}
+- name: GetAuthor
+  endpoint:
+    path: ''
+    method: SELECT
+    data_selector: ''
+    params: {}
+- name: DeleteBook
+  endpoint:
+    path: ''
+    method: DELETE
+    data_selector: ''
+    params: {}
+- name: BooksByTitleYear
+  endpoint:
+    path: ''
+    method: SELECT
+    data_selector: ''
+    params: {}
+- name: CreateBook
+  endpoint:
+    path: ''
+    method: INSERT
+    data_selector: ''
+    params: {}
+notes:
+- Remote generation is off by default and requires an opt-in to use.
+- If your tables have columns with date or time types, sqlc expects these values to
+  scan into time.Time structs.
+- You’ll need to set emit_prepared_queries to true in your sqlc configuration to generate
+  code similar to the example below.
+- PostgreSQL support is available today, with MySQL on the way.
+- Ensure that your generated code is up to date with sqlc diff
+- sqlc vet runs a set of lint rules against your SQL queries
+- After creating a project, add the project ID to your sqlc configuration file.
+- You’ll also need to create an auth token and make it available via the SQLC_AUTH_TOKEN
+  environment variable.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://sqlc.dev
+  headers:
+    Accept: application/json
+source_metadata: null

@@ -1,0 +1,118 @@
+resources:
+- name: archive
+  endpoint:
+    method: GET
+- name: callbacks
+  endpoint:
+    method: GET
+- name: core
+  endpoint:
+    method: GET
+- name: AsyncFileSystem
+  endpoint:
+    method: GET
+- name: HTTPFileSystem
+  endpoint:
+    method: GET
+- name: copy
+  endpoint:
+    method: copy
+    params:
+      recursive: true
+      maxdepth: 1
+      auto_mkdir: true
+- name: get
+  endpoint:
+    method: get
+- name: put
+  endpoint:
+    method: put
+- name: files
+  endpoint:
+    path: protocol://server/path
+    method: GET
+- name: OpenFile
+  endpoint:
+    path: /fsspec.OpenFile
+    method: GET
+    data_selector: records
+    params: {}
+- name: OpenFiles
+  endpoint:
+    path: /fsspec.OpenFiles
+    method: GET
+    data_selector: records
+    params: {}
+- name: open_files
+  endpoint:
+    path: /fsspec.open_files
+    method: GET
+    data_selector: records
+    params: {}
+- name: url_to_fs
+  endpoint:
+    path: /fsspec.url_to_fs
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- 'Pass-through cache: doesn''t keep anything, calls every time'
+- File-like object to be used in a context
+- Can layer (buffered) text-mode and compression over any file-system, which are typically
+  binary-only
+- These instances are safe to serialize, as the low-level file object is not created
+  until invoked using with
+- fsspec supports asynchronous operations on certain implementations
+- Allows for concurrent calls within bulk operations such as cat
+- AsyncFileSystem contains async def coroutine versions of the methods of AbstractFileSystem
+- Methods are prefixed with underscore to indicate they are not to called directly
+  in normal code
+- The only async implementation built into fsspec is HTTPFileSystem
+- File system instances can be created with asynchronous=True
+- AsyncFileSystemWrapper is an experimental feature that allows you to convert a synchronous
+  filesystem into an asynchronous one
+- Users should not expect this wrapper to magically make things faster
+- Uses POSIX command line cp behavior with extra functionality
+- Supports multiple targets whereas command line cp is restricted to one
+- Can create new directories automatically or via auto_mkdir=True keyword argument
+- Depth of recursion can be controlled using maxdepth keyword argument
+- Trailing slash on target is optional but recommended to explicitly indicate directory
+- Instances are serializable for use across processes and machines
+- Supports transparent compression and text-mode operations
+- Provides buffering for both read and write operations
+- Instance caching enabled by default for cachable implementations
+- Listings caching available with time-based or LRU expiry
+- URL chaining supported with '::' separator
+- Local file caching available through filecache and blockcache
+- Transaction support for atomic write operations
+- PyArrow integration available for compatible filesystems
+- FUSE mounting experimental but available
+- Configuration via files, environment variables, or runtime dict
+- Async operations supported on AsyncFileSystem implementations
+- Callback support for progress tracking and logging
+- Exclusive write feature is currently included on a trial basis and may change in
+  the future
+- Timing of existence check is not defined - may be at start or completion of operation
+  depending on backend
+- fsspec provides a unified pythonic interface to local, remote and embedded file
+  systems and bytes storage.
+- Uses various classes and functions to handle file operations.
+- 'Four auth mechanisms are supported: insecure, spnego, token, basic-auth.'
+errors:
+- 'FileExistsError: Raised when using exclusive mode on a file that already exists'
+auth_info:
+  mentioned_objects:
+  - DatabricksFileSystem
+  - AbstractArchiveFileSystem
+  - AsyncFileSystem
+  - Callback
+  - BaseCache
+  - OpenFile
+  - OpenFiles
+  - AbstractBufferedFile
+  - AbstractFileSystem
+client:
+  base_url: protocol://server/path
+  headers:
+    Accept: application/json
+source_metadata: null

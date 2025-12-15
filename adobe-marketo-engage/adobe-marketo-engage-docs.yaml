@@ -1,0 +1,70 @@
+resources:
+- name: activities
+  endpoint:
+    path: /rest/v1/activities.json
+    method: GET
+    data_selector: results
+- name: activities_pagingtoken
+  endpoint:
+    path: /rest/v1/activities/pagingtoken.json
+    method: GET
+    data_selector: nextPageToken
+    params:
+      sinceDateTime: '2024-04-12T12:00:00Z'
+- name: lead_create_update
+  endpoint:
+    path: /create_and_update
+    method: POST
+- name: companies
+  endpoint:
+    path: /rest/v1/companies.json
+    method: GET
+    data_selector: results
+- name: create_update_upsert_companies
+  endpoint:
+    path: /rest/v1/companies.json
+    method: POST
+    data_selector: results
+- name: delete_companies
+  endpoint:
+    path: /rest/v1/companies.json
+    method: DELETE
+    data_selector: results
+- name: lead
+  endpoint:
+    path: /rest/v1/leads.json
+    method: GET
+    data_selector: result
+    params: {}
+notes:
+- Currently, there is not Activities API for the REST API.
+- Send Email activities are not committed to the Marketo database until the email
+  is sent.
+- This API does not honor a 'batchSize' parameter, and it appears that calling this
+  API does not return the 'moreResult' or 'nextPagingToken' params.
+- The `result` in the response is given in the same order as `input` in the request.
+- New REST Company Objects APIs available
+- Multiple examples where the definition of APIs do not match what Marketo REST services
+  actually return.
+- Some responses contain bugs in the response type.
+- The REST API is still somewhat limited, and Get Lead by Id does indeed return a
+  small subset of the fields from a Lead record.
+errors:
+- Missing records may occur if the data is still being processed and not yet committed.
+- The ability to return 300+ attributes means it isn't paginated using any typical
+  Marketo page lengths.
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Documentation issues
+- Support interactions have been poor
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: http://developers.marketo.com/documentation/rest/
+  auth:
+    type: oauth2
+source_metadata: null

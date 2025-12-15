@@ -1,0 +1,173 @@
+resources:
+- name: ad
+  endpoint:
+    path: /ad
+    method: GET
+    data_selector: adPods
+- name: custom_buffering_screen
+  endpoint:
+    path: /docs/developer-program/advertising/raf-api.md#buffer-screen-customization
+    method: GET
+    data_selector: content_metadata
+    params: {}
+- name: custom_ad_parsing_rendering
+  endpoint:
+    path: /docs/developer-program/advertising/raf-api.md#custom-ad-parsing-and-rendering
+    method: GET
+    data_selector: ad_structure
+    params: {}
+- name: media_player
+  endpoint:
+    path: /query/media-player
+    method: GET
+    data_selector: player
+- name: keypress
+  endpoint:
+    path: /keypress/home
+    method: POST
+    data_selector: null
+- name: keydown
+  endpoint:
+    path: /keydown/left
+    method: POST
+    data_selector: null
+- name: keyup
+  endpoint:
+    path: /keyup/left
+    method: POST
+    data_selector: null
+- name: device_info
+  endpoint:
+    path: /query/device-info
+    method: GET
+    data_selector: null
+- name: tv_channels
+  endpoint:
+    path: /query/tv-channels
+    method: GET
+    data_selector: null
+- name: tv_active_channel
+  endpoint:
+    path: /query/tv-active-channel
+    method: GET
+    data_selector: null
+- name: device_info
+  endpoint:
+    path: /query/device-info
+    method: GET
+    data_selector: device-info
+- name: icon
+  endpoint:
+    path: /query/icon/{app_id}
+    method: GET
+    data_selector: raw binary picture data
+- name: chanperf
+  endpoint:
+    path: /query/chanperf
+    method: GET
+    data_selector: chanperf
+- name: r2d2_bitmaps
+  endpoint:
+    path: /query/r2d2-bitmaps
+    method: GET
+    data_selector: r2d2-bitmaps
+- name: sgnodes
+  endpoint:
+    path: /query/sgnodes
+    method: GET
+    data_selector: sgnodes
+- name: sgrendezvous
+  endpoint:
+    path: /query/sgrendezvous
+    method: GET
+    data_selector: sgrendezvous
+- name: registry
+  endpoint:
+    path: /query/registry/dev
+    method: GET
+    data_selector: plugin-registry
+- name: fwbeacons
+  endpoint:
+    path: /query/fwbeacons
+    method: GET
+    data_selector: fwbeacons
+- name: app_object_counts
+  endpoint:
+    path: /query/app-object-counts/{channelId}
+    method: GET
+    data_selector: app-object-counts
+- name: app_state
+  endpoint:
+    path: /query/app-state/{appId}
+    method: GET
+    data_selector: channel
+- name: tv_channels
+  endpoint:
+    path: /query/tv-channels
+    method: GET
+    data_selector: tv-channels
+- name: tv_active_channel
+  endpoint:
+    path: /query/tv-active-channel
+    method: GET
+    data_selector: tv-channel
+- name: roku_external_control
+  endpoint:
+    path: /examples/rokuExternalControl
+    method: GET
+    data_selector: commands
+    params: {}
+- name: dial
+  endpoint:
+    path: /dial
+    method: GET
+    data_selector: applications
+    params: {}
+notes:
+- Some objects like Contact may return nulls in deeply nested fields
+- The RAF library may not be loaded through a component library.
+- Client applications do not include any additional BrightScript modules as part of
+  their own package file.
+- Custom ad parsing and rendering requires explicit approval from Roku to ensure proper
+  ad delivery and quality.
+- All ad measurement beacons must be fired directly by RAF client-side.
+- Requires setup of connected app in Roku
+- Per Roku's certification requirements, all ad measurement beacons must be fired
+  directly by RAF client-side
+- Uses OAuth2 for authentication
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Apps must complete upgrades and downgrades on the device using On-device upgrade
+  and downgrade.
+- Authentication via a third-party oAuth provider such as Google or Facebook is not
+  supported.
+- If the customer clicks Cancel, the userData field is set to 'invalid'. In this case,
+  display an empty keyboard dialog so the customer can enter their email address or
+  phone number for signing into your app.
+- All requests and responses must be expressed as JSON objects with the 'Content-Type'
+  of 'application/json'.
+- All traffic is communicated over a Server authenticated TLS connection unless explicitly
+  specified otherwise.
+- Requires setup of connected app in Roku API
+- Control by mobile apps feature must be set to 'Enabled' for certain commands.
+- Developer mode is required for advanced commands.
+- Deep linking allows launching a particular piece of content via parameters passed
+  to the app at launch time.
+errors:
+- '403 ERROR: The request could not be satisfied'
+- Request blocked. We can't connect to the server for this app or website at this
+  time.
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400: Request error returns an empty JSON object.'
+- '200 OK: Successful request'
+- '404 Not Found: Check the endpoint path'
+- '400 Bad Request: Invalid command or parameters'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://developer.roku.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+source_metadata: null

@@ -1,0 +1,64 @@
+auth_info:
+- information_source; https://api-reference.connectionpoint.com/:
+  - 'Authorization uses Bearer token authentication. Send the access token in the
+    Authorization header as "Authorization: Bearer APP_ACCESS_TOKEN". The token is
+    obtained from the OAuth2 endpoint at aging.connectionpoint.com/v1/oauth2/token.
+    Rate limits are tracked via response headers X-RateLimit-Limit, X-RateLimit-Remaining,
+    and X-RateLimit-Reset, with a default limit of 1,000 authorized requests per hour.'
+  - 'ConnectionPoint uses OAuth 2.0 with access tokens passed in the Authorization
+    header. Every API request requires either a user access token or an app access
+    token sent as Authorization: Bearer ACCESS_TOKEN in the HTTP request headers.
+    Client applications must be registered and approved before interacting with the
+    API.'
+  - OAuth2 authorization code flow with optional PKCE support. To obtain a user access
+    token, POST to /oauth2/token with grant_type=authorization_code, client_id, client_secret
+    (or code_verifier if PKCE is used), redirect_uri, and code. The response includes
+    access_token with token_type "Bearer", user_id, and optional expires_in. Use the
+    access_token in subsequent API requests.
+  - Requests to this API require a user access token passed as an authorization credential.
+    The specific header name and token format are not explicitly detailed in the provided
+    documentation excerpt, but the authorization scheme is identified as user_access_token.
+  - The API uses user access tokens for authorization. Include the user_access_token
+    in the request (typically as a Bearer token in the Authorization header). Requests
+    without valid authentication return 401 Unauthorized responses.
+pagination_info:
+- information_source; https://api-reference.connectionpoint.com/:
+  - Pagination uses limit (query parameter, optional, default 20, maximum 50) and
+    after (cursor query parameter, optional) request parameters. The response includes
+    after_cursor (optional string) to retrieve the next page by passing it as the
+    after parameter in the next request.
+  - Pagination uses offset-based navigation with query parameters offset and max_results
+    (optional, default values not specified). Response includes total_results for
+    total count, max_results for page size, offset for current position, and after_cursor
+    for cursor-based continuation; increment offset by max_results to fetch next page
+    until offset reaches total_results.
+  - 'Pagination uses offset-based navigation with query parameters. Request parameter:
+    offset (required, object PaginationInfo). Response fields: total_results (total
+    count), max_results (page size), offset (current position), after_cursor (next
+    page indicator).'
+  - 'The API uses offset-based pagination with the following request parameters: offset
+    (optional, query parameter, default 0) and max_results (optional, query parameter).
+    The response includes total_results (total number of entries), max_results (page
+    size), offset (current position), and after_cursor (for cursor-based navigation).
+    Increment offset by max_results to fetch the next page until offset plus max_results
+    exceeds total_results.'
+  - The API uses pagination with a required `PaginationInf` object parameter. The
+    response returns campaign entries in an `entries` array, but the documentation
+    does not specify how to construct pagination requests, what fields control page
+    navigation, or when to stop iterating.
+possible_base_urls:
+- information_source; https://api-reference.connectionpoint.com/:
+  - aging.connectionpoint.com/v1
+  - https://api-staging.connectionpoint.com
+possible_endpoints:
+- information_source; https://api-reference.connectionpoint.com/:
+  - DELETE https://api-staging.connectionpoint.com/v1/activities/{activityId}/likes
+  - DELETE https://api-staging.connectionpoint.com/v1/comments/{commentId}
+  - DELETE https://api-staging.connectionpoint.com/v1/payments/offline/{paymentId}
+  - DELETE https://api-staging.connectionpoint.com/v1/story_updates/{storyUpdateId}
+  - DELETE https://api-staging.connectionpoint.com/v1/webhook/endpoints/{webhookEndpointId}
+  - DELETE https://api.connectionpoint.com/v1/activities/{activityId}/likes
+  - DELETE https://api.connectionpoint.com/v1/comments/{commentId}
+  - DELETE https://api.connectionpoint.com/v1/payments/offline/{paymentId}
+  - DELETE https://api.connectionpoint.com/v1/story_updates/{storyUpdateId}
+  - DELETE https://api.connectionpoint.com/v1/webhook/endpoints/{webhookEndpointId}

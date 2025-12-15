@@ -1,0 +1,183 @@
+resources:
+- name: open_support_tickets
+  endpoint:
+    path: /admin/open-support-tickets/
+    method: GET
+- name: My Communities
+  endpoint:
+    path: /admin/my-communities
+    method: GET
+- name: communities
+  endpoint:
+    path: /admin/communities-list-per-user/
+    method: GET
+    data_selector: communities
+    params: {}
+- name: manifest
+  endpoint:
+    path: /outlook-addin/{yourtenant}/manifest.xml
+    method: GET
+- name: Touchpoint
+  endpoint:
+    path: touchpoint
+    method: POST
+- name: community
+  endpoint:
+    path: /communities
+    method: GET
+- name: edit_on_desktop
+  endpoint:
+    path: /round-trip-edit/edit-on-desktop
+    method: GET
+    data_selector: files
+- name: MS Teams Chat Integrations
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: Slack Chat Integration
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: Sametime ITM Integrations
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: HCL Sametime Chat Integration
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: My WebMeeting
+  endpoint:
+    path: /extensions/meeting
+    method: POST
+    data_selector: payload
+    params:
+      name: My WebMeeting
+      title: My WebMeeting
+      description: Allows each user to quickly access their own Web Meeting
+      services:
+      - Customizer
+      state: enabled
+      extensions:
+      - name: webMeeting
+        type: com.ibm.customizer.ui
+        payload:
+          include-files:
+          - extensions/meeting/commonTools.js
+          - extensions/meeting/webMeeting.js
+          cache-headers:
+            cache-control: max-age=43200
+        path: global
+        state: enabled
+- name: activities
+  endpoint:
+    path: /settings/activities
+    method: POST
+    data_selector: settings
+    params: {}
+- name: policy
+  endpoint:
+    path: /policies/activities
+    method: POST
+    data_selector: policies
+    params: {}
+- name: style-customization
+  endpoint:
+    path: /admin/extensions/custom-css/
+    method: POST
+    data_selector: payload
+    params: {}
+- name: bookmarks
+  endpoint:
+    path: extensions/bookmarks/js/bookmarks.js
+    method: GET
+- name: navbar
+  endpoint:
+    path: /admin/extensions/navbar/
+    method: GET
+- name: Sametime Client
+  endpoint:
+    path: /services/auth/sametime
+    method: POST
+notes:
+- Uses OAuth 2.0 for authentication.
+- Basic authentication may no longer be supported in the future.
+- We use OAuth 2.0 for all authentication, and basic authentication is may no longer
+  be supported in the future.
+- All Organisation Admins have access to this portal
+- If you log in with SSO you will have to click the 'Forgot Password' button on the
+  login page
+- When you @mention a non-community member in an external community, the error message
+  is unreadable.
+- Sametime standalone and Notes Plugin does not show the profile pictures.
+- Some external feeds don't show at the moment.
+- There is a limitation imposed by Apple which stops the Kudos Boards Community Widget
+  from getting users cookies and therefore is stopping Authentication between Kudos
+  Boards Cloud and HCL Connections.
+- If you are using Chrome (or Brave) browser you might have faced issues with Activities
+  Plus.
+- If you are blocking 3rd party cookies in your browser you will face an issue where
+  the authentication flow will never finish.
+- External users cannot be invited directly to the Community.
+- Clustered Mail Cloud subscriptions can not yet be added via the collab.cloud Admin
+  App.
+- ThreeThirds offer some limited Federated Identity SSO options with your on-premises
+  idP - such as Active Directory Federation Services (ADFS). These options will be
+  expanded in the future.
+- Guest accounts need to be in your IDP as well. Once SSO is enabled, all authentication
+  is forwarded to your IDP.
+- If the Connections header bar will not load when launching Activities Plus/Huddo
+  Boards, the cause is probably due to the browser settings, preventing the use of
+  use third-party cookies.
+- Setup is needed to make this work, an extension needs to be added
+- 'The following fields are configurable: uiEnabled, defaultPath, icExternalPath,
+  pagStandalone, privacyAndGuidelines.enabled, privacyAndGuidelines.version, privacyAndGuidelines.externalLink,
+  privacyAndGuidelines.internalLink, maxPromotedExperts, promotedExperts, maxPromotedCommunities,
+  promotedCommunitiesItem, welcomeVideoUrl.'
+- If you are not logged in sharepoint the widget sometimes points to the wrong login
+  url.
+- The sharepoint widget requires you to be already logged in your sharepoint site.
+- The Homepage Switcher setting is stored in the browser's storage. If you switch
+  the browser or clear the local browser storage, the Social Homepage will be your
+  default Homepage.
+- The language switcher does not work.
+- Some customers have reported that they cannot disconnect the Connections Cloud site
+  because they receive an error stating that there are files are in use.
+- A user has to login to their Connections account in the mobile app before they can
+  receive any push notifications.
+- They will continue to receive notifications even if the app is not running.
+- If the user explicitly logs out, they will stop receiving push notifications for
+  the account.
+- The function 'activities' in Connection Plugin for HCL Notes does not work.
+- Settings must be configured using the Domino Administrator.
+- Disabling or deleting the 'ThreeThirds v80' app is not recommended.
+- Requires to whitelist any feed urls per default.
+- Access to the appregistry is required for managing the whitelist.
+- For testing the cacheExpiration (in seconds) should be low.
+- For production the cacheExpiration value should be very high.
+- The navbar supports only 2 levels.
+- The 'type':'com.hcl.connections.nav' may only be enabled once. If more than 1 is
+  enabled, the result may be unexpected.
+- If you have Notes Federated Login enabled with ThreeThirds Identity Provider (KeyCloak),
+  you can configure your Users' Sametime clients to login automatically to ThreeThirds
+  Multi-Tenant Sametime chat with no password.
+- Some manual configuration may be required.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- If the cache is not set or too low you'll notice that the original UI will load
+  first and your changes will be applied after the page has loaded.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://collab.cloud
+  headers:
+    Accept: application/json
+source_metadata: null

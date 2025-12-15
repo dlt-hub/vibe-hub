@@ -1,0 +1,51 @@
+auth_info:
+- information_source; https://www.bitstamp.net/api/:
+  - 'API uses HMAC-SHA256 signature-based authentication. Include X-Auth-Version header
+    set to v2, X-Auth-Subaccount-Id header for sub-account requests (optional), and
+    compute an HMAC-SHA256 signature using your API key and secret. The signature
+    message is constructed as: BITSTAMP {api_key}{HTTP_METHOD}{host}{path}{query_params}{content_type}{nonce}{timestamp}v2{payload_string},
+    then signed with your api_key_secret. Send the signature in the Authorization
+    header. Include Content-Type header only if request has a body. Nonce should be
+    a UUID and timestamp should be milliseconds since epoch.'
+  - HMAC-SHA256 signature-based authentication required. Send API key in X-Auth header,
+    computed HMAC-SHA256 signature (hex-encoded uppercase) in X-Auth-Signature header,
+    along with X-Auth-Nonce, X-Auth-Timestamp, and X-Auth-Version headers. The signature
+    is computed over a payload string using a secret key.
+  - HMAC-SHA256 signature-based authentication using API key and secret. Client sends
+    request with X-Auth header containing "BITSTAMP api_key", X-Auth-Signature (HMAC-SHA256
+    of message), X-Auth-Nonce, X-Auth-Timestamp, and X-Auth-Version v2 headers. Server
+    responds with X-Server-Auth-Signature header that client must verify using same
+    HMAC-SHA256 algorithm with API_SECRET, nonce, timestamp, content-type, and response
+    body.
+  - The API key is bound to the Main account. Requests require an API key, which should
+    be included as a parameter or header (exact mechanism not specified in this excerpt).
+pagination_info:
+- information_source; https://www.bitstamp.net/api/:
+  - Pagination uses limit and offset query parameters. The limit parameter controls
+    the number of results returned, with a maximum value constraint. The offset parameter
+    specifies the starting position for results. Response is a direct array without
+    pagination metadata fields.
+  - Pagination uses offset and limit parameters in the request body (form-urlencoded).
+    offset skips that many results, limit restricts the result count to a maximum
+    value. The response is an array of transaction objects; continue paginating by
+    incrementing offset by the limit value until fewer results than limit are returned.
+  - Pagination uses offset and limit query parameters. offset skips that many results
+    (string format), limit restricts result count to a maximum value (string format).
+    Response indicates when to stop paginating based on result count relative to the
+    limit parameter.
+possible_base_urls:
+- information_source; https://www.bitstamp.net/api/:
+  - api/v2/
+  - https://box.bitstamp.net/api/v2
+possible_endpoints:
+- information_source; https://www.bitstamp.net/api/:
+  - GET /api/v2/currencies/
+  - GET /api/v2/earn/unsubscribe/
+  - GET /api/v2/fees/trading/
+  - GET /api/v2/order_status/
+  - GET /api/v2/ticker/
+  - GET /api/v2/ticker/{currency_pair}/
+  - GET /api/v2/ticker_hour/
+  - GET /api/v2/trading-pairs-info/
+  - GET api/v2/funding_rate/{market_symbol}/
+  - GET api/v2/funding_rate_history/{market_symbol}/

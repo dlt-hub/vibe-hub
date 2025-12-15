@@ -1,0 +1,102 @@
+resources:
+- name: campaigns
+  endpoint:
+    path: /campaigns
+    method: GET
+    data_selector: data
+    params:
+      incremental: updated_at
+- name: video_guidelines
+  endpoint:
+    path: /nbcuadspecs/nbcu-programmatic-video-guidelines
+    method: GET
+    data_selector: guidelines
+    params: {}
+- name: Disney+ / Hulu prohibited ad categories
+  endpoint:
+    path: /prohibited-ad-categories/disney-hulu
+    method: GET
+    data_selector: categories
+    params: {}
+- name: Peacock prohibited ad categories
+  endpoint:
+    path: /prohibited-ad-categories/peacock
+    method: GET
+    data_selector: categories
+    params: {}
+- name: app_tracking
+  endpoint:
+    path: /attribution/partner_configuration
+    method: POST
+    data_selector: configuration
+    params: {}
+- name: events
+  endpoint:
+    path: /event
+    method: POST
+    data_selector: event
+    params: {}
+- name: users
+  endpoint:
+    path: /users/api-keys/me
+    method: GET
+    data_selector: data
+    params: {}
+- name: event_schema
+  endpoint:
+    path: /api/v1/event_schema
+    method: GET
+    data_selector: records
+notes:
+- Ensure pixel setup is complete for tracking events
+- Check this guide for your specific campaign type
+- Follow the troubleshooting steps for your situation
+- Vibe updates your retargeting audience every hour, as long as your pixel is active.
+- Website visitors are automatically removed from your audience after 30 days.
+- Ensure compliance with Disney+ and Peacock creative guidelines to avoid campaign
+  delivery issues.
+- Additional creative validation process for Disney+ or Peacock may take a few extra
+  days.
+- Full guidelines are available at https://nbcuniversal-creative-guidelines.scrollhelp.site/nbcuadspecs/nbcu-programmatic-video-guidelines
+- Peacock has specific creative guidelines that Vibe cannot overlook.
+- The additional creative validation process from Peacock can take a few extra days
+  to review the creative.
+- Vibe recommends not selecting Peacock alone in the published campaigns but rather
+  pairing them with other channels to ensure the successful delivery of the campaigns.
+- Creative validation is required for Disney+ and Peacock.
+- External VAST tags are not supported.
+- 'Recommended: Only put the Onelink attribution link with your lookback values (viewthrough,
+  cross-platform) and let Vibe add all the relevant parameters automatically.'
+- Send View-Through Postbacks
+- Send all install postback to Vibe regardless of attribution partner
+- Send event postback to Vibe on all installs
+- Include Revenue Value when your mapped event includes revenue amount
+- Vibe only passes page views to GA4, then GA4 attributes other events depending on
+  how your GA4 is set up.
+- Triple Whale requires full Shopify Store domain (e.g., my-store.myshopify.com) for
+  integration.
+- Requires setup of connected app in Vibe
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Measurement Protocol Error: Enable User Data Collection for the specific data stream.'
+- Integration will fail if only a short store name is provided.
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+client:
+  base_url: https://api.vibe.co
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.vibe.co/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

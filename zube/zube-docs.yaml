@@ -1,0 +1,47 @@
+auth_info:
+- information_source; https://zube.io/blog/introducing-zube-s-public-api/:
+  - Authentication is done with user tokens (JWTs). You need to issue yourself a JWT
+    and include it in requests so that changes are properly attributed to you. The
+    full details of how to obtain and use the JWT are found in the API documentation.
+- information_source; https://zube.io/docs/api:
+  - 'Authentication uses bearer token and client ID. Include the header "Authorization:
+    Bearer ACCESS_JWT" with your JWT access token and the header "X-Client-ID: CLIENT_ID"
+    with your client ID in all requests. For requests with body data, also include
+    "Content-Type: application/json" header.'
+  - Authorization header with Bearer token (ACCESS_JWT) and X-Client-ID header with
+    CLIENT_ID value are required for API requests. Send the Bearer token in the Authorization
+    header as "Bearer ACCESS_JWT" and the client ID in the X-Client-ID header.
+  - 'Authorization requires two headers: send a JWT in the Authorization header as
+    "Bearer ACCESS_JWT" and include your CLIENT_ID in the X-Client-ID header.'
+  - The API uses JWT-based authentication with a two-step flow. First, generate a
+    refresh JWT signed with RS256 using your client_id and private key (PEM format),
+    with claims iat, exp (max 10 minutes), and iss set to client_id. Then POST to
+    /api/users/tokens with the refresh JWT in the Authorization header as "Bearer
+    REFRESH_JWT" and your client_id in the X-Client-ID header to obtain an access
+    JWT. Use the access JWT in the Authorization header as "Bearer ACCESS_JWT" for
+    all subsequent API requests.
+pagination_info:
+- information_source; https://zube.io/docs/api:
+  - Paginated list endpoints default to 30 items per page. Use the `page` query parameter
+    to specify the page number, and optionally use `per_page` query parameter to customize
+    results per page. The documentation does not specify response fields indicating
+    pagination state or when to stop paginating.
+  - Pagination uses query parameters page and per_page (optional, default per_page
+    is 30). Response includes pagination object with page, per_page, total_pages,
+    and total fields to indicate current position and total available pages.
+possible_base_urls:
+- information_source; https://zube.io/docs/api:
+  - /api/sources
+  - /api/sources/:source_id
+possible_endpoints:
+- information_source; https://zube.io/docs/api:
+  - DELETE /api/accounts/:account_id/admin_members/:admin_member_id
+  - DELETE /api/accounts/:account_id/members/:member_id
+  - DELETE /api/card_relations/:card_relation_id
+  - DELETE /api/cards/:card_id/card_custom_field_dates/:card_custom_field_date_id
+  - DELETE /api/cards/:card_id/card_custom_field_numbers/:card_custom_field_number_id
+  - DELETE /api/cards/:card_id/card_custom_field_single_selections/:card_custom_field_single_selection_id
+  - DELETE /api/cards/:card_id/card_custom_field_texts/:card_custom_field_text_id
+  - DELETE /api/cards/:card_id/comments/:comment_id
+  - DELETE /api/cards/:card_id/subscriptions/:subscription_id
+  - DELETE /api/custom_fields/:custom_field_id/single_select_options/:single_select_option_id

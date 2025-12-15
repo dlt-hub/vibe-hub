@@ -1,0 +1,39 @@
+auth_info:
+- information_source; https://api.apis.guru/v2/specs/paylocity.com/2/openapi.json:
+  - OAuth 2.0 is used as the API Authorization framework. Paylocity provides secure
+    client credentials including a unique client id and secret (which expires in 365
+    days). The secret can be renewed via an API endpoint using current credentials
+    and a renewal code sent via email. Both current and new secret values are recognized
+    during the transition period.
+  - OAuth2 client credentials flow is used to obtain a Bearer token. POST a request
+    with Content-Type application/x-www-form-urlencoded containing grant_type=client_credentials
+    and scope=WebLinkAPI. The response includes access_token (use as Bearer token),
+    expires_in (3600 seconds), and token_type (Bearer). Include the access_token in
+    subsequent API requests as a Bearer token in the Authorization header.
+  - Paylocity Web Services API uses OAuth 2.0 authentication. To obtain a bearer token,
+    send a POST request to the authorization endpoint (https://api.paylocity.com/IdentityServer/connect/token
+    for production or https://apisandbox.paylocity.com/IdentityServer/connect/token
+    for testing) with basic authentication in the Authorization header and Content-Type
+    set to application/x-www-form-urlencoded. The Authorization header must contain
+    base-64 encoded credentials in the format "Basic base64(client-id:client-secret)",
+    where client-id and client-secret are your OAuth credentials. All subsequent API
+    requests require the bearer token obtained from this endpoint in the Authorization
+    header.
+  - 'Paylocity uses OAuth2 with the security scheme "paylocity_auth" requiring the
+    "WebLinkAPI" scope. Credentials are obtained via the /v2/credentials/secrets endpoint,
+    which accepts a POST request with client secret details in the JSON request body
+    (schema: addClientSecret).'
+  - Paylocity uses a custom security scheme called paylocity_auth with the WebLinkAPI
+    scope. Requests must include authentication credentials as defined by the paylocity_auth
+    security scheme, which is required to access endpoints like the Custom Fields
+    and employee management APIs.
+possible_base_urls:
+- information_source; https://api.apis.guru/v2/specs/paylocity.com/2/openapi.json:
+  - https://api.paylocity.com/IdentityServer/connect/token
+  - https://api.paylocity.com/api
+possible_endpoints:
+- information_source; https://api.apis.guru/v2/specs/paylocity.com/2/openapi.json:
+  - POST /v2/companies/{companyId}/employees
+  - POST /v2/credentials/secrets
+  - POST https://api.paylocity.com/IdentityServer/connect/token
+  - POST https://apisandbox.paylocity.com/IdentityServer/connect/token

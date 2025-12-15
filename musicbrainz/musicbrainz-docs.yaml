@@ -1,0 +1,45 @@
+auth_info:
+- information_source; https://musicbrainz.org/doc/Development/OAuth2:
+  - 'MusicBrainz uses Bearer tokens for authentication. The preferred method is to
+    include the token in the Authorization header as "Authorization: Bearer <token>".
+    Alternatively, for POST requests, the access_token can be passed in the request
+    body as a form parameter. Bearer tokens must only be sent over HTTPS.'
+  - 'MusicBrainz uses OAuth2 for authentication. Token revocation requires POST to
+    https://musicbrainz.org/oauth2/revoke with three form-encoded parameters: token
+    (refresh or access token), client_id, and client_secret. The implementation supports
+    scopes including profile, email, and tag for controlling authorization grants.'
+  - 'MusicBrainz uses OAuth2 with authorization code flow and PKCE (RFC 7636). To
+    exchange an authorization code for an access token, POST to https://musicbrainz.org/oauth2/token
+    with form parameters: grant_type=authorization_code, code, client_id, client_secret,
+    and redirect_uri. The server returns an access_token (Bearer token type), expires_in,
+    and refresh_token. To refresh an expired access token, POST with grant_type=refresh_token
+    and the refresh_token parameter. The code_challenge and code_challenge_method
+    from the initial authorize request must match the token exchange request per RFC
+    7636.'
+  - 'OAuth2 authorization code flow with refresh token support. To refresh an access
+    token, send a POST request to https://musicbrainz.org/oauth2/token with form-encoded
+    parameters: grant_type set to refresh_token, the refresh_token value, client_id,
+    and client_secret. The server responds with a new access_token, expires_in duration,
+    token_type (Bearer), and optionally a new refresh_token. Tokens can be revoked
+    via POST to https://musicbrainz.org/oauth2/revoke.'
+  - The MusicBrainz API uses OAuth2 bearer tokens for authentication. Tokens can be
+    sent via Authorization header as "Bearer {access_token}", in the POST request
+    body as "access_token={token}", or as a query parameter "access_token={token}"
+    (testing only, not recommended). The endpoint shown is https://musicbrainz.org/oauth2/userinfo.
+    Bearer tokens follow RFC 6750.
+possible_base_urls:
+- information_source; https://musicbrainz.org/doc/Cover_Art_Archive/API:
+  - http://coverartarchive.org
+  - https://coverartarchive.org
+possible_endpoints:
+- information_source; https://musicbrainz.org/doc/Cover_Art_Archive/API:
+  - GET /release-group/{mbid}/
+  - GET /release-group/{mbid}/front
+  - GET /release-group/{mbid}/front-(250|500|1200)
+  - GET /release/{mbid}/
+  - GET /release/{mbid}/back
+  - GET /release/{mbid}/back-(250|500|1200).jpg
+  - GET /release/{mbid}/front
+  - GET /release/{mbid}/front-(250|500|1200).jpg
+  - GET /release/{mbid}/{id}
+  - GET /release/{mbid}/{id}-(250|500|1200).jpg

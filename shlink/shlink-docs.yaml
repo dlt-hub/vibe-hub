@@ -1,0 +1,168 @@
+resources:
+- name: health
+  endpoint:
+    path: /rest/health
+    method: GET
+- name: domain_redirects
+  endpoint:
+    path: /domains/redirects
+    method: PATCH
+    data_selector: redirects
+- name: short_url_management
+  endpoint:
+    path: /short-urls
+    method: POST
+    data_selector: data
+    params:
+      domain: optional
+- name: visit_management
+  endpoint:
+    path: /visits
+    method: GET
+    data_selector: data
+    params: {}
+- name: redirect_rules
+  endpoint:
+    path: /short-urls/[shortCode]/redirect-rules
+    method: POST
+    data_selector: redirectRules
+    params: {}
+- name: import_short_urls
+  endpoint:
+    path: /short-urls/import
+    method: POST
+    data_selector: imported_urls
+- name: matomo_integration
+  endpoint:
+    path: /integration/matomo
+    method: POST
+    data_selector: results
+    params: {}
+- name: short_urls
+  endpoint:
+    path: /rest/v{version}/short-urls
+    method: GET
+- name: redirect_rules
+  endpoint:
+    path: /rest/v{version}/short-urls/{shortCode}/redirect-rules
+    method: GET
+- name: tags
+  endpoint:
+    path: /rest/v{version}/tags
+    method: GET
+- name: visits
+  endpoint:
+    path: /rest/v{version}/visits
+    method: GET
+- name: domains
+  endpoint:
+    path: /rest/v{version}/domains
+    method: GET
+- name: health
+  endpoint:
+    path: /rest/health
+    method: GET
+- name: new_visit
+  endpoint:
+    path: /new-visit
+    method: SEND
+    data_selector: shortUrl
+    params: {}
+- name: new_short_url
+  endpoint:
+    path: /new-short-url
+    method: SEND
+    data_selector: shortUrl
+    params: {}
+- name: new_orphan_visit
+  endpoint:
+    path: /new-orphan-visit
+    method: SEND
+    data_selector: visit
+    params: {}
+- name: new_short_url_visit
+  endpoint:
+    path: /new-visit/{shortCode}
+    method: SEND
+    data_selector: shortUrl
+    params: {}
+- name: ShortUrl
+  endpoint:
+    path: /shortUrls
+    method: GET
+    data_selector: shortUrls
+- name: VisitsSummary
+  endpoint:
+    path: /visitsSummary
+    method: GET
+    data_selector: visitsSummary
+- name: Visit
+  endpoint:
+    path: /visits
+    method: GET
+    data_selector: visits
+notes:
+- Shlink will track every time your short URLs are opened.
+- Shlink can track visits to any URL that would usually result in a '404 - Not found'
+  error.
+- Starting with v2.6.0, Shlink can also track orphan visits.
+- Shlink docker images are published both in Docker hub and Github Container Registry.
+- The image comes with a working SQLite database, but in production, it’s strongly
+  recommended using a distributed database.
+- Generate your first API key to interact with Shlink’s API.
+- FrankenPHP supports many other configuration options.
+- Both Apache and Nginx are officially supported
+- Shlink expects the database to be up and running when it starts.
+- If you don’t provide a GeoLite2 license key, Shlink will simply not geolocate visits.
+- The logic to parse secret env vars is generic, so you can use this approach with
+  any existing or future environment variable.
+- The use of a _FILE suffix is a convention used by popular docker images.
+- If both the suffixed and non-suffixed env vars are provided, the latter will be
+  ignored.
+- Due to the project’s architecture, and the lack of an integrated GUI, Shlink provides
+  a couple of command line tools that can be used to install or update Shlink instances,
+  or even completely manage Shlink as a whole (create short URLs, see visits, manage
+  domains, etc).
+- 'Always pass the header Accept: application/json to prevent receiving HTML.'
+- Shlink does not directly depend on the name of the folder, it’s perfectly fine to
+  rename it and continue working.
+- Starting with v2.8.0, Shlink allows configuring different special redirects for
+  every domain.
+- With Shlink v2.9.0 and newer, you can include placeholders in the URLs to redirect
+  to.
+- The installation tool expects to be executed on Shlink’s root directory.
+- Geolocation-based rules are prone to false positives/negatives (specially by city
+  name), since geolocating a visitor based on their IP address is not perfect.
+- The import process is transactional and all-or-nothing.
+- Shlink relies on the date of visits to determine if they have already been imported.
+- Real-time updates only work with RoadRunner, which is the case if you are using
+  the docker image.
+- Make sure the consumer’s IP address, and the request’s domain, are forwarded from
+  the proxy to Shlink.
+- Shlink will send raw IP addresses to Matomo for geolocation purposes.
+- Shlink will always use POST to send data to Matomo.
+- Editing roles on existing API keys is not allowed, as it could lead to behavior
+  inconsistencies and security breaches.
+errors:
+- 'https://shlink.io/api/error/tag-not-found: Tag with name "foo" could not be found'
+- 'https://shlink.io/api/error/non-unique-slug: Provided slug "custom" is already
+  in use'
+- 'BadMethodCallException: Undefined method ‘methodName’'
+- 'PHP Parse error: syntax error'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck API key or access rights'
+- Possible duplications if sending existing visits without checking for existence.
+- '401: Provided API key does not exist or is invalid'
+- https://shlink.io/api/error/tag-not-found
+- Tag with name "foo" could not be found
+- Tag not found
+- '404'
+- https://shlink.io/api/error/non-unique-slug
+- Provided slug "custom" is already in use
+- Invalid custom slug
+- '400'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://app.shlink.io
+source_metadata: null

@@ -1,0 +1,445 @@
+resources:
+- name: case_list
+  endpoint:
+    path: /api/v9/item/search
+    method: POST
+    data_selector: content
+    params:
+      orderField: openedDate
+      orderType: desc
+      pageIndex: 4
+      pageSize: 50
+      projects:
+      - project: 25
+      - project: 19
+      repository: 1
+      types:
+      - itemType: 2
+      - itemType: 1
+      - itemType: 4
+      - itemType: 3
+      - itemType: 13
+- name: case_creation
+  endpoint:
+    path: /api/v9/item
+    method: POST
+    data_selector: id
+    params: {}
+- name: case_consultation
+  endpoint:
+    path: /api/v9/item/{ItemId}
+    method: GET
+    data_selector: records
+    params:
+      ItemId: Number
+- name: item
+  endpoint:
+    path: /api/v9/item/{ItemId}
+    method: PUT
+    data_selector: result
+    params:
+      ItemId: null
+      itemType: null
+      consoleType: null
+      modelId: null
+      stateId: null
+      listAdditionalField: null
+      itemVersion: null
+- name: file_upload
+  endpoint:
+    path: api/v9/file
+    method: POST
+    data_selector: ''
+    params:
+      Data0: 'Yes'
+      FileItemId: 'Yes'
+      FileItemType: 'Yes'
+      UploadType: 'Yes'
+      AdditionalFieldId: 'No'
+      Concept: 'Yes'
+      Description: 'No'
+- name: note
+  endpoint:
+    path: /api/v9/item/{id}/note
+    method: POST
+    data_selector: result
+    params:
+      Id: item ID
+      Description: contents of the note
+      itemType: Case Type
+      visible: indicate whether the note is public or private
+- name: Get Statuses
+  endpoint:
+    path: /api/v9/model/{id}/{itemType}/states
+    method: GET
+    data_selector: content
+    params:
+      stateId: '{stateId}'
+      itemId: '{itemId}'
+- name: delete_file
+  endpoint:
+    path: /api/v9/file/{id}
+    method: DELETE
+    params:
+      uploadType: '{uploadType}'
+- name: list_files
+  endpoint:
+    path: /api/v9/item/{id}/files
+    method: GET
+    data_selector: content
+    params:
+      itemType: '{itemType}'
+      uploadType: '{uploadType}'
+      additionalFieldId: '{additionalFieldId}'
+- name: List of Historical
+  endpoint:
+    path: /api/v9/item/{id}/history/list
+    method: GET
+    params:
+      isClosed: '{isClosed}'
+      consoleType: '{consoleType}'
+      modelId: '{modelId}'
+      statusId: '{statusId}'
+- name: task
+  endpoint:
+    path: /api/v9/task
+    method: POST
+    data_selector: ''
+    params: {}
+- name: item_relations
+  endpoint:
+    path: /api/v9/item/{id}/type/{itemType}/relations/list
+    method: POST
+    data_selector: content
+    params:
+      repository: '{repository}'
+      id: Case ID
+      itemType: Case Type
+      relatedItemType: Related Case Type
+      isClosed: If the case is closed
+      isReverse: True if the search is for your children. False if the search is for
+        their parents.
+- name: Add Relationships
+  endpoint:
+    path: /api/v9/item/{id}/relation
+    method: POST
+- name: delete_relationship
+  endpoint:
+    path: api/v9/item/{id}/{itemType}/{relatedItemId}/{relatedItemType}/relation/
+    method: DELETE
+    params:
+      relationTypeId: '{relationTypeId}'
+      isReverse: '{isReverse}'
+      isSolution: '{isSolution}'
+      isClosed: '{isClosed}'
+- name: Get Model by Category
+  endpoint:
+    path: /api/v9/item/{itemType}/categories/{categoryId}/service/{serviceId}/model
+    method: GET
+    data_selector: records
+    params:
+      itemType: Number
+      categoryId: Number
+      serviceId: Number
+- name: list_parent_cases
+  endpoint:
+    path: /api/v9/item/list/parent/{childId}/close
+    method: GET
+    data_selector: content
+    params:
+      childId: Number
+- name: close_parent_cases
+  endpoint:
+    path: /api/v9/item/close/related/parent
+    method: PUT
+    data_selector: content
+    params:
+      childId: required
+      commentary: required
+- name: user_search
+  endpoint:
+    path: /api/v9/user/{id}/search
+    method: GET
+    data_selector: content
+    params:
+      itemType: '{itemType}'
+      projectId: '{projectId}'
+      criteria: '{criteria}'
+- name: user_editing
+  endpoint:
+    path: /api/v9/user/{id}
+    method: PUT
+    data_selector: Result
+    params: {}
+- name: user
+  endpoint:
+    path: /api/v9/user
+    method: POST
+    data_selector: result
+    params: {}
+- name: user
+  endpoint:
+    path: /api/v9/user
+    method: GET
+    params:
+      id: '{id}'
+- name: user_search
+  endpoint:
+    path: /api/v9/user/searchAll
+    method: GET
+    data_selector: content
+    params:
+      itemType: specialist
+- name: user_to_company_association
+  endpoint:
+    path: api/v9/company/{company_id}/associateusers
+    method: POST
+    data_selector: ''
+    params: {}
+- name: user_companies
+  endpoint:
+    path: api/v9/user/{user_id}/companies
+    method: POST
+    data_selector: ''
+    params: {}
+- name: categories
+  endpoint:
+    path: /api/v9/item/{itemType}/services/{serviceId}/categories
+    method: GET
+    data_selector: content
+    params:
+      dataType: '{dataType}'
+      parentId: '{parentId}'
+- name: services_request_details
+  endpoint:
+    path: /api/v9/project/{id}/{itemType}/services/search
+    method: GET
+    data_selector: content
+    params:
+      console: '{console}'
+      clientId: '{clientId}'
+      companyId: '{companyId}'
+      ciId: '{ciId}'
+      application: '{application}'
+      criteria: '{criteria}'
+- name: additional_fields
+  endpoint:
+    path: /api/v9/additionalfields/{id}/type/{fieldType}/values
+    method: GET
+    data_selector: content
+    params: {}
+- name: company
+  endpoint:
+    path: /api/v9/company
+    method: POST
+    data_selector: id
+    params: {}
+- name: company
+  endpoint:
+    path: /api/v9/company/{id}
+    method: PUT
+    data_selector: Result
+    params: {}
+- name: company_search
+  endpoint:
+    path: /api/v9/company/search
+    method: GET
+    data_selector: content
+    params:
+      itemType: Compañia = 38
+      projectId: optional
+      clientId: optional
+      serviceId: optional
+      criteria: optional
+      filterCaseUser: optional
+- name: company
+  endpoint:
+    path: /api/v9/company/{id}
+    method: GET
+    data_selector: content
+    params:
+      Id: Number
+- name: additional_fields
+  endpoint:
+    path: /api/v9/company/additionalfields
+    method: POST
+- name: company_search_by_name
+  endpoint:
+    path: /api/v9/company/getbyname
+    method: GET
+    data_selector: description
+    params:
+      companyName: companyName
+      projectId: projectId
+      matchName: matchName
+- name: add_project_to_company
+  endpoint:
+    path: /api/v9/company/addproject
+    method: POST
+    data_selector: Id
+    params: {}
+- name: user_companies
+  endpoint:
+    path: /api/v9/user/{Id}/usercompanies
+    method: GET
+    data_selector: content
+    params:
+      Id: Int
+- name: catalog
+  endpoint:
+    path: /api/v9/catalog/{id}
+    method: POST
+    data_selector: result
+    params: {}
+- name: catalog
+  endpoint:
+    path: /api/v9/catalog/{id}
+    method: POST
+    data_selector: result
+    params: {}
+- name: catalog
+  endpoint:
+    path: /api/v9/catalog/type={type}
+    method: GET
+    data_selector: content
+    params:
+      type: '0'
+notes:
+- OAuth authentication is required for accessing the API.
+- Configuration for Oauth 2.0 Modern Authentication
+- OAuth 2.0 authentication is required.
+- Operations on the API must be performed with users who have the appropriate permissions
+  assigned from the Console Aranda administration SERVICE MANAGEMENT SUITE ASMS.
+- To make the request to any API, it is necessary to use the integration token generated
+  from the website.
+- Using the API requires available licenses, which will behave the same as if a specialist
+  were logged in on your console.
+- In multitenant environments, consuming some endpoints can result in the “TenantNotFound”
+  error. In these cases, the header must be sent x-aranda-tenant-alias with the value
+  of the tenant on which the endpoint is to be consumed.
+- The request returns the company associated with the user consulted and the project
+  to which it belongs.
+- The token is copied to the clipboard, copied to a file and securely located. The
+  token can only be copied once it is created; When you try to check it again, it
+  will not be displayed.
+errors:
+- '400 BadRequest: Parameter Name: TemplateId'
+- '400 BadRequest: InvalidProjectsList'
+- '400 BadRequest: NoPermission'
+- '400 BadRequest: InvalidTypesList'
+- '400 BadRequest: ProjectsListNeedsSomeArguments'
+- '400 BadRequest: TypesListNeedsSomeArguments'
+- '500 InternalServerError: FailureGetItems'
+- 'TenantNotFound: Ensure the correct tenant alias is provided in the x-aranda-tenant-alias
+  header.'
+- '400 BadRequest: Parameter Name: ConsoleType'
+- '400 BadRequest: Parameter Name: ItemType'
+- '400 BadRequest: Parameter Name: ListAdditionalField'
+- '400 BadRequest: Parameter Name: TempItemId'
+- '400 BadRequest: InvalidItemType'
+- '400 BadRequest: ModelIdIsEmpty'
+- '400 BadRequest: RequestNeedsSomeArguments'
+- '400 BadRequest: StateIdIsEmpty'
+- '403 Forbidden: DoNotHavePermissionForThisAction'
+- '500 InternalServerError: FailureAddItem'
+- '400 BadRequest: Parameter Name: Id'
+- '400 BadRequest: InvalidItemId'
+- '500 InternalServerError: FailureGetObject'
+- '400 BadRequest: Parameter Name: Consoletype'
+- '400 BadRequest: Parameter Name: Itemtype'
+- '500: InternalServerError - FailureAddFile'
+- '500 InternalServerError: FailureAddNote'
+- '400 BadRequest: {id} is not a valid value for Int32. Parameter Name: Id'
+- '400 BadRequest: {itemType} is not a valid value for ArandaType. Parameter Name:
+  ItemType'
+- '400 BadRequest: {stateId} is not a valid value for Int32. Parameter name: StateId'
+- '400 BadRequest: {itemId} is not a valid value for Int32. Parameter name: ItemId'
+- '500: InternalServerError: FailureDeleteFile'
+- '400 BadRequest: Parameter Name: Uploadtype'
+- '400 BadRequest: InvalidAdditionalFieldId'
+- '400 BadRequest: InvalidGetFiles'
+- '400 BadRequest: InvalidUploadType'
+- '500 InternalServerError: FailureGetFiles'
+- '500: InternalServerError - FailureGetHistory'
+- '400: BadRequest - Parameter Name: Request'
+- '400: BadRequest - Parameter Name: ConsoleType'
+- '400: BadRequest - InvalidConsole'
+- '400: BadRequest - ParentIdIsRequired'
+- '400: BadRequest - InitialDateIsRequired'
+- '400: BadRequest - FinalDateIsRequired'
+- '400: BadRequest - DurationIsRequired'
+- '400: BadRequest - InvalidParentId'
+- '400: BadRequest - InvalidRelationTypeId'
+- '500: InternalServerError - FailureAddTask'
+- '400 BadRequest: InvalidRelations'
+- '400 BadRequest: IsReverseIsRequired'
+- '400 BadRequest: ValidationError'
+- '500 InternalServerError: FailureGetRelations'
+- '400 BadRequest: InvalidRelatedItemId'
+- '400 BadRequest: InvalidRelatedItemType'
+- '400 BadRequest: InvalidRelationTypeId'
+- '400 BadRequest: InvalidProjectId'
+- '500 InternalServerError: FailureAddRelatedItem'
+- '400 BadRequest: IsClosedIsRequired'
+- '400 BadRequest: RelatedItemTypeIsRequired'
+- '400 BadRequest: Parameter Name: RelatedItemId'
+- '400 BadRequest: Parameter Name: RelatedItemtype'
+- '500 InternalServerError: FailureDeleteRelatedItem'
+- '500: FailureGetModelByCategory'
+- '500 InternalServerError: { ‘exceptionMessage’: ‘xxxxxxxxx’, ‘message’: ‘FailureCloseRelatedParent’,
+  ‘serviceName’: ‘ItemREST’, ‘operation’: ‘CloseRelatedParent’ }'
+- '500 InternalServerError: FailureSearchUsers'
+- '400 BadRequest: InvalidTypeForSearch'
+- '500 InternalServerError: FailureUpdateUser'
+- '400 BadRequest: InvalidConsole'
+- '400 BadRequest: InvalidRegisterType'
+- '400 BadRequest: InvalidStateId'
+- '400 BadRequest: InvalidAdditionalFieldValue'
+- '400 BadRequest: AdditionalFieldIsRequired'
+- '400 BadRequest: IsRequired (Interface fields)'
+- '500 InternalServerError: FailureAddUser'
+- '500 InternalServerError: FailureGetDetail'
+- '409 Conflict: It occurs when any of the submitted IDs does not exist in the database
+  or is associated only as a specialist.'
+- '404 Not Found: CompanyIdInvalid (the company ID does not exist or is associated
+  only as a provider).'
+- '400 BadRequest: NoUsersProvided.'
+- '409 Conflict: It occurs when any of the submitted IDs do not exist in the database
+  or are associated only as a provider.'
+- '404 Not Found: ClientIdInvalid (the user’s ID does not exist or is associated only
+  as a specialist).'
+- '400 BadRequest: NoCompaniesProvided.'
+- "400 BadRequest: Is null\r\nParameter Name: ItemType"
+- "400 BadRequest: Is null\r\nParameter name: parentId"
+- "400 BadRequest: Is null\r\nParameter name: serviceId"
+- '500 InternalServerError: FailureGetCategoriesByService'
+- '500 InternalServerError: FailureGetServices'
+- '500 InternalServerError: FailureGetAdditionalFields'
+- '400 BadRequest: Parameter Name: id'
+- '400 BadRequest: Parameter Name: fieldType'
+- '400 BadRequest: Parameter name: catalogId'
+- '400 BadRequest: Parameter name: parentId'
+- '400 BadRequest: InvalidFieldType'
+- '500 InternalServerError: FailureGetLookupValues'
+- '400 BadRequest: Parameter Name: Name'
+- '400 BadRequest: Parameter Name: RegisterType'
+- '500 InternalServerError: FailureAddCompany'
+- '500 InternalServerError: FailureUpdateCompany'
+- '403 Forbidden: AccessDenied'
+- '500 InternalServerError: FailureGetCompanies'
+- '400: IdNotEmpty'
+- '500: FailureGetCompanyByName'
+- '500 InternalServerError: FailureAddProjectsToCompany'
+- 'InvalidClientUser: The queried user does not exist or is not defined as a client'
+- '403 Unauthorized: DoNotHavePermissionForThisAction'
+- '400 Bad Request: FailureAddCatalogValue'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+client:
+  base_url: '{host}/ASMSAPI/'
+  headers:
+    content-type: application/json
+    X-Authorization: Bearer {token}
+source_metadata: null

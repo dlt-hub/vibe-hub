@@ -1,0 +1,215 @@
+resources:
+- name: installation_guide
+  endpoint:
+    path: /docs/InstallationGuide/installation.html
+    method: GET
+- name: jdbc
+  endpoint:
+    path: /DeveloperGuide/jdbc-package-driver-class-and-environment-class.html
+    method: GET
+- name: development_process
+  endpoint:
+    path: /DeveloperGuide/development-process.html
+    method: GET
+- name: loading_driver
+  endpoint:
+    path: /DeveloperGuide/loading-the-driver-jdbc.html
+    method: GET
+- name: connecting_database
+  endpoint:
+    path: /DeveloperGuide/connecting-to-a-database-JDBC.html
+    method: GET
+- name: running_sql_statements
+  endpoint:
+    path: /DeveloperGuide/running-sql-statements-jdbc.html
+    method: GET
+- name: processing_data_result
+  endpoint:
+    path: /DeveloperGuide/processing-data-in-a-result-set-jdbc.html
+    method: GET
+- name: closing_connection
+  endpoint:
+    path: /DeveloperGuide/closing-a-connection-jdbc.html
+    method: GET
+- name: libpq-fe
+  endpoint:
+    path: /libpq-fe.h
+    method: GET
+- name: link_parameters
+  endpoint:
+    path: /docs/DeveloperGuide/link-parameters-libpq
+    method: GET
+    data_selector: parameters
+- name: PQconnectdb
+  endpoint:
+    path: /docs/DeveloperGuide/pqconnectdb.html
+    method: GET
+    data_selector: parameter
+    params:
+      conninfo: Connection string. For details about the fields in the string, see
+        [Connection Characters](link-parameters-libpq.html).
+- name: connection
+  endpoint:
+    path: /connect
+    method: POST
+    data_selector: PGconn
+    params: {}
+- name: PQstatus
+  endpoint:
+    path: /docs/DeveloperGuide/pqstatus.html
+    method: GET
+    data_selector: return value
+    params: {}
+- name: lo_create
+  endpoint:
+    path: /lo_create
+    method: POST
+- name: lo_import
+  endpoint:
+    path: /lo_import
+    method: POST
+- name: lo_export
+  endpoint:
+    path: /lo_export
+    method: GET
+- name: lo_open
+  endpoint:
+    path: /lo_open
+    method: POST
+- name: lo_write
+  endpoint:
+    path: /lo_write
+    method: POST
+- name: lo_read
+  endpoint:
+    path: /lo_read
+    method: GET
+- name: lo_lseek
+  endpoint:
+    path: /lo_lseek
+    method: POST
+- name: lo_tell
+  endpoint:
+    path: /lo_tell
+    method: GET
+- name: lo_truncate
+  endpoint:
+    path: /lo_truncate
+    method: POST
+- name: lo_close
+  endpoint:
+    path: /lo_close
+    method: POST
+- name: lo_unlink
+  endpoint:
+    path: /lo_unlink
+    method: DELETE
+- name: password_encryption_type
+  endpoint:
+    path: /SHOW/password_encryption_type
+    method: GET
+    data_selector: password_encryption_type
+    params: {}
+- name: password_policy
+  endpoint:
+    path: /SHOW/password_policy
+    method: GET
+    data_selector: password_policy
+    params: {}
+- name: password_reuse_time
+  endpoint:
+    path: /SHOW/password_reuse_time
+    method: GET
+    data_selector: password_reuse_time
+    params: {}
+- name: password_reuse_max
+  endpoint:
+    path: /SHOW/password_reuse_max
+    method: GET
+    data_selector: password_reuse_max
+    params: {}
+- name: password_effect_time
+  endpoint:
+    path: /SHOW/password_effect_time
+    method: GET
+    data_selector: password_effect_time
+    params: {}
+- name: password_notify_time
+  endpoint:
+    path: /SHOW/password_notify_time
+    method: GET
+    data_selector: password_notify_time
+    params: {}
+notes:
+- 'High performance: The performance of basic operators is improved.'
+- 'High security: user-level audit.'
+- 'High availability: CM supports VIP management.'
+- 'High availability: CM can be deployed on two nodes.'
+- 'High availability: The read-only detection capability of CM disks is enhanced.'
+- 'High availability: CM usability is improved.'
+- 'High intelligence: Exception detection supports self-configuration.'
+- 'Enterprise-level feature: event trigger.'
+- 'Enterprise-level feature: openGauss resource pooling architecture is implemented
+  based on storage pooling, memory pooling, and computing pooling (beta feature).'
+- 'Enterprise-level feature: UWAL accelerates the WAL performance of the database.'
+- 'Application development interface: enhanced JDBC capabilities.'
+- 'Middleware: ShardingSphere supports read/write isolation in multiple modes and
+  cross-database query.'
+- 'Middleware: 32-node networking performance of openGauss+ShardingSphere > 21 million
+  tpmC.'
+- 'Toolchain: full-lifecycle data production tool DataKit.'
+- 'Toolchain: MySQL migration tool gs_rep_portal.'
+- 'Toolchain: MySQL full migration tool gs_mysync.'
+- 'Toolchain: MySQL incremental and reverse migration tool gs_replicate.'
+- 'Toolchain: gs_datacheck based on the Merkle tree.'
+- 'Compatibilities: Compatible with most common MySQL syntax, including data types,
+  operators, system functions, DDL, DML, DCL, and PL/SQL.'
+- openGauss cannot monitor file permissions and slow disks. When the file permission
+  is abnormal, the database exits and the corresponding information is recorded in
+  logs. On a slow disk, the response to database operations is slower than usual.
+- The read-only mode of the standby node and cascaded standby node is incompatible
+  with the ultimate RTO feature. If the ultimate RTO feature is enabled, disable the
+  read-only mode of the standby node and cascaded standby node.
+- Memory Optimized Tables (MOTs) are incompatible with the incremental checkpoint
+  feature. If MOTs are used, disable the incremental checkpoint function.
+- LLVM does not support the Arm architecture. When the MOT TPC-C is imported, an LLVM
+  error is reported. To avoid this problem, disable the JIT function using the enable_mot_codegen
+  parameter. You can configure force_mot_pseudo_codegen= true to reduce the impact
+  on TPC-C test performance when the JIT function is disabled.
+- Ensure that the IP address types of the primary and standby nodes are the same.
+- If the installation stops abnormally, check whether the installation directory and
+  data directory meet the expected requirements.
+- 'The name of a database object must meet the following requirements: The name of
+  a non-time series table ranges from 1 to 63 bytes and that of a time series table
+  ranges from 1 to 53 characters.'
+- The current database ODBC driver is based on an open-source version and may be incompatible
+  with data types tinyint, smalldatetime, and nvarchar2.
+- This function establishes a new database connection using the parameters taken from
+  the string conninfo.
+- If the server connection attempt fails (as indicated by PQstatus), the application
+  should call PQfinish to release the memory used by the PGconn object.
+- The PGconn pointer must not be used again after PQfinish has been called.
+- This function is applicable to fault recovery after a connection exception occurs.
+- The connection status can be one of the preceding values. After the asynchronous
+  connection procedure is complete, only two of them, CONNECTION_OK and CONNECTION_BAD,
+  can return.
+- Client applications that use these functions must include the header file libpq/libpq-fs.h
+  and link with the libpq library.
+- Large object manipulation using these functions must take place within an SQL transaction
+  block.
+- To prevent password leakage, when running CREATE USER/ROLE to create a database
+  user, do not specify the UNENCRYPTED attribute.
+- Considering the usage and service continuity of a database, the database still allows
+  a user to log in after the password expires.
+errors:
+- 'CONNECTION_BAD: Failed connection.'
+- 'CONNECTION_OK: Normal connection.'
+- Function will return an otherwise-impossible value, typically 0 or -1 if an error
+  occurs.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: gsql://postgres:8000
+  headers: {}
+  paginator: {}
+source_metadata: null
