@@ -1,0 +1,62 @@
+auth_info:
+- information_source; https://neo4j.com/docs/aura/api/authentication/:
+  - OAuth2 client credentials flow is used to obtain access tokens. Send a POST request
+    to https://api.neo4j.io/oauth/token with grant_type=client_credentials in the
+    body and provide client_id and client_secret via HTTP Basic Authentication. The
+    response contains an access_token with a 3600 second expiration that should be
+    cached and reused for subsequent API calls.
+  - The Aura API uses Bearer Token authentication. To obtain a token, send a POST
+    request to https://api.neo4j.io/oauth/token with HTTP Basic Authentication using
+    client_id and client_secret as username and password, grant_type set to client_credentials
+    in the request body, and Content-Type header set to application/x-www-form-urlencoded.
+    Include the returned access_token in the Authorization header as Bearer <access_token>
+    for all API requests.
+- information_source; https://neo4j.com/docs/http-api/current/authentication-authorization/:
+  - Basic authentication and Bearer token authentication are both supported. For Basic
+    auth, combine username and password with a colon, base64-encode the result, and
+    send it in the Authorization header as "Basic <base64-encoded-credentials>". For
+    Bearer token auth, base64-encode the token and send it in the Authorization header
+    as "Bearer <base64-encoded-token>". The Authorization header is required; missing
+    it returns a 401 Forbidden error.
+  - 'The API requires HTTP Basic Authentication via the Authorization header. Send
+    credentials as base64-encoded username:password in the format "Authorization:
+    Basic <base64(username:password)>". If the header is missing or credentials are
+    invalid, the server returns 401 Unauthorized.'
+- information_source; https://neo4j.com/docs/query-api/current/authentication-authorization/:
+  - 'Basic authentication uses the Authorization header with the format "Authorization:
+    Basic" followed by base64-encoded credentials in the form "username:password".
+    Bearer authentication uses "Authorization: Bearer" followed by base64-encoded
+    token. Both schemes send credentials via the Authorization header, and omitting
+    it results in a 401 Forbidden response.'
+pagination_info:
+- information_source; https://neo4j.com/docs/rest-docs/current/:
+  - Pagination is available via the paged_traverse endpoint which accepts optional
+    query parameters pageSize and leaseTime to control page size and lease duration
+    for traversal results.
+  - The documentation mentions a `paged_traverse` endpoint with query parameters `pageSize`
+    and `leaseTime` for paginated traversal results, but does not provide explicit
+    details about pagination mechanics such as response fields, stopping conditions,
+    or how to navigate between pages.
+  - The response includes a `paged_traverse` URL template with query parameters `pageSize`
+    and `leaseTime` for paginating traverse results, but no explicit pagination response
+    fields or stopping conditions are documented in this excerpt.
+possible_base_urls:
+- information_source; https://neo4j.com/docs/aura/api/authentication/:
+  - https://api.neo4j.io
+  - https://api.neo4j.io/oauth/token
+possible_endpoints:
+- information_source; https://neo4j.com/docs/aura/api/authentication/:
+  - POST https://api.neo4j.io/oauth/token
+- information_source; https://neo4j.com/docs/http-api/current/authentication-authorization/:
+  - POST http://localhost:7474/db/neo4j/tx/commit
+- information_source; https://neo4j.com/docs/http-api/current/endpoints/:
+  - GET /db/{databaseName}/cluster
+  - GET /db/{databaseName}/tx
+  - GET /dbms/cluster
+  - GET http://localhost:7474/
+- information_source; https://neo4j.com/docs/query-api/current/authentication-authorization/:
+  - POST http://localhost:7474/db/neo4j/query/v2
+- information_source; https://neo4j.com/docs/rest-docs/current/:
+  - DELETE http
+  - DELETE http://localhost:7474/db/data/index/node/index_1528894864093_1/kvkey1/value1/8
+  - DELETE http://localhost:7474/db/data/index/node/index_1528894864359_1

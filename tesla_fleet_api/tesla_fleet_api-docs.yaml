@@ -1,0 +1,43 @@
+auth_info:
+- information_source; https://developer.tesla.com/docs/fleet-api/endpoints/partner-endpoints:
+  - Partner authentication token is required for certain endpoints. The token should
+    be sent as a bearer token in the Authorization header. Specific details on how
+    to obtain and use the partner authentication token are referenced in the partner-tokens
+    documentation.
+- information_source; https://developer.tesla.com/docs/fleet-api/endpoints/vehicle-commands:
+  - Commands sent to vehicles must be signed with a virtual key before being passed
+    to Fleet API. The Vehicle Command Proxy handles this signing automatically when
+    it receives requests. If a command is not signed, the vehicle will reject the
+    request. Virtual keys are installed on vehicles as applications to authorize command
+    execution, with full details available in the virtual keys developer guide.
+- information_source; https://developer.tesla.com/docs/fleet-api/endpoints/vehicle-endpoints:
+  - JWS token authentication using Schnorr signatures with NIST P-256 and SHA-256.
+    The token must be crafted manually if not using the vehicle-command proxy, which
+    automatically signs requests with the configured private key.
+pagination_info:
+- information_source; https://developer.tesla.com/docs/fleet-api/endpoints/vehicle-endpoints:
+  - The share_invites endpoint (GET /api/1/vehicles/{vehicle_tag}/invitations) is
+    paginated with a maximum page size of 25 records. However, the documentation does
+    not specify the pagination parameters (such as page, offset, limit, cursor) or
+    response fields (such as next, has_more, total_count) needed to navigate pages.
+  - This endpoint is paginated with a default page size of 100 vehicles. Use query
+    parameters page and per_page to control pagination; the response includes total_count
+    to indicate the total number of vehicles available.
+possible_base_urls:
+- information_source; https://developer.tesla.com/docs/fleet-api/endpoints/partner-endpoints:
+  - https://api.tesla.com
+- information_source; https://developer.tesla.com/docs/fleet-api/endpoints/vehicle-commands:
+  - https://developer.tesla.com
+possible_endpoints:
+- information_source; https://developer.tesla.com/docs/fleet-api/endpoints/partner-endpoints:
+  - GET /api/1/partner_accounts/fleet_telemetry_error_vins
+  - GET /api/1/partner_accounts/fleet_telemetry_errors
+  - GET /api/1/partner_accounts/public_key?domain={domain}
+  - POST /api/1/partner_accounts
+- information_source; https://developer.tesla.com/docs/fleet-api/endpoints/vehicle-commands:
+  - POST /api/1/vehicles/{vehicle_tag}/command/actuate_trunk
+  - POST /api/1/vehicles/{vehicle_tag}/command/add_charge_schedule
+  - POST /api/1/vehicles/{vehicle_tag}/command/add_precondition_schedule
+  - POST /api/1/vehicles/{vehicle_tag}/command/adjust_volume
+  - POST /api/1/vehicles/{vehicle_tag}/command/auto_conditioning_start
+  - POST /api/1/vehicles/{vehicle_tag}/command/auto_conditioning_stop

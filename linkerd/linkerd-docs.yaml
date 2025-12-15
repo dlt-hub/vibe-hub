@@ -1,0 +1,212 @@
+resources:
+- name: Server
+  endpoint:
+    path: /api/v1/namespaces/{namespace}/servers
+    method: POST
+    data_selector: metadata
+    params: {}
+- name: HTTPRoute
+  endpoint:
+    path: /api/v1/namespaces/{namespace}/httproutes
+    method: POST
+    data_selector: metadata
+    params: {}
+- name: ServerAuthorization
+  endpoint:
+    path: /api/v1/namespaces/{namespace}/serverauthorizations
+    method: POST
+    data_selector: metadata
+    params: {}
+- name: AuthorizationPolicy
+  endpoint:
+    path: /api/v1/namespaces/{namespace}/authorizationpolicies
+    method: POST
+    data_selector: metadata
+    params: {}
+- name: MeshTLSAuthentication
+  endpoint:
+    path: /api/v1/namespaces/{namespace}/meshtlsauthentications
+    method: POST
+    data_selector: metadata
+    params: {}
+- name: NetworkAuthentication
+  endpoint:
+    path: /api/v1/namespaces/{namespace}/networkauthentications
+    method: POST
+    data_selector: metadata
+    params: {}
+- name: AuthorizationPolicy
+  endpoint:
+    path: /policy/linkerd.io/v1alpha1/authorizationpolicies
+    method: GET
+    data_selector: items
+    params: {}
+- name: MeshTLSAuthentication
+  endpoint:
+    path: /policy/linkerd.io/v1alpha1/meshtlsauthentications
+    method: GET
+    data_selector: items
+    params: {}
+- name: NetworkAuthentication
+  endpoint:
+    path: /policy/linkerd.io/v1alpha1/networkauthentications
+    method: GET
+    data_selector: items
+    params: {}
+- name: ServerAuthorization
+  endpoint:
+    path: /policy/linkerd.io/v1beta1/serverauthorizations
+    method: GET
+    data_selector: items
+    params: {}
+- name: failure_accrual
+  endpoint:
+    path: /balancer.linkerd.io/failure-accrual
+    method: POST
+    data_selector: annotations
+    params: {}
+- name: HTTPRoute
+  endpoint:
+    path: /gateway.networking.kubernetes.io/v1alpha2/httproutes
+    method: GET
+    data_selector: HTTPRoute
+    params: {}
+- name: authors_get_route
+  endpoint:
+    path: /authors.json
+    method: GET
+- name: authors_path_prefix
+  endpoint:
+    path: /authors/
+    method: GET
+- name: smiley_a_b
+  endpoint:
+    path: /
+    method: GET
+- name: http_route
+  endpoint:
+    path: /gateway.networking.k8s.io/v1beta1/HTTPRoute
+    method: POST
+    data_selector: metadata.annotations
+    params: {}
+- name: grpc_route
+  endpoint:
+    path: /gateway.networking.k8s.io/v1alpha2/GRPCRoute
+    method: POST
+    data_selector: metadata.annotations
+    params: {}
+- name: webapp
+  endpoint:
+    path: /booksapp/webapp
+    method: GET
+    data_selector: default
+    params: {}
+- name: authors
+  endpoint:
+    path: /booksapp/authors
+    method: GET
+    data_selector: default
+    params: {}
+- name: books
+  endpoint:
+    path: /booksapp/books
+    method: GET
+    data_selector: default
+    params: {}
+- name: EgressNetwork
+  endpoint:
+    path: /api/v1/namespaces/{namespace}/egressnetwork
+    method: POST
+    data_selector: spec
+    params: {}
+- name: httpbin_get
+  endpoint:
+    path: /get
+    method: GET
+- name: tls_egress
+  endpoint:
+    path: /
+    method: GET
+- name: internal_egress
+  endpoint:
+    path: /
+    method: GET
+- name: authors-get-route
+  endpoint:
+    path: /authors.json
+    method: GET
+- name: authors-modify-route
+  endpoint:
+    path: /authors/
+    method: DELETE
+- name: authors-modify-route
+  endpoint:
+    path: /authors/
+    method: PUT
+- name: authors-modify-route
+  endpoint:
+    path: /authors.json
+    method: POST
+- name: authors-probe-route
+  endpoint:
+    path: /ping
+    method: GET
+notes:
+- Linkerd can only enforce policy on meshed pods, i.e. pods where the Linkerd proxy
+  has been injected.
+- If policy is a strict requirement, you should pair the usage of these features with
+  HA mode.
+- When first setting authorization policies, explicitly set accessPolicy:audit for
+  complex services.
+- Audit mode logs requests that don’t abide to policy rules without blocking them.
+- During a Linkerd install, the proxy.defaultInboundPolicy field is used to specify
+  the cluster-wide default policy.
+- AuthorizationPolicies can target HTTPRoutes instead of only Servers.
+- Circuit breaking is a pattern for improving the reliability of distributed applications.
+- HTTP responses are classified as failures if their status code is a 5xx server error.
+- Circuit breaking is incompatible with ServiceProfiles.
+- Retries configured in this way are incompatible with ServiceProfiles.
+- Timeouts configured in this way are incompatible with ServiceProfiles. If a ServiceProfile
+  is defined for a Service, proxies will use the ServiceProfile timeout configuration
+  and ignore any timeout annotations.
+- Kubernetes can tell you when all the services are running and ready for traffic.
+- Uses Linkerd for service mesh capabilities.
+- No service mesh can provide a strong security guarantee about egress traffic by
+  itself.
+- Outbound metrics do not include the hostname by default.
+- Traffic policy can restrict egress traffic based on defined routes.
+- Unencrypted HTTP traffic can only target httpbin.org/get.
+- Encrypted HTTPS traffic is allowed to all destinations.
+- Linkerd requires that the Gateway API be installed on your cluster before Linkerd
+  can be installed.
+- Running Linkerd with an incompatible version of the Gateway API on the cluster can
+  lead to hard-to-debug issues with your Linkerd installation.
+- To use this guide, you’ll need to have Linkerd installed on your cluster, along
+  with its Viz extension.
+- Routes configured in service profiles are different from HTTPRoute resources.
+- The Linkerd version implements experimental features not yet available with the
+  upstream Gateway API.
+- Prior to the complete support of the Gateway API introduced in Linkerd 2.14, Linkerd
+  provided two earlier variants of configuration.
+errors:
+- 'HTTP 403: Traffic denied by policy'
+- '503 Service Unavailable: Backend service is unavailable.'
+- '5xx server error: Endpoint is marked as failing.'
+- If no failure accrual annotations are present on a Service, proxies will not perform
+  failure accrual.
+- HTTP 502 Errors
+- HTTP 503 and 504 Errors
+- '502 Bad Gateway: Check service health and connectivity.'
+- '503 Service Unavailable: Ensure services are up and running.'
+- '504 Gateway Timeout: Service took too long to respond.'
+- '403 Forbidden: Egress traffic denied by policy configuration.'
+- 'TLS connect error: Unencrypted HTTP policy prevents HTTPS traffic.'
+- 'Not Found: The Gateway API is not installed.'
+- Incompatible version of Gateway API may cause issues.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://httpbin.org
+  headers:
+    Accept: '*/*'
+source_metadata: null

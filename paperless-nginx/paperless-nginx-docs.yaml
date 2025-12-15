@@ -1,0 +1,102 @@
+resources:
+- name: documents
+  endpoint:
+    path: /api/documents/
+    method: GET
+    data_selector: results
+- name: bulk_edit
+  endpoint:
+    path: /api/documents/bulk_edit/
+    method: POST
+    data_selector: results
+- name: token
+  endpoint:
+    path: /api/token/
+    method: POST
+    data_selector: token
+- name: ocr_settings
+  endpoint:
+    path: /configuration/ocr
+    method: GET
+    data_selector: settings
+- name: software_tweaks
+  endpoint:
+    path: /configuration/software
+    method: GET
+    data_selector: tweaks
+- name: share_links
+  endpoint:
+    path: /share
+    method: GET
+    data_selector: share_links
+    params: {}
+- name: email_sharing
+  endpoint:
+    path: /email
+    method: POST
+    data_selector: email_sharing
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- When using file name placeholders, in particular when using {tag_list}, you may
+  run into the limits of your operating system's maximum path lengths.
+- If paperless detects that two documents share the same filename, paperless will
+  automatically append _01, _02, etc to the filename.
+- If there are any errors in the placeholders included in PAPERLESS_FILENAME_FORMAT,
+  paperless will fall back to using the default naming scheme instead.
+- Defining a storage path is optional. If no storage path is defined for a document,
+  the global PAPERLESS_FILENAME_FORMAT is applied.
+- Paperless will attempt to 'clean' certain invalid PDFs with qpdf before processing.
+- Paperless will remove the staging copy as well as the scan if the first scan has
+  less pages than the second scan.
+- The scan files need to be consumed in the correct order, and one at a time.
+- Session authentication allows automatic login when logged in through the browser.
+- If you run paperless on docker, `paperless.conf` is not used.
+- Defaults to `redis://localhost:6379`.
+- Defaults to `../consume/`, relative to the 'src' directory.
+- Defaults to `../data/`, relative to the 'src' directory.
+- Defaults to empty (i.e. really delete files).
+- Defaults to `../media/`, relative to the 'src' directory.
+- Defaults to `../static/`, relative to the 'src' directory.
+- Defaults to `PAPERLESS_DATA_DIR/log/`.
+- Defaults to `/usr/share/nltk_data`.
+- If you're planning on putting Paperless on the open internet, then you really should
+  set this value to the domain name you're using.
+- Use any sequence of characters for PAPERLESS_SECRET_KEY.
+- If your language contains a '-', such as chi-sim, you must use chi_sim.
+- Deskewing is incompatible with ocr mode redo. Deskewing will get disabled automatically
+  if redo is used as the ocr mode.
+- This option may also be set with GRANIAN_WORKERS and this option may be removed
+  in the future
+- This option may also be set with GRANIAN_HOST and this option may be removed in
+  the future
+- This option may also be set with GRANIAN_PORT and this option may be removed in
+  the future
+- Ensure that the directory you're putting your documents in is the folder paperless
+  is watching.
+- Ensure that redis is up and running.
+- Paperless always redirects to /admin if you had the old paperless installed.
+- This happens when pointing these directories to NFS shares.
+- Paperless-ngx supports OAuth2 authentication for Gmail and Outlook email accounts.
+- Share links do not require a user to login.
+- For email sharing, an email server must be configured.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '406 Not Acceptable: Invalid API version specified.'
+- Ensure that any header is not passed from external requests to your reverse-proxy
+  to paperless.
+- Permission denied errors in the consumption directory
+auth_info:
+  mentioned_objects:
+  - Authorization
+  - Token
+client:
+  base_url: https://docs.paperless-ngx.com/api/
+  auth:
+    type: Token
+    location: header
+    header_name: Authorization
+source_metadata: null

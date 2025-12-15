@@ -1,0 +1,176 @@
+resources:
+- name: submit_query
+  endpoint:
+    path: /submit/
+    method: GET
+- name: status_query
+  endpoint:
+    path: /status/
+    method: GET
+- name: fetch_query
+  endpoint:
+    path: /fetch/
+    method: GET
+- name: tracking
+  endpoint:
+    path: /tracking
+    method: GET
+- name: tracking_settings
+  endpoint:
+    path: /cbp/tracking/standard-websites/configuration-variables
+    method: GET
+    data_selector: configuration_variables
+    params: {}
+- name: raw_data
+  endpoint:
+    path: /cbp/api/headline-testing-api/raw-data
+    method: GET
+- name: summary_report
+  endpoint:
+    path: /cbp/api/headline-testing-api/summary-report
+    method: GET
+- name: variant_report
+  endpoint:
+    path: /cbp/api/headline-testing-api/variant-report
+    method: GET
+- name: chartbeat_mab
+  endpoint:
+    path: //static.chartbeat.com/js/chartbeat_mab.js
+    method: GET
+- name: flicker_control_enabled
+  endpoint:
+    path: /flicker_control_enabled
+    method: GET
+    data_selector: records
+    params:
+      headlineSelector: h3, h2, h1
+      articleBlockSelector: article, section.item
+      timeout: 1000
+- name: flicker_control_disabled
+  endpoint:
+    path: /flicker_control_disabled
+    method: GET
+    data_selector: records
+    params:
+      flickerControl: false
+      articleBlockSelector: article
+- name: headline_testing
+  endpoint:
+    path: /cbp/api/headline-testing-api
+    method: GET
+    data_selector: records
+    params: {}
+- name: image_testing
+  endpoint:
+    path: /cbp/api/image-testing-api
+    method: GET
+    data_selector: records
+    params: {}
+- name: one_time_queries
+  endpoint:
+    path: /query/v2/submit/page/
+    method: GET
+    data_selector: null
+    params:
+      apikey: <YOUR API KEY>
+      endpoint: page
+      host: YOUR_HOST
+      limit: 100
+      sort_column: page_views
+      sort_order: desc
+      tz: America/New_York
+      metrics: page_views,page_uniques
+      dimensions: path,title
+      start: YYYY-MM-DD
+      end: YYYY-MM-DD
+- name: recurring_queries
+  endpoint:
+    path: /query/v2/submit/page/
+    method: GET
+    data_selector: null
+    params:
+      apikey: <YOUR API KEY>
+      endpoint: page
+      host: YOUR_HOST
+      limit: 100
+      date_range: day
+      tz: America/New_York
+      metrics: page_views,page_uniques
+      dimensions: path,title
+- name: submit_recurring_query
+  endpoint:
+    path: /query/v2/recurring/submit/
+    method: GET
+- name: get_status_recurring_query
+  endpoint:
+    path: /query/v2/recurring/status/
+    method: GET
+- name: fetch_recent_recurring_query_run
+  endpoint:
+    path: /query/v2/recurring/fetch/
+    method: GET
+- name: get_previous_recurring_query_runs
+  endpoint:
+    path: /query/v2/recurring/runs/
+    method: GET
+- name: get_recurring_queries_list
+  endpoint:
+    path: /query/v2/recurring/list/
+    method: GET
+- name: cancel_recurring_query
+  endpoint:
+    path: /query/v2/recurring/cancel/
+    method: GET
+- name: metrics
+  endpoint:
+    path: /api/metrics
+    method: GET
+- name: dimensions
+  endpoint:
+    path: /api/dimensions
+    method: GET
+- name: filters
+  endpoint:
+    path: /api/filters
+    method: GET
+notes:
+- One-time queries must be submitted anew for every unique run if your team wants
+  to run the same report over unique date ranges.
+- The domain variable must be set correctly to the site name(s) in your Chartbeat
+  account for your traffic data to begin populating in our Real-Time and Historical
+  dashboards.
+- JavaScript configuration variables are required for data to appear in your dashboard.
+- Chartbeat does not set third-party cookies.
+- Clients in the EU can point traffic to our proxy layer that de-identifies IP addresses
+  within the EU.
+- The test Site will have to be added to your organization's Chartbeat account to
+  test your data in this sandbox dashboard.
+- Chartbeat uses a web scraper to collect metadata about the pages tracked by Chartbeat's
+  main pinger.
+- Headline and Image Testing are only supported for websites using our tracking library
+  (chartbeat.js or chartbeat_video.js).
+- First-party cookies must be enabled for your site.
+- Customers using our Image Testing add-on to run image tests are more likely to require
+  a solution to flicker.
+- The headline flicker control configuration variable, _sf_async_config.flickerControl,
+  should be set to false when using this implementation.
+- 'The strategy file is requested from a URL with the following structure: https://mab.chartbeat.com/mab_strategy/headline_testing/get_strategy/?host=example.com&domain=example.com&path=%2F'
+- The size of the strategy depends on how many tests are running on the page.
+- Requires setup of staging Site on Chartbeat account
+- Click-through data needed to generate Heads Up Display pins
+- One-time queries must include start and end date parameters.
+- Recurring queries require date range parameter set to day, week, or month.
+- Filters don't impact returned rows or columns, but shape the data.
+errors:
+- 200 Returns the traffic data from your query!
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.chartbeat.com
+  auth:
+    type: apikey
+    location: header
+    header_name: X-CB-AK
+source_metadata: null

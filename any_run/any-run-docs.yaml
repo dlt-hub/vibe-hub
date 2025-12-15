@@ -1,0 +1,38 @@
+resources:
+- name: logs
+  endpoint:
+    path: /api/v1/logs
+    method: GET
+    data_selector: records
+- name: metrics
+  endpoint:
+    path: /api/v1/metrics
+    method: GET
+    data_selector: records
+notes:
+- API requires setup of connected app in Sumo Logic
+- Verify Server Certificate is optional.
+- Connection Timeout should be set in seconds.
+- Requires setup of connected app in api
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Generate your API KEY in the API and Limits tab.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+client:
+  base_url: https://api.sumologic.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.sumologic.com/oauth/token
+    client_id: '{{ dlt.secrets[''sumo_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''sumo_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''sumo_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

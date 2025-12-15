@@ -1,0 +1,60 @@
+resources:
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: public_api
+  endpoint:
+    path: /api/public
+    method: GET
+- name: password_reset
+  endpoint:
+    path: /rest/user/password
+    method: POST
+    data_selector: response
+    params:
+      reset: 'true'
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Public access without token or api_key is available for a few set of APIs with limited
+  access.
+- You need to have service definitions in order to script against the 3rd party service
+  in the front-end interface of DreamFactory.
+- 'API call format: /rest/user/password?reset=true'
+- 'Payload format: {email: "user@domain.com", password: "password", reset: true}'
+- Custom authentication methods can be implemented with a third-party authentication
+  provider.
+- Only GET requests work after update to 2.1
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Invalid credentials: Check if the email and password are correct'
+- 'No record(s) detected in request: error code 400'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.openweathermap.org/data/2.5/forecast
+  headers:
+    APPID: <app_key>
+  resources:
+  - name: weather_forecast
+    endpoint:
+      path: /
+      method: GET
+      params:
+        id: '1259229'
+source_metadata: null

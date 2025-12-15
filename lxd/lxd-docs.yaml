@@ -1,0 +1,148 @@
+resources:
+- name: containers
+  endpoint:
+    path: /1.0/instances
+    method: GET
+- name: instances
+  endpoint:
+    path: /1.0/instances
+    method: POST
+    data_selector: devices
+    params: {}
+- name: profiles
+  endpoint:
+    path: /1.0/profiles
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: images
+  endpoint:
+    path: /1.0/images
+    method: GET
+    data_selector: images
+    params:
+      project: NAME
+- name: projects
+  endpoint:
+    path: /1.0/projects/{name}
+    method: GET
+    data_selector: project
+    params: {}
+- name: instances
+  endpoint:
+    path: /1.0/instances
+    method: GET
+- name: create_container
+  endpoint:
+    path: /1.0/containers
+    method: POST
+    data_selector: operation
+    params: {}
+- name: certificates
+  endpoint:
+    path: /1.0/certificates
+    method: POST
+    data_selector: ''
+    params: {}
+- name: api_endpoints
+  endpoint:
+    path: /
+    method: GET
+    data_selector: endpoints
+- name: api_version
+  endpoint:
+    path: /1.0
+    method: GET
+    data_selector: version_info
+- name: certificates
+  endpoint:
+    path: /1.0/certificates
+    method: POST
+    data_selector: certificate_info
+- name: public_images
+  endpoint:
+    path: /1.0/images/*
+    method: GET
+    data_selector: public_images_info
+- name: cluster
+  endpoint:
+    path: /1.0/cluster
+    method: PUT
+- name: profile
+  endpoint:
+    path: /1.0/profiles
+    method: GET
+    data_selector: profiles
+    params: {}
+- name: instances
+  endpoint:
+    path: /1.0/instances
+    method: GET
+    data_selector: instances
+    params: {}
+- name: exec_command
+  endpoint:
+    path: /1.0/containers/container/exec
+    method: POST
+    data_selector: operation
+    params: {}
+- name: exec_container
+  endpoint:
+    path: /1.0/containers/[container]/exec
+    method: POST
+    data_selector: output
+    params:
+      command:
+      - systemctl
+      - status
+      - apache2
+      record_output: false
+      wait-for-websocket: true
+      interactive: true
+      environment:
+        HOME: /root
+        TERM: xterm-256color
+        USER: root
+        SYSTEMD_PAGER: ''
+      width: 192
+      height: 48
+- name: wait_operation
+  endpoint:
+    path: /1.0/operations/[UUID]/wait
+    method: GET
+    data_selector: metadata
+    params:
+      timeout: 10
+notes:
+- Certificate authentication is the easy method
+- LXD is getting OIDC and OAUTH2 added in the next 6 months
+- Properties are free for all, every image can set what they want.
+- Not all of the REST interface requires authentication
+- Recommended way to authenticate with the LXD server is to add the client’s TLS certificate
+  to the server’s trust store through a trust token.
+- Not all of the REST interface requires authentication.
+- Unauthenticated endpoints are clearly identified in the documentation.
+- cluster.https_address must be different for each cluster member and must be a specific
+  IP/port that represents how the other cluster members can connect to this server.
+- core.https_address can be different from cluster.https_address, but must be a valid
+  listen address on each member.
+- Uses cloud-init for setting up users and passwords.
+- Use the control websocket to send signals to the process.
+- The command output may require specific parameters to be retrieved correctly.
+- Using interactive mode may change the behavior of the output received.
+errors:
+- '404 Not Found: Ensure the endpoint is correct'
+- '401 Unauthorized: Check certificate trust'
+- DELETE of the operation won't work as this particular operation has no canceler
+  setup.
+- '400: Command terminated'
+- '200: Operation success'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://linuxcontainers.org
+  headers:
+    Accept: application/json
+  paginator:
+    type: cursor
+source_metadata: null

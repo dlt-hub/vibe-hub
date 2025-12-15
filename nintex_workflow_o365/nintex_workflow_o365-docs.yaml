@@ -1,0 +1,35 @@
+auth_info:
+- information_source; https://help.nintex.com/en-US/sdks/sdko365/Walkthroughs/WK_NAV_O365API.htm:
+  - The Nintex Office 365 API requires an API Key and an authentication token. You
+    must obtain your API Key and API Base URL, then create an authentication token
+    before making REST API calls. The documentation references steps for token creation
+    but does not provide explicit details about header names, parameter names, or
+    the token format in this excerpt.
+- ? information_source; https://help.nintex.com/en-us/nintexautomation/devref/current/Content/Runtime/WF-REST-API/WF-REST-API-Authentication.htm
+  : - Azure Active Directory OAuth2 password grant flow. Send POST request to Azure
+      AD token endpoint with grant_type "password", client_id, client_secret, username,
+      password, scope "openid", and resource "https://api.k2.com/". Include tenantId
+      in the token endpoint URL. The response returns an access token for authenticating
+      subsequent API requests to the K2 environment.
+    - 'The Workflow REST API supports two authentication methods: Windows Integrated
+      Authentication and OAuth. For Windows Integrated Authentication, set the UseDefaultCredentials
+      property to true in your HttpWebRequest to use the currently logged-on user''s
+      credentials. For OAuth, obtain a token using ClientID and Client Secret credentials
+      (avoid hard-coding these; use a secure store instead), then include the token
+      in subsequent API requests.'
+    - 'This API supports two authentication methods: Basic Authentication and Windows
+      Integrated Authentication. For Basic Authentication, pass username and password
+      credentials via an HttpClientHandler with the Credentials property set to a
+      NetworkCredential object containing the username and password. For Windows Integrated
+      Authentication, enable Windows Authentication in IIS for the Workflow API. OAuth
+      authentication is also mentioned as an option requiring Azure Active Directory
+      configuration per KB002784.'
+possible_base_urls:
+- ? information_source; https://help.nintex.com/en-us/nintexautomation/devref/current/Content/Runtime/WF-REST-API/WF-REST-API-Authentication.htm
+  : - https://[k2environmentid]/api/workflow/v1
+    - https://api.k2.com/
+possible_endpoints:
+- ? information_source; https://help.nintex.com/en-us/nintexautomation/devref/current/Content/Runtime/WF-REST-API/WF-REST-API-Authentication.htm
+  : - GET https://[k2environmentid]/api/workflow/v1/Employees
+    - GET https://[k2environmentid]/api/workflow/v1/workflows
+    - POST https://login.microsoftonline.com/{tenantId}/oauth2/token

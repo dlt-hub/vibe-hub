@@ -1,0 +1,906 @@
+resources:
+- name: textrecog_layers
+  endpoint:
+    path: /textrecog/layers
+    method: GET
+    data_selector: layers
+    params: {}
+- name: kie_extractors
+  endpoint:
+    path: /kie/extractors
+    method: GET
+    data_selector: extractors
+    params: {}
+- name: kie_heads
+  endpoint:
+    path: /kie/heads
+    method: GET
+    data_selector: heads
+    params: {}
+- name: kie_losses
+  endpoint:
+    path: /kie/losses
+    method: GET
+    data_selector: losses
+    params: {}
+- name: IcdarDataset
+  endpoint:
+    path: /datasets/icdar_dataset
+    method: GET
+    data_selector: results
+    params: {}
+- name: BaseDataset
+  endpoint:
+    path: /datasets/base_dataset
+    method: GET
+    data_selector: results
+    params: {}
+- name: OCRDataset
+  endpoint:
+    path: /datasets/ocr_dataset
+    method: GET
+    data_selector: results
+    params: {}
+- name: TextDetDataset
+  endpoint:
+    path: /datasets/text_det_dataset
+    method: GET
+    data_selector: results
+    params: {}
+- name: CustomFormatBundle
+  endpoint:
+    path: /datasets/custom_format_bundle
+    method: GET
+    data_selector: results
+    params: {}
+- name: DBNetTargets
+  endpoint:
+    path: /datasets/dbnet_targets
+    method: GET
+    data_selector: results
+    params: {}
+- name: OCRSegDataset
+  endpoint:
+    path: /datasets/ocr_seg_dataset
+    method: GET
+    data_selector: results
+    params: {}
+- name: KIEDataset
+  endpoint:
+    path: /datasets/kie_dataset
+    method: GET
+    data_selector: results
+    params: {}
+- name: DBHead
+  endpoint:
+    path: /models/textdet/dense_heads/db_head
+    method: GET
+    data_selector: params
+    params:
+      in_channels: null
+      with_bias: false
+      downsample_ratio: 1.0
+      loss:
+        type: DBLoss
+      postprocessor:
+        text_repr_type: quad
+        type: DBPostprocessor
+- name: DRRGHead
+  endpoint:
+    path: /models/textdet/dense_heads/drrg_head
+    method: GET
+    data_selector: params
+    params:
+      in_channels: null
+      k_at_hops:
+      - 8
+      - 4
+      num_adjacent_linkages: 3
+      node_geo_feat_len: 120
+      pooling_scale: 1.0
+      pooling_output_size:
+      - 4
+      - 3
+      nms_thr: 0.3
+      min_width: 8.0
+      max_width: 24.0
+      comp_shrink_ratio: 1.03
+      comp_ratio: 0.4
+      comp_score_thr: 0.3
+      text_region_thr: 0.2
+      center_region_thr: 0.2
+      center_region_area_thr: 50
+      local_graph_thr: 0.7
+      loss:
+        type: DRRGLoss
+      postprocessor:
+        link_thr: 0.85
+        type: DRRGPostprocessor
+- name: FCEHead
+  endpoint:
+    path: /models/textdet/dense_heads/fce_head
+    method: GET
+    data_selector: params
+    params:
+      in_channels: null
+      scales: null
+      fourier_degree: 5
+      nms_thr: 0.1
+      loss:
+        num_sample: 50
+        type: FCELoss
+      postprocessor:
+        alpha: 1.0
+        beta: 2.0
+        num_reconstr_points: 50
+        score_thr: 0.3
+        text_repr_type: poly
+        type: FCEPostprocessor
+- name: PANHead
+  endpoint:
+    path: /models/textdet/dense_heads/pan_head
+    method: GET
+    data_selector: params
+    params:
+      in_channels: null
+      out_channels: null
+      downsample_ratio: 0.25
+      loss:
+        type: PANLoss
+      postprocessor:
+        text_repr_type: poly
+        type: PANPostprocessor
+- name: PSEHead
+  endpoint:
+    path: /mmocr/models/textdet/dense_heads/PSEHead
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: TextSnakeHead
+  endpoint:
+    path: /mmocr/models/textdet/dense_heads/TextSnakeHead
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: FPEM_FFM
+  endpoint:
+    path: /models/textdet/necks/fpem_ffm
+    method: GET
+    data_selector: records
+    params: {}
+- name: FPNC
+  endpoint:
+    path: /models/textdet/necks/fpn_cat
+    method: GET
+    data_selector: records
+    params: {}
+- name: FPNF
+  endpoint:
+    path: /models/textdet/necks/fpnf
+    method: GET
+    data_selector: records
+    params: {}
+- name: FPN_UNet
+  endpoint:
+    path: /models/textdet/necks/fpn_unet
+    method: GET
+    data_selector: records
+    params: {}
+- name: DBLoss
+  endpoint:
+    path: /models/textdet/losses/db_loss
+    method: GET
+    data_selector: parameters
+    params:
+      alpha: 1
+      beta: 1
+      reduction: mean
+      negative_ratio: 3.0
+      eps: 1.0e-06
+      bbce_loss: false
+- name: DRRGLoss
+  endpoint:
+    path: /models/textdet/losses/drrg_loss
+    method: GET
+    data_selector: parameters
+    params:
+      ohem_ratio: 3.0
+- name: FCELoss
+  endpoint:
+    path: /models/textdet/losses/fce_loss
+    method: GET
+    data_selector: parameters
+    params:
+      fourier_degree: null
+      num_sample: null
+      ohem_ratio: 3.0
+- name: PANLoss
+  endpoint:
+    path: /models/textdet/losses/pan_loss
+    method: GET
+    data_selector: parameters
+    params:
+      alpha: 0.5
+      beta: 0.25
+      delta_aggregation: 0.5
+      delta_discrimination: 3
+      ohem_ratio: 3.0
+      reduction: mean
+      speedup_bbox_thr: -1
+- name: loss
+  endpoint:
+    path: /models/textdet/losses/
+    method: GET
+    data_selector: loss_dict
+- name: DBPostprocessor
+  endpoint:
+    path: /models/textdet/postprocess/db_postprocessor
+    method: GET
+    data_selector: parameters
+    params:
+      text_repr_type: poly
+      mask_thr: 0.3
+      min_text_score: 0.3
+      min_text_width: 5
+      unclip_ratio: 1.5
+      epsilon_ratio: 0.01
+      max_candidates: 3000
+- name: DRRGPostprocessor
+  endpoint:
+    path: /models/textdet/postprocess/drrg_postprocessor
+    method: GET
+    data_selector: parameters
+    params:
+      link_thr: null
+- name: FCEPostprocessor
+  endpoint:
+    path: /models/textdet/postprocess/fce_postprocessor
+    method: GET
+    data_selector: parameters
+    params:
+      fourier_degree: null
+      num_reconstr_points: null
+      text_repr_type: poly
+      alpha: 1.0
+      beta: 2.0
+      score_thr: 0.3
+      nms_thr: 0.1
+- name: PANPostprocessor
+  endpoint:
+    path: /models/textdet/postprocess/pan_postprocessor
+    method: GET
+    data_selector: parameters
+    params:
+      text_repr_type: poly
+      min_text_confidence: 0.5
+      min_kernel_confidence: 0.5
+      min_text_avg_confidence: 0.85
+      min_text_area: 16
+- name: PSEPostprocessor
+  endpoint:
+    path: /models/textdet/postprocess/pse_postprocessor
+    method: GET
+    data_selector: parameters
+    params:
+      text_repr_type: poly
+      min_kernel_confidence: 0.5
+      min_text_avg_confidence: 0.85
+      min_kernel_area: 0
+      min_text_area: 16
+- name: TextSnakePostprocessor
+  endpoint:
+    path: /models/textdet/postprocess/textsnake_postprocessor
+    method: GET
+    data_selector: parameters
+    params:
+      text_repr_type: poly
+      min_text_region_confidence: 0.6
+      min_center_region_confidence: 0.2
+      min_center_area: 30
+      disk_overlap_thr: 0.03
+      radius_shrink_ratio: 1.03
+- name: ABINet
+  endpoint:
+    path: /models/textrecog/recognizer/abinet
+    method: GET
+    data_selector: dict[str, tensor]
+- name: BaseRecognizer
+  endpoint:
+    path: /models/textrecog/recognizer/base
+    method: GET
+    data_selector: dict[str, tensor]
+- name: CRNNNet
+  endpoint:
+    path: /models/textrecog/recognizer/crnn
+    method: GET
+    data_selector: dict[str, tensor]
+- name: EncodeDecodeRecognizer
+  endpoint:
+    path: /models/textrecog/recognizer/encode_decode_recognizer
+    method: GET
+    data_selector: dict[str, tensor]
+- name: MASTER
+  endpoint:
+    path: /models/textrecog/recognizer/master
+    method: GET
+    data_selector: dict[str, tensor]
+- name: NRTR
+  endpoint:
+    path: /models/textrecog/recognizer/nrtr
+    method: GET
+    data_selector: dict[str, tensor]
+- name: RobustScanner
+  endpoint:
+    path: /models/textrecog/recognizer/robust_scanner
+    method: GET
+    data_selector: dict[str, tensor]
+- name: SARNet
+  endpoint:
+    path: /models/textrecog/recognizer/sar
+    method: GET
+    data_selector: dict[str, tensor]
+- name: SATRN
+  endpoint:
+    path: /models/textrecog/recognizer/satrn
+    method: GET
+    data_selector: dict[str, tensor]
+- name: SegRecognizer
+  endpoint:
+    path: /models/textrecog/recognizer/seg_recognizer
+    method: GET
+    data_selector: dict[str, tensor]
+- name: NRTRModalityTransform
+  endpoint:
+    path: /models/textrecog/backbones/NRTRModalityTransform
+    method: GET
+- name: ResNet
+  endpoint:
+    path: /models/textrecog/backbones/ResNet
+    method: GET
+- name: ResNet31OCR
+  endpoint:
+    path: /models/textrecog/backbones/ResNet31OCR
+    method: GET
+- name: ResNetABI
+  endpoint:
+    path: /models/textrecog/backbones/ResNetABI
+    method: GET
+- name: ShallowCNN
+  endpoint:
+    path: /models/textrecog/backbones/ShallowCNN
+    method: GET
+- name: VeryDeepVgg
+  endpoint:
+    path: /models/textrecog/backbones/VeryDeepVgg
+    method: GET
+- name: FPNOCR
+  endpoint:
+    path: /models/textrecog/necks/FPNOCR
+    method: GET
+- name: SegHead
+  endpoint:
+    path: /models/textrecog/heads/SegHead
+    method: GET
+- name: BasePreprocessor
+  endpoint:
+    path: /models/textrecog/preprocessor/base_preprocessor
+    method: GET
+    data_selector: records
+- name: TPSPreprocessor
+  endpoint:
+    path: /models/textrecog/preprocessor/tps_preprocessor
+    method: GET
+    data_selector: records
+- name: NRTRModalityTransform
+  endpoint:
+    path: /models/textrecog/backbones/nrtr_modality_transformer
+    method: GET
+    data_selector: records
+- name: ResNet
+  endpoint:
+    path: /models/textrecog/backbones/resnet
+    method: GET
+    data_selector: records
+- name: ResNet31OCR
+  endpoint:
+    path: /models/textrecog/backbones/resnet31_ocr
+    method: GET
+    data_selector: records
+- name: ResNetABI
+  endpoint:
+    path: /models/textrecog/backbones/resnet_abi
+    method: GET
+    data_selector: records
+- name: ShallowCNN
+  endpoint:
+    path: /models/textrecog/backbones/shallow_cnn
+    method: GET
+    data_selector: records
+- name: VeryDeepVgg
+  endpoint:
+    path: /models/textrecog/backbones/very_deep_vgg
+    method: GET
+    data_selector: records
+- name: Adaptive2DPositionalEncoding
+  endpoint:
+    path: /models/textrecog/layers/Adaptive2DPositionalEncoding
+    method: GET
+    data_selector: records
+- name: BasicBlock
+  endpoint:
+    path: /models/textrecog/layers/BasicBlock
+    method: GET
+    data_selector: records
+- name: BidirectionalLSTM
+  endpoint:
+    path: /models/textrecog/layers/BidirectionalLSTM
+    method: GET
+    data_selector: records
+- name: Bottleneck
+  endpoint:
+    path: /models/textrecog/layers/Bottleneck
+    method: GET
+    data_selector: records
+- name: DotProductAttentionLayer
+  endpoint:
+    path: /models/textrecog/layers/DotProductAttentionLayer
+    method: GET
+    data_selector: records
+- name: PositionAwareLayer
+  endpoint:
+    path: /models/textrecog/layers/PositionAwareLayer
+    method: GET
+    data_selector: records
+- name: RobustScannerFusionLayer
+  endpoint:
+    path: /models/textrecog/layers/RobustScannerFusionLayer
+    method: GET
+    data_selector: records
+- name: ABIConvertor
+  endpoint:
+    path: /mmocr/models/textrecog/convertors/abi.html
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: AttnConvertor
+  endpoint:
+    path: /mmocr/models/textrecog/convertors/attn.html
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: BaseConvertor
+  endpoint:
+    path: /mmocr/models/textrecog/convertors/base.html
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: CTCConvertor
+  endpoint:
+    path: /mmocr/models/textrecog/convertors/ctc.html
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: SegConvertor
+  endpoint:
+    path: /mmocr/models/textrecog/convertors/seg.html
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: ABIVisionModel
+  endpoint:
+    path: mmocr/models/textrecog/encoders/abinet_vision_model
+    method: GET
+    data_selector: None
+    params: {}
+- name: BaseEncoder
+  endpoint:
+    path: mmocr/models/textrecog/encoders/base_encoder
+    method: GET
+    data_selector: None
+    params: {}
+- name: ChannelReductionEncoder
+  endpoint:
+    path: mmocr/models/textrecog/encoders/channel_reduction_encoder
+    method: GET
+    data_selector: None
+    params: {}
+- name: NRTREncoder
+  endpoint:
+    path: mmocr/models/textrecog/encoders/nrtr_encoder
+    method: GET
+    data_selector: None
+    params: {}
+- name: SAREncoder
+  endpoint:
+    path: mmocr/models/textrecog/encoders/sar_encoder
+    method: GET
+    data_selector: None
+    params: {}
+- name: SatrnEncoder
+  endpoint:
+    path: mmocr/models/textrecog/encoders/satrn_encoder
+    method: GET
+    data_selector: None
+    params: {}
+- name: TransformerEncoder
+  endpoint:
+    path: mmocr/models/textrecog/encoders/transformer
+    method: GET
+    data_selector: None
+    params: {}
+- name: ABILanguageDecoder
+  endpoint:
+    path: /models/textrecog/decoders/abilanguage_decoder
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: ABIVisionDecoder
+  endpoint:
+    path: /models/textrecog/decoders/abinet_vision_decoder
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: BaseDecoder
+  endpoint:
+    path: /models/textrecog/decoders/base_decoder
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: CRNNDecoder
+  endpoint:
+    path: /models/textrecog/decoders/crnn_decoder
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: MasterDecoder
+  endpoint:
+    path: /models/textrecog/decoders/master_decoder
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: NRTRDecoder
+  endpoint:
+    path: /models/textrecog/decoders/nrtr_decoder
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: ParallelSARDecoder
+  endpoint:
+    path: /models/textrecog/decoders/ParallelSARDecoder
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: PositionAttentionDecoder
+  endpoint:
+    path: /models/textrecog/decoders/PositionAttentionDecoder
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: RobustScannerDecoder
+  endpoint:
+    path: /models/textrecog/decoders/robust_scanner_decoder
+    method: GET
+    data_selector: records
+    params: {}
+- name: SequenceAttentionDecoder
+  endpoint:
+    path: /models/textrecog/decoders/sequence_attention_decoder
+    method: GET
+    data_selector: records
+    params: {}
+- name: SequentialSARDecoder
+  endpoint:
+    path: /models/textrecog/decoders/sar_decoder
+    method: GET
+    data_selector: records
+    params: {}
+- name: forward_test
+  endpoint:
+    path: /mmocr/models/textrecog/decoders/sar_decoder/forward_test
+    method: GET
+    data_selector: tensor
+    params: {}
+- name: forward_train
+  endpoint:
+    path: /mmocr/models/textrecog/decoders/sar_decoder/forward_train
+    method: GET
+    data_selector: tensor
+    params: {}
+- name: ABIFuser
+  endpoint:
+    path: /models/textrecog/fusers/abi_fuser
+    method: GET
+    data_selector: parameters
+    params:
+      d_model: 512
+      max_seq_len: 40
+      num_chars: 90
+- name: ABILoss
+  endpoint:
+    path: /models/textrecog/losses/mix_loss
+    method: GET
+    data_selector: parameters
+    params:
+      enc_weight: 1.0
+      dec_weight: 1.0
+      fusion_weight: 1.0
+      num_classes: 37
+- name: CELoss
+  endpoint:
+    path: /models/textrecog/losses/ce_loss
+    method: GET
+    data_selector: parameters
+    params:
+      ignore_index: -1
+      reduction: none
+      ignore_first_char: false
+- name: CTCLoss
+  endpoint:
+    path: /models/textrecog/losses/ctc_loss
+    method: GET
+    data_selector: parameters
+    params:
+      flatten: true
+      blank: 0
+      reduction: mean
+      zero_infinity: false
+- name: SARLoss
+  endpoint:
+    path: /models/textrecog/losses/ce_loss
+    method: GET
+    data_selector: parameters
+    params:
+      ignore_index: -1
+      reduction: mean
+- name: SegLoss
+  endpoint:
+    path: /models/textrecog/losses/seg_loss
+    method: GET
+    data_selector: parameters
+    params:
+      seg_downsample_ratio: 0.5
+      seg_with_loss_weight: true
+      ignore_index: 255
+- name: TFLoss
+  endpoint:
+    path: /models/textrecog/losses/ce_loss
+    method: GET
+    data_selector: parameters
+    params:
+      ignore_index: -1
+      reduction: none
+      flatten: true
+- name: SDMGR
+  endpoint:
+    path: /models/kie/extractors/sdmgr
+    method: GET
+    data_selector: parameters
+    params:
+      visual_modality: false
+- name: SDMGRHead
+  endpoint:
+    path: /models/kie/heads/sdmgr_head
+    method: GET
+    data_selector: parameters
+    params:
+      num_chars: 92
+      visual_dim: 64
+      fusion_dim: 1024
+      node_input: 32
+      node_embed: 256
+      edge_input: 5
+      edge_embed: 256
+      num_gnn: 2
+      num_classes: 26
+      loss:
+        type: SDMGRLoss
+      bidirectional: false
+- name: SDMGRLoss
+  endpoint:
+    path: /models/kie/losses/sdmgr_loss
+    method: GET
+    data_selector: parameters
+    params:
+      node_weight: 1.0
+      edge_weight: 1.0
+      ignore: -100
+- name: BertEncoder
+  endpoint:
+    path: /models/ner/encoders/BertEncoder
+    method: GET
+    data_selector: params
+- name: FCDecoder
+  endpoint:
+    path: /models/ner/decoders/FCDecoder
+    method: GET
+    data_selector: params
+- name: MaskedCrossEntropyLoss
+  endpoint:
+    path: /models/ner/losses/MaskedCrossEntropyLoss
+    method: GET
+    data_selector: params
+- name: MaskedFocalLoss
+  endpoint:
+    path: /models/ner/losses/MaskedFocalLoss
+    method: GET
+    data_selector: params
+- name: AnnFileLoader
+  endpoint:
+    path: /mmocr/datasets/utils/loader.html#AnnFileLoader
+    method: GET
+- name: BaseDataset
+  endpoint:
+    path: /mmocr/datasets/base_dataset.html#BaseDataset
+    method: GET
+- name: CustomFormatBundle
+  endpoint:
+    path: /mmocr/datasets/pipelines/custom_format_bundle.html#CustomFormatBundle
+    method: GET
+- name: DBNetTargets
+  endpoint:
+    path: /mmocr/datasets/pipelines/textdet_targets/dbnet_targets.html#DBNetTargets
+    method: GET
+- name: FCENetTargets
+  endpoint:
+    path: /mmocr/datasets/pipelines/textdet_targets/fcenet_targets.html#FCENetTargets
+    method: GET
+- name: HardDiskLoader
+  endpoint:
+    path: /mmocr/datasets/utils/loader.html#HardDiskLoader
+    method: GET
+- name: IcdarDataset
+  endpoint:
+    path: /mmocr/datasets/icdar_dataset.html#IcdarDataset
+    method: GET
+- name: BaseDataset
+  endpoint:
+    path: /datasets/base_dataset
+    method: GET
+    data_selector: annotations
+- name: IcdarDataset
+  endpoint:
+    path: /datasets/icdar_dataset
+    method: GET
+    data_selector: annotations
+- name: OCRDataset
+  endpoint:
+    path: /datasets/ocr_dataset
+    method: GET
+    data_selector: annotations
+- name: OCRSegDataset
+  endpoint:
+    path: /datasets/ocr_seg_dataset
+    method: GET
+    data_selector: annotations
+- name: TextDetDataset
+  endpoint:
+    path: /datasets/text_det_dataset
+    method: GET
+    data_selector: annotations
+- name: KIEDataset
+  endpoint:
+    path: /datasets/kie_dataset
+    method: GET
+    data_selector: annotations
+- name: ColorJitter
+  endpoint:
+    path: /datasets/pipelines/ColorJitter
+    method: GET
+- name: CustomFormatBundle
+  endpoint:
+    path: /datasets/pipelines/CustomFormatBundle
+    method: GET
+- name: DBNetTargets
+  endpoint:
+    path: /datasets/pipelines/DBNetTargets
+    method: GET
+- name: FCENetTargets
+  endpoint:
+    path: /datasets/pipelines/FCENetTargets
+    method: GET
+- name: FancyPCA
+  endpoint:
+    path: /datasets/pipelines/FancyPCA
+    method: GET
+- name: ImgAug
+  endpoint:
+    path: /datasets/pipelines/ImgAug
+    method: GET
+- name: KIEFormatBundle
+  endpoint:
+    path: /datasets/pipelines/KIEFormatBundle
+    method: GET
+- name: LoadImageFromLMDB
+  endpoint:
+    path: /datasets/pipelines/LoadImageFromLMDB
+    method: GET
+- name: LoadImageFromNdarray
+  endpoint:
+    path: /datasets/pipelines/LoadImageFromNdarray
+    method: GET
+- name: LoadTextAnnotations
+  endpoint:
+    path: /datasets/pipelines/LoadTextAnnotations
+    method: GET
+- name: MultiRotateAugOCR
+  endpoint:
+    path: /datasets/pipelines/MultiRotateAugOCR
+    method: GET
+- name: NerTransform
+  endpoint:
+    path: /datasets/pipelines/NerTransform
+    method: GET
+- name: text_center_region_mask
+  endpoint:
+    path: /generate_targets
+    method: POST
+    data_selector: results
+    params: {}
+- name: text_region_mask
+  endpoint:
+    path: /generate_text_region_mask
+    method: POST
+    data_selector: text_region_mask
+    params: {}
+- name: reordered_poly_edge
+  endpoint:
+    path: /reorder_poly_edge
+    method: POST
+    data_selector: head_edge
+    params: {}
+- name: resampled_line
+  endpoint:
+    path: /resample_line
+    method: POST
+    data_selector: resampled_line
+    params: {}
+- name: resampled_sidelines
+  endpoint:
+    path: /resample_sidelines
+    method: POST
+    data_selector: resampled_line1
+    params: {}
+- name: AnnFileLoader
+  endpoint:
+    path: /mmocr/datasets/utils/loader.html#AnnFileLoader
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: HardDiskLoader
+  endpoint:
+    path: /mmocr/datasets/utils/loader.html#HardDiskLoader
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: LineJsonParser
+  endpoint:
+    path: /mmocr/datasets/utils/parser.html#LineJsonParser
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: LineStrParser
+  endpoint:
+    path: /mmocr/datasets/utils/parser.html#LineStrParser
+    method: GET
+    data_selector: parameters
+    params: {}
+- name: LmdbLoader
+  endpoint:
+    path: /mmocr/datasets/utils/loader.html#LmdbLoader
+    method: GET
+    data_selector: parameters
+    params: {}
+notes:
+- The input image size should be divisible by the whole downsample rate of the encoder.
+- ${MODEL_STORE} needs to be an absolute path to a folder.
+- realpath ./checkpoints points to the absolute path of “./checkpoints”, and you can
+  replace it with the absolute path where you store torchserve models.
+- This decoder will not predict the final class which is assumed to be <PAD>.
+errors: []
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://mmocr.readthedocs.io/en/v0.1.0/api.html
+  auth:
+    type: None
+source_metadata: null

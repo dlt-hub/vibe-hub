@@ -1,0 +1,47 @@
+auth_info:
+- information_source; https://nmbrs.stoplight.io/docs/nmbrs-restapi/ZG9jOjE5Nzc1OTky-getting-started:
+  - The Nmbrs API uses OAuth 2.0 with Three-Legged OAuth (3LO) flow for authentication.
+    Your application must obtain an access token from the Nmbrs authorization server
+    after the resource owner grants permission, then include this token in API requests
+    to access employee payroll and HR data.
+  - The Nmbrs REST API uses OAuth 2.0 Authorization Code Flow for authentication.
+    This is a three-legged OAuth (3LO) flow where your app must securely store a client
+    secret. Detailed implementation information is available in the authentication
+    documentation.
+- information_source; https://nmbrs.stoplight.io/docs/nmbrs-restapi/ZG9jOjY4OTAxNTQ-authentication:
+  - 'OAuth2 authorization code flow is required. Users must first obtain an authorization
+    code by redirecting to https://identityservice.nmbrs.com/connect/authorize with
+    query parameters: client_id (provided by Nmbrs), state (unique identifier), scope
+    (space-separated scopes like employee.employment.read, employee.info.read, employee.payment,
+    company.info, company.info.read, company.payrollsettings.read, offline_access),
+    response_type=code, and redirect_uri (pre-registered callback URL). The authorization
+    code is returned to the redirect_uri, which is then exchanged for an access token.'
+  - OAuth2 authorization code flow with short-lived access tokens. Obtain access_token
+    and refresh_token via POST to identityservice.nmbrs.com/connect/token using Basic
+    authentication with clientId and clientSecret. Access tokens expire in 60 minutes;
+    use refresh_token with grant_type=refresh_token to obtain new tokens. Call API
+    endpoints with Authorization header "Bearer {{access_token}}" and X-Subscription-Key
+    header containing subscription_key.
+  - The API uses OAuth2 authorization code flow with Basic authentication for token
+    exchange. To exchange an authorization code for an access token, make a POST request
+    to /connect/token with Basic authentication using client_id and client_secret
+    as credentials, sending grant_type=authorization_code, code, and redirect_uri
+    in the request body. The response includes access_token (Bearer token, expires
+    in 3600 seconds) and refresh_token (only if offline_access scope was requested).
+    Authorization codes expire after 5 minutes.
+pagination_info:
+- information_source; https://nmbrs.stoplight.io/docs/nmbrs-restapi/ZG9jOjY4OTAxNTQ-authentication:
+  - pageNumber and pageSize are query parameters used for pagination. pageNumber specifies
+    the page number to retrieve (starting from 1), and pageSize specifies the number
+    of items per page (set to 20 in the example). The documentation does not specify
+    default values, minimum/maximum constraints, or response fields indicating total
+    pages or whether more data exists.
+possible_base_urls:
+- information_source; https://nmbrs.stoplight.io/docs/nmbrs-restapi/ZG9jOjY4OTAxNTQ-authentication:
+  - https://api.nmbrsapp.com
+  - https://identityservice.nmbrs.com
+possible_endpoints:
+- information_source; https://nmbrs.stoplight.io/docs/nmbrs-restapi/ZG9jOjY4OTAxNTQ-authentication:
+  - GET https://api.nmbrsapp.com/api/companies/{{companyId}}/hourcodes
+  - GET https://identityservice.nmbrs.com/connect/authorize
+  - POST https://identityservice.nmbrs.com/connect/token

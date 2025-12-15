@@ -1,0 +1,136 @@
+resources:
+- name: commitment_classification
+  endpoint:
+    path: /commitment/classification
+    method: POST
+    data_selector: results
+    params: {}
+- name: carbon_neutral_announced
+  endpoint:
+    path: /metadata/extraction/carbon_neutral_announced
+    method: GET
+    data_selector: Correct Extractions
+    params: {}
+- name: carbon_neutral_target
+  endpoint:
+    path: /metadata/extraction/carbon_neutral_target
+    method: GET
+    data_selector: Correct Extractions
+    params: {}
+- name: net_zero_announced_date
+  endpoint:
+    path: /metadata/extraction/net_zero_announced_date
+    method: GET
+    data_selector: Correct Extractions
+    params: {}
+- name: net_zero_target_date
+  endpoint:
+    path: /metadata/extraction/net_zero_target_date
+    method: GET
+    data_selector: Correct Extractions
+    params: {}
+- name: carbon_tonnage_reduction
+  endpoint:
+    path: /metadata/extraction/carbon_tonnage_reduction
+    method: GET
+    data_selector: Correct Extractions
+    params: {}
+- name: carbon_percent_reduction
+  endpoint:
+    path: /metadata/extraction/carbon_percent_reduction
+    method: GET
+    data_selector: Correct Extractions
+    params: {}
+- name: ghg_tonnage_reduction
+  endpoint:
+    path: /metadata/extraction/ghg_tonnage_reduction
+    method: GET
+    data_selector: Correct Extractions
+    params: {}
+- name: ghg_percent_reduction
+  endpoint:
+    path: /metadata/extraction/ghg_percent_reduction
+    method: GET
+    data_selector: Correct Extractions
+    params: {}
+- name: climate_commitments
+  endpoint:
+    path: /api/climate_commitments
+    method: GET
+    data_selector: commitments
+    params: {}
+- name: commitment_metadata
+  endpoint:
+    path: /api/commitment/metadata
+    method: POST
+    data_selector: response
+    params: {}
+- name: metadata_field_evaluation
+  endpoint:
+    path: /api/metadata/evaluation
+    method: GET
+    data_selector: records
+- name: text_snippets
+  endpoint:
+    path: /climate_commitments/snippets
+    method: GET
+    data_selector: observations
+- name: metadata_fields
+  endpoint:
+    path: /metadata/extraction
+    method: GET
+    data_selector: samples
+    params: {}
+notes:
+- Uses ClimateBERT for text classification of climate commitments
+- Model performance evaluated with precision, recall, and F1 score
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Model performance is evaluated on the basis of precision, recall, and F1 score.
+- Uses ChatGPT to extract metadata values from text snippets.
+- Implemented parameter to ensure responses are JSON objects.
+- Performance results suggest high application accuracy on labeling and extraction
+  tasks.
+- The development of AI/ML-enabled data collection tools is particularly advantageous
+  when structured datasets are not readily available and/or when processing of large
+  volumes of data.
+- Standardized data formatting imposed using AI/ML tools can facilitate linkages to
+  complementary datasets, allowing for deeper analysis based on more comprehensive
+  information.
+- Particularly in the case of NLP models, AI/ML tools can be continuously retrained
+  and adapted to different information collection tasks, efficiently integrating new
+  information into data pipelines without incurring large computing costs or expending
+  significant analyst resources.
+- Refining the list of key words used to web scrape search results from PDB websites
+  by evaluating the effectiveness of each individual key word set, assessing which
+  most effectively retrieve validated commitments.
+- The classification model is trained on a rebalanced dataset containing a 50-50 split
+  between labeled commitments and non-commitments.
+- Utilizes ChatGPT for metadata extraction from commitments
+- Cost-saving strategy reduced token usage by ~78%
+- API cost can change overtime as well as become depreciated, so we recommend reviewing
+  available models for the scale of your tasks
+errors:
+- 'Invalid input: Ensure text snippets are properly formatted.'
+- 'Invalid API Key: Check API key in request header'
+- '404 Not Found: Verify endpoint and parameters'
+- 'Invalid input data format: Ensure the text snippets are correctly formatted.'
+- 'Model training error: Check data integrity before retraining the model.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.openai.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.openai.com/oauth/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

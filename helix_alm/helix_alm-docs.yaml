@@ -1,0 +1,61 @@
+auth_info:
+- ? information_source; https://help.perforce.com/helix-alm/helixalm/2025.1.0/restapi/Content/RESTAPI/AuthorizationSecurity.htm
+  : - 'Access tokens are generated using a username and password for a Helix ALM project
+      and must be included in the Authorization header with the Bearer scheme for
+      subsequent API requests. Tokens expire in seven days by default, with expiration
+      configurable via the Registry Utility, and are invalidated when the server restarts
+      or the associated API key is deleted.
+
+
+      Include the token in the request header as: Authorization: Bearer <token_value>
+
+
+      The response includes an expiresOn parameter indicating when the token expires.'
+    - Helix ALM API supports three authentication methods. API key authentication
+      requires adding the api-key and api-key-secret to the Authorization header in
+      the format "ApiKey api-key:api-key-secret". Basic authentication requires Base64-encoded
+      username:password in the Authorization header as "Basic base64(username:password)".
+      Both methods return an access token that must be included in the Authorization
+      header for all subsequent requests except when listing projects or obtaining
+      a token.
+    - To authenticate with the Helix ALM REST API, use either Basic Authentication
+      (username and password) or API Key Authentication (key ID and secret). API Key
+      Authentication is recommended for security. Both methods are required for endpoints
+      like GET /projects and GET /{projectID}/token. The key and secret are longer
+      cryptic strings, and keys cannot be used to log into Helix ALM clients, allowing
+      granular control over compromised credentials.
+- ? information_source; https://help.perforce.com/helix-alm/helixalm/2025.2.0/restapi/Content/RESTAPI/AuthorizationSecurity.htm
+  : - 'Helix ALM API uses two authentication methods: Basic authentication with Base64-encoded
+      username:password credentials sent in the Authorization header for token generation,
+      and Bearer token authentication for all subsequent API requests. Access tokens
+      are obtained via the token endpoint, expire in seven days by default, and must
+      be included in the Authorization header preceded by "Bearer" for all requests
+      except project listing and token generation.'
+    - To authenticate with the Helix ALM REST API, use either API Key Authentication
+      or Basic Authentication. For API Key Authentication, add the api-key and api-key-secret
+      to the Authorization header as "ApiKey api-key:api-key-secret". For Basic Authentication,
+      include username:password in the Authorization header. All subsequent requests
+      after obtaining an access token require the access token in the header.
+pagination_info:
+- information_source; https://help.perforce.com/helix-alm/helixalm/2024.2.0/restapi/Content/RESTAPI/Paging.htm:
+  - Use query parameters page (required, defaults to 1) and per_page (optional, defaults
+    to 300, maximum 1000) to paginate. Response includes paging object with page,
+    totalPages, pageLimit, totalCount, and links array containing self, prev, next,
+    first, last URLs for navigation.
+possible_base_urls:
+- information_source; https://help.perforce.com/helix-alm/helixalm/2024.2.0/restapi/Content/RESTAPI/Paging.htm:
+  - /helix-alm/api/v0/1
+- ? information_source; https://help.perforce.com/helix-alm/helixalm/2025.1.0/restapi/Content/RESTAPI/AuthorizationSecurity.htm
+  : - https://localhost:8443
+possible_endpoints:
+- information_source; https://help.perforce.com/helix-alm/helixalm/2024.2.0/restapi/Content/RESTAPI/Paging.htm:
+  - GET /helix-alm/api/v0/1/issues
+- ? information_source; https://help.perforce.com/helix-alm/helixalm/2025.1.0/restapi/Content/RESTAPI/AuthorizationSecurity.htm
+  : - GET /helix-alm/api/v0/4/token
+    - GET /projects
+    - GET /{projectID}/token
+- ? information_source; https://help.perforce.com/helix-alm/helixalm/2025.2.0/restapi/Content/RESTAPI/AuthorizationSecurity.htm
+  : - GET /helix-alm/api/v0/4/issues
+    - GET /helix-alm/api/v0/4/token
+    - GET /projects
+    - GET /{projectID}/token

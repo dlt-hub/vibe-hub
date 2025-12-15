@@ -1,0 +1,256 @@
+resources:
+- name: create_qr_code
+  endpoint:
+    path: /mia-qr-api/en/endpoints/payment-initiation/create-qr-code-static-dynamic
+    method: POST
+    data_selector: generated_qr_data
+- name: auth_token
+  endpoint:
+    path: /v2/auth/token
+    method: POST
+- name: create_qr
+  endpoint:
+    path: /v2/mia/qr
+    method: POST
+- name: create_hybrid_qr
+  endpoint:
+    path: /v2/mia/qr/hybrid
+    method: POST
+- name: get_qr_details
+  endpoint:
+    path: /v2/mia/qr/{qrId}
+    method: GET
+- name: cancel_qr
+  endpoint:
+    path: /v2/mia/qr/{qrId}/cancel
+    method: POST
+- name: create_extension
+  endpoint:
+    path: /v2/mia/qr/{qrId}/extension
+    method: POST
+- name: cancel_extension
+  endpoint:
+    path: /v2/mia/qr/{qrId}/extension/cancel
+    method: POST
+- name: list_qrs
+  endpoint:
+    path: /v2/mia/qr
+    method: GET
+- name: get_payment_details
+  endpoint:
+    path: /v2/mia/payments/{payId}
+    method: GET
+- name: list_payments
+  endpoint:
+    path: /v2/mia/payments
+    method: GET
+- name: refund_payment
+  endpoint:
+    path: /v2/mia/payments/{payId}/refund
+    method: POST
+- name: list_extensions
+  endpoint:
+    path: /v2/mia/qr/extension
+    method: GET
+- name: test_payment
+  endpoint:
+    path: /v2/mia/test-pay
+    method: POST
+- name: test_payment
+  endpoint:
+    path: /v2/mia/test-pay
+    method: POST
+    data_selector: result
+    params: {}
+- name: notifications
+  endpoint:
+    path: /callback-url
+    method: POST
+    data_selector: result
+    params: {}
+- name: qr_status
+  endpoint:
+    path: /statusuri-qr
+    method: GET
+    data_selector: status
+    params: {}
+- name: payment
+  endpoint:
+    path: /simulare-plata-sandbox
+    method: POST
+    data_selector: payment
+    params: {}
+- name: authentication
+  endpoint:
+    path: /auth/token
+    method: POST
+- name: create_qr_code
+  endpoint:
+    path: /mia/qr
+    method: POST
+- name: create_hybrid_qr_code
+  endpoint:
+    path: /mia/qr/hybrid
+    method: POST
+- name: get_qr_details
+  endpoint:
+    path: /mia/qr/{qrId}
+    method: GET
+- name: cancel_active_qr_code
+  endpoint:
+    path: /mia/qr/{qrId}/cancel
+    method: POST
+- name: create_qr_code_extension
+  endpoint:
+    path: /mia/qr/{qrId}/extension
+    method: POST
+- name: cancel_active_qr_code_extension
+  endpoint:
+    path: /mia/qr/{qrId}/extension/cancel
+    method: POST
+- name: get_qr_code_list
+  endpoint:
+    path: /mia/qr
+    method: GET
+- name: get_payment_details
+  endpoint:
+    path: /mia/payments/{payId}
+    method: GET
+- name: get_payment_list
+  endpoint:
+    path: /mia/payments
+    method: GET
+- name: refund_payment
+  endpoint:
+    path: /mia/payments/{payId}/refund
+    method: POST
+- name: get_qr_extensions_list
+  endpoint:
+    path: /mia/qr/extension
+    method: GET
+- name: simulate_payment
+  endpoint:
+    path: /mia/test-pay
+    method: POST
+- name: payment_simulation
+  endpoint:
+    path: /v2/mia/test-pay
+    method: POST
+    data_selector: result
+    params: {}
+- name: authentication_token
+  endpoint:
+    path: /v2/auth/token
+    method: POST
+    data_selector: result.accessToken
+- name: cancel_active_qr_static_dynamic
+  endpoint:
+    path: /v2/mia/qr/{qrId}/cancel
+    method: POST
+- name: cancel_active_extension_hybrid_qr
+  endpoint:
+    path: /v2/mia/qr/{qrId}/extension/cancel
+    method: POST
+- name: payment_refund
+  endpoint:
+    path: /mia-qr-api/en/endpoints/payment-refund
+    method: GET
+- name: QR Codes
+  endpoint:
+    path: /mia-qr-api/en/endpoints/information-retrieval-get/display-list-of-qr-codes-with-filtering-options
+    method: GET
+    data_selector: records
+- name: Payment Details
+  endpoint:
+    path: /mia-qr-api/en/endpoints/information-retrieval-get/retrieve-payment-details-by-id
+    method: GET
+    data_selector: records
+- name: create_qr_code
+  endpoint:
+    path: /v2/mia/qr
+    method: POST
+    data_selector: result
+    params: {}
+- name: create_hybrid_qr_code
+  endpoint:
+    path: /payment-initiation/create-hybrid-qr-code
+    method: POST
+    data_selector: result
+    params: {}
+notes:
+- Payment initiation requires sending a POST request to the corresponding endpoint
+  with specific details.
+- 'Datele de acces pentru testarea API-ului (`clientId` și `clientSecret`) pot fi
+  solicitate la adresa de email: **ecom@maib.md**, indicând **IDNO**, denumirea, site-ul
+  web sau aplicația pentru care doriți să efectuați integrarea.'
+- Utilizes OAuth2 for authentication
+- Endpoint-ul este disponibil doar în mediul sandbox pentru testare.
+- Merchant-ul trebuie să asigure livrarea serviciului sau produsului către Cumpărător.
+- Se consideră că notificarea a fost recepționată cu succes dacă serverul Merchant-ului
+  răspunde cu codul HTTP 200 OK.
+- This endpoint is available only in the sandbox environment for testing.
+- Ensure that your server is accessible from maib IPs to receive the notifications.
+- Respond with HTTP status 200 OK only after successfully verifying the signature.
+- Authentication is done via a standard OAuth 2.0 Client Credentials Flow.
+- 'The access token must be included in the header of every request to the QR MIA
+  API in the form: Authorization: Bearer {access_token}'
+- Canceling a QR code does not affect payments already processed. If a payment has
+  already been made, cancellation cannot be applied retroactively.
+- Refunds are only available for transactions that were successfully completed.
+- Refunds can only be initiated by the merchant, either via API or through the dedicated
+  banking platform.
+- A reason for the refund must be specified.
+- Refunds can be tracked through the transaction status returned in the API response.
+- Refunds are irreversible. Once processed, the amount is automatically returned to
+  the customer's account, in accordance with the issuing bank's policies.
+- Dynamic QR codes require an expiration date.
+- Currency must be MDL.
+- The code expires if no payment has been made in the last 30 days.
+- Expiration date of the Hybrid QR code must be minimum 1 minute and maximum 60 days.
+- Allows extending the validity period and/or modifying the amount for an existing
+  Hybrid QR code.
+errors:
+- '400: Cerere invalidă (eroare de structură sau date)'
+- '401: Neautorizat (token lipsă sau invalid)'
+- '403: Acces interzis (drepturi insuficiente)'
+- '500: Eroare internă a serverului'
+- 'errorCode: Codul erorii.'
+- 'errorMessage: Descrierea erorii.'
+- '400: No signature provided.'
+- '400: Signature is invalid.'
+- '400 Bad Request: Parametrii trimiși în request sunt invalizi sau lipsesc. Verificați
+  formatul și câmpurile obligatorii.'
+- '401 Unauthorized: Token-ul de autentificare este absent, expirat sau incorect.'
+- '403 Forbidden: Accesul la resursa este interzis. Pot exista restricții de IP sau
+  de permisiuni.'
+- '404 Not Found: Resursa solicitată nu a fost găsită (ex: qrId inexistent).'
+- '500 Internal Server Error: O eroare internă s-a produs pe server. Încercați din
+  nou mai târziu sau contactați echipa de suport.'
+- '400: Invalid request (structure or data error)'
+- '401: Unauthorized (missing or invalid token)'
+- '403: Forbidden (insufficient permissions)'
+- '500: Internal server error'
+- No signature provided.
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '400: Bad Request'
+- '401: Unauthorized'
+- '403: Forbidden'
+- '404: Not Found'
+- '500: Internal Server Error'
+- '400 Bad Request: Check request body parameters.'
+- '401 Unauthorized: Recheck authentication details.'
+- '404 Not Found: Endpoint may not exist.'
+- Error code and description are provided if any errors occur.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.maibmerchants.md
+  auth:
+    type: Bearer
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

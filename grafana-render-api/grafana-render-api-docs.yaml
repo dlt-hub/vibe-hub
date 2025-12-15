@@ -1,0 +1,105 @@
+resources:
+- name: jira
+  endpoint:
+    path: /grafana-jira-datasource
+    method: GET
+- name: search
+  endpoint:
+    path: /api/search
+    method: GET
+- name: dashboard_search
+  endpoint:
+    path: /api/search
+    method: GET
+    data_selector: '[]'
+    params: {}
+- name: dashboard_definition
+  endpoint:
+    path: /api/dashboards/db/{uid}
+    method: GET
+    data_selector: dashboard
+    params: {}
+- name: users
+  endpoint:
+    path: /api/admin/users
+    method: POST
+    data_selector: ''
+    params: {}
+- name: telemetry
+  endpoint:
+    path: /api/plugins/telemetry/DEVICE/365ad9b0-16b7-11e8-ace1-e91f8f4d7baf/values/timeseries
+    method: get
+    data_selector: values
+    params:
+      keys: humidity,temp
+- name: query_variable
+  endpoint:
+    path: /query_variable
+    method: GET
+    data_selector: results
+- name: paginated_data
+  endpoint:
+    path: /your/endpoint/path
+    method: GET
+    data_selector: response_data
+    params:
+      page_size: X
+      page_number: '1'
+- name: render_dashboard
+  endpoint:
+    path: /dashboard-solo/db/
+    method: GET
+    data_selector: records
+    params:
+      from: '1513036800000'
+      to: '1513123199000'
+      panelId: '24'
+      width: '1700'
+      height: '500'
+      refresh: 1m
+      orgId: '7'
+- name: render_dashboard
+  endpoint:
+    path: /render/d-solo
+    method: GET
+    data_selector: image
+    params: {}
+- name: webhook_data
+  endpoint:
+    path: /path/to/webhook
+    method: GET
+    data_selector: temp
+    params: {}
+notes:
+- Jira datasource plugin for Grafana
+- The token used must have appropriate permissions for the requested actions.
+- You can use the search endpoint to get a list of all your dashboards.
+- To get a list of panels in a given dashboard, parse the actual dashboard definition.
+- I was given a p12 key file with a password, and realized that there was no way in
+  grafana to use it as I normally do with postman.
+- My curls work, but no matter how I try entering the credentials, grafana seems to
+  append my ‘Get’ in a way that does not work.
+- As of writing, UQL doesn’t support pagination
+- You can definitely do this by using popular scripts e.g. Python or Bash (or simply
+  with cURL command).
+- The application server returns the information in pages.
+- API limits to batches of 100 records.
+- Trying to create dashboards by feeding Rest API data (Json format) into them.
+- Ensure to use the correct token created during InfluxDB setup.
+- Check that the bucket names match and that you are using the correct organization
+  name or ID.
+- You can authenticate to Grafana using your own oauth service.
+- the page size automatically adjusts to the height of the table
+errors:
+- '401 Unauthorized: Ensure the token has the correct permissions.'
+- The curl that shows as failing in the query inspector seems to show that the ‘GET’
+  always precedes the auth info.
+- Failed to render to png
+- 'parse error on line 1, column 1: bare " in non-quoted-field'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://grafana.com
+  auth:
+    type: oauth2
+source_metadata: null

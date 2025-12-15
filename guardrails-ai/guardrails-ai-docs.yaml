@@ -1,0 +1,165 @@
+resources:
+- name: gibberish_guard
+  endpoint:
+    path: /guards/gibberish_guard/openai/v1/
+    method: POST
+    data_selector: choices
+    params: {}
+- name: health_check
+  endpoint:
+    path: /health-check
+    method: GET
+- name: guards
+  endpoint:
+    path: /guards
+    method: GET
+- name: createGuard
+  endpoint:
+    path: /guards
+    method: POST
+    data_selector: none
+    params:
+      body: ValidatePayload
+- name: getGuard
+  endpoint:
+    path: /guards/{guardName}
+    method: GET
+    data_selector: none
+    params:
+      guardName: path
+      body: ValidatePayload
+- name: updateGuard
+  endpoint:
+    path: /guards/{guardName}
+    method: PUT
+    data_selector: none
+    params:
+      guardName: path
+      body: ValidatePayload
+- name: deleteGuard
+  endpoint:
+    path: /guards/{guardName}
+    method: DELETE
+    data_selector: none
+    params:
+      guardName: path
+      body: ValidatePayload
+- name: getGuardHistory
+  endpoint:
+    path: /guards/{guardName}/history/{callId}
+    method: GET
+    data_selector: none
+    params:
+      guardName: path
+      callId: path
+      body: ValidatePayload
+- name: openaiChatCompletion
+  endpoint:
+    path: /guards/{guardName}/openai/v1/chat/completions
+    method: POST
+    data_selector: validatedOutput
+- name: validate
+  endpoint:
+    path: /guards/{guardName}/validate
+    method: POST
+    data_selector: validatedOutput
+- name: messages
+  endpoint:
+    data_selector: messages
+- name: promptParams
+  endpoint:
+    data_selector: promptParams
+- name: metadata
+  endpoint:
+    data_selector: metadata
+- name: pass-result
+  endpoint:
+    path: /pass-result
+    method: GET
+    data_selector: outcome
+    params: {}
+- name: validator-log
+  endpoint:
+    path: /validator-log
+    method: GET
+    data_selector: validatorName
+    params: {}
+- name: outputs
+  endpoint:
+    path: /outputs
+    method: GET
+    data_selector: llmResponseInfo
+    params: {}
+- name: iteration
+  endpoint:
+    path: /iteration
+    method: GET
+    data_selector: id
+    params: {}
+- name: call
+  endpoint:
+    path: /call
+    method: GET
+    data_selector: id
+    params: {}
+- name: guard
+  endpoint:
+    path: /guard
+    method: GET
+    data_selector: id
+    params: {}
+- name: validate-payload
+  endpoint:
+    path: /validate-payload
+    method: POST
+    data_selector: llmOutput
+    params: {}
+- name: OpenAI
+  endpoint:
+    path: /openai/api
+    method: POST
+    data_selector: validated_response
+    params: {}
+- name: Cohere
+  endpoint:
+    path: /cohere/api
+    method: POST
+    data_selector: validated_response
+    params: {}
+- name: LiteLLM
+  endpoint:
+    path: /litellm/api
+    method: POST
+    data_selector: validated_response
+    params: {}
+- name: Custom LLM
+  endpoint:
+    path: /customllm/api
+    method: POST
+    data_selector: validated_response
+    params: {}
+notes:
+- Guardrails consist of a guard and a series of validators that the guard uses to
+  validate LLM responses.
+- For best performance, follow our guidelines on configuring your WSGI servers properly
+  for production.
+- If you see an 'Unauthorized' error when installing validators from the Guardrails
+  hub, it means that the API key you are using is not authorized to access the Guardrails
+  hub.
+- A guardrails key is added to the response object, which includes the validation
+  results.
+- Guardrails is now running on localhost:8000.
+- The LLM resource tar
+- The string output from the LLM
+errors:
+- 'Unauthorized: The API key you are using is not authorized to access the Guardrails
+  hub.'
+auth_info:
+  mentioned_objects:
+  - ApiKeyAuth
+  - BearerAuth
+client:
+  base_url: http://localhost:8000
+  headers:
+    Accept: application/json
+source_metadata: null

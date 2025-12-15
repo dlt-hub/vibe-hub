@@ -1,0 +1,169 @@
+resources:
+- name: input_features
+  endpoint:
+    path: /predict
+    method: POST
+    data_selector: predicted_class
+    params: {}
+- name: predict
+  endpoint:
+    path: /predict
+    method: POST
+    data_selector: prediction
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: predict
+  endpoint:
+    path: /predict
+    method: POST
+    data_selector: prediction
+- name: predict
+  endpoint:
+    path: /predict
+    method: POST
+    data_selector: prediction
+    params: {}
+- name: predict
+  endpoint:
+    path: /predict
+    method: POST
+    data_selector: prediction
+- name: large_language_model
+  endpoint:
+    path: /courses/how-to-build-a-large-language-model
+    method: GET
+    data_selector: courses
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: query_preprocessing_service
+  endpoint:
+    path: /rag/query/preprocess
+    method: POST
+    data_selector: data
+    params: {}
+- name: retrieval_service
+  endpoint:
+    path: /rag/retrieve
+    method: POST
+    data_selector: data
+    params: {}
+- name: re_ranking_service
+  endpoint:
+    path: /rag/rerank
+    method: POST
+    data_selector: data
+    params: {}
+- name: context_aggregation_service
+  endpoint:
+    path: /rag/context/aggregate
+    method: POST
+    data_selector: data
+    params: {}
+- name: generation_service
+  endpoint:
+    path: /rag/generate
+    method: POST
+    data_selector: data
+    params: {}
+- name: post_processing_service
+  endpoint:
+    path: /rag/postprocess
+    method: POST
+    data_selector: data
+    params: {}
+- name: embedding_service
+  endpoint:
+    path: /rag/embedding
+    method: POST
+    data_selector: data
+    params: {}
+- name: feedback_logging_service
+  endpoint:
+    path: /rag/feedback/log
+    method: POST
+    data_selector: data
+    params: {}
+- name: generate_response
+  endpoint:
+    path: /api/generate
+    method: POST
+    data_selector: ''
+    params: {}
+- name: chat_with_model
+  endpoint:
+    path: /api/chat
+    method: POST
+    data_selector: ''
+    params: {}
+notes:
+- Uses FastAPI for building the model prediction API
+- Model is loaded once during application startup
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Set host='0.0.0.0' to make it accessible from outside the container
+- Port 5000 is a common choice for development servers
+- Documentation provides insights into building large language models.
+- Generating text can take significant time, suitable only for very short, predictable
+  generations.
+- Streaming provides a middle ground, avoiding timeouts and improving perceived responsiveness.
+- Encapsulates each component in microservices to allow independent scaling and maintenance.
+- Utilizes both synchronous and asynchronous communication styles.
+- Ollama provides a REST API for running and managing models.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '200 OK: Successful request'
+- '400 Bad Request: Invalid input'
+- '401 Unauthorized: Missing or invalid authentication credentials'
+- '403 Forbidden: Authenticated user does not have permission'
+- '429 Too Many Requests: Rate limiting exceeded'
+- '500 Internal Server Error: An unexpected error occurred'
+- '503 Service Unavailable: The service is temporarily overloaded'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: http://localhost:8000
+  headers:
+    Content-Type: application/json
+source_metadata: null

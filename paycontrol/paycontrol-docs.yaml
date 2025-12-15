@@ -1,0 +1,247 @@
+resources:
+- name: create_user
+  endpoint:
+    path: /{{system_id}}/users
+    method: POST
+    data_selector: user_created
+    params: {}
+- name: get_user_details
+  endpoint:
+    path: /{{system_id}}
+    method: GET
+    data_selector: user_details
+    params: {}
+- name: change_user_settings
+  endpoint:
+    path: /{{system_id}}
+    method: PATCH
+    data_selector: updated_settings
+    params: {}
+- name: create_user
+  endpoint:
+    path: /{{system_id}}/users
+    method: POST
+    data_selector: answer.user_created
+    params:
+      activation_code_length: 10
+- name: update_user
+  endpoint:
+    path: /{{system_id}}/users/{{user_id}}/key
+    method: POST
+    data_selector: answer.key_updated
+    params:
+      is_delayed: false
+      return_key_method: FULL_QR
+- name: export_user_keys
+  endpoint:
+    path: /{{system_id}}/users/{{user_id}}/key/export
+    method: POST
+    data_selector: answer.export_key
+    params:
+      key_encryption_password: '123456'
+- name: change_user_settings
+  endpoint:
+    path: /{{system_id}}/users/{{user_id}}
+    method: PATCH
+    data_selector: answer.result
+    params:
+      block: false
+      unblock: false
+- name: delete_user
+  endpoint:
+    path: /{{system_id}}/users/{{user_id}}
+    method: DELETE
+    data_selector: answer.result
+- name: get_user_details
+  endpoint:
+    path: /{{system_id}}/users/{{user_id}}
+    method: GET
+    data_selector: answer.user_info
+- name: create_transaction
+  endpoint:
+    path: /users/{{user_id}}/transactions
+    method: POST
+    data_selector: transaction_created
+    params: {}
+- name: confirm_transaction
+  endpoint:
+    path: /users/{{user_id}}/transactions/{{transaction_id}}/confirm
+    method: POST
+    data_selector: result_only
+    params: {}
+- name: decline_transaction
+  endpoint:
+    path: /users/{{user_id}}/transactions/{{transaction_id}}/decline
+    method: POST
+    data_selector: result_only
+    params: {}
+- name: cancel_transaction
+  endpoint:
+    path: /users/{{user_id}}/transactions/{{transaction_id}}/decline
+    method: POST
+    data_selector: result_only
+    params: {}
+- name: get_transactions_list
+  endpoint:
+    path: /users/{{user_id}}/transactions/get_list
+    method: GET
+    data_selector: transaction_list
+    params: {}
+- name: get_autoconfirm_list
+  endpoint:
+    path: /users/{{user_id}}/transactions/get_autoconfirm_list
+    method: GET
+    data_selector: transaction_list
+    params: {}
+- name: get_transaction_details
+  endpoint:
+    path: /users/{{user_id}}/transactions/{{transaction_id}}
+    method: GET
+    data_selector: transaction_info
+    params: {}
+- name: check_confirmation
+  endpoint:
+    path: /rks/check_confirmation
+    method: POST
+    data_selector: check_confirmation_result
+- name: user_data
+  endpoint:
+    path: /rks/user_data
+    method: POST
+    data_selector: user_info
+- name: get_scoring_details
+  endpoint:
+    path: /{{system_id}}/users/{{user_id}}/transactions/attempts/{{attempt_id}}/scoring_details
+    method: GET
+    data_selector: scoring_details
+- name: get_transaction_data
+  endpoint:
+    path: /{{system_id}}/users/{{user_id}}/transactions/{{transaction_id}}/get_data
+    method: GET
+    data_selector: transaction_data
+- name: get_event_details
+  endpoint:
+    path: /events/{{event_id}}
+    method: GET
+    data_selector: event_info
+- name: register_event
+  endpoint:
+    path: /{{system_id}}/users/{{user_id}}/events
+    method: POST
+    data_selector: event_info
+notes:
+- Callbacks will be triggered if callback URL is set in system settings.
+- This user creation method is useful to provide initial keys to a user online.
+- Callback contains pc_callback object with transaction details.
+- Must handle transaction confirmation flow as described.
+errors:
+- '0: Success'
+- '401: Unauthorized'
+- '403: Forbidden'
+- '400 Bad Request: Check request parameters'
+- '404 Not Found: User or endpoint does not exist'
+- '500 Internal Server Error: Check server logs for details'
+- 'NORMAL: Success'
+- 'JAVA_INTERNAL_ERROR: Internal Error'
+- 'SYSTEM_PROPERTY_ERROR: System property error'
+- 'SYSTEM_ID_IS_NULL: System ID is null'
+- 'SYSTEM_ID_IS_WRONG: System ID is wrong'
+- 'SYSTEM_NOT_FOUND: System not found'
+- 'SYSTEM_IS_DELETED: System has been deleted'
+- 'SYSTEM_NAME_IS_NULL: System name is null'
+- 'USER_ID_IS_NULL: User ID is null'
+- 'USER_ID_PREF_IS_NULL: User ID prefix is null'
+- 'USER_NOT_FOUND: User not found'
+- 'USER_IS_DELETED: User has been deleted'
+- 'DS_VERIFY_ERROR: Digital signature is not valid'
+- 'DS_STRUCT_ERROR: Digital signature is corrupted'
+- 'STORE_TYPE_IS_WRONG: Key storage type is unsupported'
+- 'KEY_CONTAINER_ALIAS_IS_NULL: Key alias is null'
+- 'KEY_CONTAINER_NOT_EXISTS: Key container does not exist'
+- 'TRANSACTION_DATA_UID_ERROR: Transaction data is corrupted (User ID does not match)'
+- 'TRANSACTION_DATA_ERROR: Transaction data error'
+- 'TRANSACTION_DATA_IS_NULL: Transaction data is null'
+- 'REPORT_TPL_IS_NULL: Report template is null'
+- 'REQUEST_ERROR: Request error'
+- 'SYSTEM_ID_NOT_UNIQUE: System ID is not unique'
+- 'REQUEST_SIGNATURE_NOT_VALID: Requset digital signature invalid'
+- 'SYSTEM_NOT_VALID: System is not valid'
+- 'TRANSACTION_IS_NULL: Transaction is NULL'
+- 'TRANSACTION_CHECKED: Transaction is confirmed'
+- 'ERROR_PARSE_REGISTER_SYSTEM_INFO: Request is corrupted'
+- 'INCORRECT_USER_TYPE: User type is incorrect'
+- 'COLLECTION_IS_EMPTY: Collection is empty'
+- 'NO_RESULT: Empty result'
+- 'PIN_IS_EMPTY: PIN is empty'
+- 'FPRINT_IS_EMPTY: Fingerprint is empty'
+- 'OTP_IS_NOT_VALID: Offline confirmation code is not valid'
+- 'VALID_DATE_EXPIRED: Key has expired'
+- 'SYSTEM_TYPE_IS_WRONG: System type is not valid'
+- 'SPART_LENGTH_IS_WRONG: Second key part length is not valid'
+- 'DATA_TYPE_IS_WRONG: Data type is wrong'
+- 'INVALID_HMAC: HMAC is not valid'
+- 'KEY_INFO_NOT_FOUND: User key not found'
+- 'WRONG_SYSTEM_TYPE: System type is not valid'
+- 'FPRINT_IS_NOT_EMPTY: Fingerprint has not been set'
+- 'WRONG_AUTH_CODE: Authentication code is invalid'
+- 'CONFIRM_TYPE_IS_NULL: Confirm type is null'
+- 'STORE_TYPE_IS_NULL: Key store type is null'
+- 'DEVICE_TYPE_IS_NULL: Device type is null'
+- 'TRANSACTION_DATA_TYPE_IS_NULL: Transaction data type is null'
+- 'USER_ID_PREF_TOO_LONG: User ID Prefix is too long'
+- 'CONFIRM_CODE_LENGTH_IS_WRONG: Confirmation code length is not valid'
+- 'CONFIRM_CODE_IS_NULL: Confrimation code is null'
+- 'TRANSACTION_ID_IS_NULL: Transaction ID is null'
+- 'STATUS_LIST_IS_EMPTY: Transaction status list is empty'
+- 'DEVICE_ID_IS_NULL: Device ID is null'
+- 'DEVICE_TYPE_IS_INCORRECT: Device type is incorrect'
+- 'INVALID_OTP: Offline confirmation code is not valid'
+- 'INVALID_KDF: Export param format is not valid'
+- 'PIN_LENGTH_IS_WRONG: PIN length is invalid'
+- 'PUSH_ID_IS_NULL: PUSH ID is null'
+- 'TRANSACTION_STATUS_INVALID: Invalid transaction status'
+- 'TRANSACTION_IS_NOT_UNIQUE: Transaction is not unique'
+- 'BILL_DATE_CORRUPTED: Billing date is corrupted'
+- 'USER_BILL_DATE_CORRUPTED: User billing date is corrupted'
+- 'TRANSACTION_IS_DELETED: Transaction is marked as deleted'
+- 'BILL_REQUEST_ALREADY_PROCESSED: Request for close billing already processed'
+- 'PUBKEY_IS_EMPTY: Public key is empty'
+- 'PUBKEY_IS_NOT_EMPTY: Public key was already set'
+- 'SIGNATURE_IS_INVALID: Signature is invalid'
+- 'SIGNATURE_IS_NULL: Signature is null'
+- 'SIGNATURE_AND_CONFIRM_CODE_ARE_NULL: Signature or confirm code must be specified'
+- 'TRANSACTION_EXPIRED: Transaction expired'
+- 'JSON_SCHEME_NOT_SUPPORTED: JSON scheme not supported'
+- 'JSON_REQUEST_INCORRECT: JSON request is incorrect'
+- 'LICENSE_UPDATE_ERROR: License update error'
+- 'LICENSE_EXPIRED: License expired'
+- 'LICENSE_USER_COUNT_EXCEEDED: Licensed users count exceeded'
+- 'BILLING_TYPE_CORRUPTED: Billing type corrupted in database'
+- 'HTTP_AUTH_CODE_INVALID: HTTP Authorization failed'
+- 'NOT_SUPPORTED: Operation not supported'
+- 'EXT_AUTH_TEMPLATE_NOT_FOUND: Extended authentication template not found'
+- 'EXT_AUTH_FAILED: Extended authentication failed'
+- 'EXT_AUTH_TYPE_NOT_SUPPORTED: Extended authentication type not supported'
+- 'EXT_AUTH_NEEDED: Extended authentication needed'
+- 'USER_IS_BLOCKED: User is blocked'
+- 'KEY_EXPIRED: The key has been expired, to continue you should update the key'
+- 'LICENSE_NOT_FOUND: License not found'
+- 'PUSH_NOT_FOUND: Device ID not found'
+- 'SCORING_SETTINGS_IS_NULL: Scoring settings not set'
+- 'AUTOSING_SIGNATURE_IS_INVALID: Signature for autoconfirm is invalid'
+- 'SERVER_SCORING_SETTINGS_INCORRECT: Scoring settings are invalid on the server'
+- 'SCORING_FAILED: Scoring failed'
+- 'HIGH_SCORING_RISK_LEVEL: Scoring risk level is very high'
+- 'AUTOSIGN_FAILED: Transaction autoconfirm failed'
+- 'AUTOSIGN_NOT_ALLOWED: Autoconfirm is not allowed'
+- 'ATTEMPT_ID_IS_NULL: Attempt ID not set'
+- 'FLEXIBLE_LICENSE_ERROR: Flexible license error'
+- 'LICENSE_ERROR: License error'
+- 'UNSUPPORTED_BILLING_TYPE: Unsupported billing type'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: '{{pc-server-api}}'
+  headers:
+    Content-Type: application/json
+source_metadata: null

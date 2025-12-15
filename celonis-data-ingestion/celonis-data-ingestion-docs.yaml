@@ -1,0 +1,235 @@
+resources:
+- name: execute_data_job
+  endpoint:
+    path: /integration/api/v2/data-pools/{poolId}/data-jobs/{jobId}/execute
+    method: POST
+    params:
+      mode: '{mode}'
+- name: query_data_job_status
+  endpoint:
+    path: /integration/api/pools/{poolId}/jobs/{jobId}
+    method: GET
+- name: complete_data_model_reload
+  endpoint:
+    path: /integration/api/v1/data-pools/{poolId}/data-models/{dataModelId}/load
+    method: POST
+- name: partial_data_model_reload
+  endpoint:
+    path: /integration/api/v1/data-pools/{poolId}/data-models/{dataModelId}/load/partial-sync
+    method: POST
+- name: last_load_information
+  endpoint:
+    path: /integration/api/v1/data-pools/{poolId}/data-models/{dataModelId}/last-load
+    method: GET
+- name: pagination
+  endpoint:
+    params:
+      page: '0'
+      pageSize: '50'
+- name: knowledge_models
+  endpoint:
+    path: /knowledge-models
+    method: GET
+    data_selector: models
+    params: {}
+- name: subscriptions
+  endpoint:
+    path: /intelligence/api/subscriptions
+    method: GET
+- name: knowledge_models
+  endpoint:
+    path: /intelligence/api/knowledge-models/$km-id/triggers
+    method: GET
+- name: create_subscription
+  endpoint:
+    path: /intelligence/api/knowledge-models/$km-id/triggers/$trigger-id/subscriptions
+    method: POST
+- name: knowledge_models
+  endpoint:
+    path: /knowledge-models
+    method: GET
+    data_selector: records
+- name: km_triggers
+  endpoint:
+    path: /{knowledge-model-id}/triggers
+    method: GET
+    data_selector: records
+- name: elements
+  endpoint:
+    path: /api/v1/elements
+    method: GET
+    data_selector: JSON
+    params:
+      Skip: int
+      Take: int
+      facetName: string
+- name: facets
+  endpoint:
+    path: /api/v1/facets
+    method: GET
+    data_selector: JSON
+    params: {}
+- name: facet_hierarchy
+  endpoint:
+    path: /api/v1/facets/{facetName}/hierarchy
+    method: GET
+    data_selector: JSON
+    params: {}
+- name: Audit Log API
+  endpoint:
+    path: /celonis-apis/audit-log-api/overview/
+    method: GET
+- name: Platform Adoption API
+  endpoint:
+    path: /celonis-apis/platform-api/overview/
+    method: GET
+- name: SCIM API
+  endpoint:
+    path: /celonis-apis/scim-api/overview/
+    method: GET
+- name: Team APIs
+  endpoint:
+    path: /celonis-apis/team-api/overview/
+    method: GET
+- name: ingest_parquet_file
+  endpoint:
+    path: /api/data-ingestion/continuous/connection/{connectionId}/{tableName}/{fileName}.parquet
+    method: PUT
+- name: object_metadata
+  endpoint:
+    path: /api/data-ingestion/continuous/connection/{connectionId}/{tableName}/{objectKey}
+    method: HEAD
+- name: list_objects
+  endpoint:
+    path: /data-ingestion-api/standard/openapi/openapi/operation/listObjects
+    method: GET
+    data_selector: objects
+    params:
+      prefix: /api/data-ingestion/continuous/connection/{connectionId}/{tableName}
+      max-keys: integer
+notes:
+- The Monitoring tab in the Celonis Platform will only display errors that occur after
+  the file has been successfully uploaded.
+- Errors that occur prior to the file being uploaded will not be displayed on the
+  Monitoring tab and should be addressed on the client side.
+- Celonis Platform features and APIs rely on rate limits to help provide a predictable
+  experience for users.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Celonis is moving away from long term API/Application keys and towards OAuth.
+- The scope 'integration.data-pools' must be configured.
+- Client must have both viewing and managing the data pool permissions enabled.
+- OAuth client needs the scope integration.data-pools to use all of the APIs.
+- The application key requires Edit permissions on the corresponding data pool.
+- API Keys will be deprecated in the coming months.
+- OAuth2.0 client with grant_type=authorization_code has now been released in private
+  preview. Please contact your account team to get early access.
+- For production solutions, use OAuth 2.0 instead of static keys.
+- Credentials sent in the URL or body of the request will be ignored.
+- All endpoints that return results in the form of lists provide the ability to paginate
+  their results by leveraging page-based pagination.
+- The default value for pageSize is 50 meaning that the maximum number of items that
+  can be retrieved in each call is 50.
+- Celonis APIs were not built to export RAW data on a large scale but to make the
+  calculated results and insights from process mining available to 3rd party platforms
+  and applications.
+- Celonis reserves the right to adjust the rate limits at any time to guarantee high-quality
+  service for all clients.
+- In order to have access to a specific Knowledge Model and its contents, the Knowledge
+  Model must be published in the Celonis Platform.
+- The returned data corresponds to the last published version of the Knowledge Model.
+- 'OAuth clients for Knowledge Model API should be configured with the scope: intelligence.knowledge-models:read'
+- 'OAuth clients for Subscription API should be configured with the scope: intelligence.subscriptions:manage'
+- The maximum size allowed for pushed files is 1 GB.
+- Uses Standard Data Ingestion API for S3 compatible buckets
+- Save the configuration and note down the Access Key and Access Secret.
+- The API will update data once a day overnight, so you will not see the latest data
+  immediately after connection.
+- The API key will have an automatic 90 day expiration period.
+- The Reporting API is organized in objects that share a set of similar attributes.
+- The maximum limit is 100, which will be applied if no limit is set.
+- MCP clients authenticate using either OAuth 2.0 (recommended for production) or
+  Application Keys (suitable for development and testing).
+- OAuth 2.0 is the recommended authentication method for production use.
+- Ensure your MCP Server asset is published and the MCP Server URL is correct.
+- Client secret post authentication method required
+- 'Scopes to select: audit.log:read, platform-adoption.tracking-events:read, team.login-history:read'
+- 'This API supports multiple methods of authentication: Via OAuth 2.0 token with
+  scope audit.log:read, passed in an HTTP header like this: Authorization: Bearer
+  TOKEN.'
+- This API supports multiple methods of authentication
+- ALL SCIM OPERATIONS ARE SCOPED TO A TEAM. CHANGES TO A USER IN ONE TEAM DO NOT AFFECT
+  ANY OTHER MEMBERSHIPS FOR THAT USER.
+- ALL TEAM OPERATIONS ARE SCOPED TO A CELONIS PLATFORM TEAM.
+- Preferred method via OAuth 2.0 token with a scope platform-adoption.tracking-events:read
+- Uncompressed parquet files only. Alternative file formats must be converted to parquet
+  before being ingested.
+- The Standard Data Ingestion API always performs delta loads. Make sure to define
+  the primary keys to ensure proper updates and avoid duplicates.
+- Single files and multiple files simultaneously (using a first in, first out or FIFO
+  method).
+- Only the endpoints, headers, query and path parameters explicitly listed in this
+  specification are supported.
+errors:
+- Primary key not found in input file
+- Age column not found in input file
+- Table schema mismatch error
+- Input file unnesting error
+- Internal error
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '429: too many requests'
+- 'Unauthorized: Request does not provide a Bearer token.'
+- Invalid "Authorization" header format.  Should start either with "Bearer " or "AppKey
+  " (case insensitive).
+- 'Access Denied: The user does not have permission to access a specific resource
+  such as a Knowledge Model.'
+- The API is disabled.
+- 'Query parameter type mismatch: Sending an invalid format as part of the `page`
+  parameter.'
+- 'Query parameter type mismatch: Sending an invalid format as part of the `pageSize`
+  parameter.'
+- 'Path not found: Requesting a non-existing path.'
+- 'Unexpected error: Something went wrong while handling the request. Please contact
+  Celonis customer support.'
+- 'Rate limit exceeded: Rate limit for INTELLIGENCE_API_RATE_LIMIT is exceeded.'
+- 'Limit MAX_REQUESTS not found: Rate limit is not found for the size definition.'
+- 'Limit MAX_REQUESTS not found: Rate limit is not properly configured.'
+- '400: Bad Request'
+- '401: Unauthorized'
+- '402: Payment Required'
+- '403: Forbidden'
+- '404: Not Found'
+- '405: Method Not Allowed'
+- '406: Not Acceptable'
+- '410: Gone'
+- '413: Payload Too Large'
+- '414: URI Too Long'
+- '415: Unsupported Media Type'
+- '422: Unprocessable Content'
+- '431: Request Header Fields Too Large (RFC 6585)'
+- '451: Unavailable For Legal Reasons (RFC 7725)'
+- 'unauthorized: API calls will fail without an updated API key'
+- 'Default rate limit: 500 calls per minute per asset'
+- Ensure your OAuth Client or Application Key has been granted the 'use' permission
+  for your MCP Server asset.
+- '401 Unauthorized: Unauthorized access.'
+- '403 Forbidden: Forbidden access.'
+- '404: The specified resource does not exist.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - OAuth Client
+  - AppKey
+  - Bearer Token
+  - User API Key
+  - Application API Key
+  - OAuth client
+  - Audit Log API
+  - Login History API
+  - Studio Adoption APIs
+  - platform-adoption.tracking-events:read
+client:
+  base_url: https://developer.celonis.com/
+  paginator:
+    type: cursor
+source_metadata: null

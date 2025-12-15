@@ -1,0 +1,235 @@
+resources:
+- name: login-sessions
+  endpoint:
+    path: /rest/login-sessions
+    method: POST
+    data_selector: token
+- name: certificates
+  endpoint:
+    path: /rest/certificates/https/remote/<HPE OneView IP>
+    method: GET
+    data_selector: certificates
+- name: appliances
+  endpoint:
+    path: /rest/appliances
+    method: POST
+    data_selector: appliances
+- name: resource-alerts
+  endpoint:
+    path: /rest/resource-alerts
+    method: GET
+    data_selector: alerts
+    params:
+      count: '-1'
+- name: audit_events
+  endpoint:
+    path: /api/v1/audit-events
+    method: GET
+    data_selector: items
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: async-operations
+  endpoint:
+    path: /data-services/v1beta1/async-operations
+    method: GET
+    data_selector: records
+- name: active-issues
+  endpoint:
+    path: /data-services/v1beta1/issues
+    method: GET
+    data_selector: records
+- name: async-operations
+  endpoint:
+    path: /data-services/v1beta1/async-operations/{Task Id}
+    method: GET
+- name: virtual-machines
+  endpoint:
+    path: /virtualization/v1beta1/virtual-machines
+    method: POST
+- name: storage-systems
+  endpoint:
+    path: /api/v1/storage-systems
+    method: GET
+- name: controllers
+  endpoint:
+    path: /api/v1/controllers
+    method: GET
+- name: volumes
+  endpoint:
+    path: /api/v1/volumes
+    method: GET
+- name: carbon_footprint_report
+  endpoint:
+    path: /compute-ops/v1beta1/reports/{id}/data
+    method: GET
+    data_selector: series
+    params: {}
+- name: carbon_footprint_report
+  endpoint:
+    path: /compute-ops/v1beta1/reports/{id}/data
+    method: GET
+- name: server_health_information
+  endpoint:
+    path: /compute-ops/v1beta2/servers/
+    method: GET
+    params:
+      limit: '100'
+- name: servers
+  endpoint:
+    path: /compute-ops/v1beta2/servers
+    method: GET
+    data_selector: items
+- name: session
+  endpoint:
+    path: /api/v2/session
+    method: POST
+    data_selector: sessionId
+    params: {}
+- name: wellness_issues
+  endpoint:
+    path: /Issues
+    method: GET
+    data_selector: issues
+- name: wellness_issue_details
+  endpoint:
+    path: /Issue
+    method: GET
+    data_selector: issue
+- name: webhook_handler
+  endpoint:
+    path: /hpe/webhook
+    method: POST
+    data_selector: payload
+    params: {}
+- name: storage_systems
+  endpoint:
+    path: /api/v1/storage-systems
+    method: GET
+    data_selector: items
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: k8s-helloworld
+  endpoint:
+    path: /services/data/vXX.X/sobjects/k8s-helloworld
+    method: GET
+    data_selector: records
+    params: {}
+- name: person_group
+  endpoint:
+    path: /persongroups/{personGroupId}
+    method: PUT
+    data_selector: null
+    params: {}
+- name: create_person
+  endpoint:
+    path: /persongroups/{personGroupId}/persons
+    method: POST
+    data_selector: null
+    params: {}
+- name: add_person_face
+  endpoint:
+    path: /persongroups/{personGroupId}/persons/{personId}/persistedFaces
+    method: POST
+    data_selector: null
+    params: {}
+- name: train_person_group
+  endpoint:
+    path: /persongroups/{personGroupId}/train
+    method: POST
+    data_selector: null
+    params: {}
+- name: detect_faces
+  endpoint:
+    path: /detect
+    method: POST
+    data_selector: null
+    params: {}
+- name: identify_person
+  endpoint:
+    path: /identify
+    method: POST
+    data_selector: null
+    params: {}
+- name: face_detection
+  endpoint:
+    path: /face/v1.0/detect
+    method: POST
+    data_selector: faces
+    params: {}
+notes:
+- The access token has a limited lifetime (about 7200 seconds or 2 hours).
+- If the client application generates a new access token before the current one has
+  expired, then the current access token will be invalidated.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Access token will expire after 2 hours past from the time of creation.
+- Asynchronous execution means that execution of the API will complete and return
+  with response status= 0x202.
+- The major version number will be provided in the resource path as 'v1'.
+- All REST API operations are stateless.
+- Carbon footprint information is only available after running a report from the HPE
+  GreenLake Cloud Platform GUI.
+- 'Data source: Infinity-COM'
+- Some objects may return nulls in deeply nested fields
+- Access token expires after 120 minutes and needs to be regenerated.
+- Session location token will remain valid for 1440 minutes (or 24 hours)
+- Admin role is required to access API.
+- Client Key and Client Secret pair are required for making Wellness API calls.
+- HPE GreenLake webhooks require webhook secret management and HMAC SHA-256 signature
+  verification.
+- Access bearer token expires after 120 minutes.
+- Uses Kubernetes services to expose applications via HPE Ezmeral Runtime Enterprise
+  Gateway.
+- The access token is designed to enable secure transmission between the client application
+  and the REST API server with a limited lifetime (2 hours).
+- The subscription key must be passed in the request header for all API calls.
+- Users log in to the face detection application running on the EL300 Kubernetes cluster.
+- The application fetches the current image from the network camera.
+errors:
+- '401 Unauthorized: Token expiration or invalid token.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '422: Missing required field(s) - lastOccurredAt, customerId, createdAt, id, resourceUri,
+  generation, type'
+- '0x202: Accepted, operation is running in the background.'
+- '201 created: Session created successfully'
+- '400 Bad Request: Check the request format and parameters.'
+- '401 Unauthorized: Verify the subscription key.'
+- '404 Not Found: Check the endpoint and resource paths.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - session
+client:
+  base_url: https://us1.data.clo
+  auth:
+    type: oauth2
+    flow: client_credentials
+    location: header
+    header_name: Authorization
+source_metadata: null

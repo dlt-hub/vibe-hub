@@ -1,0 +1,108 @@
+resources:
+- name: brief_bibs
+  endpoint:
+    path: /search/brief-bibs
+    method: GET
+    data_selector: briefRecords
+- name: bib_get
+  endpoint:
+    path: /manage/bibs/{oclcNumber}
+    method: GET
+    data_selector: record
+- name: SearchSession
+  endpoint:
+    path: /sru
+    method: GET
+    data_selector: records
+- name: MetadataSession
+  endpoint:
+    path: /metadata
+    method: GET
+    data_selector: records
+- name: SearchSession
+  endpoint:
+    path: /search
+    method: GET
+    data_selector: records
+    params:
+      service_level: default
+- name: MetadataSession
+  endpoint:
+    path: /metadata
+    method: GET
+    data_selector: records
+    params: {}
+- name: brief_bibs
+  endpoint:
+    path: /brief-bibs
+    method: GET
+    data_selector: briefRecords
+- name: full_bib
+  endpoint:
+    path: /bib-data
+    method: GET
+    data_selector: record
+- name: holdings_set
+  endpoint:
+    path: /ih/data
+    method: POST
+    data_selector: response
+- name: holdings_get_status
+  endpoint:
+    path: /ih/checkholdings
+    method: GET
+    data_selector: content
+- name: match_marc_records
+  endpoint:
+    path: /manage/bibs/match
+    method: POST
+- name: retrieve_full_marc_record
+  endpoint:
+    path: /manage/bibs
+    method: GET
+- name: search_brief_bibliographic_resources
+  endpoint:
+    path: /search/brief-bibs/
+    method: GET
+notes:
+- Requires OCLC credentials to obtain WSKey for access.
+- Requires credentials - WSkey for Search API and OCLC credentials for Metadata API.
+- Not all features of Worldcat Search and Metadata APIs are implemented.
+- Returned records are by default in MARC XML format.
+- 'Default parameters of the `sru_query` method include: start_record (default value:
+  `1`), maximum_records (default: `10`), sort_keys (default: `[(''relevance'', ''descending'')]`),
+  frbr_grouping (default: `off`), service_level (default: `default`), hooks (default:
+  `None`).'
+- Authenticates and authorizes using Client Credentials Grant.
+- Token with correctly bonded scopes can then be passed into a session of particular
+  web service to authorize requests for resources.
+- Requires OCLC credentials to access the Metadata API
+- All MetadataSession issued requests have a built-in access token auto-refresh feature.
+- Does not support Explicit Authorization Code and Refresh Token flows
+- Automatic Token Refresh is built-in to MetadataSession.
+- Users should not set up automatic retries for authentication (401, 403) or malformed
+  request errors (400).
+- Uses OAuth2 with token retrieval from a JSON file
+errors:
+- 'Unauthorized: Check your API credentials or token expiration.'
+- 'TokenRequestError: Raised when a token request fails.'
+- '401 Unauthorized: Check OCLC credentials or token expiration'
+- 'WorldcatAuthorizationError: Raised on failed token request.'
+- 'WorldcatAuthorizationError: Invalid scope(s)'
+auth_info:
+  mentioned_objects:
+  - WorldcatAccessToken
+  - MetadataSession
+  - SearchSession
+client:
+  base_url: https://oauth.oclc.org
+  auth:
+    type: oauth2
+    flow: client_credentials
+    key: my_WSKey
+    secret: my_secret
+    agent: my_app/version 1.0
+  headers:
+    user-agent: bookops-worldcat/0.1.0
+    Accept: application/json
+source_metadata: null

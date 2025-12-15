@@ -1,0 +1,75 @@
+resources:
+- name: OffloadModel
+  endpoint:
+    path: /experimental/nn/offload
+    method: POST
+    data_selector: model
+    params:
+      num_slices: 3
+      checkpoint_activation: true
+      num_microbatches: 1
+- name: Pipe
+  endpoint:
+    path: /api/nn/pipe
+    method: GET
+    data_selector: records
+    params: {}
+- name: checkpoint_wrapper
+  endpoint:
+    path: /api/nn/checkpoint/checkpoint_activations
+    method: GET
+    data_selector: records
+    params: {}
+- name: OffloadModel
+  endpoint:
+    path: /api/experimental/nn/offload_model
+    method: GET
+    data_selector: model
+    params: {}
+notes:
+- OSS is very useful when you are using an optimizer such as Adam that has additional
+  state.
+- If your model is extremely unbalanced in terms of size (one giant tensor for instance),
+  then this method will not be very helpful.
+- For best memory efficiency use auto_wrap to wrap each layer in your network with
+  FSDP and set reshard_after_forward to be True.
+- Using OffloadModel to train large models can result in loss of throughput which
+  can be overcome by using activation checkpointing and microbatches.
+- OffloadModel currently only works for nn.Sequential models.
+- Adascale only works for the SGD optimizer (with and without momentum)
+- SlowMo will be useful in deep learning workloads which run on more than 2 nodes
+  in clusters with a slow interconnect, eg Ethernet.
+- slowmo_momentum will need to be tuned for obtaining good model quality.
+- Auto wrapping sub-modules with FSDP improves training speed and memory efficiency.
+- Currently requires the model to be a nn.Sequential model.
+- 'The LayerwiseMemoryTracker has a bunch of limitations it is important to be aware
+  of: It only works on GPU models: models cannot sit on the CPU. Some of the GPU memory
+  might not tracked by PyTorch and therefore will not be tracked with this tooling
+  either. Results are based on heuristics and might miss some memory in some cases.'
+- AdaScale does not help increase per-GPU batch size.
+- Wraps an arbitrary nn.Sequential module to train on Pipe.
+- You should determine the balance when defining a Pipe module.
+- The optimizer must be initialized after the module has been wrapped, since FSDP
+  will shard parameters in-place and this will break any previously initialized optimizers.
+- If activation checkpointing is used with FSDP, it is strongly encouraged to use
+  `checkpoint_wrapper` function from FairScale instead of the `checkpoint` function
+  from PyTorch.
+- This needs to be called on all ranks, since synchronization primitives will be used.
+- Calling it after wrapping can crash due to unexpected tensor size and dimensions
+  due to flattening and sharding.
+- Calling it after wrapping can result in incorrect init values due to flattening.
+- If models are originally on CPU and after wrapping it is moved to GPU, calling this
+  will again be problematic.
+- OffloadModel currently only supports nn.Sequential models.
+errors:
+- 'Out Of Memory (OOM): Try reducing the batch size or using gradient accumulation.'
+- 'TypeError: the module is not a nn.Sequential.'
+- 'ValueError: invalid arguments, or wrong balance.'
+- 'IndexError: the number of devices is fewer than the number of partitions.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://fairscale.readthedocs.io/
+  headers:
+    Accept: application/json
+source_metadata: null

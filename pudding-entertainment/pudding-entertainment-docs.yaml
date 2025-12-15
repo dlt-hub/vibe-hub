@@ -1,0 +1,72 @@
+resources:
+- name: game_levels
+  endpoint:
+    path: /game/levels
+    method: GET
+    data_selector: levels
+- name: mints
+  endpoint:
+    path: /operations/listMints
+    method: GET
+    data_selector: data
+    params:
+      incremental: updated_at
+- name: orders
+  endpoint:
+    path: /orders
+    method: GET
+    data_selector: data
+    params: {}
+- name: asset
+  endpoint:
+    path: /assets/{token_address}/{token_id}
+    method: GET
+    data_selector: data
+    params: {}
+- name: normal_transactions
+  endpoint:
+    path: /api
+    method: GET
+    data_selector: result
+    params:
+      module: account
+      action: txlist
+      startblock: '14846665'
+      offset: '10000'
+- name: erc20_token_transfer_events
+  endpoint:
+    path: /api
+    method: GET
+    data_selector: result
+    params:
+      module: account
+      action: tokentx
+      startblock: '14846665'
+      offset: '10000'
+notes:
+- Procedural level generation can be complex and may require optimization.
+- Uses OAuth2 with refresh token — requires setup of connected app in ImmutableX
+- Pagination uses cursor from response
+- API will be queried every minute to check the data for the last minute.
+- Etherscan API structure can be a bit counter-intuitive.
+- Both APIs are limited to 10,000 records.
+errors:
+- 'OutOfMemoryError: Optimize data handling or increase memory allocation.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck API key validity'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.immutable.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.immutable.com/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+source_metadata: null

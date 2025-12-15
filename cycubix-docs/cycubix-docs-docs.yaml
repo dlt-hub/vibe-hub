@@ -1,0 +1,76 @@
+resources:
+- name: profile
+  endpoint:
+    path: /WebGoat/IDOR/profile/{userId}
+    method: GET
+    data_selector: response
+    params: {}
+- name: edit_profile
+  endpoint:
+    path: /WebGoat/IDOR/profile/{userId}
+    method: PUT
+    data_selector: response
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: profile
+  endpoint:
+    path: /profile/me
+    method: GET
+- name: Insecure Direct Object Reference
+  endpoint:
+    path: /services/data/vXX.X/sobjects/InsecureDirectObjectReference
+    method: GET
+    data_selector: records
+notes:
+- Requires setup of connected app in api
+- Older apps may follow different patterns, but RESTful apps often just change methods
+  to perform different functions.
+- The Web Application Security Essentials course is a comprehensive and strategic
+  overview of web application security.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Application developers who develop their own session IDs frequently forget to incorporate
+  the complexity and randomness necessary for security.
+- During this exercise it is possible that Proxy service stops, and connection to
+  listener fails. In this case, close the broswer, turn interceptor off. Restart interceptor
+  and Try login in again to Webgoat.
+- If you receive a '500 Internal Server Error' response in the Repeater, restart your
+  container in Docker.
+- If the range of numbers selected on the payload do not provide the solution for
+  the completion of the assignment, go back to the post request and identify a new
+  sequence of hijack_cookies to find a new range of numbers. Don't get frustrated
+  if you need to do this step again...it happens.
+- Authenticate First, Abuse Authorization Later
+- Many time, APIs or RESTFul endpoints rely on obscurity , a static 'key', or lack
+  of imagination on the user’s part to control access.
+- Good options such as digitally signed JSON Web Tokens are a good option for API
+  authentication & access control using a combination of the claims and a digital/cryptographic
+  signature to validate the consumer.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '500 Internal Server Error: Restart your container in Docker.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://docs.cycubix.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+source_metadata: null

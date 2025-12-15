@@ -1,0 +1,69 @@
+auth_info:
+- information_source; https://freesound.org/docs/api/authentication.html:
+  - API key authentication via token parameter or Authorization header, or OAuth2
+    authorization code grant flow. For token auth, pass the API key as a GET parameter
+    named token or in the Authorization header as Token YOUR_API_KEY. For OAuth2,
+    redirect users to Freesound login, receive an authorization grant as a GET parameter,
+    then exchange it for an access token to include in subsequent API requests.
+  - 'Freesound API uses OAuth2 authorization code flow. Exchange the authorization
+    code for an access token by making a POST request to https://freesound.org/apiv2/oauth2/access_token/
+    with POST parameters: client_id, client_secret, grant_type set to ''authorization_code'',
+    and code. The response includes access_token, scope, expires_in, and refresh_token.
+    Use the access_token in all subsequent API calls. Authorization codes expire after
+    10 minutes.'
+  - OAuth2 Bearer token authentication. Access tokens must be included in the Authorization
+    header as "Bearer ACCESS_TOKEN" and have a 24-hour lifetime. Authorization codes
+    (10-minute lifetime, single-use) are exchanged for access tokens via POST request
+    with grant_type parameter. Expired tokens return 401 responses; use the refresh_token
+    parameter to obtain new access tokens without restarting the full OAuth2 flow.
+  - 'OAuth2 authorization code flow is required. Redirect users to https://freesound.org/apiv2/oauth2/authorize/
+    with GET parameters: client_id (your application''s client ID), response_type
+    (must be ''code''), and state (optional arbitrary value for CSRF protection).
+    All OAuth2 requests must use HTTPS. Users authenticate and grant permission on
+    Freesound, then are redirected back to your application with an authorization
+    code.'
+  - OAuth2 authorization code flow with refresh token support. To refresh an expired
+    access token, POST to https://freesound.org/apiv2/oauth2/access_token/ with grant_type
+    set to 'refresh_token', your client_id, client_secret, and refresh_token parameter.
+    The response provides a new access token and refresh token. Access tokens can
+    be revoked by users, resulting in 401 Unauthorized responses with 'Invalid token'
+    error.
+pagination_info:
+- information_source; https://freesound.org/docs/api/resources_apiv2.html:
+  - Combined Search uses a `more` link in responses to paginate through results instead
+    of `next` and `previous` links. The `results` list length may be less than the
+    specified `page_size`, so verify the list length to detect the end of pagination.
+    The `count` field is absent, so total result count is unknown. Use the `more`
+    link value as the URL for the next request to fetch additional results.
+  - Pagination for Content Search uses query parameters page and page_size. The response
+    returns a sound list with the same pagination structure as standard sound list
+    responses, where page specifies the page number and page_size specifies results
+    per page.
+  - Pagination uses query parameters page (page number) and page_size (results per
+    page), with response structure matching the sound list endpoint. The fields parameter
+    allows selecting specific response fields.
+  - Parameters `page` and `page_size` control pagination in query string. The response
+    includes `next` and `previous` fields with links to navigate pages; use these
+    links for subsequent requests or stop when `next` or `previous` is null.
+  - Search results use offset-based pagination with query parameters page and page_size
+    to control pagination. The response includes count (total results), next and previous
+    (links to adjacent pages, null if none), and results array containing the current
+    page of sounds. Use the next or previous links to navigate pages.
+possible_base_urls:
+- information_source; https://freesound.org/docs/api/authentication.html:
+  - https://freesound.org/apiv2/
+  - https://freesound.org/apiv2/oauth2/access_token/
+possible_endpoints:
+- information_source; https://freesound.org/docs/api/authentication.html:
+  - GET https://freesound.org/apiv2/oauth2/authorize/
+  - GET https://freesound.org/apiv2/oauth2/logout_and_authorize/
+  - GET https://freesound.org/apiv2/search/text/
+  - GET https://freesound.org/apiv2/sounds/pending_uploads/
+  - POST https://freesound.org/apiv2/oauth2/access_token/
+- information_source; https://freesound.org/docs/api/overview.html:
+  - GET https://freesound.org/apiv2/search/combined/
+  - GET https://freesound.org/apiv2/search/content/
+  - GET https://freesound.org/apiv2/search/text/
+- information_source; https://freesound.org/docs/api/overview_apiv1.html:
+  - GET https://freesound.org/api/sounds/<sound_id>
+  - GET https://freesound.org/api/sounds/search

@@ -1,0 +1,160 @@
+resources:
+- name: tasks
+  endpoint:
+    path: /api/v1/tasks
+    method: GET
+    data_selector: records
+- name: activities
+  endpoint:
+    path: /api/data/v1.0/activities
+    method: GET
+    data_selector: value
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: recurring_tasks
+  endpoint:
+    path: /services/data/vXX.X/sobjects/RecurringTask
+    method: GET
+    data_selector: records
+    params: {}
+- name: quick_create_phone_call
+  endpoint:
+    path: /services/data/vXX.X/sobjects/QuickCreatePhoneCall
+    method: POST
+    data_selector: result
+    params: {}
+- name: annotation
+  endpoint:
+    path: /api/data/vXX.X/annotations
+    method: GET
+    data_selector: value
+    params: {}
+- name: Activities
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Activity
+    method: GET
+    data_selector: records
+- name: form_type
+  endpoint:
+    path: /form/type
+    method: GET
+    data_selector: form_types
+    params: {}
+- name: submit_mode
+  endpoint:
+    path: /submit/mode
+    method: GET
+    data_selector: submit_modes
+    params: {}
+- name: save_mode
+  endpoint:
+    path: /save/mode
+    method: GET
+    data_selector: save_modes
+    params: {}
+- name: tab_visibility
+  endpoint:
+    path: /tab/visibility
+    method: GET
+    data_selector: tabs
+    params: {}
+- name: form_notification
+  endpoint:
+    path: /form/notification
+    method: GET
+    data_selector: notifications
+    params: {}
+- name: form_load_script
+  endpoint:
+    path: /api/form/load
+    method: GET
+    data_selector: scripts
+    params: {}
+- name: form_notification
+  endpoint:
+    path: /api/form/notification
+    method: POST
+    data_selector: notifications
+    params: {}
+notes:
+- Common scenarios and solutions for using JavaScript in Dynamics 365.
+- Tips for manipulating forms and fields in Dynamics 365.
+- Requires a valid OAuth2 token for each request
+- Uses OAuth2 with refresh token — requires setup of connected app in Dynamics 365
+- Some objects may return nulls in deeply nested fields
+- You can easily configure fields to a really cool custom control in Dynamics 365
+  without any sort of coding.
+- Environments that can be restored are environments deleted by an administrator and
+  not those deleted by the system due to license expiration and other scenarios.
+- Requires setup of connected app in api
+- Get the form type of the record to ensure you don’t load ALL scripts on every form
+  load.
+- Use developer tools to find dirty fields in your form.
+- Set submit mode to control how you want to save the field you changed programmatically.
+- Get save mode to manipulate auto-save for specific forms.
+- Use form level notifications to display messages on the form.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Make sure you have a valid email address and phone number.
+- Before running the Package Deployer, check the following in Advanced Find to avoid
+  encountering issues during the installation.
+- If the CRM environment is in Administration Mode, turning it off should fix the
+  issue.
+- XRMToolbox has a filtering capability in the Data Migration Tool.
+- It is required to setup a Team to use Queues.
+- The activities and cases inside a queue is called a queue item.
+- Users can pick a queue item as needed.
+- Picking a queue item updates the Worked By field/column.
+- Users can route a queue item to another Queue or User.
+- Users cannot route a queue item to a user who is not a member of the Queue that
+  owns the queue item.
+- A queue item can be delegated to another user who is not member of team.
+- Releasing a picked queue item will automatically be routed back to the Queue.
+- When displaying an Activity Status in queue, it will be a separate column per activity
+  type unless you add a custom script.
+- The requirement is to add a ribbon button so a Customer Service Agent can easily
+  create a Phone Call with minimal clicks in the Unified Client Interface of Dynamics
+  365.
+- Ensure to trigger flow only when the Note has an attachment.
+- You need to set Trigger Conditions to ensure that you are only triggering this flow
+  if the Note (annotation) has an attachment (isdocument) and for a specific object
+  type.
+- Setting the Calendar Control will give your users a calendar view of all their activities
+  marked on due date.
+- Even if it's in calendar view by default, you can always revert it back as list.
+- Uses JavaScript in Dynamics 365 Client API for customization.
+- Scripts can be executed based on form type.
+errors:
+- '401 Unauthorized: Check your credentials or token'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'The pre-import process failed: Organisation should have no more than one active
+  ‘msdyn_organisationalunit’'
+- 'The pre-import process failed: ID for the user with login ‘davids’ not found'
+- 'Renaming Default Work Order Template failed with error: ID for User with login
+  ‘davids’ not found'
+- 'ERROR: Invalid form context.'
+- 'WARNING: Changes not saved.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://trials.dynamics.com
+  auth:
+    type: oauth2
+source_metadata: null

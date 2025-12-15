@@ -1,0 +1,1283 @@
+resources:
+- name: login
+  endpoint:
+    path: /login
+    method: POST
+    data_selector: token
+    params: {}
+- name: loginBySignature
+  endpoint:
+    path: /loginBySignature
+    method: POST
+    data_selector: token
+    params: {}
+- name: federation
+  endpoint:
+    path: /federation
+    method: POST
+    data_selector: token
+    params:
+      originalUserId: user-0001
+      userId: user-0002
+      policyDocument: "{\n  \"Version\": \"2016-04-01\",\n  \"Statements\": [\n  \
+        \  {\n      \"Effect\": \"Allow\",\n      \"Actions\": [\n        \"Gs2Inbox:SendMessage\"\
+        \n      ],\n      \"Resources\": [\n        \"grn:gs2:ap-northeast-1:YourOwnerId:inbox:namespace-0001\"\
+        ,\n        \"grn:gs2:ap-northeast-1:YourOwnerId:inbox:namespace-0001:*\"\n\
+        \      ]\n    }\n  ]\n}"
+- name: issueTimeOffsetTokenByUserId
+  endpoint:
+    path: /issueTimeOffsetTokenByUserId
+    method: POST
+    data_selector: token
+    params:
+      userId: user-0001
+      timeOffset: 1000
+- name: service_version
+  endpoint:
+    path: /getServiceVersion
+    method: GET
+    data_selector: item
+- name: namespace
+  endpoint:
+    path: /namespace
+    method: GET
+    data_selector: namespaces
+- name: buff_target_model
+  endpoint:
+    path: /buff/targetModel
+    method: GET
+    data_selector: targetModels
+- name: buff_target_action
+  endpoint:
+    path: /buff/targetAction
+    method: GET
+    data_selector: targetActions
+- name: buff_entry_model
+  endpoint:
+    path: /buff/entryModel
+    method: GET
+    data_selector: entryModels
+- name: buff_entry_model_master
+  endpoint:
+    path: /buff/entryModelMaster
+    method: GET
+    data_selector: entryModelMasters
+- name: current_buff_master
+  endpoint:
+    path: /buff/currentMaster
+    method: GET
+    data_selector: currentMaster
+- name: override_buff_rate
+  endpoint:
+    path: /buff/overrideRate
+    method: POST
+    data_selector: overrideRates
+- name: describeNamespaces
+  endpoint:
+    path: /describeNamespaces
+    method: GET
+    data_selector: items
+    params:
+      limit: 30
+- name: create_namespace
+  endpoint:
+    path: /createNamespace
+    method: POST
+    data_selector: item
+    params:
+      name: namespace-0001
+      logSetting:
+        loggingNamespaceId: grn:gs2:ap-northeast-1:YourOwnerId:log:namespace-0001
+- name: get_namespace_status
+  endpoint:
+    path: /getNamespaceStatus
+    method: GET
+    data_selector: status
+    params:
+      namespaceName: namespace-0001
+- name: namespace
+  endpoint:
+    path: /getNamespace
+    method: GET
+    data_selector: item
+    params:
+      namespaceName: namespace-0001
+- name: update_namespace
+  endpoint:
+    path: /updateNamespace
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace-0001
+      description: description1
+      logSetting:
+        loggingNamespaceId: grn:gs2:ap-northeast-1:YourOwnerId:log:namespace-0001
+- name: delete_namespace
+  endpoint:
+    path: /deleteNamespace
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace-0001
+- name: get_service_version
+  endpoint:
+    path: /getServiceVersion
+    method: GET
+    data_selector: item
+    params: {}
+- name: dumpUserDataByUserId
+  endpoint:
+    path: /dumpUserDataByUserId
+    method: POST
+    data_selector: result
+    params:
+      userId: user-0001
+      timeOffsetToken: null
+- name: checkDumpUserDataByUserId
+  endpoint:
+    path: /checkDumpUserDataByUserId
+    method: POST
+    data_selector: url
+    params:
+      userId: user-0001
+      timeOffsetToken: null
+- name: cleanUserDataByUserId
+  endpoint:
+    path: /cleanUserDataByUserId
+    method: POST
+    data_selector: result
+    params:
+      userId: user-0001
+      timeOffsetToken: null
+- name: checkCleanUserDataByUserId
+  endpoint:
+    path: /checkCleanUserDataByUserId
+    method: POST
+    data_selector: result
+    params:
+      userId: user-0001
+      timeOffsetToken: null
+- name: prepareImportUserDataByUserId
+  endpoint:
+    path: /buff/PrepareImportUserDataByUserId
+    method: POST
+    data_selector: result
+    params:
+      userId: user-0001
+- name: importUserDataByUserId
+  endpoint:
+    path: /buff/ImportUserDataByUserId
+    method: POST
+    data_selector: result
+    params:
+      userId: user-0001
+      uploadToken: upload-0001
+- name: check_import_user_data
+  endpoint:
+    path: /checkImportUserDataByUserId
+    method: POST
+    data_selector: url
+    params:
+      userId: user-0001
+      uploadToken: upload-0001
+- name: describe_buff_entry_models
+  endpoint:
+    path: /describeBuffEntryModels
+    method: GET
+    data_selector: items
+    params:
+      namespaceName: namespace-0001
+- name: buff_entry_model
+  endpoint:
+    path: /buff/entry/model
+    method: GET
+    data_selector: item
+    params:
+      namespaceName: namespace-0001
+      buffEntryName: character-level
+- name: buff_entry_model_masters
+  endpoint:
+    path: /buff/entry/model/masters
+    method: GET
+    data_selector: items
+    params:
+      namespaceName: namespace-0001
+- name: buff_entry_model_master
+  endpoint:
+    path: /buff/entry/model/master
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace-0001
+      name: buff-0001
+      description: null
+      metadata: null
+      expression: add
+      targetType: model
+      targetModel:
+        targetModelName: Gs2Experience:Status
+        targetFieldName: rankCapValue
+        conditionGrns:
+        - targetModelName: Gs2Experience:RateModel
+          targetGrn: grn:gs2:ap-northeast-1:YourOwnerId:exchange:namespace-0001:model:rate-0001
+        rate: 1.0
+      targetAction: null
+      priority: 1
+      applyPeriodScheduleEventId: null
+- name: buff_entry_model_master
+  endpoint:
+    path: /getBuffEntryModelMaster
+    method: GET
+    data_selector: item
+    params:
+      namespaceName: namespace-0001
+      buffEntryName: buff-0001
+- name: buff_entry_model_master
+  endpoint:
+    path: /updateBuffEntryModelMaster
+    method: POST
+    data_selector: item
+    params: {}
+- name: deleteBuffEntryModelMaster
+  endpoint:
+    path: /buff/deleteBuffEntryModelMaster
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace-0001
+      buffEntryName: buff-0001
+- name: applyBuff
+  endpoint:
+    path: /buff/applyBuff
+    method: POST
+    data_selector: items
+    params:
+      namespaceName: namespace-0001
+      accessToken: accessToken-0001
+- name: apply_buff_by_user_id
+  endpoint:
+    path: /applyBuffByUserId
+    method: POST
+    data_selector: items
+    params:
+      namespaceName: namespace-0001
+      userId: user-0001
+- name: export_master
+  endpoint:
+    path: /exportMaster
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace-0001
+- name: current_buff_master
+  endpoint:
+    path: /buff/currentBuffMaster
+    method: GET
+    data_selector: item
+    params:
+      namespaceName: namespace-0001
+- name: pre_update_current_buff_master
+  endpoint:
+    path: /buff/preUpdateCurrentBuffMaster
+    method: POST
+    data_selector: uploadToken
+    params:
+      namespaceName: namespace-0001
+- name: current_buff_master
+  endpoint:
+    path: /updateCurrentBuffMaster
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace-0001
+      mode: direct
+      settings: string
+      uploadToken: string
+- name: buff-0001
+  endpoint:
+    path: /buffs/buff-0001
+    method: GET
+- name: buff-0002
+  endpoint:
+    path: /buffs/buff-0002
+    method: GET
+- name: current_buff_master
+  endpoint:
+    path: /buff/updateCurrentBuffMasterFromGitHub
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace-0001
+      checkoutSetting:
+        apiKeyId: apiKeyId-0001
+        repositoryName: gs2io/master-data
+        sourcePath: path/to/file.json
+        referenceType: branch
+        branchName: develop
+- name: User
+  endpoint:
+    path: /user
+    method: GET
+    data_selector: result
+- name: SecurityPolicy
+  endpoint:
+    path: /securityPolicy
+    method: GET
+    data_selector: result
+- name: Identifier
+  endpoint:
+    path: /identifier
+    method: GET
+    data_selector: result
+- name: Password
+  endpoint:
+    path: /password
+    method: GET
+    data_selector: result
+- name: ProjectToken
+  endpoint:
+    path: /projectToken
+    method: GET
+    data_selector: result
+- name: TwoFactorAuthenticationSetting
+  endpoint:
+    path: /twoFactorAuthenticationSetting
+    method: GET
+    data_selector: result
+- name: user
+  endpoint:
+    path: /api/identifier/users
+    method: GET
+    data_selector: items
+    params:
+      limit: 30
+- name: security_policy
+  endpoint:
+    path: /api/identifier/securityPolicies
+    method: GET
+    data_selector: items
+    params: {}
+- name: identifier
+  endpoint:
+    path: /api/identifier/identifiers
+    method: GET
+    data_selector: items
+    params: {}
+- name: password
+  endpoint:
+    path: /api/identifier/passwords
+    method: GET
+    data_selector: items
+    params: {}
+- name: project_token
+  endpoint:
+    path: /api/identifier/projectTokens
+    method: GET
+    data_selector: items
+    params: {}
+- name: createUser
+  endpoint:
+    path: /createUser
+    method: POST
+    data_selector: item
+- name: updateUser
+  endpoint:
+    path: /updateUser
+    method: POST
+    data_selector: item
+- name: getUser
+  endpoint:
+    path: /getUser
+    method: GET
+    data_selector: item
+- name: deleteUser
+  endpoint:
+    path: /deleteUser
+    method: POST
+    data_selector: item
+    params:
+      userName: user-0001
+- name: describeSecurityPolicies
+  endpoint:
+    path: /describeSecurityPolicies
+    method: GET
+    data_selector: items
+    params:
+      limit: 30
+- name: describeCommonSecurityPolicies
+  endpoint:
+    path: /describeCommonSecurityPolicies
+    method: GET
+    data_selector: items
+    params:
+      limit: 30
+- name: createSecurityPolicy
+  endpoint:
+    path: /createSecurityPolicy
+    method: POST
+    data_selector: item
+    params:
+      name: policy-0001
+      policy: '{}'
+- name: updateSecurityPolicy
+  endpoint:
+    path: /updateSecurityPolicy
+    method: PUT
+    data_selector: item
+    params:
+      securityPolicyName: policy-0001
+      description: description1
+      policy: '{"hoge": "fuga"}'
+- name: getSecurityPolicy
+  endpoint:
+    path: /getSecurityPolicy
+    method: GET
+    data_selector: item
+    params:
+      securityPolicyName: policy-0001
+- name: deleteSecurityPolicy
+  endpoint:
+    path: /deleteSecurityPolicy
+    method: POST
+    data_selector: item
+    params:
+      securityPolicyName: policy-0001
+- name: describeIdentifiers
+  endpoint:
+    path: /describeIdentifiers
+    method: GET
+    data_selector: items
+    params:
+      userName: user-0001
+- name: createIdentifier
+  endpoint:
+    path: /createIdentifier
+    method: POST
+    data_selector: item
+    params:
+      userName: user-0001
+- name: getIdentifier
+  endpoint:
+    path: /identifier/get
+    method: POST
+    data_selector: item
+    params: {}
+- name: deleteIdentifier
+  endpoint:
+    path: /identifier/delete
+    method: POST
+    data_selector: item
+    params: {}
+- name: describeAttachedGuards
+  endpoint:
+    path: /guards/attached
+    method: POST
+    data_selector: items
+    params: {}
+- name: attachGuard
+  endpoint:
+    path: /attachGuard
+    method: POST
+    data_selector: items
+    params: {}
+- name: detachGuard
+  endpoint:
+    path: /detachGuard
+    method: POST
+    data_selector: items
+    params: {}
+- name: getServiceVersion
+  endpoint:
+    path: /getServiceVersion
+    method: GET
+    data_selector: item
+    params: {}
+- name: createPassword
+  endpoint:
+    path: /identifier/createPassword
+    method: POST
+    data_selector: item
+    params:
+      userName: user-0001
+- name: getPassword
+  endpoint:
+    path: /identifier/getPassword
+    method: POST
+    data_selector: item
+    params:
+      userName: user-0001
+- name: enableMfa
+  endpoint:
+    path: /identifier/enableMfa
+    method: POST
+    data_selector: item
+    params:
+      userName: user-0001
+- name: challengeMfa
+  endpoint:
+    path: /challengeMfa
+    method: POST
+    data_selector: item
+    params: {}
+- name: disableMfa
+  endpoint:
+    path: /disableMfa
+    method: POST
+    data_selector: item
+    params: {}
+- name: deletePassword
+  endpoint:
+    path: /deletePassword
+    method: POST
+    data_selector: item
+    params: {}
+- name: getHasSecurityPolicy
+  endpoint:
+    path: /getHasSecurityPolicy
+    method: GET
+    data_selector: items
+    params:
+      userName: user-0001
+- name: attachSecurityPolicy
+  endpoint:
+    path: /attachSecurityPolicy
+    method: POST
+    data_selector: items
+    params:
+      userName: user-0001
+      securityPolicyId: securityPolicyId-0001
+- name: detachSecurityPolicy
+  endpoint:
+    path: /detachSecurityPolicy
+    method: POST
+    data_selector: items
+    params:
+      userName: user-0001
+      securityPolicyId: securityPolicyId-0001
+- name: login
+  endpoint:
+    path: /login
+    method: POST
+    data_selector: access_token
+    params:
+      client_id: client-0001
+      client_secret: secret-0001
+- name: loginByUser
+  endpoint:
+    path: /loginByUser
+    method: POST
+    data_selector: item
+    params:
+      userName: user-name
+      password: password
+- name: authentication
+  endpoint:
+    path: /account/authentication
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace-0001
+      userId: user-0001
+      keyId: grn:gs2:ap-northeast-1:owner_id:key:namespace-0001:key:key-0001
+      password: password-0001
+- name: create_account
+  endpoint:
+    path: /create
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace-0001
+- name: add_takeover_setting
+  endpoint:
+    path: /addTakeOverSetting
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace-0001
+      accessToken: user-0001@gs2.io
+      type: 0
+      userIdentifier: user-0001@gs2.io
+      password: password-0001
+- name: delete_takeover_setting
+  endpoint:
+    path: /deleteTakeOverSetting
+    method: DELETE
+    data_selector: item
+    params:
+      namespaceName: namespace-0001
+      accessToken: user-0001@gs2.io
+      type: 0
+- name: do_takeover
+  endpoint:
+    path: /doTakeOver
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace-0001
+      type: 0
+      userIdentifier: user-0001@gs2.io
+      password: password-0001
+- name: get_takeover_settings
+  endpoint:
+    path: /getTakeOverSettings
+    method: GET
+    data_selector: item
+    params:
+      namespaceName: namespace-0001
+      accessToken: user-0001@gs2.io
+      type: 0
+- name: takeover_settings
+  endpoint:
+    path: /takeOverSettings
+    method: GET
+    data_selector: items
+    params:
+      namespaceName: namespace-0001
+      accessToken: user-0001@gs2.io
+      limit: 30
+- name: update_takeover_setting
+  endpoint:
+    path: /updateTakeOverSetting
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace-0001
+      accessToken: user-0001@gs2.io
+      type: 0
+      oldPassword: password-0001
+      password: password-1001
+- name: namespace
+  endpoint:
+    path: /namespace
+    method: GET
+    data_selector: records
+- name: account
+  endpoint:
+    path: /account
+    method: GET
+    data_selector: records
+- name: takeover
+  endpoint:
+    path: /takeover
+    method: GET
+    data_selector: records
+- name: dataowner
+  endpoint:
+    path: /dataowner
+    method: GET
+    data_selector: records
+- name: banstatus
+  endpoint:
+    path: /banstatus
+    method: GET
+    data_selector: records
+- name: namespaces
+  endpoint:
+    path: /account/namespaces
+    method: GET
+    data_selector: items
+    params:
+      limit: 30
+- name: create_namespace
+  endpoint:
+    path: /account/namespaces
+    method: POST
+    data_selector: item
+- name: namespace_status
+  endpoint:
+    path: /getNamespaceStatus
+    method: GET
+    data_selector: status
+    params:
+      namespaceName: namespace1
+- name: namespace
+  endpoint:
+    path: /getNamespace
+    method: GET
+    data_selector: item
+    params:
+      namespaceName: namespace1
+- name: namespace
+  endpoint:
+    path: /updateNamespace
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace1
+      description: description1
+      changePasswordIfTakeOver: true
+      createAccountScript:
+        triggerScriptId: grn:gs2:ap-northeast-1:YourOwnerId:script:namespace1:script:script-1001
+        doneTriggerScriptId: grn:gs2:ap-northeast-1:YourOwnerId:script:namespace1:script:script-1002
+      authenticationScript:
+        triggerScriptId: grn:gs2:ap-northeast-1:YourOwnerId:script:namespace1:script:script-1003
+        doneTriggerScriptId: grn:gs2:ap-northeast-1:YourOwnerId:script:namespace1:script:script-1004
+      createTakeOverScript:
+        triggerScriptId: grn:gs2:ap-northeast-1:YourOwnerId:script:namespace1:script:script-1005
+        doneTriggerScriptId: grn:gs2:ap-northeast-1:YourOwnerId:script:namespace1:script:script-1006
+      doTakeOverScript:
+        triggerScriptId: grn:gs2:ap-northeast-1:YourOwnerId:script:namespace1:script:script-1007
+        doneTriggerScriptId: grn:gs2:ap-northeast-1:YourOwnerId:script:namespace1:script:script-1008
+      logSetting:
+        loggingNamespaceId: grn:gs2:ap-northeast-1:YourOwnerId:log:namespace1
+- name: delete_namespace
+  endpoint:
+    path: /deleteNamespace
+    method: POST
+    data_selector: item
+    params: {}
+- name: dump_user_data_by_user_id
+  endpoint:
+    path: /dumpUserDataByUserId
+    method: POST
+    data_selector: result
+    params: {}
+- name: check_dump_user_data_by_user_id
+  endpoint:
+    path: /checkDumpUserDataByUserId
+    method: POST
+    data_selector: url
+    params: {}
+- name: cleanUserDataByUserId
+  endpoint:
+    path: /cleanUserDataByUserId
+    method: POST
+    data_selector: result
+    params:
+      userId: user-0001
+- name: checkCleanUserDataByUserId
+  endpoint:
+    path: /checkCleanUserDataByUserId
+    method: POST
+    data_selector: result
+    params:
+      userId: user-0001
+- name: prepareImportUserDataByUserId
+  endpoint:
+    path: /prepareImportUserDataByUserId
+    method: POST
+    data_selector: result
+    params:
+      userId: user-0001
+- name: importUserDataByUserId
+  endpoint:
+    path: /importUserDataByUserId
+    method: POST
+    data_selector: result
+    params:
+      userId: user-0001
+      uploadToken: upload-0001
+- name: checkImportUserDataByUserId
+  endpoint:
+    path: /checkImportUserDataByUserId
+    method: POST
+    data_selector: url
+    params:
+      userId: user-0001
+      uploadToken: upload-0001
+- name: describeAccounts
+  endpoint:
+    path: /describeAccounts
+    method: GET
+    data_selector: items
+    params:
+      namespaceName: namespace1
+      pageToken: null
+      limit: null
+- name: createAccount
+  endpoint:
+    path: /createAccount
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace1
+- name: updateTimeOffset
+  endpoint:
+    path: /updateTimeOffset
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace1
+      userId: $account1.userId
+      timeOffset: null
+- name: updateBanned
+  endpoint:
+    path: /updateBanned
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace1
+      userId: $account1.userId
+      banned: true
+- name: addBan
+  endpoint:
+    path: /addBan
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace1
+      userId: $account1.userId
+      banStatus:
+        featureNames:
+        - feature1
+        - feature2
+        reason: reason
+        releaseTimestamp: 1000000000000
+- name: removeBan
+  endpoint:
+    path: /removeBan
+    method: DELETE
+    data_selector: item
+    params:
+      namespaceName: namespace1
+      userId: $account1.userId
+      banStatusName: status-0001
+- name: getAccount
+  endpoint:
+    path: /getAccount
+    method: GET
+    data_selector: item
+    params:
+      namespaceName: namespace1
+      userId: $account1.userId
+- name: deleteAccount
+  endpoint:
+    path: /deleteAccount
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace1
+      userId: $account1.userId
+- name: authentication
+  endpoint:
+    path: /authentication
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace1
+      userId: user-0001
+      keyId: grn:gs2:ap-northeast-1:owner_id:key:namespace1:key:key-0001
+      password: password-0001
+- name: takeover_settings
+  endpoint:
+    path: /describeTakeOvers
+    method: POST
+    data_selector: items
+    params:
+      namespaceName: namespace1
+      accessToken: $account1.userId
+      limit: 30
+- name: takeover_settings_by_user_id
+  endpoint:
+    path: /describeTakeOversByUserId
+    method: POST
+    data_selector: items
+    params:
+      namespaceName: namespace1
+      userId: $account1.userId
+      limit: 30
+- name: takeover
+  endpoint:
+    path: /createTakeOver
+    method: POST
+    data_selector: item
+    params: {}
+- name: takeover_by_user_id
+  endpoint:
+    path: /createTakeOverByUserId
+    method: POST
+    data_selector: item
+    params: {}
+- name: take_over
+  endpoint:
+    path: /getTakeOver
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace1
+      accessToken: $account1.userId
+      type: 0
+- name: take_over_by_user_id
+  endpoint:
+    path: /getTakeOverByUserId
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace1
+      userId: $account1.userId
+      type: 0
+- name: updateTakeOver
+  endpoint:
+    path: /updateTakeOver
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace1
+      accessToken: $account1.userId
+      type: 0
+      oldPassword: password-0001
+      password: password-1001
+- name: updateTakeOverByUserId
+  endpoint:
+    path: /updateTakeOverByUserId
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace1
+      userId: $account1.userId
+      type: 0
+      oldPassword: password-0001
+      password: password-0002
+- name: deleteTakeOver
+  endpoint:
+    path: /deleteTakeOver
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace1
+      accessToken: $account1.userId
+      type: 0
+      userIdentifier: user-0001@gs2.io
+- name: deleteTakeOverByUserIdentifier
+  endpoint:
+    path: /deleteTakeOverByUserIdentifier
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace1
+      type: 0
+      userIdentifier: user-0001@gs2.io
+- name: deleteTakeOverByUserId
+  endpoint:
+    path: /deleteTakeOverByUserId
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace1
+      userId: $account1.userId
+      type: 0
+- name: doTakeOver
+  endpoint:
+    path: /doTakeOver
+    method: POST
+    data_selector: item
+    params:
+      namespaceName: namespace1
+      type: 0
+      userIdentifier: user-0001@gs2.io
+      password: password-0001
+- name: data_owner
+  endpoint:
+    path: /getDataOwnerByUserId
+    method: GET
+    data_selector: item
+    params:
+      namespaceName: namespace1
+      userId: $account1.userId
+- name: delete_data_owner
+  endpoint:
+    path: /deleteDataOwnerByUserId
+    method: DELETE
+    data_selector: item
+    params:
+      namespaceName: namespace1
+      userId: $account1.userId
+- name: stack
+  endpoint:
+    path: /stack
+    method: GET
+    data_selector: stacks
+    params: {}
+- name: resource
+  endpoint:
+    path: /resource
+    method: GET
+    data_selector: resources
+    params: {}
+- name: event
+  endpoint:
+    path: /events
+    method: GET
+    data_selector: records
+- name: output
+  endpoint:
+    path: /outputs
+    method: GET
+    data_selector: records
+- name: changeset
+  endpoint:
+    path: /changesets
+    method: GET
+    data_selector: records
+- name: github_checkout_setting
+  endpoint:
+    path: /github/checkout
+    method: GET
+    data_selector: records
+- name: stacks
+  endpoint:
+    path: /describeStacks
+    method: GET
+    data_selector: items
+    params:
+      limit: '30'
+- name: pre_create_stack
+  endpoint:
+    path: /preCreateStack
+    method: POST
+    data_selector: uploadToken
+- name: createStack
+  endpoint:
+    path: /deploy/createStack
+    method: POST
+    data_selector: item
+- name: createStackFromGitHub
+  endpoint:
+    path: /deploy/createStackFromGitHub
+    method: POST
+    data_selector: item
+- name: preValidate
+  endpoint:
+    path: /preValidate
+    method: POST
+    data_selector: result
+- name: validate
+  endpoint:
+    path: /validate
+    method: POST
+    data_selector: result
+- name: getStackStatus
+  endpoint:
+    path: /getStackStatus
+    method: GET
+    data_selector: result
+- name: getStack
+  endpoint:
+    path: /getStack
+    method: GET
+    data_selector: item
+    params:
+      stackName: stack-0001
+- name: preUpdateStack
+  endpoint:
+    path: /preUpdateStack
+    method: POST
+    data_selector: uploadToken
+    params:
+      stackName: stack-0001
+- name: update_stack
+  endpoint:
+    path: /updateStack
+    method: POST
+    data_selector: item
+    params:
+      stackName: stack-0001
+      template: "\nGS2TemplateFormatVersion: \"2019-05-01\"\nDescription: Template\
+        \ Sample\n\nResources:\n  IdentifierAuthUser:\n    Type: GS2::Identifier::User\n\
+        \    Properties:\n      Name: auth\n\nOutputs:\n  SecretKey: !GetAttr IdentifierAuthUser.Name\n"
+- name: pre_change_set
+  endpoint:
+    path: /preChangeSet
+    method: POST
+    data_selector: uploadToken
+    params:
+      stackName: stack-0001
+- name: changeSet
+  endpoint:
+    path: /changeSet
+    method: POST
+    data_selector: items
+    params:
+      stackName: stack-0001
+      mode: null
+      template: "\nGS2TemplateFormatVersion: \"2019-05-01\"\nDescription: Template\
+        \ Sample\n\nResources:\n  IdentifierAuthUser:\n    Type: GS2::Identifier::User\n\
+        \    Properties:\n      Name: auth\n\nOutputs:\n  SecretKey: !GetAttr IdentifierAuthUser.Name\n"
+      uploadToken: null
+- name: updateStackFromGitHub
+  endpoint:
+    path: /updateStackFromGitHub
+    method: POST
+    data_selector: item
+    params:
+      stackName: stack-0001
+      description: null
+      checkoutSetting:
+        apiKeyId: apiKeyId-0001
+        repositoryName: gs2io/master-data
+        sourcePath: path/to/file.json
+        referenceType: branch
+        branchName: develop
+- name: deleteStack
+  endpoint:
+    path: /deploy/deleteStack
+    method: POST
+    data_selector: item
+    params:
+      stackName: stack-0001
+- name: forceDeleteStack
+  endpoint:
+    path: /deploy/forceDeleteStack
+    method: POST
+    data_selector: item
+    params:
+      stackName: stack-0001
+- name: deleteStackResources
+  endpoint:
+    path: /deploy/deleteStackResources
+    method: POST
+    data_selector: item
+    params:
+      stackName: stack-0001
+- name: deleteStackEntity
+  endpoint:
+    path: /deleteStackEntity
+    method: POST
+    data_selector: item
+    params:
+      stackName: stack-0001
+- name: getServiceVersion
+  endpoint:
+    path: /getServiceVersion
+    method: GET
+    data_selector: item
+    params: {}
+- name: describeResources
+  endpoint:
+    path: /describeResources
+    method: GET
+    data_selector: items
+    params:
+      stackName: stack-0001
+      pageToken: null
+      limit: null
+- name: resource
+  endpoint:
+    path: /resource
+    method: GET
+    data_selector: item
+    params:
+      stackName: stack-0001
+      resourceName: resource-0001
+- name: event
+  endpoint:
+    path: /event
+    method: GET
+    data_selector: item
+    params:
+      stackName: stack-0001
+      eventName: event-0001
+- name: describe_outputs
+  endpoint:
+    path: /describeOutputs
+    method: GET
+    data_selector: items
+    params:
+      stackName: stack-0001
+      limit: 30
+- name: get_output
+  endpoint:
+    path: /getOutput
+    method: GET
+    data_selector: item
+    params:
+      stackName: stack-0001
+      outputName: output-0001
+notes:
+- This API provides logs in real time, which can be used for system monitoring, analysis,
+  debugging, etc.
+- Requires setup of connected app in GS2
+- Error handling is essential for API calls
+- Error handling is essential due to potential exceptions
+- Requires setup of BasicGs2Credential with client ID and secret.
+- Some API calls may return null values for optional fields
+- Uses Basic Auth with client ID and secret.
+- Requires client ID and client secret for authentication.
+- Requires setup of connected app in api
+- Some objects may return nulls in deeply nested fields
+- Ensure to handle errors appropriately
+- Namespace names and user IDs must be valid
+- When uploading master data larger than 1MB, the update is performed in 3 phases.
+- An API key is required to access GS2’s API.
+- Usernames must be ~128 characters long.
+- Requires valid client ID and username for all requests.
+- Ensure you provide correct ClientId and ClientSecret for authentication.
+- Ensure to handle MFA setup correctly.
+- The user ID and password issued must be persistent for use in the authentication
+  process.
+- No password authorization is required for game players to delete their takeover
+  settings.
+- Namespace name has a limitation of ~32 chars
+- Description has a limitation of ~1024 chars
+- Namespace name should be ~ 32 chars
+- Uses Basic authentication
+- User Id must be ~ 128 characters.
+- Requires client ID and client secret to be configured in the secrets.
+- Requires namespace name and user ID for requests.
+- Token specifying the page can be used in requests.
+- Limit can be between 1 and 1000.
+- Requires a valid namespace name and user ID for creating takeover settings.
+- Requires setup of connected app in GS2.
+- Ensure namespace name and user ID are correctly specified.
+- Namespace name must be less than 32 characters
+- User ID must be less than 1024 characters
+- Requires setup of basic authentication with client id and client secret
+- UserId must be a valid UUID
+- Some responses may include null values in certain fields
+- Requires setup of basic authentication with client ID and secret.
+- Requires setup of client credentials.
+errors:
+- error occurred
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'error occurred: Error during session connection or API call'
+- 'Gs2Exception: Error occurred'
+- '401 Unauthorized: Check client credentials'
+- '500 Internal Server Error: Retry the request'
+- 'Gs2Exception: Check client credentials or request parameters'
+- 'Gs2Exception: error occurred'
+- '401 Unauthorized: Check client credentials and access token'
+- '404 Not Found: Verify namespace and buff entry names'
+- '401 Unauthorized: Recheck credentials'
+- '400 Bad Request: Check request parameters'
+- 'error occurred: Check credentials or session'
+- '401 Unauthorized: Check client ID or client secret'
+- '404 Not Found: Check the resource path'
+- '401 Unauthorized: check your credentials'
+- '400 Bad Request: invalid input parameters'
+- '401 Unauthorized: Check your credentials.'
+- '404 Not Found: Ensure the resource exists.'
+- '500 Internal Server Error: Try again later.'
+- 'PasswordIncorrect: Incorrect password specified.'
+- 'BannedInfinity: Account has been suspended.'
+- 'PasswordIncorrectExc: Incorrect password specified.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '400 Bad Request: Check your request parameters'
+- '401 Unauthorized: Check your access token'
+- '404 Not Found: Namespace or user ID does not exist'
+- '401 Unauthorized: Check your access token and permissions.'
+- '400 Bad Request: Ensure all required parameters are provided.'
+- '400 Bad Request: Check the request payload for required fields'
+- '401 Unauthorized: Recheck client ID or secret.'
+auth_info:
+  mentioned_objects:
+  - BasicGs2Credential
+  - Gs2RestSession
+  - Gs2BuffRestClient
+  - GetNamespaceRequest
+  - UpdateNamespaceRequest
+  - Gs2IdentifierRestClient
+  - EzAccount
+  - EzTakeOver
+  - Gs2Account
+  - Namespace
+  - TakeOver
+  - Gs2DeployRestClient
+  - Region
+client:
+  base_url: https://api.gs2.io/auth
+  auth:
+    type: basic
+    client_id: your client id
+    client_secret: your client secret
+source_metadata: null

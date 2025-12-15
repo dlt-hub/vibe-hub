@@ -1,0 +1,247 @@
+resources:
+- name: Log Event
+  endpoint:
+    path: /LogAPI/Features/LogEvent/Overview
+    method: GET
+    data_selector: EndPointTypeId
+- name: LogEvents
+  endpoint:
+    path: /api/LogEvents/LogEventsPerDay
+    method: GET
+    data_selector: Collection.Items[0].Data[0]
+    params:
+      fromDate: $from$
+      toDate: $to$
+      numberOfPeriodsToCompare: 0
+- name: Temperature
+  endpoint:
+    path: http://temperatur.johndoe.nu/api.php
+    method: GET
+    data_selector: value
+    params: {}
+- name: OrdersToday
+  endpoint:
+    path: /api/Search/FlowSearch
+    method: GET
+    data_selector: Collection.Pagination.TotalNumberOfItemsAvailable
+    params:
+      logViewId: 17
+      searchJson: '{"FilterGroups":[],"NumberOfItems":0,"Page":1,"From":"$from$","To":"$to$","DataSource":{}}'
+- name: LastOrderReceived
+  endpoint:
+    path: /api/MessageTypes/2
+    method: GET
+    data_selector: Collection.Items[*].Data.EventLastSeen
+    params: {}
+- name: LoggingAgent
+  endpoint:
+    path: /LoggingAgent
+    method: GET
+- name: MonitoringAgent
+  endpoint:
+    path: /MonitoringAgent
+    method: GET
+- name: Storage Account
+  endpoint:
+    path: /Features/Storage/Monitoring/AzureStorage
+    method: GET
+    data_selector: Resources
+    params: {}
+- name: File Shares
+  endpoint:
+    path: /Features/Storage/Monitoring/AzureStorage
+    method: GET
+    data_selector: Resources
+    params: {}
+- name: Blob Containers
+  endpoint:
+    path: /Features/Storage/Monitoring/AzureStorage
+    method: GET
+    data_selector: Resources
+    params: {}
+- name: Queues
+  endpoint:
+    path: /Features/Storage/Monitoring/AzureStorage
+    method: GET
+    data_selector: Resources
+    params: {}
+- name: Function
+  endpoint:
+    path: /api/monitoring/functions
+    method: GET
+    data_selector: functions
+    params: {}
+- name: Function - Failed Executions
+  endpoint:
+    path: /api/monitoring/functions/failed
+    method: GET
+    data_selector: failed_executions
+    params: {}
+- name: Web Site - Function App
+  endpoint:
+    path: /api/monitoring/websites/functions
+    method: GET
+    data_selector: websites
+    params: {}
+- name: Storage Account
+  endpoint:
+    path: /Features/Storage/Managing%20Azure%20Storage#fa-user-circle-storage-account
+    method: GET
+    data_selector: resources
+- name: File Shares
+  endpoint:
+    path: /Features/Storage/Managing%20Azure%20Storage#fa-folder-file-shares
+    method: GET
+    data_selector: resources
+- name: Blob Containers
+  endpoint:
+    path: /Features/Storage/Managing%20Azure%20Storage#fa-boxes-blob-containers
+    method: GET
+    data_selector: resources
+- name: Queues
+  endpoint:
+    path: /Features/Storage/Managing%20Azure%20Storage#fa-list-queues
+    method: GET
+    data_selector: resources
+- name: Storage Account
+  endpoint:
+    path: /Features/Storage/Monitoring%20Azure%20Storage#fa-user-circle-storage-account
+    method: GET
+    data_selector: Resources
+    params: {}
+- name: File Shares
+  endpoint:
+    path: /Features/Storage/Monitoring%20Azure%20Storage#fa-folder-file-shares
+    method: GET
+    data_selector: Resources
+    params: {}
+- name: Blob Containers
+  endpoint:
+    path: /Features/Storage/Monitoring%20Azure%20Storage#fa-boxes-blob-containers
+    method: GET
+    data_selector: Resources
+    params: {}
+- name: Queues
+  endpoint:
+    path: /Features/Storage/Monitoring%20Azure%20Storage#fa-list-queues
+    method: GET
+    data_selector: Resources
+    params: {}
+- name: Blob Storage Policy
+  endpoint:
+    path: /Policy/Blob/Storage
+    method: POST
+- name: Outbound Policy Fragment
+  endpoint:
+    path: /outbound
+    method: PUT
+    data_selector: requestLogMessage
+    params: {}
+- name: On-Error Policy Fragment
+  endpoint:
+    path: /on-error
+    method: PUT
+    data_selector: requestLogMessage
+    params: {}
+- name: Inbound Policy Fragment
+  endpoint:
+    path: /inbound
+    method: PUT
+    data_selector: requestLogMessage
+    params: {}
+- name: inbound
+  endpoint:
+    path: InboundLoggingPolicyFragment
+    method: include-fragment
+    data_selector: ''
+    params: {}
+- name: outbound
+  endpoint:
+    path: outboundLoggingPolicyFragment
+    method: include-fragment
+    data_selector: ''
+    params: {}
+- name: on-error
+  endpoint:
+    path: onerrorLoggingPolicyFragment
+    method: include-fragment
+    data_selector: ''
+    params: {}
+- name: monitoring_logic_app
+  endpoint:
+    path: /monitoring_logic_app
+    method: GET
+    data_selector: monitoring_data
+- name: logging_logic_apps
+  endpoint:
+    path: /logging_logic_apps
+    method: GET
+    data_selector: logging_data
+- name: web_service_monitoring
+  endpoint:
+    path: /monitoring
+    method: GET
+    data_selector: results
+- name: certificate_monitoring
+  endpoint:
+    path: /certificates
+    method: GET
+    data_selector: certificates
+notes:
+- Unlock advanced filtering and actionable insights in your integration landscape
+  with Nodinite
+- The EndPointTypeId property is mandatory. You must ALWAYS provide a value in the
+  Log Event.
+- Keep in mind that updating Azure role assignments may take up to five minutes to
+  propagate. Then, you need to restart the necessary Nodinite agents.
+- To optimize performance and conserve system resources, Nodinite caches App Registration
+  data for five minutes. If you make changes in Azure, wait for the cache to update
+  or restart the agent to see the latest information.
+- Nodinite evaluates the state of each Function based on defined policies.
+- Automatic Discovery uses the Azure Rest API to discover Function Apps and Functions.
+- Nodinite evaluates the state of Azure Storage content using user-defined thresholds.
+- Nodinite uses the Azure REST API to collect health data and execute remote actions—with
+  all operations audited and secured via Azure App Registration (Service Principal)
+  authentication.
+- Uses Azure App Registration (Service Principal) authentication—no passwords shared
+  between users
+- This guide explains how to apply a Nodinite-specific policy that enables comprehensive
+  logging from the Azure API Management platform to Nodinite.
+- LogStatus is set to -1 to indicate an Error condition.
+- Set variable on the API level (on-error)
+- Set variable name to 'loggingSchemaName' with value 'Error'
+- Set variable name to 'logtext' with value 'Error in processing'
+- Set the loggingSchemaName variable to 'Error'
+- Set the logtext variable to 'Error in processing'
+- Plug-and-play monitoring and logging for Azure Logic Apps
+- Auto-discover workflows, track business transactions, detect failures, and resolve
+  issues instantly without Azure Portal dependency
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- 'Supports all HTTP methods: GET, POST, PUT, DELETE, PATCH.'
+- Tracks SSL/TLS certificates expiration dates.
+errors:
+- 'Unavailable: Resource not available'
+- 'Error: Errors exist'
+- 'OK: No problems exist'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- LogStatus is set to -1 to indicate an Error condition.
+- 'HTTP 500: Internal Server Error'
+- 'HTTP 404: Not Found'
+- 'HTTP 403: Forbidden'
+auth_info:
+  mentioned_objects:
+  - Managed Identity
+  - Named Values
+  - Policy Fragments
+  - Basic Authentication
+  - Bearer Tokens
+  - API Keys
+  - Client Certificates
+  - NTLM
+  - Custom Headers
+client:
+  base_url: https://nodinite.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+source_metadata: null

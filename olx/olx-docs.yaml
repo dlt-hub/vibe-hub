@@ -1,0 +1,64 @@
+auth_info:
+- information_source; https://developer.olx.bg/api/doc:
+  - Access token authentication is required. Send the access token in the Authorization
+    header (typically as "Bearer {access_token}") to authenticate requests to the
+    OLX Partner API.
+  - "Access token based authentication is required for most paid features endpoints.\
+    \ The access_token must be provided as an authorization credential (exact mechanism\
+    \ for passing it\u2014header, query parameter, or request body\u2014is not explicitly\
+    \ specified in this documentation chunk). One endpoint (Purchase paid feature)\
+    \ indicates no authorization is required."
+  - 'Access tokens are passed in the Authorization header as Bearer tokens (format:
+    "Authorization: Bearer {access_token}"). Access tokens expire and must be refreshed
+    using a refresh token, which is valid for one month (2592000 seconds). Both tokens
+    may be updated during refresh and must be stored securely in your database per
+    user. Each API request requires the corresponding user''s current access token
+    in the Authorization header.'
+  - 'Authorization uses Bearer token authentication. Send `Authorization: Bearer ACCESS_TOKEN`
+    header along with `Version: 2.0` header in the request. The ACCESS_TOKEN represents
+    the currently authenticated user who will own the created advert.'
+  - 'Bearer token authentication is used for API requests. After OAuth2 authentication,
+    store the access_token and refresh_token securely. Send the access_token in the
+    Authorization header as "Authorization: Bearer <access_token>" with each API request.
+    When the access_token expires (indicated by expires_in), refresh it by posting
+    to /api/open/oauth/token with grant_type "refresh_token", client_id, client_secret,
+    and the user''s refresh_token. The refresh_token is valid for one month (2592000
+    seconds).'
+pagination_info:
+- information_source; https://developer.olx.bg/api/doc:
+  - Pagination uses offset (integer, optional) and limit (integer, optional) query
+    parameters. The response contains a data array with advert objects, but no explicit
+    next/prev fields or pagination metadata are documented.
+- information_source; https://developer.olx.bg/swagger/v2/partner_api.yaml:
+  - Pagination uses offset and limit query parameters. offset specifies the starting
+    position (optional), and limit specifies the maximum number of results to return
+    (optional). No response fields indicating next page or total count are documented.
+  - Pagination uses optional query parameters page (integer, starts from 1) and limit
+    (integer for results per page) on the /users/me/billing and /users/me/prepaid-invoices
+    endpoints. Response structure for pagination state or navigation fields is not
+    documented.
+  - The /users/me/postpaid-invoices endpoint uses query parameter pagination with
+    page (integer, optional, starts from 1) and limit (integer, optional, number of
+    results per page). The response structure does not explicitly document pagination
+    metadata fields or navigation instructions.
+  - The GET /users/me/packets endpoint uses offset-limit pagination. Request parameters
+    are limit (query, optional, default 50) for number of results and offset (query,
+    optional) for starting element. The response returns an array of BoughtPacket
+    objects with no pagination metadata fields, so construct subsequent requests by
+    incrementing the offset parameter.
+possible_base_urls:
+- information_source; https://developer.olx.bg/api/doc:
+  - /api/open/oauth/token
+  - https://www.olx.bg/api/partner
+possible_endpoints:
+- information_source; https://developer.olx.bg/api/doc:
+  - DELETE https://www.olx.bg/api/partner/adverts/{advertId}/logos
+  - DELETE https://www.olx.bg/api/partner/adverts/{advertId}/logos/{logoId}
+  - DELETE https://www.olx.bg/api/partner/adverts/{advertId}/statistics/{statisticName}
+  - DELETE https://www.olx.bg/api/partner/users-business/me/banners/{bannerId}
+  - DELETE https://www.olx.bg/api/partner/users-business/me/logos/{logoId}
+  - GET /api/partner/categories
+  - GET /api/partner/categories/1581
+  - GET /api/partner/categories/1755
+  - GET /api/partner/categories/{ID}/attributes
+  - GET /api/partner/cities

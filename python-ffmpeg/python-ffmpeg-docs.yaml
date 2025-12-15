@@ -1,0 +1,43 @@
+resources:
+- name: Progress
+  endpoint:
+    path: /ffmpeg/progress
+    method: GET
+    data_selector: progress
+    params: {}
+- name: ffmpeg_output
+  endpoint:
+    path: pipe:1
+    method: execute
+    data_selector: results
+    params: {}
+- name: feed_data_to_stdin
+  endpoint:
+    path: /feeding-data-to-stdin
+    method: GET
+    data_selector: ''
+- name: metadata
+  endpoint:
+    path: /query/metadata
+    method: GET
+    data_selector: streams
+    params: {}
+notes:
+- Execute FFmpeg using specified global options and files.
+- To use the output to ffmpeg's stdout, you must use pipe:1 as the URL for the output
+  file.
+errors:
+- 'FFmpegAlreadyExecuted: If FFmpeg is already executed.'
+- 'FFmpegError: If FFmpeg process returns non-zero exit status.'
+- 'asyncio.TimeoutError: If FFmpeg process does not terminate after timeout seconds.'
+- 'FFmpegAlreadyExecuted: Represents FFmpeg is being executed'
+- 'FFmpegFileNotFound: Represents an input file was not found'
+- 'FFmpegInvalidCommand: Represents FFmpeg was passed invalid options or arguments'
+- 'FFmpegUnsupportedCodec: Represents FFmpeg attempted to use an unsupported codec'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: ffmpeg
+  auth:
+    type: None
+source_metadata: null

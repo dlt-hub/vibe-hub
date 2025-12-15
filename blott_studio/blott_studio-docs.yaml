@@ -1,0 +1,36 @@
+auth_info:
+- information_source; https://www.blott.studio/blog:
+  - A2A protocol supports multiple authentication methods from the OpenAPI specification
+    including HTTP authentication (Basic, Bearer), API keys, and OAuth 2.0 with OpenID
+    Connect. Authorization boundaries must be clearly defined to set agent permissions
+    and data access limits, with external services handling sensitive data required
+    to be part of the authorization boundary or in an authorized system with matching
+    security levels.
+  - A2A supports JSON Web Tokens (JWT) for authentication as an alternative to traditional
+    user authentication, allowing multiple concurrent API sessions. RSA key pairs
+    enable secure service account authentication through public key registration and
+    private key signature generation. Authorization is implemented via role-based
+    access control (RBAC) where service accounts receive specific roles limiting access
+    to required resources, with dynamic context-based adaptation. All data exchanges
+    require encryption throughout the communication lifecycle.
+  - AWS Bedrock API authentication uses bearer tokens sent in the Authorization header.
+    Credentials are created via IAM's CreateServiceSpecificCredential API for the
+    bedrock.amazonaws.com service, and usage is tracked through CloudTrail events
+    marked with callWithBearerToken flag. The Authorization header format is "Bearer
+    ${AWS_BEARER_TOKEN_BEDROCK}" and deletion requests require proper token credentials
+    in headers along with Content-Type application/json.
+  - 'Firecrawl API uses Bearer token authentication. Include your API key in the Authorization
+    header as `Authorization: Bearer YOUR_API_KEY`. The API key is obtained by signing
+    up on the Firecrawl platform.'
+  - The Firecrawl API uses Bearer token authentication. Include your API key in the
+    Authorization header as "Bearer YOUR_API_KEY" when making requests to endpoints
+    like /crawl.
+possible_base_urls:
+- information_source; https://www.blott.studio/blog:
+  - https://api.firecrawl.dev/v0
+  - https://bedrock.${REGION}.amazonaws.com
+possible_endpoints:
+- information_source; https://www.blott.studio/blog:
+  - DELETE https://bedrock.${REGION}.amazonaws.com/guardrails/${GUARDRAIL_ID}
+  - POST /v0/crawl
+  - POST https://api.firecrawl.dev/v0/crawl

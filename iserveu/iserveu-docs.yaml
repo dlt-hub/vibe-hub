@@ -1,0 +1,367 @@
+resources:
+- name: QR Request
+  endpoint:
+    path: /api/qr/request
+    method: POST
+    data_selector: response
+    params: {}
+- name: INTENT Request
+  endpoint:
+    path: /api/intent/request
+    method: POST
+    data_selector: response
+    params: {}
+- name: Transaction Status Enquiry
+  endpoint:
+    path: /api/transaction/status
+    method: GET
+    data_selector: response
+    params: {}
+- name: Webhook API
+  endpoint:
+    path: /api/webhook
+    method: POST
+    data_selector: response
+    params: {}
+- name: intent_request
+  endpoint:
+    path: /api/intent
+    method: POST
+    data_selector: parameters
+- name: qr_request
+  endpoint:
+    path: /api/qr
+    method: POST
+    data_selector: parameters
+- name: refund
+  endpoint:
+    path: /refund
+    method: POST
+    data_selector: response
+    params: {}
+- name: refund_status
+  endpoint:
+    path: /refund/status
+    method: GET
+    data_selector: response
+    params: {}
+- name: transaction_status
+  endpoint:
+    path: /transaction/status
+    method: POST
+    data_selector: results
+    params:
+      productCode: UPI
+      TxnDate: '2025-04-10'
+      clientRefId: FIQ9666053226371
+- name: transaction_updates
+  endpoint:
+    path: /webhook
+    method: POST
+    data_selector: transaction_updates
+    params: {}
+- name: Bio-Auth Based Onboarding
+  endpoint:
+    path: /docs/agent-onboarding-api/bio-auth-based-onboarding-api
+    method: POST
+- name: OTP Verify
+  endpoint:
+    path: /docs/agent-onboarding-api/otp-verify-api
+    method: POST
+- name: Resend OTP
+  endpoint:
+    path: /docs/agent-onboarding-api/resend-otp-api
+    method: POST
+- name: agent_onboarding
+  endpoint:
+    path: /agent_onboarding
+    method: POST
+    data_selector: RequestData
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: otp_verification
+  endpoint:
+    path: /otp/verify
+    method: POST
+    data_selector: status
+    params: {}
+- name: resend_otp
+  endpoint:
+    path: /resend-otp
+    method: POST
+    data_selector: response
+    params: {}
+notes:
+- Epoch is validated and must not be older than 5 mins.
+- Header secrets must be encrypted using AES256 each time the API is consumed.
+- Same key used for both payload and header secrets encryption.
+- Responses are encrypted only if successful.
+- Keys are client-specific.
+- The Data Provided is for visualization purpose only.
+- This supports JSON and array of JSON for decryption.
+- Any file in the payload should be passed as-is without encryption.
+- API User Name and key will be provided by the ISU team.
+- Any missing or invalid mandatory field will generate a Failed response.
+- The date and time stamp present across all endpoints in the document is in UTC timestamp
+  format.
+- The system will automatically send callbacks with updated transaction data to the
+  registered endpoint.
+- Agent have total three attempts (one OTP verification and two OTP resend requests),
+  the agent will be restricted from further attempts for the next 24 hours.
+- During Staging Integration, client will receive the OTP through API response (backend),
+  not in mobile number.
+- bcagentid,mobilenumber ,aadhar_no and pancard are unique.
+- Special character should be allowed for address, area, Shop address, Shop area,
+  Shopname, and companyname.
+- Middle space should be allowed for address, area, Shop address, Shop city, Shop
+  district, Shop state, Shop area, Shopname, and companyname.
+- As per the guidelines of NPCI on 'FIR-FMR single PID block implementation in Aadhar-based
+  biometric authentication, we need to capture the fingerprint data of our end-user
+  with an updated PID fType value.
+- In order to capture finger data, you needs to pass value of fType = 2 rather than
+  0; this will return PID XML with the updated fingerprint data format and same can
+  be passed over in the API.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- header_secrets and pass_key are to be shared during integration by ISU Team.
+- Uses AES-256 encryption for secure data transmission.
+- Critical to implement the exact encryption and decryption logic provided by iServeU.
+errors:
+- '99: Mobile Verification Failed. Exceeded Maximum retries.'
+- '300: Biometric data did not match'
+- '11: Aadhaar details already exist with the Bank'
+- '563: Duplicate request'
+- '810: Missing biometric data or Aadhaar not updated as per UIDAI standards'
+- '330: Biometric is locked by Aadhaar Holder'
+- '99: Existing DMT Customer'
+- '07: MicroServices are not responding'
+- '07: JME Server Not Responding'
+- '08: Database Error'
+- '06: Internal Server Issue'
+- '05: Invalid user input'
+- '996: Aadhaar Cancelled'
+- '30: ERR: Format Error'
+- '100: UID Verification Failed'
+- '200: UID Verification Failed'
+- '300: UID Verification Failed'
+- '310: UID Verification Failed'
+- '311: UID Verification Failed'
+- '312: UID Verification Failed'
+- '313: UID Verification Failed'
+- '314: UID Verification Failed'
+- '315: UID Verification Failed'
+- '316: UID Verification Failed'
+- '330: UID Verification Failed'
+- '400: UID Verification Failed'
+- '500: UID Verification Failed'
+- '501: UID Verification Failed'
+- '504: UID Verification Failed'
+- '505: UID Verification Failed'
+- '510: UID Verification Failed'
+- '511: UID Verification Failed'
+- '512: UID Verification Failed'
+- '520: UID Verification Failed'
+- '521: UID Verification Failed'
+- '524: UID Verification Failed'
+- '527: UID Verification Failed'
+- '530: UID Verification Failed'
+- '540: UID Verification Failed'
+- '541: UID Verification Failed'
+- '542: UID Verification Failed'
+- '543: UID Verification Failed'
+- '550: UID Verification Failed'
+- '551: UID Verification Failed'
+- '553: UID Verification Failed'
+- '554: UID Verification Failed'
+- '555: UID Verification Failed'
+- '556: UID Verification Failed'
+- '557: UID Verification Failed'
+- '558: UID Verification Failed'
+- '559: UID Verification Failed'
+- '560: UID Verification Failed'
+- '561: UID Verification Failed'
+- '562: UID Verification Failed'
+- '563: UID Verification Failed'
+- '564: UID Verification Failed'
+- '565: UID Verification Failed'
+- '566: UID Verification Failed'
+- '567: UID Verification Failed'
+- '568: UID Verification Failed'
+- '569: UID Verification Failed'
+- '570: UID Verification Failed'
+- '571: UID Verification Failed'
+- '572: UID Verification Failed'
+- '573: UID Verification Failed'
+- '574: UID Verification Failed'
+- '575: UID Verification Failed'
+- '576: UID Verification Failed'
+- '577: UID Verification Failed'
+- '578: UID Verification Failed'
+- '579: UID Verification Failed'
+- '580: UID Verification Failed'
+- '581: UID Verification Failed'
+- '582: UID Verification Failed'
+- '586: UID Verification Failed'
+- '587: UID Verification Failed'
+- '588: UID Verification Failed'
+- '590: UID Verification Failed'
+- '710: UID Verification Failed'
+- '720: UID Verification Failed'
+- '721: UID Verification Failed'
+- '730: UID Verification Failed'
+- '740: UID Verification Failed'
+- '750: UID Verification Failed'
+- '800: UID Verification Failed'
+- '810: UID Verification Failed'
+- '811: UID Verification Failed'
+- '812: UID Verification Failed'
+- '820: UID Verification Failed'
+- '821: UID Verification Failed'
+- '822: UID Verification Failed'
+- '901: UID Verification Failed'
+- '902: UID Verification Failed'
+- '910: UID Verification Failed'
+- '911: UID Verification Failed'
+- '912: UID Verification Failed'
+- '913: UID Verification Failed'
+- '930: UID Verification Failed'
+- '931: UID Verification Failed'
+- '932: UID Verification Failed'
+- '933: UID Verification Failed'
+- '934: UID Verification Failed'
+- '935: UID Verification Failed'
+- '936: UID Verification Failed'
+- '937: UID Verification Failed'
+- '938: UID Verification Failed'
+- '939: UID Verification Failed'
+- '940: UID Verification Failed'
+- '941: UID Verification Failed'
+- '950: UID Verification Failed'
+- '951: UID Verification Failed'
+- '995: UID Verification Failed'
+- '996: UID Verification Failed'
+- '997: UID Verification Failed'
+- '998: UID Verification Failed'
+- '999: UID Verification Failed'
+- '400: Bad Request: For Bad Request from client to be sent in normal JSON as sent
+  by backend.'
+- '401: Unauthorized: Missing Pass-Key in Header'
+- '401: Unauthorized: Invalid Pass-key'
+- '401: Unauthorized: Missing header_secrets'
+- '401: Unauthorized: Epoch Time Limit Exceeded'
+- '404: Not Found: For Invalid URL'
+- '503: Service Unavailable: Service Issue'
+- '405: Method Not Allowed: If method passed is not acceptable'
+- 'statusCode: -1, status: ''FAILED'', statusDesc: ''amount must not be blank'''
+- 'statusCode: -1, status: ''FAILED'', statusDesc: ''Client Reference id must not
+  be blank'''
+- amount must not be blank
+- Client Reference id must not be blank
+- 'REIS001: Refund Created Successfully'
+- 'RESF001: Refund Successfully'
+- 'REIP001: Refund Inprogress'
+- 'REEF0001: Product Code is invalid.'
+- 'REEF0002: Refund date does not match the given client reference id or is invalid.'
+- 'REEF0003: Refund Client reference ID not available or is invalid'
+- 'REIF001: Merchant ID not found or is invalid.'
+- 'REIF002: Original UPI Transaction ID not found or is invalid.'
+- 'REIF003: Client Reference ID does not match the given UPI transaction or is invalid.'
+- 'REIF004: Refund amount does not match the given UPI transaction amount or is invalid.'
+- 'REIF005: Remark is invalid.'
+- 'REIF006: Original UPI transaction date does not match the given UPI transaction
+  or is invalid.'
+- 'REIF007: Client reference ID already exists or is invalid.'
+- 'REIF009: Refund request failed due to system or bank/NPCI issue.'
+- 'REIF008: Original UPI transaction RRN does not match the given UPI transaction
+  or is invalid.'
+- 'REIF010: ParamA is invalid.'
+- 'REIF011: ParamB is invalid.'
+- 'REIF012: ParamC is invalid.'
+- 'REIF013: Refund cannot be initiated, full amount already refunded.'
+- 'REIF014: Another refund is already in progress for the given UPI transaction.'
+- 'REIF015: Refund not allowed for in progress or failed UPI transactions.'
+- 'REIF017: Refund not allowed as the refund window has expired.'
+- 'REIF018: Refunds failed due to insufficient balance in the merchant account.'
+- 'REIF019: Original UPI transaction RRN does not match the given UPI transaction
+  or is invalid.'
+- 'REIF099: Refund not allowed.'
+- '0: FAILED - Get an error message in Response.'
+- '200: SUCCESS - Transaction response received with data.'
+- '1: SUCCESS - Transaction response with no data for the required parameters'
+- '0: SUCCESS'
+- '1: FAILED'
+- '400: Bad Request'
+- '401: Authentication Failure'
+- '403: Forbidden'
+- '404: Entity does not exist'
+- '405: Method does not exist'
+- '409: Resource conflict. Resource might already exist'
+- '412: Precondition failed'
+- '413: Request Entity too large to be processed'
+- '422: Input not in an expected format'
+- '429: Too many error requests'
+- '500: Internal Server Error'
+- '503: Service Unavailable'
+- '520: Unknown error'
+- ERROTP001:- Mobile number already registered
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- ERROTPV002:- OTP already validated!
+- ERRDUP01:- Please Enter Valid BcagentId
+- 'SUCCESS: Otp resent successfully'
+- 'FAILED: No data found'
+- 'UCNV001: User details contain empty value in Request body'
+- 'UCWS001: User details contain whitespace character in Request body'
+- 'ERRFAD01: Something went to wrong'
+- 'ERRSWT01: Internal server error /something went to wrong'
+- 'ERRCPM01: Duplicate pan and mobile number'
+- 'ERRCA01: Duplicate Aadhar number'
+- 'ERRFAD01: Admin is not onboarded'
+- 'ERRDU01: Duplicate user/user_name found'
+- 'ERRPIN02: Failed to get data from pincode Details'
+- 'ERRAXIOS01: Internal Server Error'
+- ERRAXIOS02
+- ERRAXIOS03
+- ERRAXIOS04
+- ERREN001
+- ERROTPVR001
+- ERRIDN01
+- 'ERROTP001: Failed to verify OTP'
+- 'ERRDUP01: Please Enter Valid bcagentid'
+- 'ERROTPV001: OTP is not validated'
+- 'ERROTPV002: OTP already validated'
+- 'ERRSTACK001: Status check error'
+- 'Invalid Input: Incorrectly formatted data, missing mandatory fields, or data not
+  adhering to specified validation rules.'
+- 'Authentication Failures: Incorrect header_secrets or pass_key.'
+- 'OTP Verification Issues: Incorrect OTP, expired OTP if not validated in 90 sec,
+  or OTP already validated.'
+- 'Duplicate Data: Agent mobile number, PAN, or Aadhaar already registered in the
+  system.'
+- 'Aadhaar/Biometric Issues: Mismatched Aadhaar details, biometric data not matching,
+  or Aadhaar details not updated as per UIDAI standards.'
+- 'Internal Server Issues: Temporary issues on iServeU''s end (e.g., database errors,
+  microservices not responding).'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://iserveu.in
+  headers:
+    Accept: application/json
+source_metadata: null

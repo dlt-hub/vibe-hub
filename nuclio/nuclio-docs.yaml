@@ -1,0 +1,897 @@
+resources:
+- name: functions
+  endpoint:
+    path: /api/functions
+    method: GET
+    data_selector: echo
+    params: {}
+- name: function_by_name
+  endpoint:
+    path: /api/functions/<function name>
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: create_function
+  endpoint:
+    path: /api/functions
+    method: POST
+    data_selector: metadata
+    params: {}
+- name: update_function
+  endpoint:
+    path: /api/functions/<function name>
+    method: PUT
+    data_selector: metadata
+    params: {}
+- name: patch_function
+  endpoint:
+    path: /api/functions/<function name>
+    method: PATCH
+    data_selector: desiredState
+    params: {}
+- name: function_invocations
+  endpoint:
+    path: /api/function_invocations
+    method: DELETE
+- name: functions
+  endpoint:
+    path: /api/functions
+    method: DELETE
+- name: function_events
+  endpoint:
+    path: /api/function_events
+    method: GET
+- name: function_templates
+  endpoint:
+    path: /api/function_templates
+    method: GET
+- name: api_gateways
+  endpoint:
+    path: /api/api_gateways
+    method: GET
+- name: api_gateways
+  endpoint:
+    path: /api/api_gateways
+    method: POST
+- name: api_gateway_by_name
+  endpoint:
+    path: /api/api_gateways/<api-gateway-name>
+    method: GET
+- name: update_api_gateway
+  endpoint:
+    path: /api/api_gateways/<api-gateway-name>
+    method: PUT
+- name: delete_api_gateway
+  endpoint:
+    path: /api/api_gateways
+    method: DELETE
+- name: v3io_streams
+  endpoint:
+    path: /api/v3io_streams
+    method: GET
+- name: get_shard_lags
+  endpoint:
+    path: /api/v3io_streams/get_shard_lags
+    method: POST
+- name: versions
+  endpoint:
+    path: /api/versions
+    method: GET
+- name: external_ip_addresses
+  endpoint:
+    path: /api/external_ip_addresses
+    method: GET
+- name: namespace
+  endpoint:
+    path: /api/v1/namespaces/nuclio
+    method: GET
+- name: registry-credentials
+  endpoint:
+    path: /api/v1/namespaces/nuclio/secrets/registry-credentials
+    method: GET
+- name: function
+  endpoint:
+    path: /deploy
+    method: POST
+    data_selector: function
+    params:
+      namespace: nuclio
+      http-trigger-service-type: nodePort
+      registry: $(minikube ip):5000
+      run-registry: localhost:5000
+- name: AKS_Cluster
+  endpoint:
+    path: /services/aks/create
+    method: POST
+    data_selector: deployment
+    params:
+      resource_group_name: my-nuclio-k8s-rg
+      cluster_name: myNuclioCluster
+      node_count: 2
+- name: Container_Registry
+  endpoint:
+    path: /services/acr/create
+    method: POST
+    data_selector: registry
+    params:
+      resource_group_name: my-nuclio-k8s-rg
+      registry_name: mynuclioacr
+      sku: Basic
+- name: platform-config
+  endpoint:
+    path: /platform-config
+    method: POST
+    data_selector: config
+    params: {}
+- name: platform-config
+  endpoint:
+    path: /platform-config
+    method: POST
+    data_selector: metrics
+    params: {}
+- name: Kubernetes Cluster
+  endpoint:
+    path: /gcloud/container/clusters/create
+    method: POST
+    data_selector: response
+    params:
+      machine-type: n1-standard-2
+      image-type: COS
+      disk-size: 100
+      num-nodes: 2
+      no-enable-legacy-authorization: true
+- name: Get Credentials
+  endpoint:
+    path: /gcloud/container/clusters/get-credentials
+    method: POST
+    data_selector: response
+    params:
+      cluster: nuclio
+- name: ingress
+  endpoint:
+    path: /ingress/latest
+    method: GET
+    data_selector: Handler called
+    params: {}
+- name: projectSecretTemplate
+  endpoint:
+    path: '{{ .ProjectName }}-nuclio-project-secret'
+    method: GET
+- name: projectSecretAllowedServiceAccountsKey
+  endpoint:
+    path: allowedServiceAccounts
+    method: GET
+- name: projectSecretDefaultServiceAccountKey
+  endpoint:
+    path: defaultServiceAccount
+    method: GET
+- name: my-function
+  endpoint:
+    path: /tmp/nuclio/my_function.py
+    method: POST
+    data_selector: response
+    params:
+      namespace: nuclio
+- name: my-function
+  endpoint:
+    path: /tmp/nuclio/my_function_with_config.py
+    method: POST
+    data_selector: event_body
+    params: {}
+- name: hello-world
+  endpoint:
+    path: /deploying-pre-built-functions
+    method: POST
+    data_selector: function
+    params:
+      runtime: golang
+      handler: main:Handler
+      namespace: nuclio
+- name: functions
+  endpoint:
+    path: /api/functions/
+    method: POST
+    data_selector: functions
+    params: {}
+- name: projects
+  endpoint:
+    path: /api/projects/
+    method: POST
+    data_selector: projects
+    params: {}
+- name: async_mode
+  endpoint:
+    path: /spec/triggers/trigger-name/mode
+    method: POST
+    data_selector: async
+    params: {}
+- name: event_timeout
+  endpoint:
+    path: /spec/eventTimeout
+    method: POST
+    data_selector: timeout
+    params: {}
+- name: connection_availability_timeout
+  endpoint:
+    path: /spec/triggers/trigger-name/async/connectionAvailabilityTimeout
+    method: POST
+    data_selector: timeout
+    params: {}
+- name: http_trigger
+  endpoint:
+    path: /triggers/http
+    method: POST
+    data_selector: batch
+    params:
+      batchSize: 10
+      timeout: 1s
+- name: streaming_http_responses
+  endpoint:
+    path: /streaming/http/responses
+    method: GET
+- name: helloworld-go
+  endpoint:
+    path: /golang/empty/empty.go
+    method: POST
+    data_selector: requests
+    params:
+      numWorkers: 36
+- name: helloworld-py
+  endpoint:
+    path: /python/empty/empty.py
+    method: POST
+    data_selector: requests
+    params:
+      numWorkers: 36
+- name: helloworld-dotnetcore
+  endpoint:
+    path: /dotnetcore/empty/empty.cs
+    method: POST
+    data_selector: requests
+    params:
+      numWorkers: 36
+- name: helloworld-java
+  endpoint:
+    path: /java/empty/EmptyHandler.java
+    method: POST
+    data_selector: requests
+    params:
+      numWorkers: 36
+- name: helloworld-njs
+  endpoint:
+    path: /nodejs/empty/empty.js
+    method: POST
+    data_selector: requests
+    params:
+      numWorkers: 36
+- name: function_image
+  endpoint:
+    path: /spec/image
+    method: GET
+- name: function_source_code
+  endpoint:
+    path: /spec/build/functionSourceCode
+    method: GET
+- name: source_code_file
+  endpoint:
+    path: /spec/build/path
+    method: GET
+- name: external_code_source
+  endpoint:
+    path: /spec/build/codeEntryType
+    method: GET
+- name: function
+  endpoint:
+    path: /function
+    method: POST
+    data_selector: spec
+    params: {}
+- name: go_function
+  endpoint:
+    path: /go-function
+    method: GET
+    data_selector: codeEntryAttributes
+    params: {}
+- name: github_code_entry
+  endpoint:
+    path: /
+    method: GET
+    data_selector: code
+- name: example
+  endpoint:
+    path: /example
+    method: GET
+    data_selector: records
+    params: {}
+- name: function
+  endpoint:
+    path: /functions
+    method: GET
+    data_selector: functions
+- name: api_gateways
+  endpoint:
+    path: /api/api_gateways
+    method: POST
+    data_selector: spec
+    params: {}
+- name: delete_api_gateway
+  endpoint:
+    path: /api/api_gateways
+    method: DELETE
+    data_selector: metadata
+    params: {}
+- name: api_gateway_no_authentication
+  endpoint:
+    path: /some/path
+    method: POST
+    data_selector: none
+    params:
+      authentication_mode: none
+- name: api_gateway_basic_authentication
+  endpoint:
+    path: /some/path
+    method: POST
+    data_selector: none
+    params:
+      authentication_mode: basicAuth
+- name: API Gateway
+  endpoint:
+    path: /api/gateway
+    method: POST
+- name: functions
+  endpoint:
+    path: /functions
+    method: GET
+    data_selector: functions
+    params: {}
+- name: build
+  endpoint:
+    path: /nuctl/build
+    method: POST
+    data_selector: build_info
+    params: {}
+- name: create
+  endpoint:
+    path: /nuctl/create
+    method: POST
+- name: api_gateway
+  endpoint:
+    path: /create/apigateway
+    method: POST
+    data_selector: attributes
+    params:
+      authentication_mode: none
+      description: Api gateway description
+      function: The api gateway primary function
+      host: Api gateway host address
+      path: Api gateway path
+      project: The project the api gateway should be created in
+- name: functionevent
+  endpoint:
+    path: /create/functionevent
+    method: POST
+    data_selector: function events
+    params: {}
+- name: project
+  endpoint:
+    path: /create/project
+    method: POST
+    data_selector: project
+    params: {}
+- name: delete
+  endpoint:
+    path: /nuctl/delete
+    method: DELETE
+- name: apigateways
+  endpoint:
+    path: /apigateways
+    method: DELETE
+- name: functionevents
+  endpoint:
+    path: /nuctl/delete/functionevents
+    method: DELETE
+- name: functions
+  endpoint:
+    path: /nuctl/delete/functions
+    method: DELETE
+    data_selector: functions
+    params: {}
+- name: projects
+  endpoint:
+    path: /nuctl/delete/projects
+    method: DELETE
+    params:
+      strategy: restricted
+      wait: true
+      wait-timeout: 3m0s
+- name: function
+  endpoint:
+    path: /nuctl/deploy
+    method: POST
+    data_selector: function
+    params: {}
+- name: functions
+  endpoint:
+    path: /export/functions
+    method: GET
+- name: projects
+  endpoint:
+    path: /export/projects
+    method: GET
+- name: projects
+  endpoint:
+    path: /projects
+    method: GET
+    data_selector: projects
+- name: get
+  endpoint:
+    path: /nuctl/get
+    method: GET
+- name: apigateway
+  endpoint:
+    path: /apigateways
+    method: GET
+    data_selector: api gateways information
+    params: {}
+- name: functionevents
+  endpoint:
+    path: /functionevents
+    method: GET
+    data_selector: functionevents
+    params: {}
+- name: functions
+  endpoint:
+    path: /functions
+    method: GET
+    data_selector: functions
+    params: {}
+- name: projects
+  endpoint:
+    path: /nuctl/get/projects
+    method: GET
+- name: import
+  endpoint:
+    path: /import
+    method: POST
+    data_selector: configurations
+- name: projects
+  endpoint:
+    path: /import/projects
+    method: POST
+    params: {}
+- name: invoke_function
+  endpoint:
+    path: /invoke
+    method: POST
+- name: update
+  endpoint:
+    path: /nuctl/update
+    method: GET
+- name: function
+  endpoint:
+    params:
+      concurrency: 4
+      platform: auto
+- name: Python
+  endpoint:
+    path: python/python-reference.html
+    method: GET
+- name: Golang
+  endpoint:
+    path: golang/golang-reference.html
+    method: GET
+- name: .NET Core
+  endpoint:
+    path: dotnetcore/dotnetcore-reference.html
+    method: GET
+- name: Java
+  endpoint:
+    path: java/java-reference.html
+    method: GET
+- name: NodeJS
+  endpoint:
+    path: nodejs/nodejs-reference.html
+    method: GET
+- name: Shell
+  endpoint:
+    path: shell/shell-reference.html
+    method: GET
+- name: my-function
+  endpoint:
+    path: /opt/nuclio/function.yaml
+    method: POST
+    data_selector: config
+    params: {}
+- name: function
+  endpoint:
+    path: /function
+    method: POST
+    data_selector: function
+    params: {}
+- name: reverser
+  endpoint:
+    path: /tmp/nuclio-dotnetcore-script/reverser.cs
+    method: POST
+    data_selector: body
+    params: {}
+- name: rev
+  endpoint:
+    path: /tmp/nuclio-shell-script/reverser.sh
+    method: deploy
+    data_selector: ''
+    params: {}
+- name: convert
+  endpoint:
+    path: /dev/null
+    method: deploy
+    data_selector: ''
+    params:
+      build_command: apk --update --no-cache add imagemagick
+      runtime_attrs: '{"arguments": "- -resize 50% fd:1"}'
+- name: cron_trigger
+  endpoint:
+    path: /triggers/myCronTrigger
+    method: POST
+    data_selector: attributes
+    params: {}
+- name: eventhub
+  endpoint:
+    path: /<your_event_hub_path>
+    method: GET
+    data_selector: records
+    params:
+      eventHubName: fleet
+      consumerGroup: < your value here >
+      partitions:
+      - 0
+      - 1
+- name: myHttpTrigger
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: myCORSHttpTrigger
+  endpoint:
+    path: ''
+    method: ''
+    data_selector: ''
+    params: {}
+- name: kafka
+  endpoint:
+    path: /kafka
+    method: POST
+    data_selector: messages
+    params: {}
+- name: myKafkaTrigger
+  endpoint:
+    path: mytopic
+    method: GET
+    data_selector: records
+    params:
+      initialOffset: earliest
+      brokers:
+      - 10.0.0.2:9092
+      consumerGroup: my-consumer-group
+- name: topics
+  endpoint:
+    path: /topics
+    method: GET
+- name: kinesis_stream
+  endpoint:
+    path: /my-stream
+    method: GET
+    data_selector: records
+    params:
+      regionName: eu-west-1
+      shards:
+      - shard-0
+      - shard-1
+      - shard-2
+- name: subscriptions
+  endpoint:
+    path: /subscriptions
+    method: GET
+    data_selector: subscriptions
+    params: {}
+- name: myNatsTopic
+  endpoint:
+    path: /
+    method: GET
+    data_selector: messages
+    params:
+      topic: my.topic
+      queueName: '{{ .Namespace }}.{{ .Name }}.{{ .Id }}'
+- name: myNatsJetStream
+  endpoint:
+    path: /
+    method: GET
+    data_selector: attributes
+    params:
+      stream: mystream
+      consumer: myconsumer
+- name: myRabbit
+  endpoint:
+    path: /triggers/myRabbit
+    method: POST
+    data_selector: attributes
+    params:
+      exchangeName: myExchangeName
+      queueName: myQueueName
+      reconnectDuration: 10m
+      reconnectInterval: 60s
+      prefetchCount: 1
+      durableExchange: true
+      durableQueue: true
+      onError: nack
+      requeueOnError: true
+- name: stream
+  endpoint:
+    path: /<container name>/<stream path>@<consumer group name>
+    method: GET
+    data_selector: records
+- name: stream
+  endpoint:
+    path: /users/test-stream-0
+    method: GET
+    data_selector: records
+- name: platform_config
+  endpoint:
+    path: hack/env/platform_config.yaml
+    method: GET
+    data_selector: records
+    params: {}
+- name: function_yaml
+  endpoint:
+    path: hack/env/golang.yaml
+    method: GET
+    data_selector: records
+    params: {}
+- name: nuclio_services
+  endpoint:
+    path: /hack/k8s/helm/nuclio
+    method: POST
+    data_selector: services
+    params:
+      registry.pushPullUrl: localhost:5000
+      controller.image.tag: latest-amd64
+      dashboard.image.tag: latest-amd64
+      dashboard.baseImagePullPolicy: Never
+- name: functions
+  endpoint:
+    path: /api/functions
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: function_events
+  endpoint:
+    path: /api/function_events
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: projects
+  endpoint:
+    path: /api/projects
+    method: GET
+    data_selector: metadata
+    params: {}
+- name: function_templates
+  endpoint:
+    path: /api/function_templates
+    method: GET
+    data_selector: function_templates
+    params: {}
+- name: api_gateways
+  endpoint:
+    path: /api/api_gateways
+    method: GET
+    data_selector: api_gateways
+    params: {}
+- name: v3io_streams
+  endpoint:
+    path: /api/v3io_streams
+    method: GET
+    data_selector: v3io_streams
+    params: {}
+notes:
+- '`metadata.name` is mandatory in all bodies (required to identify the resource).'
+- If you omit `namespace`, the dashboard uses the default namespace, as configured
+  in its command line arguments
+- Some endpoints require specific headers such as x-nuclio-function-name and x-nuclio-project-name.
+- Nuclio is a high-performance serverless framework focused on data, I/O, and compute
+  intensive workloads.
+- Nuclio can be used as a standalone Docker container or on top of an existing Kubernetes
+  cluster.
+- The stable tag refers to the latest version released from the master branch of the
+  Nuclio repository.
+- Your environment has a Kubernetes v1.19 or later cluster.
+- You have the credentials of a Docker registry, such as Docker Hub, Azure Container
+  Registry (ACR), or Google Container Registry (GCR).
+- The Nuclio CLI (nuctl) is installed — if you wish to use the CLI to deploy Nuclio
+  functions.
+- Using Helm charts is the preferred deployment method for production.
+- This is needed to allow Kaniko creating the image repository prior to pushing the
+  function image.
+- Otherwise, Kaniko will fail to push the image to ECR because the image name is being
+  determined during the build process.
+- All Nuclio resources go into the 'nuclio' namespace, and role-based access control
+  (RBAC) is configured accordingly.
+- Use the command kubectl --namespace nuclio get pods to verify both the controller
+  and dashboard are running.
+- 'Forward the Nuclio dashboard port: the Nuclio dashboard publishes a service at
+  port 8070.'
+- The configuration makes use of the instrumentation key you obtained earlier in this
+  guide.
+- The system expects the specific name 'platform.yaml' for the configuration file.
+- GKE project name should be replaced with the actual project name.
+- Requires installation of gcloud CLI and other dependencies.
+- Use init_context instead of global variable declarations or function calls
+- Use HTTP clients over browsers for HTTP(s) tests
+- Tweak worker configurations to resolve unavailable-server errors
+- Install CA certificates for alpine with HTTPS
+- Functions are event-driven. They respond to event triggers, data messages, or records
+  that are accepted from the event source and pushed to the function runtime engine.
+- Event sources can be divided into classes, based on their behavior and flow management.
+  Each class can have multiple event-source implementations.
+- Ensure that all your requests are sent to the returned NodePort.
+- Configuration allows adding paths for functions and choosing domains for triggering.
+- A “platform” could be a cluster or any sub resource of that cluster like a namespace.
+- Configuring where a function logs to is a two step process.
+- Metric sinks behave similarly to logger sinks in that first you declare a sink and
+  then bind a scope to it.
+- If running on Kubernetes, you may want to port-forward nuclio dashboard to your
+  localhost.
+- Exposing your functions outside your Kubernetes cluster network has dire security
+  implications.
+- Always control on which networks your functions are exposed, and use proper authentication.
+- Showcases unstructured logging and a structured response.
+- While the process itself is offered as an alternative, many good things came from
+  this feature.
+- Each runtime has a different Dockerfile. Consult the appropriate runtime reference
+  documents to understand the specific nuances.
+- The `import functions` command doesn’t deploy the imported functions.
+- 'The `export functions` command doesn’t export all the data: it ‘scrubs’ sensitive
+  function data.'
+- Asynchronous mode operates by establishing multiple socket connections between the
+  Nuclio processor and the worker process.
+- If a blocking operation is executed within an async function, it can block the entire
+  worker process.
+- Event batching is supported only for python runtimes and http trigger kinds.
+- Streaming allows a function to send data to the client in chunks as it becomes available.
+- Nuclio can leverage parallelism, adding cores contributes to performance.
+- This is a rare issue that primarily occurs in low-latency setups.
+- To mitigate this, we’ve introduced a 5-second wait time before halting event processing
+  after receiving SIGTERM. However, this does not fully eliminate the issue.
+- To configure a function image from the dashboard, select Image from the Code entry
+  type list, and then enter the image name in the URL field.
+- The source-code file code-entry type isn’t supported from the dashboard.
+- To run against a local Docker platform, add --platform local to the CLI command.
+- To run against a Kubernetes instance, add --platform kube to the CLI command.
+- Max number of parallel patches. The default value is equal to the number of CPUs.
+  (default 4)
+- A beta version of nuctl as a Nuclio api CLI client
+- Command works on functions that were previously deployed, or imported functions.
+- Uses Nuclio CLI for building functions
+- Path to a Kubernetes configuration file (admin.conf)
+- Enable sensitive fields masking
+- Namespace
+- Platform identifier - 'kube', 'local', or 'auto' (default 'auto')
+- Verbose output
+- JSON-encoded attributes for the api gateway (overrides all the rest) (default '{}')
+- Max number of parallel patches is equal to the number of CPUs by default (default
+  4)
+- Platform identifier can be 'kube', 'local', or 'auto' with default as 'auto'
+- Force delete resources
+- 'Whether function should be removed with its api gateways (default: false)'
+- Project deletion strategy; one of "restricted" (default), "cascading" (default "restricted")
+- Whether to wait until all project related resources are removed
+- Build and deploy a function, or deploy from an existing image
+- Export the configuration of a specific project including all its functions, function
+  events, and API gateways.
+- Function name to filter api gateways
+- Output format - "text", "wide", "yaml", or "json" (default "text")
+- Display function event information
+- Output format can be 'text', 'wide', 'yaml', or 'json' (default 'text')
+- Import functions or projects from a configuration file or from the standard input.
+- The command doesn’t deploy the imported functions. To deploy an imported function,
+  use the ‘deploy’ command.
+- The command doesn’t deploy the functions in the imported projects.
+- Invocation request timeout (default 1m0s)
+- HTTP method for invoking the function
+- The default value for max concurrency is equal to the number of CPUs.
+- The default report file path is 'nuctl-import-report.json'.
+- Max number of parallel patches. The default value is equal to the number of CPUs.
+- Async mode is in Technical preview
+- The function package must be main, because the code compiles into a Go plugin.
+- The handler field can be empty, as the Go runtime supports auto-handler detection
+  by parsing the AST and looking for an exported function with the expected signature.
+- .Net Core runtime is in tech-preview
+- Java runtime is in tech-preview.
+- NodeJS runtime is in tech-preview.
+- A temporary limitation mandates that the file be named handler.js.
+- You must set either the schedule or interval mutually-exclusive attributes.
+- Azure Event Hub trigger is in tech-preview.
+- The HTTP trigger is the only trigger created by default if not configured (by default,
+  it has 1 worker).
+- A good rule of thumb is to set the number of workers to ceil((<number of partitions>
+  / <max number of replicas>) * 1.2).
+- 'Nuclio supports two modes of worker allocation: Pool mode and Static mode.'
+- A rebalance process is triggered whenever there’s a change in the number of consumer
+  group members.
+- SASL OAuth configuration is not fully supported.
+- SASL OAuth configuration is available for authentication.
+- Currently, the Explicit Ack feature is only available for python runtime and functions
+  that have a stream trigger (kafka/v3io).
+- 'The explicit ack feature can be enabled only when using a static worker allocation
+  mode. Meaning the function metadata must have the following annotation: "nuclio.io/kafka-worker-allocation-mode":"static".'
+- Timeout during rebalance can be resolved by increasing the trigger.<name>.workerTerminationTimeout.
+- MQTT trigger is in tech-preview.
+- NATS trigger is in tech-preview.
+- NATS JetStream trigger is in tech-preview.
+- topics and queueName are mutually exclusive
+- when running in Kubernetes / docker, the consumer name is the host name (pod name)
+- The explicit ack feature is only available for python runtime and functions that
+  have a stream trigger (kafka/v3io).
+- The explicit ack feature can be enabled only when using a static worker allocation
+  mode.
+- Uses a valid platform access key for authentication
+- All Nuclio artifacts are versioned. They take their versions from variables in v3io/version-go/version.go.
+- 'To run Kubernetes `nuctl` suite locally: NUCTL_REGISTRY=<registry> make test-k8s-nuctl'
+- 'To run Docker `nuctl` suite locally: make test-docker-nuctl'
+- 'Follow the latest kubernetes coding conventions: kubernetes/kubernetes'
+- Ensure that your setup includes Linux or OSX, Git, Docker version 19.03+, The Go
+  toolchain, Kubernetes version 1.24+, Node version 10.x, and Goland IDE.
+- By default, when building a function image, the dashboard will try to pull the base
+  image from the remote registry with the 'latest' tag.
+- This guide will guide you through running the Nuclio services locally using docker,
+  so they will contain your changes when developing in Nuclio.
+- If you want to be able to debug the actual components locally, see local-development.md.
+- 'Make changes to the function build pipeline: function spec changes that only affect
+  build changes to builder logic changes to runtime-specific build logic'
+- 'Make changes that will affect the deployed, running function (or Nuclio’s processor
+  binary inside the function container), e.g.: health checks changes to trigger-specific
+  logic changes to function spec that affect runtime (like adding support for Docker
+  volumes) changes to a runtime (or a runtime’s wrapper)'
+- 'Make platform-level changes that also affect kubernetes platform logic: extending
+  the platform.Platform interface writing kube-specific logic (assuming you’re also
+  testing with a Kubernetes cluster - which you should be doing!)'
+- Use go test locally
+- Controller/dashboard images are 'latest', resulting in the images you pushed being
+  used
+- Controller/dashboard images are never pulled from Docker Hub
+- If you omit `namespace`, the dashboard uses the default namespace, as configured
+  in its command line arguments.
+errors:
+- '404: When accessing paths not configured for the host.'
+- '503 Error Code While Scaling Down (Kubernetes Only): Implement a client-side retry
+  mechanism when a 503 response is received with an empty body.'
+- '401 Unauthorized: Check API access key'
+- '404 Not Found: Ensure function name is correct'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Invalid strategy provided
+- Timeout while waiting for resources to be removed
+- Error occurred during import process.
+- Max number of parallel patches. The default value is equal to the number of CPUs.
+  (default 4)
+- Path to a Kubernetes configuration file (admin.conf)
+- Enable sensitive fields masking
+- Namespace
+- Platform identifier - 'kube', 'local', or 'auto' (default 'auto')
+- Path to import report (default 'nuctl-import-report.json')
+- Save importing report to a file
+- Skip config autofix if error occurred
+- Verbose output
+- Invalid configuration file format
+- 'Access denied: Check permissions'
+- 'Import failed: Review the provided configurations'
+- Error due to consumer group member changes.
+- '401 Unauthorized: Recheck API key or access permissions'
+auth_info:
+  mentioned_objects:
+  - sasl
+  - tls
+client:
+  base_url: http://localhost:8070
+source_metadata: null

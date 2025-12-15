@@ -1,0 +1,80 @@
+resources:
+- name: sales_content
+  endpoint:
+    path: /api/v1/sales_content
+    method: GET
+    data_selector: records
+- name: training_sessions
+  endpoint:
+    path: /api/v1/training_sessions
+    method: GET
+    data_selector: records
+- name: Sales Enablement
+  endpoint:
+    path: /sales-enablement-platform/
+    method: GET
+- name: LinkedIn
+  endpoint:
+    path: /api/linkedin
+    method: GET
+    data_selector: data
+    params: {}
+- name: Google Workspace
+  endpoint:
+    path: /api/google_workspace
+    method: GET
+    data_selector: data
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in SalesHood
+- Users need to log in to access demo or platform features.
+- Some objects like Contact may return nulls in deeply nested fields
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://app.saleshood.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.saleshood.com/oauth2/token
+    client_id: '{{ dlt.secrets[''saleshood_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''saleshood_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''saleshood_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

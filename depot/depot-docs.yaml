@@ -1,0 +1,160 @@
+resources:
+- name: namespace
+  endpoint:
+    path: /api/namespaces
+    method: POST
+    data_selector: namespaceData
+- name: build
+  endpoint:
+    path: /api/builds
+    method: POST
+    data_selector: buildData
+- name: buildkit
+  endpoint:
+    path: /api/buildkit
+    method: GET
+    data_selector: buildkitData
+- name: project
+  endpoint:
+    path: /v1/projects
+    method: GET
+    data_selector: projects
+- name: build
+  endpoint:
+    path: /v1/builds
+    method: POST
+    data_selector: build
+- name: rock_paper_scissors
+  endpoint:
+    path: /api
+    method: GET
+    data_selector: available_endpoints
+- name: project_tokens
+  endpoint:
+    path: /api/v1/projects/tokens
+    method: POST
+    data_selector: result
+    params: {}
+- name: project
+  endpoint:
+    path: /core.v1.ProjectService.createProject
+    method: POST
+    data_selector: projectId
+- name: build
+  endpoint:
+    path: /build.v1.BuildService.createBuild
+    method: POST
+    data_selector: buildId
+- name: docker-compose
+  endpoint:
+    path: /docker-compose
+    method: GET
+    data_selector: services
+    params: {}
+- name: depot/build-push-action
+  endpoint:
+    path: /github-actions/build-push-action
+    method: POST
+- name: depot/bake-action
+  endpoint:
+    path: /github-actions/bake-action
+    method: POST
+- name: depot/setup-action
+  endpoint:
+    path: /github-actions/setup-action
+    method: POST
+- name: Build image
+  endpoint:
+    path: /build-image
+    method: POST
+    data_selector: image
+    params:
+      project: <your-depot-project-id>
+      load: true
+- name: Build image with SBOM
+  endpoint:
+    path: /build-image-sbom
+    method: POST
+    data_selector: image
+    params:
+      project: <your-depot-project-id>
+      sbom: true
+      sbom-dir: ./sbom-output
+- name: project
+  endpoint:
+    path: /depot.core.v1.ProjectService/listProjects
+    method: GET
+    data_selector: projects
+- name: build
+  endpoint:
+    path: /depot.build.v1.BuildService/createBuild
+    method: POST
+    data_selector: buildId
+- name: registry
+  endpoint:
+    path: /depot.build.v1.RegistryService/listImages
+    method: GET
+    data_selector: images
+- name: usage
+  endpoint:
+    path: /depot.core.v1.UsageService/getProjectUsage
+    method: GET
+    data_selector: usage
+- name: usage
+  endpoint:
+    path: /core/v1/UsageService/getUsage
+    method: POST
+    data_selector: result
+    params:
+      startAt: timestampFromDate(new Date('2025-09-01T00:00:00Z'))
+      endAt: timestampFromDate(new Date('2025-09-30T23:59:59Z'))
+notes:
+- To authorize API requests, set the DEPOT_TOKEN environment variable.
+- Depot builds faster with optimized Docker image builds.
+- You can now programmatically access your organization's resource usage data.
+- AWS PrivateLink now available for Depot remote container builds
+- Uses OIDC trust relationships for CI integration
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Improved error message when your .dockerignore isn't formatted correctly
+- Added --lint flag to lint your Dockerfile before building
+- Improved build start time by removing unnecessary API calls
+- Depot API is now in private beta
+- New region selection feature to minimize network latency
+- Uses OAuth2 with OIDC — does not require static access keys in GitHub Actions
+- Requires setup of organization token in environment variable DEPOT_TOKEN
+- Authenticate to the API using an Authorization header with an Organization Token
+  that you generate in your organization settings.
+- Depot Cache can be used with Bazel from Depot's managed GitHub Actions runners.
+- 'Adding # syntax=docker/dockerfile:1 as the first line of your Dockerfile enables
+  mounting secrets as environment variables.'
+- User access tokens have full push and pull permissions for the Depot Registry.
+- Project tokens are tied to a specific project and have full push and pull permissions
+  within that project.
+- The depot bake command is optimized to work with Depot infrastructure and is able
+  to efficiently load images back into your local Docker daemon.
+- When using docker compose build with Depot, there are a few things to be aware of.
+- Using Depot for your Docker image builds is as straightforward as replacing your
+  docker build command with depot build.
+- API tokens are scoped to a single organization and grant access to manage projects
+  and builds within your Depot organization.
+- This token can create, update, and delete projects and run builds within your organization.
+- One Depot project per customer entity in your organization for secure cache isolation
+- Use OIDC token for authentication for best experience.
+- Depot accelerates your most important development workflows.
+- API tokens are scoped to a single organization and grant access to manage projects
+  and builds.
+- The token can create, update, and delete projects and run builds within your organization.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - User access tokens
+  - Project tokens
+  - OIDC trust relationships
+client:
+  base_url: https://depot.dev
+  headers:
+    Accept: application/json
+source_metadata: null

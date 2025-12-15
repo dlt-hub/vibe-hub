@@ -1,0 +1,46 @@
+auth_info:
+- information_source; https://docs.docker.com/reference/api/dvp/latest/:
+  - 'Docker Hub APIs use bearer token authentication in JWT format. To authenticate,
+    send a POST request to /v2/users/login with a JSON body containing username and
+    password fields, and use the returned token in the Authorization header as "Authorization:
+    Bearer {TOKEN}".'
+  - 'Docker Hub uses JWT bearer token authentication. After initial login via `/v2/users/login`,
+    users receive a JWT token in the response body under the "token" field. This token
+    is then used in subsequent API requests by including it in the HTTP Authorization
+    header as `Authorization: Bearer {TOKEN}`. For accounts with 2FA enabled, a second
+    call to `/v2/users/2fa-login` is required, passing the intermediate `login_2fa_token`
+    and a Time-based One-Time Password `code` in the request body to obtain the final
+    bearer token.'
+- information_source; https://docs.docker.com/reference/api/engine/version/v1.45/:
+  - Authentication for registries is handled client-side by sending registry credentials
+    as a base64url-encoded JSON object in the `X-Registry-Auth` header. The JSON must
+    contain either username/password/serveraddress fields, or an identitytoken field
+    obtained from the `/auth` endpoint.
+  - The API uses base64url-encoded registry credentials passed via the X-Registry-Auth
+    header for authentication when installing plugins. This header contains authentication
+    information needed to pull the plugin from a registry.
+  - The `X-Registry-Auth` header is required for updating a service and must contain
+    a base64url-encoded authentication token for registry access.
+pagination_info:
+- information_source; https://docs.docker.com/reference/api/hub/latest/:
+  - The API uses offset-based pagination with query parameters page (page number)
+    and page_size (number of items per page). The response includes count (total items),
+    next (URL for next page or null), previous (URL for previous page or null), and
+    results (array of items). Stop paginating when next is null.
+possible_base_urls:
+- information_source; https://docs.docker.com/ai/model-runner/api-reference/:
+  - http://172.17.0.1:12434/
+  - http://localhost:12434/
+possible_endpoints:
+- information_source; https://docs.docker.com/reference/api/dvp/latest/:
+  - POST /v2/users/2fa-login
+  - POST /v2/users/login
+- information_source; https://docs.docker.com/ai/model-runner/api-reference/:
+  - DELETE /models/{namespace}/{name}
+  - GET /
+  - GET /engines/llama.cpp/v1/models
+  - GET /engines/llama.cpp/v1/models/{namespace}/{name}
+  - GET /models
+  - GET /models/{namespace}/{name}
+  - POST /engines/llama.cpp/v1/chat/completions
+  - POST /engines/llama.cpp/v1/completions

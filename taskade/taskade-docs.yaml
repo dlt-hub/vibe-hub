@@ -1,0 +1,56 @@
+resources:
+- name: agents
+  endpoint:
+    path: /agents
+    method: GET
+    data_selector: agents
+    params: {}
+- name: workspace
+  endpoint:
+    path: /workspace
+    method: GET
+    data_selector: workspaces
+    params: {}
+- name: projects
+  endpoint:
+    path: /api/projects
+    method: GET
+    data_selector: data
+    params: {}
+- name: agents
+  endpoint:
+    path: /api/agents
+    method: GET
+    data_selector: data
+    params: {}
+- name: automations
+  endpoint:
+    path: /api/automations
+    method: GET
+    data_selector: data
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in Taskade
+- Some responses may include null values in certain fields
+- Uses OAuth2 for authentication
+- API access requires a valid token
+errors:
+- '401 Unauthorized: Check your access token'
+- '404 Not Found: Verify the endpoint path'
+- '500 Internal Server Error: Retry the request'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.taskade.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.taskade.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''taskade_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''taskade_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''taskade_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

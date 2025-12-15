@@ -1,0 +1,70 @@
+auth_info:
+- ? information_source; https://docs.fortinet.com/document/fortiauthenticator/6.6.4/rest-api-solution-guide/704555/authentication-auth
+  : - Basic authentication with optional two-factor authentication. Send a POST request
+      with username (required), password (optional), token_code (optional), and user_ip
+      (optional) in the request body. At least one of password or token_code must
+      be provided; if two-factor authentication is enabled for the user, both may
+      be required.
+    - The API supports token-based authentication via a security token code parameter.
+      Credentials are validated through a POST request using username, password, and
+      optional token_code (security token) and user_ip parameters; the token_code
+      field explicitly indicates "Supported token auth".
+    - The API uses HTTP Basic Authentication for requests. Credentials are passed
+      via the `-u` flag in curl (or the `Authorization` header with Base64-encoded
+      "username:password"). Additionally, the API validates user passwords and token
+      codes via POST requests to the `/api/v1/auth/` endpoint, sending JSON payloads
+      with "username" and "password" fields. Successful authentication returns a session
+      cookie (sessionid) that is set in the response headers.
+    - The API uses HTTP Basic Authentication with a username and password pair sent
+      via the `-u` flag (Authorization header). Requests to authentication endpoints
+      require credentials in the format "username:password" encoded in the Authorization
+      header. Additionally, successful authentication returns a session cookie (sessionid)
+      that is httponly and can be used for subsequent requests. The API also supports
+      token-based validation where a username and token_code are sent in the JSON
+      request body.
+- information_source; https://docs.fortinet.com/document/fortisoar/7.0.0/api-guide/267041/api-methods:
+  - 'Audit Log Purge API endpoints require Bearer Token authentication. The token
+    must be passed in the Authorization header with the format "Authorization: <Bearer
+    Token>". This applies to DELETE requests for stopping automatic audit log purging
+    and for deleting audit logs before a specified date.'
+pagination_info:
+- information_source; https://docs.fortinet.com/document/fortisoar/7.0.0/api-guide/267041/api-methods:
+  - Offset and Limit query parameters control pagination for workflow execution history.
+    Offset specifies the initial index to start returning results, and Limit specifies
+    the maximum number of results per page. Use these parameters together to paginate
+    through results.
+  - Offset and Limit query parameters control pagination. Offset specifies the initial
+    index from which to return results, and Limit sets the maximum number of results
+    to return per page.
+  - Use the `$legacy_collection_view=true` query parameter to access pagination fields.
+    The response includes hydra:totalItems, hydra:itemsPerPage, hydra:firstPage, and
+    hydra:lastPage. In version 7.0.0+, the hydra:next attribute is omitted if no further
+    results exist, and pagination uses hydra:view with first, next, and last page
+    information instead.
+  - Use the optional query parameter $legacy_collection_view=true to request legacy
+    pagination format. In version 7.0.0+, responses include hydra:view with first,
+    next, and last page links; the hydra:next attribute is omitted when no further
+    results exist. Legacy format includes hydra:itemsPerPage, hydra:firstPage, and
+    hydra:lastPage fields.
+- information_source; https://docs.fortinet.com/document/fortisoar/7.6.2/api-guide/267041/api-methods:
+  - Offset and limit query parameters control pagination. Offset specifies the starting
+    index for results, and limit sets the maximum number of results returned per page.
+    Use offset to navigate through pages by incrementing the starting index.
+possible_base_urls:
+- ? information_source; https://docs.fortinet.com/document/fortiauthenticator/6.6.4/rest-api-solution-guide/704555/authentication-auth
+  : - https://192.168.0.122/api/v1
+- information_source; https://docs.fortinet.com/document/fortisoar/7.0.0/api-guide/267041/api-methods:
+  - /api/3/files/<uuid of uploaded json file>
+possible_endpoints:
+- ? information_source; https://docs.fortinet.com/document/fortiauthenticator/6.6.4/rest-api-solution-guide/704555/authentication-auth
+  : - POST https://192.168.0.122/api/v1/auth/
+- information_source; https://docs.fortinet.com/document/fortisoar/7.0.0/api-guide/267041/api-methods:
+  - DELETE /api/3/incidents/bbdc13f8-015f-4615-8c63-4cebb6ec991b/assets/e0a3521f-67de-473f-a9a0-7f2d44626567
+  - DELETE /gateway/audit/activities
+  - DELETE /gateway/audit/activities/ttl
+  - DELETE /gateway/audit/activities?uptoDate=1524477805
+  - GET /api/3//utils/log-collect
+  - GET /api/3/assets
+  - GET /api/3/export_jobs/
+  - GET /api/3/export_jobs/<export job uuid>
+  - GET /api/3/import_jobs/<import job uuid>

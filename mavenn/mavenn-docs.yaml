@@ -1,0 +1,45 @@
+resources:
+- name: example_dataset
+  endpoint:
+    path: /api/v1/example_dataset
+    method: GET
+    data_selector: records
+    params: {}
+- name: heatmap
+  endpoint:
+    path: /mavenn.heatmap
+    method: GET
+    data_selector: values
+- name: heatmap_pairwise
+  endpoint:
+    path: /mavenn.heatmap_pairwise
+    method: GET
+    data_selector: values
+- name: Model
+  endpoint:
+    path: /mavenn/Model
+    method: GET
+    data_selector: records
+notes:
+- Some operations may require specific API permissions.
+errors:
+- '404 Not Found: Check the endpoint path'
+- '500 Internal Server Error: Try again later'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+client:
+  base_url: https://mavenn.api.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.api.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

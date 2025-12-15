@@ -1,0 +1,195 @@
+resources:
+- name: projects
+  endpoint:
+    path: /api/projects
+    method: GET
+    data_selector: projects
+- name: create_integration
+  endpoint:
+    path: /projects/auth/create
+    method: POST
+    data_selector: auth_provider
+    params:
+      project_id: project-id
+      branch_id: br-example-123
+      database_name: neondb
+      role_name: neondb_owner
+- name: list_integrations
+  endpoint:
+    path: /projects/{project_id}/auth/integrations
+    method: GET
+    data_selector: data
+    params:
+      project_id: project-id
+- name: generate_sdk_keys
+  endpoint:
+    path: /projects/auth/keys
+    method: POST
+    data_selector: auth_provider
+    params:
+      project_id: project-id
+      auth_provider: stack
+- name: create_user
+  endpoint:
+    path: /projects/auth/user
+    method: POST
+    data_selector: id
+    params:
+      project_id: project-id
+      auth_provider: stack
+      email: user@example.com
+- name: delete_user
+  endpoint:
+    path: /projects/{project_id}/auth/users/{auth_user_id}
+    method: DELETE
+    data_selector: ''
+    params:
+      project_id: project-id
+      auth_user_id: user-id-123
+- name: transfer_ownership
+  endpoint:
+    path: /projects/auth/transfer_ownership
+    method: POST
+    data_selector: url
+    params:
+      project_id: project-id
+      auth_provider: stack
+- name: delete_integration
+  endpoint:
+    path: /projects/{project_id}/auth/integration/{auth_provider}
+    method: DELETE
+    data_selector: ''
+    params:
+      project_id: project-id
+      auth_provider: stack
+- name: list_oauth_providers
+  endpoint:
+    path: /projects/{project_id}/auth/oauth_providers
+    method: GET
+    data_selector: providers
+    params:
+      project_id: project-id
+- name: add_oauth_provider
+  endpoint:
+    path: /projects/{project_id}/auth/oauth_providers
+    method: POST
+    data_selector: id
+    params:
+      project_id: project-id
+      id: google
+      client_id: your-client-id
+      client_secret: your-client-secret
+- name: update_oauth_provider
+  endpoint:
+    path: /projects/{project_id}/auth/oauth_providers/google
+    method: PATCH
+    data_selector: id
+    params:
+      project_id: project-id
+      client_id: new-client-id
+      client_secret: new-client-secret
+- name: delete_oauth_provider
+  endpoint:
+    path: /projects/{project_id}/auth/oauth_providers/google
+    method: DELETE
+    data_selector: ''
+    params:
+      project_id: project-id
+      oauth_provider_id: google
+- name: list_redirect_uri_whitelist
+  endpoint:
+    path: /projects/{project_id}/auth/domains
+    method: GET
+    data_selector: domains
+    params:
+      project_id: project-id
+- name: add_domain_to_redirect_uri_whitelist
+  endpoint:
+    path: /projects/{project_id}/auth/domains
+    method: POST
+    data_selector: ''
+    params:
+      project_id: project-id
+      domain: https://example.com
+      auth_provider: stack
+- name: delete_domain_from_redirect_uri_whitelist
+  endpoint:
+    path: /projects/{project_id}/auth/domains
+    method: DELETE
+    data_selector: ''
+    params:
+      project_id: project-id
+      auth_provider: stack
+      domains:
+      - domain: https://example.com
+- name: get_email_server_configuration
+  endpoint:
+    path: /projects/{project_id}/auth/email_server
+    method: GET
+    data_selector: type
+    params:
+      project_id: project-id
+- name: update_email_server_configuration
+  endpoint:
+    path: /projects/{project_id}/auth/email_server
+    method: PATCH
+    data_selector: type
+    params:
+      project_id: project-id
+      type: standard
+      host: smtp.gmail.com
+      port: 587
+      username: your-email@gmail.com
+      password: your-app-password
+      sender_email: noreply@yourcompany.com
+      sender_name: Your Company
+- name: users_sync
+  endpoint:
+    path: /neon_auth/users_sync
+    method: GET
+    data_selector: '*'
+- name: users_sync
+  endpoint:
+    path: /neon_auth/users_sync
+    method: GET
+    data_selector: raw_json
+- name: todos
+  endpoint:
+    path: /todos
+    method: POST
+    data_selector: task, user_id
+notes:
+- Data API and IP Allow cannot be used together.
+- All requests to the Data API currently require authentication with a valid JWT token.
+- HIPAA support is currently available at no additional cost.
+- Once billing is finalized, HIPAA support will add a 15% surcharge to your monthly
+  invoice.
+- In some cases, audit logs may include SQL statements that contain plain-text passwords—for
+  example, in a CREATE ROLE ... LOGIN PASSWORD command. This is due to limitations
+  in the Postgres pgaudit extension, which may log full statements without redacting
+  sensitive values.
+- We recommend avoiding the inclusion of raw credentials in SQL statements where possible.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Neon Auth is in beta and ready to use.
+- Do not try to change the neon_auth.users_sync table name. It's needed for the synchronization
+  process to work correctly.
+- neon_auth.users_sync table is automatically created and kept in sync by Neon Auth
+- API rate limiting is set to 700 requests per minute with bursts allowed up to 40
+  requests per second per route.
+errors:
+- 'permission denied to create extension: Check if your database was created via direct
+  SQL rather than the Console API.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '401 Unauthorized: Check API key or permissions.'
+- '429 Too Many Requests: Handle this by retrying requests appropriately.'
+auth_info:
+  mentioned_objects:
+  - StackApp
+  - OauthToken
+client:
+  base_url: https://neon.tech/unify
+  auth:
+    type: oauth2
+source_metadata: null

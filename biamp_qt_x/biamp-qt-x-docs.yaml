@@ -1,0 +1,110 @@
+resources:
+- name: config
+  endpoint:
+    path: /api/v1/Config
+    method: GET
+    data_selector: data
+    params: {}
+- name: device_info
+  endpoint:
+    path: /api/v1/Device/Info
+    method: GET
+    data_selector: data
+    params: {}
+- name: network_discovery
+  endpoint:
+    path: /network/discovery
+    method: GET
+    data_selector: devices
+    params: {}
+- name: configuration
+  endpoint:
+    path: /configuration
+    method: POST
+    data_selector: configuration_result
+    params: {}
+- name: VoIP
+  endpoint:
+    path: /voip
+    method: GET
+    data_selector: VoIPData
+- name: AEC
+  endpoint:
+    path: /aec
+    method: GET
+    data_selector: AECData
+- name: AnalogIO
+  endpoint:
+    path: /analog_io
+    method: GET
+    data_selector: AnalogIOData
+- name: GPIO
+  endpoint:
+    path: /gpio
+    method: GET
+    data_selector: GPIOData
+- name: software_downloads
+  endpoint:
+    path: /services/data/v3.16/downloads
+    method: GET
+    data_selector: downloads
+    params: {}
+- name: sip_device_capabilities
+  endpoint:
+    path: /services/data/vXX.X/sobjects/SIPDeviceCapabilities
+    method: GET
+    data_selector: records
+    params: {}
+- name: user_device_configuration
+  endpoint:
+    path: /services/data/vXX.X/sobjects/UserDeviceConfiguration
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- 802.1X is not supported while in single cable mode.
+- A Qt X controller in dual cable mode while set to Dante media mode does not support
+  802.1x.
+- A GUID stands for 'Globally Unique Identifier,' which is a 128-bit code used to
+  uniquely identify digital objects.
+- Qt X devices are shipped in an 'unprotected' state to allow installers to configure
+  and use the device without requiring explicit authentication or authorization
+- Device IP discovery is done via a network connection to port 1 using the Biamp Discovery
+  app or Biamp Tesira software.
+- The web UI will prompt for authentication. The default username is admin and the
+  default password is the device's 8-digit serial number.
+- Firmware must be release 4.0 or later to support the TesiraFORTÉ X and Devio SCX.
+- Always be sure to load the latest firmware to ensure hardware is up to date.
+- VoIP X is entirely software-based and is configured solely via an internally-served
+  web page.
+- Analog input channel 1 is routed to all speaker outputs and to other available far
+  end outputs.
+- SSH is the default protocol for TTP but Telnet can be enabled if needed.
+- The Control ports (P1) of each TesiraFORTÉ X need to be on a common control network.
+  (FW 4.0 and 4.1)
+- The AVB ports (P2-P5) of the TesiraFORTÉ X need to be on a common AVB network to
+  share media. (FW 4.0 and 4.1)
+- A maximum of (3) TC-5 has been recommended with one TesiraFORTÉ X to ensure that
+  stream counts and hop limits are observed.
+- A rare issue can occur when updating TesiraLUX resulting in the device not booting
+  completely after a firmware update. If this occurs, power-cycling the TesiraLUX
+  device will result in normal operation with the updated firmware.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Confirm that the Mitel server is using a T1/E1 connection or Mitel MBG.
+- The PIN code must be a number.
+errors:
+- 'Unauthorized: Check username and password'
+- 'Device not found: Ensure the device is powered and connected to the network'
+- VLAN configuration issues may lead to discarded ingress traffic.
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects:
+  - Biamp Discovery
+  - Tesira software
+client:
+  base_url: https://api.qtx.help.biamp.com
+  headers:
+    Content-Type: application/json
+source_metadata: null

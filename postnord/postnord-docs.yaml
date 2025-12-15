@@ -1,0 +1,39 @@
+auth_info:
+- information_source; https://atdeveloper.postnord.com/:
+  - Use an API key passed as a query parameter named apikey for sandbox access. For
+    production and secured APIs, register a developer account and order an OAuth2
+    client with required scopes defined in the API swagger documentation.
+- information_source; https://atdeveloper.postnord.com/apis/howToUseApis:
+  - OAuth2 application flow authentication is required. Register your client application
+    with PostNord by emailing api.support@postnord.com with subject "IAM" to obtain
+    client_id and client_secret. Use the tokenUrl https://stage.account.postnord.com/oauth2/auth
+    (test) or production equivalent to request access tokens with scope https://api.postnord.com/scopes/shipment/declare/vat/write
+    for shipment VAT modification operations.
+  - 'OAuth2 with client credentials flow. Send HTTPS POST request to https://stage.account.postnord.com/oauth2/token
+    (staging) or https://account.postnord.com/oauth2/token (production) with Content-Type
+    application/x-www-form-urlencoded and body parameters: grant_type=client_credentials,
+    client_id (your PostNord client ID), client_secret (your PostNord client secret),
+    and optional scope parameter. Response includes access_token with token_type bearer,
+    valid for expires_in seconds. Use the access_token in subsequent API requests.'
+  - 'PostNord uses OAuth2 with the client credentials grant type. The Access token
+    obtained from the OAuth2 token endpoint (https://stage.account.postnord.com/oauth2/auth)
+    must be sent in the Authorization header as a Bearer token (format: "Bearer <access_token>").
+    Clients must be registered and request scopes defined in the API''s swagger securityDefinitions
+    to obtain appropriate permissions.'
+  - 'The access token must be obtained from an Authorization response and sent in
+    the HTTP Header "Authorization" with the format "Bearer {access_token}". For example,
+    if the Authorization response returns "access_token": "o5Ptk3GUEgNV3izvuDl5",
+    the secured API request must include the header "Authorization": "Bearer o5Ptk3GUEgNV3izvuDl5".'
+possible_base_urls:
+- information_source; https://atdeveloper.postnord.com/:
+  - https://atdeveloper.postnord.com
+  - https://developer.postnord.com
+possible_endpoints:
+- information_source; https://atdeveloper.postnord.com/apis/howToUseApis:
+  - POST https://account.postnord.com/oauth2/auth
+  - POST https://stage.account.postnord.com/oauth2/auth
+  - POST https://stage.account.postnord.com/oauth2/token
+- information_source; https://developer.postnord.com/apis/howToUseApis:
+  - POST https://account.postnord.com/oauth2/token
+  - POST https://stage.account.postnord.com/oauth2/auth
+  - POST https://stage.account.postnord.com/oauth2/token

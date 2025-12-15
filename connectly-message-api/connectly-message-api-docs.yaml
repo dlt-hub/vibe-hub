@@ -1,0 +1,197 @@
+resources:
+- name: whatsapp_templated_messages
+  endpoint:
+    path: /v1/businesses/{businessId}/send/whatsapp_templated_messages
+    method: POST
+    data_selector: response
+    params: {}
+- name: whatsapp_template_message
+  endpoint:
+    path: /v1/businesses/<business_id>/send/whatsapp_templated_messages
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: send_message
+  endpoint:
+    path: /v1/businesses/<business_id>/send/messages
+    method: POST
+    data_selector: message_id
+- name: agent_graph_invoke
+  endpoint:
+    path: /external/v1/ai/agent_graph/invoke
+    method: POST
+- name: create_webhooks
+  endpoint:
+    path: /v1/businesses/<business_id>/create/webhooks
+    method: POST
+    data_selector: null
+    params: {}
+- name: delivery_status
+  endpoint:
+    path: /v1/businesses/<BUSINESS_ID>/create/webhooks
+    method: POST
+    data_selector: null
+    params: {}
+- name: send_messages
+  endpoint:
+    path: /v1/businesses/<BUSINESS_ID>/send/messages
+    method: POST
+    data_selector: null
+    params: {}
+- name: sender
+  endpoint:
+    path: /messages
+    method: POST
+    data_selector: message
+    params:
+      sender:
+        id: '+11234567890'
+        channelType: whatsapp
+- name: send_template_message
+  endpoint:
+    path: /message-api/message-service-api/messageservice/send-template-message
+    method: POST
+- name: send_session_message
+  endpoint:
+    path: /message-api/message-service-api/messageservice/send-session-message
+    method: POST
+- name: send_message
+  endpoint:
+    path: /v1/businesses/{businessId}/send/messages
+    method: POST
+    data_selector: Response
+    params: {}
+- name: create_template
+  endpoint:
+    path: /v1/businesses/{businessId}/create/template
+    method: POST
+    data_selector: entity.templates
+    params: {}
+- name: template
+  endpoint:
+    path: /v1/businesses/{businessId}/create/template
+    method: POST
+    data_selector: entity.templates
+    params: {}
+- name: template
+  endpoint:
+    path: /business-management/business-management-api/template-management/get-templates
+    method: GET
+    data_selector: templates
+    params: {}
+- name: get_templates
+  endpoint:
+    path: /business-management/business-management-api/template-management/get-templates
+    method: GET
+- name: create_template
+  endpoint:
+    path: /business-management/business-management-api/template-management/create-a-template
+    method: POST
+- name: templates
+  endpoint:
+    path: /v1/businesses/{businessId}/get/templates
+    method: POST
+    data_selector: entity.templateGroups
+    params: {}
+- name: quality_signals
+  endpoint:
+    path: /v1/businesses/{businessId}/get/quality_signals
+    method: GET
+    data_selector: entity.signals
+    params: {}
+notes:
+- WhatsApp template messages can be sent only to personal WhatsApp accounts.
+- Your template must have a language translation approved before you can use it for
+  that specific language.
+- This endpoint is limited to 200 requests per second.
+- If the limit is exceeded, the API will return a `429 Too Many Requests` response.
+- Supports up to 200 requests per second with burst traffic of up to 1000 requests
+  per second.
+- Your API requests are authenticated using API keys. Any request that doesn't include
+  an API key will return an error.
+- You can generate an API key from your Dashboard at any time.
+- In order to develop with us, you need a business account and an API key so that
+  you can authenticate with the Connectly API.
+- Any request that doesn't include an API key will return an error.
+- You cannot send a regular message to the customer first if the customer has not
+  messaged first.
+- API allows businesses to streamline the process of initiating campaign sendouts
+  with ease.
+- Continually adding information will enhance Sofia AI's effectiveness.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Currently only WhatsApp webhook events are supported
+- You must have physical access to be able to receive and verify a 6 Digit PIN code
+  through SMS or Voice Call per every number to be migrated.
+- Two-Factor Verification must be disabled for the number.
+- The delay period for sending a follow-up cannot exceed 20 hours.
+- Last updated 1 year ago
+- If the recipient has not initiated the conversation first within the last 24 hours
+  you MUST use templated message API.
+- Templates are approved within 5 minutes to 24 hours.
+- Templates require approval from Meta before use, which can take up to 24 hours.
+- WhatsApp templates have media size limits. To know about them visit Meta documentation.
+- Templates that come from the same name/definition with different language variations
+  are lumped in a template group.
+- message limit tier changes only when there is an update
+errors:
+- '200: A successful response.'
+- '201: Successful response containing id of created message.'
+- 'default: An unexpected error response.'
+- '429 Too Many Requests: Rate limit exceeded'
+- 'ERROR_TYPE_INVALID_REQUEST: Pass along the connectly trace id ''cnct_trace_id''
+  to the team for more information.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Failed to send a message because more than 24 hours have passed since the customer
+  last replied
+- ERROR_CODE_INVALID_SENDER_ID - the phone number is not valid
+- ERROR_CODE_PHONE_NUMBER_BAD_FORMAT - bad phone format number
+- ERROR_CODE_MESSAGE_ATTACHMENTS_NUMBER_INVALID - invalid number of attachments, currently
+  Connectly API supports only one attachment at a time
+- ERROR_CODE_MESSAGE_TEXT_EMPTY - message text is empty
+- ERROR_CODE_MESSAGE_TEMPLATE_NOT_FOUND - the template for the specified name and
+  language does not exist, please create it first
+- ERROR_CODE_MESSAGE_TEMPLATE_INPUT_INVALID - message template inputs are not valid
+- ERROR_CODE_MESSAGE_ATTACHMENT_EMPTY - message attachment URL is empty
+- ERROR_CODE_MESSAGE_ATTACHMENT_INVALID - message attachment URL is invalid and can't
+  be parsed
+- ERROR_CODE_BUSINESS_MISSES_MATCHING_CHANNEL - business is missing sender channel
+  of matching channel type
+- ERROR_CODE_MESSAGE_OUTSIDE_OF_ELIGIBILITY_WINDOW - failed to send a message because
+  more than 24 hours have passed since the customer last replied
+- ERROR_CODE_BUSINESS_REACHED_LIMITS - business reached the restrictions on how many
+  messages can be sent from this channel. Too many previous messages were blocked
+  or flagged as spam
+- ERROR_CODE_MESSAGE_SELF_INVALID - this message type can't be sent to yourself. Please
+  use a different receiver
+- ERROR_CODE_MESSAGE_PHONE_NUMBER_INVALID - phone number is invalid
+- ERROR_CODE_MESSAGE_CUSTOMER_OPTED_OUT - customer opted out of receiving template
+  messages
+- ERROR_CODE_MESSAGE_CUSTOMER_NO_CONVERSATION_INITIATION - you can not use the send
+  message API when the customer has not performed the initial reach out, check out
+  our send templated message API
+- ERROR_CODE_BUSINESS_KEY_SECRET_ABSENT - business API secret is not initialized.
+  Please initialize it or contact Connectly team for more information
+- ERROR_CODE_MESSAGE_TEMPLATE_DELETED - new language content can't be added while
+  the existing language content is being deleted. Try again in 4 weeks or consider
+  creating a new message template
+- ERROR_CODE_MESSAGE_TEMPLATE_INVALID_PARAM - invalid message template parameter is
+  provided, please check that all the template message variables, buttons, and parameters
+  are present and correct
+- ERROR_CODE_BUSINESS_RATE_LIMIT_REACHED - business reached the rate limit
+- '201: Created'
+- '200: OK'
+- '400 Bad Request: Check the template structure and required fields.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.connectly.ai
+  auth:
+    type: ApiKeyAuth
+  headers:
+    Accept: '*/*'
+source_metadata: null

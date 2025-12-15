@@ -1,0 +1,220 @@
+resources:
+- name: hello_command
+  endpoint:
+    path: /hello
+    method: GET
+    data_selector: command_response
+- name: lock_file
+  endpoint:
+    path: /lockfile
+    method: GET
+    data_selector: records
+    params: {}
+- name: pypi
+  endpoint:
+    path: /packages
+    method: GET
+    data_selector: records
+- name: repository
+  endpoint:
+    path: /publish
+    method: POST
+    data_selector: records
+- name: arbitrary_scripts
+  endpoint:
+    path: /arbitrary/scripts
+    method: GET
+    data_selector: scripts
+    params: {}
+- name: single_file_scripts
+  endpoint:
+    path: /single/file/scripts
+    method: GET
+    data_selector: scripts
+    params: {}
+- name: user_scripts
+  endpoint:
+    path: /user/scripts
+    method: GET
+    data_selector: scripts
+    params: {}
+- name: initialization
+  endpoint:
+    path: /pdm/init
+    method: POST
+    data_selector: hooks
+- name: dependencies_management
+  endpoint:
+    path: /pdm/dependencies
+    method: POST
+    data_selector: hooks
+- name: publication
+  endpoint:
+    path: /pdm/publication
+    method: POST
+    data_selector: hooks
+- name: user_scripts
+  endpoint:
+    path: /pdm/scripts
+    method: GET
+    data_selector: scripts
+- name: skipping
+  endpoint:
+    path: /pdm/skipping
+    method: GET
+    data_selector: hooks
+- name: requirements_export
+  endpoint:
+    path: /export
+    method: POST
+    data_selector: requirements
+    params: {}
+- name: lock_check
+  endpoint:
+    path: /lock/check
+    method: POST
+    data_selector: lock_status
+    params: {}
+- name: sync
+  endpoint:
+    path: /sync
+    method: POST
+    data_selector: sync_status
+    params: {}
+- name: post_build
+  endpoint:
+    path: pdm_signals.signal('post_build')
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: post_init
+  endpoint:
+    path: pdm_signals.signal('post_init')
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: post_install
+  endpoint:
+    path: pdm_signals.signal('post_install')
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: post_lock
+  endpoint:
+    path: pdm_signals.signal('post_lock')
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: post_publish
+  endpoint:
+    path: pdm_signals.signal('post_publish')
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: post_run
+  endpoint:
+    path: pdm_signals.signal('post_run')
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: post_script
+  endpoint:
+    path: pdm_signals.signal('post_script')
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: post_use
+  endpoint:
+    path: pdm_signals.signal('post_use')
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: pre_build
+  endpoint:
+    path: pdm_signals.signal('pre_build')
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: pre_install
+  endpoint:
+    path: pdm_signals.signal('pre_install')
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: pre_invoke
+  endpoint:
+    path: pdm_signals.signal('pre_invoke')
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: pre_lock
+  endpoint:
+    path: pdm_signals.signal('pre_lock')
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: pre_publish
+  endpoint:
+    path: pdm_signals.signal('pre_publish')
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: pre_run
+  endpoint:
+    path: pdm_signals.signal('pre_run')
+    method: POST
+    data_selector: parameters
+    params: {}
+- name: pre_script
+  endpoint:
+    path: pdm_signals.signal('pre_script')
+    method: POST
+    data_selector: parameters
+    params: {}
+notes:
+- PDM plugins can be developed and published as standalone PyPI projects.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- You can specify the overrides in the `pyproject.toml` file, under the `[tool.pdm.resolution.overrides]`
+  table.
+- Override files serve as an easy way to store the dependencies in a centralized location
+  that can be shared by multiple projects in your organization.
+- 'The configuration files are stored in the order of priority: project, home, site.'
+- Password management with keyring is supported.
+- You can completely skip certain packages and their dependencies during dependency
+  resolution.
+- Added in version 2.16.0
+- Added in version 2.13.0
+- Added in version 2.20.2
+- Tasks with a name starting with an underscore (`_`) are considered internal (helpers...)
+  and are not shown in the listing.
+- Pre & post scripts can't receive any arguments.
+- Composite tasks can also have pre and post scripts.
+- PDM can't be installed on Python < 3.7
+- Known compatibility issue on Ubuntu virtual environment for parallel install
+- PEP 582 has been rejected. However, due to the fact that this feature is the reason
+  for PDM's birth, PDM will retain the support.
+- We recommend using virtual environments instead.
+- If the corresponding env var is set, the value will take precedence over what is
+  saved in the config file.
+- Commands available for managing packages and environments.
+- Editable installations won't be overridden unless `--no-editable` is passed.
+- PDM requires Python 3.9+ to be installed.
+- It works on multiple platforms including Windows, Linux and macOS.
+- Major and minor releases also include changes listed within prior beta releases.
+- Respect certificates in env vars REQUESTS_CA_BUNDLE and CURL_CA_BUNDLE when verifying
+  SSL certificates.
+- Allow pypi.verify_ssl to be configured via PDM_PYPI_VERIFY_SSL environmental variable.
+- Clean logs older than 7 days.
+- Polish the UI looking of locking packages to display the progress.
+- Some objects like Contact may return nulls in deeply nested fields
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://pdm-project.org/en/latest/
+  headers:
+    Accept: application/json
+source_metadata: null

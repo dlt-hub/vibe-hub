@@ -1,0 +1,119 @@
+resources:
+- name: Relay Services
+  endpoint:
+    path: /configure/relay
+    method: POST
+    data_selector: settings
+    params:
+      port: 8801
+- name: SQL Server
+  endpoint:
+    path: /configure/sql
+    method: POST
+    data_selector: database
+    params: {}
+- name: extensions
+  endpoint:
+    path: /extensions
+    method: GET
+- name: email_server
+  endpoint:
+    path: /email_server
+    method: POST
+- name: automated_test
+  endpoint:
+    path: /automated_test
+    method: POST
+- name: contacts
+  endpoint:
+    path: /contacts
+    method: GET
+    data_selector: records
+- name: speed_dials
+  endpoint:
+    path: /speed_dials
+    method: GET
+    data_selector: records
+- name: emergency_numbers
+  endpoint:
+    path: /emergency_numbers
+    method: GET
+    data_selector: records
+- name: Emergency Numbers
+  endpoint:
+    path: /emergency/numbers
+    method: GET
+    data_selector: emergencyNumbers
+- name: Messages
+  endpoint:
+    path: /messages
+    method: GET
+    data_selector: messages
+- name: Locations
+  endpoint:
+    path: /locations
+    method: GET
+    data_selector: locations
+- name: call_router
+  endpoint:
+    path: /api/call_router
+    method: GET
+    data_selector: records
+- name: contacts_sync
+  endpoint:
+    path: /api/contacts_sync
+    method: GET
+    data_selector: records
+- name: agents
+  endpoint:
+    path: /api/v1/agents
+    method: GET
+    data_selector: records
+- name: departments
+  endpoint:
+    path: /api/v1/departments
+    method: GET
+    data_selector: records
+- name: recordings
+  endpoint:
+    path: /api/recordings
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+notes:
+- You must set the Relay Port to 8801.
+- If you want to use ‘SQL Authentication’, then install SQL Server in ‘Mixed‘ mode.
+- Make sure that you select a SQL Login that has sufficient permissions to alter the
+  database and create SQL objects.
+- We encourage you to use SQL Authentication rather than Windows authentication.
+- If you make changes to ‘Settings’, it is necessary to stop and start the service.
+- You must ensure the use of a physical phone to test the working of the 3CX Emergency
+  Notifier.
+- You must configure specific contacts to receive test notifications.
+- Only .WAV audio file type is supported for uploads.
+- The Number and Description fields for internal emergency numbers cannot be empty.
+- We do not provide remote server login assistance.
+- Requires setup of connected app in VoIPTools
+- Some objects may return nulls in deeply nested fields
+- Enhanced logging functionality for more detailed and efficient diagnostics.
+- Some objects may return nulls in deeply nested fields.
+errors:
+- 'Relay test failed: Confirm firewall port TCP 8801 is open.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration.'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+client:
+  base_url: https://voiptools.com
+  auth:
+    type: oauth2
+    flow: jwt
+    location: header
+    header_name: Authorization
+source_metadata: null

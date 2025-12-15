@@ -1,0 +1,80 @@
+resources:
+- name: Player
+  endpoint:
+    path: /rlapi/player
+    method: GET
+    data_selector: player_data
+- name: PlayerStats
+  endpoint:
+    path: /rlapi/player/stats
+    method: GET
+    data_selector: stats_data
+- name: SeasonRewards
+  endpoint:
+    path: /rlapi/player/season_rewards
+    method: GET
+    data_selector: rewards_data
+- name: SkillLeaderboard
+  endpoint:
+    path: /rlapi/leaderboard/skill
+    method: GET
+    data_selector: leaderboard_data
+- name: StatLeaderboard
+  endpoint:
+    path: /rlapi/leaderboard/stat
+    method: GET
+    data_selector: stat_leaderboard_data
+- name: Population
+  endpoint:
+    path: /rlapi/population
+    method: GET
+    data_selector: population_data
+- name: player_profiles
+  endpoint:
+    path: /player/profile
+    method: GET
+    data_selector: Player
+- name: player_titles
+  endpoint:
+    path: /player/titles/{platform.value}/{player_id}
+    method: GET
+    data_selector: titles
+- name: population
+  endpoint:
+    path: /population
+    method: GET
+    data_selector: Population
+- name: skill_leaderboard
+  endpoint:
+    path: /leaderboard/skill/{platform.value}/{playlist_key.value}
+    method: GET
+    data_selector: SkillLeaderboard
+- name: stat_leaderboard
+  endpoint:
+    path: /leaderboard/stat/{platform.value}/{stat.value}
+    method: GET
+    data_selector: StatLeaderboard
+notes:
+- Uses OAuth2 with client credentials — requires setup of API client
+- This API may return nulls in some responses.
+errors:
+- 'IllegalUsername: Username has unallowed characters.'
+- 'PlayerNotFound: Username could not be found.'
+- 'HTTPException: Exception that’s thrown when an HTTP request operation fails.'
+- 'Unauthorized: Exception that’s thrown when status code 401 occurs.'
+- '401 Unauthorized: Recheck OAuth credentials or token expiration'
+- 'HTTPException: HTTP request to Rocket League API failed.'
+- 'PlayerNotFound: The player could not be found.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.rlpp.psynet.gg/public/v1
+  auth:
+    type: oauth2
+    flow: client_credentials
+    token_url: https://api.epicgames.dev/epic/oauth/v1/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    location: header
+    header_name: Authorization
+source_metadata: null

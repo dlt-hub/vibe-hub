@@ -1,0 +1,151 @@
+resources:
+- name: vinyl_effect
+  endpoint:
+    path: /vinyl_effect
+    method: GET
+    data_selector: records
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: midi_devices
+  endpoint:
+    path: /midi/devices
+    method: GET
+    data_selector: devices
+- name: mioX
+  endpoint:
+    path: /mioX/rtp
+    method: GET
+    data_selector: sessions
+    params: {}
+- name: MIDI Router
+  endpoint:
+    path: /midi-router
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: desktop_screencap_video
+  endpoint:
+    path: /services/data/vXX.X/sobjects/DesktopScreencapVideo
+    method: GET
+    data_selector: records
+- name: tracking_room
+  endpoint:
+    path: /services/data/vXX.X/sobjects/TrackingRoom
+    method: GET
+    data_selector: records
+- name: live_stream_pc
+  endpoint:
+    path: /services/data/vXX.X/sobjects/LiveStreamPC
+    method: GET
+    data_selector: records
+- name: loveless_remasters
+  endpoint:
+    path: /board/so-much-gear-so-little-time/728210-loveless-remasters-thoughts
+    method: GET
+    data_selector: posts
+    params: {}
+- name: remaster_info
+  endpoint:
+    path: /api/v1/remaster/info
+    method: GET
+    data_selector: data
+    params: {}
+- name: remastered_album
+  endpoint:
+    path: /remasters/loveless
+    method: GET
+    data_selector: records
+notes:
+- Most of their sounds come from sampling off of vinyl, so the crackle is part of
+  the audio signal that was sampled.
+- There are ways to sound less 'on top' and more congruent through mixing technique
+  using plugins or more random vinyl crackle samples (worth learning!), but if you
+  really want to get that sound, crate dig vinyl like crazy, amass a wealth of vinyl-based
+  samples, and use those in your compositions.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- MIDI over USB is faster than MIDI over DIN by at least an order of magnitude (or
+  2).
+- USB Audio can also appear slow if the OS or application you are using isn't prioritizing
+  it enough.
+- USB MIDI is roughly 16 times faster than MIDI DIN under high bandwidth circumstances.
+- Packets are sent every 1ms, with up to 1ms of jitter over USB.
+- USB midi doesn't care as long as it fits the USB pipe.
+- Any bandwidth throttling that is needed for the DIN port on a USB interface needs
+  to be done before the data enters the USB midi transport system.
+- mioXx can't 'see' a NDLR connected to the USB port. It will power it, but the NDLR
+  does not correctly declare itself (in terms of USB metadata), so the only option
+  is to use DIN on the mioX.
+- Uses RTP for MIDI connectivity.
+- Some users experience stuck notes or MIDI timing issues with RTP.
+- There are stability issues with the Windows Auracle app - it can lose sight of the
+  connected devices.
+- Utilizes VNC for remote desktop functionality.
+- Systems can switch between LAN and WAN.
+- Confusion about the differences between the remastered versions of Loveless.
+- Requires OAuth2 authentication for all requests.
+- Some people believe the discs have been mislabeled.
+- There is a glitch on one of the tracks ('What You Want', around 02:46) on CD 1.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- Data will get lost if you feed it too much.
+- 'stuck notes: Check your adapter and connections.'
+- 'initializing MIDI inputs and outputs: Ensure proper setup.'
+- '401 Unauthorized: Check client credentials or refresh token.'
+- '404 Not Found: The requested resource does not exist.'
+- Confusion about the two versions.
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - OAuthToken
+client:
+  base_url: https://gearspace.com/board/
+  headers:
+    Accept: application/json
+source_metadata: null

@@ -1,0 +1,111 @@
+resources:
+- name: fema_flood_zones
+  endpoint:
+    path: /rest/services/AGOL_Open_Data/MapServer/19/query
+    method: GET
+    data_selector: features
+    params:
+      where: 1=1
+      outFields: '*'
+      outSR: '4326'
+      f: json
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: initiatives
+  endpoint:
+    path: /api/v1/initiatives
+    method: GET
+    data_selector: records
+    params: {}
+- name: events
+  endpoint:
+    path: /api/v1/events
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Hub now supports the visualization of 3D datasets when exploring maps.
+- Added language support for Slovak
+- Consent and tracking configuration options to ensure compliance with international
+  privacy regulations
+- This will be our final release of 2022, we want to thank our customers, users, and
+  development teams for such a great year. Check out some of our blogs over the past
+  year for quick 'year in review' of some of the things we've added.
+- This will be our final release of 2022, we want to thank our customers, users, and
+  development teams for such a great year.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Some objects may return nulls in deeply nested fields
+- Uses OAuth2 with refresh token — requires setup of connected app in ArcGIS
+- Team managers and Hub administrators can add content created by members of their
+  organizations and the public, while team members can only add their own content.
+- Hub no longer supports the IE or Edge Legacy browsers. Users attempting to access
+  Hub sites using legacy browsers will be redirected to a page with links to supported
+  browsers.
+- Requires setup of connected app in ArcGIS.
+- Some objects may return nulls in deeply nested fields.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- Issue where blog links pointed to web help and web help pointed to blogs
+- Issue where user popovers in discussions would not open on some mobile devices
+- Issue where opt-out modals for discussion @mention notifications were partially
+  obscured by site headers
+- Issue where Gallery Cards were able to be repositioned within layout editors
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://hub.arcgis.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://login.arcgis.com/services/oauth2/token
+    client_id: '{{ dlt.secrets[''api_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''api_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''api_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

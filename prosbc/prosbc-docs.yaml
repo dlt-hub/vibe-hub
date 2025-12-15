@@ -1,0 +1,166 @@
+resources:
+- name: nap_types
+  endpoint:
+    path: /nap/types
+    method: GET
+    data_selector: types
+    params: {}
+- name: SIP Registration
+  endpoint:
+    path: /configuring-sip-registration-to-sip-proxy
+    method: GET
+    data_selector: registration_parameters
+    params: {}
+- name: Forwarding Modes
+  endpoint:
+    path: /configuration-details/configuration-by-use-case/sip-registration-forwarding#forwarding-modes
+    method: GET
+- name: Registrar Selection Mode
+  endpoint:
+    path: /configuration-details/configuration-by-use-case/sip-registration-forwarding#registrar-selection-mode-registration-redundancy
+    method: GET
+- name: Protection
+  endpoint:
+    path: /configuration-details/configuration-by-use-case/sip-registration-forwarding#protection
+    method: GET
+- name: NAP
+  endpoint:
+    path: /create_nap
+    method: POST
+    data_selector: nap_creation
+    params: {}
+- name: sip_registration_domain
+  endpoint:
+    path: /api/sip_domain
+    method: POST
+    data_selector: domain
+    params: {}
+- name: sip_registration_registrar
+  endpoint:
+    path: /api/sip_registrar
+    method: POST
+    data_selector: registrar
+    params: {}
+- name: prosbc
+  endpoint:
+    path: /etc/freeswitch/sip_profiles/external/prosbc.xml
+    method: POST
+    data_selector: gateway
+    params: {}
+- name: prosbc_outbound
+  endpoint:
+    path: /etc/freeswitch/dialplan/default/prosbc.xml
+    method: POST
+    data_selector: extension
+    params: {}
+- name: prosbc_inbound_did
+  endpoint:
+    path: /etc/freeswitch/dialplan/public/prosbc_inbound_did.xml
+    method: POST
+    data_selector: extension
+    params: {}
+- name: IP Access Control Lists
+  endpoint:
+    path: /console/sip-trunking/authentication/ip-acls
+    method: GET
+    data_selector: acl_records
+- name: Elastic SIP Trunking
+  endpoint:
+    path: /console/sip-trunking/dashboard
+    method: GET
+    data_selector: trunk_records
+- name: trunk
+  endpoint:
+    path: /trunks
+    method: POST
+    data_selector: trunks
+    params: {}
+- name: origination_uri
+  endpoint:
+    path: /trunks/{trunk_id}/origination_uris
+    method: POST
+    data_selector: origination_uris
+    params: {}
+- name: phone_numbers
+  endpoint:
+    path: /trunks/{trunk_id}/phone_numbers
+    method: POST
+    data_selector: phone_numbers
+    params: {}
+- name: users
+  endpoint:
+    path: /users
+    method: GET
+    data_selector: root
+    params: {}
+- name: configurations
+  endpoint:
+    path: /configurations
+    method: GET
+    data_selector: name
+    params: {}
+- name: sip_registration_domains
+  endpoint:
+    path: /configurations/configuration_name/sip_registration_domains/
+    method: POST
+    data_selector: ''
+    params: {}
+- name: modify_sip_domain
+  endpoint:
+    path: /configurations/configurationname/sip_registration_domains/sip_domain_name
+    method: PUT
+    data_selector: ''
+    params: {}
+notes:
+- 'Two required sections to set are: Registration Parameters, Authentication Parameters'
+- 'Registration Parameters: need to obtain the address to register from SIP Proxy/SIP
+  provider'
+- 'Authentication Parameters: check ignore realm use, username, and password. In addition,
+  specify the Realm by obtaining this information from the SIP Proxy/SIP provider.'
+- A NAP that accepts SIP registration must be a Registrar.
+- If you are using multiple registrations to the same destination with different ports,
+  you must add the port number in the Address to register too.
+- Users' registration requests are forwarded to the available registrar with the highest
+  priority in the list
+- Your actual dialplan will depend on specific FreeSWITCH configuration.
+- Origination traffic can be routed via multiple Twilio Edges for redundancy.
+- Poll Registrar enabled by default. Sends an OPTIONS message to determine registrar
+  availability.
+- Polling Interval in seconds. Time between each OPTIONS sending message.
+- Response Timeout in second. Maximum waiting time for a response to a registrar polling.
+- Credentials (user/password) are the same as for the WebPortal.
+- Check if SIP domain configured correctly
+- Check the SIP domain Status. Be sure the domain registrar can be reached by ProSBC
+- Check if the SIP client sends the correct Domain name to ProSBC
+- Check if SIP domain configured with correct registrar setting
+- Check if Registrar NAP configured with a correct IP address
+- Check if your client configured with the correct username and password
+- Check the forwarding modes on ProSBC, and select the correct one
+- The calls can be dropped because of the congestion too. You can check the NAP status
+  for congestions.
+- If you are receiving a congestion error, you first need to check the concurrent
+  call counts. If your concurrent call count exceeded the license, you would have
+  a congestion error. Please check your license.
+- Check if you set any Call Rate Limiting in the NAP. Go to NAPS -> Select The NAP
+  -> Advanced Parameters -> Call Rate Limiting.
+- Some Nics (Azure, vmxnet3, e1000, ixgbe vf) report a RETA size of 0 while reporting
+  multiple rx queues, meaning they can not support multiple CPUs.
+- The default maximum 'accept' entries is 4000. This can be changed in SBC -> Advanced
+  Parameters -> List Sizes.
+- The default maximum 'drop' entries is 2000. This can be changed in SBC -> Advanced
+  Parameters -> List Sizes.
+- Easy to deploy, operate and manage through various interfaces including a RESTful
+  API
+errors:
+- 2XX - success
+- 3XX - redirection (304 Not Modified)
+- 4XX - client error
+- 5XX - server error
+- Call dropping within the first minute – missing ACK in Invite. Check the NAT configuration.
+- Maximum Call time exceeded. Many service providers set a limit on the maximum duration
+  for any call passing through their system.
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://prsbc.telcobridges.com
+source_metadata: null

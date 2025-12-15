@@ -1,0 +1,225 @@
+resources:
+- name: user_inactivity
+  endpoint:
+    path: /exo/user/status/offline/delay
+    method: GET
+    data_selector: delay
+    params: {}
+- name: jcr_storage
+  endpoint:
+    path: /exo/jcr/storage/enabled
+    method: GET
+    data_selector: enabled
+    params: {}
+- name: WatchDocumentService
+  endpoint:
+    params: {}
+- name: SettingService
+  endpoint:
+    path: /exo.cache.commons.SettingService
+    method: GET
+    data_selector: MaxNodes
+    params: {}
+- name: WebNotificationCountCache
+  endpoint:
+    path: /exo.cache.commons.WebNotificationCountCache
+    method: GET
+    data_selector: MaxNodes
+    params: {}
+- name: WebNotificationCache
+  endpoint:
+    path: /exo.cache.commons.WebNotificationCache
+    method: GET
+    data_selector: MaxNode
+    params: {}
+- name: UserStateService
+  endpoint:
+    path: /exo.cache.commons.UserStateService
+    method: GET
+    data_selector: MaxNodes
+    params: {}
+- name: UserSettingService
+  endpoint:
+    path: /exo.cache.commons.UserSettingService
+    method: GET
+    data_selector: MaxNodes
+    params: {}
+- name: DriveCache
+  endpoint:
+    path: /exo.cache.ecms.drive
+    method: GET
+    data_selector: MaxNodes
+    params: {}
+- name: ScriptCache
+  endpoint:
+    path: /exo.cache.ecms.scriptservice
+    method: GET
+    data_selector: MaxNodes
+    params: {}
+- name: FragmentCache
+  endpoint:
+    path: /exo.cache.ecms.fragmentcacheservice
+    method: GET
+    data_selector: MaxNodes
+    params: {}
+- name: TemplateCache
+  endpoint:
+    path: /exo.cache.ecms.templateservice
+    method: GET
+    data_selector: MaxNodes
+    params: {}
+- name: InitialWebContentCache
+  endpoint:
+    path: /exo.cache.ecms.initialwebcontentplugin
+    method: GET
+    data_selector: MaxNodes
+    params: {}
+- name: PDFViewerCache
+  endpoint:
+    path: /exo.cache.ecms.PDFViewerService
+    method: GET
+    data_selector: MaxNodes
+    params: {}
+- name: SEOCache
+  endpoint:
+    path: /exo.cache.ecms.seoservice
+    method: GET
+    data_selector: MaxNode
+    params: {}
+- name: IdentityCache
+  endpoint:
+    path: /exo.cache.social.IdentityCache
+    method: GET
+    data_selector: MaxNodes
+    params: {}
+- name: RelationshipCache
+  endpoint:
+    path: /exo.cache.social.RelationshipCache
+    method: GET
+    data_selector: MaxNodes
+    params: {}
+- name: SpaceCache
+  endpoint:
+    path: /exo.cache.social.SpaceCache
+    method: GET
+    data_selector: MaxNodes
+    params: {}
+- name: ActivityCache
+  endpoint:
+    path: /exo.cache.social.ActivityCache
+    method: GET
+    data_selector: MaxNodes
+    params: {}
+- name: wallet_account_cache
+  endpoint:
+    path: /services/data/vXX.X/sobjects/WalletAccountCache
+    method: GET
+    data_selector: records
+    params:
+      exo.cache.wallet.account.MaxNodes: '2000'
+      exo.cache.wallet.account.TimeToLive: '-1'
+- name: wallet_transaction_cache
+  endpoint:
+    path: /services/data/vXX.X/sobjects/WalletTransactionCache
+    method: GET
+    data_selector: records
+    params:
+      exo.cache.wallet.transactions.MaxNodes: '2000'
+      exo.cache.wallet.transactions.TimeToLive: '-1'
+- name: trash_cleaner_job
+  endpoint:
+    path: /exo/trashcleaner
+    method: GET
+    data_selector: records
+    params:
+      lifetime: '30'
+- name: connections_birthday
+  endpoint:
+    path: /rest/private/connections/birthday
+    method: GET
+    data_selector: jsonArray
+- name: update_birthday
+  endpoint:
+    path: /rest/private/connections/birthday
+    method: POST
+    data_selector: jsonObject
+- name: birthday_connections
+  endpoint:
+    path: /connections/birthday
+    method: GET
+    data_selector: birthdayItems
+- name: save_birthday
+  endpoint:
+    path: /connections/birthday
+    method: POST
+    data_selector: successMessage
+- name: documents
+  endpoint:
+    path: /v1/documents
+    method: GET
+    data_selector: records
+- name: account
+  endpoint:
+    path: /kudos/api/account
+    method: GET
+- name: kudos
+  endpoint:
+    path: /kudos/api/kudos
+    method: GET
+- name: settings
+  endpoint:
+    path: /kudos/api/settings
+    method: GET
+- name: features
+  endpoint:
+    path: /v1/features
+    method: GET
+- name: settings
+  endpoint:
+    path: /v1/settings
+    method: GET
+notes:
+- eXo Platform configuration is customizable via properties in exo.properties.
+- Default user inactivity delay is 240000 milliseconds.
+- JCR storage enabled by default is true.
+- If you want to use SMTP gateway over SSL, and starting from openjdk 11.0.11, which
+  no longer supports legacy SSL versions (SSLv3, TLSv1,TLSv1.1), the following property
+  mail.smtp.ssl.protocols=TLSv1.2 has to be added in eXo Platform.
+- 'The specific configuration of wallet caches can be found in: $PLATFORM_TOMCAT_HOME/webapps/wallet-common.war!/WEB-INF/wallet/cache-configuration.xml.'
+- Default trash cleaner job runs each Saturday at 8PM and deletes all content present
+  in Trash since more than 30 days.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Even if the XSS protection is handled in the PRODUCT development, some protections
+  can be added on the server side to protect against external threats.
+- They are essentially based on HTTP headers added to the responses to ask the modern
+  browsers to avoid such attacks.
+- Requires SSL certificate for HTTPS access.
+- Use of a reverse proxy is recommended for HTTPS.
+- XSS Protection headers should be appended.
+- By default, eXo uses Lax policy in order to have email notification links and SSO
+  configurations work.
+- The parameters above correspond with the values used during creating authorization
+  for MongoDB.
+- 'SameSite property can take one of these values: None, Strict, and Lax'
+- By default, eXo uses Lax policy in order to have email notification links and SSO
+  configurations work
+- Requires Basic authentication mode.
+- User can only update their own birthday.
+errors:
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency.'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity.'
+- 'FORBIDDEN: User cannot update another user''s birthday.'
+- '500 Internal Server Error: General error handling.'
+auth_info:
+  mentioned_objects:
+  - SSODelegateLoginModule
+  - TomcatLoginModule
+  - SecurityContext
+  - Identity
+  - Profile
+client:
+  base_url: https://proxy1.com
+  auth:
+    type: oauth2
+source_metadata: null

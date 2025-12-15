@@ -1,0 +1,155 @@
+resources:
+- name: journalist
+  endpoint:
+    path: /api/journalist/
+    method: GET
+    data_selector: journalists
+    params: {}
+- name: article
+  endpoint:
+    path: /api/article/
+    method: GET
+    data_selector: articles
+    params: {}
+- name: article_detail
+  endpoint:
+    path: /api/article/<int:pk>/
+    method: PUT
+    data_selector: article
+    params: {}
+- name: tasks
+  endpoint:
+    path: /tasks
+    method: GET
+    data_selector: tasks
+    params: {}
+- name: HelloWorld
+  endpoint:
+    path: /api
+    method: GET
+    data_selector: message
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+- name: note
+  endpoint:
+    path: /note
+    method: POST
+    data_selector: new_note
+- name: notes
+  endpoint:
+    path: /notes
+    method: GET
+    data_selector: notes
+- name: note
+  endpoint:
+    path: /note/{note_id}
+    method: PUT
+    data_selector: note
+    params: {}
+- name: note
+  endpoint:
+    path: /note/{note_id}
+    method: DELETE
+    data_selector: note
+    params: {}
+- name: notes
+  endpoint:
+    path: /notes
+    method: GET
+    data_selector: notes
+    params: {}
+- name: note
+  endpoint:
+    path: /note/{id}
+    method: PUT
+    data_selector: data
+- name: notes
+  endpoint:
+    path: /notes
+    method: GET
+    data_selector: data
+- name: delete_note
+  endpoint:
+    path: /note/{noteId}
+    method: DELETE
+    data_selector: data
+- name: messages
+  endpoint:
+    path: /gmail/v1/users/me/messages
+    method: GET
+    data_selector: messages
+    params:
+      incremental: updated_at
+- name: messages
+  endpoint:
+    path: /users/me/messages
+    method: GET
+    data_selector: messages
+    params: {}
+- name: messages
+  endpoint:
+    path: /gmail/v1/users/me/messages
+    method: GET
+    data_selector: messages
+    params: {}
+notes:
+- Creating an internal news site with an API allows organizations to share news content
+  and internal communication more effectively.
+- Requires setup of Django and Django Rest Framework.
+- Endpoints allow CRUD operations for articles and journalists.
+- Uses Flask and Flask-RESTful for API development.
+- Tasks are stored in an SQLite database.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- CORS is set up to allow requests from http://localhost:5173
+- Requires enabling the Gmail API from Google API dashboard.
+- OAuth 2.0 client ID must be created to access the API.
+- Gmail API requires OAuth2 authentication setup.
+- You can use the query 'is:unread' to read all unread messages.
+- Requires setup of OAuth2 credentials in Google Cloud Console
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- '403 Forbidden: Check API key or token permissions.'
+- '404 Not Found: Validate the resource ID being accessed.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration.'
+- '400 Bad Request: Check your request parameters.'
+- '404 Not Found: Ensure the message ID is correct.'
+- '401 Unauthorized: Refreshed token might be expired.'
+- googleapiclient.errors.HttpError
+- '400 Bad Request: Check the request parameters'
+- '401 Unauthorized: Check the access token'
+- '403 Forbidden: Check the permissions'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+  - InstalledAppFlow
+  - Request
+client:
+  base_url: https://gmail.googleapis.com
+  auth:
+    type: oauth2
+    flow: authorization_code
+    token_url: https://oauth2.googleapis.com/token
+    client_id: '{{ dlt.secrets[''gmail_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''gmail_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''gmail_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

@@ -1,0 +1,151 @@
+resources:
+- name: members
+  endpoint:
+    path: /api/members
+    method: GET
+    data_selector: data
+    params: {}
+- name: invite_member
+  endpoint:
+    path: /api/organizations/${organizationId}/invite
+    method: POST
+    data_selector: data
+    params: {}
+- name: organization_members
+  endpoint:
+    path: /api/organizations/${organizationId}/members
+    method: GET
+    data_selector: data
+    params: {}
+- name: users
+  endpoint:
+    path: /api/users
+    method: GET
+    data_selector: message
+    params: {}
+- name: posts
+  endpoint:
+    path: /api/posts
+    method: GET
+    data_selector: message
+    params: {}
+- name: users
+  endpoint:
+    path: /api/users
+    method: GET
+- name: data
+  endpoint:
+    path: /api/data
+    method: GET
+- name: posts
+  endpoint:
+    path: /wp/v2/posts
+    method: GET
+    data_selector: posts
+    params:
+      per_page: 10
+      page: 1
+- name: posts
+  endpoint:
+    path: /wp-json/wp/v2/posts
+    method: POST
+    data_selector: id
+- name: organizations
+  endpoint:
+    path: /from/organizations
+    method: GET
+    data_selector: '*'
+    params:
+      from: number
+      to: number
+- name: blog_posts
+  endpoint:
+    path: /api/search
+    method: GET
+    data_selector: hits
+    params: {}
+- name: search
+  endpoint:
+    path: /api/search
+    method: GET
+    data_selector: results
+    params: {}
+- name: supabase_project
+  endpoint:
+    path: /projects
+    method: POST
+    data_selector: project
+    params: {}
+- name: stripe_webhook
+  endpoint:
+    path: /webhook
+    method: POST
+    data_selector: event
+    params: {}
+- name: hello
+  endpoint:
+    path: /api/hello
+    method: GET
+    data_selector: ''
+    params: {}
+- name: sign_up
+  endpoint:
+    path: /auth/v1/signup
+    method: POST
+    data_selector: data
+- name: sign_in
+  endpoint:
+    path: /auth/v1/token
+    method: POST
+    data_selector: data
+- name: users
+  endpoint:
+    path: /rest/v1/users
+    method: GET
+    data_selector: data
+    params: {}
+notes:
+- This guide is specifically tailored for Next.js App Router.
+- Use Server Actions for internal mutations, otherwise use API Route Handlers.
+- Ensure you add them to your production CI or Vercel console
+- Basic authentication requires an application password for write operations.
+- Requires a valid API key for authentication.
+- Ensure the WordPress REST API is enabled on your site.
+- Debounces search input with RxJS for better performance
+- Make sure to add environment variables in Vercel for Supabase and Stripe.
+- Keep the Database Password safe - you will need it to authenticate your project
+  with the Supabase CLI later on.
+- Ensure that the Redirect URL is set before going live with your project.
+- Uses withAuthedUser to protect API routes
+- POST requests without a CSRF token will return a 403 error.
+- Make sure to keep the secret key secret and very complex.
+- Use a public URL for your webhooks.
+- By default, the Makerkit SaaS Starter uses Email/Password and Google Auth.
+- Supabase requires users to verify their email address before being able to access
+  the application.
+- The documentation is for a legacy version of Remix and Supabase.
+- Requires Supabase project setup.
+- Use environment variables for Supabase URL and Anon Key.
+- Users must be signed in to access the onboarding flow.
+- Ensure to handle cases where user data may not be found in the database.
+errors:
+- '401 Unauthorized: Check your username and password.'
+- '404 Not Found: Verify the endpoint path.'
+- '401 Unauthorized: Recheck API key or permissions.'
+- '403 Forbidden: Check if you have access rights to the resource.'
+- '404 Not Found: Verify the endpoint URL.'
+- Ensure that the Test mode is toggled off in Stripe Dashboard.
+- '403: Error with API/Actions'
+- '401 Unauthorized: Check your Supabase Anon Key or session.'
+- '401 Unauthorized: Recheck user session or sign-in status.'
+- '404 Not Found: User record not found in the database.'
+auth_info:
+  mentioned_objects:
+  - Provider
+  - SupabaseClient
+  - Session
+client:
+  base_url: https://supabase.com
+  auth:
+    type: apikey
+source_metadata: null

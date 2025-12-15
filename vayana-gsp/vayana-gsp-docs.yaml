@@ -1,0 +1,146 @@
+resources:
+- name: ping
+  endpoint:
+    path: /gus/ping
+    method: GET
+- name: taxpayerapi
+  endpoint:
+    path: /gus/taxpayerapi
+    method: GET
+- name: ewaybillapi
+  endpoint:
+    path: /gus/eway/ew1/ewaybillapi
+    method: GET
+- name: eicore
+  endpoint:
+    path: /gus/irp/ni1/eicore
+    method: GET
+- name: authentication
+  endpoint:
+    path: /gus/irp/{irp_provider}/eivital/v1.04/auth
+    method: POST
+    data_selector: Data
+- name: invoice
+  endpoint:
+    path: /gus/irp/{irp_provider}/eicore/v1.03/Invoice/irn/{irn-number}
+    method: GET
+- name: response_content
+  endpoint:
+    path: /
+    method: GET
+    data_selector: Data
+- name: e_invoice
+  endpoint:
+    path: /Others/VSignedInvoice
+    method: GET
+    data_selector: data
+    params: {}
+- name: generate_e_invoice
+  endpoint:
+    path: /gus/irp/{irp_provider}/eicore/v1.03/Invoice
+    method: POST
+    data_selector: Data
+- name: invoice
+  endpoint:
+    path: /Others/VSignedInvoice
+    method: POST
+    data_selector: AckNo
+    params: {}
+- name: authentication
+  endpoint:
+    path: /ewaybillapi/v1.03/auth
+    method: POST
+    data_selector: status
+    params: {}
+- name: GetEwayBill
+  endpoint:
+    path: /gus/eway/{ewb_provider}/v1.03/ewayapi/GetEwayBill
+    method: GET
+    data_selector: data
+    params: {}
+- name: generate_eway_bill
+  endpoint:
+    path: /gus/eway/{ewb_provider}/ewaybillapi/v1.03/ewayapi
+    method: POST
+    data_selector: data
+    params: {}
+- name: OTP Request
+  endpoint:
+    path: /gus/taxpayerapi/v1.0/authenticate
+    method: POST
+    data_selector: status_cd
+    params: {}
+- name: authenticate
+  endpoint:
+    path: /authenticate
+    method: POST
+    data_selector: status_cd
+    params: {}
+- name: gstr1
+  endpoint:
+    path: /gus/taxpayerapi/v2.2/returns/gstr1
+    method: PUT
+    data_selector: response
+    params: {}
+- name: search_taxpayer
+  endpoint:
+    path: /gus/commonapi/v1.3/search
+    method: GET
+    params:
+      gstin: '{gstin}'
+      action: '{action}'
+notes:
+- You will need to first decide which environment you wish to connect to.
+- For both GSTN and Eway Bill APIs, you will use either your client id OR your cust
+  id in the authentication token.
+- If you have been issued a cust id - the only place you should use the cust id is
+  in the Vayana GSP auth token.
+- The auth token must be populated in the request headers under the key X-Asp-Auth-Token
+- The signed auth token must be added to the request headers under the key X-Asp-Auth-Signature
+- The public key must be shared with Vayana GSP operations team over email.
+- NIC has released a notification where NIC will be blocking the Users calling large
+  number of erroneous hits to the GST E-Way Bill and GST eInvoice Systems.
+- Request you to please restrict the repeated erroneous API calls to E-Way Bill and
+  eInvoice Systems.
+- The authentication here is usually valid for about 6 hours before you need to authenticate
+  again.
+- The API ACTION field will be a blank value for GET calls.
+- You can download the e-invoice pdf using this payload by uploading the json file
+  [here](https://einvoice1.gst.gov.in/Others/VSignedInvoice)
+- The JSON needs to be encrypted using the sek got during the authentication call.
+- You can download the e-invoice pdf using this payload by uploading the json file
+  here
+- The API ACTION field for get calls will be a blank value.
+- When you invoke gstn API you need to take care of populating the headers correctly,
+  creating the request payload, encrypting the payload and wrapping it in an envelope
+  and then processing the responses.
+- The values for app_key will need to be encrypted using the public key.
+- Authentication is usually valid for about 6 hours.
+- Refer to API Ecosystem and NIC API document to form the correct URL.
+- Details of how to construct the X-Asp-Auth-Token is covered in Building a Vayana
+  GSP Auth Token.
+- In case of any error desired result will not be accepted as above.
+- To construct the X-Asp-Auth-Token is covered in greater details in building-a-vayana-gsp-auth-token
+- If cust-id is assigned then it is not required to pass clientid and client-secret
+  in request headers
+errors:
+- RET11400 Header Value Missing
+- RET11403 Invalid API Request
+- RET11402 Unauthorized User
+- RET11404 State Code is not valid
+- RET11409 Username is not Valid
+- FO8001  Malformed Request
+- FO8007  Invalid GSTIN/UIN
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: <base_url>
+  auth:
+    type: oauth2
+    flow: refresh_token
+  headers:
+    gstin: <your-GSTIN>
+    Content-Type: application/json
+    X-Asp-Auth-Token: <your-X-Asp-Auth-Token>
+    X-Asp-Auth-Signature: <your-X-Asp-Auth-Signature>
+source_metadata: null

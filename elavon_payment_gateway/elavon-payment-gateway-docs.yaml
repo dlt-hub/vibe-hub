@@ -1,0 +1,50 @@
+resources:
+- name: process_payment
+  endpoint:
+    path: /remote
+    method: POST
+    data_selector: response
+    params: {}
+- name: process_payment
+  endpoint:
+    path: /pay
+    method: POST
+    data_selector: response
+    params: {}
+- name: HPP Transaction
+  endpoint:
+    path: /pay
+    method: POST
+- name: process_payment
+  endpoint:
+    path: /remote
+    method: POST
+notes:
+- Requests must include a hash using a Shared Secret for security.
+- Only whitelisted IP addresses can send transactions to the Live environment.
+- Elavon Payment Gateway creates the hash in the same way on our side and sends it
+  back in the XML.
+- The Shared Secret should always remain on the server-side and must not be exposed
+  to the public.
+- Elavon Payment Gateway maintains separate endpoints for live and test transactions.
+- HPP has two separate URLs for test and live.
+- Customers must have JavaScript enabled on their browser for HPP to function correctly.
+- The Timestamp returned in the response will be identical to the one sent in the
+  request POST.
+- Check the other transaction variables against what was stored in your application
+  at the time the request POST was sent.
+- Merchants who accept customer card data directly using the API should be aware of
+  their PCI DSS compliance responsibilities.
+- Your Shared Secret should always remain on the server side and must not be exposed
+  to the public.
+errors:
+- '00: Success'
+- '12345: Authorization code returned.'
+- 'M: CVN result indicating match.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://pay.sandbox.elavonpaymentgateway.com/pay
+  auth:
+    type: oauth2
+source_metadata: null

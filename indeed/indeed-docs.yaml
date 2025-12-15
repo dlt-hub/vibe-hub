@@ -1,0 +1,51 @@
+auth_info:
+- information_source; https://docs.indeed.com/api/sponsored-jobs-api-ats/get-campaign-job-details:
+  - OAuth 2.0 authentication is required with the employer.advertising scope. Include
+    an access token that represents employer permissions in the Authorization header
+    as a Bearer token.
+- information_source; https://docs.indeed.com/getstarted/integrate-and-call-apis:
+  - Indeed uses OAuth2 for API authentication. Partners obtain a client ID and secret
+    from Partner Console, then exchange these credentials for an access token by making
+    a POST request to https://apis.indeed.com/oauth/v2/tokens with Accept and Content-Type
+    headers. The access token is then included in Indeed API calls for authentication.
+    For 3-legged OAuth apps, an authorization code is also required as part of the
+    credential exchange process.
+  - Indeed uses OAuth2 with client credentials grant type. To authenticate, POST to
+    https://apis.indeed.com/oauth/v2/tokens with client_id, client_secret, grant_type=client_credentials,
+    and scope=employer_access in the request body. The response contains an access_token
+    with token_type Bearer that expires in 3600 seconds and must be refreshed hourly.
+    Use the access_token in subsequent API calls as a Bearer token in the Authorization
+    header.
+  - 'POST requests to https://apis.indeed.com/graphql require an Authorization header
+    with a Bearer token in the format "Authorization: Bearer <access_token>". The
+    access token must be refreshed hourly as it expires after 3600 seconds. Include
+    Content-Type: application/json header with all requests.'
+  - The Indeed API uses OAuth 2.0 for authentication. Obtain OAuth credentials (client_id
+    and client_secret) as a partner, then exchange them for an access token via the
+    oauth/v2/tokens endpoint. Include the access token in HTTP request headers when
+    calling Indeed APIs.
+pagination_info:
+- information_source; https://docs.indeed.com/api/sponsored-jobs-api-ats/get-campaign-job-details:
+  - This endpoint uses offset-based pagination with a maximum of 500 results per page.
+    Use the `offset` query parameter to request different pages, and validate consistency
+    across pages using the `hash` parameter from the response; if the hash changes
+    between requests, wait one minute and restart from offset 0.
+possible_base_urls:
+- information_source; https://docs.indeed.com/api/sponsored-jobs-api-ats/get-campaign-job-details:
+  - https://apis.indeed.com/ads/v1
+- information_source; https://docs.indeed.com/getstarted/integrate-and-call-apis:
+  - https://apis.indeed.com
+possible_endpoints:
+- information_source; https://docs.indeed.com/api/sponsored-jobs-api-ats/get-campaign-job-details:
+  - GET https://apis.indeed.com/ads/v1/campaigns/:campaignId/jobDetails
+- information_source; https://docs.indeed.com/getstarted/integrate-and-call-apis:
+  - POST https://apis.indeed.com/graphql
+  - POST https://apis.indeed.com/oauth/v2/tokens
+  - POST oauth/v2/tokens
+- ? information_source; https://docs.indeed.com/sponsored-jobs-api/sponsored-jobs-api-1-guides/integration-guide-for-nodejs-ats
+  : - GET /campaign/create
+    - GET /campaign/create/:jobId
+    - GET https://apis.indeed.com/ads/v1
+    - GET https://secure.indeed.com/.well-known/openid-configuration
+    - POST /campaign/create
+    - POST /campaign/create/:jobId

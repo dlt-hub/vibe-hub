@@ -1,0 +1,64 @@
+auth_info:
+- information_source; https://wiki.openstreetmap.org/wiki/API_v0.6:
+  - Authentication is required for accessing private GPX files and for listing GPX
+    traces owned by the authenticated user. Private GPX files (those not marked public)
+    can only be downloaded by the owner account using authentication. The List endpoint
+    requires authentication to retrieve GPX traces for the current authenticated user.
+    The documentation does not specify the exact authentication method, headers, or
+    parameters to use.
+  - Authentication uses OAuth 2.0. Calls that update, create, or delete data require
+    an authenticated and authorized user. Required OAuth scopes include read_prefs,
+    write_prefs, write_api, read_gpx, write_gpx, write_notes, write_diary, write_redactions,
+    write_blocks, consume_messages, and send_messages. HTTP 401 indicates login failure,
+    and HTTP 403 indicates successful login but insufficient permissions or missing
+    OAuth application scopes.
+  - If the request is made as an authenticated user, the note is associated to that
+    user account. If the OAuth access token used does not have the allow_write_notes
+    permission, it is created as an anonymous note instead. Authentication is optional
+    for creating notes. When authenticated, use an OAuth access token with the allow_write_notes
+    permission scope; without this scope or without authentication, notes are created
+    anonymously.
+  - OAuth 2.0 is required for API authorization. The API client must obtain an OAuth
+    2.0 token and include it in requests. Permissions are returned as scopes prefixed
+    with "allow_" (e.g., "allow_read_prefs" for the "read_prefs" scope). An unauthorized
+    client receives an empty permissions list. Check permissions via GET /api/0.6/permissions
+    or GET /api/0.6/permissions.json.
+  - Requests to modify the OSM database require OAuth authorization. Read requests
+    do not require authorization except for user details endpoints. OAuth is the authorization
+    mechanism used for write operations (create, update, delete).
+pagination_info:
+- information_source; https://wiki.openstreetmap.org/wiki/API_v0.6:
+  - Query parameters limit (optional, default 100, max 10000) and bbox (optional,
+    for geographic bounding box) control result size and scope. Response includes
+    total attribute indicating total matching notes count. No explicit pagination
+    mechanism (next/previous cursors or page numbers) is documented; results appear
+    to be returned as a single response limited by the limit parameter.
+  - The Get GPS Points endpoint uses a query parameter page=pageNumber to paginate
+    through trackpoints within a bounding box. The documentation references this pagination
+    mechanism but does not specify response fields indicating total pages, has_more
+    status, or how to determine when pagination ends.
+  - Use limit and offset query parameters to paginate results. limit controls the
+    maximum number of changesets returned per request (default and typical maximum
+    is 100), and offset specifies the starting position for the next request. Stop
+    paginating when fewer results than the limit are returned.
+  - Use the query parameter page to paginate through GPS track points. The page parameter
+    specifies which group of 5,000 points to retrieve, starting with page 0 for the
+    first 5,000 points. Increment page and resend the request with the same bounding
+    box to retrieve additional points until fewer than 5,000 points are returned,
+    indicating the final page.
+possible_base_urls:
+- information_source; https://wiki.openstreetmap.org/wiki/API_v0.6:
+  - https://api.openstreetmap.org
+  - https://api.openstreetmap.org/
+possible_endpoints:
+- information_source; https://wiki.openstreetmap.org/wiki/API_v0.6:
+  - DELETE /api/0.6/[node|way|relation]/#id
+  - DELETE /api/0.6/changeset/#id/subscription
+  - DELETE /api/0.6/changeset_comments/#id/visibility
+  - DELETE /api/0.6/gpx/#id
+  - DELETE /api/0.6/notes/#id
+  - DELETE /api/0.6/notes/#id/subscription
+  - DELETE /api/0.6/user/preferences
+  - DELETE /api/0.6/user/preferences/[your_key]
+  - DELETE https://api.openstreetmap.org/api/0.6/changeset/#id/subscription
+  - DELETE https://api.openstreetmap.org/api/0.6/changeset_comments/#id/visibility

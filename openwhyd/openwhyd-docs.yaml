@@ -1,0 +1,53 @@
+auth_info:
+- information_source; https://openwhyd.github.io/openwhyd/API.html:
+  - The user who created the provided playlist must be logged in based on cookie before
+    using playlist modification endpoints (rename, delete, setOrder). Cookie-based
+    session authentication is required for these operations.
+  - User must be logged in, which is verified through an openwhyd session cookie that
+    must be included in requests. Certain endpoints like updating playlist images
+    and sharing playlists require the authenticated user (based on cookie) to be the
+    owner of the playlist.
+  - User must be logged in, with openwhyd session cookie included in the request.
+    This applies to endpoints that require authentication, such as POST /api/post/<pId>/sendToUsers
+    and POST /api/playlist.
+pagination_info:
+- information_source; https://openwhyd.github.io/openwhyd/API.html:
+  - 'Cursor-based pagination using optional query parameters: after (id of last post
+    from previous page) and before (id of first post currently). Use the post id values
+    from responses to construct subsequent requests for the next or previous page.'
+  - The API uses limit-offset pagination. The limit parameter (optional, default 20)
+    controls the number of posts returned per request. The after parameter (optional)
+    specifies a post identifier (pId) from which to fetch subsequent entries, enabling
+    pagination through result sets.
+  - The API uses offset-based pagination with skip (number of items to skip, optional)
+    and limit (number of items to return, optional, default 50) query parameters for
+    the /api/follow/fetchFollowers and /api/follow/fetchFollowing endpoints. The response
+    is a JSON array; pagination continues by incrementing the skip parameter until
+    fewer than limit items are returned.
+  - The API uses two different pagination schemes. For the incoming stream endpoint,
+    use the optional limit parameter (int) to specify number of posts returned, and
+    use the after parameter (string, post id) to paginate forward or before parameter
+    (string, post id) to get fresher posts. For the hot tracks endpoint, use the optional
+    limit parameter (int) for number of tracks and skip parameter (int) to skip tracks
+    for pagination.
+  - The endpoint supports offset-based pagination using the "after" parameter (optional
+    string) which accepts the id of the last post from the previous page to fetch
+    the next set of posts, and an optional "limit" parameter (int) to control the
+    number of posts returned per request. A "before" parameter (optional string) can
+    be used to fetch fresher posts since a given post id.
+possible_base_urls:
+- information_source; https://openwhyd.github.io/openwhyd/API.html:
+  - /api/post
+  - http://openwhyd.org
+possible_endpoints:
+- information_source; https://openwhyd.github.io/openwhyd/API.html:
+  - GET /:uHandle/[playlist/:playlistId]
+  - GET /[stream]
+  - GET /[uId]/likes?format=json
+  - GET /api/follow/fetchFollowers/<id>
+  - GET /api/follow/fetchFollowing/<id>
+  - GET /api/follow?action&tId
+  - GET /api/follow?action=get&tId
+  - GET /api/playlist/<id>
+  - GET /api/playlist?id=<id1>&id=<id2>
+  - GET /api/post?action=addComment&...

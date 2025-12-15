@@ -1,0 +1,55 @@
+resources:
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+- name: Formatted Status
+  endpoint:
+    path: /FormattedStatus
+    method: GET
+    data_selector: records
+- name: Counter
+  endpoint:
+    path: /api/enlighten/Counter
+    method: GET
+    data_selector: records
+    params: {}
+- name: StatusBar
+  endpoint:
+    path: /api/enlighten/StatusBar
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+- Windows does not currently support resizing.
+- Jupyter Notebook support is provided by the NotebookManager class.
+- The PyCharm Python console is currently not supported because sys.stdout does not
+  reference a valid TTY.
+- The status bar is only updated when StatusBar.update() or StatusBar.refresh() is
+  called, so fields like elapsed will need additional calls to appear dynamic.
+- Status bar is only updated when StatusBar.update() or StatusBar.refresh() is called
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://python-enlighten.readthedocs.io/en/1.8.0/api.html
+  headers:
+    Accept: application/json
+source_metadata: null

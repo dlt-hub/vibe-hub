@@ -1,0 +1,68 @@
+resources:
+- name: users
+  endpoint:
+    path: /api/users
+    method: GET
+    data_selector: '[]'
+- name: my-app
+  endpoint:
+    path: /v1/webapi/find
+    method: GET
+    data_selector: server_version
+    params: {}
+- name: dashboard
+  endpoint:
+    path: /teleport-logout
+    method: GET
+- name: grafana
+  endpoint:
+    path: http://localhost:3000
+    method: GET
+    data_selector: JWT
+    params: {}
+- name: azure-cli
+  endpoint:
+    path: Azure
+    method: GET
+    data_selector: CLI
+    params: {}
+- name: api_users
+  endpoint:
+    path: /api/users
+    method: GET
+    data_selector: '[]'
+    params: {}
+notes:
+- Non-HTTP API Support for TCP application access
+- Uses a join token to authorize the Teleport Application Service.
+- Applications must be accessible through the Teleport Proxy Service.
+- Teleport requires that credentials are sent with every request to your applications.
+- Backing up production instances, environments, and/or settings before making permanent
+  modifications is encouraged as a best practice.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Provides secure access to internal dashboards and applications.
+- Applications can integrate with the JWT tokens for authentication
+- This documentation is for an unreleased version of Teleport.
+- The app's X.509 certificate will expire on its own after the TTL allowed by your
+  user's role.
+- You can use Teleport to protect infrastructure resources like servers, databases,
+  and Kubernetes clusters.
+- You can also create a Teleport bot user and set up Machine & Workload Identity to
+  enable service accounts to access Teleport-protected resources.
+- Protect applications with Teleport by deploying the Teleport Application Service.
+- Teleport provides secure access to applications and cloud provider APIs with RBAC,
+  audit logging, and just-in-time access.
+- It is recommended to make a new user and role for each client.
+- Follow the principle of least privilege.
+errors:
+- '401 Unauthorized: Ensure the join token is valid and correctly configured'
+- '401 Unauthorized: Recheck user credentials or certificate validity.'
+auth_info:
+  mentioned_objects:
+  - Teleport-Jwt-Assertion
+  - Credential loaders
+client:
+  base_url: https://goteleport.com
+  auth:
+    type: oauth2
+source_metadata: null

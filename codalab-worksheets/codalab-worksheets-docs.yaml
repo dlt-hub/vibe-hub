@@ -1,0 +1,59 @@
+resources:
+- name: bundle_stores
+  endpoint:
+    path: /bundle_stores
+    method: GET
+    data_selector: data
+- name: bundles
+  endpoint:
+    path: /bundles/<uuid:re:0x[0-9a-f]{32}>
+    method: GET
+    data_selector: data
+- name: bundles
+  endpoint:
+    path: /bundles
+    method: GET
+    data_selector: results
+- name: bundle_locations
+  endpoint:
+    path: /bundles/locations
+    method: GET
+    data_selector: results
+- name: worksheets
+  endpoint:
+    path: /worksheets
+    method: GET
+    data_selector: response
+    params: {}
+- name: worksheet
+  endpoint:
+    path: /worksheets/<uuid:re:0x[0-9a-f]{32}>
+    method: GET
+    data_selector: response
+    params:
+      include: owner
+- name: bundles
+  endpoint:
+    path: /bundles
+    method: GET
+    data_selector: records
+- name: worksheets
+  endpoint:
+    path: /worksheets
+    method: GET
+    data_selector: records
+notes:
+- All requests to protected resources must include a valid OAuth bearer token.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+errors:
+- '401 Unauthorized: If the token is expired or invalid.'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OAuth2
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://worksheets.codalab.org
+source_metadata: null

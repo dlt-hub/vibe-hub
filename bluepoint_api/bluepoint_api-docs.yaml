@@ -1,0 +1,46 @@
+auth_info:
+- information_source; https://api.bluepoint.io/:
+  - 'API key authentication is required. Applications are created at https://www.bluepoint.io/api-access/
+    where you obtain an application secret that must be saved at creation time as
+    it is only displayed once. Each request must include the api-version header set
+    to the current version like api-version: 2024-02-23. M2M apps have an associated
+    system user and role that control API access permissions. The documentation references
+    an OAS 3.0 schema at https://api.bluepoint.io/schema.yaml for complete authentication
+    details including how to send credentials in requests.'
+  - 'The API uses JSON Web Tokens (JWT) for authentication in two modes: M2M and User.
+    For M2M mode, generate a JWT using the application ID and secret with a payload
+    containing sub (application ID) and iat (Unix timestamp in seconds). The JWT is
+    sent via request headers on each request. Use the PyJWT package to generate tokens
+    with the application secret as the signing key. The application secret is only
+    displayed once upon generation and cannot be retrieved again.'
+  - The API uses OAuth2 / Auth0 for authentication. After user login via Auth0 redirect,
+    the API returns a JWT token in the response body as {"token":"JWT_STRING"}. This
+    JWT must be included in the "Authorization" header as "Bearer <JWT_TOKEN>" along
+    with the "api-version" header on every request. The JWT includes an expiration
+    time in the "exp" field of the payload that should be checked before use, and
+    a new token should be obtained if expired.
+  - Use OAuth2 with Auth0. First, obtain an application_id from the API access page,
+    then make a GET request to https://api.bluepoint.io/users/login with the application_id
+    query parameter. This returns a redirectUrl pointing to Auth0's authorize endpoint
+    where the user logs in. After successful authentication, Auth0 redirects back
+    to https://api.bluepoint.io/user/token/?application_id=[your_application_id] with
+    an authorization code, which should be exchanged for an access token. The access
+    token is then used in subsequent API requests, likely in an Authorization header
+    as a Bearer token.
+pagination_info:
+- information_source; https://api.bluepoint.io/:
+  - 'Based on the provided documentation chunk, I can identify pagination information:
+
+
+    The API uses next and previous fields in the response to indicate pagination state.
+    The results array contains the paginated data. When next is null, there are no
+    more pages to fetch; otherwise, use the next value to construct the subsequent
+    request. The previous field similarly indicates whether a previous page exists.'
+possible_base_urls:
+- information_source; https://api.bluepoint.io/:
+  - https://api.bluepoint.io
+possible_endpoints:
+- information_source; https://api.bluepoint.io/:
+  - GET https://api.bluepoint.io/plants/
+  - GET https://api.bluepoint.io/user/token/
+  - GET https://api.bluepoint.io/users/login

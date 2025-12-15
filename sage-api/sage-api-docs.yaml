@@ -1,0 +1,73 @@
+resources:
+- name: bank_transactions
+  endpoint:
+    path: /v1/bank/transactions
+    method: GET
+    data_selector: transactions
+    params: {}
+- name: reconciliations
+  endpoint:
+    path: /v1/bank/reconciliations
+    method: GET
+    data_selector: reconciliations
+    params: {}
+- name: recurring_transaction_template
+  endpoint:
+    path: /api/recurring-transaction-template
+    method: PUT
+    data_selector: data
+    params: {}
+- name: Customer
+  endpoint:
+    path: /customer
+    method: GET
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Requires OAuth2 configuration in Sage Intacct.
+- API has rate limits that should be considered.
+- Ensure to handle rate limiting as per API guidelines.
+- Weird 422 errors when posting sales_invoices
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Some objects like Contact may return nulls in deeply nested fields
+errors:
+- 'CLIENT_ID_INVALID: The Client ID, Client Secret, and/or 3rd Party Application are
+  incorrect'
+- 'INVALID_CREDENTIALS: Check your API credentials.'
+- 'RATE_LIMIT_EXCEEDED: Reduce the number of requests.'
+- '400 Bad Request: Check the request format and parameters.'
+- '401 Unauthorized: Validate your credentials.'
+- '422: Validation errors occurred when posting sales_invoices'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.intacct.com
+  auth:
+    type: oauth2
+    flow: refresh_token
+    token_url: https://api.intacct.com/oauth/token
+    client_id: '{{ dlt.secrets[''intacct_client_id''] }}'
+    client_secret: '{{ dlt.secrets[''intacct_client_secret''] }}'
+    refresh_token: '{{ dlt.secrets[''intacct_refresh_token''] }}'
+    location: header
+    header_name: Authorization
+  headers:
+    Accept: application/json
+source_metadata: null

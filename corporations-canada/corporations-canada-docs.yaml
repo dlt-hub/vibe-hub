@@ -1,0 +1,49 @@
+resources:
+- name: directors
+  endpoint:
+    path: /v2/corporations/{number}/directors
+    method: GET
+    data_selector: _embedded.directors
+    params:
+      number: corporation_id
+- name: corporation
+  endpoint:
+    path: /v1/corporations/{corporation_id}.json
+    method: GET
+    data_selector: records
+    params:
+      lang: eng
+- name: corporation
+  endpoint:
+    path: /v1/corporations/{corporation_bn9}.json
+    method: GET
+    data_selector: value
+    params:
+      corporation_bn9: integer
+      lang: string
+- name: corporation
+  endpoint:
+    path: /corporations
+    method: GET
+    data_selector: APIResponse
+    params: {}
+notes:
+- Public Plan limits to 20 hits per minute and 25000 hits per day.
+- CIPO Internal Plan has no limits.
+- Hits – 60 hits per minute
+- Please note that a Corporation not found does not return a 404. It still returns
+  a 200 with the message ["could not find corporation 123","Corporation 123 est inconnu."]
+- It still returns a 200 with the message ["could not find corporation 123","Corporation
+  123 est inconnu."]
+errors:
+- '401: Unauthorized'
+- '403: Forbidden'
+- '404: Not Found'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck API key'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.ised-isde.canada.ca
+source_metadata: null

@@ -1,0 +1,34 @@
+resources:
+- name: model_upload
+  endpoint:
+    path: /v1/projects/$PROJECT_ID/locations/$LOCATION_ID/models:upload
+    method: POST
+    data_selector: response
+    params: {}
+- name: predict
+  endpoint:
+    path: /v1/projects/$PROJECT_ID/locations/$REGION/endpoints/$ENDPOINT_ID:predict
+    method: POST
+    data_selector: response
+    params: {}
+- name: DeepSeekMathVerifierTool
+  endpoint:
+    path: /predict
+    method: POST
+    data_selector: predictions
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Requires Google Cloud project setup and proper permissions
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '500 Internal error encountered: Verify your model and endpoint configurations.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://$REGION-aiplatform.googleapis.com
+  auth:
+    type: oauth2
+    location: header
+    header_name: Authorization
+source_metadata: null

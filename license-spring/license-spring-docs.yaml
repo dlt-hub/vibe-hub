@@ -1,0 +1,233 @@
+resources:
+- name: licenses
+  endpoint:
+    path: /api/licenses
+    method: GET
+- name: products
+  endpoint:
+    path: /api/products
+    method: GET
+- name: check_license
+  endpoint:
+    path: /check
+    method: POST
+    data_selector: license_check_response
+- name: checkLicenseOffline
+  endpoint:
+    path: /checkLicenseOffline
+    method: POST
+    data_selector: LicenseFilePayload
+    params: {}
+- name: checkBundle
+  endpoint:
+    path: /checkBundle
+    method: POST
+    data_selector: CheckBundleResponse
+    params: {}
+- name: checkBundleOffline
+  endpoint:
+    path: /checkBundleOffline
+    method: POST
+    data_selector: Record<string, LicenseFilePayload>
+    params: {}
+- name: activateLicense
+  endpoint:
+    path: /activateLicense
+    method: POST
+    data_selector: ActivateLicenseResponse
+    params: {}
+- name: deactivateLicense
+  endpoint:
+    path: /deactivateLicense
+    method: POST
+    data_selector: boolean
+    params: {}
+- name: activateOffline
+  endpoint:
+    path: /activateOffline
+    method: POST
+    data_selector: ActivateOfflineResponse
+    params: {}
+- name: deactivateOffline
+  endpoint:
+    path: /deactivateOffline
+    method: POST
+    data_selector: boolean
+    params: {}
+- name: activateBundle
+  endpoint:
+    path: /activateBundle
+    method: POST
+    data_selector: ActivateBundleResponse
+    params: {}
+- name: deactivateBundle
+  endpoint:
+    path: /deactivateBundle
+    method: POST
+    data_selector: boolean
+    params: {}
+- name: getTrialKey
+  endpoint:
+    path: /getTrialKey
+    method: POST
+    data_selector: TrialResponse
+    params: {}
+- name: user_licenses
+  endpoint:
+    path: /user-licenses
+    method: GET
+- name: customer_license_users
+  endpoint:
+    path: /customer-license-users
+    method: GET
+- name: license_feature_check
+  endpoint:
+    path: /license-feature-check
+    method: GET
+- name: add_consumption
+  endpoint:
+    path: /consumption/add
+    method: POST
+- name: add_feature_consumption
+  endpoint:
+    path: /consumption/add-feature
+    method: POST
+- name: product_details
+  endpoint:
+    path: /license-api/product-details
+    method: GET
+    data_selector: product
+    params: {}
+- name: device_variables
+  endpoint:
+    path: /license-api/device-variables/get
+    method: GET
+    data_selector: id
+    params: {}
+- name: track_device_variables
+  endpoint:
+    path: /license-api/device-variables/track
+    method: POST
+    data_selector: variable
+    params: {}
+- name: borrow_floating_license
+  endpoint:
+    path: /license-api/floating/license/borrow
+    method: POST
+    data_selector: borrowed_until
+    params: {}
+- name: release_floating_license
+  endpoint:
+    path: /license-api/floating/license/release
+    method: POST
+    data_selector: boolean
+    params: {}
+- name: release_floating_feature
+  endpoint:
+    path: /license-api/floating/feature/release
+    method: POST
+    data_selector: boolean
+    params: {}
+- name: change_password
+  endpoint:
+    path: /license-api/change-password
+    method: POST
+    data_selector: boolean
+    params: {}
+- name: get_product_versions
+  endpoint:
+    path: /license-api/versions
+    method: GET
+    data_selector: version
+    params: {}
+- name: get_installation_file
+  endpoint:
+    path: /license-api/installation-file
+    method: GET
+    data_selector: id
+    params: {}
+- name: get_sso_url
+  endpoint:
+    path: /license-api/sso-url
+    method: GET
+    data_selector: url
+    params: {}
+- name: getAirGapActivationCode
+  endpoint:
+    path: /air-gapped-license-code
+    method: GET
+    data_selector: activationCode
+    params: {}
+- name: verifyConfirmationCode
+  endpoint:
+    path: /verify-confirmation-code
+    method: POST
+    data_selector: isValid
+    params: {}
+- name: activateAirgappedLicense
+  endpoint:
+    path: /activate-airgapped-license
+    method: POST
+    data_selector: licenseSaved
+    params: {}
+- name: licenses_for_user
+  endpoint:
+    path: /user_licenses
+    method: GET
+    data_selector: licenses
+    params:
+      product: PRODUCT_STRING
+      username: USERNAME_STRING
+      password: PASSWORD_STRING
+      customer_account_code: CUSTOMER_ACCOUNT_CODE
+      id_token: ID_TOKEN
+      code: CODE
+- name: licenses
+  endpoint:
+    path: /licenses
+    method: GET
+    data_selector: items
+- name: user_licenses
+  endpoint:
+    path: /license-api/user-licenses
+    method: GET
+- name: licenses
+  endpoint:
+    path: /api/v1/licenses/
+    method: GET
+    params:
+      limit: 20
+notes:
+- The SDK uses multiple fallbacks to look up valid SSL certificates for reaching the
+  License API.
+- Ensure that the Date header value is set to current time. The server allows timestamps
+  that are up to 15 minutes old.
+- License users SSO (Single Sign On) is only available on Enterprise plan.
+- For Enterprise accounts, we host user portal on company code subdomain.
+- The License API provides a direct interface to the LicenseSpring API.
+errors:
+- 'date_header_diff: (400)'
+- 'authorization_invalid_headers: (400)'
+- 'hmac_required: (400)'
+- 'signature_mismatch: (400)'
+- 'authorization_missing_params: (400)'
+- 'invalid_api_key: (400)'
+- 'revoked_api_key: (400)'
+- 'read_only_api_key: (400)'
+- '401 Unauthorized: Recheck API key or shared key'
+- '404 Not Found: Check the endpoint path'
+- '400: Bad Request'
+- '401: Unauthorized'
+- '403: Forbidden'
+- '404: Not Found'
+- '500: Internal Server Error'
+- 200 OK
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://api.licensespring.com
+  auth:
+    type: apikey
+source_metadata: null

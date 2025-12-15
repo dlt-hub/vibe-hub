@@ -1,0 +1,54 @@
+auth_info:
+- information_source; https://engage-api.campuslabs.com:
+  - API key authentication is required and can be sent either as the `key` query string
+    parameter or the `X-Engage-Api-Key` request header. 401 errors indicate a missing
+    API key, while 403 errors indicate the API key is invalid, not authorized for
+    the request IP address, not authorized for the endpoint, or the institution lacks
+    API access.
+  - 'API key authentication is required. Send the API key in the request header as
+    `X-Engage-Api-Key` with the key value (format: `esk_test_*`). Alternatively, the
+    key can be passed as a query parameter named `key`, though header-based authentication
+    is the preferred method.'
+  - API keys are used for authentication and can be passed in either the `headerAuth`
+    header or the `queryAuth` query parameter. API keys can be restricted by IP address
+    range, HTTP method, and specific endpoints; requests that violate these restrictions
+    return a 403 Forbidden response.
+  - Requests to the Engage API require an API key passed in the X-Engage-Api-Key header.
+    For idempotent requests, include an Idempotency-Key header with a unique UUID
+    value to prevent duplicate processing on retries.
+  - 'The API uses an API key for authentication that can be passed in two ways: as
+    the X-Engage-Api-Key header or as a key query parameter. The API key format is
+    esk_test_* for test keys.'
+pagination_info:
+- information_source; https://engage-api.campuslabs.com:
+  - List endpoints use take (default 10) and skip (default 0) query parameters to
+    paginate. Responses include totalItems for total count and items array. Stop paginating
+    when the number of returned items is less than the take value or when skip plus
+    returned items equals totalItems.
+  - Pagination uses query parameters skip (offset) and take (page size) to control
+    which results are returned. The response includes a totalItems field indicating
+    the total number of available items, allowing clients to determine when all pages
+    have been retrieved.
+- information_source; https://engage-api.campuslabs.com/:
+  - List endpoints support offset-based pagination using query parameters take (default
+    10, specifies page size) and skip (default 0, specifies items to skip). Responses
+    include totalItems (total count) and items (current page results); construct subsequent
+    requests by incrementing skip by take value until skip >= totalItems.
+  - Pagination uses query parameters skip and take to control offset and page size.
+    The response includes totalItems indicating the total number of records available.
+    Use skip to offset results and take to specify how many items to return per request.
+possible_base_urls:
+- information_source; https://engage-api.campuslabs.com:
+  - https://engage-api.campuslabs.com
+  - https://engage-api.campuslabs.com/api
+possible_endpoints:
+- information_source; https://engage-api.campuslabs.com:
+  - GET /v3.0/finance/account
+  - GET https://engage-api.campuslabs.com/api/v3.0/finance/account
+  - GET https://engage-api.campuslabs.com/api/v3.0/finance/transaction
+  - POST https://engage-api.campuslabs.com/api/v3.0/finance/account
+- information_source; https://engage-api.campuslabs.com/:
+  - GET /v3.0/finance/account
+  - GET https://engage-api.campuslabs.com/api/v3.0/finance/account
+  - GET https://engage-api.campuslabs.com/api/v3.0/finance/transaction
+  - POST https://engage-api.campuslabs.com/api/v3.0/finance/account

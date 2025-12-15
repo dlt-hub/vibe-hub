@@ -1,0 +1,98 @@
+resources:
+- name: environment
+  endpoint:
+    path: /create_environment_endpoint
+    method: POST
+    data_selector: environment_config
+- name: agent
+  endpoint:
+    path: /create_agent_endpoint
+    method: POST
+    data_selector: agent_config
+- name: chat
+  endpoint:
+    path: /chat_with_agent
+    method: POST
+    data_selector: response
+- name: lyzr_chat_api
+  endpoint:
+    path: /v3/inference/chat/
+    method: POST
+    data_selector: response.text
+    params: {}
+- name: Structured Outputs
+  endpoint:
+    path: /agent-apis/agents/agent events
+    method: GET
+    data_selector: outputs
+    params: {}
+- name: Workflow
+  endpoint:
+    path: /agent-lab/orchestration/orchestration-engine/comparison
+    method: GET
+- name: Manager Agent
+  endpoint:
+    path: /agent-lab/lyzr-mcp/introduction
+    method: GET
+- name: credits
+  endpoint:
+    path: /credits
+    method: GET
+    data_selector: credit_info
+    params: {}
+- name: Community Plan
+  endpoint:
+    path: /community/plan
+    method: GET
+    data_selector: features
+    params: {}
+- name: Pro Plan
+  endpoint:
+    path: /pro/plan
+    method: GET
+    data_selector: features
+    params: {}
+- name: Enterprise Plan
+  endpoint:
+    path: /enterprise/plan
+    method: GET
+    data_selector: features
+    params: {}
+notes:
+- Using an incorrect or expired session_id will result in no events being streamed.
+- Ensure the WebSocket client stays open for the duration of the session.
+- Uses API key for authentication
+- Structured Outputs are crucial for machine interoperability.
+- Use JSON schema for validation when needed.
+- Ensure both LYZR_API_KEY and LYZR_USER_ID are correctly set
+- Confirm your Lyzr account has access to the necessary agents
+- Credit allocation scales with plan level (Starter, Pro, Enterprise).
+- Credits reset or replenish on a fixed schedule and can be supplemented as needed.
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Uses OAuth2 with refresh token.
+- Community Plan is free for beginners or small-scale experimentation.
+- Pro Plan is scalable, affordable, and ideal for growing startups.
+- Enterprise Plan is tailored for enterprises needing full customization.
+- Applicable to only paid users who are part of a plan.
+- Visible to only Owner accounts, that have bought the plan.
+- Users who did a top-up without purchasing a plan do not need to unsubscribe as top-up
+  is a one-time payment and the credits do not have expiry.
+errors:
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+- 'Invalid Plan: Ensure you are selecting a correct plan.'
+- 'Rate Limit Exceeded: Reduce the frequency of requests.'
+auth_info:
+  mentioned_objects: []
+client:
+  base_url: https://agent-prod.studio.lyzr.ai
+  resources:
+  - name: chat_mode
+    endpoint:
+      path: /v3/inference/chat
+      method: POST
+  - name: streaming_mode
+    endpoint:
+      path: /v3/inference/stream
+      method: POST
+source_metadata: null

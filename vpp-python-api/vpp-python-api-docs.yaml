@@ -1,0 +1,155 @@
+resources:
+- name: mpls_tunnel_details
+  endpoint:
+    path: /mpls/api
+    method: GET
+- name: network_config
+  endpoint:
+    path: /s/network/config
+    method: GET
+    data_selector: records
+- name: show_version
+  endpoint:
+    path: /api/show_version
+    method: GET
+    data_selector: show_version_reply
+- name: sw_interface_dump
+  endpoint:
+    path: /api/sw_interface_dump
+    method: GET
+    data_selector: sw_interface_details
+- name: ip_address_dump
+  endpoint:
+    path: /api/ip_address_dump
+    method: GET
+    data_selector: ip_address_details
+- name: mpls_tunnel
+  endpoint:
+    path: /mpls_tunnel_dump
+    method: GET
+    data_selector: mpls_tunnel_details
+- name: vxlan_tunnel
+  endpoint:
+    path: /vxlan_tunnel_v2_dump
+    method: GET
+    data_selector: vxlan_tunnel_details
+- name: interface_events
+  endpoint:
+    path: /want_interface_events
+    method: POST
+    data_selector: sw_interface_event
+- name: vpp
+  endpoint:
+    path: /vpp
+    method: GET
+    data_selector: routing
+    params: {}
+- name: babel
+  endpoint:
+    path: /babel
+    method: GET
+    data_selector: protocols
+    params: {}
+- name: sflow_configuration
+  endpoint:
+    path: /sflow
+    method: POST
+    data_selector: configuration
+    params: {}
+- name: sflow
+  endpoint:
+    path: /etc/hsflowd.conf
+    method: GET
+    data_selector: sflow
+    params: {}
+- name: interface_counters
+  endpoint:
+    path: /sflow/interface/counters
+    method: GET
+    data_selector: counterRecords
+- name: packet_samples
+  endpoint:
+    path: /sflow/packet/samples
+    method: GET
+    data_selector: sampleRecords
+- name: vpp1
+  endpoint:
+    path: config/vpp1/vppcfg.yaml
+    method: GET
+    data_selector: interfaces
+    params: {}
+- name: vpp1_bird_local
+  endpoint:
+    path: config/vpp1/bird-local.conf
+    method: GET
+    data_selector: protocols
+    params: {}
+- name: articles
+  endpoint:
+    path: /s/articles
+    method: GET
+    data_selector: records
+    params: {}
+- name: sflow_datagram
+  endpoint:
+    path: /sflow/datagram
+    method: GET
+    data_selector: datagrams
+    params: {}
+- name: sflow_interface
+  endpoint:
+    path: /sflow/interface
+    method: GET
+    data_selector: interfaces
+    params: {}
+- name: sflow_packet
+  endpoint:
+    path: /sflow/packet
+    method: GET
+    data_selector: packets
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- This agent is meant to run with Net SNMPd.
+- If the config file is read, the ifAlias OID for an interface will be set to the
+  description field.
+- Requires proper configuration of Centec switches for routing.
+- Uses static routes and OSPF for connectivity
+- Supports both IPv4 and IPv6
+- N+2 is a great rule to live by, when it comes to network engineering.
+- There are two BGP uplinks to AS8298 here, which also provides resilience in case
+  one of them is down for maintenance or in fault condition.
+- Clients connect to a unix domain socket, typically /run/vpp/api.sock.
+- The API has been ported to many languages including C, C++, Go, Lua, Rust, Python.
+- Some APIs may require specific versions due to backward compatibility.
+- Events require thread awareness and safe data transfer between threads.
+- Forwarding IPv4 routes over IPv4 point-to-point nexthops works!
+- Forwarding IPv4 routes over IPv6 nexthops works, ICMPv4 works, PMTUd works!
+- VPP’s goal is to be a programmable dataplane, and explicitly has left the programming
+  and configuration as an exercise for integrators.
+- hsflowd sends UDP packets every 30 seconds to the configured collector
+- sFlow provides an automatic mapping between interface names and their indexes.
+- sFlow can be turned on or off for each port.
+- SSH pubkeys for VPP containers are installed
+- Root login available with password 'vpp'
+- Data collection is based on sFlow datagrams.
+- Requires specific configuration for interface polling.
+errors:
+- 'Invalid IP address format: Ensure addresses adhere to IPv4/IPv6 standards.'
+- 'Invalid request: Ensure the API method and parameters are correct.'
+- 'Not authorized: Check user permissions.'
+- 'Invalid hw_if_index: Check the specified hardware interface index.'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://git.ipng.ch
+  auth:
+    type: oauth2
+    flow: refresh_token
+source_metadata: null

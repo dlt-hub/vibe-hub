@@ -1,0 +1,119 @@
+resources:
+- name: sepa_direct_debit
+  endpoint:
+    path: /api/sepa_direct_debit
+    method: GET
+    data_selector: records
+- name: clients
+  endpoint:
+    path: /api/clients
+    method: GET
+    data_selector: records
+    params:
+      viewfilter: custom view encoded key
+- name: groups
+  endpoint:
+    path: /api/groups
+    method: GET
+    data_selector: records
+    params:
+      viewfilter: custom view encoded key
+- name: lines_of_credit
+  endpoint:
+    path: /api/linesofcredit
+    method: GET
+    data_selector: records
+    params:
+      viewfilter: custom view encoded key
+- name: loans
+  endpoint:
+    path: /api/loans
+    method: GET
+    data_selector: records
+    params:
+      viewfilter: custom view encoded key
+- name: loan_transactions
+  endpoint:
+    path: /api/loans/transacti
+    method: GET
+    data_selector: records
+    params: {}
+- name: deposits
+  endpoint:
+    path: /api/savings
+    method: GET
+    data_selector: records
+    params:
+      viewfilter: custom view encoded key
+- name: deposit_transactions
+  endpoint:
+    path: /api/savings/transac
+    method: GET
+    data_selector: records
+    params: {}
+- name: system_activities
+  endpoint:
+    path: /api/activities
+    method: GET
+    data_selector: records
+    params:
+      viewfilter: custom view encoded key
+- name: custom_views
+  endpoint:
+    path: /api/users/{username}/views
+    method: GET
+    data_selector: '[]'
+    params:
+      for: CLIENTS
+- name: sepa_direct_debit
+  endpoint:
+    path: /services/data/vXX.X/sobjects/SEPADirectDebit
+    method: GET
+    data_selector: records
+    params: {}
+- name: campaign_member
+  endpoint:
+    path: /services/data/vXX.X/sobjects/CampaignMember
+    method: GET
+    data_selector: records
+    params:
+      incremental: updated_at
+- name: contact
+  endpoint:
+    path: /services/data/vXX.X/sobjects/Contact
+    method: GET
+    data_selector: records
+    params: {}
+notes:
+- Uses OAuth2 with refresh token — requires setup of connected app in api
+- Requires OAuth2 authentication
+- Basic authentication may only be used with the Mambu API. However, we recommend
+  using API keys instead of basic authentication whenever possible.
+- Mambu automatically blocks any IP address that issues a total of 10 requests from
+  an API consumer using invalid credentials. This applies even if the IP has been
+  whitelisted.
+- We're moving! We’ve launched a new and improved support site - designed to help
+  you find answers faster and easier across support documentation and Mambu APIs.
+- All requests must include the required viewfilter path parameter.
+- Uses OAuth2 with refresh token — requires setup of connected app in Mambu
+- Some objects may return nulls in deeply nested fields
+- Mambu does not support versioning.
+- APIs are backward-compatible for at least one release.
+- Some objects like Contact may return nulls in deeply nested fields
+- API v1 is no longer being actively developed. We strongly recommend that all customers
+  use our API v2 endpoints for all new integrations and transition to API v2 endpoints
+  for existing features wherever possible.
+errors:
+- '401 Unauthorized: Check OAuth credentials'
+- '404 Not Found: Verify the endpoint path'
+- 'REQUEST_LIMIT_EXCEEDED: Throttle API calls or reduce frequency'
+- 'QUERY_TIMEOUT: Break down filters or add selectivity'
+- '401 Unauthorized: Recheck OAuth scopes or token expiration'
+auth_info:
+  mentioned_objects:
+  - OauthToken
+  - AuthProvider
+  - NamedCredential
+client:
+  base_url: https://api.mambu.com
+source_metadata: null

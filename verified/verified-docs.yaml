@@ -1,0 +1,53 @@
+auth_info:
+- information_source; https://docs.verified.eu/docs/api-documentation/584e632c71d0e-api-authentication:
+  - JWT token-based authentication is required. Obtain a JWT token via the Retrieve
+    token API, then include it in the Authorization header as "JWT <token>" or "Bearer
+    <token>" for all API requests. Tokens expire after 7 days and can be renewed by
+    making a GET request to https://app.verified.eu/api/auth/token with the current
+    token in the Authorization header, which returns a new token valid for another
+    7 days.
+  - Requests are IP-locked by default as a security measure; if a request comes from
+    a different IP than the one used during authentication, it will be rejected. To
+    retrieve tokens without IP locking for use in distributed systems with dynamic
+    IPs, add the query parameter withoutIpLock=1 to the POST /api/auth authentication
+    endpoint.
+  - The Verified API uses JWT bearer token authentication combined with company namespace
+    isolation. Include the JWT token in the Authorization header as "JWT ey..." and
+    add an x-namespace header with the value "/companies/{your_company_id}" (extracted
+    from the user info endpoint at GET /auth/userinfo under the roles name path).
+    All requests to an envelope require the same namespace header that was used during
+    envelope creation. Additionally, IP locking is enforced, so requests must originate
+    from the same IP address used during authentication.
+  - 'To use the API you need to authenticate with Basic Auth (base64-encoded email:password)
+    to POST /api/auth to retrieve a JWT token, then include that JWT and a company
+    ID in HTTP headers for subsequent API requests. JWT tokens are valid for 7 days
+    and must be renewed after expiration.
+
+
+    **Token Retrieval:**
+
+    - Endpoint: POST https://app.verified.eu/api/auth
+
+    - Header: Authorization: Basic base64(email:password)
+
+    - Returns: JWT token
+
+
+    **API Requests:**
+
+    - Include JWT token in HTTP headers (exact header name not specified in excerpt)
+
+    - Include company ID in HTTP headers (exact header name not specified in excerpt)
+
+    - Token validity: 7 days'
+possible_base_urls:
+- information_source; https://docs.verified.eu/docs/api-documentation/584e632c71d0e-api-authentication:
+  - https://app.verified.eu/api/auth
+  - https://app.verified.eu/api/auth/token
+possible_endpoints:
+- information_source; https://docs.verified.eu/docs/api-documentation/584e632c71d0e-api-authentication:
+  - GET /auth/userinfo
+  - GET https://app.verified.eu/api/auth/token
+  - POST /api/auth
+  - POST /api/auth?withoutIpLock=1
+  - POST https://app.verified.eu/api/auth
